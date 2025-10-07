@@ -1,4 +1,4 @@
-import { $Enums, type User } from '../generated/prisma';
+import { Prisma, $Enums, type User } from '../generated/prisma';
 import { prisma } from '../config/database';
 import type { AuthenticatedUser, OAuthProvider, UserRole } from '../types';
 
@@ -34,29 +34,62 @@ function mapUser(record: User): AuthenticatedUser {
 export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<AuthenticatedUser> {
   const prismaProvider = providerEnumMap[input.provider];
 
-  const user = await prisma.user.upsert({
-    where: {
-      provider_providerAccountId: {
+  try {
+    const user = await prisma.user.upsert({
+      where: {
+        provider_providerAccountId: {
+          provider: prismaProvider,
+          providerAccountId: input.providerAccountId,
+        },
+      },
+      update: {
+        email: input.email ?? undefined,
+        displayName: input.displayName ?? undefined,
+        avatarUrl: input.photo ?? undefined,
+        lastLoginAt: new Date(),
+      },
+      create: {
         provider: prismaProvider,
         providerAccountId: input.providerAccountId,
+        email: input.email ?? undefined,
+        displayName: input.displayName ?? undefined,
+        avatarUrl: input.photo ?? undefined,
       },
-    },
-    update: {
-      email: input.email ?? undefined,
-      displayName: input.displayName ?? undefined,
-      avatarUrl: input.photo ?? undefined,
-      lastLoginAt: new Date(),
-    },
-    create: {
-      provider: prismaProvider,
-      providerAccountId: input.providerAccountId,
-      email: input.email ?? undefined,
-      displayName: input.displayName ?? undefined,
-      avatarUrl: input.photo ?? undefined,
-    },
-  });
+    });
 
-  return mapUser(user);
+    return mapUser(user);
+  } catch (error) {
+    // Allow linking Google/Facebook accounts that share the same email address
+    if (input.email && error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      const targetMeta = error.meta?.target;
+      const targets = Array.isArray(targetMeta)
+        ? targetMeta
+        : typeof targetMeta === 'string'
+        ? [targetMeta]
+        : [];
+
+      if (targets.some(target => target.includes('email'))) {
+        const existing = await prisma.user.findUnique({ where: { email: input.email } });
+
+        if (existing) {
+          const updated = await prisma.user.update({
+            where: { id: existing.id },
+            data: {
+              provider: prismaProvider,
+              providerAccountId: input.providerAccountId,
+              displayName: input.displayName ?? undefined,
+              avatarUrl: input.photo ?? undefined,
+              lastLoginAt: new Date(),
+            },
+          });
+
+          return mapUser(updated);
+        }
+      }
+    }
+
+    throw error;
+  }
 }
 
 export async function findUserById(id: string): Promise<AuthenticatedUser | null> {

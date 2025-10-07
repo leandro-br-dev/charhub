@@ -40,10 +40,23 @@ function buildUserFromQuery(fallbackName: string, params: URLSearchParams, provi
   };
 }
 
+function cleanCallbackQueryParams(): void {
+  const params = new URLSearchParams(window.location.search);
+  ['token', 'user', 'provider', 'state', 'code', 'auth', 'error', 'error_description'].forEach(key => {
+    if (params.has(key)) {
+      params.delete(key);
+    }
+  });
+
+  const next = params.toString();
+  const target = `${window.location.pathname}${next ? `?${next}` : ''}${window.location.hash ?? ''}`;
+  window.history.replaceState(null, '', target);
+}
+
 export default function Callback(): JSX.Element {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { completeLogin } = useAuth();
+  const { completeLogin, isAuthenticated, user } = useAuth();
   const { t } = useTranslation(['callback', 'common']);
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [message, setMessage] = useState(t('callback:processingMessage'));
@@ -51,13 +64,22 @@ export default function Callback(): JSX.Element {
   useEffect(() => {
     const error = searchParams.get('error');
     const errorDescription = searchParams.get('error_description');
-    const token = searchParams.get('token');
+    const tokenFromQuery = searchParams.get('token');
     const providerParam = (searchParams.get('provider') as OAuthProvider | null) ?? 'google';
     const code = searchParams.get('code');
     const state = searchParams.get('state');
 
+    const effectiveToken = tokenFromQuery ?? user?.token ?? undefined;
+
     async function finalize() {
-      console.debug('[callback] params', { error, token, providerParam, code, state });
+      console.debug('[callback] params', {
+        error,
+        token: effectiveToken,
+        providerParam,
+        code,
+        state,
+        isAuthenticated
+      });
 
       if (error) {
         setStatus('error');
@@ -65,10 +87,13 @@ export default function Callback(): JSX.Element {
         return;
       }
 
-      if (token) {
-        const user = buildUserFromQuery(t('common:authenticatedUser'), searchParams, providerParam, token);
-        console.debug('[callback] completing login with token', user);
-        completeLogin(user);
+      if (effectiveToken) {
+        if (!isAuthenticated || !user?.token) {
+          const resolvedUser = buildUserFromQuery(t('common:authenticatedUser'), searchParams, providerParam, effectiveToken);
+          console.debug('[callback] completing login with token', resolvedUser);
+          completeLogin(resolvedUser);
+        }
+        cleanCallbackQueryParams();
         setStatus('success');
         setMessage(t('callback:redirectingMessage'));
         setTimeout(() => navigate('/dashboard', { replace: true }), 900);
@@ -87,6 +112,7 @@ export default function Callback(): JSX.Element {
           });
 
           completeLogin({ ...response.data.user, token: response.data.token });
+          cleanCallbackQueryParams();
           setStatus('success');
           setMessage(t('callback:redirectingMessage'));
           setTimeout(() => navigate('/dashboard', { replace: true }), 900);
@@ -104,7 +130,7 @@ export default function Callback(): JSX.Element {
     }
 
     void finalize();
-  }, [completeLogin, navigate, searchParams, t]);
+  }, [completeLogin, isAuthenticated, navigate, searchParams, t, user]);
 
   return (
     <section className="mx-auto flex min-h-[calc(100vh-120px)] max-w-lg flex-col items-center justify-center px-6 text-center">

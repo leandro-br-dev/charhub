@@ -15,6 +15,7 @@ interface AuthContextValue {
 
 const STORAGE_KEY = 'charhub.auth.user';
 const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
+const CALLBACK_PATH = import.meta.env.VITE_AUTH_CALLBACK_PATH || '/auth/callback';
 const defaultProviderPaths: Record<OAuthProvider, string> = {
   google: `${API_PREFIX}/oauth/google`,
   facebook: `${API_PREFIX}/oauth/facebook`
@@ -36,6 +37,10 @@ function resolveAuthBaseUrl(): string {
 }
 
 function consumeQueryParams(): AuthUser | null {
+  if (window.location.pathname.startsWith(CALLBACK_PATH)) {
+    return null;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const token = params.get('token');
   if (!token) {
@@ -115,7 +120,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
 
   const loginWithProvider = (provider: OAuthProvider) => {
     const baseUrl = resolveAuthBaseUrl();
-    const callbackUrl = `${window.location.origin}/auth/callback`;
+    const callbackUrl = `${window.location.origin}${CALLBACK_PATH}`;
     const params = new URLSearchParams({
       redirect_uri: `${callbackUrl}?provider=${provider}`
     });
