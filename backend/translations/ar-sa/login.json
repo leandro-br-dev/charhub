@@ -1,0 +1,16 @@
+{
+  "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
+  "resources": {
+    "title": "أهلاً بك في CharHub",
+    "subtitle": "احمِ ملفات تعريف لاعبيك بتسجيل الدخول الاجتماعي. سجّل الدخول باستخدام جوجل أو فيسبوك، واحصل على تحليلات حصرية للألعاب في ثوانٍ.",
+    "formTitle": "سجّل الدخول للمتابعة",
+    "formInstructions": "اختر مزود الخدمة المفضل لديك أدناه. سيتم توجيهك لتأكيد الوصول وإعادتك إلى هنا عند الانتهاء.",
+    "greeting": "أهلاً بعودتك!",
+    "instruction": "سجّل الدخول للمتابعة",
+    "googleButton": "سجّل الدخول باستخدام جوجل",
+    "facebookButton": "سجّل الدخول باستخدام فيسبوك",
+    "firstAccess": "هل هذه زيارتك الأولى؟",
+    "signupLink": "سجّل",
+    "checkingAuth": "جارٍ التحقق من المصادقة..."
+  }
+}

@@ -1,0 +1,85 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tema claro (padrão) */
+:root {
+  color-scheme: light dark;
+
+  --color-light: #E6E6EA;
+  --color-normal: #f3f1f1;
+  --color-dark: #161618;
+
+  --color-title: #2F2F2F;
+  --color-description: #9C9C9C;
+  --color-content: #2F2F2F;
+  --color-content-dark: #FFFFFF;
+
+  --color-primary: #FFC917;
+  --color-primary-100: #FFDE72;
+  --color-primary-500: #FFC917;
+  --color-primary-900: #967300;
+  --color-secondary: #10b981;
+
+  --color-accent: #f59e0b;
+  --color-muted: #6b7280;
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+  --color-info: #0ea5e9;
+
+  --color-background: #f3f1f1;
+  --color-foreground: #161618;
+  --color-card: #FFFFFF;
+  --color-border: #E6E6EA;
+}
+
+/* Tema escuro */
+.dark {
+  --color-light: #2F2F2F;
+  --color-normal: #161618;
+  --color-dark: #f3f1f1;
+
+  --color-title: #FFFFFF;
+  --color-description: #9C9C9C;
+  --color-content: #FFFFFF;
+  --color-content-dark: #161618;
+
+  --color-primary: #FFC917;
+  --color-primary-100: #080808;
+  --color-primary-500: #FFC917;
+  --color-primary-900: #967300;
+  --color-secondary: #10b981;
+
+  --color-accent: #f59e0b;
+  --color-muted: #6b7280;
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+  --color-info: #0ea5e9;
+
+  --color-background: #161618;
+  --color-foreground: #f3f1f1;
+  --color-card: #2F2F2F;
+  --color-border: #2F2F2F;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+button {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}

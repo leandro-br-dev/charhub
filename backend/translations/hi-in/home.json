@@ -1,0 +1,10 @@
+{
+  "description": "Landing page strings for the home page with call-to-action buttons.",
+  "resources": {
+    "titleLine1": "अपनी",
+    "titleLine2Highlight": "बातचीत और कहानियों को जीवंत करें",
+    "subtitle": "मनमोहक पात्र बनाएँ और AI-जनित इंटरैक्टिव कहानियों में डूब जाएँ। आपका रोमांच अब शुरू होता है।",
+    "accessButton": "साइन इन करें",
+    "signupButton": "साइन अप करें"
+  }
+}

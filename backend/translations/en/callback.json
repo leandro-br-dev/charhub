@@ -1,0 +1,14 @@
+{
+  "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
+  "resources": {
+    "processingTitle": "Completing login...",
+    "processingMessage": "Completing authentication...",
+    "successTitle": "Welcome back!",
+    "redirectingMessage": "Authentication completed. Redirecting...",
+    "errorTitle": "Authentication error",
+    "cancelledMessage": "Authentication was cancelled by the provider.",
+    "missingParamsMessage": "Missing authorization parameters. Please restart the login process.",
+    "exchangeFailedMessage": "We could not finalize the OAuth exchange. Please try again.",
+    "returnButton": "Return to login"
+  }
+}

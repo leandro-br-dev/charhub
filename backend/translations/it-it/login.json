@@ -1,0 +1,16 @@
+{
+  "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
+  "resources": {
+    "title": "Benvenuto su CharHub",
+    "subtitle": "Proteggi i profili dei tuoi giocatori con l'accesso tramite social. Connettiti con Google o Facebook e accedi ad analisi di gioco esclusive in pochi secondi.",
+    "formTitle": "Accedi per continuare",
+    "formInstructions": "Scegli il tuo provider preferito qui sotto. Verrai reindirizzato per confermare l'accesso e riportato qui una volta completato.",
+    "greeting": "Bentornato!",
+    "instruction": "Accedi per continuare",
+    "googleButton": "Accedi con Google",
+    "facebookButton": "Accedi con Facebook",
+    "firstAccess": "È la tua prima volta qui?",
+    "signupLink": "Registrati",
+    "checkingAuth": "Verifica autenticazione in corso..."
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
+  "resources": {
+    "processingTitle": "Anmeldung wird abgeschlossen...",
+    "processingMessage": "Authentifizierung wird abgeschlossen...",
+    "successTitle": "Willkommen zurück!",
+    "redirectingMessage": "Authentifizierung abgeschlossen. Weiterleitung erfolgt...",
+    "errorTitle": "Authentifizierungsfehler",
+    "cancelledMessage": "Die Authentifizierung wurde vom Anbieter abgebrochen.",
+    "missingParamsMessage": "Fehlende Autorisierungsparameter. Bitte starten Sie den Anmeldevorgang neu.",
+    "exchangeFailedMessage": "Wir konnten den OAuth-Austausch nicht abschließen. Bitte versuchen Sie es erneut.",
+    "returnButton": "Zurück zur Anmeldung"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
+  "resources": {
+    "title": "Добро пожаловать в CharHub",
+    "subtitle": "Защитите профили своих игроков с помощью входа через социальные сети. Войдите через Google или Facebook и получите доступ к эксклюзивной игровой аналитике за считанные секунды.",
+    "formTitle": "Войдите, чтобы продолжить",
+    "formInstructions": "Выберите предпочитаемый сервис ниже. Вы будете перенаправлены для подтверждения доступа и возвращены сюда по завершении.",
+    "greeting": "С возвращением!",
+    "instruction": "Войдите, чтобы продолжить",
+    "googleButton": "Войти через Google",
+    "facebookButton": "Войти через Facebook",
+    "firstAccess": "Впервые здесь?",
+    "signupLink": "Зарегистрироваться",
+    "checkingAuth": "Проверка аутентификации..."
+  }
+}

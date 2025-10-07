@@ -1,0 +1,10 @@
+{
+  "description": "Landing page strings for the home page with call-to-action buttons.",
+  "resources": {
+    "titleLine1": "Bring Your",
+    "titleLine2Highlight": "Conversations and Stories to Life",
+    "subtitle": "Create captivating characters and immerse yourself in AI-generated interactive narratives. Your adventure starts now.",
+    "accessButton": "Sign In",
+    "signupButton": "Sign Up"
+  }
+}

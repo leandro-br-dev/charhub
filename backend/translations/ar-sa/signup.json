@@ -1,0 +1,16 @@
+{
+  "description": "Signup page strings for new user registration.",
+  "resources": {
+    "greeting": "أنشئ حسابك!",
+    "instruction": "اختر خيارًا للتسجيل",
+    "googleButton": "التسجيل باستخدام جوجل",
+    "facebookButton": "التسجيل باستخدام فيسبوك",
+    "termsAgreementPt1": "بالتسجيل، أنت توافق على",
+    "termsAgreementAnd": "و",
+    "termsAndConditions": "الشروط والأحكام",
+    "privacyPolicy": "سياسة الخصوصية",
+    "alreadyRegistered": "هل لديك حساب بالفعل؟",
+    "loginLink": "تسجيل الدخول",
+    "checkingAuth": "جاري التحقق من المصادقة..."
+  }
+}

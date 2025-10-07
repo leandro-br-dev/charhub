@@ -1,0 +1,2 @@
+# Cloudflare tunnel credentials (downloaded per environment)
+config/*/*.json

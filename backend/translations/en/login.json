@@ -1,0 +1,16 @@
+{
+  "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
+  "resources": {
+    "title": "Welcome to CharHub",
+    "subtitle": "Secure your players' profiles with social sign-in. Connect with Google or Facebook and access exclusive game analytics in seconds.",
+    "formTitle": "Sign in to continue",
+    "formInstructions": "Choose your preferred provider below. You'll be redirected to confirm access and brought back here when complete.",
+    "greeting": "Welcome Back!",
+    "instruction": "Sign in to continue",
+    "googleButton": "Sign in with Google",
+    "facebookButton": "Sign in with Facebook",
+    "firstAccess": "First time here?",
+    "signupLink": "Sign up",
+    "checkingAuth": "Checking authentication..."
+  }
+}

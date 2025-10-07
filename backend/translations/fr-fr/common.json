@@ -1,0 +1,21 @@
+{
+  "description": "General UI strings shared across navigation, buttons, and reusable components.",
+  "resources": {
+    "brand": "CharHub Auth",
+    "language": "Langue",
+    "continueGoogle": "Continuer avec Google",
+    "continueFacebook": "Continuer avec Facebook",
+    "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder à vos informations de profil de base.",
+    "logout": "Se déconnecter",
+    "logoutLoading": "Déconnexion en cours...",
+    "authenticatedUser": "Utilisateur authentifié",
+    "tokenStored": "Stocké dans un cookie HTTP-only",
+    "navDashboard": "Tableau de bord",
+    "navTagline": "Démo OAuth sécurisée",
+    "providerLabel": {
+      "google": "Google",
+      "facebook": "Facebook"
+    },
+    "provider": "Fournisseur"
+  }
+}

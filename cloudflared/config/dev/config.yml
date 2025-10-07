@@ -1,0 +1,14 @@
+# Cloudflare Tunnel configuration for development
+
+# ID do NOVO túnel de desenvolvimento
+tunnel: 28d1c2b3-ebf7-479f-b8de-18c29a0f3de2
+# Caminho para as credenciais do NOVO túnel DENTRO do container
+credentials-file: /etc/cloudflared/config/dev/28d1c2b3-ebf7-479f-b8de-18c29a0f3de2.json
+
+ingress:
+  - hostname: dev.charhub.app
+    service: http://nginx:80
+    originRequest:
+      noTLSVerify: true
+
+  - service: http_status:404

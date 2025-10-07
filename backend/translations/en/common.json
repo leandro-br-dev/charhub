@@ -1,0 +1,21 @@
+{
+    "description":  "General UI strings shared across navigation, buttons, and reusable components.",
+    "resources":  {
+                      "brand":  "CharHub Auth",
+                      "language":  "Language",
+                      "continueGoogle":  "Continue with Google",
+                      "continueFacebook":  "Continue with Facebook",
+                      "privacy":  "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
+                      "logout":  "Sign out",
+                      "logoutLoading":  "Signing out...",
+                      "authenticatedUser":  "Authenticated user",
+                      "tokenStored":  "Stored in HTTP-only cookie",
+                      "navDashboard":  "Dashboard",
+                      "navTagline":  "Secure OAuth demo",
+                      "providerLabel":  {
+                                            "google":  "Google",
+                                            "facebook":  "Facebook"
+                                        },
+                      "provider":  "Provider"
+                  }
+}

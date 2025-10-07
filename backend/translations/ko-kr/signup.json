@@ -1,0 +1,16 @@
+{
+  "description": "Signup page strings for new user registration.",
+  "resources": {
+    "greeting": "계정을 만드세요!",
+    "instruction": "가입할 방법을 선택하세요",
+    "googleButton": "Google로 가입",
+    "facebookButton": "Facebook으로 가입",
+    "termsAgreementPt1": "가입하시면 다음 항목에 동의하시게 됩니다:",
+    "termsAgreementAnd": "및",
+    "termsAndConditions": "이용약관",
+    "privacyPolicy": "개인정보처리방침",
+    "alreadyRegistered": "이미 계정이 있으신가요?",
+    "loginLink": "로그인",
+    "checkingAuth": "인증 확인 중..."
+  }
+}

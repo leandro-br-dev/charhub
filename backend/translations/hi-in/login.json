@@ -1,0 +1,16 @@
+{
+  "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
+  "resources": {
+    "title": "CharHub में आपका स्वागत है",
+    "subtitle": "सोशल साइन-इन के साथ अपने खिलाड़ियों की प्रोफाइल सुरक्षित करें। Google या Facebook से कनेक्ट करें और कुछ ही सेकंड में विशेष गेम एनालिटिक्स तक पहुंचें।",
+    "formTitle": "जारी रखने के लिए साइन इन करें",
+    "formInstructions": "नीचे अपना पसंदीदा प्रदाता चुनें। आपको एक्सेस की पुष्टि करने के लिए रीडायरेक्ट किया जाएगा और पूरा होने पर वापस यहीं लाया जाएगा।",
+    "greeting": "आपका फिर से स्वागत है!",
+    "instruction": "जारी रखने के लिए साइन इन करें",
+    "googleButton": "Google के साथ साइन इन करें",
+    "facebookButton": "Facebook के साथ साइन इन करें",
+    "firstAccess": "यहां पहली बार आए हैं?",
+    "signupLink": "साइन अप करें",
+    "checkingAuth": "प्रमाणीकरण की जाँच की जा रही है..."
+  }
+}

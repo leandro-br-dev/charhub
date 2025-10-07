@@ -1,0 +1,110 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: charhub
+      POSTGRES_PASSWORD: charhub_dev_password
+      POSTGRES_DB: charhub_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U charhub -d charhub_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV:-production}
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Mount translations for persistence (dev: auto-generated, prod: committed)
+      - type: bind
+        source: ./backend/translations
+        target: /app/translations
+      # Mount source code for hot-reload (only used in development)
+      - type: bind
+        source: ./backend/src
+        target: /app/src
+      # Mount TypeScript config (needed by ts-node-dev)
+      - type: bind
+        source: ./backend/tsconfig.json
+        target: /app/tsconfig.json
+      # Preserve node_modules from container (don't overwrite with host)
+      - /app/node_modules
+    expose:
+      - "3000"
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/v1/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"]
+      interval: 30s
+      timeout: 3s
+      start_period: 5s
+      retries: 3
+    networks:
+      - app-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    expose:
+      - "80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - app-net
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    restart: unless-stopped
+    networks:
+      - app-net
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --config /etc/cloudflared/config/${ENV_SUFFIX:-dev}/config.yml run
+    volumes:
+      - ./cloudflared/config:/etc/cloudflared/config:ro
+    depends_on:
+      - nginx
+    restart: unless-stopped
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

@@ -1,0 +1,8 @@
+{
+  "description": "Copy for the fallback 404 page when a route is not found.",
+  "resources": {
+    "title": "404 - صفحة غير موجودة",
+    "message": "الصفحة التي تحاول الوصول إليها غير موجودة. الرجاء العودة إلى لوحة التحكم أو بدء جلسة تسجيل دخول جديدة.",
+    "returnButton": "العودة إلى تسجيل الدخول"
+  }
+}

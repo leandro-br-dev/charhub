@@ -1,0 +1,16 @@
+{
+  "description": "Signup page strings for new user registration.",
+  "resources": {
+    "greeting": "अपना खाता बनाएँ!",
+    "instruction": "साइन अप करने के लिए एक विकल्प चुनें",
+    "googleButton": "Google से साइन अप करें",
+    "facebookButton": "Facebook से साइन अप करें",
+    "termsAgreementPt1": "साइन अप करके, आप इससे सहमत हैं",
+    "termsAgreementAnd": "और",
+    "termsAndConditions": "नियम और शर्तें",
+    "privacyPolicy": "गोपनीयता नीति",
+    "alreadyRegistered": "पहले से ही एक खाता है?",
+    "loginLink": "साइन इन करें",
+    "checkingAuth": "प्रमाणीकरण की जाँच की जा रही है..."
+  }
+}

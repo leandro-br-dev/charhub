@@ -1,0 +1,14 @@
+{
+  "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
+  "resources": {
+    "processingTitle": "Завершение входа...",
+    "processingMessage": "Завершение аутентификации...",
+    "successTitle": "С возвращением!",
+    "redirectingMessage": "Аутентификация завершена. Перенаправление...",
+    "errorTitle": "Ошибка аутентификации",
+    "cancelledMessage": "Аутентификация была отменена поставщиком.",
+    "missingParamsMessage": "Отсутствуют параметры авторизации. Пожалуйста, перезапустите процесс входа.",
+    "exchangeFailedMessage": "Не удалось завершить обмен OAuth. Пожалуйста, попробуйте снова.",
+    "returnButton": "Вернуться ко входу"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Signup page strings for new user registration.",
+  "resources": {
+    "greeting": "Создайте свою учетную запись!",
+    "instruction": "Выберите способ регистрации",
+    "googleButton": "Зарегистрироваться через Google",
+    "facebookButton": "Зарегистрироваться через Facebook",
+    "termsAgreementPt1": "Регистрируясь, вы соглашаетесь с",
+    "termsAgreementAnd": "и",
+    "termsAndConditions": "Условиями использования",
+    "privacyPolicy": "Политикой конфиденциальности",
+    "alreadyRegistered": "Уже есть аккаунт?",
+    "loginLink": "Войти",
+    "checkingAuth": "Проверка аутентификации..."
+  }
+}

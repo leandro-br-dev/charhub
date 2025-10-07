@@ -1,0 +1,14 @@
+{
+  "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
+  "resources": {
+    "processingTitle": "लॉगिन पूरा किया जा रहा है...",
+    "processingMessage": "प्रमाणीकरण पूरा किया जा रहा है...",
+    "successTitle": "आपका फिर से स्वागत है!",
+    "redirectingMessage": "प्रमाणीकरण पूरा हो गया। रीडायरेक्ट किया जा रहा है...",
+    "errorTitle": "प्रमाणीकरण त्रुटि",
+    "cancelledMessage": "प्रमाणीकरण प्रदाता द्वारा रद्द कर दिया गया था।",
+    "missingParamsMessage": "प्राधिकरण पैरामीटर अनुपलब्ध हैं। कृपया लॉगिन प्रक्रिया पुनः प्रारंभ करें।",
+    "exchangeFailedMessage": "हम OAuth एक्सचेंज को अंतिम रूप नहीं दे सके। कृपया पुनः प्रयास करें।",
+    "returnButton": "लॉगिन पर वापस जाएँ"
+  }
+}

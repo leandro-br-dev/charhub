@@ -1,0 +1,16 @@
+{
+  "description": "Signup page strings for new user registration.",
+  "resources": {
+    "greeting": "Create Your Account!",
+    "instruction": "Choose an option to sign up",
+    "googleButton": "Sign up with Google",
+    "facebookButton": "Sign up with Facebook",
+    "termsAgreementPt1": "By signing up, you agree to the",
+    "termsAgreementAnd": "and",
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "alreadyRegistered": "Already have an account?",
+    "loginLink": "Sign in",
+    "checkingAuth": "Checking authentication..."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "resources": {
+    "title": "受限区域",
+    "subtitle": "您已通过 {{provider}} 成功进行身份验证。此仪表板仅限已登录用户访问。",
+    "accountDetails": "账户详情",
+    "nextSteps": "后续步骤",
+    "displayName": "显示名称",
+    "email": "电子邮件",
+    "provider": "提供商",
+    "token": "令牌",
+    "insightSyncUnity": "通过安全的 WebSockets 或 REST 将此会话与 Unity 客户端同步。",
+    "insightPersist": "将 OAuth 配置文件持久化到您的后端身份存储中。",
+    "insightTokens": "签发短期访问令牌并在需要时刷新。"
+  }
+}

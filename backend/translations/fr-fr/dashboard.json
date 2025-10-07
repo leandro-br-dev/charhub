@@ -1,0 +1,16 @@
+{
+  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "resources": {
+    "title": "Zone restreinte",
+    "subtitle": "Vous vous êtes authentifié avec succès via {{provider}}. Ce tableau de bord n'est accessible qu'aux utilisateurs connectés.",
+    "accountDetails": "Détails du compte",
+    "nextSteps": "Étapes suivantes",
+    "displayName": "Nom d'affichage",
+    "email": "E-mail",
+    "provider": "Fournisseur",
+    "token": "Jeton",
+    "insightSyncUnity": "Synchronisez cette session avec le client Unity via des WebSockets sécurisés ou REST.",
+    "insightPersist": "Persistez les profils OAuth dans votre magasin d'identité backend.",
+    "insightTokens": "Émettez des jetons d'accès de courte durée et rafraîchissez-les si nécessaire."
+  }
+}

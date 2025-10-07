@@ -1,0 +1,21 @@
+{
+  "description": "General UI strings shared across navigation, buttons, and reusable components.",
+  "resources": {
+    "brand": "CharHub Auth",
+    "language": "言語",
+    "continueGoogle": "Googleで続行",
+    "continueFacebook": "Facebookで続行",
+    "privacy": "続行することにより、お客様は当社のプライバシーポリシーに同意し、CharHubがお客様の基本プロフィール情報にアクセスすることを許可します。",
+    "logout": "サインアウト",
+    "logoutLoading": "サインアウト中...",
+    "authenticatedUser": "認証済みユーザー",
+    "tokenStored": "HTTP-onlyクッキーに保存",
+    "navDashboard": "ダッシュボード",
+    "navTagline": "安全なOAuthデモ",
+    "providerLabel": {
+      "google": "Google",
+      "facebook": "Facebook"
+    },
+    "provider": "プロバイダー"
+  }
+}

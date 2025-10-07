@@ -1,0 +1,8 @@
+{
+  "description": "Copy for the fallback 404 page when a route is not found.",
+  "resources": {
+    "title": "404 - 页面未找到",
+    "message": "您尝试访问的页面不存在。请返回仪表板或开始新的登录会话。",
+    "returnButton": "返回登录"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "description": "Copy for the fallback 404 page when a route is not found.",
+  "resources": {
+    "title": "404 - Pagina non trovata",
+    "message": "La pagina che stai cercando di raggiungere non esiste. Torna alla dashboard o inizia una nuova sessione di accesso.",
+    "returnButton": "Torna al login"
+  }
+}

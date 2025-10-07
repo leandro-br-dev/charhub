@@ -1,0 +1,16 @@
+{
+  "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
+  "resources": {
+    "title": "CharHubへようこそ",
+    "subtitle": "ソーシャルサインインでプレイヤーのプロフィールを安全に保護します。GoogleまたはFacebookで接続し、数秒で限定ゲーム分析にアクセスできます。",
+    "formTitle": "サインインして続行",
+    "formInstructions": "以下のプロバイダーからお選びください。アクセス確認のためにリダイレクトされ、完了後はこちらに戻ります。",
+    "greeting": "おかえりなさい！",
+    "instruction": "サインインして続行",
+    "googleButton": "Googleでサインイン",
+    "facebookButton": "Facebookでサインイン",
+    "firstAccess": "初めてのご利用ですか？",
+    "signupLink": "新規登録",
+    "checkingAuth": "認証を確認中..."
+  }
+}

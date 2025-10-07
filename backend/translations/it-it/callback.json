@@ -1,0 +1,14 @@
+{
+  "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
+  "resources": {
+    "processingTitle": "Completamento dell'accesso...",
+    "processingMessage": "Completamento dell'autenticazione...",
+    "successTitle": "Bentornato!",
+    "redirectingMessage": "Autenticazione completata. Reindirizzamento in corso...",
+    "errorTitle": "Errore di autenticazione",
+    "cancelledMessage": "L'autenticazione è stata annullata dal provider.",
+    "missingParamsMessage": "Parametri di autorizzazione mancanti. Riavviare il processo di accesso.",
+    "exchangeFailedMessage": "Non è stato possibile finalizzare lo scambio OAuth. Riprova.",
+    "returnButton": "Torna all'accesso"
+  }
+}

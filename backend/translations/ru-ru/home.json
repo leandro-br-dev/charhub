@@ -1,0 +1,10 @@
+{
+  "description": "Landing page strings for the home page with call-to-action buttons.",
+  "resources": {
+    "titleLine1": "Оживите свои",
+    "titleLine2Highlight": "Разговоры и Истории",
+    "subtitle": "Создавайте увлекательных персонажей и погружайтесь в интерактивные истории, созданные ИИ. Ваше приключение начинается сейчас.",
+    "accessButton": "Войти",
+    "signupButton": "Зарегистрироваться"
+  }
+}

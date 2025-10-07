@@ -1,0 +1,10 @@
+{
+  "description": "Landing page strings for the home page with call-to-action buttons.",
+  "resources": {
+    "titleLine1": "여러분의",
+    "titleLine2Highlight": "대화와 이야기를 생생하게",
+    "subtitle": "매력적인 캐릭터를 만들고 AI가 생성한 인터랙티브 내러티브에 몰입해 보세요. 당신의 모험이 지금 시작됩니다.",
+    "accessButton": "로그인",
+    "signupButton": "회원가입"
+  }
+}

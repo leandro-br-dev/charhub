@@ -1,0 +1,113 @@
+{
+  "providers": {
+    "gemini": {
+      "name": "Google Gemini",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+      "models": {
+        "gemini-2.5-flash-lite": {
+          "name": "Gemini 2.5 Flash-Lite",
+          "performance": "fast",
+          "contextWindow": 1000000,
+          "maxOutput": 8192,
+          "description": "Fastest flash model optimized for cost-efficiency and high throughput"
+        },
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash",
+          "performance": "medium",
+          "contextWindow": 1000000,
+          "maxOutput": 8192,
+          "description": "Best price-performance for large-scale processing and agentic tasks"
+        },
+        "gemini-2.0-flash": {
+          "name": "Gemini 2.0 Flash",
+          "performance": "medium",
+          "contextWindow": 1000000,
+          "maxOutput": 8192,
+          "description": "Next-gen features with native tool use and superior speed"
+        },
+        "gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro",
+          "performance": "high",
+          "contextWindow": 2000000,
+          "maxOutput": 8192,
+          "description": "Most intelligent AI model with adaptive thinking capabilities"
+        }
+      }
+    },
+    "openai": {
+      "name": "OpenAI",
+      "baseUrl": "https://api.openai.com/v1",
+      "models": {
+        "gpt-5-nano": {
+          "name": "GPT-5 Nano",
+          "performance": "fast",
+          "contextWindow": 1000000,
+          "maxOutput": 16384,
+          "description": "Fastest and most efficient GPT-5 variant"
+        },
+        "gpt-5-mini": {
+          "name": "GPT-5 Mini",
+          "performance": "medium",
+          "contextWindow": 1000000,
+          "maxOutput": 32768,
+          "description": "Balanced performance and cost in GPT-5 family"
+        },
+        "gpt-4.1-nano": {
+          "name": "GPT-4.1 Nano",
+          "performance": "fast",
+          "contextWindow": 1000000,
+          "maxOutput": 16384,
+          "description": "Fastest and cheapest model with 1M token context, 80.1% on MMLU"
+        },
+        "gpt-5": {
+          "name": "GPT-5",
+          "performance": "high",
+          "contextWindow": 1000000,
+          "maxOutput": 65536,
+          "description": "Best model for coding and agentic tasks, 74.9% on SWE-bench"
+        },
+        "gpt-realtime": {
+          "name": "GPT Realtime",
+          "performance": "high",
+          "contextWindow": 128000,
+          "maxOutput": 8192,
+          "description": "Most advanced speech-to-speech model for voice agents"
+        }
+      }
+    },
+    "grok": {
+      "name": "XAI Grok",
+      "baseUrl": "https://api.x.ai/v1",
+      "models": {
+        "grok-4-fast-non-reasoning": {
+          "name": "Grok 4 Fast (Non-Reasoning)",
+          "performance": "fast",
+          "contextWindow": 2000000,
+          "maxOutput": 8192,
+          "description": "Cost-efficient fast model without reasoning mode"
+        },
+        "grok-code-fast-1": {
+          "name": "Grok Code Fast",
+          "performance": "medium",
+          "contextWindow": 256000,
+          "maxOutput": 8192,
+          "description": "Speedy and economical reasoning model for agentic coding"
+        },
+        "grok-4-fast-reasoning": {
+          "name": "Grok 4 Fast (Reasoning)",
+          "performance": "high",
+          "contextWindow": 2000000,
+          "maxOutput": 16384,
+          "description": "Frontier-level performance with exceptional token efficiency"
+        },
+        "grok-4": {
+          "name": "Grok 4",
+          "performance": "high",
+          "contextWindow": 256000,
+          "maxOutput": 16384,
+          "description": "Most intelligent model with native tool use and real-time search (Nov 2024 cutoff)"
+        }
+      }
+    }
+  }
+}

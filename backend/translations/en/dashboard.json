@@ -1,0 +1,16 @@
+{
+  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "resources": {
+    "title": "Restricted Area",
+    "subtitle": "You have successfully authenticated via {{provider}}. This dashboard is only accessible to signed-in users.",
+    "accountDetails": "Account details",
+    "nextSteps": "Next steps",
+    "displayName": "Display name",
+    "email": "Email",
+    "provider": "Provider",
+    "token": "Token",
+    "insightSyncUnity": "Sync this session with the Unity client via secure WebSockets or REST.",
+    "insightPersist": "Persist OAuth profiles in your backend identity store.",
+    "insightTokens": "Issue short-lived access tokens and refresh when needed."
+  }
+}

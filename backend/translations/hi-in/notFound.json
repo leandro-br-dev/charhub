@@ -1,0 +1,8 @@
+{
+  "description": "Copy for the fallback 404 page when a route is not found.",
+  "resources": {
+    "title": "404 - पृष्ठ नहीं मिला",
+    "message": "आप जिस पृष्ठ तक पहुँचने का प्रयास कर रहे हैं वह मौजूद नहीं है। कृपया डैशबोर्ड पर वापस जाएँ या एक नया लॉगिन सत्र शुरू करें।",
+    "returnButton": "लॉगिन पर वापस जाएँ"
+  }
+}
