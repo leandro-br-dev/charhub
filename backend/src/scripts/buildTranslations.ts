@@ -1,14 +1,18 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
+import { config } from 'dotenv';
 import { callLLM } from '../services/llm';
 import type { LLMProvider } from '../services/llm';
+
+// Load environment variables from .env file
+config({ path: path.resolve(__dirname, '../../.env') });
 
 const TRANSLATIONS_ROOT = path.resolve(__dirname, '../../translations');
 const BASE_LANGUAGE = 'en';
 
 // Supported namespaces - must match translationService.ts
-const SUPPORTED_NAMESPACES = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound'] as const;
+const SUPPORTED_NAMESPACES = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal'] as const;
 type Namespace = (typeof SUPPORTED_NAMESPACES)[number];
 
 // Target languages to build
@@ -128,23 +132,66 @@ function buildPrompt(targetLanguage: string, base: TranslationFile): string {
 
   return `You are a professional localization assistant. Translate the JSON values from English to ${langName}.
 
-IMPORTANT RULES:
+CRITICAL RULES:
 - Keep the JSON structure and keys EXACTLY identical
 - Translate ONLY the values, never the keys
 - Preserve placeholders like {{provider}}, {{name}}, etc. exactly as they are
 - Maintain the same level of formality and tone
 - Use natural, idiomatic expressions in the target language
-- Respond with ONLY the translated JSON, no explanations or markdown
+- Respond with ONLY valid JSON - no explanations, no markdown fences, no comments
+- IMPORTANT: Ensure all strings are properly quoted and escaped
+- IMPORTANT: Do not truncate the response - translate ALL content completely
+- If a string contains quotes, escape them with backslash: \\"
 
 Context: ${description}
 
 JSON to translate:
-${jsonContent}`;
+${jsonContent}
+
+Remember: Your response must be valid JSON that can be parsed by JSON.parse(). Double-check that all strings are properly closed with quotes.`;
 }
 
 function parseModelResponse(text: string): Record<string, unknown> {
   const cleaned = text.trim().replace(/^```json\s*/i, '').replace(/```$/i, '').trim();
-  return JSON.parse(cleaned) as Record<string, unknown>;
+
+  try {
+    return JSON.parse(cleaned) as Record<string, unknown>;
+  } catch (error) {
+    // Try to fix common LLM JSON errors
+    let fixed = cleaned;
+
+    // Remove trailing commas before closing braces/brackets
+    fixed = fixed.replace(/,(\s*[}\]])/g, '$1');
+
+    // Try to fix unterminated strings by finding the last complete quote
+    const lines = fixed.split('\n');
+    const fixedLines: string[] = [];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const quoteCount = (line.match(/"/g) || []).length;
+
+      // If odd number of quotes, line has unterminated string
+      if (quoteCount % 2 !== 0) {
+        // Try to complete the string by adding a quote before any trailing comma or brace
+        fixedLines.push(line.replace(/([^"])(\s*[,}\]])$/, '$1"$2'));
+      } else {
+        fixedLines.push(line);
+      }
+    }
+
+    fixed = fixedLines.join('\n');
+
+    try {
+      return JSON.parse(fixed) as Record<string, unknown>;
+    } catch (retryError) {
+      console.error('Failed to parse JSON even after fixes:');
+      console.error('Original error:', error);
+      console.error('First 500 chars of response:', cleaned.substring(0, 500));
+      console.error('Last 500 chars of response:', cleaned.substring(Math.max(0, cleaned.length - 500)));
+      throw new Error(`Failed to parse LLM response as JSON: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
 }
 
 function getResourceKeys(obj: Record<string, unknown>, prefix = ''): string[] {
@@ -234,28 +281,64 @@ async function generateTranslation(
   }
 
   const provider = getProvider(options);
-  const model = options.model ?? 'gemini-2.5-flash';
+  const model = options.model ?? 'gemini-2.5-flash-lite';
 
   if (options.verbose) {
     console.log(`  🤖 Generating with ${provider}/${model}...`);
   }
 
   const prompt = buildPrompt(language, baseFile);
-  const response = await callLLM({
-    provider,
-    model,
-    userPrompt: prompt,
-  });
 
-  const resources = parseModelResponse(response.content);
+  // Calculate estimated output size (input size * 1.5 for translation expansion)
+  const estimatedOutputTokens = Math.ceil((JSON.stringify(baseFile.resources).length / 4) * 1.5);
+  const maxOutputTokens = Math.max(8192, Math.min(estimatedOutputTokens, 32768));
 
-  const translationFile: TranslationFile = {
-    description: baseFile.description,
-    resources,
-  };
+  // Retry logic for handling LLM errors
+  let lastError: Error | null = null;
+  const maxRetries = 2;
 
-  await writeTranslationFile(normalizedLanguage, namespace, translationFile);
-  return resources;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      if (options.verbose && attempt > 1) {
+        console.log(`  🔄 Retry attempt ${attempt}/${maxRetries}...`);
+      }
+
+      const response = await callLLM({
+        provider,
+        model,
+        userPrompt: prompt,
+        maxTokens: maxOutputTokens,
+      });
+
+      const resources = parseModelResponse(response.content);
+
+      // Validate that we got a proper translation
+      if (Object.keys(resources).length === 0) {
+        throw new Error('LLM returned empty object');
+      }
+
+      // Write translation file
+      const translationFile: TranslationFile = {
+        description: baseFile.description,
+        resources,
+      };
+
+      await writeTranslationFile(normalizedLanguage, namespace, translationFile);
+      return resources;
+    } catch (error) {
+      lastError = error as Error;
+      console.warn(`  ⚠️  Attempt ${attempt} failed: ${lastError.message}`);
+
+      if (attempt === maxRetries) {
+        throw lastError;
+      }
+
+      // Wait before retry
+      await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+    }
+  }
+
+  throw lastError || new Error('Translation failed after retries');
 }
 
 async function buildNamespace(

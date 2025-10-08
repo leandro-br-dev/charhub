@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import api from '../lib/api';
+import { resolveApiBaseUrl } from '../lib/resolveApiBaseUrl';
 import type { AuthUser, OAuthProvider, UserRole } from '../types/auth';
 
 interface AuthContextValue {
@@ -27,14 +28,6 @@ const providerPaths: Record<OAuthProvider, string> = {
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
-function resolveAuthBaseUrl(): string {
-  const raw = import.meta.env.VITE_API_BASE_URL?.trim();
-  if (raw && raw.length > 0) {
-    return raw;
-  }
-  return window.location.origin;
-}
 
 function consumeQueryParams(): AuthUser | null {
   if (window.location.pathname.startsWith(CALLBACK_PATH)) {
@@ -119,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   }, [user]);
 
   const loginWithProvider = (provider: OAuthProvider) => {
-    const baseUrl = resolveAuthBaseUrl();
+    const baseUrl = resolveApiBaseUrl() ?? window.location.origin;
     const callbackUrl = `${window.location.origin}${CALLBACK_PATH}`;
     const params = new URLSearchParams({
       redirect_uri: `${callbackUrl}?provider=${provider}`

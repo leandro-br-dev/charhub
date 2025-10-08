@@ -1,4 +1,4 @@
-﻿# Backend OAuth Service
+# Backend OAuth Service
 
 ## Overview
 Node.js and TypeScript service that exposes OAuth 2.0 integrations for Google and Facebook. The API is packaged via Docker and runs behind an Nginx reverse proxy orchestrated with docker-compose.

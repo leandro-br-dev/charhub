@@ -1,0 +1,153 @@
+{
+  "description": "Legal documents: privacy policy and terms of service.",
+  "resources": {
+    "privacyPolicyPage": {
+      "title": "CharHub AI Privacy Policy",
+      "lastUpdatedLabel": "Last updated",
+      "lastUpdatedDate": "May 24, 2025",
+      "introduction": "Welcome to the CharHub AI Privacy Policy (\"us\", \"we\", \"our\"). This policy describes how we collect, use, store, share, and protect your personal information when you use our CharHub AI platform (the \"Platform\"). By using the Platform, you agree to the collection and use of information in accordance with this policy.",
+      "section1": {
+        "title": "1. Information We Collect",
+        "paragraph1": "We may collect and process the following types of information about you:",
+        "listItem1": {
+          "title": "Information You Provide:",
+          "subItem1": "When you register: Your email address, username (if provided, or auto-generated), password (stored as a hash). Optionally, full name and date of birth.",
+          "subItem2": "When using Social Login (Google/Facebook): We collect your email, name, and profile picture as provided and permitted by the OAuth provider.",
+          "subItem3": "User-Generated Content: Characters you create (name, description, avatar, etc.), assistants, chat conversations (text messages, image prompts), and files you upload (avatars, LoRA training images).",
+          "subItem4": "Preferences: Your settings, such as theme, NSFW content permission, and preferred language."
+        },
+        "listItem2": {
+          "title": "Information Collected Automatically:",
+          "subItem1": "Usage Data: Information on how you interact with the Platform, such as features used, frequency, and duration of activities.",
+          "subItem2": "Technical Data: IP address, browser type, operating system, device information. (Standard collection for most web services)."
+        }
+      },
+      "section2": {
+        "title": "2. How We Use Your Information",
+        "paragraph1": "We use the information we collect for the following purposes:",
+        "listItem1": "To provide and operate the Platform: Authenticate users, allow creation and interaction with characters and assistants, process your requests (such as text, image, and audio generation).",
+        "listItem2": "To personalize your experience: Adapt content and features to your preferences.",
+        "listItem3": "For communication: Send important notifications about your account or Platform updates (e.g., email verification - to be implemented).",
+        "listItem4": "For analysis and improvement: Understand how the Platform is used to enhance our services and develop new features.",
+        "listItem5": "For security and fraud prevention: Protect the integrity of the Platform."
+      },
+      "section3": {
+        "title": "3. Sharing Your Information",
+        "paragraph1": "We do not sell your personal information. We may share your information in the following circumstances:",
+        "listItem1": "With Third-Party AI Providers: The content of your interactions (such as text and image prompts) is sent to third-party Large Language Model (LLM) APIs and other AI services (e.g., OpenAI, Google, Anthropic, Groq, ComfyUI) to generate responses, images, and audio. We take steps to use these services responsibly, but final processing occurs on these third-party systems.",
+        "listItem2": "Within Conversations: If you participate in conversations with other users (future functionality) or multiple bots/assistants, the content of those conversations is inherently shared among participants.",
+        "listItem3": "Legal Obligations: If required by law, subpoena, or other legal process, or if we believe in good faith that disclosure is necessary to protect our rights, your safety, or the safety of others, investigate fraud, or respond to a government request.",
+        "listItem4": "Business Transfers: In the event of a merger, acquisition, or asset sale, your information may be transferred."
+      },
+      "section4": {
+        "title": "4. Data Storage and Security",
+        "paragraph1": "We store your data on secure servers. We implement technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure.",
+        "paragraph2": "Passwords are stored using hashing. Access tokens (JWTs) are used for authentication and expire after a set period."
+      },
+      "section5": {
+        "title": "5. Data Retention",
+        "paragraph1": "We will retain your personal information for as long as necessary to fulfill the purposes outlined in this policy, unless a longer retention period is required or permitted by law. You may request the deletion of your data as described in Section 7."
+      },
+      "section6": {
+        "title": "6. Your Rights and Choices",
+        "paragraph1": "Depending on your jurisdiction, you may have the following rights regarding your personal information:",
+        "listItem1": "The right to access the information we hold about you.",
+        "listItem2": "The right to correct inaccurate information.",
+        "listItem3": "The right to request the deletion of your information.",
+        "listItem4": "The right to restrict or object to the processing of your information.",
+        "paragraph2": "You can update some of your profile information directly on the Platform. For other requests, please contact us."
+      },
+      "section7": {
+        "title": "7. User Data Deletion",
+        "paragraph1": {
+          "textBeforeLink": "You can request the deletion of your CharHub AI account and its associated data. For detailed instructions on how to make this request, please see our ",
+          "linkText": "Data Deletion Instructions",
+          "textAfterLink": " page."
+        }
+      },
+      "section8": {
+        "title": "8. Children's Privacy",
+        "paragraph1": "Our Platform is not intended for children under the age of 14 (or the applicable minimum age in your jurisdiction without parental consent). We do not knowingly collect personal information from children without parental consent. If you believe a child has provided us with personal information, please contact us."
+      },
+      "section9": {
+        "title": "9. Changes to This Privacy Policy",
+        "paragraph1": "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last updated\" date at the top. We recommend you review this Privacy Policy periodically for any changes."
+      },
+      "section10": {
+        "title": "10. Contact Us",
+        "paragraph1Prefix": "If you have any questions about this Privacy Policy, please contact us at:"
+      }
+    },
+    "termsOfServicePage": {
+      "title": "CharHub AI Terms of Service",
+      "lastUpdatedLabel": "Last updated",
+      "lastUpdatedDate": "May 24, 2025",
+      "introduction": {
+        "text1": "Welcome to CharHub AI! These Terms of Service (\"Terms\") govern your access to and use of the CharHub AI platform (the \"Platform\"), provided by [Your Company Name/Your Name, if applicable] (\"us\", \"we\", \"our\"). By accessing or using the Platform, you agree to comply with these Terms and our ",
+        "privacyPolicyLinkText": "Privacy Policy",
+        "text2": "."
+      },
+      "section1": {
+        "title": "1. Use of the Platform",
+        "subSection1": {
+          "title": "1.1. Eligibility:",
+          "paragraph1": "You must be at least 14 years old (or the minimum age required in your jurisdiction to consent to online services) to use the Platform. If you are between 14 and 18 years old (or the age of legal majority in your jurisdiction), you represent that your legal guardian has reviewed and agreed to these Terms."
+        },
+        "subSection2": {
+          "title": "1.2. Your Account:",
+          "paragraph1": "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account."
+        },
+        "subSection3": {
+          "title": "1.3. Acceptable Conduct:",
+          "paragraph1": "You agree not to use the Platform to:",
+          "listItem1": "Violate any applicable laws or regulations.",
+          "listItem2": "Generate or disseminate content that is unlawful, harmful, threatening, abusive, hateful, defamatory, obscene (unless permitted by NSFW settings and for age-appropriate users), or otherwise objectionable.",
+          "listItem3": "Infringe upon the intellectual property rights of others.",
+          "listItem4": "Attempt to gain unauthorized access to our systems or other users' accounts.",
+          "listItem5": "Interfere with or disrupt the operation of the Platform."
+        }
+      },
+      "section2": {
+        "title": "2. User Content and AI-Generated Content",
+        "subSection1": {
+          "title": "2.1. Your Content:",
+          "paragraph1": "You retain ownership of any original content you create and submit to the Platform (such as character descriptions, prompts, etc.), but you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, and display such content for the purpose of operating and improving the Platform."
+        },
+        "subSection2": {
+          "title": "2.2. AI-Generated Content:",
+          "paragraph1": "The Platform utilizes artificial intelligence models to generate text, images, and audio (\"AI-Generated Content\"). While you may use AI-Generated Content, you understand that it is produced by AI systems and may not be unique, accurate, or suitable for all purposes. Ownership and usage rights of AI-Generated Content may be subject to the terms of third-party AI providers."
+        },
+        "subSection3": {
+          "title": "2.3. Responsibility for Content:",
+          "paragraph1": "You are solely responsible for all content you submit or generate through the Platform and the consequences of its use. We do not endorse and are not responsible for any AI-Generated Content."
+        }
+      },
+      "section3": {
+        "title": "3. NSFW Content",
+        "paragraph1": "The Platform may allow the generation and viewing of Not Safe For Work (\"NSFW\") content, including adult or explicit content, for users who meet age requirements (as defined in our Privacy Policy and verified to the extent possible) and who explicitly enable such preference. You are responsible for ensuring your use of NSFW features complies with applicable laws and community standards. We reserve the right to moderate or remove NSFW content that violates our standards."
+      },
+      "section4": {
+        "title": "4. Platform Intellectual Property",
+        "paragraph1": "The Platform and all its original components, features, and functionality (including but not limited to software, text, graphics, logos) are and will remain the exclusive property of CharHub AI and its licensors."
+      },
+      "section5": {
+        "title": "5. Modifications and Termination",
+        "paragraph1": "We reserve the right to modify or discontinue the Platform (or any part thereof) with or without notice. We may also terminate or suspend your access to the Platform immediately, without prior notice or liability, for any reason whatsoever, including for a breach of these Terms.",
+        "paragraph2": "If your account is terminated, your right to use the Platform will immediately cease. Provisions of these Terms that by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity, and limitations of liability."
+      },
+      "section6": {
+        "title": "6. Disclaimer of Warranties and Limitation of Liability",
+        "paragraph1": "THE PLATFORM IS PROVIDED \"AS IS\" AND \"AS AVAILABLE\" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE PLATFORM WILL BE UNINTERRUPTED, SECURE, OR ERROR-FREE.",
+        "paragraph2": "IN NO EVENT SHALL CHARHUB AI, ITS DIRECTORS, EMPLOYEES, OR AFFILIATES BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF YOUR USE OF OR INABILITY TO USE THE PLATFORM."
+      },
+      "section7": {
+        "title": "7. Changes to Terms",
+        "paragraph1": "We may revise these Terms from time to time. The most current version will always be posted on our website. By continuing to use the Platform after revisions become effective, you agree to be bound by the revised terms."
+      },
+      "section8": {
+        "title": "8. Contact Us",
+        "paragraph1Prefix": "If you have any questions about these Terms of Service, please contact us at:"
+      }
+    }
+  }
+}

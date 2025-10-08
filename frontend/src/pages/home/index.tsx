@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ExternalAuthLayout } from '../layouts/ExternalAuthLayout';
-import { Button } from '../components/ui/Button';
+import { ExternalAuthLayout } from '../../layouts/ExternalAuthLayout';
+import { Button } from '../../components/ui/Button';
 
 export default function Home(): JSX.Element {
   const { t } = useTranslation(['home', 'common']);

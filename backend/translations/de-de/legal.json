@@ -1,0 +1,153 @@
+{
+  "description": "Legal documents: privacy policy and terms of service.",
+  "resources": {
+    "privacyPolicyPage": {
+      "title": "CharHub AI Datenschutzrichtlinie",
+      "lastUpdatedLabel": "Zuletzt aktualisiert",
+      "lastUpdatedDate": "24. Mai 2025",
+      "introduction": "Willkommen bei der CharHub AI Datenschutzrichtlinie („wir“, „uns“, „unser“). Diese Richtlinie beschreibt, wie wir Ihre persönlichen Daten sammeln, verwenden, speichern, weitergeben und schützen, wenn Sie unsere CharHub AI-Plattform („die Plattform“) nutzen. Durch die Nutzung der Plattform stimmen Sie der Erhebung und Verwendung von Informationen gemäß dieser Richtlinie zu.",
+      "section1": {
+        "title": "1. Von uns gesammelte Informationen",
+        "paragraph1": "Wir können die folgenden Arten von Informationen über Sie sammeln und verarbeiten:",
+        "listItem1": {
+          "title": "Von Ihnen bereitgestellte Informationen:",
+          "subItem1": "Bei der Registrierung: Ihre E-Mail-Adresse, Benutzername (falls angegeben oder automatisch generiert), Passwort (als Hash gespeichert). Optional: Vollständiger Name und Geburtsdatum.",
+          "subItem2": "Bei Nutzung von Social Login (Google/Facebook): Wir sammeln Ihre E-Mail-Adresse, Ihren Namen und Ihr Profilbild, wie vom OAuth-Anbieter bereitgestellt und gestattet.",
+          "subItem3": "Benutzergenerierte Inhalte: Von Ihnen erstellte Charaktere (Name, Beschreibung, Avatar usw.), Assistenten, Chat-Konversationen (Textnachrichten, Bild-Prompts) und von Ihnen hochgeladene Dateien (Avatare, LoRA-Trainingsbilder).",
+          "subItem4": "Einstellungen: Ihre Präferenzen, wie z. B. Design, Erlaubnis für NSFW-Inhalte und bevorzugte Sprache."
+        },
+        "listItem2": {
+          "title": "Automatisch gesammelte Informationen:",
+          "subItem1": "Nutzungsdaten: Informationen darüber, wie Sie mit der Plattform interagieren, z. B. welche Funktionen genutzt werden, Häufigkeit und Dauer von Aktivitäten.",
+          "subItem2": "Technische Daten: IP-Adresse, Browsertyp, Betriebssystem, Geräteinformationen. (Standardmäßige Erhebung für die meisten Webdienste)."
+        }
+      },
+      "section2": {
+        "title": "2. Wie wir Ihre Informationen verwenden",
+        "paragraph1": "Wir verwenden die von uns gesammelten Informationen für die folgenden Zwecke:",
+        "listItem1": "Bereitstellung und Betrieb der Plattform: Authentifizierung von Benutzern, Ermöglichung der Erstellung und Interaktion mit Charakteren und Assistenten, Verarbeitung Ihrer Anfragen (wie Text-, Bild- und Audiogenerierung).",
+        "listItem2": "Personalisierung Ihrer Erfahrung: Anpassung von Inhalten und Funktionen an Ihre Präferenzen.",
+        "listItem3": "Kommunikation: Versenden wichtiger Benachrichtigungen über Ihr Konto oder Plattform-Updates (z. B. E-Mail-Verifizierung – wird implementiert).",
+        "listItem4": "Analyse und Verbesserung: Verständnis der Nutzung der Plattform zur Verbesserung unserer Dienste und Entwicklung neuer Funktionen.",
+        "listItem5": "Sicherheit und Betrugsprävention: Schutz der Integrität der Plattform."
+      },
+      "section3": {
+        "title": "3. Weitergabe Ihrer Informationen",
+        "paragraph1": "Wir verkaufen Ihre persönlichen Daten nicht. Wir können Ihre Informationen unter den folgenden Umständen weitergeben:",
+        "listItem1": "An Drittanbieter von KI-Diensten: Der Inhalt Ihrer Interaktionen (wie Text- und Bild-Prompts) wird an externe Large Language Model (LLM)-APIs und andere KI-Dienste (z. B. OpenAI, Google, Anthropic, Groq, ComfyUI) gesendet, um Antworten, Bilder und Audio zu generieren. Wir bemühen uns, diese Dienste verantwortungsvoll zu nutzen, die endgültige Verarbeitung erfolgt jedoch auf diesen Systemen von Drittanbietern.",
+        "listItem2": "Innerhalb von Konversationen: Wenn Sie an Konversationen mit anderen Benutzern (zukünftige Funktionalität) oder mehreren Bots/Assistenten teilnehmen, werden die Inhalte dieser Konversationen zwangsläufig zwischen den Teilnehmern geteilt.",
+        "listItem3": "Gesetzliche Verpflichtungen: Wenn dies gesetzlich vorgeschrieben ist, durch eine Vorladung oder ein anderes rechtliches Verfahren, oder wenn wir nach Treu und Glauben davon überzeugt sind, dass eine Offenlegung notwendig ist, um unsere Rechte, Ihre Sicherheit oder die Sicherheit anderer zu schützen, Betrug zu untersuchen oder auf eine behördliche Anfrage zu antworten.",
+        "listItem4": "Geschäftsübertragungen: Im Falle einer Fusion, Übernahme oder eines Verkaufs von Vermögenswerten können Ihre Informationen übertragen werden."
+      },
+      "section4": {
+        "title": "4. Datenspeicherung und Sicherheit",
+        "paragraph1": "Wir speichern Ihre Daten auf sicheren Servern. Wir implementieren technische und organisatorische Sicherheitsmaßnahmen, um Ihre persönlichen Daten vor unbefugtem Zugriff, Veränderung, Offenlegung oder Zerstörung zu schützen. Kein Übertragungsverfahren über das Internet oder elektronische Speicherung ist jedoch zu 100 % sicher.",
+        "paragraph2": "Passwörter werden mithilfe von Hashing gespeichert. Zugriffstoken (JWTs) werden zur Authentifizierung verwendet und verfallen nach einer bestimmten Zeit."
+      },
+      "section5": {
+        "title": "5. Datenspeicherung",
+        "paragraph1": "Wir speichern Ihre persönlichen Daten so lange, wie es zur Erfüllung der in dieser Richtlinie dargelegten Zwecke erforderlich ist, es sei denn, eine längere Aufbewahrungsfrist ist gesetzlich vorgeschrieben oder zulässig. Sie können die Löschung Ihrer Daten wie in Abschnitt 7 beschrieben beantragen."
+      },
+      "section6": {
+        "title": "6. Ihre Rechte und Wahlmöglichkeiten",
+        "paragraph1": "Abhängig von Ihrem Gerichtsstand können Sie die folgenden Rechte in Bezug auf Ihre persönlichen Daten haben:",
+        "listItem1": "Das Recht auf Auskunft über die von uns über Sie gespeicherten Daten.",
+        "listItem2": "Das Recht auf Berichtigung unrichtiger Daten.",
+        "listItem3": "Das Recht auf Löschung Ihrer Daten.",
+        "listItem4": "Das Recht auf Einschränkung oder Widerspruch gegen die Verarbeitung Ihrer Daten.",
+        "paragraph2": "Sie können einige Ihrer Profilinformationen direkt auf der Plattform aktualisieren. Für andere Anfragen kontaktieren Sie uns bitte."
+      },
+      "section7": {
+        "title": "7. Löschung von Benutzerdaten",
+        "paragraph1": {
+          "textBeforeLink": "Sie können die Löschung Ihres CharHub AI-Kontos und der damit verbundenen Daten beantragen. Detaillierte Anweisungen zur Beantragung finden Sie auf unserer ",
+          "linkText": "Seite mit Anweisungen zur Datenlöschung",
+          "textAfterLink": "."
+        }
+      },
+      "section8": {
+        "title": "8. Datenschutz für Kinder",
+        "paragraph1": "Unsere Plattform ist nicht für Kinder unter 14 Jahren (oder dem in Ihrer Gerichtsbarkeit geltenden Mindestalter ohne elterliche Zustimmung) bestimmt. Wir sammeln wissentlich keine persönlichen Daten von Kindern ohne elterliche Zustimmung. Wenn Sie glauben, dass ein Kind uns persönliche Daten zur Verfügung gestellt hat, kontaktieren Sie uns bitte."
+      },
+      "section9": {
+        "title": "9. Änderungen dieser Datenschutzrichtlinie",
+        "paragraph1": "Wir können unsere Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Wir werden Sie über alle Änderungen informieren, indem wir die neue Datenschutzrichtlinie auf dieser Seite veröffentlichen und das Datum „Zuletzt aktualisiert“ oben aktualisieren. Wir empfehlen Ihnen, diese Datenschutzrichtlinie regelmäßig auf Änderungen zu überprüfen."
+      },
+      "section10": {
+        "title": "10. Kontaktieren Sie uns",
+        "paragraph1Prefix": "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, kontaktieren Sie uns bitte unter:"
+      }
+    },
+    "termsOfServicePage": {
+      "title": "CharHub AI Nutzungsbedingungen",
+      "lastUpdatedLabel": "Zuletzt aktualisiert",
+      "lastUpdatedDate": "24. Mai 2025",
+      "introduction": {
+        "text1": "Willkommen bei CharHub AI! Diese Nutzungsbedingungen („Bedingungen“) regeln Ihren Zugriff auf und Ihre Nutzung der CharHub AI-Plattform („die Plattform“), die von [Ihr Firmenname/Ihr Name, falls zutreffend] („wir“, „uns“, „unser“) bereitgestellt wird. Durch den Zugriff auf oder die Nutzung der Plattform erklären Sie sich damit einverstanden, diese Bedingungen und unsere ",
+        "privacyPolicyLinkText": "Datenschutzrichtlinie",
+        "text2": " einzuhalten."
+      },
+      "section1": {
+        "title": "1. Nutzung der Plattform",
+        "subSection1": {
+          "title": "1.1. Berechtigung:",
+          "paragraph1": "Sie müssen mindestens 14 Jahre alt sein (oder das in Ihrer Gerichtsbarkeit erforderliche Mindestalter, um Online-Diensten zuzustimmen), um die Plattform nutzen zu können. Wenn Sie zwischen 14 und 18 Jahre alt sind (oder das gesetzliche Volljährigkeitsalter in Ihrer Gerichtsbarkeit), erklären Sie, dass Ihr gesetzlicher Vormund diese Bedingungen geprüft und ihnen zugestimmt hat."
+        },
+        "subSection2": {
+          "title": "1.2. Ihr Konto:",
+          "paragraph1": "Sie sind für die Geheimhaltung Ihrer Kontodaten und für alle Aktivitäten verantwortlich, die unter Ihrem Konto stattfinden. Sie erklären sich damit einverstanden, uns unverzüglich über jede unbefugte Nutzung Ihres Kontos zu informieren."
+        },
+        "subSection3": {
+          "title": "1.3. Akzeptables Verhalten:",
+          "paragraph1": "Sie erklären sich damit einverstanden, die Plattform nicht zu nutzen, um:",
+          "listItem1": "Jegliche geltenden Gesetze oder Vorschriften zu verletzen.",
+          "listItem2": "Inhalte zu generieren oder zu verbreiten, die rechtswidrig, schädlich, bedrohlich, beleidigend, hasserfüllt, diffamierend, obszön (sofern nicht durch NSFW-Einstellungen und für altersgerechte Benutzer erlaubt) oder anderweitig anstößig sind.",
+          "listItem3": "Die Rechte an geistigem Eigentum Dritter zu verletzen.",
+          "listItem4": "Zu versuchen, unbefugten Zugriff auf unsere Systeme oder Konten anderer Benutzer zu erlangen.",
+          "listItem5": "Den Betrieb der Plattform zu stören oder zu beeinträchtigen."
+        }
+      },
+      "section2": {
+        "title": "2. Benutzerinhalte und KI-generierte Inhalte",
+        "subSection1": {
+          "title": "2.1. Ihre Inhalte:",
+          "paragraph1": "Sie behalten das Eigentum an allen Originalinhalten, die Sie erstellen und auf der Plattform einreichen (z. B. Charakterbeschreibungen, Prompts usw.), gewähren uns jedoch eine weltweite, nicht ausschließliche, lizenzgebührenfreie Lizenz zur Nutzung, Reproduktion, Modifikation, Anpassung und Anzeige solcher Inhalte zum Zweck des Betriebs und der Verbesserung der Plattform."
+        },
+        "subSection2": {
+          "title": "2.2. KI-generierte Inhalte:",
+          "paragraph1": "Die Plattform nutzt künstliche Intelligenzmodelle zur Generierung von Text, Bildern und Audio („KI-generierte Inhalte“). Obwohl Sie KI-generierte Inhalte nutzen dürfen, verstehen Sie, dass diese von KI-Systemen erzeugt werden und möglicherweise nicht eindeutig, korrekt oder für alle Zwecke geeignet sind. Eigentums- und Nutzungsrechte an KI-generierten Inhalten können den Bedingungen von Drittanbietern von KI-Diensten unterliegen."
+        },
+        "subSection3": {
+          "title": "2.3. Verantwortung für Inhalte:",
+          "paragraph1": "Sie sind allein verantwortlich für alle Inhalte, die Sie über die Plattform einreichen oder generieren, sowie für die Folgen deren Nutzung. Wir unterstützen keine KI-generierten Inhalte und sind nicht dafür verantwortlich."
+        }
+      },
+      "section3": {
+        "title": "3. NSFW-Inhalte",
+        "paragraph1": "Die Plattform kann die Generierung und Anzeige von Inhalten, die nicht sicher für die Arbeit sind („NSFW“), einschließlich erwachsener oder expliziter Inhalte, für Benutzer ermöglichen, die die Altersanforderungen erfüllen (wie in unserer Datenschutzrichtlinie definiert und soweit möglich verifiziert) und die eine solche Präferenz explizit aktivieren. Sie sind dafür verantwortlich, sicherzustellen, dass Ihre Nutzung von NSFW-Funktionen den geltenden Gesetzen und Community-Standards entspricht. Wir behalten uns das Recht vor, NSFW-Inhalte zu moderieren oder zu entfernen, die gegen unsere Standards verstoßen."
+      },
+      "section4": {
+        "title": "4. Geistiges Eigentum der Plattform",
+        "paragraph1": "Die Plattform und alle ihre ursprünglichen Komponenten, Funktionen und Merkmale (einschließlich, aber nicht beschränkt auf Software, Text, Grafiken, Logos) sind und bleiben das ausschließliche Eigentum von CharHub AI und seinen Lizenzgebern."
+      },
+      "section5": {
+        "title": "5. Änderungen und Kündigung",
+        "paragraph1": "Wir behalten uns das Recht vor, die Plattform (oder Teile davon) mit oder ohne Vorankündigung zu ändern oder einzustellen. Wir können Ihren Zugriff auf die Plattform auch sofort, ohne vorherige Ankündigung oder Haftung, aus irgendeinem Grund, einschließlich eines Verstoßes gegen diese Bedingungen, kündigen oder aussetzen.",
+        "paragraph2": "Wenn Ihr Konto gekündigt wird, erlischt Ihr Recht zur Nutzung der Plattform sofort. Bestimmungen dieser Bedingungen, die ihrer Natur nach eine Kündigung überdauern sollten, überdauern die Kündigung, einschließlich, aber nicht beschränkt auf Eigentumsbestimmungen, Gewährleistungsausschlüsse, Entschädigung und Haftungsbeschränkungen."
+      },
+      "section6": {
+        "title": "6. Haftungsausschluss und Haftungsbeschränkung",
+        "paragraph1": "DIE PLATTFORM WIRD „WIE BESEHEN“ UND „WIE VERFÜGBAR“ OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG BEREITGESTELLT. WIR GEWÄHRLEISTEN NICHT, DASS DIE PLATTFORM UNUNTERBROCHEN, SICHER ODER FEHLERFREI IST.",
+        "paragraph2": "IN KEINEM FALL HAFTEN CHARHUB AI, SEINE DIREKTOREN, MITARBEITER ODER VERBUNDENEN UNTERNEHMEN FÜR INDIREKTE, ZUFÄLLIGE, SPEZIELLE, FOLGE- ODER STRAFSCHÄDEN, DIE SICH AUS IHRER NUTZUNG ODER UNMÖGLICHKEIT DER NUTZUNG DER PLATTFORM ERGEBEN."
+      },
+      "section7": {
+        "title": "7. Änderungen der Bedingungen",
+        "paragraph1": "Wir können diese Bedingungen von Zeit zu Zeit überarbeiten. Die aktuellste Version wird immer auf unserer Website veröffentlicht. Indem Sie die Plattform nach Inkrafttreten von Änderungen weiterhin nutzen, erklären Sie sich damit einverstanden, an die geänderten Bedingungen gebunden zu sein."
+      },
+      "section8": {
+        "title": "8. Kontaktieren Sie uns",
+        "paragraph1Prefix": "Wenn Sie Fragen zu diesen Nutzungsbedingungen haben, kontaktieren Sie uns bitte unter:"
+      }
+    }
+  }
+}

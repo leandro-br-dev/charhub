@@ -1,4 +1,4 @@
-﻿# CharHub
+# CharHub
 
 CharHub is an OAuth-first platform that connects users to multiple generative AI providers while serving localized content for future interactive narrative experiences. The project ships as a Dockerized stack with an Express backend, a React SPA frontend, and optional Cloudflare tunnels for public exposure.
 
@@ -55,11 +55,11 @@ docker compose up --build
 - Run `npm run build:translations` for fresh AI output or `npm run build:translations -- --offline` to seed the JSON files without calling an LLM.
 ## Documentation
 
-- `docs/PROJECT_OVERVIEW.md` Ã¢â‚¬â€œ architecture summary and repository layout.
-- `docs/BACKEND.md` Ã¢â‚¬â€œ routes, services, environment variables, and commands.
-- `docs/FRONTEND.md` Ã¢â‚¬â€œ UI flows, component organization, and Vite configuration.
-- `docs/DEV_OPERATIONS.md` Ã¢â‚¬â€œ environment prep, Docker usage, Cloudflare tunnel setup, translation pipeline.
-- `docs/TODO.md` Ã¢â‚¬â€œ current priorities (see `docs/ROADMAP.md` for long-term plans).
+- `docs/PROJECT_OVERVIEW.md` - architecture summary and repository layout.
+- `docs/BACKEND.md` - routes, services, environment variables, and commands.
+- `docs/FRONTEND.md` - UI flows, component organization, and Vite configuration.
+- `docs/DEV_OPERATIONS.md` - environment prep, Docker usage, Cloudflare tunnel setup, translation pipeline.
+- `docs/TODO.md` - current priorities (see `docs/ROADMAP.md` for long-term plans).
 
 ## Current Status
 
@@ -77,7 +77,7 @@ docker compose up --build
 
 ## License
 
-ISC Ã¢â‚¬â€œ see the original repository for details.
+ISC - see the original repository for details.
 
 
 

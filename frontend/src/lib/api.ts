@@ -1,10 +1,10 @@
-﻿import axios from 'axios';
+import axios from 'axios';
+import { resolveApiBaseUrl } from './resolveApiBaseUrl';
 
-const rawBase = import.meta.env.VITE_API_BASE_URL?.trim();
-const baseURL = rawBase && rawBase.length > 0 ? rawBase : undefined;
+const resolvedBase = resolveApiBaseUrl();
 
 const api = axios.create({
-  baseURL,
+  baseURL: resolvedBase,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json'

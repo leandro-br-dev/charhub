@@ -1,4 +1,4 @@
-﻿# Development & Operations Guide
+# Development & Operations Guide
 
 This document consolidates the workflows required to run CharHub locally, manage environment variables, work with Docker, and configure Cloudflare tunnels for external access.
 
@@ -15,8 +15,8 @@ This document consolidates the workflows required to run CharHub locally, manage
 
 Copy `.env.example` to `.env` in the repository root. Key fields:
 
-- `ENV_SUFFIX` â€“ `dev` or `prod`; used by Docker Compose to pick the right Cloudflare config directory.
-- `PUBLIC_HOSTNAME`, `PUBLIC_FACING_URL` â€“ Hostnames consumed by both backend and frontend during runtime.
+- `ENV_SUFFIX` - `dev` or `prod`; used by Docker Compose to pick the right Cloudflare config directory.
+- `PUBLIC_HOSTNAME`, `PUBLIC_FACING_URL` - Hostnames consumed by both backend and frontend during runtime.
 
 ### Backend (`backend/.env`)
 
@@ -43,9 +43,12 @@ Services launched:
 |---------|---------|
 | `postgres` | Persistent database with health checks. |
 | `backend` | Express API (build + runtime). Translation volume mounted. |
-| `frontend` | React SPA served via Vite build output (development uses live reload). |
+| `frontend` | React SPA; runs `npm run dev` when `NODE_ENV=development` and serves the built bundle via Nginx when `NODE_ENV=production`. |
 | `nginx` | Reverse proxy exposing SPA under `/` and API under `/api/v1`. |
 | `cloudflared` | Optional tunnel service referencing `cloudflared/config/<env>/config.yml`. |
+
+> **Tip:** Set `NODE_ENV=development` in the root `.env` to enable hot reload for both backend (ts-node-dev) and frontend (Vite). Switch back to `production` to build and serve optimized assets behind Nginx.
+> **Hostnames:** When exposing the Vite dev server through the tunnel, add every expected hostname (e.g., `dev.charhub.app`) to `VITE_ALLOWED_HOSTS` (comma separated) in `frontend/.env` so the host check passes.
 
 Front door (without tunnel) defaults to `http://localhost`. If Cloudflare tunnel is configured, dev traffic can hit `https://dev.charhub.app`.
 
@@ -79,14 +82,14 @@ Front door (without tunnel) defaults to `http://localhost`. If Cloudflare tunnel
 
 ### Monitoring & Logs
 
-- `docker compose logs -f backend` â€“ Backend logs (Pino JSON entries).
-- `docker compose logs -f frontend` â€“ Build output, Vite server messages.
-- `docker compose logs -f cloudflared` â€“ Tunnel health and connection status.
+- `docker compose logs -f backend` - Backend logs (Pino JSON entries).
+- `docker compose logs -f frontend` - Build output, Vite server messages.
+- `docker compose logs -f cloudflared` - Tunnel health and connection status.
 
 ## Deployment Considerations
 
 - Production still relies on Docker Compose; adapt to managed services as the roadmap (see `docs/ROADMAP.md`) advances.
-- Cloudflare R2 credentials exist but asset upload/publishing pipeline has not been implementedâ€”ensure secrets stay out of Git.
+- Cloudflare R2 credentials exist but asset upload/publishing pipeline has not been implemented - ensure secrets stay out of Git.
 - Include manual smoke tests: OAuth login, `/api/v1/llm/models`, translation fetch, premium endpoint access with a token containing `role=PREMIUM`.
 - Review `docs/TODO.md` before shipping; it tracks pending work around premium features, analytics, and observability.
 

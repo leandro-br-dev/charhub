@@ -14,9 +14,50 @@ type StateValue = {
 const stateStore = new Map<string, StateValue>();
 const STATE_TTL_MS = 10 * 60 * 1000;
 
+function normalizeOrigin(value: string | undefined): string | null {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    return new URL(value).origin.replace(/\/$/, '');
+  } catch (_error) {
+    return null;
+  }
+}
+
+function getAllowedFrontendOrigins(): string[] {
+  const origins = new Set<string>();
+
+  const primary = normalizeOrigin(process.env.FRONTEND_URL);
+  if (primary) {
+    origins.add(primary);
+  }
+
+  const publicFacing = normalizeOrigin(process.env.PUBLIC_FACING_URL);
+  if (publicFacing) {
+    origins.add(publicFacing);
+  }
+
+  const additional = process.env.FRONTEND_URLS;
+  if (additional) {
+    additional
+      .split(',')
+      .map(entry => normalizeOrigin(entry.trim()))
+      .filter((origin): origin is string => Boolean(origin))
+      .forEach(origin => origins.add(origin));
+  }
+
+  if (origins.size === 0) {
+    origins.add('http://localhost');
+  }
+
+  return Array.from(origins);
+}
+
 function defaultRedirect(): string {
-  const base = process.env.FRONTEND_URL || 'http://localhost';
-  return `${base.replace(/\/$/, '')}/auth/callback`;
+  const [firstOrigin] = getAllowedFrontendOrigins();
+  return `${firstOrigin.replace(/\/$/, '')}/auth/callback`;
 }
 
 function sanitizeRedirectUri(candidate?: string): string {
@@ -24,10 +65,11 @@ function sanitizeRedirectUri(candidate?: string): string {
     return defaultRedirect();
   }
 
+  const allowedOrigins = getAllowedFrontendOrigins();
+
   try {
     const target = new URL(candidate);
-    const allowedOrigin = new URL(defaultRedirect());
-    if (target.origin === allowedOrigin.origin) {
+    if (allowedOrigins.includes(target.origin)) {
       return target.toString();
     }
   } catch (error) {

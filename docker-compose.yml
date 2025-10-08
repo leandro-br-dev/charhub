@@ -65,8 +65,35 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      target: ${NODE_ENV:-production}
+      args:
+        NODE_ENV: ${NODE_ENV:-production}
     env_file:
       - ./frontend/.env
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+    volumes:
+      # Mount source code for hot-reload (only used in development)
+      - type: bind
+        source: ./frontend/src
+        target: /app/src
+      - type: bind
+        source: ./frontend/index.html
+        target: /app/index.html
+      - type: bind
+        source: ./frontend/vite.config.ts
+        target: /app/vite.config.ts
+      - type: bind
+        source: ./frontend/tsconfig.json
+        target: /app/tsconfig.json
+      - type: bind
+        source: ./frontend/.env
+        target: /app/.env
+      # Preserve node_modules from container
+      - /app/node_modules
+    ports:
+      # Map Vite HMR port directly (bypasses nginx for WebSocket)
+      - "5173:80"
     expose:
       - "80"
     restart: unless-stopped

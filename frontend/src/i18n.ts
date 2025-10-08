@@ -2,11 +2,12 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import HttpBackend from 'i18next-http-backend';
+import { resolveApiBaseUrl } from './lib/resolveApiBaseUrl';
 
-const apiBase = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '');
-const loadPath = apiBase ? `${apiBase}/api/v1/i18n/{{lng}}/{{ns}}` : '/api/v1/i18n/{{lng}}/{{ns}}';
+const resolvedBase = resolveApiBaseUrl();
+const loadPath = resolvedBase ? `${resolvedBase}/api/v1/i18n/{{lng}}/{{ns}}` : '/api/v1/i18n/{{lng}}/{{ns}}';
 
-const namespaces = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound'];
+const namespaces = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal'];
 const supportedPrefixes = ['en', 'pt', 'es', 'fr', 'de', 'zh', 'hi', 'ar', 'ru', 'ja', 'ko', 'it'];
 const supportedLngs = [
   'en-US', 'pt-BR', 'es-ES', 'fr-FR', 'de-DE', 'zh-CN', 'hi-IN', 'ar-SA', 'ru-RU', 'ja-JP', 'ko-KR', 'it-IT',

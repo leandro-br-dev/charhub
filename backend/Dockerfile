@@ -12,7 +12,11 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install all dependencies (including devDependencies for build)
-RUN npm ci
+# Add retry logic for network resilience
+RUN npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000 && \
+    npm config set fetch-retries 5 && \
+    npm ci
 
 # Copy source code
 COPY . .
@@ -43,7 +47,11 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies based on environment
-RUN if [ "$NODE_ENV" = "development" ]; then \
+# Configure npm for network resilience before installation
+RUN npm config set fetch-retry-mintimeout 20000 && \
+    npm config set fetch-retry-maxtimeout 120000 && \
+    npm config set fetch-retries 5 && \
+    if [ "$NODE_ENV" = "development" ]; then \
       echo "Installing all dependencies (dev mode)"; \
       npm ci; \
     else \

@@ -1,0 +1,153 @@
+{
+  "description": "Legal documents: privacy policy and terms of service.",
+  "resources": {
+    "privacyPolicyPage": {
+      "title": "Política de Privacidade da CharHub AI",
+      "lastUpdatedLabel": "Última atualização",
+      "lastUpdatedDate": "24 de maio de 2025",
+      "introduction": "Bem-vindo à Política de Privacidade da CharHub AI (\"nós\"). Esta política descreve como coletamos, usamos, armazenamos, compartilhamos e protegemos suas informações pessoais quando você utiliza nossa plataforma CharHub AI (a \"Plataforma\"). Ao usar a Plataforma, você concorda com a coleta e o uso de informações de acordo com esta política.",
+      "section1": {
+        "title": "1. Informações que Coletamos",
+        "paragraph1": "Podemos coletar e processar os seguintes tipos de informações sobre você:",
+        "listItem1": {
+          "title": "Informações que Você Fornece:",
+          "subItem1": "Ao se registrar: Seu endereço de e-mail, nome de usuário (se fornecido ou gerado automaticamente), senha (armazenada como hash). Opcionalmente, nome completo e data de nascimento.",
+          "subItem2": "Ao usar Login Social (Google/Facebook): Coletamos seu e-mail, nome e foto de perfil conforme fornecido e permitido pelo provedor OAuth.",
+          "subItem3": "Conteúdo Gerado pelo Usuário: Personagens que você cria (nome, descrição, avatar, etc.), assistentes, conversas de chat (mensagens de texto, prompts de imagem) e arquivos que você envia (avatares, imagens de treinamento LoRA).",
+          "subItem4": "Preferências: Suas configurações, como tema, permissão de conteúdo NSFW e idioma preferido."
+        },
+        "listItem2": {
+          "title": "Informações Coletadas Automaticamente:",
+          "subItem1": "Dados de Uso: Informações sobre como você interage com a Plataforma, como recursos utilizados, frequência e duração das atividades.",
+          "subItem2": "Dados Técnicos: Endereço IP, tipo de navegador, sistema operacional, informações do dispositivo. (Coleta padrão para a maioria dos serviços web)."
+        }
+      },
+      "section2": {
+        "title": "2. Como Usamos Suas Informações",
+        "paragraph1": "Usamos as informações que coletamos para os seguintes fins:",
+        "listItem1": "Para fornecer e operar a Plataforma: Autenticar usuários, permitir a criação e interação com personagens e assistentes, processar suas solicitações (como geração de texto, imagem e áudio).",
+        "listItem2": "Para personalizar sua experiência: Adaptar conteúdo e recursos às suas preferências.",
+        "listItem3": "Para comunicação: Enviar notificações importantes sobre sua conta ou atualizações da Plataforma (por exemplo, verificação de e-mail - a ser implementado).",
+        "listItem4": "Para análise e melhoria: Entender como a Plataforma é usada para aprimorar nossos serviços e desenvolver novos recursos.",
+        "listItem5": "Para segurança e prevenção de fraudes: Proteger a integridade da Plataforma."
+      },
+      "section3": {
+        "title": "3. Compartilhamento de Suas Informações",
+        "paragraph1": "Não vendemos suas informações pessoais. Podemos compartilhar suas informações nas seguintes circunstâncias:",
+        "listItem1": "Com Provedores de IA de Terceiros: O conteúdo de suas interações (como prompts de texto e imagem) é enviado para APIs de Modelos de Linguagem Grande (LLMs) de terceiros e outros serviços de IA (por exemplo, OpenAI, Google, Anthropic, Groq, ComfyUI) para gerar respostas, imagens e áudio. Tomamos medidas para usar esses serviços de forma responsável, mas o processamento final ocorre nesses sistemas de terceiros.",
+        "listItem2": "Em Conversas: Se você participar de conversas com outros usuários (funcionalidade futura) ou múltiplos bots/assistentes, o conteúdo dessas conversas é inerentemente compartilhado entre os participantes.",
+        "listItem3": "Obrigações Legais: Se exigido por lei, intimação ou outro processo legal, ou se acreditarmos de boa fé que a divulgação é necessária para proteger nossos direitos, sua segurança ou a segurança de terceiros, investigar fraudes ou responder a uma solicitação governamental.",
+        "listItem4": "Transferências de Negócios: No caso de uma fusão, aquisição ou venda de ativos, suas informações podem ser transferidas."
+      },
+      "section4": {
+        "title": "4. Armazenamento e Segurança de Dados",
+        "paragraph1": "Armazenamos seus dados em servidores seguros. Implementamos medidas de segurança técnicas e organizacionais para proteger suas informações pessoais contra acesso não autorizado, alteração, divulgação ou destruição. No entanto, nenhum método de transmissão pela Internet ou armazenamento eletrônico é 100% seguro.",
+        "paragraph2": "Senhas são armazenadas usando hashing. Tokens de acesso (JWTs) são usados para autenticação e expiram após um determinado período."
+      },
+      "section5": {
+        "title": "5. Retenção de Dados",
+        "paragraph1": "Reteremos suas informações pessoais pelo tempo necessário para cumprir os propósitos descritos nesta política, a menos que um período de retenção mais longo seja exigido ou permitido por lei. Você pode solicitar a exclusão de seus dados, conforme descrito na Seção 7."
+      },
+      "section6": {
+        "title": "6. Seus Direitos e Escolhas",
+        "paragraph1": "Dependendo da sua jurisdição, você pode ter os seguintes direitos em relação às suas informações pessoais:",
+        "listItem1": "O direito de acessar as informações que temos sobre você.",
+        "listItem2": "O direito de corrigir informações imprecisas.",
+        "listItem3": "O direito de solicitar a exclusão de suas informações.",
+        "listItem4": "O direito de restringir ou se opor ao processamento de suas informações.",
+        "paragraph2": "Você pode atualizar algumas de suas informações de perfil diretamente na Plataforma. Para outras solicitações, entre em contato conosco."
+      },
+      "section7": {
+        "title": "7. Exclusão de Dados do Usuário",
+        "paragraph1": {
+          "textBeforeLink": "Você pode solicitar a exclusão de sua conta CharHub AI e seus dados associados. Para instruções detalhadas sobre como fazer essa solicitação, consulte nossa página de ",
+          "linkText": "Instruções de Exclusão de Dados",
+          "textAfterLink": "."
+        }
+      },
+      "section8": {
+        "title": "8. Privacidade Infantil",
+        "paragraph1": "Nossa Plataforma não se destina a crianças menores de 14 anos (ou a idade mínima aplicável em sua jurisdição sem consentimento parental). Não coletamos intencionalmente informações pessoais de crianças sem consentimento parental. Se você acredita que uma criança nos forneceu informações pessoais, entre em contato conosco."
+      },
+      "section9": {
+        "title": "9. Alterações Nesta Política de Privacidade",
+        "paragraph1": "Podemos atualizar nossa Política de Privacidade periodicamente. Notificaremos sobre quaisquer alterações publicando a nova Política de Privacidade nesta página e atualizando a data de \"Última atualização\" no topo. Recomendamos que você revise esta Política de Privacidade periodicamente para quaisquer alterações."
+      },
+      "section10": {
+        "title": "10. Entre em Contato Conosco",
+        "paragraph1Prefix": "Se você tiver alguma dúvida sobre esta Política de Privacidade, entre em contato conosco em:"
+      }
+    },
+    "termsOfServicePage": {
+      "title": "Termos de Serviço da CharHub AI",
+      "lastUpdatedLabel": "Última atualização",
+      "lastUpdatedDate": "24 de maio de 2025",
+      "introduction": {
+        "text1": "Bem-vindo à CharHub AI! Estes Termos de Serviço (\"Termos\") regem seu acesso e uso da plataforma CharHub AI (a \"Plataforma\"), fornecida por [Nome da sua empresa/Seu nome, se aplicável] (\"nós\"). Ao acessar ou usar a Plataforma, você concorda em cumprir estes Termos e nossa ",
+        "privacyPolicyLinkText": "Política de Privacidade",
+        "text2": "."
+      },
+      "section1": {
+        "title": "1. Uso da Plataforma",
+        "subSection1": {
+          "title": "1.1. Elegibilidade:",
+          "paragraph1": "Você deve ter pelo menos 14 anos (ou a idade mínima exigida em sua jurisdição para consentir com serviços online) para usar a Plataforma. Se você tiver entre 14 e 18 anos (ou a idade legal de maioridade em sua jurisdição), você declara que seu tutor legal revisou e concordou com estes Termos."
+        },
+        "subSection2": {
+          "title": "1.2. Sua Conta:",
+          "paragraph1": "Você é responsável por manter a confidencialidade de suas credenciais de conta e por todas as atividades que ocorrerem sob sua conta. Você concorda em nos notificar imediatamente sobre qualquer uso não autorizado de sua conta."
+        },
+        "subSection3": {
+          "title": "1.3. Conduta Aceitável:",
+          "paragraph1": "Você concorda em não usar a Plataforma para:",
+          "listItem1": "Violar quaisquer leis ou regulamentos aplicáveis.",
+          "listItem2": "Gerar ou disseminar conteúdo que seja ilegal, prejudicial, ameaçador, abusivo, odioso, difamatório, obsceno (a menos que permitido pelas configurações de NSFW e para usuários com idade apropriada) ou de outra forma questionável.",
+          "listItem3": "Infrair os direitos de propriedade intelectual de terceiros.",
+          "listItem4": "Tentar obter acesso não autorizado aos nossos sistemas ou contas de outros usuários.",
+          "listItem5": "Interferir ou interromper a operação da Plataforma."
+        }
+      },
+      "section2": {
+        "title": "2. Conteúdo do Usuário e Conteúdo Gerado por IA",
+        "subSection1": {
+          "title": "2.1. Seu Conteúdo:",
+          "paragraph1": "Você mantém a propriedade de qualquer conteúdo original que crie e envie para a Plataforma (como descrições de personagens, prompts, etc.), mas nos concede uma licença mundial, não exclusiva, isenta de royalties para usar, reproduzir, modificar, adaptar e exibir tal conteúdo para fins de operação e aprimoramento da Plataforma."
+        },
+        "subSection2": {
+          "title": "2.2. Conteúdo Gerado por IA:",
+          "paragraph1": "A Plataforma utiliza modelos de inteligência artificial para gerar texto, imagens e áudio (\"Conteúdo Gerado por IA\"). Embora você possa usar o Conteúdo Gerado por IA, você entende que ele é produzido por sistemas de IA e pode não ser único, preciso ou adequado para todos os fins. A propriedade e os direitos de uso do Conteúdo Gerado por IA podem estar sujeitos aos termos de provedores de IA de terceiros."
+        },
+        "subSection3": {
+          "title": "2.3. Responsabilidade pelo Conteúdo:",
+          "paragraph1": "Você é o único responsável por todo o conteúdo que envia ou gera através da Plataforma e pelas consequências de seu uso. Não endossamos e não somos responsáveis por nenhum Conteúdo Gerado por IA."
+        }
+      },
+      "section3": {
+        "title": "3. Conteúdo NSFW",
+        "paragraph1": "A Plataforma pode permitir a geração e visualização de conteúdo Não Seguro Para o Trabalho (\"NSFW\"), incluindo conteúdo adulto ou explícito, para usuários que atendem aos requisitos de idade (conforme definido em nossa Política de Privacidade e verificado na medida do possível) e que ativam explicitamente essa preferência. Você é responsável por garantir que seu uso de recursos NSFW esteja em conformidade com as leis aplicáveis e os padrões da comunidade. Reservamo-nos o direito de moderar ou remover conteúdo NSFW que viole nossos padrões."
+      },
+      "section4": {
+        "title": "4. Propriedade Intelectual da Plataforma",
+        "paragraph1": "A Plataforma e todos os seus componentes, recursos e funcionalidades originais (incluindo, mas não se limitando a, software, texto, gráficos, logotipos) são e permanecerão a propriedade exclusiva da CharHub AI e de seus licenciadores."
+      },
+      "section5": {
+        "title": "5. Modificações e Rescisão",
+        "paragraph1": "Reservamo-nos o direito de modificar ou descontinuar a Plataforma (ou qualquer parte dela) com ou sem aviso prévio. Também podemos rescindir ou suspender seu acesso à Plataforma imediatamente, sem aviso prévio ou responsabilidade, por qualquer motivo, incluindo a violação destes Termos.",
+        "paragraph2": "Se sua conta for encerrada, seu direito de usar a Plataforma cessará imediatamente. As disposições destes Termos que, por sua natureza, devem sobreviver à rescisão, sobreviverão à rescisão, incluindo, sem limitação, disposições de propriedade, isenções de garantia, indenização e limitações de responsabilidade."
+      },
+      "section6": {
+        "title": "6. Isenção de Garantias e Limitação de Responsabilidade",
+        "paragraph1": "A PLATAFORMA É FORNECIDA \"COMO ESTÁ\" E \"CONFORME DISPONÍVEL\", SEM GARANTIAS DE QUALQUER TIPO, EXPRESSAS OU IMPLÍCITAS. NÃO GARANTIMOS QUE A PLATAFORMA SERÁ ININTERRUPTA, SEGURA OU LIVRE DE ERROS.",
+        "paragraph2": "EM NENHUM CASO A CHARHUB AI, SEUS DIRETORES, FUNCIONÁRIOS OU AFILIADOS SERÃO RESPONSÁVEIS POR QUAISQUER DANOS INDIRETOS, INCIDENTAIS, ESPECIAIS, CONSEQUENCIAIS OU PUNITIVOS DECORRENTES DO SEU USO OU INCAPACIDADE DE USAR A PLATAFORMA."
+      },
+      "section7": {
+        "title": "7. Alterações nos Termos",
+        "paragraph1": "Podemos revisar estes Termos periodicamente. A versão mais atualizada estará sempre publicada em nosso site. Ao continuar a usar a Plataforma após a entrada em vigor das revisões, você concorda em ser regido pelos termos revisados."
+      },
+      "section8": {
+        "title": "8. Entre em Contato Conosco",
+        "paragraph1Prefix": "Se você tiver alguma dúvida sobre estes Termos de Serviço, entre em contato conosco em:"
+      }
+    }
+  }
+}

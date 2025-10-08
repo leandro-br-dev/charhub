@@ -89,8 +89,9 @@ All build-time variables must be prefixed with `VITE_` so Vite exposes them to t
 5. `npm run preview` serves the built bundle locally for smoke testing.
 
 ## Docker & Orchestration
-- The provided `Dockerfile` performs a multi-stage build (Node build phase + Nginx static host) aligned with the backend and docker-compose setup.
-- `docker-compose.yml` mounts the built frontend behind the shared Nginx gateway and networks it with the backend container.
+- The `Dockerfile` exposes a development stage that runs Vite (`npm run dev`) and a production stage that builds `dist/` and serves it via Nginx; `docker-compose.yml` picks the correct stage based on the root `NODE_ENV` value.
+- `docker-compose.yml` wires the frontend container behind the shared Nginx gateway and networks it with the backend service.
+- When serving the dev server through tunnels or custom domains, list the hostnames in `VITE_ALLOWED_HOSTS` (comma separated) so Vite accepts the forwarded Host header.
 
 ## Testing Recommendations
 - Component tests for login buttons and protected route behaviour.

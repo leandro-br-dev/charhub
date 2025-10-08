@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import api from '../lib/api';
-import { useAuth } from '../hooks/useAuth';
-import type { AuthResponse, AuthUser, OAuthProvider } from '../types/auth';
+import api from '../../../lib/api';
+import { useAuth } from '../../../hooks/useAuth';
+import type { AuthResponse, AuthUser, OAuthProvider } from '../../../types/auth';
 
 const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
 const defaultCallbackPaths: Record<OAuthProvider, string> = {

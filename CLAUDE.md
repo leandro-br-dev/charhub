@@ -4,8 +4,12 @@ Welcome to CharHub. This guide is shared by every automation agent (GitHub Copil
 
 ## Encoding Requirements
 
-- Always save this playbook and related docs using UTF-8 without BOM to prevent garbled characters.
-- Configure your editor accordingly (for example, in VS Code set "files.encoding": "utf8") and confirm encoding before committing.
+- Always save source and docs using UTF-8 **without** BOM to prevent garbled characters (e.g., `Ã¢â‚¬â€œ`).
+- Use LF newlines. On Windows set `files.eol`: `"\n"` and `git config core.autocrlf false` (per repo is fine).
+- Prefer plain ASCII punctuation (regular hyphen `-`, straight quotes) unless a file already needs accented text.
+- Configure your editor (`files.encoding`: `"utf8"`, disable "BOM") and confirm before committing.
+- If in doubt, run `find . -type f -name '*.md' -print0 | xargs -0 file` (or a tiny Python script) to confirm no file starts with `0xEFBBBF`.
+- **Never delete API keys or overwrite `.env` files** with their example counterparts unless the user explicitly instructs you. If a change is required, edit only the specific lines to avoid losing existing secrets or local configuration.
 
 ## Before You Start
 
@@ -63,6 +67,71 @@ For a deeper tree, see `docs/PROJECT_OVERVIEW.md`.
 - Tailwind utilities ordered: layout > spacing > color/typography.
 - Never import one OAuth provider's service into another; keep shared types in `backend/src/types`.
 - When cloning React elements, preserve refs correctly (see `SmartDropdown` pattern).
+
+### Frontend Page Structure Pattern (Colocation)
+
+All pages must follow the **colocation pattern** to encapsulate page-specific dependencies:
+
+```
+frontend/src/pages/
+  ├── (auth)/                    # Group: authentication flow
+  │   ├── login/
+  │   │   └── index.tsx          # Login page
+  │   ├── signup/
+  │   │   └── index.tsx          # Signup page
+  │   ├── callback/
+  │   │   └── index.tsx          # OAuth callback handler
+  │   └── shared/                # Shared resources for auth group
+  │       ├── components/
+  │       │   ├── GoogleIcon.tsx
+  │       │   ├── FacebookIcon.tsx
+  │       │   ├── OAuthButton.tsx
+  │       │   └── index.ts       # Barrel export
+  │       └── hooks/
+  │           ├── useAuthRedirect.tsx
+  │           └── index.ts       # Barrel export
+  │
+  ├── home/
+  │   └── index.tsx
+  │
+  ├── dashboard/
+  │   └── index.tsx
+  │
+  └── not-found/
+      └── index.tsx
+```
+
+**Key Rules:**
+1. **Each page gets its own folder** with an `index.tsx` entry point
+2. **Group related pages** using parentheses `(group-name)/` when they share logic or components
+3. **Shared resources** go in `(group)/shared/{components,hooks,services,utils}`
+4. **Page-specific dependencies** (components, hooks, utils) live inside the page folder
+5. **Generic reusables** stay in `src/components` and `src/hooks` (not page-specific)
+6. **Use barrel exports** (`index.ts`) for cleaner imports from shared folders
+7. **Delete entire folders** when removing features (colocation ensures cleanup)
+
+**Example: Adding a forgot-password page**
+```
+pages/
+  └── (auth)/
+      ├── forgot-password/
+      │   ├── index.tsx
+      │   └── components/
+      │       └── ResetForm.tsx
+      └── shared/
+          └── components/
+              └── OAuthButton.tsx  # Still shared with login/signup
+```
+
+**Import Pattern:**
+```typescript
+// ✅ Good: Clean barrel imports
+import { OAuthButton, GoogleIcon } from '../shared/components';
+import { useAuthRedirect } from '../shared/hooks';
+
+// ❌ Bad: Direct file imports when barrel exists
+import { OAuthButton } from '../shared/components/OAuthButton';
+```
 
 ## Operational Notes
 

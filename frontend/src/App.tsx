@@ -1,12 +1,12 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Callback from './pages/Callback';
-import Dashboard from './pages/Dashboard';
-import NotFound from './pages/NotFound';
+import Home from './pages/home';
+import Login from './pages/(auth)/login';
+import Signup from './pages/(auth)/signup';
+import Callback from './pages/(auth)/callback';
+import Dashboard from './pages/dashboard';
+import NotFound from './pages/not-found';
 
 export default function App(): JSX.Element {
   const location = useLocation();
