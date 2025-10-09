@@ -20,6 +20,32 @@ enum UserRole {
   ADMIN
 }
 
+// Age-based content rating system (similar to movie/anime ratings)
+enum AgeRating {
+  L      // Livre (All ages) - General audiences
+  TEN    // 10+ - Mild themes
+  TWELVE // 12+ - Moderate themes
+  FOURTEEN // 14+ - More mature themes, mild sexual references
+  SIXTEEN  // 16+ - Strong themes, explicit language, moderate violence
+  EIGHTEEN // 18+ - Adult content, explicit violence/sexual content
+}
+
+// Content warning tags (can be combined with age rating)
+enum ContentTag {
+  VIOLENCE       // Physical violence, fighting
+  GORE           // Explicit violence, blood, injuries
+  SEXUAL         // Sexual content, innuendo
+  NUDITY         // Nudity or partial nudity
+  LANGUAGE       // Strong language, profanity
+  DRUGS          // Drug use or references
+  ALCOHOL        // Alcohol consumption
+  HORROR         // Horror themes, disturbing content
+  PSYCHOLOGICAL  // Psychological themes, mental health
+  DISCRIMINATION // Discriminatory content, hate speech
+  CRIME          // Criminal activities
+  GAMBLING       // Gambling themes
+}
+
 model User {
   id                String       @id @default(uuid())
   provider          AuthProvider
@@ -32,5 +58,73 @@ model User {
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 
+  // Content filtering preferences
+  maxAgeRating      AgeRating    @default(EIGHTEEN) // Maximum age rating user wants to see
+  blockedTags       ContentTag[] // Content tags the user wants to block
+
+  // Relations
+  createdCharacters Character[]  @relation("CharacterCreator")
+  createdStories    Story[]      @relation("StoryCreator")
+
   @@unique([provider, providerAccountId])
+}
+
+// Generic content classification model (can be used for any content type)
+model ContentClassification {
+  id          String       @id @default(uuid())
+  ageRating   AgeRating
+  contentTags ContentTag[]
+  reason      String?      // Optional: explanation for the rating
+
+  // Polymorphic relations (contentType + contentId pattern)
+  contentType String       // e.g., "Character", "Story", "Image", "Conversation"
+  contentId   String       // ID of the content being classified
+
+  // Moderation info
+  autoClassified Boolean    @default(true)  // Was it auto-classified or manually reviewed?
+  reviewedBy     String?    // User ID of moderator who reviewed (if manual)
+  reviewedAt     DateTime?  // When it was reviewed
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([contentType, contentId]) // One classification per content item
+  @@index([ageRating])
+  @@index([contentType])
+}
+
+// Character model (for future phases)
+model Character {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+
+  creatorId   String
+  creator     User     @relation("CharacterCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  isPublic    Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([creatorId])
+  @@index([isPublic])
+}
+
+// Story model (for future phases)
+model Story {
+  id          String   @id @default(uuid())
+  title       String
+  synopsis    String?
+
+  creatorId   String
+  creator     User     @relation("StoryCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  isPublic    Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([creatorId])
+  @@index([isPublic])
 }

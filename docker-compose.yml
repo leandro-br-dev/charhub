@@ -62,6 +62,10 @@ services:
       - type: bind
         source: ./backend/tsconfig.json
         target: /app/tsconfig.json
+      # Mount Prisma schema and migrations (needed for development)
+      - type: bind
+        source: ./backend/prisma
+        target: /app/prisma
       # Preserve node_modules from container (don't overwrite with host)
       - /app/node_modules
     expose:

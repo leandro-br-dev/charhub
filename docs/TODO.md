@@ -12,6 +12,7 @@ Consolidated view of the current technology stack, delivered functionality, and 
 - [x] **LLM providers Gemini/OpenAI/Grok** (`backend/src/services/llm/`).
 - [x] **Docker Compose + Nginx proxy + Cloudflared tunnel** (`docker-compose.yml`, `nginx/conf.d/app.conf`, `cloudflared/config/*`).
 - [x] **Redis + BullMQ** (`backend/src/queues/`, Docker `redis` service) - Sistema de filas assíncronas implementado.
+- [x] **Sistema de Classificação de Conteúdo** (`backend/src/services/contentClassificationService.ts`, `routes/v1/classification.ts`) - Sistema completo de classificação com age ratings e content tags.
 - [ ] **Cloudflare R2 storage integration** – variáveis de ambiente definidas, mas consumo em código ainda não implementado.
 
 ## Funcionalidades Entregues
@@ -24,6 +25,7 @@ Consolidated view of the current technology stack, delivered functionality, and 
 - [x] **Pipelines Docker**: ambos os aplicativos compilam via multi-stage Dockerfiles; Compose monta volumes relevantes.
 - [x] **Integração Cloudflared**: serviço no compose seleciona configs `config/<ENV_SUFFIX>/config.yml` e expõe `nginx`.
 - [x] **Sistema de Filas (BullMQ)**: infraestrutura completa com Redis, QueueManager, workers e API de testes (`/api/v1/queues/*`).
+- [x] **Sistema de Classificação de Conteúdo**: sistema de duas dimensões (AgeRating + ContentTag) com filtros personalizáveis por usuário (`/api/v1/classification/*`).
 
 ## Plano de Migração (EM ANDAMENTO)
 
@@ -77,13 +79,15 @@ Foi criado um plano detalhado para migrar funcionalidades do projeto antigo (Pyt
 - **Arquivos tocados**: `services/r2Service.ts`, novas rotas em `routes/`
 - **Referência**: `E:\Projects\charhub_dev_old_version\backend\app\services\r2_service.py`
 
-**👤 AGENTE 2: Etapa 0.3 - Classificação de Conteúdo**
-- [ ] Definir Enums `AgeRating` e `ContentTag` em `schema.prisma`
-- [ ] Adicionar campos de preferências ao model User
-- [ ] Executar migração Prisma
-- [ ] Criar `backend/src/services/contentClassificationService.ts`
-- **Arquivos tocados**: `prisma/schema.prisma`, `services/contentClassificationService.ts`
-- **Referência**: `E:\Projects\charhub_dev_old_version\backend\app\models\` (procurar por enums de classificação)
+**👤 AGENTE 2: Etapa 0.3 - Classificação de Conteúdo** (✅ COMPLETO)
+- [x] Definir Enums `AgeRating` e `ContentTag` em `schema.prisma`
+- [x] Adicionar campos de preferências ao model User
+- [x] Executar migração Prisma
+- [x] Criar `backend/src/services/contentClassificationService.ts`
+- [x] Criar API endpoints (`/api/v1/classification/*`)
+- [x] Sistema testado e validado
+- **Arquivos tocados**: `prisma/schema.prisma`, `services/contentClassificationService.ts`, `routes/v1/classification.ts`
+- **Documentação**: Sistema de classificação de duas dimensões (AgeRating + ContentTag) implementado
 
 **Por que essas duas podem rodar em paralelo?**
 - ✅ Trabalham em arquivos completamente diferentes
