@@ -3,28 +3,16 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import passport from 'passport';
-import pino from 'pino';
 import pinoHttp from 'pino-http';
+import { logger } from './config/logger';
 import { configurePassport } from './config/passport';
 import { disconnectDatabase } from './config/database';
+import { initializeWorkers } from './queues/workers';
+import { queueManager } from './queues';
 import v1Routes from './routes/v1';
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
-const LOG_PRETTY = process.env.USE_PRETTY_LOGS === 'true';
-
-// Application logger configuration
-const logger = pino({
-  level: process.env.LOG_LEVEL || 'info',
-  transport: LOG_PRETTY
-    ? {
-        target: 'pino-pretty',
-        options: {
-          colorize: true,
-        },
-      }
-    : undefined,
-});
 
 // HTTP logging middleware
 app.use(pinoHttp({ logger }));
@@ -93,6 +81,9 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
+// Initialize queue workers
+initializeWorkers();
+
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
   logger.info(`Server running on port ${PORT}`);
@@ -104,12 +95,14 @@ app.listen(PORT, '0.0.0.0', () => {
 // Graceful shutdown hooks
 process.on('SIGTERM', async () => {
   logger.info('SIGTERM signal received: closing HTTP server');
+  await queueManager.closeAll();
   await disconnectDatabase();
   process.exit(0);
 });
 
 process.on('SIGINT', async () => {
   logger.info('SIGINT signal received: closing HTTP server');
+  await queueManager.closeAll();
   await disconnectDatabase();
   process.exit(0);
 });
