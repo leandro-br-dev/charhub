@@ -13,7 +13,7 @@ Consolidated view of the current technology stack, delivered functionality, and 
 - [x] **Docker Compose + Nginx proxy + Cloudflared tunnel** (`docker-compose.yml`, `nginx/conf.d/app.conf`, `cloudflared/config/*`).
 - [x] **Redis + BullMQ** (`backend/src/queues/`, Docker `redis` service) - Sistema de filas assíncronas implementado.
 - [x] **Sistema de Classificação de Conteúdo** (`backend/src/services/contentClassificationService.ts`, `routes/v1/classification.ts`) - Sistema completo de classificação com age ratings e content tags.
-- [ ] **Cloudflare R2 storage integration** – variáveis de ambiente definidas, mas consumo em código ainda não implementado.
+- [x] **Cloudflare R2 Storage** (`backend/src/services/r2Service.ts`, `routes/v1/storage.ts`) - Sistema completo de storage com upload, validação e geração de URLs públicas.
 
 ## Funcionalidades Entregues
 
@@ -26,6 +26,7 @@ Consolidated view of the current technology stack, delivered functionality, and 
 - [x] **Integração Cloudflared**: serviço no compose seleciona configs `config/<ENV_SUFFIX>/config.yml` e expõe `nginx`.
 - [x] **Sistema de Filas (BullMQ)**: infraestrutura completa com Redis, QueueManager, workers e API de testes (`/api/v1/queues/*`).
 - [x] **Sistema de Classificação de Conteúdo**: sistema de duas dimensões (AgeRating + ContentTag) com filtros personalizáveis por usuário (`/api/v1/classification/*`).
+- [x] **Cloudflare R2 Storage**: sistema completo de armazenamento com validação robusta de base64, geração de nomes seguros e URLs públicas (`/api/v1/storage/*`).
 
 ## Plano de Migração (EM ANDAMENTO)
 
@@ -71,13 +72,14 @@ Foi criado um plano detalhado para migrar funcionalidades do projeto antigo (Pyt
 
 **Passos 2 e 3** (Executar em PARALELO - SEM CONFLITOS):
 
-**👤 AGENTE 1: Etapa 0.2 - Storage de Arquivos (Cloudflare R2)**
-- [ ] Criar `backend/src/services/r2Service.ts` usando AWS SDK v3
-- [ ] Implementar função de upload
-- [ ] Implementar função de geração de URLs
-- [ ] Criar endpoint de teste para validar upload
-- **Arquivos tocados**: `services/r2Service.ts`, novas rotas em `routes/`
-- **Referência**: `E:\Projects\charhub_dev_old_version\backend\app\services\r2_service.py`
+**👤 AGENTE 1: Etapa 0.2 - Storage de Arquivos (Cloudflare R2)** (✅ COMPLETO)
+- [x] Criar `backend/src/services/r2Service.ts` usando AWS SDK v3
+- [x] Implementar função de upload
+- [x] Implementar função de geração de URLs
+- [x] Criar endpoint de teste para validar upload
+- [x] Sistema testado e validado com uploads reais para R2
+- **Arquivos tocados**: `services/r2Service.ts`, `routes/v1/storage.ts`, `routes/v1/index.ts`
+- **Documentação**: Sistema de storage com validação robusta e URLs públicas implementado
 
 **👤 AGENTE 2: Etapa 0.3 - Classificação de Conteúdo** (✅ COMPLETO)
 - [x] Definir Enums `AgeRating` e `ContentTag` em `schema.prisma`
@@ -106,7 +108,6 @@ Foi criado um plano detalhado para migrar funcionalidades do projeto antigo (Pyt
 
 - [ ] **Implementar funcionalidades premium reais**: endpoints e UI existem apenas como placeholders; definir regras/benefícios concretos.
 - [ ] **Persistir e consumir dados reais de usuários**: revisar `userService`/Prisma para armazenar perfis além do token OAuth.
-- [ ] **Integrar Cloudflare R2/CDN**: consumir `R2_*` no backend para uploads e expor `VITE_CDN_PUBLIC_URL_BASE` na UI. (SERÁ FEITO NA FASE 0.2)
 - [ ] **Observabilidade e testes**: adicionar testes unitários/integrados (especialmente para tradução, OAuth) e configurar monitoramento (Sentry/metrics).
 - [ ] **Automação CI/CD**: pipelines para lint/test/build/deploy ainda ausentes.
 - [ ] **UX adicional**: construir dashboard real, formulários de perfil, telas premium, melhorias responsivas.

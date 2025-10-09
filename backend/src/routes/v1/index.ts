@@ -4,6 +4,7 @@ import accessRoutes from './access';
 import i18nRoutes from './i18n';
 import queuesRoutes from './queues';
 import classificationRoutes from './classification';
+import storageRoutes from './storage';
 
 const router = Router();
 
@@ -11,6 +12,7 @@ router.use('/oauth', oauthRoutes);
 router.use('/i18n', i18nRoutes);
 router.use('/queues', queuesRoutes);
 router.use('/classification', classificationRoutes);
+router.use('/storage', storageRoutes);
 router.use('/', accessRoutes);
 
 export default router;
