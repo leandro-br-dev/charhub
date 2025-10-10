@@ -5,12 +5,13 @@
     "language": "语言",
     "continueGoogle": "使用 Google 继续",
     "continueFacebook": "使用 Facebook 继续",
-    "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人信息。",
+    "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
     "logout": "退出登录",
     "logoutLoading": "正在退出登录...",
     "authenticatedUser": "已认证用户",
     "tokenStored": "存储在 HTTP Only Cookie 中",
     "navDashboard": "仪表盘",
+    "navCharacters": "角色",
     "navTagline": "安全 OAuth 演示",
     "providerLabel": {
       "google": "Google",
@@ -22,7 +23,7 @@
       "option": {
         "light": "浅色",
         "dark": "深色",
-        "system": "系统默认"
+        "system": "系统"
       }
     }
   }

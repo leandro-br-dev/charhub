@@ -20,6 +20,9 @@ export function Header(): JSX.Element {
             <Link className="transition hover:text-white" to="/dashboard">
               {t('navDashboard')}
             </Link>
+            <Link className="transition hover:text-white" to="/characters">
+              {t('navCharacters')}
+            </Link>
           </nav>
         ) : (
           <span className="text-sm text-slate-400">{t('navTagline')}</span>

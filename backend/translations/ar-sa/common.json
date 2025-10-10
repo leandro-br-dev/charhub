@@ -3,18 +3,19 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "اللغة",
-    "continueGoogle": "متابعة باستخدام Google",
-    "continueFacebook": "متابعة باستخدام Facebook",
+    "continueGoogle": "متابعة باستخدام جوجل",
+    "continueFacebook": "متابعة باستخدام فيسبوك",
     "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
-    "logoutLoading": "جارٍ تسجيل الخروج...",
+    "logoutLoading": "تسجيل الخروج...",
     "authenticatedUser": "المستخدم المصادق عليه",
-    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
+    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP فقط",
     "navDashboard": "لوحة التحكم",
+    "navCharacters": "الشخصيات",
     "navTagline": "عرض توضيحي آمن لـ OAuth",
     "providerLabel": {
-      "google": "Google",
-      "facebook": "Facebook"
+      "google": "جوجل",
+      "facebook": "فيسبوك"
     },
     "provider": "الموفر",
     "theme": {

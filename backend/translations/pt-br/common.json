@@ -11,6 +11,7 @@
     "authenticatedUser": "Usuário autenticado",
     "tokenStored": "Armazenado em cookie HTTP-only",
     "navDashboard": "Painel",
+    "navCharacters": "Personagens",
     "navTagline": "Demo OAuth segura",
     "providerLabel": {
       "google": "Google",

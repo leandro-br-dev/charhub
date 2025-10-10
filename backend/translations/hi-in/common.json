@@ -9,8 +9,9 @@
     "logout": "साइन आउट करें",
     "logoutLoading": "साइन आउट हो रहा है...",
     "authenticatedUser": "प्रमाणित उपयोगकर्ता",
-    "tokenStored": "HTTP-ओनली कुकी में संग्रहीत",
+    "tokenStored": "HTTP-ओनली कुकी में सहेजा गया",
     "navDashboard": "डैशबोर्ड",
+    "navCharacters": "कैरेक्टर्स",
     "navTagline": "सुरक्षित OAuth डेमो",
     "providerLabel": {
       "google": "Google",

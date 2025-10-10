@@ -5,13 +5,14 @@
     "language": "言語",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、お客様はプライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを許可したことになります。",
+    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを承認したことになります。",
     "logout": "サインアウト",
     "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
     "tokenStored": "HTTP専用Cookieに保存",
     "navDashboard": "ダッシュボード",
-    "navTagline": "セキュアなOAuthデモ",
+    "navCharacters": "キャラクター",
+    "navTagline": "セキュアOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"

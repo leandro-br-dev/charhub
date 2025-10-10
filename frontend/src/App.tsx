@@ -7,6 +7,10 @@ import Signup from './pages/(auth)/signup';
 import Callback from './pages/(auth)/callback';
 import Dashboard from './pages/dashboard';
 import NotFound from './pages/not-found';
+import CharacterHubPage from './pages/(characters)/hub';
+import CharacterCreatePage from './pages/(characters)/create';
+import CharacterDetailPage from './pages/(characters)/[characterId]';
+import CharacterEditPage from './pages/(characters)/[characterId]/edit';
 
 export default function App(): JSX.Element {
   const location = useLocation();
@@ -26,6 +30,38 @@ export default function App(): JSX.Element {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/characters"
+            element={
+              <ProtectedRoute>
+                <CharacterHubPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/characters/create"
+            element={
+              <ProtectedRoute>
+                <CharacterCreatePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/characters/:characterId"
+            element={
+              <ProtectedRoute>
+                <CharacterDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/characters/:characterId/edit"
+            element={
+              <ProtectedRoute>
+                <CharacterEditPage />
               </ProtectedRoute>
             }
           />

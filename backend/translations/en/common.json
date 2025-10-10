@@ -11,6 +11,7 @@
                       "authenticatedUser":  "Authenticated user",
                       "tokenStored":  "Stored in HTTP-only cookie",
                       "navDashboard":  "Dashboard",
+                      "navCharacters":  "Characters",
                       "navTagline":  "Secure OAuth demo",
                       "providerLabel":  {
                                             "google":  "Google",
