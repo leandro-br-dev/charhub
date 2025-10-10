@@ -20,9 +20,24 @@ Welcome to CharHub. This guide is shared by every automation agent (GitHub Copil
    - `docs/FRONTEND.md`
    - `docs/DEV_OPERATIONS.md`
    - `docs/TODO.md` (ongoing priorities)
-   - `docs/ROADMAP.md` (long-term vision)
+   - **For Migration Tasks**: `docs/MIGRATION/README.MD` (current migration status and next steps)
+   - **For Migration Tasks**: `docs/MIGRATION/01_RESUMO_EXECUTIVO.md`
+   - **For Migration Tasks**: `docs/MIGRATION/02_PLANO_DE_MIGRACAO.md`
+   - **For Migration Tasks**: `docs/MIGRATION/03_GUIA_TECNICO_E_REFERENCIA.md`
+   - **For Finding Old Files**: `docs/MIGRATION/04_OLD_PROJECT_INVENTORY.md` (complete file inventory)
 2. Confirm that `.env` files are **never** committed. Work from the `*.example` templates.
 3. Make sure you understand the current state by scanning the latest commit history when in doubt.
+
+## Migration-Specific Guidelines
+
+When working on migration tasks:
+
+1. **Read First**: Check `docs/MIGRATION_START.md` for current phase and assigned tasks
+2. **Reference Old Code**: Use `docs/OLD_PROJECT_INVENTORY.md` to locate files in `E:\Projects\charhub_dev_old_version\`
+3. **Document Decisions**: Update `docs/MIGRATION_DECISIONS.md` for any architectural choices
+4. **Mark Progress**: Update `docs/MIGRATION_CHECKLIST.md` when completing tasks
+5. **Clean Up**: Remove completed items from migration docs as you finish them
+6. **Conventional Commits**: Use format `feat(module): description` for migration work
 
 ## Project Summary
 

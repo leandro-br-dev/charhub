@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => {
     .filter(Boolean);
 
   const publicHostname = env.PUBLIC_HOSTNAME?.trim();
-  const publicFacingUrl = env.PUBLIC_FACING_URL?.trim();
 
   const allowedHosts: string[] = ['localhost', '127.0.0.1'];
   if (publicHostname) {
@@ -19,43 +18,21 @@ export default defineConfig(({ mode }) => {
   }
   if (explicitHosts && explicitHosts.length > 0) {
     allowedHosts.push(...explicitHosts);
-  } else if (mode !== 'development') {
-    allowedHosts.push('dev.charhub.app');
   }
 
-  // HMR configuration - let Vite auto-detect the host from browser location
-  // Only override if explicitly set via env vars
-  const explicitHmrHost = env.VITE_HMR_HOST?.trim();
-  const inferredClientPort = env.VITE_HMR_CLIENT_PORT ? Number(env.VITE_HMR_CLIENT_PORT) : undefined;
-  const hmrProtocolEnv = env.VITE_HMR_PROTOCOL?.trim()?.toLowerCase();
-
-  // HMR configuration strategy:
-  // - In development: use clientPort 5173 (mapped host port) so browser connects directly to Vite, bypassing nginx
-  // - Protocol is always 'ws' for localhost (no SSL on direct Vite connection)
-  // - Host is 'localhost' (browser connects to localhost:5173)
-  const hmrConfig: { host: string; protocol: 'ws'; clientPort: number } = {
-    host: 'localhost',
-    protocol: 'ws',
-    clientPort: 5173, // This is the host port mapped in docker-compose.yml
+  // Configuração HMR corrigida
+  const hmrConfig = {
+    // O host e o protocolo são omitidos intencionalmente.
+    // O Vite irá inferi-los a partir do window.location do navegador.
+    // Isso faz com que funcione tanto para 'localhost' (http -> ws) 
+    // quanto para 'dev.charhub.app' (https -> wss).
+    clientPort: 5173, // Esta é a porta do host mapeada no docker-compose.yml
   };
-
-  // Allow override via environment variables if needed
-  if (explicitHmrHost) {
-    hmrConfig.host = explicitHmrHost;
-  }
-
-  if (hmrProtocolEnv === 'ws' || hmrProtocolEnv === 'wss') {
-    hmrConfig.protocol = hmrProtocolEnv;
-  }
-
-  if (!Number.isNaN(inferredClientPort ?? NaN) && (inferredClientPort ?? 0) > 0) {
-    hmrConfig.clientPort = inferredClientPort as number;
-  }
 
   return {
     plugins: [react()],
     server: {
-      port: 5173,
+      port: 80, // O container do Vite roda internamente na porta 80
       host: '0.0.0.0',
       allowedHosts,
       hmr: hmrConfig,

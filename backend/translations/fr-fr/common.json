@@ -5,7 +5,7 @@
     "language": "Langue",
     "continueGoogle": "Continuer avec Google",
     "continueFacebook": "Continuer avec Facebook",
-    "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder à vos informations de profil de base.",
+    "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder aux informations de base de votre profil.",
     "logout": "Se déconnecter",
     "logoutLoading": "Déconnexion en cours...",
     "authenticatedUser": "Utilisateur authentifié",
@@ -16,6 +16,14 @@
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Fournisseur"
+    "provider": "Fournisseur",
+    "theme": {
+      "label": "Thème",
+      "option": {
+        "light": "Clair",
+        "dark": "Sombre",
+        "system": "Système"
+      }
+    }
   }
 }

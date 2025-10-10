@@ -1,14 +1,12 @@
-# cloudflared/config.yml (APENAS no projeto PROD)
+# cloudflared/config/prod/config.yml
 
-# ID do túnel ORIGINAL de produção
 tunnel: 64dc6dc0-b430-4d84-bc47-e2ac1838064f
-# Caminho para as credenciais do túnel ORIGINAL DENTRO do container
 credentials-file: /etc/cloudflared/config/prod/64dc6dc0-b430-4d84-bc47-e2ac1838064f.json
+protocol: http2  # Adicione esta linha
 
 ingress:
   - hostname: charhub.app
     service: http://nginx:80
     originRequest:
       noTLSVerify: true
-
   - service: http_status:404

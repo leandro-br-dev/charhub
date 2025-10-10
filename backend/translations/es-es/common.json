@@ -5,17 +5,25 @@
     "language": "Idioma",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
-    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información básica de perfil.",
+    "privacy": "Al continuar, usted acepta nuestra política de privacidad y autoriza a CharHub a acceder a su información básica de perfil.",
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
     "tokenStored": "Almacenado en cookie HTTP-only",
     "navDashboard": "Panel",
-    "navTagline": "Demo segura de OAuth",
+    "navTagline": "Demostración segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Proveedor"
+    "provider": "Proveedor",
+    "theme": {
+      "label": "Tema",
+      "option": {
+        "light": "Claro",
+        "dark": "Oscuro",
+        "system": "Sistema"
+      }
+    }
   }
 }

@@ -16,6 +16,14 @@
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Provedor"
+    "provider": "Provedor",
+    "theme": {
+      "label": "Tema",
+      "option": {
+        "light": "Claro",
+        "dark": "Escuro",
+        "system": "Sistema"
+      }
+    }
   }
 }

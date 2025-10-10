@@ -42,7 +42,7 @@ Backend container reads `backend/.env`. Important keys:
 - `JWT_SECRET` – symmetric signing secret for generated access tokens.
 - `GEMINI_API_KEY`, `OPENAI_API_KEY`, `GROK_API_KEY` – LLM provider keys.
 - `PUBLIC_HOSTNAME` / `PUBLIC_FACING_URL` – canonical hostname, surfaced to frontend via env propagation.
-- `R2_*` (bucket, keys, endpoint) – future-proofed Cloudflare R2 configuration (not yet consumed in code).
+- `R2_*` (bucket, keys, endpoint) – Cloudflare R2 storage credentials consumidos pelo `r2Service`.
 - `DEV_TRANSLATION_MODE` (development only) – controls translation bootstrapping (`auto`, `offline`, or `skip`).
 
 ## Commands
@@ -86,6 +86,12 @@ Run these from `backend/`:
 - Valid namespaces: `common`, `home`, `login`, `signup`, `callback`, `dashboard`, `notFound`.
 - Language matching: tries full locale (`pt-BR`), then prefix (`pt`), then falls back to `en`.
 - Returns `{ resources }` JSON shaped for i18next.
+
+### Storage (`/api/v1/storage`)
+
+| Method & Path | Guard | Description |
+|---------------|-------|-------------|
+| `POST /storage/test-upload` | Dev only | Recebe `{ fileName, content, contentType? }` onde `content` é base64, faz upload para o Cloudflare R2 e retorna a URL pública. Disponível apenas quando `NODE_ENV=development`.
 
 ## Data & Persistence
 

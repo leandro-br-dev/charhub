@@ -53,6 +53,36 @@ docker compose up --build
 - The backend container now prepares translations automatically on startup.
 - Control the behaviour with `DEV_TRANSLATION_MODE`: `auto` (default) tries LLM generation with a fallback to English copies when keys are missing, `offline` always mirrors English resources, and `skip` leaves existing files untouched.
 - Run `npm run build:translations` for fresh AI output or `npm run build:translations -- --offline` to seed the JSON files without calling an LLM.
+## 🔄 Migration Plan (NEW!)
+
+**We are migrating features from an older Python/FastAPI project to this Node.js/Express stack.**
+
+**📋 Full Migration Plan Available**: [`MIGRATION_SUMMARY.md`](./MIGRATION_SUMMARY.md)
+
+This comprehensive plan includes:
+- 8 detailed documents (~5,000 lines)
+- 7 migration phases (3-6 months timeline)
+- Step-by-step guides
+- Complete checklists
+- Command references
+
+**Quick Start for Migration**:
+1. Read [`docs/RESUMO_EXECUTIVO_MIGRACAO.md`](./docs/RESUMO_EXECUTIVO_MIGRACAO.md) (Portuguese executive summary)
+2. Review [`docs/MIGRATION_GUIDE.md`](./docs/MIGRATION_GUIDE.md) (practical guide)
+3. Follow [`docs/MIGRATION_PLAN.md`](./docs/MIGRATION_PLAN.md) (detailed plan)
+
+**Features to Migrate**:
+- 👤 Characters System (LoRAs, Attires, Stickers)
+- 💬 Real-time Chat (WebSocket, AI Agents)
+- 📖 Story Generation (Visual Novels)
+- 💰 Credits & Monetization (Plans, PayPal)
+- 🔗 Referral System
+- 🛠️ AI-assisted Development (Optional)
+
+See [`MIGRATION_SUMMARY.md`](./MIGRATION_SUMMARY.md) for complete overview.
+
+---
+
 ## Documentation
 
 - `docs/PROJECT_OVERVIEW.md` - architecture summary and repository layout.
@@ -60,6 +90,7 @@ docker compose up --build
 - `docs/FRONTEND.md` - UI flows, component organization, and Vite configuration.
 - `docs/DEV_OPERATIONS.md` - environment prep, Docker usage, Cloudflare tunnel setup, translation pipeline.
 - `docs/TODO.md` - current priorities (see `docs/ROADMAP.md` for long-term plans).
+- **`docs/README.md`** - comprehensive documentation index (includes migration docs).
 
 ## Current Status
 

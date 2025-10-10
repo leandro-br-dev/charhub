@@ -5,17 +5,25 @@
     "language": "Язык",
     "continueGoogle": "Продолжить с Google",
     "continueFacebook": "Продолжить с Facebook",
-    "privacy": "Продолжая, вы соглашаетесь с нашей политикой конфиденциальности и разрешаете CharHub доступ к вашей основной информации профиля.",
+    "privacy": "Продолжая, вы соглашаетесь с нашей политикой конфиденциальности и разрешаете CharHub доступ к основной информации вашего профиля.",
     "logout": "Выйти",
     "logoutLoading": "Выход...",
     "authenticatedUser": "Аутентифицированный пользователь",
-    "tokenStored": "Хранится в HTTP-only cookie",
+    "tokenStored": "Сохранено в HTTP-only cookie",
     "navDashboard": "Панель управления",
-    "navTagline": "Безопасная демонстрация OAuth",
+    "navTagline": "Демонстрация безопасного OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Провайдер"
+    "provider": "Поставщик",
+    "theme": {
+      "label": "Тема",
+      "option": {
+        "light": "Светлая",
+        "dark": "Темная",
+        "system": "Системная"
+      }
+    }
   }
 }

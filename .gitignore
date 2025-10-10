@@ -146,3 +146,7 @@ crashlytics-build.properties
 
 # Claude AI
 .claude
+
+# Project Analyzer
+project_analyzer.py
+project_context.log

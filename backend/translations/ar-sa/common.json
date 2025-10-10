@@ -1,21 +1,29 @@
 {
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
-    "brand": "مصادقة CharHub",
+    "brand": "CharHub Auth",
     "language": "اللغة",
-    "continueGoogle": "المتابعة باستخدام جوجل",
-    "continueFacebook": "المتابعة باستخدام فيسبوك",
-    "privacy": "بالمتابعة، أنت توافق على سياسة الخصوصية الخاصة بنا وتصرح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "continueGoogle": "متابعة باستخدام Google",
+    "continueFacebook": "متابعة باستخدام Facebook",
+    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
-    "logoutLoading": "جاري تسجيل الخروج...",
-    "authenticatedUser": "مستخدم موثق",
-    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-فقط",
+    "logoutLoading": "جارٍ تسجيل الخروج...",
+    "authenticatedUser": "المستخدم المصادق عليه",
+    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navTagline": "عرض توضيحي آمن لـ OAuth",
     "providerLabel": {
-      "google": "جوجل",
-      "facebook": "فيسبوك"
+      "google": "Google",
+      "facebook": "Facebook"
     },
-    "provider": "المزود"
+    "provider": "الموفر",
+    "theme": {
+      "label": "السمة",
+      "option": {
+        "light": "فاتح",
+        "dark": "داكن",
+        "system": "النظام"
+      }
+    }
   }
 }

@@ -3,19 +3,27 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Sprache",
-    "continueGoogle": "Weiter mit Google",
-    "continueFacebook": "Weiter mit Facebook",
-    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "continueGoogle": "Mit Google fortfahren",
+    "continueFacebook": "Mit Facebook fortfahren",
+    "privacy": "Durch Fortfahren stimmen Sie unserer Datenschutzrichtlinie zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
-    "logoutLoading": "Meldet ab...",
+    "logoutLoading": "Abmelden...",
     "authenticatedUser": "Authentifizierter Benutzer",
-    "tokenStored": "In HTTP-only Cookie gespeichert",
+    "tokenStored": "Gespeichert in einem HTTP-Only-Cookie",
     "navDashboard": "Dashboard",
     "navTagline": "Sichere OAuth-Demo",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Anbieter"
+    "provider": "Anbieter",
+    "theme": {
+      "label": "Design",
+      "option": {
+        "light": "Hell",
+        "dark": "Dunkel",
+        "system": "System"
+      }
+    }
   }
 }

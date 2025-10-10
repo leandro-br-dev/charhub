@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from './Button';
 
@@ -8,6 +8,8 @@ const SIZE_CLASSES: Record<'sm' | 'md' | 'lg' | 'xl', string> = {
   lg: 'max-w-3xl',
   xl: 'max-w-4xl'
 };
+
+const ANIMATION_DURATION = 200;
 
 export interface ModalProps {
   isOpen: boolean;
@@ -26,10 +28,77 @@ export function Modal({
   className = '',
   size = 'md'
 }: ModalProps): JSX.Element | null {
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isVisible, setIsVisible] = useState(isOpen);
   const overlayRef = useRef<HTMLDivElement | null>(null);
+  const closeTimeoutRef = useRef<number>();
+  const openFrameRef = useRef<number>();
+  const openSecondFrameRef = useRef<number>();
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      if (closeTimeoutRef.current) {
+        window.clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = undefined;
+      }
+
+      if (openFrameRef.current) {
+        window.cancelAnimationFrame(openFrameRef.current);
+        openFrameRef.current = undefined;
+      }
+
+      if (openSecondFrameRef.current) {
+        window.cancelAnimationFrame(openSecondFrameRef.current);
+        openSecondFrameRef.current = undefined;
+      }
+
+      setShouldRender(true);
+      setIsVisible(false);
+
+      if (typeof window !== 'undefined') {
+        openFrameRef.current = window.requestAnimationFrame(() => {
+          openSecondFrameRef.current = window.requestAnimationFrame(() => {
+            setIsVisible(true);
+            openSecondFrameRef.current = undefined;
+          });
+          openFrameRef.current = undefined;
+        });
+      } else {
+        setIsVisible(true);
+      }
+    } else {
+      setIsVisible(false);
+
+      if (typeof window !== 'undefined') {
+        closeTimeoutRef.current = window.setTimeout(() => {
+          setShouldRender(false);
+          closeTimeoutRef.current = undefined;
+        }, ANIMATION_DURATION);
+      } else {
+        setShouldRender(false);
+      }
+    }
+
+    return () => {
+      if (closeTimeoutRef.current) {
+        window.clearTimeout(closeTimeoutRef.current);
+        closeTimeoutRef.current = undefined;
+      }
+
+      if (openFrameRef.current) {
+        window.cancelAnimationFrame(openFrameRef.current);
+        openFrameRef.current = undefined;
+      }
+
+      if (openSecondFrameRef.current) {
+        window.cancelAnimationFrame(openSecondFrameRef.current);
+        openSecondFrameRef.current = undefined;
+      }
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!shouldRender) {
       return;
     }
 
@@ -47,16 +116,24 @@ export function Modal({
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalOverflow;
     };
-  }, [isOpen, onClose]);
+  }, [shouldRender, onClose]);
 
-  if (!isOpen) {
+  if (!shouldRender) {
     return null;
   }
+
+  const overlayClasses = `fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-10 transition-opacity duration-200 ease-out ${
+    isVisible ? 'opacity-100' : 'opacity-0'
+  }`;
+
+  const modalClasses = `w-full ${SIZE_CLASSES[size]} rounded-2xl bg-normal shadow-xl focus:outline-none transform transition-all duration-200 ease-out ${
+    isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+  } ${className}`.trim();
 
   const modalContent = (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-10"
+      className={overlayClasses}
       onMouseDown={event => {
         if (event.target === overlayRef.current) {
           onClose();
@@ -67,7 +144,7 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`w-full ${SIZE_CLASSES[size]} rounded-2xl bg-normal shadow-xl focus:outline-none ${className}`.trim()}
+        className={modalClasses}
         onMouseDown={event => event.stopPropagation()}
       >
         <header className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
@@ -89,4 +166,3 @@ export function Modal({
 
   return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : null;
 }
-

@@ -27,6 +27,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.744.0",
     "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.16.3",
     "bullmq": "^5.61.0",

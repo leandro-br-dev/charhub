@@ -80,7 +80,7 @@ export function LanguageSwitcher(): JSX.Element {
                 } group flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm ${isSelected ? 'font-semibold' : ''}`}
               >
                 <LangFlag aria-label={lang.name} role="img" className="h-4 w-6 rounded-sm" />
-                <span>{lang.name}</span>
+                <span className="flex-1 whitespace-nowrap text-left">{lang.name}</span>
                 {isSelected ? (
                   <span className="material-symbols-outlined ml-auto text-primary text-base">check_circle</span>
                 ) : null}

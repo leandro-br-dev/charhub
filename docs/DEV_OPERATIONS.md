@@ -89,7 +89,7 @@ Front door (without tunnel) defaults to `http://localhost`. If Cloudflare tunnel
 ## Deployment Considerations
 
 - Production still relies on Docker Compose; adapt to managed services as the roadmap (see `docs/ROADMAP.md`) advances.
-- Cloudflare R2 credentials exist but asset upload/publishing pipeline has not been implemented - ensure secrets stay out of Git.
+- Cloudflare R2 credentials agora alimentam o serviço `r2Service` (endpoint `/api/v1/storage/test-upload` disponível em desenvolvimento); o pipeline completo de publicação de assets permanece pendente.
 - Include manual smoke tests: OAuth login, `/api/v1/llm/models`, translation fetch, premium endpoint access with a token containing `role=PREMIUM`.
 - Review `docs/TODO.md` before shipping; it tracks pending work around premium features, analytics, and observability.
 
