@@ -9,7 +9,8 @@ import { useCharacterForm, type UseCharacterFormReturn } from '../hooks/useChara
 import {
   AGE_RATING_OPTIONS,
   CHARACTER_PURPOSE_OPTIONS,
-  CONTENT_TAG_OPTIONS
+  CONTENT_TAG_OPTIONS,
+  GENDER_OPTIONS
 } from '../utils/constants';
 
 export interface CharacterFormProps {
@@ -69,7 +70,7 @@ export function CharacterForm({
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <label className="flex flex-col gap-2 text-sm">
             <span className="font-medium text-slate-600 dark:text-slate-300">
-              {t('characters:form.fields.firstName')}
+              {t('characters:form.fields.firstName')} <span className="text-red-500">*</span>
             </span>
             <input
               className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
@@ -107,12 +108,18 @@ export function CharacterForm({
             <span className="font-medium text-slate-600 dark:text-slate-300">
               {t('characters:form.fields.gender')}
             </span>
-            <input
+            <select
               className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               value={values.gender ?? ''}
-              onChange={handleTextChange('gender')}
-              placeholder={t('characters:form.placeholders.gender') ?? ''}
-            />
+              onChange={handleSelectChange('gender')}
+            >
+              <option value="">Select gender</option>
+              {GENDER_OPTIONS.map(option => (
+                <option key={option} value={option}>
+                  {t(`characters:genders.${option}`)}
+                </option>
+              ))}
+            </select>
           </label>
         </div>
 
@@ -248,9 +255,9 @@ export function CharacterForm({
             </div>
           </label>
 
-          <label className="flex flex-col gap-2 text-sm">
+          <label className="flex flex-col gap-2 text-sm md:col-span-2">
             <span className="font-medium text-slate-600 dark:text-slate-300">
-              {t('characters:form.fields.ageRating')}
+              {t('characters:form.fields.ageRating')} <span className="text-red-500">*</span>
             </span>
             <select
               className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
@@ -263,18 +270,6 @@ export function CharacterForm({
                 </option>
               ))}
             </select>
-          </label>
-
-          <label className="flex flex-col gap-2 text-sm">
-            <span className="font-medium text-slate-600 dark:text-slate-300">
-              {t('characters:form.fields.originalLanguageCode')}
-            </span>
-            <input
-              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm uppercase text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-              value={values.originalLanguageCode ?? 'en'}
-              onChange={handleTextChange('originalLanguageCode')}
-              maxLength={5}
-            />
           </label>
         </div>
 

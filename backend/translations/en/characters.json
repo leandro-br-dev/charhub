@@ -24,6 +24,11 @@
       "story": "Story",
       "both": "Chat & Story"
     },
+    "genders": {
+      "male": "Male",
+      "female": "Female",
+      "non-binary": "Non-binary"
+    },
     "contentTags": {
       "VIOLENCE": "Violence",
       "GORE": "Gore",

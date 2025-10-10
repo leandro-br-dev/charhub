@@ -8,7 +8,7 @@
       "private": "Privato",
       "identifier": "ID personaggio: {{id}}",
       "unsavedChanges": "Modifiche non salvate",
-      "allSaved": "Tutte le modifiche salvate",
+      "allSaved": "Tutte le modifiche sono state salvate",
       "submitting": "Salvataggio in corso..."
     },
     "ageRatings": {
@@ -24,12 +24,17 @@
       "story": "Storia",
       "both": "Chat e Storia"
     },
+    "genders": {
+      "male": "Maschio",
+      "female": "Femmina",
+      "non-binary": "Non binario"
+    },
     "contentTags": {
       "VIOLENCE": "Violenza",
-      "GORE": "Gore",
-      "SEXUAL": "Contenuti sessuali",
+      "GORE": "Sangue",
+      "SEXUAL": "Sessuale",
       "NUDITY": "Nudità",
-      "LANGUAGE": "Linguaggio esplicito",
+      "LANGUAGE": "Linguaggio volgare",
       "DRUGS": "Droghe",
       "ALCOHOL": "Alcol",
       "HORROR": "Horror",
@@ -40,16 +45,16 @@
     },
     "contentTagHints": {
       "VIOLENCE": "Combattimenti, risse o conflitti aggressivi.",
-      "GORE": "Ferite grafiche e dettagli espliciti.",
-      "SEXUAL": "Temi per adulti o allusioni.",
+      "GORE": "Lesioni grafiche e dettagli espliciti.",
+      "SEXUAL": "Temi o allusioni per adulti.",
       "NUDITY": "Nudità parziale o completa.",
       "LANGUAGE": "Linguaggio esplicito o forte.",
       "DRUGS": "Uso o riferimenti a droghe.",
       "ALCOHOL": "Consumo di alcol.",
       "HORROR": "Immagini disturbanti o horror.",
       "PSYCHOLOGICAL": "Salute mentale o tensione psicologica.",
-      "DISCRIMINATION": "Incitamento all'odio o pregiudizi.",
-      "CRIME": "Temi di attività criminale.",
+      "DISCRIMINATION": "Incitamento all'odio o pregiudizio.",
+      "CRIME": "Temi legati ad attività criminali.",
       "GAMBLING": "Riferimenti a scommesse o gioco d'azzardo."
     },
     "accessibility": {
@@ -57,8 +62,8 @@
       "removeFromFavorites": "Rimuovi dai preferiti"
     },
     "hub": {
-      "title": "Hub dei Personaggi",
-      "subtitle": "Crea, organizza ed evolve il cast che alimenta le tue storie, gli agenti di chat e le esperienze AI.",
+      "title": "Hub Personaggi",
+      "subtitle": "Crea, organizza ed evolve il cast che anima le tue storie, gli agenti di chat e le esperienze AI.",
       "actions": {
         "createCharacter": "Nuovo personaggio",
         "retry": "Riprova",
@@ -80,11 +85,11 @@
         "empty_private": "Non hai ancora creato alcun personaggio.",
         "empty_public": "Nessun personaggio pubblico corrisponde ai tuoi filtri.",
         "emptyHint": "Inizia creando un profilo o modifica i tuoi filtri.",
-        "emptySearchHint": "Regola i filtri o cancella la ricerca per vedere più risultati."
+        "emptySearchHint": "Regola i tuoi filtri o cancella la ricerca per vedere più risultati."
       },
       "labels": {
         "total": "{{count}} personaggio{{count, plural, one {} other {i}}} disponibile{{count, plural, one {} other {i}}}",
-        "quickCreateLink": "Inizia subito la creazione"
+        "quickCreateLink": "Passa direttamente alla creazione"
       }
     },
     "form": {
@@ -94,10 +99,10 @@
         "identity": "Identità",
         "identityHint": "Definisci come le persone scoprono e identificano questo personaggio a colpo d'occhio.",
         "profile": "Profilo narrativo",
-        "profileHint": "Descrivi personalità, tratti e background per guidare l'AI.",
+        "profileHint": "Descrivi personalità, tratti e retroscena per guidare l'IA.",
         "configuration": "Disponibilità e moderazione",
         "configurationHint": "Controlla come appare il personaggio, chi può accedervi e quali salvaguardie si applicano.",
-        "contentTagsHint": "Segnala i temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze."
+        "contentTagsHint": "Segnala temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze."
       },
       "fields": {
         "firstName": "Nome",
@@ -106,11 +111,11 @@
         "gender": "Genere",
         "species": "Specie / origine",
         "style": "Stile visivo o narrativo",
-        "avatar": "URL dell'immagine avatar",
+        "avatar": "URL immagine avatar",
         "physicalCharacteristics": "Descrizione fisica",
         "personality": "Personalità",
-        "history": "Background",
-        "purpose": "Uso principale",
+        "history": "Retroscena",
+        "purpose": "Utilizzo principale",
         "isPublic": "Visibilità",
         "ageRating": "Classificazione per età",
         "originalLanguageCode": "Lingua originale",
@@ -142,7 +147,7 @@
       "title": "Modifica personaggio",
       "subtitle": "Aggiornamento di {{name}}",
       "saveButton": "Aggiorna personaggio",
-      "cancelButton": "Annulla modifiche",
+      "cancelButton": "Scarta modifiche",
       "states": {
         "loading": "Caricamento personaggio..."
       }
@@ -169,7 +174,7 @@
       "sections": {
         "physicalCharacteristics": "Aspetto",
         "personality": "Personalità",
-        "history": "Background",
+        "history": "Retroscena",
         "contentTags": "Avvisi sui contenuti",
         "metadata": "Tag"
       }

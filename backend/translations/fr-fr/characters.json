@@ -2,7 +2,7 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Personnage sans nom",
+      "untitledCharacter": "Personnage sans titre",
       "updatedAt": "Mis à jour le {{date}}",
       "public": "Public",
       "private": "Privé",
@@ -24,6 +24,11 @@
       "story": "Histoire",
       "both": "Chat et Histoire"
     },
+    "genders": {
+      "male": "Homme",
+      "female": "Femme",
+      "non-binary": "Non-binaire"
+    },
     "contentTags": {
       "VIOLENCE": "Violence",
       "GORE": "Gore",
@@ -36,13 +41,13 @@
       "PSYCHOLOGICAL": "Psychologique",
       "DISCRIMINATION": "Discrimination",
       "CRIME": "Crime",
-      "GAMBLING": "Jeux d'argent"
+      "GAMBLING": "Jeu"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, affrontements ou conflits agressifs.",
+      "VIOLENCE": "Combat, bagarres ou conflits agressifs.",
       "GORE": "Blessures graphiques et détails explicites.",
       "SEXUAL": "Thèmes adultes ou sous-entendus.",
-      "NUDITY": "Nudité partielle ou totale.",
+      "NUDITY": "Nudité partielle ou complète.",
       "LANGUAGE": "Langage explicite ou grossier.",
       "DRUGS": "Usage ou références à des drogues.",
       "ALCOHOL": "Consommation d'alcool.",
@@ -50,7 +55,7 @@
       "PSYCHOLOGICAL": "Santé mentale ou tension psychologique.",
       "DISCRIMINATION": "Discours de haine ou préjugés.",
       "CRIME": "Thèmes d'activités criminelles.",
-      "GAMBLING": "Références aux paris ou aux jeux d'argent."
+      "GAMBLING": "Références aux paris ou au jeu."
     },
     "accessibility": {
       "addToFavorites": "Ajouter aux favoris",
@@ -62,8 +67,8 @@
       "actions": {
         "createCharacter": "Nouveau personnage",
         "retry": "Réessayer",
-        "blurSensitive": "Masquer le contenu sensible",
-        "showSensitive": "Afficher le contenu sensible"
+        "blurSensitive": "Masquer les contenus sensibles",
+        "showSensitive": "Afficher les contenus sensibles"
       },
       "tabs": {
         "myCharacters": "Mes personnages",
@@ -92,16 +97,16 @@
       "cancel": "Annuler",
       "sections": {
         "identity": "Identité",
-        "identityHint": "Définissez comment les gens découvrent et identifient ce personnage en un coup d'œil.",
+        "identityHint": "Définissez comment les gens découvrent et identifient ce personnage d'un coup d'œil.",
         "profile": "Profil narratif",
-        "profileHint": "Décrivez la personnalité, les traits et l'histoire pour guider l'IA.",
+        "profileHint": "Décrivez la personnalité, les traits et l'historique pour guider l'IA.",
         "configuration": "Disponibilité et modération",
-        "configurationHint": "Contrôlez comment le personnage apparaît, qui peut y accéder et quelles mesures de sécurité s'appliquent.",
-        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer selon leurs préférences."
+        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles protections s'appliquent.",
+        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer en fonction de leurs préférences."
       },
       "fields": {
         "firstName": "Prénom",
-        "lastName": "Nom",
+        "lastName": "Nom de famille",
         "age": "Âge",
         "gender": "Genre",
         "species": "Espèce / origine",
@@ -109,17 +114,17 @@
         "avatar": "URL de l'image d'avatar",
         "physicalCharacteristics": "Description physique",
         "personality": "Personnalité",
-        "history": "Histoire",
-        "purpose": "Usage principal",
+        "history": "Historique",
+        "purpose": "Utilisation principale",
         "isPublic": "Visibilité",
         "ageRating": "Classification d'âge",
         "originalLanguageCode": "Langue d'origine",
         "contentTags": "Avertissements de contenu"
       },
       "placeholders": {
-        "gender": "Ex: IA non binaire, androïde, chevalier",
-        "species": "Ex: Humain, Elfe, Synthétique",
-        "style": "Ex: Détective noir, anime pastel, pictural",
+        "gender": "Ex : IA non-binaire, androïde, chevalier",
+        "species": "Ex : Humain, Elfe, Synthétique",
+        "style": "Ex : Détective noir, anime pastel, peinture",
         "avatar": "https://cdn.example.com/avatar.png"
       },
       "hints": {
@@ -136,7 +141,7 @@
       "title": "Créer un nouveau personnage",
       "subtitle": "Combinez le contexte narratif, le style visuel et les paramètres de modération. Vous pourrez tout affiner plus tard.",
       "saveButton": "Enregistrer le personnage",
-      "cancelButton": "Annuler et revenir"
+      "cancelButton": "Annuler et revenir en arrière"
     },
     "edit": {
       "title": "Modifier le personnage",
@@ -150,7 +155,7 @@
     "detail": {
       "states": {
         "loading": "Chargement des détails du personnage...",
-        "notFound": "Nous n'avons pas trouvé ce personnage."
+        "notFound": "Nous n'avons pas pu trouver ce personnage."
       },
       "actions": {
         "backToHub": "Retour au hub",
@@ -169,7 +174,7 @@
       "sections": {
         "physicalCharacteristics": "Apparence",
         "personality": "Personnalité",
-        "history": "Histoire",
+        "history": "Historique",
         "contentTags": "Avertissements de contenu",
         "metadata": "Étiquettes"
       }

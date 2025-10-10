@@ -2,11 +2,11 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Personagem sem nome",
+      "untitledCharacter": "Personagem sem título",
       "updatedAt": "Atualizado em {{date}}",
       "public": "Público",
       "private": "Privado",
-      "identifier": "ID do Personagem: {{id}}",
+      "identifier": "ID do personagem: {{id}}",
       "unsavedChanges": "Alterações não salvas",
       "allSaved": "Todas as alterações salvas",
       "submitting": "Salvando..."
@@ -20,13 +20,18 @@
       "EIGHTEEN": "18+"
     },
     "purposes": {
-      "chat": "Chat",
+      "chat": "Bate-papo",
       "story": "História",
-      "both": "Chat e História"
+      "both": "Bate-papo e História"
+    },
+    "genders": {
+      "male": "Masculino",
+      "female": "Feminino",
+      "non-binary": "Não binário"
     },
     "contentTags": {
       "VIOLENCE": "Violência",
-      "GORE": "Gore",
+      "GORE": "Sangue e vísceras",
       "SEXUAL": "Sexual",
       "NUDITY": "Nudez",
       "LANGUAGE": "Linguagem",
@@ -36,14 +41,14 @@
       "PSYCHOLOGICAL": "Psicológico",
       "DISCRIMINATION": "Discriminação",
       "CRIME": "Crime",
-      "GAMBLING": "Jogo"
+      "GAMBLING": "Jogos de azar"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combate, lutas ou conflito agressivo.",
+      "VIOLENCE": "Combate, lutas ou conflitos agressivos.",
       "GORE": "Ferimentos gráficos e detalhes explícitos.",
       "SEXUAL": "Temas adultos ou insinuações.",
       "NUDITY": "Nudez parcial ou total.",
-      "LANGUAGE": "Linguagem explícita ou pesada.",
+      "LANGUAGE": "Linguagem explícita ou forte.",
       "DRUGS": "Uso ou referências a drogas.",
       "ALCOHOL": "Consumo de álcool.",
       "HORROR": "Imagens perturbadoras ou de terror.",
@@ -58,7 +63,7 @@
     },
     "hub": {
       "title": "Central de Personagens",
-      "subtitle": "Crie, organize e evolua o elenco que impulsiona suas histórias, agentes de chat e experiências de IA.",
+      "subtitle": "Crie, organize e evolua o elenco que impulsiona suas histórias, agentes de bate-papo e experiências de IA.",
       "actions": {
         "createCharacter": "Novo personagem",
         "retry": "Tentar novamente",
@@ -80,7 +85,7 @@
         "empty_private": "Você ainda não criou nenhum personagem.",
         "empty_public": "Nenhum personagem público corresponde aos seus filtros.",
         "emptyHint": "Comece criando um perfil ou ajuste seus filtros.",
-        "emptySearchHint": "Ajuste seus filtros ou limpe a busca para ver mais resultados."
+        "emptySearchHint": "Ajuste seus filtros ou limpe a pesquisa para ver mais resultados."
       },
       "labels": {
         "total": "{{count}} personagem{{count, plural, one {} other {s}}} disponível{{count, plural, one {} other {s}}}",
@@ -94,7 +99,7 @@
         "identity": "Identidade",
         "identityHint": "Defina como as pessoas descobrem e identificam este personagem rapidamente.",
         "profile": "Perfil narrativo",
-        "profileHint": "Descreva a personalidade, traços e história para guiar a IA.",
+        "profileHint": "Descreva a personalidade, traços e histórico para guiar a IA.",
         "configuration": "Disponibilidade e moderação",
         "configurationHint": "Controle como o personagem aparece, quem pode acessá-lo e quais salvaguardas se aplicam.",
         "contentTagsHint": "Marque temas potencialmente sensíveis. Os usuários podem filtrá-los com base em suas preferências."
@@ -109,7 +114,7 @@
         "avatar": "URL da imagem do avatar",
         "physicalCharacteristics": "Descrição física",
         "personality": "Personalidade",
-        "history": "História pregressa",
+        "history": "Histórico",
         "purpose": "Uso principal",
         "isPublic": "Visibilidade",
         "ageRating": "Classificação etária",
@@ -117,13 +122,13 @@
         "contentTags": "Avisos de conteúdo"
       },
       "placeholders": {
-        "gender": "Ex: IA não-binária, androide, cavaleiro",
+        "gender": "Ex: IA não binária, andróide, cavaleiro",
         "species": "Ex: Humano, Elfo, Sintético",
         "style": "Ex: Detetive noir, anime pastel, estilo pictórico",
         "avatar": "https://cdn.example.com/avatar.png"
       },
       "hints": {
-        "avatar": "Forneça um URL de imagem HTTPS enquanto o fluxo de upload estiver em desenvolvimento."
+        "avatar": "Forneça um URL de imagem HTTPS enquanto o fluxo de upload estiver em construção."
       },
       "labels": {
         "publicToggle": "Permitir que outros usuários descubram este personagem",
@@ -134,7 +139,7 @@
     },
     "create": {
       "title": "Criar um novo personagem",
-      "subtitle": "Combine contexto narrativo, estilo visual e configurações de moderação. Você pode refinar tudo mais tarde.",
+      "subtitle": "Combine contexto narrativo, estilo visual e configurações de moderação. Você pode refinar tudo depois.",
       "saveButton": "Salvar personagem",
       "cancelButton": "Cancelar e voltar"
     },
@@ -158,18 +163,18 @@
         "delete": "Excluir",
         "deleting": "Excluindo..."
       },
-      "confirmDelete": "Tem certeza de que deseja excluir este personagem? Esta ação não pode ser desfeita.",
+      "confirmDelete": "Você tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.",
       "labels": {
         "public": "Público",
         "private": "Privado",
         "createdAt": "Criado em",
         "updatedAt": "Última atualização",
-        "identifier": "ID do Personagem: {{id}}"
+        "identifier": "ID do personagem: {{id}}"
       },
       "sections": {
         "physicalCharacteristics": "Aparência",
         "personality": "Personalidade",
-        "history": "História pregressa",
+        "history": "Histórico",
         "contentTags": "Avisos de conteúdo",
         "metadata": "Tags"
       }
@@ -178,7 +183,7 @@
       "createFailed": "Não foi possível criar o personagem. Por favor, tente novamente.",
       "updateFailed": "Não foi possível atualizar o personagem.",
       "deleteFailed": "Não foi possível excluir o personagem.",
-      "detailUnavailable": "Impossível carregar os detalhes do personagem no momento."
+      "detailUnavailable": "Não foi possível carregar os detalhes do personagem no momento."
     }
   }
 }

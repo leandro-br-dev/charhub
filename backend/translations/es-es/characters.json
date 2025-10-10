@@ -24,19 +24,24 @@
       "story": "Historia",
       "both": "Chat y Historia"
     },
+    "genders": {
+      "male": "Masculino",
+      "female": "Femenino",
+      "non-binary": "No binario"
+    },
     "contentTags": {
       "VIOLENCE": "Violencia",
-      "GORE": "Sangre explícita",
-      "SEXUAL": "Temas sexuales",
+      "GORE": "Sangre/Violencia explícita",
+      "SEXUAL": "Sexual",
       "NUDITY": "Desnudez",
-      "LANGUAGE": "Lenguaje explícito",
+      "LANGUAGE": "Lenguaje",
       "DRUGS": "Drogas",
       "ALCOHOL": "Alcohol",
       "HORROR": "Terror",
       "PSYCHOLOGICAL": "Psicológico",
       "DISCRIMINATION": "Discriminación",
       "CRIME": "Crimen",
-      "GAMBLING": "Juegos de azar"
+      "GAMBLING": "Juego"
     },
     "contentTagHints": {
       "VIOLENCE": "Combate, peleas o conflictos agresivos.",
@@ -50,15 +55,15 @@
       "PSYCHOLOGICAL": "Salud mental o tensión psicológica.",
       "DISCRIMINATION": "Discurso de odio o prejuicios.",
       "CRIME": "Temas de actividad criminal.",
-      "GAMBLING": "Referencias a apuestas o juegos de azar."
+      "GAMBLING": "Referencias a apuestas o juego."
     },
     "accessibility": {
       "addToFavorites": "Añadir a favoritos",
       "removeFromFavorites": "Eliminar de favoritos"
     },
     "hub": {
-      "title": "Centro de personajes",
-      "subtitle": "Crea, organiza y evoluciona el reparto que impulsa tus historias, agentes de chat y experiencias de IA.",
+      "title": "Centro de Personajes",
+      "subtitle": "Crea, organiza y evoluciona el elenco que impulsa tus historias, agentes de chat y experiencias de IA.",
       "actions": {
         "createCharacter": "Nuevo personaje",
         "retry": "Intentar de nuevo",
@@ -75,16 +80,16 @@
       },
       "states": {
         "loading": "Cargando tus personajes...",
-        "error": "No pudimos cargar los personajes. Inténtalo de nuevo.",
+        "error": "No pudimos cargar los personajes. Por favor, intenta de nuevo.",
         "empty": "Aún no hay personajes disponibles.",
         "empty_private": "Aún no has creado ningún personaje.",
-        "empty_public": "Ningún personaje público coincide con tus filtros.",
-        "emptyHint": "Comienza creando un perfil o ajusta tus filtros.",
+        "empty_public": "No hay personajes públicos que coincidan con tus filtros.",
+        "emptyHint": "Empieza por crear un perfil o ajusta tus filtros.",
         "emptySearchHint": "Ajusta tus filtros o borra la búsqueda para ver más resultados."
       },
       "labels": {
         "total": "{{count}} personaje{{count, plural, one {} other {s}}} disponible{{count, plural, one {} other {s}}}",
-        "quickCreateLink": "Saltar directamente a la creación"
+        "quickCreateLink": "Ir directamente a la creación"
       }
     },
     "form": {
@@ -92,11 +97,11 @@
       "cancel": "Cancelar",
       "sections": {
         "identity": "Identidad",
-        "identityHint": "Define cómo las personas descubren y identifican a este personaje de un vistazo.",
+        "identityHint": "Define cómo las personas descubren e identifican a este personaje de un vistazo.",
         "profile": "Perfil narrativo",
-        "profileHint": "Describe la personalidad, los rasgos y la historia para guiar a la IA.",
+        "profileHint": "Describe la personalidad, rasgos y trasfondo para guiar a la IA.",
         "configuration": "Disponibilidad y moderación",
-        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardas se aplican.",
+        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardias se aplican.",
         "contentTagsHint": "Marca temas potencialmente sensibles. Los usuarios pueden filtrarlos según sus preferencias."
       },
       "fields": {
@@ -105,11 +110,11 @@
         "age": "Edad",
         "gender": "Género",
         "species": "Especie / origen",
-        "style": "Estilo visual o narrativo",
+        "style": "Estilo visual o de narración",
         "avatar": "URL de la imagen del avatar",
         "physicalCharacteristics": "Descripción física",
         "personality": "Personalidad",
-        "history": "Historia de fondo",
+        "history": "Trasfondo",
         "purpose": "Uso principal",
         "isPublic": "Visibilidad",
         "ageRating": "Clasificación por edad",
@@ -119,11 +124,11 @@
       "placeholders": {
         "gender": "Ej: IA no binaria, androide, caballero",
         "species": "Ej: Humano, Elfo, Sintético",
-        "style": "Ej: Detective noir, anime pastel, estilo pictórico",
+        "style": "Ej: Detective noir, anime pastel, pictórico",
         "avatar": "https://cdn.example.com/avatar.png"
       },
       "hints": {
-        "avatar": "Proporciona una URL de imagen HTTPS mientras el flujo de carga está en construcción."
+        "avatar": "Proporciona una URL de imagen HTTPS mientras el flujo de carga está en desarrollo."
       },
       "labels": {
         "publicToggle": "Permitir que otros usuarios descubran este personaje",
@@ -158,7 +163,7 @@
         "delete": "Eliminar",
         "deleting": "Eliminando..."
       },
-      "confirmDelete": "¿Estás seguro de que deseas eliminar este personaje? Esta acción no se puede deshacer.",
+      "confirmDelete": "¿Estás seguro de que quieres eliminar este personaje? Esta acción no se puede deshacer.",
       "labels": {
         "public": "Público",
         "private": "Privado",
@@ -169,13 +174,13 @@
       "sections": {
         "physicalCharacteristics": "Apariencia",
         "personality": "Personalidad",
-        "history": "Historia de fondo",
+        "history": "Trasfondo",
         "contentTags": "Advertencias de contenido",
         "metadata": "Etiquetas"
       }
     },
     "errors": {
-      "createFailed": "No pudimos crear el personaje. Inténtalo de nuevo.",
+      "createFailed": "No pudimos crear el personaje. Por favor, intenta de nuevo.",
       "updateFailed": "No pudimos actualizar el personaje.",
       "deleteFailed": "No pudimos eliminar el personaje.",
       "detailUnavailable": "No se pueden cargar los detalles del personaje en este momento."

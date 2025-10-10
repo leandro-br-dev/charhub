@@ -18,3 +18,6 @@ export const CONTENT_TAG_OPTIONS: ContentTag[] = [
 ];
 
 export const CHARACTER_PURPOSE_OPTIONS: CharacterPurpose[] = ['chat', 'story', 'both'];
+
+export const GENDER_OPTIONS = ['male', 'female', 'non-binary'] as const;
+export type GenderOption = (typeof GENDER_OPTIONS)[number];
