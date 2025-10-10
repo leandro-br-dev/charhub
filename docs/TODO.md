@@ -10,10 +10,11 @@ Este documento contém o status atual da migração e os próximos passos. Para 
 
 ### 📋 Próximas Tarefas
 
-#### Etapa 1.1: Modelos de Dados (Fundação)
-- [ ] Criar schemas Prisma para Character, CharacterSticker, Lora, Attire, Tag
-- [ ] Definir relacionamentos entre modelos
-- [ ] Executar migração e validar no Prisma Studio
+#### Etapa 1.1: Modelos de Dados (Fundação) ✅ COMPLETA
+- [x] Criar schemas Prisma para Character, CharacterSticker, Lora, Attire, Tag
+- [x] Definir relacionamentos entre modelos
+- [x] Executar migração e validar no Prisma Studio
+- [x] Documentar comandos de migração bem-sucedidos
 
 #### Etapa 1.2 e 1.3: Desenvolvimento Paralelo
 
@@ -75,11 +76,14 @@ Um usuário pode:
 ## 📊 Progresso da Migração
 
 - ✅ **FASE 0**: Infraestrutura (3/3 etapas) - **COMPLETA**
-- 🚧 **FASE 1**: Sistema de Personagens (0/3 etapas) - **PRÓXIMA**
+- 🚧 **FASE 1**: Sistema de Personagens (1/3 etapas) - **EM ANDAMENTO**
+  - ✅ Etapa 1.1: Modelos de Dados (Prisma schemas)
+  - ⏳ Etapa 1.2: CRUD Backend
+  - ⏳ Etapa 1.3: Interface Frontend
 - ⏳ **FASE 2**: Sistema de Chat
 - ⏳ **FASE 3**: Sistema de Histórias
 - ⏳ **FASE 4**: Créditos e Monetização
 - ⏳ **FASE 5**: Sistema de Indicação
 - ⏳ **FASE 6**: Polimento e Testes
 
-**Progresso total**: 14% (1 de 7 fases)
+**Progresso total**: 19% (1.33 de 7 fases)

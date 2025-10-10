@@ -49,17 +49,19 @@ Este documento é o guia de execução e acompanhamento da migração. Marque os
 ### 👤 FASE 1: Sistema de Personagens (2-3 semanas) 🚧 EM ANDAMENTO
 **Objetivo**: Permitir a criação, visualização e gerenciamento completo de personagens.
 **Duração**: 2-3 semanas
-**Status**: 🚧 **PRÓXIMA FASE**
+**Status**: 🚧 **EM ANDAMENTO** (1/3 etapas concluídas)
 
 #### Sequência de Execução:
 
-**Passo 1** (Sequencial - Fundação):
-- [ ] **Etapa 1.1: Modelos de Dados (Prisma)**
-  - [ ] Criar schemas Prisma para: `Character`, `CharacterSticker`, `Lora`, `Attire`, e `Tag`.
-  - [ ] Definir todos os relacionamentos entre os modelos.
-  - [ ] Executar a migração e validar a estrutura no Prisma Studio.
-  - **Arquivos tocados**: `prisma/schema.prisma`, nova migração
+**Passo 1** (Sequencial - Fundação): ✅ **COMPLETO**
+- [x] **Etapa 1.1: Modelos de Dados (Prisma)** ✅
+  - [x] Criar schemas Prisma para: `Character`, `CharacterSticker`, `Lora`, `Attire`, e `Tag`.
+  - [x] Definir todos os relacionamentos entre os modelos.
+  - [x] Executar a migração e validar a estrutura no Prisma Studio.
+  - [x] Documentar comandos de migração bem-sucedidos em `docs/DEV_OPERATIONS.md`.
+  - **Arquivos tocados**: `prisma/schema.prisma`, `docs/DEV_OPERATIONS.md`, `docs/TODO.md`
   - **Dependência**: Nenhuma (pode iniciar imediatamente)
+  - **Commit**: `feat(phase-1.1): implement Character system Prisma schemas`
 
 **Passos 2 e 3** (Executar em PARALELO após Passo 1):
 

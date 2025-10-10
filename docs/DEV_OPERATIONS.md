@@ -80,6 +80,52 @@ Front door (without tunnel) defaults to `http://localhost`. If Cloudflare tunnel
 - Apply migrations manually: `docker compose exec backend npx prisma migrate deploy`.
 - Generate Prisma client (if schema changes): `docker compose exec backend npx prisma generate`.
 
+#### Prisma Migration Workflow (Recommended Commands)
+
+Durante o desenvolvimento, foram testados diferentes comandos de migração. Os comandos abaixo são **comprovadamente eficazes**:
+
+**1. Sincronizar schema com o banco de dados (desenvolvimento):**
+```bash
+docker compose exec backend npx prisma db push --skip-generate
+```
+Este comando sincroniza o schema Prisma diretamente com o banco de dados sem criar arquivos de migração. Ideal para desenvolvimento rápido e prototipagem.
+
+**2. Gerar o Prisma Client:**
+```bash
+docker compose exec backend npx prisma generate
+```
+Sempre execute após modificar o `schema.prisma` para atualizar os tipos TypeScript e o cliente Prisma.
+
+**3. Formatar o schema Prisma:**
+```bash
+docker compose exec backend npx prisma format
+```
+Formata o arquivo `schema.prisma` seguindo as convenções do Prisma.
+
+**4. Abrir o Prisma Studio (interface visual):**
+```bash
+docker compose exec backend npx prisma studio --browser none &
+```
+Abre o Prisma Studio em `http://localhost:5555` para visualizar e editar dados.
+
+**5. Validar tabelas criadas:**
+```bash
+docker compose exec postgres psql -U charhub -d charhub_db -c "\dt"
+```
+Lista todas as tabelas do banco de dados.
+
+**6. Descrever estrutura de uma tabela:**
+```bash
+docker compose exec postgres psql -U charhub -d charhub_db -c '\d "NomeDaTabela"'
+```
+Mostra a estrutura completa de uma tabela (colunas, tipos, índices, constraints).
+
+**⚠️ Notas Importantes:**
+- O comando `prisma db push` **não** cria arquivos de migração. Para produção, use `prisma migrate dev` ou `prisma migrate deploy`.
+- Sempre execute `prisma generate` após `db push` para atualizar o cliente TypeScript.
+- Se encontrar erros de "table does not exist" mesmo após a migração estar marcada como aplicada, use `prisma db push` para forçar a sincronização.
+- O Prisma cria automaticamente tabelas de junção para relações many-to-many (ex: `_CharacterToTag`, `_CharacterAttires`).
+
 ### Monitoring & Logs
 
 - `docker compose logs -f backend` - Backend logs (Pino JSON entries).

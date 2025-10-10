@@ -22,28 +22,28 @@ enum UserRole {
 
 // Age-based content rating system (similar to movie/anime ratings)
 enum AgeRating {
-  L      // Livre (All ages) - General audiences
-  TEN    // 10+ - Mild themes
+  L // Livre (All ages) - General audiences
+  TEN // 10+ - Mild themes
   TWELVE // 12+ - Moderate themes
   FOURTEEN // 14+ - More mature themes, mild sexual references
-  SIXTEEN  // 16+ - Strong themes, explicit language, moderate violence
+  SIXTEEN // 16+ - Strong themes, explicit language, moderate violence
   EIGHTEEN // 18+ - Adult content, explicit violence/sexual content
 }
 
 // Content warning tags (can be combined with age rating)
 enum ContentTag {
-  VIOLENCE       // Physical violence, fighting
-  GORE           // Explicit violence, blood, injuries
-  SEXUAL         // Sexual content, innuendo
-  NUDITY         // Nudity or partial nudity
-  LANGUAGE       // Strong language, profanity
-  DRUGS          // Drug use or references
-  ALCOHOL        // Alcohol consumption
-  HORROR         // Horror themes, disturbing content
-  PSYCHOLOGICAL  // Psychological themes, mental health
+  VIOLENCE // Physical violence, fighting
+  GORE // Explicit violence, blood, injuries
+  SEXUAL // Sexual content, innuendo
+  NUDITY // Nudity or partial nudity
+  LANGUAGE // Strong language, profanity
+  DRUGS // Drug use or references
+  ALCOHOL // Alcohol consumption
+  HORROR // Horror themes, disturbing content
+  PSYCHOLOGICAL // Psychological themes, mental health
   DISCRIMINATION // Discriminatory content, hate speech
-  CRIME          // Criminal activities
-  GAMBLING       // Gambling themes
+  CRIME // Criminal activities
+  GAMBLING // Gambling themes
 }
 
 model User {
@@ -59,12 +59,13 @@ model User {
   updatedAt         DateTime     @updatedAt
 
   // Content filtering preferences
-  maxAgeRating      AgeRating    @default(EIGHTEEN) // Maximum age rating user wants to see
-  blockedTags       ContentTag[] // Content tags the user wants to block
+  maxAgeRating AgeRating    @default(EIGHTEEN) // Maximum age rating user wants to see
+  blockedTags  ContentTag[] // Content tags the user wants to block
 
   // Relations
-  createdCharacters Character[]  @relation("CharacterCreator")
-  createdStories    Story[]      @relation("StoryCreator")
+  createdCharacters Character[] @relation("CharacterCreator")
+  createdStories    Story[]     @relation("StoryCreator")
+  createdAttires    Attire[]    @relation("AttireCreator")
 
   @@unique([provider, providerAccountId])
 }
@@ -74,56 +75,224 @@ model ContentClassification {
   id          String       @id @default(uuid())
   ageRating   AgeRating
   contentTags ContentTag[]
-  reason      String?      // Optional: explanation for the rating
+  reason      String? // Optional: explanation for the rating
 
   // Polymorphic relations (contentType + contentId pattern)
-  contentType String       // e.g., "Character", "Story", "Image", "Conversation"
-  contentId   String       // ID of the content being classified
+  contentType String // e.g., "Character", "Story", "Image", "Conversation"
+  contentId   String // ID of the content being classified
 
   // Moderation info
-  autoClassified Boolean    @default(true)  // Was it auto-classified or manually reviewed?
-  reviewedBy     String?    // User ID of moderator who reviewed (if manual)
-  reviewedAt     DateTime?  // When it was reviewed
+  autoClassified Boolean   @default(true) // Was it auto-classified or manually reviewed?
+  reviewedBy     String? // User ID of moderator who reviewed (if manual)
+  reviewedAt     DateTime? // When it was reviewed
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([contentType, contentId]) // One classification per content item
   @@index([ageRating])
   @@index([contentType])
 }
 
-// Character model (for future phases)
-model Character {
-  id          String   @id @default(uuid())
+// Sticker generation status
+enum StickerStatus {
+  PENDING
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+// Tag type classification
+enum TagType {
+  CHARACTER
+  STORY
+}
+
+// LoRA model from Civitai
+model Lora {
+  id String @id @default(uuid())
+
+  // Civitai integration
+  civitaiModelId   String?
+  civitaiVersionId String? @unique
+
+  // Metadata
+  name          String
+  modelType     String? // e.g., "LORA", "Checkpoint", etc.
+  baseModel     String? // e.g., "SD 1.5", "SDXL", etc.
+  downloadCount Int?     @default(0)
+  modelUrl      String?
+  tags          String[] // Civitai tags
+  trainedWords  String[] // Trigger words for the LoRA
+  nsfw          Boolean  @default(false)
+
+  // File information
+  filename         String?
+  filepathRelative String?
+  firstImageUrl    String?
+  imageUrls        String[]
+
+  // Internal categorization
+  category String?
+  term     String?
+  deleted  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  characters Character[]
+
+  @@index([civitaiModelId])
+  @@index([civitaiVersionId])
+  @@index([deleted])
+}
+
+// Attire (clothing/appearance system)
+model Attire {
+  id          String  @id @default(uuid())
   name        String
   description String?
+  gender      String? // "male", "female", "unisex"
 
-  creatorId   String
-  creator     User     @relation("CharacterCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  // Prompt components for image generation
+  promptHead String? // Head/face appearance prompts
+  promptBody String? // Body/clothing prompts
+  promptFull String? // Full combined prompt
 
-  isPublic    Boolean  @default(false)
+  previewImageUrl      String?
+  originalLanguageCode String?
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  // Ownership and visibility
+  isPublic Boolean @default(false)
+  userId   String
+  owner    User    @relation("AttireCreator", fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([creatorId])
+  // Content classification
+  ageRating   AgeRating    @default(L)
+  contentTags ContentTag[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  charactersUsingAsMain Character[] @relation("CharacterMainAttire")
+  characters            Character[] @relation("CharacterAttires")
+
+  @@index([userId])
   @@index([isPublic])
+  @@index([ageRating])
+}
+
+// Tag system for categorization
+model Tag {
+  id                   String    @id @default(uuid())
+  name                 String
+  type                 TagType
+  weight               Int       @default(1)
+  ageRating            AgeRating @default(L)
+  originalLanguageCode String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  characters Character[]
+  stories    Story[]
+
+  @@unique([name, type])
+  @@index([type])
+  @@index([ageRating])
+}
+
+// Character model (full implementation)
+model Character {
+  id String @id @default(uuid())
+
+  // Basic information
+  firstName String
+  lastName  String?
+  age       Int?
+  gender    String? // "male", "female", "non-binary", etc.
+  species   String? // "human", "elf", "robot", etc.
+  style     String? // Art style preference
+
+  // Visual and descriptive
+  avatar                  String? // Avatar image URL
+  physicalCharacteristics String? @db.Text // Physical appearance description
+  personality             String? @db.Text // Personality traits
+  history                 String? @db.Text // Background/backstory
+
+  // Configuration
+  isPublic             Boolean @default(false)
+  purpose              String? // "chat", "story", "both"
+  originalLanguageCode String?
+
+  // Content classification
+  ageRating   AgeRating    @default(L)
+  contentTags ContentTag[]
+
+  // Ownership
+  userId  String
+  creator User   @relation("CharacterCreator", fields: [userId], references: [id], onDelete: Cascade)
+
+  // LoRA and Attire associations
+  loraId String?
+  lora   Lora?   @relation(fields: [loraId], references: [id], onDelete: SetNull)
+
+  mainAttireId String?
+  mainAttire   Attire? @relation("CharacterMainAttire", fields: [mainAttireId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  attires  Attire[]           @relation("CharacterAttires")
+  tags     Tag[]
+  stickers CharacterSticker[]
+
+  @@index([userId])
+  @@index([isPublic])
+  @@index([ageRating])
+  @@index([loraId])
+  @@index([mainAttireId])
+}
+
+// Character stickers (emotion/action images)
+model CharacterSticker {
+  id          String    @id @default(uuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  emotionTag String?
+  actionTag  String?
+  imageUrl   String?
+  promptUsed String?       @db.Text
+  status     StickerStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([characterId])
+  @@index([status])
 }
 
 // Story model (for future phases)
 model Story {
-  id          String   @id @default(uuid())
-  title       String
-  synopsis    String?
+  id       String  @id @default(uuid())
+  title    String
+  synopsis String?
 
-  creatorId   String
-  creator     User     @relation("StoryCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
+  creator   User   @relation("StoryCreator", fields: [creatorId], references: [id], onDelete: Cascade)
 
-  isPublic    Boolean  @default(false)
+  isPublic Boolean @default(false)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tags Tag[]
 
   @@index([creatorId])
   @@index([isPublic])
