@@ -9,47 +9,92 @@ Este documento é o guia de execução e acompanhamento da migração. Marque os
 
 ---
 
-### 🏗️ FASE 0: Infraestrutura (1-2 semanas)
+### 🏗️ FASE 0: Infraestrutura ✅ COMPLETA
 **Objetivo**: Criar a fundação técnica para os módulos seguintes.
-- [ ] **Etapa 0.1: Jobs Assíncronos (BullMQ)**
-  - [ ] Instalar e configurar o BullMQ.
-  - [ ] Adicionar o serviço Redis ao `docker-compose.yml`.
-  - [ ] Criar a estrutura de pastas para filas e processadores (`/queues`).
-  - [ ] Implementar um job de teste (ex: log no console) para validar o fluxo.
-- [ ] **Etapa 0.2: Storage de Arquivos (Cloudflare R2)**
-  - [ ] Criar o `r2Service.ts` utilizando o AWS SDK v3.
-  - [ ] Implementar a função de upload de arquivos.
-  - [ ] Implementar a função para gerar URLs de acesso.
-  - [ ] Criar um endpoint de teste para validar o upload.
-- [ ] **Etapa 0.3: Classificação de Conteúdo**
-  - [ ] Definir os `Enums` `AgeRating` e `ContentTag` no `schema.prisma`.
-  - [ ] Adicionar as preferências de conteúdo ao `model User` no Prisma.
-  - [ ] Executar a migração do banco de dados.
-  - [ ] Criar o `contentClassificationService.ts` com a lógica de filtro inicial.
+**Duração**: 1-2 semanas
+**Status**: ✅ **CONCLUÍDA**
 
-**Critério de Sucesso**: Jobs são processados via BullMQ e arquivos podem ser enviados ao R2.
+- [x] **Etapa 0.1: Jobs Assíncronos (BullMQ)** ✅
+  - [x] Instalar e configurar o BullMQ.
+  - [x] Adicionar o serviço Redis ao `docker-compose.yml`.
+  - [x] Criar a estrutura de pastas para filas e processadores (`/queues`).
+  - [x] Implementar um job de teste (ex: log no console) para validar o fluxo.
+  - [x] Criar API endpoints de monitoramento (`/api/v1/queues/*`).
+  - **Commit**: `feat(phase-0.1): implement BullMQ job queue system`
+
+- [x] **Etapa 0.2: Storage de Arquivos (Cloudflare R2)** ✅
+  - [x] Criar o `r2Service.ts` utilizando o AWS SDK v3.
+  - [x] Implementar a função de upload de arquivos.
+  - [x] Implementar a função para gerar URLs de acesso.
+  - [x] Criar um endpoint de teste para validar o upload.
+  - [x] Validação robusta de base64 e sanitização de nomes.
+  - **Commit**: `feat(phase-0.2): implement Cloudflare R2 storage integration`
+
+- [x] **Etapa 0.3: Classificação de Conteúdo** ✅
+  - [x] Definir os `Enums` `AgeRating` e `ContentTag` no `schema.prisma`.
+  - [x] Adicionar as preferências de conteúdo ao `model User` no Prisma.
+  - [x] Executar a migração do banco de dados.
+  - [x] Criar o `contentClassificationService.ts` com a lógica de filtro inicial.
+  - [x] Implementar 9 endpoints de API (`/api/v1/classification/*`).
+  - [x] Sistema de duas dimensões: Age Rating + Content Tags.
+  - **Commit**: `feat(phase-0.3): implement content classification system`
+
+**Critério de Sucesso**: ✅ **ATINGIDO**
+- ✅ Jobs são processados via BullMQ
+- ✅ Arquivos podem ser enviados ao R2 e URLs geradas
+- ✅ Sistema de classificação definido no banco e com lógica de filtro inicial
 
 ---
 
-### 👤 FASE 1: Sistema de Personagens (2-3 semanas)
+### 👤 FASE 1: Sistema de Personagens (2-3 semanas) 🚧 EM ANDAMENTO
 **Objetivo**: Permitir a criação, visualização e gerenciamento completo de personagens.
+**Duração**: 2-3 semanas
+**Status**: 🚧 **PRÓXIMA FASE**
+
+#### Sequência de Execução:
+
+**Passo 1** (Sequencial - Fundação):
 - [ ] **Etapa 1.1: Modelos de Dados (Prisma)**
   - [ ] Criar schemas Prisma para: `Character`, `CharacterSticker`, `Lora`, `Attire`, e `Tag`.
   - [ ] Definir todos os relacionamentos entre os modelos.
   - [ ] Executar a migração e validar a estrutura no Prisma Studio.
-- [ ] **Etapa 1.2: CRUD Backend**
-  - [ ] Criar validadores Zod para as entidades de personagem.
-  - [ ] Implementar os `services`: `characterService`, `loraService`, `attireService`.
-  - [ ] Criar as rotas Express para o CRUD completo de Personagens, LoRAs e Vestimentas.
-  - [ ] Implementar middleware de permissão para garantir que apenas o dono possa editar/deletar.
-  - [ ] Testar todos os endpoints via Postman/Insomnia.
-- [ ] **Etapa 1.3: Interface Frontend**
-  - [ ] Criar a camada de serviço (`characterService.ts`) no frontend.
-  - [ ] Implementar os hooks customizados (ex: `useCharacters`).
-  - [ ] Desenvolver os componentes da UI: `CharacterCard`, `CharacterForm`, `LoraSelector`.
-  - [ ] Criar as páginas: Hub de Personagens, Formulário de Criação/Edição e Visualização.
+  - **Arquivos tocados**: `prisma/schema.prisma`, nova migração
+  - **Dependência**: Nenhuma (pode iniciar imediatamente)
 
-**Critério de Sucesso**: Um usuário pode criar um personagem com LoRA e vestimentas, e visualizá-lo na plataforma.
+**Passos 2 e 3** (Executar em PARALELO após Passo 1):
+
+**👤 AGENTE 1: Etapa 1.2 - CRUD Backend**
+- [ ] Criar validadores Zod para as entidades de personagem.
+- [ ] Implementar os `services`: `characterService`, `loraService`, `attireService`.
+- [ ] Criar as rotas Express para o CRUD completo de Personagens, LoRAs e Vestimentas.
+- [ ] Implementar middleware de permissão para garantir que apenas o dono possa editar/deletar.
+- [ ] Testar todos os endpoints via Postman/Insomnia.
+- **Arquivos tocados**: `services/characterService.ts`, `services/loraService.ts`, `services/attireService.ts`, `routes/v1/characters.ts`, `routes/v1/loras.ts`, `routes/v1/attires.ts`
+- **Dependência**: Etapa 1.1 (schemas Prisma devem existir)
+- **Referência**: `E:\Projects\charhub_dev_old_version\backend\app\api\endpoints\characters.py`
+
+**👤 AGENTE 2: Etapa 1.3 - Interface Frontend**
+- [ ] Criar a camada de serviço (`characterService.ts`) no frontend.
+- [ ] Implementar os hooks customizados (ex: `useCharacters`, `useCharacterForm`).
+- [ ] Desenvolver os componentes da UI: `CharacterCard`, `CharacterForm`, `LoraSelector`, `AttireSelector`.
+- [ ] Criar as páginas: Hub de Personagens, Formulário de Criação/Edição e Visualização.
+- [ ] Implementar upload de imagens usando o sistema R2.
+- [ ] Integrar sistema de classificação de conteúdo nos formulários.
+- **Arquivos tocados**: `frontend/src/services/characterService.ts`, `frontend/src/hooks/useCharacters.tsx`, `frontend/src/components/characters/*`, `frontend/src/pages/characters/*`
+- **Dependência**: Etapa 1.1 (tipos devem ser conhecidos) - pode começar com tipos mock
+- **Referência**: `E:\Projects\charhub_dev_old_version\frontend\src\components\characters\`
+
+**Por que Passos 2 e 3 podem rodar em paralelo?**
+- ✅ Backend e Frontend trabalham em arquivos completamente diferentes
+- ✅ Frontend pode usar tipos TypeScript mock enquanto backend é desenvolvido
+- ✅ Ambos dependem apenas da Etapa 1.1 (schemas)
+- ✅ Integração final será feita quando ambos estiverem prontos
+
+**Critério de Sucesso**:
+- ✅ Um usuário pode criar um personagem com LoRA e vestimentas
+- ✅ Personagens aparecem no hub com imagens do R2
+- ✅ Sistema de classificação aplicado aos personagens
+- ✅ Apenas o dono pode editar/deletar seus personagens
 
 ---
 
