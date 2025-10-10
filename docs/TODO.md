@@ -16,23 +16,20 @@ Este documento contém o status atual da migração e os próximos passos. Para 
 - [x] Executar migração e validar no Prisma Studio
 - [x] Documentar comandos de migração bem-sucedidos
 
-#### Etapa 1.2 e 1.3: Desenvolvimento Paralelo
+#### Etapa 1.2: Backend CRUD ✅ COMPLETA
+- [x] Validadores Zod para entidades (character, lora, attire, tag, sticker)
+- [x] Services: characterService, loraService, attireService
+- [x] Rotas Express para CRUD completo
+- [x] Middleware de permissões (owner-only, requireAuth)
+- [x] Integração com backend finalizada
 
-Após Etapa 1.1, dois agentes podem trabalhar simultaneamente:
-
-**Agente 1 - Backend (CRUD)**
-- [ ] Validadores Zod para entidades
-- [ ] Services: characterService, loraService, attireService
-- [ ] Rotas Express para CRUD completo
-- [ ] Middleware de permissões (owner-only)
-- [ ] Testes de endpoints
-
-**Agente 2 - Frontend (Interface)**
-- [ ] Camada de serviço no frontend
-- [ ] Hooks customizados (useCharacters, etc)
-- [ ] Componentes UI (CharacterCard, CharacterForm, etc)
-- [ ] Páginas (Hub, Criação, Visualização)
-- [ ] Integração com R2 Storage e Classification
+#### Etapa 1.3: Frontend Interface ✅ COMPLETA
+- [x] Camada de serviço no frontend (characterService.ts)
+- [x] Hooks customizados (useCharacterQueries, useCharacterForm)
+- [x] Componentes UI (CharacterCard, CharacterForm)
+- [x] Páginas (Hub, Criação, Visualização, Edição)
+- [x] Sistema de mock/real API (VITE_USE_CHARACTER_MOCKS)
+- [x] Correção de integração com backend
 
 ### ✅ Critério de Sucesso
 
@@ -76,14 +73,14 @@ Um usuário pode:
 ## 📊 Progresso da Migração
 
 - ✅ **FASE 0**: Infraestrutura (3/3 etapas) - **COMPLETA**
-- 🚧 **FASE 1**: Sistema de Personagens (1/3 etapas) - **EM ANDAMENTO**
+- ✅ **FASE 1**: Sistema de Personagens (3/3 etapas) - **COMPLETA**
   - ✅ Etapa 1.1: Modelos de Dados (Prisma schemas)
-  - ⏳ Etapa 1.2: CRUD Backend
-  - ⏳ Etapa 1.3: Interface Frontend
+  - ✅ Etapa 1.2: CRUD Backend (validators, services, routes)
+  - ✅ Etapa 1.3: Interface Frontend (pages, components, hooks)
 - ⏳ **FASE 2**: Sistema de Chat
 - ⏳ **FASE 3**: Sistema de Histórias
 - ⏳ **FASE 4**: Créditos e Monetização
 - ⏳ **FASE 5**: Sistema de Indicação
 - ⏳ **FASE 6**: Polimento e Testes
 
-**Progresso total**: 19% (1.33 de 7 fases)
+**Progresso total**: 29% (2 de 7 fases)
