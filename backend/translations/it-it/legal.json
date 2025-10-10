@@ -5,15 +5,15 @@
       "title": "Informativa sulla Privacy di CharHub AI",
       "lastUpdatedLabel": "Ultimo aggiornamento",
       "lastUpdatedDate": "24 maggio 2025",
-      "introduction": "Benvenuti nell'Informativa sulla Privacy di CharHub AI (\"noi\", \"nostro\"). Questa informativa descrive come raccogliamo, utilizziamo, conserviamo, condividiamo e proteggiamo le tue informazioni personali quando utilizzi la nostra piattaforma CharHub AI (la \"Piattaforma\"). Utilizzando la Piattaforma, acconsenti alla raccolta e all'uso delle informazioni in conformità con questa informativa.",
+      "introduction": "Benvenuti nell'Informativa sulla Privacy di CharHub AI (\"noi\", \"nostro\"). Questa informativa descrive come raccogliamo, utilizziamo, conserviamo, condividiamo e proteggiamo le tue informazioni personali quando utilizzi la nostra piattaforma CharHub AI (la \"Piattaforma\"). Utilizzando la Piattaforma, accetti la raccolta e l'utilizzo delle informazioni in conformità con questa politica.",
       "section1": {
         "title": "1. Informazioni che raccogliamo",
-        "paragraph1": "Potremmo raccogliere ed elaborare le seguenti tipologie di informazioni su di te:",
+        "paragraph1": "Potremmo raccogliere ed elaborare i seguenti tipi di informazioni su di te:",
         "listItem1": {
           "title": "Informazioni che fornisci:",
           "subItem1": "Al momento della registrazione: Il tuo indirizzo email, nome utente (se fornito o generato automaticamente), password (memorizzata come hash). Opzionalmente, nome completo e data di nascita.",
-          "subItem2": "Utilizzando il Social Login (Google/Facebook): Raccogliamo la tua email, nome e immagine del profilo come forniti e consentiti dal provider OAuth.",
-          "subItem3": "Contenuti generati dall'utente: Personaggi che crei (nome, descrizione, avatar, ecc.), assistenti, conversazioni di chat (messaggi di testo, richieste di immagini) e file che carichi (avatar, immagini di addestramento LoRA).",
+          "subItem2": "Utilizzando il Social Login (Google/Facebook): Raccogliamo la tua email, il tuo nome e la tua immagine del profilo come forniti e consentiti dal provider OAuth.",
+          "subItem3": "Contenuti generati dall'utente: Personaggi che crei (nome, descrizione, avatar, ecc.), assistenti, conversazioni di chat (messaggi di testo, prompt di immagini) e file che carichi (avatar, immagini di addestramento LoRA).",
           "subItem4": "Preferenze: Le tue impostazioni, come tema, permesso di contenuti NSFW e lingua preferita."
         },
         "listItem2": {
@@ -25,36 +25,36 @@
       "section2": {
         "title": "2. Come utilizziamo le tue informazioni",
         "paragraph1": "Utilizziamo le informazioni che raccogliamo per i seguenti scopi:",
-        "listItem1": "Per fornire e operare la Piattaforma: Autenticare gli utenti, consentire la creazione e l'interazione con personaggi e assistenti, elaborare le tue richieste (come generazione di testo, immagini e audio).",
-        "listItem2": "Per personalizzare la tua esperienza: Adattare contenuti e funzionalità alle tue preferenze.",
-        "listItem3": "Per comunicazioni: Inviare notifiche importanti relative al tuo account o agli aggiornamenti della Piattaforma (ad es. verifica email - da implementare).",
+        "listItem1": "Fornire e operare la Piattaforma: Autenticare gli utenti, consentire la creazione e l'interazione con personaggi e assistenti, elaborare le tue richieste (come generazione di testo, immagini e audio).",
+        "listItem2": "Personalizzare la tua esperienza: Adattare contenuti e funzionalità alle tue preferenze.",
+        "listItem3": "Per comunicazioni: Inviare notifiche importanti sul tuo account o aggiornamenti della Piattaforma (ad esempio, verifica email - da implementare).",
         "listItem4": "Per analisi e miglioramento: Comprendere come viene utilizzata la Piattaforma per migliorare i nostri servizi e sviluppare nuove funzionalità.",
         "listItem5": "Per sicurezza e prevenzione frodi: Proteggere l'integrità della Piattaforma."
       },
       "section3": {
         "title": "3. Condivisione delle tue informazioni",
         "paragraph1": "Non vendiamo le tue informazioni personali. Potremmo condividere le tue informazioni nelle seguenti circostanze:",
-        "listItem1": "Con fornitori di AI di terze parti: Il contenuto delle tue interazioni (come richieste di testo e immagini) viene inviato ad API di modelli linguistici di grandi dimensioni (LLM) di terze parti e altri servizi AI (ad es. OpenAI, Google, Anthropic, Groq, ComfyUI) per generare risposte, immagini e audio. Adottiamo misure per utilizzare questi servizi in modo responsabile, ma l'elaborazione finale avviene su questi sistemi di terze parti.",
+        "listItem1": "Con fornitori di IA di terze parti: Il contenuto delle tue interazioni (come prompt di testo e immagini) viene inviato ad API di Large Language Model (LLM) di terze parti e altri servizi di IA (ad esempio, OpenAI, Google, Anthropic, Groq, ComfyUI) per generare risposte, immagini e audio. Adottiamo misure per utilizzare questi servizi in modo responsabile, ma l'elaborazione finale avviene su questi sistemi di terze parti.",
         "listItem2": "All'interno delle conversazioni: Se partecipi a conversazioni con altri utenti (funzionalità futura) o con più bot/assistenti, il contenuto di tali conversazioni viene intrinsecamente condiviso tra i partecipanti.",
-        "listItem3": "Obblighi legali: Se richiesto dalla legge, da un mandato o da un altro procedimento legale, o se crediamo in buona fede che la divulgazione sia necessaria per proteggere i nostri diritti, la tua sicurezza o la sicurezza altrui, indagare su frodi o rispondere a una richiesta governativa.",
+        "listItem3": "Obblighi legali: Se richiesto dalla legge, da un mandato di comparizione o da un altro procedimento legale, o se crediamo in buona fede che la divulgazione sia necessaria per proteggere i nostri diritti, la tua sicurezza o la sicurezza altrui, indagare su frodi o rispondere a una richiesta governativa.",
         "listItem4": "Trasferimenti aziendali: In caso di fusione, acquisizione o vendita di attività, le tue informazioni potrebbero essere trasferite."
       },
       "section4": {
         "title": "4. Archiviazione e sicurezza dei dati",
-        "paragraph1": "Memorizziamo i tuoi dati su server sicuri. Implementiamo misure di sicurezza tecniche e organizzative per proteggere le tue informazioni personali da accessi non autorizzati, alterazioni, divulgazioni o distruzione. Tuttavia, nessun metodo di trasmissione su Internet o archiviazione elettronica è sicuro al 100%.",
-        "paragraph2": "Le password vengono memorizzate utilizzando l'hashing. I token di accesso (JWT) vengono utilizzati per l'autenticazione e scadono dopo un determinato periodo."
+        "paragraph1": "Archiviamo i tuoi dati su server sicuri. Implementiamo misure di sicurezza tecniche e organizzative per proteggere le tue informazioni personali da accessi non autorizzati, alterazioni, divulgazioni o distruzioni. Tuttavia, nessun metodo di trasmissione su Internet o di archiviazione elettronica è sicuro al 100%.",
+        "paragraph2": "Le password sono memorizzate tramite hashing. I token di accesso (JWT) vengono utilizzati per l'autenticazione e scadono dopo un determinato periodo."
       },
       "section5": {
         "title": "5. Conservazione dei dati",
-        "paragraph1": "Conserveremo le tue informazioni personali per il tempo necessario a soddisfare gli scopi delineati in questa informativa, a meno che non sia richiesto o consentito dalla legge un periodo di conservazione più lungo. Puoi richiedere la cancellazione dei tuoi dati come descritto nella Sezione 7."
+        "paragraph1": "Conserveremo le tue informazioni personali per il tempo necessario a soddisfare gli scopi delineati in questa politica, a meno che un periodo di conservazione più lungo non sia richiesto o consentito dalla legge. Puoi richiedere la cancellazione dei tuoi dati come descritto nella Sezione 7."
       },
       "section6": {
-        "title": "6. I tuoi diritti e le tue scelte",
-        "paragraph1": "A seconda della tua giurisdizione, potresti avere i seguenti diritti riguardo alle tue informazioni personali:",
+        "title": "6. I tuoi diritti e scelte",
+        "paragraph1": "A seconda della tua giurisdizione, potresti avere i seguenti diritti in merito alle tue informazioni personali:",
         "listItem1": "Il diritto di accedere alle informazioni che deteniamo su di te.",
-        "listItem2": "Il diritto di correggere informazioni imprecise.",
+        "listItem2": "Il diritto di correggere informazioni inaccurate.",
         "listItem3": "Il diritto di richiedere la cancellazione delle tue informazioni.",
-        "listItem4": "Il diritto di limitare o opporsi al trattamento delle tue informazioni.",
+        "listItem4": "Il diritto di limitare o opporsi all'elaborazione delle tue informazioni.",
         "paragraph2": "Puoi aggiornare alcune delle tue informazioni del profilo direttamente sulla Piattaforma. Per altre richieste, ti preghiamo di contattarci."
       },
       "section7": {
@@ -70,12 +70,12 @@
         "paragraph1": "La nostra Piattaforma non è destinata a minori di 14 anni (o all'età minima applicabile nella tua giurisdizione senza il consenso dei genitori). Non raccogliamo consapevolmente informazioni personali da minori senza il consenso dei genitori. Se ritieni che un minore ci abbia fornito informazioni personali, ti preghiamo di contattarci."
       },
       "section9": {
-        "title": "9. Modifiche a questa Informativa sulla Privacy",
+        "title": "9. Modifiche alla presente Informativa sulla Privacy",
         "paragraph1": "Potremmo aggiornare la nostra Informativa sulla Privacy di volta in volta. Ti informeremo di eventuali modifiche pubblicando la nuova Informativa sulla Privacy in questa pagina e aggiornando la data \"Ultimo aggiornamento\" in alto. Ti consigliamo di rivedere periodicamente questa Informativa sulla Privacy per eventuali modifiche."
       },
       "section10": {
         "title": "10. Contattaci",
-        "paragraph1Prefix": "Se hai domande su questa Informativa sulla Privacy, ti preghiamo di contattarci all'indirizzo:"
+        "paragraph1Prefix": "Se hai domande sulla presente Informativa sulla Privacy, ti preghiamo di contattarci a:"
       }
     },
     "termsOfServicePage": {
@@ -83,7 +83,7 @@
       "lastUpdatedLabel": "Ultimo aggiornamento",
       "lastUpdatedDate": "24 maggio 2025",
       "introduction": {
-        "text1": "Benvenuti in CharHub AI! Questi Termini di Servizio (\"Termini\") regolano il tuo accesso e utilizzo della piattaforma CharHub AI (la \"Piattaforma\"), fornita da [Nome della tua azienda/Il tuo nome, se applicabile] (\"noi\", \"nostro\"). Accedendo o utilizzando la Piattaforma, acconsenti a rispettare questi Termini e la nostra ",
+        "text1": "Benvenuti in CharHub AI! I presenti Termini di Servizio (\"Termini\") disciplinano il tuo accesso e utilizzo della piattaforma CharHub AI (la \"Piattaforma\"), fornita da [Nome della tua azienda/Il tuo nome, se applicabile] (\"noi\", \"nostro\"). Accedendo o utilizzando la Piattaforma, accetti di rispettare i presenti Termini e la nostra ",
         "privacyPolicyLinkText": "Informativa sulla Privacy",
         "text2": "."
       },
@@ -91,62 +91,124 @@
         "title": "1. Utilizzo della Piattaforma",
         "subSection1": {
           "title": "1.1. Idoneità:",
-          "paragraph1": "Devi avere almeno 14 anni (o l'età minima richiesta nella tua giurisdizione per acconsentire ai servizi online) per utilizzare la Piattaforma. Se hai tra i 14 e i 18 anni (o l'età della maggiore età legale nella tua giurisdizione), dichiari che il tuo tutore legale ha esaminato e approvato questi Termini."
+          "paragraph1": "Devi avere almeno 14 anni (o l'età minima richiesta nella tua giurisdizione per acconsentire ai servizi online) per utilizzare la Piattaforma. Se hai tra i 14 e i 18 anni (o l'età della maggiore età legale nella tua giurisdizione), dichiari che il tuo tutore legale ha esaminato e approvato i presenti Termini."
         },
         "subSection2": {
-          "title": "1.2. Il tuo account:",
-          "paragraph1": "Sei responsabile del mantenimento della riservatezza delle tue credenziali di accesso e di tutte le attività che si verificano sotto il tuo account. Accetti di avvisarci immediatamente di qualsiasi uso non autorizzato del tuo account."
+          "title": "1.2. Il tuo Account:",
+          "paragraph1": "Sei responsabile del mantenimento della riservatezza delle tue credenziali di accesso e di tutte le attività che si verificano sotto il tuo account. Accetti di informarci immediatamente di qualsiasi uso non autorizzato del tuo account."
         },
         "subSection3": {
           "title": "1.3. Condotta accettabile:",
           "paragraph1": "Accetti di non utilizzare la Piattaforma per:",
           "listItem1": "Violare leggi o regolamenti applicabili.",
-          "listItem2": "Generare o diffondere contenuti illegali, dannosi, minacciosi, offensivi, odiosi, diffamatori, osceni (a meno che non sia consentito dalle impostazioni NSFW e per utenti di età appropriata) o altrimenti discutibili.",
-          "listItem3": "Violare i diritti di proprietà intellettuale altrui.",
+          "listItem2": "Generare o diffondere contenuti illegali, dannosi, minacciosi, offensivi, carichi d'odio, diffamatori, osceni (a meno che non sia consentito dalle impostazioni NSFW e per utenti appropriati all'età) o altrimenti discutibili.",
+          "listItem3": "Infringere i diritti di proprietà intellettuale altrui.",
           "listItem4": "Tentare di ottenere accesso non autorizzato ai nostri sistemi o agli account di altri utenti.",
           "listItem5": "Interferire o interrompere il funzionamento della Piattaforma."
         }
       },
       "section2": {
-        "title": "2. Contenuti dell'utente e contenuti generati dall'AI",
+        "title": "2. Contenuti dell'utente e Contenuti generati dall'IA",
         "subSection1": {
-          "title": "2.1. I tuoi contenuti:",
+          "title": "2.1. I tuoi Contenuti:",
           "paragraph1": "Mantieni la proprietà di qualsiasi contenuto originale che crei e invii alla Piattaforma (come descrizioni di personaggi, prompt, ecc.), ma ci concedi una licenza mondiale, non esclusiva, esente da royalty per utilizzare, riprodurre, modificare, adattare e visualizzare tali contenuti allo scopo di operare e migliorare la Piattaforma."
         },
         "subSection2": {
-          "title": "2.2. Contenuti generati dall'AI:",
-          "paragraph1": "La Piattaforma utilizza modelli di intelligenza artificiale per generare testo, immagini e audio (\"Contenuti generati dall'AI\"). Sebbene tu possa utilizzare i Contenuti generati dall'AI, comprendi che sono prodotti da sistemi AI e potrebbero non essere unici, accurati o adatti a tutti gli scopi. La proprietà e i diritti di utilizzo dei Contenuti generati dall'AI possono essere soggetti ai termini dei fornitori di AI di terze parti."
+          "title": "2.2. Contenuti generati dall'IA:",
+          "paragraph1": "La Piattaforma utilizza modelli di intelligenza artificiale per generare testo, immagini e audio (\"Contenuti generati dall'IA\"). Sebbene tu possa utilizzare i Contenuti generati dall'IA, comprendi che sono prodotti da sistemi di IA e potrebbero non essere unici, accurati o adatti a tutti gli scopi. La proprietà e i diritti di utilizzo dei Contenuti generati dall'IA possono essere soggetti ai termini dei fornitori di IA di terze parti."
         },
         "subSection3": {
-          "title": "2.3. Responsabilità per i contenuti:",
-          "paragraph1": "Sei l'unico responsabile di tutti i contenuti che invii o generi tramite la Piattaforma e delle conseguenze del loro utilizzo. Non approviamo e non siamo responsabili per alcun Contenuto generato dall'AI."
+          "title": "2.3. Responsabilità per i Contenuti:",
+          "paragraph1": "Sei l'unico responsabile di tutti i contenuti che invii o generi tramite la Piattaforma e delle conseguenze del loro utilizzo. Non approviamo né siamo responsabili per alcun Contenuto generato dall'IA."
         }
       },
       "section3": {
         "title": "3. Contenuti NSFW",
-        "paragraph1": "La Piattaforma può consentire la generazione e la visualizzazione di contenuti Not Safe For Work (\"NSFW\"), inclusi contenuti per adulti o espliciti, per gli utenti che soddisfano i requisiti di età (come definiti nella nostra Informativa sulla Privacy e verificati nella misura possibile) e che abilitano esplicitamente tale preferenza. Sei responsabile di garantire che il tuo utilizzo delle funzionalità NSFW sia conforme alle leggi applicabili e agli standard della comunità. Ci riserviamo il diritto di moderare o rimuovere contenuti NSFW che violano i nostri standard."
+        "paragraph1": "La Piattaforma può consentire la generazione e la visualizzazione di contenuti Non Sicuri per il Lavoro (\"NSFW\"), inclusi contenuti per adulti o espliciti, per gli utenti che soddisfano i requisiti di età (come definiti nella nostra Informativa sulla Privacy e verificati nella misura possibile) e che abilitano esplicitamente tale preferenza. Sei responsabile di garantire che il tuo utilizzo delle funzionalità NSFW sia conforme alle leggi applicabili e agli standard della community. Ci riserviamo il diritto di moderare o rimuovere contenuti NSFW che violano i nostri standard."
       },
       "section4": {
         "title": "4. Proprietà intellettuale della Piattaforma",
-        "paragraph1": "La Piattaforma e tutti i suoi componenti originali, funzionalità e interfacce (inclusi, ma non limitati a software, testo, grafica, loghi) sono e rimarranno di proprietà esclusiva di CharHub AI e dei suoi licenziatari."
+        "paragraph1": "La Piattaforma e tutti i suoi componenti, funzionalità e caratteristiche originali (inclusi, ma non limitati a, software, testo, grafica, loghi) sono e rimarranno di esclusiva proprietà di CharHub AI e dei suoi licenziatari."
       },
       "section5": {
-        "title": "5. Modifiche e cessazione",
-        "paragraph1": "Ci riserviamo il diritto di modificare o interrompere la Piattaforma (o qualsiasi sua parte) con o senza preavviso. Potremmo anche terminare o sospendere il tuo accesso alla Piattaforma immediatamente, senza preavviso o responsabilità, per qualsiasi motivo, inclusa la violazione di questi Termini.",
-        "paragraph2": "Se il tuo account viene terminato, il tuo diritto di utilizzare la Piattaforma cesserà immediatamente. Le disposizioni di questi Termini che per loro natura dovrebbero sopravvivere alla cessazione sopravvivranno alla cessazione, inclusi, senza limitazione, le disposizioni sulla proprietà, i disconoscimenti di garanzia, l'indennizzo e le limitazioni di responsabilità."
+        "title": "5. Modifiche e Cessazione",
+        "paragraph1": "Ci riserviamo il diritto di modificare o interrompere la Piattaforma (o qualsiasi sua parte) con o senza preavviso. Potremmo anche terminare o sospendere il tuo accesso alla Piattaforma immediatamente, senza preavviso o responsabilità, per qualsiasi motivo, inclusa la violazione dei presenti Termini.",
+        "paragraph2": "In caso di cessazione del tuo account, il tuo diritto di utilizzare la Piattaforma cesserà immediatamente. Le disposizioni dei presenti Termini che per loro natura dovrebbero sopravvivere alla cessazione sopravvivranno alla cessazione, inclusi, senza limitazione, le disposizioni sulla proprietà, i disclaimer di garanzia, l'indennizzo e le limitazioni di responsabilità."
       },
       "section6": {
-        "title": "6. Esclusione di garanzie e limitazione di responsabilità",
+        "title": "6. Esclusione di Garanzie e Limitazione di Responsabilità",
         "paragraph1": "LA PIATTAFORMA VIENE FORNITA \"COSÌ COM'È\" E \"COME DISPONIBILE\" SENZA GARANZIE DI ALCUN TIPO, ESPLICITE O IMPLICITE. NON GARANTIAMO CHE LA PIATTAFORMA SARÀ ININTERROTTA, SICURA O PRIVA DI ERRORI.",
-        "paragraph2": "IN NESSUN CASO CHARHUB AI, I SUOI DIRETTORI, DIPENDENTI O AFFILIATE SARANNO RESPONSABILI PER QUALSIASI DANNO INDIRETTO, INCIDENTALE, SPECIALE, CONSEQUENZIALE O PUNITIVO DERIVANTE DAL TUO UTILIZZO O DALL'IMPOSSIBILITÀ DI UTILIZZARE LA PIATTAFORMA."
+        "paragraph2": "IN NESSUN CASO CHARHUB AI, I SUOI DIRETTORI, DIPENDENTI O AFFILIATI SARANNO RESPONSABILI PER DANNI INDIRETTI, INCIDENTALI, SPECIALI, CONSEQUENZIALI O PUNITIVI DERIVANTI DAL TUO UTILIZZO O DALL'INCAPACITÀ DI UTILIZZARE LA PIATTAFORMA."
       },
       "section7": {
         "title": "7. Modifiche ai Termini",
-        "paragraph1": "Potremmo rivedere questi Termini di volta in volta. La versione più aggiornata sarà sempre pubblicata sul nostro sito web. Continuando a utilizzare la Piattaforma dopo che le revisioni diventano effettive, accetti di essere vincolato dai termini rivisti."
+        "paragraph1": "Potremmo rivedere i presenti Termini di volta in volta. La versione più aggiornata sarà sempre pubblicata sul nostro sito web. Continuando a utilizzare la Piattaforma dopo che le revisioni saranno diventate effettive, accetti di essere vincolato dai termini revisionati."
       },
       "section8": {
         "title": "8. Contattaci",
-        "paragraph1Prefix": "Se hai domande su questi Termini di Servizio, ti preghiamo di contattarci all'indirizzo:"
+        "paragraph1Prefix": "Se hai domande sui presenti Termini di Servizio, ti preghiamo di contattarci a:"
+      }
+    },
+    "dataDeletionPage": {
+      "title": "Istruzioni per la cancellazione dei dati di CharHub AI",
+      "lastUpdatedLabel": "Ultimo aggiornamento",
+      "lastUpdatedDate": "24 maggio 2025",
+      "introduction": "In CharHub AI, rispettiamo il tuo diritto alla privacy e al controllo sui tuoi dati personali. Questa pagina fornisce istruzioni su come puoi richiedere la cancellazione dei tuoi dati associati al tuo account CharHub AI, inclusi eventuali dati che potremmo aver ricevuto tramite il tuo accesso con provider di terze parti come Google o Facebook.",
+      "section1": {
+        "title": "Come richiedere la cancellazione dei dati",
+        "paragraph1": "Per richiedere la cancellazione del tuo account e dei dati associati, segui questi passaggi:",
+        "step1": {
+          "textBeforeLink": "Invia un'email al nostro indirizzo di supporto: "
+        },
+        "step2": "Nell'oggetto dell'email, scrivi: \"Richiesta di cancellazione dati account\".",
+        "step3": {
+          "intro": "Nel corpo dell'email, includi le seguenti informazioni in modo che possiamo identificare il tuo account:",
+          "bullet1": "L'indirizzo email associato al tuo account CharHub AI (lo stesso che utilizzi per l'accesso diretto o tramite Google/Facebook).",
+          "bullet2": "Il tuo nome utente CharHub AI (se lo ricordi).",
+          "bullet3": "Se hai utilizzato l'accesso social (Google o Facebook), specifica quale provider hai utilizzato."
+        }
+      },
+      "section2": {
+        "title": "Cosa succede dopo la tua richiesta?",
+        "listItem1": {
+          "title": "Verifica:",
+          "text": "Potremmo dover contattarti per verificare la tua identità e confermare la tua richiesta prima di procedere con la cancellazione."
+        },
+        "listItem2": {
+          "title": "Elaborazione:",
+          "text": "Dopo la verifica, elaboreremo la tua richiesta di cancellazione. Ciò comporta in genere la rimozione delle tue informazioni personali dai nostri database attivi. Questo processo può richiedere fino a 30 giorni, anche se ci sforziamo di completarlo prima."
+        },
+        "listItem3": {
+          "title": "Quali dati vengono cancellati:",
+          "text": "Il tuo profilo utente (email, nome, avatar, ecc.), i personaggi e gli assistenti creati, la cronologia delle chat, i token di autenticazione e qualsiasi altra informazione personale direttamente associata al tuo account."
+        },
+        "listItem4": {
+          "title": "Dati conservati:",
+          "text": "Alcune informazioni anonime o aggregate che non ti identificano personalmente potrebbero essere conservate per scopi di analisi e miglioramento del servizio. Inoltre, potremmo conservare determinate informazioni se richieste dalla legge o per scopi legittimi come la sicurezza, la prevenzione delle frodi o l'adempimento dei nostri obblighi legali. Ti informeremo se questo è il caso."
+        },
+        "listItem5": {
+          "title": "Dati con fornitori di IA:",
+          "text": "Si noti che le interazioni inviate a modelli di IA di terze parti (LLM) per generare risposte potrebbero essere elaborate e conservate da tali fornitori secondo le loro politiche sulla privacy e i loro termini. La cancellazione del tuo account CharHub AI non garantisce la cancellazione di questi dati dai sistemi dei fornitori di IA."
+        }
+      },
+      "section3": {
+        "title": "Rimozione dell'accesso all'app da Facebook/Google",
+        "paragraph1": "Oltre a richiedere la cancellazione dei dati a noi, puoi anche revocare l'accesso di CharHub AI direttamente dalle impostazioni del tuo account Google o Facebook:",
+        "listItem1": {
+          "provider": "Google:",
+          "instructionPreLink": "Visita la pagina ",
+          "linkText": "App con accesso al tuo account Google",
+          "instructionPostLink": " e rimuovi CharHub AI."
+        },
+        "listItem2": {
+          "provider": "Facebook:",
+          "instruction": "Vai su Impostazioni e privacy > Impostazioni > App e siti web, e rimuovi CharHub AI dal tuo elenco di app attive."
+        },
+        "paragraph2": "La revoca dell'accesso sul provider OAuth impedirà a CharHub AI di accedere a nuovi dati dal tuo account provider, ma non cancellerà automaticamente i dati che abbiamo già raccolto. Per questo, segui le istruzioni per la richiesta di cancellazione sopra."
+      },
+      "section4": {
+        "title": "Contattaci",
+        "paragraph1Prefix": "Se hai domande sul processo di cancellazione dei dati, ti preghiamo di contattarci a:"
       }
     }
   }

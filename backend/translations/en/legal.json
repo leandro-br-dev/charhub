@@ -148,6 +148,68 @@
         "title": "8. Contact Us",
         "paragraph1Prefix": "If you have any questions about these Terms of Service, please contact us at:"
       }
+    },
+    "dataDeletionPage": {
+      "title": "CharHub AI Data Deletion Instructions",
+      "lastUpdatedLabel": "Last updated",
+      "lastUpdatedDate": "May 24, 2025",
+      "introduction": "At CharHub AI, we respect your right to privacy and control over your personal data. This page provides instructions on how you can request the deletion of your data associated with your CharHub AI account, including any data we may have received through your login with third-party providers like Google or Facebook.",
+      "section1": {
+        "title": "How to Request Data Deletion",
+        "paragraph1": "To request the deletion of your account and associated data, please follow the steps below:",
+        "step1": {
+          "textBeforeLink": "Send an email to our support address: "
+        },
+        "step2": "In the subject line of the email, please write: \"Account Data Deletion Request\".",
+        "step3": {
+          "intro": "In the body of the email, please include the following information so we can identify your account:",
+          "bullet1": "The email address associated with your CharHub AI account (the same one you use for direct login or via Google/Facebook).",
+          "bullet2": "Your CharHub AI username (if you remember it).",
+          "bullet3": "If you used social login (Google or Facebook), please mention which provider you used."
+        }
+      },
+      "section2": {
+        "title": "What Happens After Your Request?",
+        "listItem1": {
+          "title": "Verification:",
+          "text": "We may need to contact you to verify your identity and confirm your request before proceeding with the deletion."
+        },
+        "listItem2": {
+          "title": "Processing:",
+          "text": "Upon verification, we will process your deletion request. This typically involves removing your personal information from our active databases. This process may take up to 30 days, though we strive to complete it sooner."
+        },
+        "listItem3": {
+          "title": "What Data is Deleted:",
+          "text": "Your user profile (email, name, avatar, etc.), created characters and assistants, chat history, authentication tokens, and any other personal information directly associated with your account."
+        },
+        "listItem4": {
+          "title": "Retained Data:",
+          "text": "Some anonymous or aggregated information that does not personally identify you may be retained for analytics and service improvement purposes. Additionally, we may retain certain information if required by law or for legitimate purposes such as security, fraud prevention, or fulfilling our legal obligations. We will inform you if this is the case."
+        },
+        "listItem5": {
+          "title": "Data with AI Providers:",
+          "text": "Note that interactions sent to third-party AI models (LLMs) to generate responses may be processed and retained by those providers according to their own privacy policies and terms. Deleting your CharHub AI account does not guarantee deletion of this data from AI provider systems."
+        }
+      },
+      "section3": {
+        "title": "Removing App Access from Facebook/Google",
+        "paragraph1": "In addition to requesting data deletion from us, you can also revoke CharHub AI's access directly from your Google or Facebook account settings:",
+        "listItem1": {
+          "provider": "Google:",
+          "instructionPreLink": "Visit the ",
+          "linkText": "Apps with access to your Google account page",
+          "instructionPostLink": " and remove CharHub AI."
+        },
+        "listItem2": {
+          "provider": "Facebook:",
+          "instruction": "Go to Settings & Privacy > Settings > Apps and Websites, and remove CharHub AI from your list of active apps."
+        },
+        "paragraph2": "Revoking access on the OAuth provider will prevent CharHub AI from accessing new data from your provider account, but it will not automatically delete data we have already collected. For that, please follow the deletion request instructions above."
+      },
+      "section4": {
+        "title": "Contact Us",
+        "paragraph1Prefix": "If you have any questions about the data deletion process, please contact us at:"
+      }
     }
   }
 }

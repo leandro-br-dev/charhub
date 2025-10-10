@@ -3,9 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
 import { ExternalAuthLayout } from '../../../layouts/ExternalAuthLayout';
-import { PrivacyPolicyModal } from '../../../components/features/legal/PrivacyPolicyModal';
-import { TermsOfServiceModal } from '../../../components/features/legal/TermsOfServiceModal';
-import { OAuthButton } from '../shared/components';
+import { DataDeletionInstructionsModal, OAuthButton, PrivacyPolicyModal, TermsOfServiceModal } from '../shared/components';
 import { useAuthRedirect } from '../shared/hooks';
 
 export default function Signup(): JSX.Element {
@@ -13,7 +11,7 @@ export default function Signup(): JSX.Element {
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [searchParams] = useSearchParams();
   const [referralCode, setReferralCode] = useState('');
-  const [activeLegalModal, setActiveLegalModal] = useState<'terms' | 'privacy' | null>(null);
+  const [activeLegalModal, setActiveLegalModal] = useState<'terms' | 'privacy' | 'dataDeletion' | null>(null);
   const { isAuthenticated, loginWithGoogle, loginWithFacebook } = useAuth();
 
   useAuthRedirect();
@@ -114,6 +112,11 @@ export default function Signup(): JSX.Element {
       />
       <PrivacyPolicyModal
         isOpen={activeLegalModal === 'privacy'}
+        onClose={closeLegalModal}
+        onNavigateToDataDeletion={() => setActiveLegalModal('dataDeletion')}
+      />
+      <DataDeletionInstructionsModal
+        isOpen={activeLegalModal === 'dataDeletion'}
         onClose={closeLegalModal}
       />
     </ExternalAuthLayout>

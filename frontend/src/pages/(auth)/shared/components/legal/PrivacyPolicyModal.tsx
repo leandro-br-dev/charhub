@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Modal } from '../../ui/Modal';
+import { Modal } from '../../../../../components/ui/Modal';
 
 const SUPPORT_EMAIL = 'support@charhub.app';
 
@@ -150,4 +150,3 @@ export function PrivacyPolicyModal({
     </Modal>
   );
 }
-
