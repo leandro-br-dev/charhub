@@ -2,35 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Tema claro (padrão) */
+/* Tema claro (padrão) - Inspirado em GitHub, Linear, Notion */
 :root {
   color-scheme: light dark;
 
-  --color-light: #E6E6EA;
-  --color-normal: #f3f1f1;
-  --color-dark: #161618;
+  --color-light: #F6F8FA;
+  --color-normal: #FFFFFF;
+  --color-dark: #0D1117;
 
-  --color-title: #2F2F2F;
-  --color-description: #9C9C9C;
-  --color-content: #2F2F2F;
+  --color-title: #0D1117;
+  --color-description: #656D76;
+  --color-content: #1F2328;
   --color-content-dark: #FFFFFF;
 
   --color-primary: #FFC917;
-  --color-primary-100: #FFDE72;
+  --color-primary-100: #FFF8E1;
   --color-primary-500: #FFC917;
   --color-primary-900: #967300;
   --color-secondary: #10b981;
 
   --color-accent: #f59e0b;
-  --color-muted: #6b7280;
-  --color-danger: #ef4444;
-  --color-success: #22c55e;
-  --color-info: #0ea5e9;
+  --color-muted: #656D76;
+  --color-danger: #D1242F;
+  --color-success: #1A7F37;
+  --color-info: #0969DA;
 
-  --color-background: #f3f1f1;
-  --color-foreground: #161618;
-  --color-card: #FFFFFF;
-  --color-border: #E6E6EA;
+  --color-background: #FFFFFF;
+  --color-foreground: #1F2328;
+  --color-card: #F6F8FA;
+  --color-border: #D1D9E0;
 }
 
 /* Tema escuro */
