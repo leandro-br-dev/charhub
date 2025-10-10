@@ -1,0 +1,184 @@
+{
+  "description": "Characters module strings for hub, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledCharacter": "無題のキャラクター",
+      "updatedAt": "{{date}} 更新",
+      "public": "公開",
+      "private": "非公開",
+      "identifier": "キャラクターID: {{id}}",
+      "unsavedChanges": "未保存の変更があります",
+      "allSaved": "すべての変更が保存されました",
+      "submitting": "保存中..."
+    },
+    "ageRatings": {
+      "L": "全年齢対象",
+      "TEN": "10歳以上",
+      "TWELVE": "12歳以上",
+      "FOURTEEN": "14歳以上",
+      "SIXTEEN": "16歳以上",
+      "EIGHTEEN": "18歳以上"
+    },
+    "purposes": {
+      "chat": "チャット",
+      "story": "ストーリー",
+      "both": "チャット＆ストーリー"
+    },
+    "contentTags": {
+      "VIOLENCE": "暴力",
+      "GORE": "ゴア",
+      "SEXUAL": "性的",
+      "NUDITY": "ヌード",
+      "LANGUAGE": "言葉遣い",
+      "DRUGS": "薬物",
+      "ALCOHOL": "アルコール",
+      "HORROR": "ホラー",
+      "PSYCHOLOGICAL": "心理的",
+      "DISCRIMINATION": "差別",
+      "CRIME": "犯罪",
+      "GAMBLING": "ギャンブル"
+    },
+    "contentTagHints": {
+      "VIOLENCE": "戦闘、喧嘩、攻撃的な対立。",
+      "GORE": "露骨な怪我や詳細。",
+      "SEXUAL": "大人向けのテーマやそれを示唆するもの。",
+      "NUDITY": "部分的または完全なヌード。",
+      "LANGUAGE": "露骨または強い言葉遣い。",
+      "DRUGS": "薬物の使用または言及。",
+      "ALCOHOL": "アルコールの摂取。",
+      "HORROR": "不穏またはホラーなイメージ。",
+      "PSYCHOLOGICAL": "メンタルヘルスまたは心理的な緊張。",
+      "DISCRIMINATION": "ヘイトスピーチまたは偏見。",
+      "CRIME": "犯罪行為のテーマ。",
+      "GAMBLING": "賭けまたはギャンブルの言及。"
+    },
+    "accessibility": {
+      "addToFavorites": "お気に入りに追加",
+      "removeFromFavorites": "お気に入りから削除"
+    },
+    "hub": {
+      "title": "キャラクターハブ",
+      "subtitle": "ストーリー、チャットエージェント、AI体験を支えるキャストを作成、整理、進化させましょう。",
+      "actions": {
+        "createCharacter": "新しいキャラクター",
+        "retry": "再試行",
+        "blurSensitive": "機密情報をぼかす",
+        "showSensitive": "機密情報を表示"
+      },
+      "tabs": {
+        "myCharacters": "マイキャラクター",
+        "publicGallery": "公開ギャラリー"
+      },
+      "filters": {
+        "searchPlaceholder": "名前またはスタイルで検索",
+        "allAgeRatings": "すべての年齢評価"
+      },
+      "states": {
+        "loading": "キャラクターを読み込んでいます...",
+        "error": "キャラクターを読み込めませんでした。もう一度お試しください。",
+        "empty": "まだキャラクターがありません。",
+        "empty_private": "キャラクターはまだ作成されていません。",
+        "empty_public": "フィルターに一致する公開キャラクターはありません。",
+        "emptyHint": "プロフィールの作成から始めるか、フィルターを調整してください。",
+        "emptySearchHint": "より多くの結果を表示するには、フィルターを調整するか、検索をクリアしてください。"
+      },
+      "labels": {
+        "total": "{{count}} 件のキャラクターが利用可能です",
+        "quickCreateLink": "すぐに作成を開始"
+      }
+    },
+    "form": {
+      "submit": "保存",
+      "cancel": "キャンセル",
+      "sections": {
+        "identity": "アイデンティティ",
+        "identityHint": "このキャラクターがどのように発見され、一目で識別されるかを定義します。",
+        "profile": "ナラティブプロフィール",
+        "profileHint": "AIをガイドするために、性格、特徴、背景ストーリーを説明します。",
+        "configuration": "利用可能性とモデレーション",
+        "configurationHint": "キャラクターの表示方法、アクセスできるユーザー、適用される保護措置を制御します。",
+        "contentTagsHint": "潜在的に機密性の高いテーマをマークします。ユーザーは自分の好みに基づいてそれらをフィルタリングできます。"
+      },
+      "fields": {
+        "firstName": "名",
+        "lastName": "姓",
+        "age": "年齢",
+        "gender": "性別",
+        "species": "種族 / 出身",
+        "style": "ビジュアルまたはストーリーテリングスタイル",
+        "avatar": "アバター画像URL",
+        "physicalCharacteristics": "身体的特徴",
+        "personality": "性格",
+        "history": "背景ストーリー",
+        "purpose": "主な用途",
+        "isPublic": "表示設定",
+        "ageRating": "年齢評価",
+        "originalLanguageCode": "元の言語",
+        "contentTags": "コンテンツ警告"
+      },
+      "placeholders": {
+        "gender": "例: ノンバイナリーAI、アンドロイド、騎士",
+        "species": "例: 人間、エルフ、合成生命体",
+        "style": "例: ノワール探偵、パステルアニメ、絵画風",
+        "avatar": "https://cdn.example.com/avatar.png"
+      },
+      "hints": {
+        "avatar": "アップロードフローが構築中のため、HTTPS画像URLを提供してください。"
+      },
+      "labels": {
+        "publicToggle": "他のユーザーがこのキャラクターを発見できるようにする",
+        "unsavedChanges": "未保存の変更があります",
+        "allSaved": "変更が保存されました",
+        "submitting": "保存中..."
+      }
+    },
+    "create": {
+      "title": "新しいキャラクターを作成",
+      "subtitle": "ナラティブコンテキスト、ビジュアルスタイル、モデレーション設定を組み合わせます。後ですべてを微調整できます。",
+      "saveButton": "キャラクターを保存",
+      "cancelButton": "キャンセルして戻る"
+    },
+    "edit": {
+      "title": "キャラクターを編集",
+      "subtitle": "{{name}} を更新中",
+      "saveButton": "キャラクターを更新",
+      "cancelButton": "変更を破棄",
+      "states": {
+        "loading": "キャラクターを読み込んでいます..."
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "キャラクターの詳細を読み込んでいます...",
+        "notFound": "このキャラクターを見つけることができませんでした。"
+      },
+      "actions": {
+        "backToHub": "ハブに戻る",
+        "edit": "編集",
+        "delete": "削除",
+        "deleting": "削除中..."
+      },
+      "confirmDelete": "このキャラクターを削除してもよろしいですか？この操作は元に戻せません。",
+      "labels": {
+        "public": "公開",
+        "private": "非公開",
+        "createdAt": "作成日",
+        "updatedAt": "最終更新日",
+        "identifier": "キャラクターID: {{id}}"
+      },
+      "sections": {
+        "physicalCharacteristics": "外見",
+        "personality": "性格",
+        "history": "背景ストーリー",
+        "contentTags": "コンテンツ警告",
+        "metadata": "タグ"
+      }
+    },
+    "errors": {
+      "createFailed": "キャラクターを作成できませんでした。もう一度お試しください。",
+      "updateFailed": "キャラクターを更新できませんでした。",
+      "deleteFailed": "キャラクターを削除できませんでした。",
+      "detailUnavailable": "現在、キャラクターの詳細を読み込めません。"
+    }
+  }
+}

@@ -1,0 +1,184 @@
+{
+  "description": "Characters module strings for hub, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledCharacter": "Personaggio senza titolo",
+      "updatedAt": "Aggiornato il {{date}}",
+      "public": "Pubblico",
+      "private": "Privato",
+      "identifier": "ID personaggio: {{id}}",
+      "unsavedChanges": "Modifiche non salvate",
+      "allSaved": "Tutte le modifiche salvate",
+      "submitting": "Salvataggio in corso..."
+    },
+    "ageRatings": {
+      "L": "Per tutti",
+      "TEN": "10+",
+      "TWELVE": "12+",
+      "FOURTEEN": "14+",
+      "SIXTEEN": "16+",
+      "EIGHTEEN": "18+"
+    },
+    "purposes": {
+      "chat": "Chat",
+      "story": "Storia",
+      "both": "Chat e Storia"
+    },
+    "contentTags": {
+      "VIOLENCE": "Violenza",
+      "GORE": "Gore",
+      "SEXUAL": "Contenuti sessuali",
+      "NUDITY": "Nudità",
+      "LANGUAGE": "Linguaggio esplicito",
+      "DRUGS": "Droghe",
+      "ALCOHOL": "Alcol",
+      "HORROR": "Horror",
+      "PSYCHOLOGICAL": "Psicologico",
+      "DISCRIMINATION": "Discriminazione",
+      "CRIME": "Crimine",
+      "GAMBLING": "Gioco d'azzardo"
+    },
+    "contentTagHints": {
+      "VIOLENCE": "Combattimenti, risse o conflitti aggressivi.",
+      "GORE": "Ferite grafiche e dettagli espliciti.",
+      "SEXUAL": "Temi per adulti o allusioni.",
+      "NUDITY": "Nudità parziale o completa.",
+      "LANGUAGE": "Linguaggio esplicito o forte.",
+      "DRUGS": "Uso o riferimenti a droghe.",
+      "ALCOHOL": "Consumo di alcol.",
+      "HORROR": "Immagini disturbanti o horror.",
+      "PSYCHOLOGICAL": "Salute mentale o tensione psicologica.",
+      "DISCRIMINATION": "Incitamento all'odio o pregiudizi.",
+      "CRIME": "Temi di attività criminale.",
+      "GAMBLING": "Riferimenti a scommesse o gioco d'azzardo."
+    },
+    "accessibility": {
+      "addToFavorites": "Aggiungi ai preferiti",
+      "removeFromFavorites": "Rimuovi dai preferiti"
+    },
+    "hub": {
+      "title": "Hub dei Personaggi",
+      "subtitle": "Crea, organizza ed evolve il cast che alimenta le tue storie, gli agenti di chat e le esperienze AI.",
+      "actions": {
+        "createCharacter": "Nuovo personaggio",
+        "retry": "Riprova",
+        "blurSensitive": "Sfoca contenuti sensibili",
+        "showSensitive": "Mostra contenuti sensibili"
+      },
+      "tabs": {
+        "myCharacters": "I miei personaggi",
+        "publicGallery": "Galleria pubblica"
+      },
+      "filters": {
+        "searchPlaceholder": "Cerca per nome o stile",
+        "allAgeRatings": "Tutte le classificazioni per età"
+      },
+      "states": {
+        "loading": "Caricamento dei tuoi personaggi...",
+        "error": "Impossibile caricare i personaggi. Riprova.",
+        "empty": "Nessun personaggio disponibile al momento.",
+        "empty_private": "Non hai ancora creato alcun personaggio.",
+        "empty_public": "Nessun personaggio pubblico corrisponde ai tuoi filtri.",
+        "emptyHint": "Inizia creando un profilo o modifica i tuoi filtri.",
+        "emptySearchHint": "Regola i filtri o cancella la ricerca per vedere più risultati."
+      },
+      "labels": {
+        "total": "{{count}} personaggio{{count, plural, one {} other {i}}} disponibile{{count, plural, one {} other {i}}}",
+        "quickCreateLink": "Inizia subito la creazione"
+      }
+    },
+    "form": {
+      "submit": "Salva",
+      "cancel": "Annulla",
+      "sections": {
+        "identity": "Identità",
+        "identityHint": "Definisci come le persone scoprono e identificano questo personaggio a colpo d'occhio.",
+        "profile": "Profilo narrativo",
+        "profileHint": "Descrivi personalità, tratti e background per guidare l'AI.",
+        "configuration": "Disponibilità e moderazione",
+        "configurationHint": "Controlla come appare il personaggio, chi può accedervi e quali salvaguardie si applicano.",
+        "contentTagsHint": "Segnala i temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze."
+      },
+      "fields": {
+        "firstName": "Nome",
+        "lastName": "Cognome",
+        "age": "Età",
+        "gender": "Genere",
+        "species": "Specie / origine",
+        "style": "Stile visivo o narrativo",
+        "avatar": "URL dell'immagine avatar",
+        "physicalCharacteristics": "Descrizione fisica",
+        "personality": "Personalità",
+        "history": "Background",
+        "purpose": "Uso principale",
+        "isPublic": "Visibilità",
+        "ageRating": "Classificazione per età",
+        "originalLanguageCode": "Lingua originale",
+        "contentTags": "Avvisi sui contenuti"
+      },
+      "placeholders": {
+        "gender": "Es: IA non binaria, androide, cavaliere",
+        "species": "Es: Umano, Elfo, Sintetico",
+        "style": "Es: Detective noir, anime pastello, pittorico",
+        "avatar": "https://cdn.example.com/avatar.png"
+      },
+      "hints": {
+        "avatar": "Fornisci un URL di immagine HTTPS mentre il flusso di caricamento è in fase di sviluppo."
+      },
+      "labels": {
+        "publicToggle": "Consenti ad altri utenti di scoprire questo personaggio",
+        "unsavedChanges": "Hai modifiche non salvate",
+        "allSaved": "Modifiche salvate",
+        "submitting": "Salvataggio in corso..."
+      }
+    },
+    "create": {
+      "title": "Crea un nuovo personaggio",
+      "subtitle": "Combina contesto narrativo, stile visivo e impostazioni di moderazione. Puoi perfezionare tutto in seguito.",
+      "saveButton": "Salva personaggio",
+      "cancelButton": "Annulla e torna indietro"
+    },
+    "edit": {
+      "title": "Modifica personaggio",
+      "subtitle": "Aggiornamento di {{name}}",
+      "saveButton": "Aggiorna personaggio",
+      "cancelButton": "Annulla modifiche",
+      "states": {
+        "loading": "Caricamento personaggio..."
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "Caricamento dettagli personaggio...",
+        "notFound": "Impossibile trovare questo personaggio."
+      },
+      "actions": {
+        "backToHub": "Torna all'hub",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "deleting": "Eliminazione in corso..."
+      },
+      "confirmDelete": "Sei sicuro di voler eliminare questo personaggio? Questa azione non può essere annullata.",
+      "labels": {
+        "public": "Pubblico",
+        "private": "Privato",
+        "createdAt": "Creato il",
+        "updatedAt": "Ultimo aggiornamento",
+        "identifier": "ID personaggio: {{id}}"
+      },
+      "sections": {
+        "physicalCharacteristics": "Aspetto",
+        "personality": "Personalità",
+        "history": "Background",
+        "contentTags": "Avvisi sui contenuti",
+        "metadata": "Tag"
+      }
+    },
+    "errors": {
+      "createFailed": "Impossibile creare il personaggio. Riprova.",
+      "updateFailed": "Impossibile aggiornare il personaggio.",
+      "deleteFailed": "Impossibile eliminare il personaggio.",
+      "detailUnavailable": "Impossibile caricare i dettagli del personaggio al momento."
+    }
+  }
+}

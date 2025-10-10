@@ -1,0 +1,184 @@
+{
+  "description": "Characters module strings for hub, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledCharacter": "شخصية بدون عنوان",
+      "updatedAt": "تم التحديث {{date}}",
+      "public": "عام",
+      "private": "خاص",
+      "identifier": "معرف الشخصية: {{id}}",
+      "unsavedChanges": "تغييرات غير محفوظة",
+      "allSaved": "تم حفظ جميع التغييرات",
+      "submitting": "جارٍ الحفظ..."
+    },
+    "ageRatings": {
+      "L": "للجمهور العام",
+      "TEN": "10+",
+      "TWELVE": "12+",
+      "FOURTEEN": "14+",
+      "SIXTEEN": "16+",
+      "EIGHTEEN": "18+"
+    },
+    "purposes": {
+      "chat": "دردشة",
+      "story": "قصة",
+      "both": "دردشة وقصة"
+    },
+    "contentTags": {
+      "VIOLENCE": "عنف",
+      "GORE": "دموية",
+      "SEXUAL": "جنسي",
+      "NUDITY": "عري",
+      "LANGUAGE": "لغة",
+      "DRUGS": "مخدرات",
+      "ALCOHOL": "كحول",
+      "HORROR": "رعب",
+      "PSYCHOLOGICAL": "نفسي",
+      "DISCRIMINATION": "تمييز",
+      "CRIME": "جريمة",
+      "GAMBLING": "قمار"
+    },
+    "contentTagHints": {
+      "VIOLENCE": "قتال، اشتباكات أو صراع عدواني.",
+      "GORE": "إصابات واضحة وتفاصيل صريحة.",
+      "SEXUAL": "مواضيع للبالغين أو تلميحات جنسية.",
+      "NUDITY": "عري جزئي أو كلي.",
+      "LANGUAGE": "لغة صريحة أو قوية.",
+      "DRUGS": "استخدام المخدرات أو الإشارة إليها.",
+      "ALCOHOL": "استهلاك الكحول.",
+      "HORROR": "صور مزعجة أو مرعبة.",
+      "PSYCHOLOGICAL": "الصحة النفسية أو التوتر النفسي.",
+      "DISCRIMINATION": "خطاب كراهية أو تحيز.",
+      "CRIME": "مواضيع تتعلق بالنشاط الإجرامي.",
+      "GAMBLING": "إشارات إلى المراهنات أو القمار."
+    },
+    "accessibility": {
+      "addToFavorites": "إضافة إلى المفضلة",
+      "removeFromFavorites": "إزالة من المفضلة"
+    },
+    "hub": {
+      "title": "مركز الشخصيات",
+      "subtitle": "قم بإنشاء وتنظيم وتطوير الشخصيات التي تدعم قصصك، ووكلاء الدردشة، وتجارب الذكاء الاصطناعي.",
+      "actions": {
+        "createCharacter": "شخصية جديدة",
+        "retry": "حاول مرة أخرى",
+        "blurSensitive": "تمويه الحساس",
+        "showSensitive": "إظهار الحساس"
+      },
+      "tabs": {
+        "myCharacters": "شخصياتي",
+        "publicGallery": "معرض عام"
+      },
+      "filters": {
+        "searchPlaceholder": "البحث بالاسم أو الأسلوب",
+        "allAgeRatings": "جميع التصنيفات العمرية"
+      },
+      "states": {
+        "loading": "جارٍ تحميل شخصياتك...",
+        "error": "لم نتمكن من تحميل الشخصيات. يرجى المحاولة مرة أخرى.",
+        "empty": "لا توجد شخصيات متاحة بعد.",
+        "empty_private": "لم تقم بإنشاء أي شخصيات بعد.",
+        "empty_public": "لا توجد شخصيات عامة تطابق مرشحاتك.",
+        "emptyHint": "ابدأ بصياغة ملف شخصي أو قم بتعديل مرشحاتك.",
+        "emptySearchHint": "اضبط مرشحاتك أو امسح البحث لرؤية المزيد من النتائج."
+      },
+      "labels": {
+        "total": "{{count}} شخصية{{count, plural, one {} other {s}}} متاحة",
+        "quickCreateLink": "انتقل مباشرة إلى الإنشاء"
+      }
+    },
+    "form": {
+      "submit": "حفظ",
+      "cancel": "إلغاء",
+      "sections": {
+        "identity": "الهوية",
+        "identityHint": "حدد كيف يكتشف الناس هذه الشخصية ويعرفونها بنظرة سريعة.",
+        "profile": "ملف السرد",
+        "profileHint": "صف الشخصية والصفات والخلفية لتوجيه الذكاء الاصطناعي.",
+        "configuration": "التوفر والإشراف",
+        "configurationHint": "تحكم في كيفية ظهور الشخصية، ومن يمكنه الوصول إليها، وأي إجراءات وقائية تنطبق.",
+        "contentTagsHint": "ضع علامة على المواضيع الحساسة المحتملة. يمكن للمستخدمين استبعادها بناءً على تفضيلاتهم."
+      },
+      "fields": {
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "age": "العمر",
+        "gender": "الجنس",
+        "species": "النوع / الأصل",
+        "style": "الأسلوب المرئي أو أسلوب السرد",
+        "avatar": "عنوان URL لصورة الرمز المميز",
+        "physicalCharacteristics": "الوصف الجسدي",
+        "personality": "الشخصية",
+        "history": "الخلفية",
+        "purpose": "الاستخدام الأساسي",
+        "isPublic": "الرؤية",
+        "ageRating": "التصنيف العمري",
+        "originalLanguageCode": "اللغة الأصلية",
+        "contentTags": "تحذيرات المحتوى"
+      },
+      "placeholders": {
+        "gender": "مثال: ذكاء اصطناعي غير ثنائي، روبوت، فارس",
+        "species": "مثال: إنسان، جني، اصطناعي",
+        "style": "مثال: محقق نوار، أنمي باستيل، رسم زيتي",
+        "avatar": "https://cdn.example.com/avatar.png"
+      },
+      "hints": {
+        "avatar": "قدم عنوان URL لصورة HTTPS بينما تدفق التحميل قيد الإنشاء."
+      },
+      "labels": {
+        "publicToggle": "اسمح للمستخدمين الآخرين باكتشاف هذه الشخصية",
+        "unsavedChanges": "لديك تغييرات غير محفوظة",
+        "allSaved": "تم حفظ التغييرات",
+        "submitting": "جارٍ الحفظ..."
+      }
+    },
+    "create": {
+      "title": "إنشاء شخصية جديدة",
+      "subtitle": "اجمع بين السياق السردي، والأسلوب المرئي، وإعدادات الإشراف. يمكنك تحسين كل شيء لاحقًا.",
+      "saveButton": "حفظ الشخصية",
+      "cancelButton": "إلغاء والعودة"
+    },
+    "edit": {
+      "title": "تعديل الشخصية",
+      "subtitle": "تحديث {{name}}",
+      "saveButton": "تحديث الشخصية",
+      "cancelButton": "تجاهل التغييرات",
+      "states": {
+        "loading": "جارٍ تحميل الشخصية..."
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "جارٍ تحميل تفاصيل الشخصية...",
+        "notFound": "لم نتمكن من العثور على هذه الشخصية."
+      },
+      "actions": {
+        "backToHub": "العودة إلى المركز",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "deleting": "جارٍ الحذف..."
+      },
+      "confirmDelete": "هل أنت متأكد أنك تريد حذف هذه الشخصية؟ لا يمكن التراجع عن هذا الإجراء.",
+      "labels": {
+        "public": "عام",
+        "private": "خاص",
+        "createdAt": "تم الإنشاء",
+        "updatedAt": "آخر تحديث",
+        "identifier": "معرف الشخصية: {{id}}"
+      },
+      "sections": {
+        "physicalCharacteristics": "المظهر",
+        "personality": "الشخصية",
+        "history": "الخلفية",
+        "contentTags": "تحذيرات المحتوى",
+        "metadata": "علامات"
+      }
+    },
+    "errors": {
+      "createFailed": "لم نتمكن من إنشاء الشخصية. يرجى المحاولة مرة أخرى.",
+      "updateFailed": "لم نتمكن من تحديث الشخصية.",
+      "deleteFailed": "لم نتمكن من حذف الشخصية.",
+      "detailUnavailable": "تعذر تحميل تفاصيل الشخصية حاليًا."
+    }
+  }
+}

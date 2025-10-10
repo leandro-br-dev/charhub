@@ -1,4 +1,4 @@
-import { Prisma, AgeRating } from '../generated/prisma';
+import { Prisma } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import type { CreateAttireInput, UpdateAttireInput } from '../validators';

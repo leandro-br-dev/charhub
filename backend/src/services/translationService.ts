@@ -4,7 +4,7 @@ import { existsSync } from 'node:fs';
 
 const TRANSLATIONS_ROOT = path.resolve(__dirname, '../../translations');
 const BASE_LANGUAGE = 'en';
-const SUPPORTED_NAMESPACES = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal'] as const;
+const SUPPORTED_NAMESPACES = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal', 'characters'] as const;
 type Namespace = (typeof SUPPORTED_NAMESPACES)[number];
 
 type TranslationFile = {

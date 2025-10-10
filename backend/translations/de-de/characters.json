@@ -1,0 +1,184 @@
+{
+  "description": "Characters module strings for hub, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledCharacter": "Unbenannter Charakter",
+      "updatedAt": "Aktualisiert am {{date}}",
+      "public": "Öffentlich",
+      "private": "Privat",
+      "identifier": "Charakter-ID: {{id}}",
+      "unsavedChanges": "Ungespeicherte Änderungen",
+      "allSaved": "Alle Änderungen gespeichert",
+      "submitting": "Speichere..."
+    },
+    "ageRatings": {
+      "L": "Allgemeine Zielgruppe",
+      "TEN": "Ab 10 Jahren",
+      "TWELVE": "Ab 12 Jahren",
+      "FOURTEEN": "Ab 14 Jahren",
+      "SIXTEEN": "Ab 16 Jahren",
+      "EIGHTEEN": "Ab 18 Jahren"
+    },
+    "purposes": {
+      "chat": "Chat",
+      "story": "Geschichte",
+      "both": "Chat & Geschichte"
+    },
+    "contentTags": {
+      "VIOLENCE": "Gewalt",
+      "GORE": "Blut und Gewalt",
+      "SEXUAL": "Sexuell",
+      "NUDITY": "Nacktheit",
+      "LANGUAGE": "Sprache",
+      "DRUGS": "Drogen",
+      "ALCOHOL": "Alkohol",
+      "HORROR": "Horror",
+      "PSYCHOLOGICAL": "Psychologisch",
+      "DISCRIMINATION": "Diskriminierung",
+      "CRIME": "Kriminalität",
+      "GAMBLING": "Glücksspiel"
+    },
+    "contentTagHints": {
+      "VIOLENCE": "Kampf, Schlägereien oder aggressive Konflikte.",
+      "GORE": "Grafische Verletzungen und explizite Details.",
+      "SEXUAL": "Erwachsenenthemen oder Anspielungen.",
+      "NUDITY": "Teilweise oder vollständige Nacktheit.",
+      "LANGUAGE": "Explizite oder starke Sprache.",
+      "DRUGS": "Drogenkonsum oder -bezüge.",
+      "ALCOHOL": "Alkoholkonsum.",
+      "HORROR": "Beunruhigende oder Horror-Bilder.",
+      "PSYCHOLOGICAL": "Psychische Gesundheit oder psychologische Spannung.",
+      "DISCRIMINATION": "Hassreden oder Vorurteile.",
+      "CRIME": "Themen der kriminellen Aktivität.",
+      "GAMBLING": "Wetten oder Glücksspielbezüge."
+    },
+    "accessibility": {
+      "addToFavorites": "Zu Favoriten hinzufügen",
+      "removeFromFavorites": "Aus Favoriten entfernen"
+    },
+    "hub": {
+      "title": "Charakter-Hub",
+      "subtitle": "Erstellen, organisieren und entwickeln Sie die Besetzung, die Ihre Geschichten, Chat-Agenten und KI-Erlebnisse antreibt.",
+      "actions": {
+        "createCharacter": "Neuer Charakter",
+        "retry": "Erneut versuchen",
+        "blurSensitive": "Sensible Inhalte ausblenden",
+        "showSensitive": "Sensible Inhalte anzeigen"
+      },
+      "tabs": {
+        "myCharacters": "Meine Charaktere",
+        "publicGallery": "Öffentliche Galerie"
+      },
+      "filters": {
+        "searchPlaceholder": "Suche nach Name oder Stil",
+        "allAgeRatings": "Alle Altersfreigaben"
+      },
+      "states": {
+        "loading": "Lade deine Charaktere...",
+        "error": "Wir konnten keine Charaktere laden. Bitte versuche es erneut.",
+        "empty": "Noch keine Charaktere verfügbar.",
+        "empty_private": "Du hast noch keine Charaktere erstellt.",
+        "empty_public": "Keine öffentlichen Charaktere entsprechen deinen Filtern.",
+        "emptyHint": "Beginne mit der Erstellung eines Profils oder passe deine Filter an.",
+        "emptySearchHint": "Passe deine Filter an oder lösche die Suche, um mehr Ergebnisse zu sehen."
+      },
+      "labels": {
+        "total": "{{count}} Charakter{{count, plural, one {} other {e}}} verfügbar",
+        "quickCreateLink": "Direkt zur Erstellung springen"
+      }
+    },
+    "form": {
+      "submit": "Speichern",
+      "cancel": "Abbrechen",
+      "sections": {
+        "identity": "Identität",
+        "identityHint": "Definiere, wie Personen diesen Charakter auf einen Blick entdecken und identifizieren.",
+        "profile": "Erzählerisches Profil",
+        "profileHint": "Beschreibe Persönlichkeit, Eigenschaften und Hintergrundgeschichte, um die KI zu leiten.",
+        "configuration": "Verfügbarkeit & Moderation",
+        "configurationHint": "Kontrolliere, wie der Charakter angezeigt wird, wer darauf zugreifen kann und welche Schutzmaßnahmen gelten.",
+        "contentTagsHint": "Markiere potenziell sensible Themen. Benutzer können diese basierend auf ihren Präferenzen herausfiltern."
+      },
+      "fields": {
+        "firstName": "Vorname",
+        "lastName": "Nachname",
+        "age": "Alter",
+        "gender": "Geschlecht",
+        "species": "Spezies / Herkunft",
+        "style": "Visueller oder erzählerischer Stil",
+        "avatar": "Avatar-Bild-URL",
+        "physicalCharacteristics": "Physische Beschreibung",
+        "personality": "Persönlichkeit",
+        "history": "Hintergrundgeschichte",
+        "purpose": "Hauptverwendung",
+        "isPublic": "Sichtbarkeit",
+        "ageRating": "Altersfreigabe",
+        "originalLanguageCode": "Ursprungssprache",
+        "contentTags": "Inhaltswarnungen"
+      },
+      "placeholders": {
+        "gender": "Z. B. nicht-binäre KI, Android, Ritter",
+        "species": "Z. B. Mensch, Elf, Synthetik",
+        "style": "Z. B. Noir-Detektiv, Pastell-Anime, malerisch",
+        "avatar": "https://cdn.example.com/avatar.png"
+      },
+      "hints": {
+        "avatar": "Gib eine HTTPS-Bild-URL an, während der Upload-Prozess noch in Entwicklung ist."
+      },
+      "labels": {
+        "publicToggle": "Erlaube anderen Benutzern, diesen Charakter zu entdecken",
+        "unsavedChanges": "Du hast ungespeicherte Änderungen",
+        "allSaved": "Änderungen gespeichert",
+        "submitting": "Speichere..."
+      }
+    },
+    "create": {
+      "title": "Neuen Charakter erstellen",
+      "subtitle": "Kombiniere erzählerischen Kontext, visuellen Stil und Moderationseinstellungen. Du kannst alles später verfeinern.",
+      "saveButton": "Charakter speichern",
+      "cancelButton": "Abbrechen und zurückkehren"
+    },
+    "edit": {
+      "title": "Charakter bearbeiten",
+      "subtitle": "Bearbeite {{name}}",
+      "saveButton": "Charakter aktualisieren",
+      "cancelButton": "Änderungen verwerfen",
+      "states": {
+        "loading": "Lade Charakter..."
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "Lade Charakterdetails...",
+        "notFound": "Wir konnten diesen Charakter nicht finden."
+      },
+      "actions": {
+        "backToHub": "Zurück zum Hub",
+        "edit": "Bearbeiten",
+        "delete": "Löschen",
+        "deleting": "Lösche..."
+      },
+      "confirmDelete": "Möchtest du diesen Charakter wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "labels": {
+        "public": "Öffentlich",
+        "private": "Privat",
+        "createdAt": "Erstellt am",
+        "updatedAt": "Zuletzt aktualisiert",
+        "identifier": "Charakter-ID: {{id}}"
+      },
+      "sections": {
+        "physicalCharacteristics": "Aussehen",
+        "personality": "Persönlichkeit",
+        "history": "Hintergrundgeschichte",
+        "contentTags": "Inhaltswarnungen",
+        "metadata": "Tags"
+      }
+    },
+    "errors": {
+      "createFailed": "Wir konnten den Charakter nicht erstellen. Bitte versuche es erneut.",
+      "updateFailed": "Wir konnten den Charakter nicht aktualisieren.",
+      "deleteFailed": "Wir konnten den Charakter nicht löschen.",
+      "detailUnavailable": "Charakterdetails können derzeit nicht geladen werden."
+    }
+  }
+}
