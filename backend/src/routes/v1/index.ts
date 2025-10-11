@@ -8,6 +8,8 @@ import storageRoutes from './storage';
 import charactersRoutes from './characters';
 import lorasRoutes from './loras';
 import attiresRoutes from './attires';
+import usersRoutes from './users';
+import conversationsRoutes from './conversations';
 
 const router = Router();
 
@@ -19,6 +21,8 @@ router.use('/storage', storageRoutes);
 router.use('/characters', charactersRoutes);
 router.use('/loras', lorasRoutes);
 router.use('/attires', attiresRoutes);
+router.use('/users', usersRoutes);
+router.use('/conversations', conversationsRoutes);
 router.use('/', accessRoutes);
 
 export default router;

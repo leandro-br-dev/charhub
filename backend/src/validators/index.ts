@@ -54,3 +54,33 @@ export {
   type UpdateCharacterStickerInput,
   type ListCharacterStickersQuery,
 } from './characterSticker.validator';
+
+// User validators
+export {
+  updateUserProfileSchema,
+  type UpdateUserProfileInput,
+} from './user.validator';
+
+// Conversation validators
+export {
+  createConversationSchema,
+  updateConversationSchema,
+  addParticipantSchema,
+  listConversationsQuerySchema,
+  type CreateConversationInput,
+  type UpdateConversationInput,
+  type AddParticipantInput,
+  type ListConversationsQuery,
+} from './conversation.validator';
+
+// Message validators
+export {
+  sendMessageSchema,
+  createMessageSchema,
+  listMessagesQuerySchema,
+  deleteMessageSchema,
+  type SendMessageInput,
+  type CreateMessageInput,
+  type ListMessagesQuery,
+  type DeleteMessageInput,
+} from './message.validator';
