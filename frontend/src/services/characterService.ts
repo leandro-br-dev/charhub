@@ -8,7 +8,8 @@ import {
   EMPTY_CHARACTER_FORM
 } from '../types/characters';
 
-const BASE_PATH = '/characters';
+const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
+const BASE_PATH = `${API_PREFIX}/characters`;
 const USE_MOCKS = import.meta.env.VITE_USE_CHARACTER_MOCKS === 'true';
 
 const defaultListResponse = (items: Character[]): CharacterListResponse => ({

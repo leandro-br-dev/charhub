@@ -1,6 +1,6 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { Header } from './components/layout/Header';
-import { ProtectedRoute } from './components/layout/ProtectedRoute';
+import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { Header, ProtectedRoute } from './components/layout';
+import { AuthenticatedLayout } from './layouts';
 import Home from './pages/home';
 import Login from './pages/(auth)/login';
 import Signup from './pages/(auth)/signup';
@@ -11,63 +11,49 @@ import CharacterHubPage from './pages/(characters)/hub';
 import CharacterCreatePage from './pages/(characters)/create';
 import CharacterDetailPage from './pages/(characters)/[characterId]';
 import CharacterEditPage from './pages/(characters)/[characterId]/edit';
+import ProfilePage from './pages/profile';
 
-export default function App(): JSX.Element {
+function PublicShell(): JSX.Element {
   const location = useLocation();
-  const isExternalPage = ['/', '/login', '/signup'].includes(location.pathname);
+  const hideHeaderPaths = new Set(['/', '/login', '/signup']);
+  const showHeader = !hideHeaderPaths.has(location.pathname);
+  const mainClassName = showHeader ? 'mx-auto max-w-7xl px-6 py-10' : '';
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {!isExternalPage && <Header />}
-      <main className={isExternalPage ? '' : 'mx-auto max-w-7xl px-6 py-10'}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/auth/callback" element={<Callback />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/characters"
-            element={
-              <ProtectedRoute>
-                <CharacterHubPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/characters/create"
-            element={
-              <ProtectedRoute>
-                <CharacterCreatePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/characters/:characterId"
-            element={
-              <ProtectedRoute>
-                <CharacterDetailPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/characters/:characterId/edit"
-            element={
-              <ProtectedRoute>
-                <CharacterEditPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      {showHeader ? <Header /> : null}
+      <main className={mainClassName}>
+        <Outlet />
       </main>
     </div>
+  );
+}
+
+export default function App(): JSX.Element {
+  return (
+    <Routes>
+      <Route element={<PublicShell />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/auth/callback" element={<Callback />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+
+      <Route
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/characters" element={<CharacterHubPage />} />
+        <Route path="/characters/create" element={<CharacterCreatePage />} />
+        <Route path="/characters/:characterId" element={<CharacterDetailPage />} />
+        <Route path="/characters/:characterId/edit" element={<CharacterEditPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+      </Route>
+    </Routes>
   );
 }

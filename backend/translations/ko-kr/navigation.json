@@ -1,0 +1,23 @@
+{
+  "description": "Navigation components strings for the desktop rail and contextual sidebar.",
+  "resources": {
+    "chat": "채팅",
+    "story": "스토리",
+    "development": "개발",
+    "characters": "캐릭터",
+    "assets": "에셋",
+    "profileLink": "내 프로필",
+    "reportBug": "문제 신고",
+    "storyPlaceholder": "스토리 도구가 곧 여기에 표시됩니다.",
+    "chatHistory": "대화 기록",
+    "chatHistoryPlaceholder": "채팅 마이그레이션이 완료되면 메시지와 스레드가 여기에 표시됩니다.",
+    "developmentTools": "개발자 도구",
+    "developmentPlaceholder": "빌드 파이프라인, 로그 및 자동화 컨트롤이 곧 여기에 표시됩니다.",
+    "characterSidebar": "캐릭터 개요",
+    "characterSidebarPlaceholder": "허브 사이드바가 재구축되는 즉시 좋아하는 캐릭터를 찾아 고정하세요.",
+    "storySidebar": "스토리",
+    "storySidebarPlaceholder": "스토리텔링 제품군이 마이그레이션되면 초안과 챕터 개요를 여기에 보관하세요.",
+    "sidebarDefaultTitle": "CharHub 탐색",
+    "sidebarDefaultDescription": "탐색 레일의 아이콘을 사용하여 환경 간에 전환하세요."
+  }
+}

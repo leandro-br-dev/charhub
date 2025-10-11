@@ -1,0 +1,48 @@
+{
+  "description": "Profile management surface for authenticated users.",
+  "resources": {
+    "sectionTitle": "Account",
+    "title": "Manage your profile",
+    "subtitle": "Update how other people see you on CharHub. Preferences that are still being migrated will appear here soon.",
+    "identity": {
+      "header": "Profile photo",
+      "description": "Pick an avatar to represent you across chats and characters.",
+      "upload": "Upload image",
+      "placeholderNote": "Avatar uploads will be available after we reconnect the media service."
+    },
+    "details": {
+      "header": "Public details",
+      "description": "These values are shared with collaborators and used as defaults in conversations."
+    },
+    "fields": {
+      "displayName": "Display name",
+      "displayNamePlaceholder": "How other users address you",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Optional for billing and e-mail copies",
+      "username": "User ID",
+      "usernamePlaceholder": "Unique identifier",
+      "usernameHint": "This identifier comes from your OAuth provider and cannot be changed yet.",
+      "email": "E-mail",
+      "emailHint": "Managed by your authentication provider.",
+      "birthDate": "Birth date",
+      "gender": "Gender"
+    },
+    "genders": {
+      "feminine": "Female",
+      "masculine": "Male",
+      "nonBinary": "Non-binary",
+      "unspecified": "Prefer not to say"
+    },
+    "preferences": {
+      "placeholder": "Content preferences, blur settings and sensitive themes will return once the moderation service is integrated."
+    },
+    "actions": {
+      "save": "Save changes"
+    },
+    "security": {
+      "header": "Security",
+      "description": "Your CharHub sessions inherit OAuth security from Google or Facebook. Multi-factor support will be added soon.",
+      "placeholder": "Session management and passwordless login controls are on the roadmap."
+    }
+  }
+}

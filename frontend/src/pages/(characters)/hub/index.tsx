@@ -26,7 +26,11 @@ export default function CharacterHubPage(): JSX.Element {
     if (ageRatingFilter !== 'all') {
       params.ageRatings = [ageRatingFilter];
     }
-    params.isPublic = viewMode === 'public';
+    // Only filter by isPublic when viewing public gallery
+    // For "My Characters" view, don't set isPublic to show all user's characters (both public and private)
+    if (viewMode === 'public') {
+      params.isPublic = true;
+    }
     return params;
   }, [search, ageRatingFilter, viewMode]);
 

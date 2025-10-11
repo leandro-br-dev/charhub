@@ -1,0 +1,23 @@
+{
+  "description": "Navigation components strings for the desktop rail and contextual sidebar.",
+  "resources": {
+    "chat": "الدردشة",
+    "story": "القصة",
+    "development": "التطوير",
+    "characters": "الشخصيات",
+    "assets": "الأصول",
+    "profileLink": "ملفي الشخصي",
+    "reportBug": "الإبلاغ عن مشكلة",
+    "storyPlaceholder": "ستتوفر أدوات القصة هنا قريبًا.",
+    "chatHistory": "سجل المحادثات",
+    "chatHistoryPlaceholder": "ستظهر الرسائل والمواضيع هنا عند اكتمال ترحيل الدردشة.",
+    "developmentTools": "أدوات المطور",
+    "developmentPlaceholder": "ستتوفر مسارات البناء والسجلات وعناصر التحكم الآلية هنا قريبًا.",
+    "characterSidebar": "نظرة عامة على الشخصيات",
+    "characterSidebarPlaceholder": "تصفح وثبت شخصياتك المفضلة هنا بمجرد إعادة بناء الشريط الجانبي للمركز.",
+    "storySidebar": "القصص",
+    "storySidebarPlaceholder": "احتفظ بالمسودات ومخططات الفصول هنا بمجرد ترحيل مجموعة أدوات سرد القصص.",
+    "sidebarDefaultTitle": "استكشف CharHub",
+    "sidebarDefaultDescription": "استخدم الأيقونات الموجودة على شريط التنقل للتبديل بين التجارب."
+  }
+}

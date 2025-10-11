@@ -1,0 +1,23 @@
+{
+  "description": "Navigation components strings for the desktop rail and contextual sidebar.",
+  "resources": {
+    "chat": "Chat",
+    "story": "Storia",
+    "development": "Sviluppo",
+    "characters": "Personaggi",
+    "assets": "Risorse",
+    "profileLink": "Il mio profilo",
+    "reportBug": "Segnala un problema",
+    "storyPlaceholder": "Gli strumenti per le storie saranno presto qui.",
+    "chatHistory": "Cronologia conversazioni",
+    "chatHistoryPlaceholder": "Messaggi e thread appariranno qui al completamento della migrazione della chat.",
+    "developmentTools": "Strumenti per sviluppatori",
+    "developmentPlaceholder": "Le pipeline di build, i log e i controlli di automazione saranno presto qui.",
+    "characterSidebar": "Panoramica personaggi",
+    "characterSidebarPlaceholder": "Sfoglia e fissa i tuoi personaggi preferiti qui non appena la barra laterale dell'hub verrà ricostruita.",
+    "storySidebar": "Storie",
+    "storySidebarPlaceholder": "Tieni qui le bozze e gli schemi dei capitoli una volta migrata la suite di narrazione.",
+    "sidebarDefaultTitle": "Esplora CharHub",
+    "sidebarDefaultDescription": "Usa le icone nella barra di navigazione per passare da un'esperienza all'altra."
+  }
+}
