@@ -1,0 +1,48 @@
+{
+  "description": "Profile management surface for authenticated users.",
+  "resources": {
+    "sectionTitle": "Cuenta",
+    "title": "Gestiona tu perfil",
+    "subtitle": "Actualiza cómo te ven los demás en CharHub. Las preferencias que aún se están migrando aparecerán aquí pronto.",
+    "identity": {
+      "header": "Foto de perfil",
+      "description": "Elige un avatar para representarte en chats y personajes.",
+      "upload": "Subir imagen",
+      "placeholderNote": "Las subidas de avatar estarán disponibles después de que reconectemos el servicio de medios."
+    },
+    "details": {
+      "header": "Detalles públicos",
+      "description": "Estos valores se comparten con los colaboradores y se utilizan como valores predeterminados en las conversaciones."
+    },
+    "fields": {
+      "displayName": "Nombre a mostrar",
+      "displayNamePlaceholder": "Cómo te dirigen otros usuarios",
+      "fullName": "Nombre completo",
+      "fullNamePlaceholder": "Opcional para facturación y copias de correo electrónico",
+      "username": "ID de usuario",
+      "usernamePlaceholder": "Identificador único",
+      "usernameHint": "Este identificador proviene de tu proveedor de OAuth y aún no se puede cambiar.",
+      "email": "Correo electrónico",
+      "emailHint": "Gestionado por tu proveedor de autenticación.",
+      "birthDate": "Fecha de nacimiento",
+      "gender": "Género"
+    },
+    "genders": {
+      "feminine": "Femenino",
+      "masculine": "Masculino",
+      "nonBinary": "No binario",
+      "unspecified": "Prefiero no decirlo"
+    },
+    "preferences": {
+      "placeholder": "Las preferencias de contenido, la configuración de desenfoque y los temas sensibles volverán una vez que se integre el servicio de moderación."
+    },
+    "actions": {
+      "save": "Guardar cambios"
+    },
+    "security": {
+      "header": "Seguridad",
+      "description": "Tus sesiones de CharHub heredan la seguridad OAuth de Google o Facebook. Pronto se añadirá soporte para autenticación multifactor.",
+      "placeholder": "La gestión de sesiones y los controles de inicio de sesión sin contraseña están en el plan de desarrollo."
+    }
+  }
+}

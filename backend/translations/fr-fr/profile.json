@@ -1,0 +1,48 @@
+{
+  "description": "Profile management surface for authenticated users.",
+  "resources": {
+    "sectionTitle": "Compte",
+    "title": "Gérez votre profil",
+    "subtitle": "Modifiez la façon dont les autres vous voient sur CharHub. Les préférences en cours de migration apparaîtront bientôt ici.",
+    "identity": {
+      "header": "Photo de profil",
+      "description": "Choisissez un avatar pour vous représenter dans les discussions et auprès des personnages.",
+      "upload": "Importer une image",
+      "placeholderNote": "L'importation d'avatars sera disponible après la reconnexion du service multimédia."
+    },
+    "details": {
+      "header": "Détails publics",
+      "description": "Ces valeurs sont partagées avec les collaborateurs et utilisées par défaut dans les conversations."
+    },
+    "fields": {
+      "displayName": "Nom d'affichage",
+      "displayNamePlaceholder": "Comment les autres utilisateurs vous appellent",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Facultatif pour la facturation et les copies par e-mail",
+      "username": "ID utilisateur",
+      "usernamePlaceholder": "Identifiant unique",
+      "usernameHint": "Cet identifiant provient de votre fournisseur OAuth et ne peut pas être modifié pour l'instant.",
+      "email": "E-mail",
+      "emailHint": "Géré par votre fournisseur d'authentification.",
+      "birthDate": "Date de naissance",
+      "gender": "Genre"
+    },
+    "genders": {
+      "feminine": "Femme",
+      "masculine": "Homme",
+      "nonBinary": "Non-binaire",
+      "unspecified": "Préfère ne pas répondre"
+    },
+    "preferences": {
+      "placeholder": "Les préférences de contenu, les paramètres de flou et les thèmes sensibles reviendront une fois le service de modération intégré."
+    },
+    "actions": {
+      "save": "Enregistrer les modifications"
+    },
+    "security": {
+      "header": "Sécurité",
+      "description": "Vos sessions CharHub héritent de la sécurité OAuth de Google ou Facebook. La prise en charge de l'authentification multifacteur sera bientôt ajoutée.",
+      "placeholder": "La gestion des sessions et les contrôles de connexion sans mot de passe sont prévus."
+    }
+  }
+}

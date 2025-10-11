@@ -1,0 +1,48 @@
+{
+  "description": "Profile management surface for authenticated users.",
+  "resources": {
+    "sectionTitle": "Konto",
+    "title": "Verwalten Sie Ihr Profil",
+    "subtitle": "Aktualisieren Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, werden bald hier angezeigt.",
+    "identity": {
+      "header": "Profilfoto",
+      "description": "Wählen Sie einen Avatar, der Sie in Chats und bei Charakteren repräsentiert.",
+      "upload": "Bild hochladen",
+      "placeholderNote": "Avatar-Uploads sind verfügbar, sobald wir den Mediendienst wieder verbunden haben."
+    },
+    "details": {
+      "header": "Öffentliche Details",
+      "description": "Diese Werte werden mit Kollaborateuren geteilt und als Standardwerte in Konversationen verwendet."
+    },
+    "fields": {
+      "displayName": "Anzeigename",
+      "displayNamePlaceholder": "Wie andere Benutzer Sie ansprechen",
+      "fullName": "Vollständiger Name",
+      "fullNamePlaceholder": "Optional für Abrechnung und E-Mail-Kopien",
+      "username": "Benutzer-ID",
+      "usernamePlaceholder": "Eindeutiger Identifikator",
+      "usernameHint": "Dieser Identifikator stammt von Ihrem OAuth-Anbieter und kann noch nicht geändert werden.",
+      "email": "E-Mail",
+      "emailHint": "Verwaltet von Ihrem Authentifizierungsanbieter.",
+      "birthDate": "Geburtsdatum",
+      "gender": "Geschlecht"
+    },
+    "genders": {
+      "feminine": "Weiblich",
+      "masculine": "Männlich",
+      "nonBinary": "Nicht-binär",
+      "unspecified": "Keine Angabe"
+    },
+    "preferences": {
+      "placeholder": "Inhaltspräferenzen, Blur-Einstellungen und sensible Themen werden zurückkehren, sobald der Moderationsdienst integriert ist."
+    },
+    "actions": {
+      "save": "Änderungen speichern"
+    },
+    "security": {
+      "header": "Sicherheit",
+      "description": "Ihre CharHub-Sitzungen erben die OAuth-Sicherheit von Google oder Facebook. Multi-Faktor-Unterstützung wird bald hinzugefügt.",
+      "placeholder": "Sitzungsverwaltung und passwortlose Anmeldeoptionen sind in der Roadmap enthalten."
+    }
+  }
+}

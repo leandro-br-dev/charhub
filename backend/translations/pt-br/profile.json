@@ -1,0 +1,48 @@
+{
+  "description": "Profile management surface for authenticated users.",
+  "resources": {
+    "sectionTitle": "Conta",
+    "title": "Gerencie seu perfil",
+    "subtitle": "Atualize como outras pessoas te veem no CharHub. Preferências que ainda estão sendo migradas aparecerão aqui em breve.",
+    "identity": {
+      "header": "Foto de perfil",
+      "description": "Escolha um avatar para te representar em chats e personagens.",
+      "upload": "Carregar imagem",
+      "placeholderNote": "O upload de avatares estará disponível após reconectarmos o serviço de mídia."
+    },
+    "details": {
+      "header": "Detalhes públicos",
+      "description": "Estes valores são compartilhados com colaboradores e usados como padrão em conversas."
+    },
+    "fields": {
+      "displayName": "Nome de exibição",
+      "displayNamePlaceholder": "Como outros usuários se dirigem a você",
+      "fullName": "Nome completo",
+      "fullNamePlaceholder": "Opcional para faturamento e cópias de e-mail",
+      "username": "ID do usuário",
+      "usernamePlaceholder": "Identificador único",
+      "usernameHint": "Este identificador vem do seu provedor OAuth e ainda não pode ser alterado.",
+      "email": "E-mail",
+      "emailHint": "Gerenciado pelo seu provedor de autenticação.",
+      "birthDate": "Data de nascimento",
+      "gender": "Gênero"
+    },
+    "genders": {
+      "feminine": "Feminino",
+      "masculine": "Masculino",
+      "nonBinary": "Não-binário",
+      "unspecified": "Prefiro não dizer"
+    },
+    "preferences": {
+      "placeholder": "Preferências de conteúdo, configurações de desfoque e temas sensíveis retornarão assim que o serviço de moderação for integrado."
+    },
+    "actions": {
+      "save": "Salvar alterações"
+    },
+    "security": {
+      "header": "Segurança",
+      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte multifator será adicionado em breve.",
+      "placeholder": "Gerenciamento de sessão e controles de login sem senha estão no roteiro."
+    }
+  }
+}

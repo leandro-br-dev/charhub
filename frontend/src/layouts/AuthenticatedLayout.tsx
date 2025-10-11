@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { NavigationRail, Sidebar } from "../components/layout";
 import { Button } from "../components/ui/Button";
@@ -13,38 +13,12 @@ type AuthenticatedLayoutProps = {
   children?: ReactNode;
 };
 
-const SIDEBAR_PATH_PREFIXES = [
-  "/chat",
-  "/story",
-  "/characters",
-  "/manage",
-  "/profile",
-  "/credits-plans",
-  "/development",
-  "/assets",
-];
-
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX.Element {
   const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const railRef = useRef<HTMLDivElement | null>(null);
-
-  const hasSidebarContent = useMemo(
-    () => SIDEBAR_PATH_PREFIXES.some((prefix) => location.pathname.startsWith(prefix)),
-    [location.pathname]
-  );
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    if (window.innerWidth >= 768) {
-      setIsDesktopSidebarOpen(hasSidebarContent);
-    }
-  }, [hasSidebarContent]);
 
   useEffect(() => {
     setIsDrawerOpen(false);
@@ -140,3 +114,5 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
     </div>
   );
 }
+
+

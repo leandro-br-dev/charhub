@@ -47,6 +47,9 @@ services:
         NODE_ENV: ${NODE_ENV:-production}
     environment:
       - NODE_ENV=${NODE_ENV:-production}
+      - ENABLE_HOT_RELOAD=${BACKEND_ENABLE_HOT_RELOAD:-false}
+      - CHOKIDAR_USEPOLLING=${BACKEND_ENABLE_HOT_RELOAD:-false}
+      - CHOKIDAR_INTERVAL=${BACKEND_HOT_RELOAD_POLL_INTERVAL:-700}
     env_file:
       - ./backend/.env
     volumes:

@@ -1,0 +1,48 @@
+{
+  "description": "Profile management surface for authenticated users.",
+  "resources": {
+    "sectionTitle": "Account",
+    "title": "Gestisci il tuo profilo",
+    "subtitle": "Aggiorna come ti vedono gli altri su CharHub. Le preferenze in fase di migrazione appariranno presto qui.",
+    "identity": {
+      "header": "Foto profilo",
+      "description": "Scegli un avatar che ti rappresenti nelle chat e nei personaggi.",
+      "upload": "Carica immagine",
+      "placeholderNote": "I caricamenti di avatar saranno disponibili dopo il riconnetto del servizio multimediale."
+    },
+    "details": {
+      "header": "Dettagli pubblici",
+      "description": "Questi valori vengono condivisi con i collaboratori e utilizzati come predefiniti nelle conversazioni."
+    },
+    "fields": {
+      "displayName": "Nome visualizzato",
+      "displayNamePlaceholder": "Come gli altri utenti ti chiamano",
+      "fullName": "Nome completo",
+      "fullNamePlaceholder": "Opzionale per fatturazione e copie e-mail",
+      "username": "ID utente",
+      "usernamePlaceholder": "Identificatore univoco",
+      "usernameHint": "Questo identificatore proviene dal tuo provider OAuth e non può essere modificato al momento.",
+      "email": "E-mail",
+      "emailHint": "Gestito dal tuo provider di autenticazione.",
+      "birthDate": "Data di nascita",
+      "gender": "Genere"
+    },
+    "genders": {
+      "feminine": "Femmina",
+      "masculine": "Maschio",
+      "nonBinary": "Non binario",
+      "unspecified": "Preferisco non rispondere"
+    },
+    "preferences": {
+      "placeholder": "Le preferenze di contenuto, le impostazioni di sfocatura e i temi sensibili torneranno disponibili una volta integrato il servizio di moderazione."
+    },
+    "actions": {
+      "save": "Salva modifiche"
+    },
+    "security": {
+      "header": "Sicurezza",
+      "description": "Le tue sessioni CharHub ereditano la sicurezza OAuth da Google o Facebook. Il supporto multi-fattore verrà aggiunto presto.",
+      "placeholder": "La gestione delle sessioni e i controlli di accesso senza password sono in fase di sviluppo."
+    }
+  }
+}

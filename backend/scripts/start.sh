@@ -3,8 +3,10 @@ set -e
 
 NODE_ENV=${NODE_ENV:-production}
 DEV_TRANSLATION_MODE=${DEV_TRANSLATION_MODE:-auto}
+ENABLE_HOT_RELOAD=${ENABLE_HOT_RELOAD:-true}
 
 echo "[entrypoint] Environment: $NODE_ENV"
+echo "[entrypoint] Hot reload: $ENABLE_HOT_RELOAD"
 
 # Run database migrations
 if [ "$RUN_MIGRATIONS" != "false" ]; then
@@ -65,6 +67,12 @@ fi
 # Start application based on environment
 echo "[entrypoint] Starting application..."
 if [ "$NODE_ENV" = "development" ]; then
+  if [ "$ENABLE_HOT_RELOAD" = "false" ]; then
+    echo "[entrypoint] Hot reload disabled via ENABLE_HOT_RELOAD=false"
+    echo "[entrypoint] Running development server without watcher (tsx)"
+    exec ./node_modules/.bin/tsx src/index.ts
+  fi
+
   echo "[entrypoint] Running with hot-reload (ts-node-dev) as root"
   echo "[entrypoint] Note: Running as root in development to access mounted volumes"
 

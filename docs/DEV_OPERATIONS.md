@@ -17,6 +17,8 @@ Copy `.env.example` to `.env` in the repository root. Key fields:
 
 - `ENV_SUFFIX` - `dev` or `prod`; used by Docker Compose to pick the right Cloudflare config directory.
 - `PUBLIC_HOSTNAME`, `PUBLIC_FACING_URL` - Hostnames consumed by both backend and frontend during runtime.
+- `BACKEND_ENABLE_HOT_RELOAD` - Set to `true` (default) so the backend container uses `ts-node-dev`; switch to `false` to boot with plain `tsx` when file watching is undesirable.
+- `BACKEND_HOT_RELOAD_POLL_INTERVAL` - Milliseconds used by Chokidar polling (effective only when hot reload is enabled).
 
 ### Backend (`backend/.env`)
 
