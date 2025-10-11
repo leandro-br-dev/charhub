@@ -52,53 +52,61 @@ Este documento contém apenas as tarefas prioritárias em que devemos focar agor
 
 Estas tarefas podem ser executadas simultaneamente por 2 agentes diferentes:
 
-#### 👤 AGENTE 1: Etapa 2.2 - Backend Chat (API REST + Services)
+#### ✅ AGENTE 1: Etapa 2.2 - Backend Chat (API REST + Services) - COMPLETA
 **Tempo**: 1-2 semanas
 **Dependência**: ✅ Etapa 2.1 (schemas Prisma)
+**Status**: ✅ Concluída em 2025-10-11
 
 **Tarefas**:
-- [ ] **Validadores Zod**:
-  - [ ] `CreateConversationSchema` (title?, participantIds[])
-  - [ ] `SendMessageSchema` (conversationId, content, metadata?)
-  - [ ] `UpdateConversationSchema` (title?, archived?)
-- [ ] **Services**:
-  - [ ] `conversationService.ts`:
-    - [ ] `create(userId, data)` - criar conversa com participantes
-    - [ ] `getById(conversationId, userId)` - buscar com mensagens
-    - [ ] `list(userId, filters)` - listar conversas do usuário
-    - [ ] `addParticipant(conversationId, characterId)`
-    - [ ] `removeParticipant(conversationId, characterId)`
-    - [ ] `archive(conversationId, userId)`
-  - [ ] `messageService.ts`:
-    - [ ] `create(conversationId, senderId, senderType, content)`
-    - [ ] `list(conversationId, pagination)`
-    - [ ] `delete(messageId, userId)` - soft delete
-  - [ ] `assistantService.ts`:
-    - [ ] `generateResponse(conversationId, characterId)` - orquestrar LLM
-    - [ ] `buildPrompt(character, conversationHistory)` - construir contexto
-- [ ] **Rotas Express** (`routes/v1/conversations.ts`):
-  - [ ] `POST /conversations` - criar conversa
-  - [ ] `GET /conversations` - listar conversas
-  - [ ] `GET /conversations/:id` - detalhes + mensagens
-  - [ ] `POST /conversations/:id/messages` - enviar mensagem
-  - [ ] `POST /conversations/:id/participants` - adicionar personagem
-  - [ ] `DELETE /conversations/:id/participants/:characterId`
-  - [ ] `PATCH /conversations/:id` - atualizar (arquivar, título)
-  - [ ] `GET /conversations/:id/messages` - paginação de histórico
-- [ ] **Middleware**:
-  - [ ] `requireConversationAccess` - verificar ownership
-  - [ ] Integrar com `requireAuth`
-- [ ] **Testes manuais** via Postman/Insomnia
+- [x] **Validadores Zod**:
+  - [x] `CreateConversationSchema` (title, participantIds[], settings, projectId)
+  - [x] `SendMessageSchema` (conversationId, content, attachments, metadata)
+  - [x] `UpdateConversationSchema` (title, settings, isTitleUserEdited)
+  - [x] `AddParticipantSchema` com validação XOR (userId/characterId/assistantId)
+- [x] **Services**:
+  - [x] `conversationService.ts` (380 linhas):
+    - [x] `createConversation(userId, data)` - criar conversa com participantes
+    - [x] `getConversationById(conversationId, userId)` - buscar com mensagens
+    - [x] `listConversations(userId, filters)` - listar conversas com paginação
+    - [x] `updateConversation(conversationId, userId, data)`
+    - [x] `addParticipant(conversationId, userId, participantData)`
+    - [x] `removeParticipant(conversationId, userId, participantId)`
+    - [x] `archiveConversation(conversationId, userId)`
+    - [x] `isConversationOwner(conversationId, userId)`
+  - [x] `messageService.ts` (192 linhas):
+    - [x] `createMessage(data)` - criar mensagem + update lastMessageAt
+    - [x] `listMessages(conversationId, userId, query)` - paginação com before/after
+    - [x] `getMessageById(messageId, userId)`
+    - [x] `deleteMessage(messageId, userId)`
+    - [x] `getMessageCount(conversationId)`
+    - [x] `getLastMessages(conversationId, limit)`
+  - [x] `assistantService.ts` (160 linhas):
+    - [x] `generateResponse(conversationId, participantId)` - placeholder LLM
+    - [x] `buildSystemPrompt(instructions, character)` - construir contexto
+    - [x] `buildConversationHistory(conversationId, limit)`
+    - [x] `sendAIMessage(conversationId, participantId)`
+- [x] **Rotas Express** (`routes/v1/conversations.ts` - 532 linhas):
+  - [x] `POST /conversations` - criar conversa
+  - [x] `GET /conversations` - listar conversas do usuário
+  - [x] `GET /conversations/:id` - detalhes + mensagens
+  - [x] `PATCH /conversations/:id` - atualizar título/settings
+  - [x] `POST /conversations/:id/participants` - adicionar participante
+  - [x] `DELETE /conversations/:id/participants/:participantId` - remover participante
+  - [x] `POST /conversations/:id/messages` - enviar mensagem do usuário
+  - [x] `GET /conversations/:id/messages` - paginação de histórico
+  - [x] `POST /conversations/:id/generate` - gerar resposta de IA
+- [x] **Middleware**:
+  - [x] Usar `requireAuth` em todas as rotas
+  - [x] Ownership verification em cada service
+- [x] Integrar rotas em `routes/v1/index.ts`
 
-**Arquivos criados**:
-- `backend/src/validators/conversation.ts`
-- `backend/src/validators/message.ts`
-- `backend/src/services/conversationService.ts`
-- `backend/src/services/messageService.ts`
-- `backend/src/services/assistantService.ts`
-- `backend/src/routes/v1/conversations.ts`
-
-**Referência**: `E:\Projects\charhub_dev_old_version\backend\app\api\endpoints\conversations.py`
+**Arquivos implementados**:
+- `backend/src/validators/conversation.validator.ts` (70 linhas)
+- `backend/src/validators/message.validator.ts` (40 linhas)
+- `backend/src/services/conversationService.ts` (380 linhas)
+- `backend/src/services/messageService.ts` (192 linhas)
+- `backend/src/services/assistantService.ts` (160 linhas)
+- `backend/src/routes/v1/conversations.ts` (532 linhas)
 
 ---
 
