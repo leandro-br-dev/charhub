@@ -8,19 +8,16 @@ const resolvedBase = resolveApiBaseUrl();
 const loadPath = resolvedBase ? `${resolvedBase}/api/v1/i18n/{{lng}}/{{ns}}` : '/api/v1/i18n/{{lng}}/{{ns}}';
 
 const namespaces = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal', 'characters'];
-const supportedPrefixes = ['en', 'pt', 'es', 'fr', 'de', 'zh', 'hi', 'ar', 'ru', 'ja', 'ko', 'it'];
-const supportedLngs = [
-  'en-US', 'pt-BR', 'es-ES', 'fr-FR', 'de-DE', 'zh-CN', 'hi-IN', 'ar-SA', 'ru-RU', 'ja-JP', 'ko-KR', 'it-IT',
-  ...supportedPrefixes
-];
+const supportedLngs = ['en-US', 'pt-BR', 'es-ES', 'fr-FR', 'de-DE', 'zh-CN', 'hi-IN', 'ar-SA', 'ru-RU', 'ja-JP', 'ko-KR', 'it-IT'];
 
 i18n
   .use(HttpBackend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en-US',
+    fallbackLng: false,
     supportedLngs,
+    load: 'currentOnly',
     ns: namespaces,
     defaultNS: 'common',
     interpolation: {
@@ -32,8 +29,12 @@ i18n
     },
     backend: {
       loadPath,
+      requestOptions: {
+        cache: 'default',
+      },
     },
     returnNull: false,
+    saveMissing: false,
   });
 
 export default i18n;

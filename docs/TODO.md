@@ -22,31 +22,29 @@ Este documento contém apenas as tarefas prioritárias em que devemos focar agor
 
 ### 📋 Tarefas Sequenciais
 
-#### Etapa 2.1: Modelos de Dados (FUNDAÇÃO) 🔒 Deve vir primeiro
+#### ✅ Etapa 2.1: Modelos de Dados (FUNDAÇÃO) - COMPLETA
 **Tempo**: 2-3 dias
 **Responsável**: 1 agente
-**Bloqueante para**: Todas as outras etapas da Fase 2
+**Status**: ✅ Concluída em 2025-10-11
 
 **Tarefas**:
-- [ ] Criar schemas Prisma:
-  - [ ] `Conversation` (id, title, type, createdAt, updatedAt, userId)
-  - [ ] `ConversationParticipant` (id, conversationId, characterId, role, joinedAt)
-  - [ ] `Message` (id, conversationId, senderId, senderType, content, metadata, createdAt)
-  - [ ] `Assistant` (id, name, systemPrompt, model, temperature, maxTokens)
-- [ ] Definir relacionamentos:
-  - [ ] Conversation ↔ User (1:N)
-  - [ ] Conversation ↔ ConversationParticipant (1:N)
-  - [ ] ConversationParticipant ↔ Character (N:1)
-  - [ ] Conversation ↔ Message (1:N)
-- [ ] Executar migração: `npx prisma migrate dev --name add_chat_models`
-- [ ] Validar estrutura no Prisma Studio
-- [ ] Documentar em `docs/DEV_OPERATIONS.md`
+- [x] Criar schemas Prisma:
+  - [x] `Conversation` (id, title, settings, timestamps, userId)
+  - [x] `ConversationParticipant` (id, conversationId, userId/characterId/assistantId, configOverride)
+  - [x] `Message` (id, conversationId, senderId, senderType, content, attachments, metadata)
+  - [x] `Assistant` (id, name, instructions, defaultCharacterId, userId)
+- [x] Definir relacionamentos:
+  - [x] Conversation ↔ User (1:N)
+  - [x] Conversation ↔ ConversationParticipant (1:N)
+  - [x] ConversationParticipant ↔ Character (N:1)
+  - [x] ConversationParticipant ↔ Assistant (N:1)
+  - [x] Conversation ↔ Message (1:N)
+- [x] Executar migração: `20251011000000_baseline_all_tables`
+- [x] Schemas validados e prontos para uso
 
-**Arquivos tocados**:
-- `backend/prisma/schema.prisma`
-- `docs/DEV_OPERATIONS.md`
-
-**Referência**: `E:\Projects\charhub_dev_old_version\backend\app\models\conversation.py`
+**Arquivos implementados**:
+- `backend/prisma/schema.prisma` (linhas 322-464)
+- `backend/prisma/migrations/20251011000000_baseline_all_tables/`
 
 ---
 
