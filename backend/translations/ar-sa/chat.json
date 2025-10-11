@@ -1,0 +1,77 @@
+{
+  "description": "Chat and conversation interface translations",
+  "resources": {
+    "title": "دردشة",
+    "newConversation": "محادثة جديدة",
+    "conversations": "المحادثات",
+    "noConversations": "لا توجد محادثات بعد",
+    "createFirst": "أنشئ أول محادثة لك",
+    "loading": "جارٍ التحميل...",
+    "error": "خطأ في تحميل الدردشة",
+    "conversation": {
+      "title": "محادثة",
+      "participants": "المشاركون",
+      "addParticipant": "إضافة مشارك",
+      "removeParticipant": "إزالة مشارك",
+      "editTitle": "تعديل العنوان",
+      "delete": "حذف المحادثة",
+      "archive": "أرشفة",
+      "settings": "الإعدادات",
+      "lastMessage": "آخر رسالة",
+      "noMessages": "لا توجد رسائل بعد",
+      "startTyping": "ابدأ الكتابة لبدء المحادثة"
+    },
+    "message": {
+      "send": "إرسال",
+      "sending": "جارٍ الإرسال...",
+      "placeholder": "اكتب رسالتك...",
+      "delete": "حذف الرسالة",
+      "edit": "تعديل الرسالة",
+      "copy": "نسخ",
+      "retry": "إعادة المحاولة",
+      "failed": "فشل إرسال الرسالة",
+      "you": "أنت",
+      "ai": "ذكاء اصطناعي",
+      "system": "النظام"
+    },
+    "participant": {
+      "character": "شخصية",
+      "assistant": "مساعد",
+      "user": "مستخدم",
+      "addCharacter": "إضافة شخصية",
+      "selectCharacter": "اختر شخصية لإضافتها",
+      "noCharacters": "لا توجد شخصيات متاحة",
+      "removed": "تمت إزالة المشارك",
+      "added": "تمت إضافة المشارك"
+    },
+    "typing": {
+      "isTyping": "{{name}} يكتب...",
+      "areTyping": "{{names}} يكتبون...",
+      "generating": "جارٍ إنشاء الرد..."
+    },
+    "actions": {
+      "create": "إنشاء",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "delete": "حذف",
+      "confirm": "تأكيد",
+      "close": "إغلاق"
+    },
+    "errors": {
+      "loadFailed": "فشل تحميل المحادثة",
+      "createFailed": "فشل إنشاء المحادثة",
+      "sendFailed": "فشل إرسال الرسالة",
+      "deleteFailed": "فشل الحذف",
+      "updateFailed": "فشل التحديث",
+      "networkError": "خطأ في الشبكة. يرجى التحقق من اتصالك.",
+      "unauthorized": "ليس لديك الإذن للقيام بذلك",
+      "notFound": "لم يتم العثور على المحادثة"
+    },
+    "success": {
+      "created": "تم إنشاء المحادثة بنجاح",
+      "updated": "تم التحديث بنجاح",
+      "deleted": "تم الحذف بنجاح",
+      "sent": "تم إرسال الرسالة"
+    }
+  }
+}

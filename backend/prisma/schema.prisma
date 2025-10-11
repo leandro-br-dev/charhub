@@ -52,7 +52,12 @@ model User {
   providerAccountId String
   email             String?      @unique
   displayName       String?
+  fullName          String?
   avatarUrl         String?
+  avatarSource      AvatarSource @default(PROVIDER)
+  avatarUpdatedAt   DateTime?
+  birthDate         DateTime?
+  gender            String?
   role              UserRole     @default(BASIC)
   lastLoginAt       DateTime     @default(now())
   createdAt         DateTime     @default(now())
@@ -67,7 +72,17 @@ model User {
   createdStories    Story[]     @relation("StoryCreator")
   createdAttires    Attire[]    @relation("AttireCreator")
 
+  // Chat system relations
+  assistants            Assistant[]               @relation("UserAssistants")
+  conversations         Conversation[]            @relation("UserConversations")
+  conversationParticipations ConversationParticipant[] @relation("UserParticipations")
+
   @@unique([provider, providerAccountId])
+}
+
+enum AvatarSource {
+  PROVIDER
+  UPLOADED
 }
 
 // Generic content classification model (can be used for any content type)
@@ -251,6 +266,11 @@ model Character {
   tags     Tag[]
   stickers CharacterSticker[]
 
+  // Chat system relations
+  assistantsUsingAsDefault   Assistant[]               @relation("AssistantDefaultCharacter")
+  actingParticipations       ConversationParticipant[] @relation("ParticipantActingCharacter")
+  representingParticipations ConversationParticipant[] @relation("ParticipantRepresentingCharacter")
+
   @@index([userId])
   @@index([isPublic])
   @@index([ageRating])
@@ -296,4 +316,149 @@ model Story {
 
   @@index([creatorId])
   @@index([isPublic])
+}
+
+// ============================================================================
+// CHAT SYSTEM MODELS (Phase 2)
+// ============================================================================
+
+// Assistant represents an AI agent with specific instructions and personality
+// It can act in conversations representing a Character
+model Assistant {
+  id          String  @id @default(uuid())
+  name        String
+  description String? @db.Text
+
+  // System prompt / instructions that define the assistant's behavior
+  instructions String @db.Text
+
+  // Default character this assistant represents (optional)
+  defaultCharacterId String?
+  defaultCharacter   Character? @relation("AssistantDefaultCharacter", fields: [defaultCharacterId], references: [id], onDelete: SetNull)
+
+  // Visibility
+  isPublic Boolean @default(false)
+
+  // Ownership
+  userId  String
+  creator User   @relation("UserAssistants", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  participations ConversationParticipant[] @relation("ParticipantAssistant")
+
+  @@index([userId])
+  @@index([isPublic])
+  @@index([defaultCharacterId])
+}
+
+// Conversation represents a chat session between user and characters
+model Conversation {
+  id    String @id @default(uuid())
+  title String @default("New Conversation") // Topic/title of the conversation
+
+  // Title edit tracking
+  isTitleUserEdited   Boolean @default(false)
+  isTitleSystemEdited Boolean @default(false)
+
+  // Optional: link conversation to a project (for future use)
+  projectId String?
+
+  // Settings stored as JSON (LLM preferences, roleplay settings, etc.)
+  settings Json? // Will store: { view, llm_settings, roleplay_specific, etc. }
+
+  // Timestamps
+  lastMessageAt     DateTime? // Timestamp of last message (for sorting)
+  titleLastUpdatedAt DateTime? // When title was last changed
+  memoryLastUpdatedAt DateTime? // When conversation memory was last updated
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Ownership
+  userId String
+  owner  User   @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relations
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([userId])
+  @@index([lastMessageAt])
+  @@index([projectId])
+}
+
+// Sender type for messages
+enum SenderType {
+  USER
+  CHARACTER
+  ASSISTANT
+  SYSTEM
+}
+
+// ConversationParticipant represents an entity participating in a conversation
+// Can be: User, Character (acting directly), or Assistant (acting as a character)
+model ConversationParticipant {
+  id             String   @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  // XOR constraint: Exactly ONE of these must be set
+  // Option 1: Human user participating
+  userId String?
+  user   User?   @relation("UserParticipations", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Option 2: Character acting directly (no AI logic, simple responses)
+  actingCharacterId String?
+  actingCharacter   Character? @relation("ParticipantActingCharacter", fields: [actingCharacterId], references: [id], onDelete: Cascade)
+
+  // Option 3: Assistant (AI) acting in the conversation
+  actingAssistantId String?
+  actingAssistant   Assistant? @relation("ParticipantAssistant", fields: [actingAssistantId], references: [id], onDelete: Cascade)
+
+  // The character being visually represented (appearance, name, etc.)
+  // Required when actingAssistantId is set
+  representingCharacterId String?
+  representingCharacter   Character? @relation("ParticipantRepresentingCharacter", fields: [representingCharacterId], references: [id], onDelete: SetNull)
+
+  // Optional: JSON config override for this specific participant in this conversation
+  configOverride String? @db.Text // JSON string
+
+  joinedAt  DateTime @default(now())
+
+  @@index([conversationId])
+  @@index([userId])
+  @@index([actingCharacterId])
+  @@index([actingAssistantId])
+  @@index([representingCharacterId])
+  @@index([conversationId, actingCharacterId])
+  @@index([conversationId, actingAssistantId])
+}
+
+// Message represents a single message in a conversation
+model Message {
+  id             String   @id @default(uuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  // Sender identification
+  senderId   String     // ID of the sender (User, Character, or Assistant)
+  senderType SenderType // Type of sender
+
+  // Content
+  content String @db.Text // Message content (can be JSON for rich content)
+
+  // Optional: Attachments (image URLs, file URLs, etc.)
+  attachments String? @db.Text // JSON array of attachment URLs
+
+  // Metadata (can store additional info like emotion, action, etc.)
+  metadata Json? // Flexible metadata field
+
+  timestamp DateTime @default(now())
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@index([conversationId, timestamp])
 }

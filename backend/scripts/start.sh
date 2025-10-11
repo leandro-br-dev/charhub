@@ -82,10 +82,10 @@ if [ "$NODE_ENV" = "development" ]; then
   echo "[entrypoint] DEBUG: NPM version: $(npm --version)"
 
   if [ -f "/app/src/index.ts" ]; then
-    echo "[entrypoint] DEBUG: âœ… src/index.ts found"
+    echo "[entrypoint] DEBUG: [OK] src/index.ts found"
     ls -lh /app/src/index.ts
   else
-    echo "[entrypoint] DEBUG: âŒ src/index.ts NOT found"
+    echo "[entrypoint] DEBUG: [MISSING] src/index.ts NOT found"
     echo "[entrypoint] DEBUG: Listing /app contents:"
     ls -la /app
     echo "[entrypoint] DEBUG: Listing /app/src contents (if exists):"
@@ -99,9 +99,9 @@ if [ "$NODE_ENV" = "development" ]; then
   ls -la /app
   echo "[entrypoint] DEBUG: Checking tsconfig.json..."
   if [ -f "/app/tsconfig.json" ]; then
-    echo "[entrypoint] DEBUG: âœ… tsconfig.json found"
+    echo "[entrypoint] DEBUG: [OK] tsconfig.json found"
   else
-    echo "[entrypoint] DEBUG: âŒ tsconfig.json NOT found"
+    echo "[entrypoint] DEBUG: [MISSING] tsconfig.json NOT found"
   fi
   echo "[entrypoint] DEBUG: Checking package.json 'dev' script..."
   cat /app/package.json | grep -A 1 '"dev"'

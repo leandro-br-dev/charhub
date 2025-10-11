@@ -37,12 +37,21 @@
       "placeholder": "Content preferences, blur settings and sensitive themes will return once the moderation service is integrated."
     },
     "actions": {
-      "save": "Save changes"
+      "save": "Save changes",
+      "saving": "Saving..."
     },
     "security": {
       "header": "Security",
       "description": "Your CharHub sessions inherit OAuth security from Google or Facebook. Multi-factor support will be added soon.",
       "placeholder": "Session management and passwordless login controls are on the roadmap."
+    },
+    "feedback": {
+      "success": "Profile updated successfully.",
+      "error": "We could not save your changes."
+    },
+    "errors": {
+      "updateFailed": "We could not save your changes. Try again in a moment.",
+      "displayNameRequired": "Display name is required."
     }
   }
 }

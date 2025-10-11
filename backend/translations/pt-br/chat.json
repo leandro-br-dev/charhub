@@ -1,0 +1,77 @@
+{
+  "description": "Chat and conversation interface translations",
+  "resources": {
+    "title": "Chat",
+    "newConversation": "Nova Conversa",
+    "conversations": "Conversas",
+    "noConversations": "Nenhuma conversa ainda",
+    "createFirst": "Crie sua primeira conversa",
+    "loading": "Carregando...",
+    "error": "Erro ao carregar chat",
+    "conversation": {
+      "title": "Conversa",
+      "participants": "Participantes",
+      "addParticipant": "Adicionar Participante",
+      "removeParticipant": "Remover Participante",
+      "editTitle": "Editar Título",
+      "delete": "Excluir Conversa",
+      "archive": "Arquivar",
+      "settings": "Configurações",
+      "lastMessage": "Última mensagem",
+      "noMessages": "Nenhuma mensagem ainda",
+      "startTyping": "Comece a digitar para iniciar a conversa"
+    },
+    "message": {
+      "send": "Enviar",
+      "sending": "Enviando...",
+      "placeholder": "Digite sua mensagem...",
+      "delete": "Excluir Mensagem",
+      "edit": "Editar Mensagem",
+      "copy": "Copiar",
+      "retry": "Tentar novamente",
+      "failed": "Falha ao enviar",
+      "you": "Você",
+      "ai": "IA",
+      "system": "Sistema"
+    },
+    "participant": {
+      "character": "Personagem",
+      "assistant": "Assistente",
+      "user": "Usuário",
+      "addCharacter": "Adicionar Personagem",
+      "selectCharacter": "Selecione um personagem para adicionar",
+      "noCharacters": "Nenhum personagem disponível",
+      "removed": "Participante removido",
+      "added": "Participante adicionado"
+    },
+    "typing": {
+      "isTyping": "{{name}} está digitando...",
+      "areTyping": "{{names}} estão digitando...",
+      "generating": "Gerando resposta..."
+    },
+    "actions": {
+      "create": "Criar",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "delete": "Excluir",
+      "confirm": "Confirmar",
+      "close": "Fechar"
+    },
+    "errors": {
+      "loadFailed": "Falha ao carregar conversa",
+      "createFailed": "Falha ao criar conversa",
+      "sendFailed": "Falha ao enviar mensagem",
+      "deleteFailed": "Falha ao excluir",
+      "updateFailed": "Falha ao atualizar",
+      "networkError": "Erro de rede. Verifique sua conexão.",
+      "unauthorized": "Você não tem permissão para fazer isso",
+      "notFound": "Conversa não encontrada"
+    },
+    "success": {
+      "created": "Conversa criada com sucesso",
+      "updated": "Atualizado com sucesso",
+      "deleted": "Excluído com sucesso",
+      "sent": "Mensagem enviada"
+    }
+  }
+}

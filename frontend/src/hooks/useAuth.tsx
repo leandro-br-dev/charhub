@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import api from '../lib/api';
 import { resolveApiBaseUrl } from '../lib/resolveApiBaseUrl';
 import type { AuthUser, OAuthProvider, UserRole } from '../types/auth';
@@ -11,6 +11,7 @@ interface AuthContextValue {
   loginWithGoogle: () => void;
   loginWithFacebook: () => void;
   completeLogin: (payload: AuthUser) => void;
+  updateUser: (updates: Partial<AuthUser>) => void;
   logout: () => Promise<void>;
 }
 
@@ -73,6 +74,9 @@ function consumeQueryParams(): AuthUser | null {
     displayName: decodedUser?.displayName,
     email: decodedUser?.email,
     photo: decodedUser?.photo,
+    fullName: decodedUser?.fullName,
+    birthDate: decodedUser?.birthDate,
+    gender: decodedUser?.gender,
     role: decodedUser?.role as UserRole | undefined,
     token
   };
@@ -142,6 +146,10 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     }
   };
 
+  const updateUser = useCallback((updates: Partial<AuthUser>) => {
+    setUser(prev => (prev ? { ...prev, ...updates } : prev));
+  }, [setUser]);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
@@ -150,9 +158,10 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
       loginWithGoogle,
       loginWithFacebook,
       completeLogin,
+      updateUser,
       logout
     }),
-    [user]
+    [user, loginWithProvider, loginWithGoogle, loginWithFacebook, completeLogin, updateUser, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

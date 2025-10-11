@@ -2,23 +2,23 @@
   "description": "Profile management surface for authenticated users.",
   "resources": {
     "sectionTitle": "Konto",
-    "title": "Verwalten Sie Ihr Profil",
-    "subtitle": "Aktualisieren Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, werden bald hier angezeigt.",
+    "title": "Profil verwalten",
+    "subtitle": "Ändern Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, werden hier bald angezeigt.",
     "identity": {
       "header": "Profilfoto",
       "description": "Wählen Sie einen Avatar, der Sie in Chats und bei Charakteren repräsentiert.",
       "upload": "Bild hochladen",
-      "placeholderNote": "Avatar-Uploads sind verfügbar, sobald wir den Mediendienst wieder verbunden haben."
+      "placeholderNote": "Avatar-Uploads sind verfügbar, sobald wir den Medienservice wieder verbunden haben."
     },
     "details": {
       "header": "Öffentliche Details",
-      "description": "Diese Werte werden mit Kollaborateuren geteilt und als Standardwerte in Konversationen verwendet."
+      "description": "Diese Werte werden mit Kollaborateuren geteilt und als Standardeinstellungen in Konversationen verwendet."
     },
     "fields": {
       "displayName": "Anzeigename",
       "displayNamePlaceholder": "Wie andere Benutzer Sie ansprechen",
       "fullName": "Vollständiger Name",
-      "fullNamePlaceholder": "Optional für Abrechnung und E-Mail-Kopien",
+      "fullNamePlaceholder": "Optional für Rechnungsstellung und E-Mail-Kopien",
       "username": "Benutzer-ID",
       "usernamePlaceholder": "Eindeutiger Identifikator",
       "usernameHint": "Dieser Identifikator stammt von Ihrem OAuth-Anbieter und kann noch nicht geändert werden.",
@@ -37,12 +37,21 @@
       "placeholder": "Inhaltspräferenzen, Blur-Einstellungen und sensible Themen werden zurückkehren, sobald der Moderationsdienst integriert ist."
     },
     "actions": {
-      "save": "Änderungen speichern"
+      "save": "Änderungen speichern",
+      "saving": "Speichere..."
     },
     "security": {
       "header": "Sicherheit",
       "description": "Ihre CharHub-Sitzungen erben die OAuth-Sicherheit von Google oder Facebook. Multi-Faktor-Unterstützung wird bald hinzugefügt.",
-      "placeholder": "Sitzungsverwaltung und passwortlose Anmeldeoptionen sind in der Roadmap enthalten."
+      "placeholder": "Sitzungsverwaltung und passwortlose Login-Steuerelemente sind in der Roadmap enthalten."
+    },
+    "feedback": {
+      "success": "Profil erfolgreich aktualisiert.",
+      "error": "Wir konnten Ihre Änderungen nicht speichern."
+    },
+    "errors": {
+      "updateFailed": "Wir konnten Ihre Änderungen nicht speichern. Versuchen Sie es in einem Moment erneut.",
+      "displayNameRequired": "Anzeigename ist erforderlich."
     }
   }
 }

@@ -1,0 +1,77 @@
+{
+  "description": "Chat and conversation interface translations",
+  "resources": {
+    "title": "Чат",
+    "newConversation": "Новый чат",
+    "conversations": "Чаты",
+    "noConversations": "Чатов пока нет",
+    "createFirst": "Создайте свой первый чат",
+    "loading": "Загрузка...",
+    "error": "Ошибка при загрузке чата",
+    "conversation": {
+      "title": "Чат",
+      "participants": "Участники",
+      "addParticipant": "Добавить участника",
+      "removeParticipant": "Удалить участника",
+      "editTitle": "Редактировать название",
+      "delete": "Удалить чат",
+      "archive": "Архивировать",
+      "settings": "Настройки",
+      "lastMessage": "Последнее сообщение",
+      "noMessages": "Сообщений пока нет",
+      "startTyping": "Начните печатать, чтобы начать разговор"
+    },
+    "message": {
+      "send": "Отправить",
+      "sending": "Отправка...",
+      "placeholder": "Введите ваше сообщение...",
+      "delete": "Удалить сообщение",
+      "edit": "Редактировать сообщение",
+      "copy": "Копировать",
+      "retry": "Повторить",
+      "failed": "Не удалось отправить",
+      "you": "Вы",
+      "ai": "ИИ",
+      "system": "Система"
+    },
+    "participant": {
+      "character": "Персонаж",
+      "assistant": "Помощник",
+      "user": "Пользователь",
+      "addCharacter": "Добавить персонажа",
+      "selectCharacter": "Выберите персонажа для добавления",
+      "noCharacters": "Персонажи недоступны",
+      "removed": "Участник удален",
+      "added": "Участник добавлен"
+    },
+    "typing": {
+      "isTyping": "{{name}} печатает...",
+      "areTyping": "{{names}} печатают...",
+      "generating": "Генерация ответа..."
+    },
+    "actions": {
+      "create": "Создать",
+      "cancel": "Отмена",
+      "save": "Сохранить",
+      "delete": "Удалить",
+      "confirm": "Подтвердить",
+      "close": "Закрыть"
+    },
+    "errors": {
+      "loadFailed": "Не удалось загрузить чат",
+      "createFailed": "Не удалось создать чат",
+      "sendFailed": "Не удалось отправить сообщение",
+      "deleteFailed": "Не удалось удалить",
+      "updateFailed": "Не удалось обновить",
+      "networkError": "Сетевая ошибка. Проверьте ваше подключение.",
+      "unauthorized": "У вас нет разрешения на выполнение этого действия",
+      "notFound": "Чат не найден"
+    },
+    "success": {
+      "created": "Чат успешно создан",
+      "updated": "Успешно обновлено",
+      "deleted": "Успешно удалено",
+      "sent": "Сообщение отправлено"
+    }
+  }
+}

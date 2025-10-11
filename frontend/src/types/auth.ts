@@ -9,6 +9,9 @@ export interface AuthUser {
   email?: string;
   photo?: string;
   role?: UserRole;
+  fullName?: string;
+  birthDate?: string;
+  gender?: string;
   token?: string;
 }
 

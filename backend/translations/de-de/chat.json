@@ -1,0 +1,77 @@
+{
+  "description": "Chat and conversation interface translations",
+  "resources": {
+    "title": "Chat",
+    "newConversation": "Neue Konversation",
+    "conversations": "Konversationen",
+    "noConversations": "Noch keine Konversationen",
+    "createFirst": "Erstellen Sie Ihre erste Konversation",
+    "loading": "Lade...",
+    "error": "Fehler beim Laden des Chats",
+    "conversation": {
+      "title": "Konversation",
+      "participants": "Teilnehmer",
+      "addParticipant": "Teilnehmer hinzufügen",
+      "removeParticipant": "Teilnehmer entfernen",
+      "editTitle": "Titel bearbeiten",
+      "delete": "Konversation löschen",
+      "archive": "Archivieren",
+      "settings": "Einstellungen",
+      "lastMessage": "Letzte Nachricht",
+      "noMessages": "Noch keine Nachrichten",
+      "startTyping": "Beginnen Sie mit der Eingabe, um die Konversation zu starten"
+    },
+    "message": {
+      "send": "Senden",
+      "sending": "Sende...",
+      "placeholder": "Geben Sie Ihre Nachricht ein...",
+      "delete": "Nachricht löschen",
+      "edit": "Nachricht bearbeiten",
+      "copy": "Kopieren",
+      "retry": "Erneut versuchen",
+      "failed": "Senden fehlgeschlagen",
+      "you": "Sie",
+      "ai": "KI",
+      "system": "System"
+    },
+    "participant": {
+      "character": "Charakter",
+      "assistant": "Assistent",
+      "user": "Benutzer",
+      "addCharacter": "Charakter hinzufügen",
+      "selectCharacter": "Wählen Sie einen Charakter zum Hinzufügen aus",
+      "noCharacters": "Keine Charaktere verfügbar",
+      "removed": "Teilnehmer entfernt",
+      "added": "Teilnehmer hinzugefügt"
+    },
+    "typing": {
+      "isTyping": "{{name}} tippt gerade...",
+      "areTyping": "{{names}} tippen gerade...",
+      "generating": "Antwort wird generiert..."
+    },
+    "actions": {
+      "create": "Erstellen",
+      "cancel": "Abbrechen",
+      "save": "Speichern",
+      "delete": "Löschen",
+      "confirm": "Bestätigen",
+      "close": "Schließen"
+    },
+    "errors": {
+      "loadFailed": "Konversation konnte nicht geladen werden",
+      "createFailed": "Konversation konnte nicht erstellt werden",
+      "sendFailed": "Nachricht konnte nicht gesendet werden",
+      "deleteFailed": "Löschen fehlgeschlagen",
+      "updateFailed": "Aktualisierung fehlgeschlagen",
+      "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
+      "unauthorized": "Sie haben keine Berechtigung, dies zu tun",
+      "notFound": "Konversation nicht gefunden"
+    },
+    "success": {
+      "created": "Konversation erfolgreich erstellt",
+      "updated": "Erfolgreich aktualisiert",
+      "deleted": "Erfolgreich gelöscht",
+      "sent": "Nachricht gesendet"
+    }
+  }
+}

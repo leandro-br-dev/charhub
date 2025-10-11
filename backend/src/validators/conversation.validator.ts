@@ -7,15 +7,15 @@ import { z } from 'zod';
 
 // Create conversation schema
 export const createConversationSchema = z.object({
-  title: z.string().min(1).max(200).optional().default('New Conversation'),
-  participantIds: z.array(z.string().uuid('Invalid participant ID')).min(1, 'At least one participant is required'),
+  title: z.string().min(1, 'Title must include at least 1 character').max(200, 'Title cannot exceed 200 characters').optional().default('New Conversation'),
+  participantIds: z.array(z.string().uuid()).min(1, 'At least one participant is required'),
   settings: z.record(z.unknown()).optional().nullable(), // Flexible JSON settings
-  projectId: z.string().uuid('Invalid project ID').optional().nullable(),
+  projectId: z.string().uuid().optional().nullable(),
 });
 
 // Update conversation schema
 export const updateConversationSchema = z.object({
-  title: z.string().min(1).max(200).optional(),
+  title: z.string().min(1, 'Title must include at least 1 character').max(200, 'Title cannot exceed 200 characters').optional(),
   settings: z.record(z.unknown()).optional().nullable(),
   isTitleUserEdited: z.boolean().optional(),
 });
@@ -23,12 +23,12 @@ export const updateConversationSchema = z.object({
 // Add participant schema
 export const addParticipantSchema = z.object({
   // XOR constraint: Exactly ONE of these must be provided
-  userId: z.string().uuid('Invalid user ID').optional(),
-  actingCharacterId: z.string().uuid('Invalid character ID').optional(),
-  actingAssistantId: z.string().uuid('Invalid assistant ID').optional(),
+  userId: z.string().uuid().optional(),
+  actingCharacterId: z.string().uuid().optional(),
+  actingAssistantId: z.string().uuid().optional(),
 
   // Optional: character being represented (required when actingAssistantId is set)
-  representingCharacterId: z.string().uuid('Invalid representing character ID').optional(),
+  representingCharacterId: z.string().uuid().optional(),
 
   // Optional: JSON config override for this participant
   configOverride: z.string().max(5000).optional().nullable(),
@@ -60,8 +60,8 @@ export const listConversationsQuerySchema = z.object({
   projectId: z.string().uuid().optional(),
   skip: z.number().int().min(0).default(0),
   limit: z.number().int().min(1).max(100).default(20),
-  sortBy: z.enum(['lastMessageAt', 'createdAt', 'updatedAt']).default('lastMessageAt'),
-  sortOrder: z.enum(['asc', 'desc']).default('desc'),
+  sortBy: z.union([z.literal('lastMessageAt'), z.literal('createdAt'), z.literal('updatedAt')]).default('lastMessageAt'),
+  sortOrder: z.union([z.literal('asc'), z.literal('desc')]).default('desc'),
 });
 
 // Type exports

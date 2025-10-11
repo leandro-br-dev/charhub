@@ -1,0 +1,84 @@
+{
+  "description": "Chat and conversation interface translations",
+  "resources": {
+    "title": "Chat",
+    "newConversation": "New Conversation",
+    "conversations": "Conversations",
+    "noConversations": "No conversations yet",
+    "createFirst": "Create your first conversation",
+    "loading": "Loading...",
+    "error": "Error loading chat",
+
+    "conversation": {
+      "title": "Conversation",
+      "participants": "Participants",
+      "addParticipant": "Add Participant",
+      "removeParticipant": "Remove Participant",
+      "editTitle": "Edit Title",
+      "delete": "Delete Conversation",
+      "archive": "Archive",
+      "settings": "Settings",
+      "lastMessage": "Last message",
+      "noMessages": "No messages yet",
+      "startTyping": "Start typing to begin the conversation"
+    },
+
+    "message": {
+      "send": "Send",
+      "sending": "Sending...",
+      "placeholder": "Type your message...",
+      "delete": "Delete Message",
+      "edit": "Edit Message",
+      "copy": "Copy",
+      "retry": "Retry",
+      "failed": "Failed to send",
+      "you": "You",
+      "ai": "AI",
+      "system": "System"
+    },
+
+    "participant": {
+      "character": "Character",
+      "assistant": "Assistant",
+      "user": "User",
+      "addCharacter": "Add Character",
+      "selectCharacter": "Select a character to add",
+      "noCharacters": "No characters available",
+      "removed": "Participant removed",
+      "added": "Participant added"
+    },
+
+    "typing": {
+      "isTyping": "{{name}} is typing...",
+      "areTyping": "{{names}} are typing...",
+      "generating": "Generating response..."
+    },
+
+    "actions": {
+      "create": "Create",
+      "cancel": "Cancel",
+      "save": "Save",
+      "delete": "Delete",
+      "confirm": "Confirm",
+      "close": "Close"
+    },
+
+    "errors": {
+      "loadFailed": "Failed to load conversation",
+      "createFailed": "Failed to create conversation",
+      "sendFailed": "Failed to send message",
+      "deleteFailed": "Failed to delete",
+      "updateFailed": "Failed to update",
+      "networkError": "Network error. Please check your connection.",
+      "unauthorized": "You don't have permission to do this",
+      "notFound": "Conversation not found"
+    },
+
+    "success": {
+      "created": "Conversation created successfully",
+      "updated": "Updated successfully",
+      "deleted": "Deleted successfully",
+      "sent": "Message sent"
+    }
+  }
+}

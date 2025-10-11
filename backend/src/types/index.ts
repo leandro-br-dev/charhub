@@ -10,6 +10,9 @@ export interface AuthenticatedUser {
   email?: string;
   photo?: string;
   role: UserRole;
+  fullName?: string;
+  birthDate?: string;
+  gender?: string;
 }
 
 export interface JwtPayload {

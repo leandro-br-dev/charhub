@@ -1,7 +1,8 @@
-import { useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/Button';
+import { userService } from '../../services/userService';
 
 type ProfileFormState = {
   displayName: string;
@@ -12,16 +13,30 @@ type ProfileFormState = {
 };
 
 export default function ProfilePage(): JSX.Element {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { t } = useTranslation(['profile', 'common']);
 
   const [formState, setFormState] = useState<ProfileFormState>(() => ({
     displayName: user?.displayName ?? '',
-    fullName: '',
+    fullName: user?.fullName ?? '',
     username: user?.id ?? '',
-    birthDate: '',
-    gender: 'unspecified'
+    birthDate: user?.birthDate ? user.birthDate.slice(0, 10) : '',
+    gender: user?.gender ?? 'unspecified'
   }));
+
+  const [isSaving, setIsSaving] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    setFormState({
+      displayName: user?.displayName ?? '',
+      fullName: user?.fullName ?? '',
+      username: user?.id ?? '',
+      birthDate: user?.birthDate ? user.birthDate.slice(0, 10) : '',
+      gender: user?.gender ?? 'unspecified'
+    });
+  }, [user]);
 
   const genders = useMemo(
     () => [
@@ -35,22 +50,71 @@ export default function ProfilePage(): JSX.Element {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
+    setStatus('idle');
+    setErrorMessage(null);
     setFormState(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // TODO(profile): connect to user settings endpoint once available.
+
+    const trimmedDisplayName = formState.displayName.trim();
+    if (!trimmedDisplayName) {
+      setStatus('error');
+      setErrorMessage('profile:errors.displayNameRequired');
+      return;
+    }
+
+    setIsSaving(true);
+    setStatus('idle');
+    setErrorMessage(null);
+
+    try {
+      const trimmedFullName = formState.fullName.trim();
+      const payload = {
+        displayName: trimmedDisplayName,
+        fullName: trimmedFullName,
+        birthDate: formState.birthDate,
+        gender: formState.gender,
+      };
+
+      const updated = await userService.updateProfile(payload);
+      updateUser({
+        displayName: updated.displayName,
+        fullName: updated.fullName ?? undefined,
+        birthDate: updated.birthDate ?? undefined,
+        gender: updated.gender ?? undefined,
+      });
+
+      setFormState(prev => ({
+        ...prev,
+        displayName: updated.displayName ?? trimmedDisplayName,
+        fullName: updated.fullName ?? '',
+        birthDate: updated.birthDate ? updated.birthDate.slice(0, 10) : '',
+        gender: updated.gender ?? 'unspecified',
+      }));
+
+      setStatus('success');
+    } catch (error) {
+      console.error('[profile] failed to update user profile', error);
+      const apiError = (error as { response?: { data?: { error?: string; message?: string } } }).response?.data;
+      setErrorMessage(apiError?.error || apiError?.message || 'profile:errors.updateFailed');
+      setStatus('error');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleReset = () => {
     setFormState({
       displayName: user?.displayName ?? '',
-      fullName: '',
+      fullName: user?.fullName ?? '',
       username: user?.id ?? '',
-      birthDate: '',
-      gender: 'unspecified'
+      birthDate: user?.birthDate ? user.birthDate.slice(0, 10) : '',
+      gender: user?.gender ?? 'unspecified'
     });
+    setStatus('idle');
+    setErrorMessage(null);
   };
 
   return (
@@ -177,13 +241,23 @@ export default function ProfilePage(): JSX.Element {
             )}
           </div>
 
-          <div className="flex flex-wrap justify-end gap-3">
-            <Button type="button" variant="light" onClick={handleReset}>
-              {t('common:cancel', 'Cancel')}
-            </Button>
-            <Button type="submit" variant="primary">
-              {t('profile:actions.save', 'Save changes')}
-            </Button>
+          <div className="flex flex-col gap-2">
+            <div className="flex flex-wrap justify-end gap-3">
+              <Button type="button" variant="light" onClick={handleReset} disabled={isSaving}>
+                {t('common:cancel', 'Cancel')}
+              </Button>
+              <Button type="submit" variant="primary" disabled={isSaving}>
+                {isSaving ? t('profile:actions.saving', 'Saving...') : t('profile:actions.save', 'Save changes')}
+              </Button>
+            </div>
+            {status === 'success' ? (
+              <p className="text-sm text-success">{t('profile:feedback.success', 'Profile updated successfully.')}</p>
+            ) : null}
+            {status === 'error' ? (
+              <p className="text-sm text-danger">
+                {t(errorMessage ?? 'profile:feedback.error', { defaultValue: errorMessage ?? 'We could not save your changes.' })}
+              </p>
+            ) : null}
           </div>
         </form>
       </div>

@@ -1,0 +1,77 @@
+{
+  "description": "Chat and conversation interface translations",
+  "resources": {
+    "title": "Chat",
+    "newConversation": "Nouvelle conversation",
+    "conversations": "Conversations",
+    "noConversations": "Aucune conversation pour l'instant",
+    "createFirst": "Créez votre première conversation",
+    "loading": "Chargement...",
+    "error": "Erreur lors du chargement du chat",
+    "conversation": {
+      "title": "Conversation",
+      "participants": "Participants",
+      "addParticipant": "Ajouter un participant",
+      "removeParticipant": "Supprimer un participant",
+      "editTitle": "Modifier le titre",
+      "delete": "Supprimer la conversation",
+      "archive": "Archiver",
+      "settings": "Paramètres",
+      "lastMessage": "Dernier message",
+      "noMessages": "Aucun message pour l'instant",
+      "startTyping": "Commencez à taper pour lancer la conversation"
+    },
+    "message": {
+      "send": "Envoyer",
+      "sending": "Envoi en cours...",
+      "placeholder": "Tapez votre message...",
+      "delete": "Supprimer le message",
+      "edit": "Modifier le message",
+      "copy": "Copier",
+      "retry": "Réessayer",
+      "failed": "Échec de l'envoi",
+      "you": "Vous",
+      "ai": "IA",
+      "system": "Système"
+    },
+    "participant": {
+      "character": "Personnage",
+      "assistant": "Assistant",
+      "user": "Utilisateur",
+      "addCharacter": "Ajouter un personnage",
+      "selectCharacter": "Sélectionnez un personnage à ajouter",
+      "noCharacters": "Aucun personnage disponible",
+      "removed": "Participant supprimé",
+      "added": "Participant ajouté"
+    },
+    "typing": {
+      "isTyping": "{{name}} est en train d'écrire...",
+      "areTyping": "{{names}} sont en train d'écrire...",
+      "generating": "Génération de la réponse..."
+    },
+    "actions": {
+      "create": "Créer",
+      "cancel": "Annuler",
+      "save": "Enregistrer",
+      "delete": "Supprimer",
+      "confirm": "Confirmer",
+      "close": "Fermer"
+    },
+    "errors": {
+      "loadFailed": "Échec du chargement de la conversation",
+      "createFailed": "Échec de la création de la conversation",
+      "sendFailed": "Échec de l'envoi du message",
+      "deleteFailed": "Échec de la suppression",
+      "updateFailed": "Échec de la mise à jour",
+      "networkError": "Erreur réseau. Veuillez vérifier votre connexion.",
+      "unauthorized": "Vous n'avez pas l'autorisation d'effectuer cette action",
+      "notFound": "Conversation introuvable"
+    },
+    "success": {
+      "created": "Conversation créée avec succès",
+      "updated": "Mise à jour réussie",
+      "deleted": "Supprimé avec succès",
+      "sent": "Message envoyé"
+    }
+  }
+}

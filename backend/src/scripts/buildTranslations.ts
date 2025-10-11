@@ -12,7 +12,7 @@ const TRANSLATIONS_ROOT = path.resolve(__dirname, '../../translations');
 const BASE_LANGUAGE = 'en';
 
 // Supported namespaces - must match translationService.ts
-const SUPPORTED_NAMESPACES = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal', 'characters', 'navigation', 'profile'] as const;
+const SUPPORTED_NAMESPACES = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal', 'characters', 'navigation', 'profile', 'chat'] as const;
 type Namespace = (typeof SUPPORTED_NAMESPACES)[number];
 
 // Target languages to build

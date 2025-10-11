@@ -1,0 +1,77 @@
+{
+  "description": "Chat and conversation interface translations",
+  "resources": {
+    "title": "聊天",
+    "newConversation": "新建对话",
+    "conversations": "对话列表",
+    "noConversations": "还没有对话",
+    "createFirst": "创建你的第一个对话",
+    "loading": "正在加载...",
+    "error": "加载聊天出错",
+    "conversation": {
+      "title": "对话",
+      "participants": "参与者",
+      "addParticipant": "添加参与者",
+      "removeParticipant": "移除参与者",
+      "editTitle": "编辑标题",
+      "delete": "删除对话",
+      "archive": "归档",
+      "settings": "设置",
+      "lastMessage": "最后一条消息",
+      "noMessages": "还没有消息",
+      "startTyping": "开始输入以发起对话"
+    },
+    "message": {
+      "send": "发送",
+      "sending": "正在发送...",
+      "placeholder": "输入你的消息...",
+      "delete": "删除消息",
+      "edit": "编辑消息",
+      "copy": "复制",
+      "retry": "重试",
+      "failed": "发送失败",
+      "you": "你",
+      "ai": "AI",
+      "system": "系统"
+    },
+    "participant": {
+      "character": "角色",
+      "assistant": "助手",
+      "user": "用户",
+      "addCharacter": "添加角色",
+      "selectCharacter": "选择要添加的角色",
+      "noCharacters": "没有可用角色",
+      "removed": "参与者已移除",
+      "added": "参与者已添加"
+    },
+    "typing": {
+      "isTyping": "{{name}} 正在输入...",
+      "areTyping": "{{names}} 正在输入...",
+      "generating": "正在生成回复..."
+    },
+    "actions": {
+      "create": "创建",
+      "cancel": "取消",
+      "save": "保存",
+      "delete": "删除",
+      "confirm": "确认",
+      "close": "关闭"
+    },
+    "errors": {
+      "loadFailed": "加载对话失败",
+      "createFailed": "创建对话失败",
+      "sendFailed": "发送消息失败",
+      "deleteFailed": "删除失败",
+      "updateFailed": "更新失败",
+      "networkError": "网络错误。请检查你的连接。",
+      "unauthorized": "你没有权限执行此操作",
+      "notFound": "未找到对话"
+    },
+    "success": {
+      "created": "对话创建成功",
+      "updated": "更新成功",
+      "deleted": "删除成功",
+      "sent": "消息已发送"
+    }
+  }
+}

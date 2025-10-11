@@ -10,6 +10,13 @@ interface SyncOAuthUserInput {
   photo?: string | null;
 }
 
+interface UpdateUserProfileParams {
+  displayName: string;
+  fullName?: string | null;
+  birthDate?: Date | null;
+  gender?: string | null;
+}
+
 const providerEnumMap: Record<OAuthProvider, $Enums.AuthProvider> = {
   google: $Enums.AuthProvider.GOOGLE,
   facebook: $Enums.AuthProvider.FACEBOOK,
@@ -28,6 +35,9 @@ function mapUser(record: User): AuthenticatedUser {
     email: record.email ?? undefined,
     photo: record.avatarUrl ?? undefined,
     role: record.role as UserRole,
+    fullName: record.fullName ?? undefined,
+    birthDate: record.birthDate ? record.birthDate.toISOString() : undefined,
+    gender: record.gender ?? undefined,
   };
 }
 
@@ -90,6 +100,31 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
 
     throw error;
   }
+}
+
+export async function updateUserProfile(userId: string, data: UpdateUserProfileParams): Promise<AuthenticatedUser> {
+  const updatePayload: Prisma.UserUpdateInput = {
+    displayName: data.displayName,
+  };
+
+  if (data.fullName !== undefined) {
+    updatePayload.fullName = data.fullName;
+  }
+
+  if (data.birthDate !== undefined) {
+    updatePayload.birthDate = data.birthDate;
+  }
+
+  if (data.gender !== undefined) {
+    updatePayload.gender = data.gender;
+  }
+
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: updatePayload,
+  });
+
+  return mapUser(user);
 }
 
 export async function findUserById(id: string): Promise<AuthenticatedUser | null> {

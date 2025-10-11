@@ -18,10 +18,10 @@
       "displayName": "表示名",
       "displayNamePlaceholder": "他のユーザーがあなたを呼ぶ方法",
       "fullName": "氏名",
-      "fullNamePlaceholder": "請求書およびメールコピー用（任意）",
+      "fullNamePlaceholder": "請求書およびメールコピーに任意",
       "username": "ユーザーID",
       "usernamePlaceholder": "一意の識別子",
-      "usernameHint": "この識別子はOAuthプロバイダーから提供されたもので、現時点では変更できません。",
+      "usernameHint": "この識別子はOAuthプロバイダーから提供されるもので、現時点では変更できません。",
       "email": "Eメール",
       "emailHint": "認証プロバイダーによって管理されます。",
       "birthDate": "生年月日",
@@ -31,18 +31,27 @@
       "feminine": "女性",
       "masculine": "男性",
       "nonBinary": "ノンバイナリー",
-      "unspecified": "答えたくない"
+      "unspecified": "回答しない"
     },
     "preferences": {
-      "placeholder": "コンテンツ設定、ぼかし設定、およびセンシティブなテーマは、モデレーションサービスが統合され次第表示されるようになります。"
+      "placeholder": "コンテンツ設定、ぼかし設定、およびセンシティブなテーマは、モデレーションサービスが統合され次第復活します。"
     },
     "actions": {
-      "save": "変更を保存"
+      "save": "変更を保存",
+      "saving": "保存中..."
     },
     "security": {
       "header": "セキュリティ",
       "description": "CharHubセッションは、GoogleまたはFacebookからのOAuthセキュリティを継承します。多要素認証サポートは近日中に追加されます。",
-      "placeholder": "セッション管理およびパスワードレスログイン制御はロードマップにあります。"
+      "placeholder": "セッション管理およびパスワードレスログイン制御はロードマップ上にあります。"
+    },
+    "feedback": {
+      "success": "プロフィールが正常に更新されました。",
+      "error": "変更を保存できませんでした。"
+    },
+    "errors": {
+      "updateFailed": "変更を保存できませんでした。しばらくしてからもう一度お試しください。",
+      "displayNameRequired": "表示名は必須です。"
     }
   }
 }

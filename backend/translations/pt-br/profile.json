@@ -37,12 +37,21 @@
       "placeholder": "Preferências de conteúdo, configurações de desfoque e temas sensíveis retornarão assim que o serviço de moderação for integrado."
     },
     "actions": {
-      "save": "Salvar alterações"
+      "save": "Salvar alterações",
+      "saving": "Salvando..."
     },
     "security": {
       "header": "Segurança",
       "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte multifator será adicionado em breve.",
       "placeholder": "Gerenciamento de sessão e controles de login sem senha estão no roteiro."
+    },
+    "feedback": {
+      "success": "Perfil atualizado com sucesso.",
+      "error": "Não foi possível salvar suas alterações."
+    },
+    "errors": {
+      "updateFailed": "Não conseguimos salvar suas alterações. Tente novamente em instantes.",
+      "displayNameRequired": "Informe um nome de exibição."
     }
   }
 }

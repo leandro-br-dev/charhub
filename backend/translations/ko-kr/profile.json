@@ -3,22 +3,22 @@
   "resources": {
     "sectionTitle": "계정",
     "title": "프로필 관리",
-    "subtitle": "CharHub에서 다른 사용자에게 보이는 방식을 업데이트하세요. 현재 이전 중인 기본 설정은 곧 여기에 표시됩니다.",
+    "subtitle": "CharHub에서 다른 사람들에게 보여지는 방식을 업데이트하세요. 아직 마이그레이션 중인 환경설정은 곧 여기에 표시될 예정입니다.",
     "identity": {
       "header": "프로필 사진",
-      "description": "채팅 및 캐릭터 전반에 걸쳐 나를 나타낼 아바타를 선택하세요.",
+      "description": "채팅 및 캐릭터 전반에 걸쳐 자신을 나타낼 아바타를 선택하세요.",
       "upload": "이미지 업로드",
-      "placeholderNote": "미디어 서비스 재연결 후 아바타 업로드를 사용할 수 있습니다."
+      "placeholderNote": "미디어 서비스 재연결 후 아바타 업로드가 가능합니다."
     },
     "details": {
-      "header": "공개 세부 정보",
-      "description": "이 값은 협업자와 공유되며 대화에서 기본값으로 사용됩니다."
+      "header": "공개 정보",
+      "description": "이 값들은 협력자와 공유되며 대화에서 기본값으로 사용됩니다."
     },
     "fields": {
       "displayName": "표시 이름",
-      "displayNamePlaceholder": "다른 사용자가 나를 부르는 방식",
+      "displayNamePlaceholder": "다른 사용자들이 당신을 부르는 방식",
       "fullName": "전체 이름",
-      "fullNamePlaceholder": "청구 및 이메일 사본에 선택 사항",
+      "fullNamePlaceholder": "결제 및 이메일 복사본에 선택 사항",
       "username": "사용자 ID",
       "usernamePlaceholder": "고유 식별자",
       "usernameHint": "이 식별자는 OAuth 제공업체에서 제공되며 아직 변경할 수 없습니다.",
@@ -31,18 +31,27 @@
       "feminine": "여성",
       "masculine": "남성",
       "nonBinary": "논바이너리",
-      "unspecified": "답변 안 함"
+      "unspecified": "답변 거부"
     },
     "preferences": {
-      "placeholder": "콘텐츠 기본 설정, 흐림 설정 및 민감한 테마는 모더레이션 서비스가 통합된 후에 다시 제공됩니다."
+      "placeholder": "콘텐츠 환경설정, 흐리게 설정 및 민감한 테마는 중재 서비스가 통합된 후에 다시 제공될 예정입니다."
     },
     "actions": {
-      "save": "변경 내용 저장"
+      "save": "변경 사항 저장",
+      "saving": "저장 중..."
     },
     "security": {
       "header": "보안",
-      "description": "CharHub 세션은 Google 또는 Facebook의 OAuth 보안을 상속합니다. 곧 다단계 인증이 지원될 예정입니다.",
+      "description": "CharHub 세션은 Google 또는 Facebook의 OAuth 보안을 상속합니다. 곧 다단계 인증 지원이 추가될 예정입니다.",
       "placeholder": "세션 관리 및 비밀번호 없는 로그인 제어는 로드맵에 있습니다."
+    },
+    "feedback": {
+      "success": "프로필이 성공적으로 업데이트되었습니다.",
+      "error": "변경 사항을 저장하지 못했습니다."
+    },
+    "errors": {
+      "updateFailed": "변경 사항을 저장하지 못했습니다. 잠시 후 다시 시도하세요.",
+      "displayNameRequired": "표시 이름은 필수입니다."
     }
   }
 }

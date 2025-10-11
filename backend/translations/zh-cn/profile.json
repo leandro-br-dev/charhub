@@ -3,7 +3,7 @@
   "resources": {
     "sectionTitle": "账户",
     "title": "管理您的个人资料",
-    "subtitle": "更新您在 CharHub 上的个人信息。正在迁移的偏好设置将很快在此处显示。",
+    "subtitle": "更新您在CharHub上的形象。仍在迁移中的偏好设置将很快在此显示。",
     "identity": {
       "header": "个人资料照片",
       "description": "选择一个头像来代表您在聊天和角色中的形象。",
@@ -11,8 +11,8 @@
       "placeholderNote": "媒体服务重新连接后即可上传头像。"
     },
     "details": {
-      "header": "公开详情",
-      "description": "这些信息将与协作者共享，并用作对话中的默认值。"
+      "header": "公开信息",
+      "description": "这些信息将与协作者共享，并用作对话的默认值。"
     },
     "fields": {
       "displayName": "显示名称",
@@ -22,7 +22,7 @@
       "username": "用户 ID",
       "usernamePlaceholder": "唯一标识符",
       "usernameHint": "此标识符来自您的 OAuth 提供商，目前无法更改。",
-      "email": "电子邮件",
+      "email": "邮箱",
       "emailHint": "由您的身份验证提供商管理。",
       "birthDate": "出生日期",
       "gender": "性别"
@@ -34,15 +34,24 @@
       "unspecified": "不愿透露"
     },
     "preferences": {
-      "placeholder": "内容偏好、模糊设置和敏感主题将在审核服务集成后返回。"
+      "placeholder": "内容偏好、模糊设置和敏感主题将在集成审核服务后返回。"
     },
     "actions": {
-      "save": "保存更改"
+      "save": "保存更改",
+      "saving": "正在保存..."
     },
     "security": {
       "header": "安全",
-      "description": "您的 CharHub 会话继承了 Google 或 Facebook 的 OAuth 安全性。多因素认证支持将很快添加。",
-      "placeholder": "会话管理和无密码登录控件已纳入路线图。"
+      "description": "您的CharHub会话继承自Google或Facebook的OAuth安全性。很快将支持多因素认证。",
+      "placeholder": "会话管理和无密码登录控件已在路线图中。"
+    },
+    "feedback": {
+      "success": "个人资料更新成功。",
+      "error": "我们无法保存您的更改。"
+    },
+    "errors": {
+      "updateFailed": "我们无法保存您的更改。请稍后重试。",
+      "displayNameRequired": "显示名称是必填项。"
     }
   }
 }

@@ -99,6 +99,53 @@ Run these from `backend/`:
 - **Translations** generated once and mounted as a Docker volume (`./backend/translations:/app/translations`). They are read-only at runtime.
 - **Logging**: Each Express request installs `req.log` via Pino HTTP integration (see `index.ts`), ensuring passport and guards emit structured logs.
 
+### Database Models
+
+O CharHub utiliza Prisma ORM com PostgreSQL. Consulte `backend/prisma/schema.prisma` para detalhes completos.
+
+#### **Sistema de Chat (Phase 2)**
+
+**Assistant**
+- Representa um agente de IA com instruções e personalidade específicas
+- Pode atuar em conversas representando um Character
+- Campos principais: `name`, `description`, `instructions` (system prompt), `defaultCharacterId`
+- Relacionamentos: pertence a um `User` (creator), pode ter um `Character` padrão
+
+**Conversation**
+- Representa uma sessão de chat entre usuário e personagens
+- Campos principais: `title`, `settings` (JSON com preferências de LLM/roleplay), `lastMessageAt`
+- Tracking de edições: `isTitleUserEdited`, `isTitleSystemEdited`, `titleLastUpdatedAt`
+- Relacionamentos: pertence a um `User`, contém múltiplos `ConversationParticipant` e `Message`
+
+**ConversationParticipant**
+- Representa uma entidade participando de uma conversa
+- **Restrição XOR**: Exatamente UM dos seguintes deve estar definido:
+  - `userId` - Usuário humano participando
+  - `actingCharacterId` - Character atuando diretamente (sem IA)
+  - `actingAssistantId` - Assistant (IA) atuando
+- `representingCharacterId` - Character sendo representado visualmente (obrigatório quando `actingAssistantId` está definido)
+- `configOverride` - Configuração JSON específica para este participante nesta conversa
+
+**Message**
+- Representa uma mensagem individual na conversa
+- Campos principais: `content` (texto ou JSON), `senderId`, `senderType` (enum: USER, CHARACTER, ASSISTANT, SYSTEM)
+- Suporte a anexos: `attachments` (array JSON de URLs)
+- Metadata: campo `metadata` (JSON) para informações adicionais (emoção, ação, etc.)
+
+**SenderType** (enum)
+- `USER` - Mensagem enviada pelo usuário humano
+- `CHARACTER` - Mensagem de um character atuando diretamente
+- `ASSISTANT` - Mensagem gerada por um assistant (IA)
+- `SYSTEM` - Mensagens do sistema (notificações, avisos)
+
+#### **Fluxo de Dados de Chat**
+
+1. **Criar Conversa**: User cria Conversation, system adiciona User como ConversationParticipant
+2. **Adicionar Character**: Adiciona ConversationParticipant com `actingAssistantId` (IA) ou `actingCharacterId` (direto)
+3. **Enviar Mensagem**: Cria Message com `senderId` e `senderType`, atualiza `Conversation.lastMessageAt`
+4. **Gerar Resposta IA**: Assistant processa histórico, gera resposta usando LLM, cria nova Message
+5. **Histórico**: Busca Messages ordenadas por `timestamp` com paginação
+
 ## Testing & Observability
 
 - Automated tests are not yet defined; future work includes unit tests for translation lookups and OAuth controllers.

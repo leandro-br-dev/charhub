@@ -3,7 +3,7 @@
   "resources": {
     "sectionTitle": "Cuenta",
     "title": "Gestiona tu perfil",
-    "subtitle": "Actualiza cómo te ven los demás en CharHub. Las preferencias que aún se están migrando aparecerán aquí pronto.",
+    "subtitle": "Actualiza cómo te ven los demás en CharHub. Las preferencias que aún se están migrando aparecerán pronto aquí.",
     "identity": {
       "header": "Foto de perfil",
       "description": "Elige un avatar para representarte en chats y personajes.",
@@ -12,13 +12,13 @@
     },
     "details": {
       "header": "Detalles públicos",
-      "description": "Estos valores se comparten con los colaboradores y se utilizan como valores predeterminados en las conversaciones."
+      "description": "Estos valores se comparten con colaboradores y se usan como predeterminados en las conversaciones."
     },
     "fields": {
       "displayName": "Nombre a mostrar",
       "displayNamePlaceholder": "Cómo te dirigen otros usuarios",
       "fullName": "Nombre completo",
-      "fullNamePlaceholder": "Opcional para facturación y copias de correo electrónico",
+      "fullNamePlaceholder": "Opcional para facturación y copias por correo electrónico",
       "username": "ID de usuario",
       "usernamePlaceholder": "Identificador único",
       "usernameHint": "Este identificador proviene de tu proveedor de OAuth y aún no se puede cambiar.",
@@ -37,12 +37,21 @@
       "placeholder": "Las preferencias de contenido, la configuración de desenfoque y los temas sensibles volverán una vez que se integre el servicio de moderación."
     },
     "actions": {
-      "save": "Guardar cambios"
+      "save": "Guardar cambios",
+      "saving": "Guardando..."
     },
     "security": {
       "header": "Seguridad",
       "description": "Tus sesiones de CharHub heredan la seguridad OAuth de Google o Facebook. Pronto se añadirá soporte para autenticación multifactor.",
       "placeholder": "La gestión de sesiones y los controles de inicio de sesión sin contraseña están en el plan de desarrollo."
+    },
+    "feedback": {
+      "success": "Perfil actualizado correctamente.",
+      "error": "No pudimos guardar tus cambios."
+    },
+    "errors": {
+      "updateFailed": "No pudimos guardar tus cambios. Inténtalo de nuevo en un momento.",
+      "displayNameRequired": "El nombre a mostrar es obligatorio."
     }
   }
 }

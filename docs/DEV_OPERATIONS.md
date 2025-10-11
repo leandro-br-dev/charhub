@@ -82,51 +82,144 @@ Front door (without tunnel) defaults to `http://localhost`. If Cloudflare tunnel
 - Apply migrations manually: `docker compose exec backend npx prisma migrate deploy`.
 - Generate Prisma client (if schema changes): `docker compose exec backend npx prisma generate`.
 
-#### Prisma Migration Workflow (Recommended Commands)
+#### Prisma Migration Workflow
 
-Durante o desenvolvimento, foram testados diferentes comandos de migração. Os comandos abaixo são **comprovadamente eficazes**:
+O Prisma oferece dois fluxos de trabalho para gerenciar o schema do banco de dados:
 
-**1. Sincronizar schema com o banco de dados (desenvolvimento):**
+##### **Opção 1: Migrations (Recomendado para Produção)**
+
+Este é o fluxo **correto e recomendado** que cria histórico versionado de mudanças no banco de dados.
+
+**1. Criar uma nova migração (desenvolvimento):**
 ```bash
-docker compose exec backend npx prisma db push --skip-generate
+docker compose exec backend npx prisma migrate dev --name <nome_descritivo>
 ```
-Este comando sincroniza o schema Prisma diretamente com o banco de dados sem criar arquivos de migração. Ideal para desenvolvimento rápido e prototipagem.
+Este comando:
+- Cria um novo arquivo SQL em `backend/prisma/migrations/`
+- Aplica a migração no banco de dados
+- Gera o Prisma Client automaticamente
 
-**2. Gerar o Prisma Client:**
+Exemplos de nomes descritivos:
+- `add_chat_models` - Adiciona tabelas do sistema de chat
+- `add_user_avatar_fields` - Adiciona campos de avatar ao User
+- `update_character_indexes` - Atualiza índices da tabela Character
+
+**2. Aplicar migrações pendentes (produção/staging):**
+```bash
+docker compose exec backend npx prisma migrate deploy
+```
+Aplica todas as migrações que ainda não foram executadas no banco de dados. Use este comando em ambientes de produção.
+
+**3. Verificar status das migrações:**
+```bash
+docker compose exec backend npx prisma migrate status
+```
+Mostra quais migrações foram aplicadas e quais estão pendentes.
+
+**4. Resolver migrações com drift (estado inconsistente):**
+
+Se o banco de dados tiver mudanças que não estão no histórico de migrações:
+
+```bash
+# Opção A: Marcar uma migração como aplicada (se o banco já está correto)
+docker compose exec backend npx prisma migrate resolve --applied <nome_da_migração>
+
+# Opção B: Criar baseline do estado atual
+# 1. Criar diretório da migração
+mkdir -p backend/prisma/migrations/$(date +%Y%m%d%H%M%S)_baseline_state
+echo "-- Baseline migration (database already in sync)" > backend/prisma/migrations/$(date +%Y%m%d%H%M%S)_baseline_state/migration.sql
+
+# 2. Marcar como aplicada
+docker compose exec backend npx prisma migrate resolve --applied <nome_do_diretório>
+```
+
+##### **Opção 2: DB Push (Apenas para Prototipagem Rápida)**
+
+**⚠️ ATENÇÃO:** Este método **não cria arquivos de migração** e **não deve ser usado em produção**.
+
+```bash
+docker compose exec backend npx prisma db push
+```
+
+Use `db push` apenas quando:
+- Estiver prototipando e mudando o schema frequentemente
+- Não se importar em perder o histórico de mudanças
+- Estiver trabalhando em desenvolvimento local
+
+Depois de finalizar o protótipo, crie uma migração apropriada com `migrate dev`.
+
+##### **Comandos Auxiliares**
+
+**Gerar o Prisma Client (atualizar tipos TypeScript):**
 ```bash
 docker compose exec backend npx prisma generate
 ```
-Sempre execute após modificar o `schema.prisma` para atualizar os tipos TypeScript e o cliente Prisma.
+Execute após modificar o `schema.prisma` manualmente ou quando o cliente estiver desatualizado.
 
-**3. Formatar o schema Prisma:**
+**Formatar o schema Prisma:**
 ```bash
 docker compose exec backend npx prisma format
 ```
 Formata o arquivo `schema.prisma` seguindo as convenções do Prisma.
 
-**4. Abrir o Prisma Studio (interface visual):**
+**Abrir o Prisma Studio (interface visual):**
 ```bash
-docker compose exec backend npx prisma studio --browser none &
+docker compose exec backend npx prisma studio
 ```
-Abre o Prisma Studio em `http://localhost:5555` para visualizar e editar dados.
+Abre o Prisma Studio em `http://localhost:5555` para visualizar e editar dados do banco.
 
-**5. Validar tabelas criadas:**
+**Validar tabelas criadas (PostgreSQL):**
 ```bash
 docker compose exec postgres psql -U charhub -d charhub_db -c "\dt"
 ```
-Lista todas as tabelas do banco de dados.
 
-**6. Descrever estrutura de uma tabela:**
+**Descrever estrutura de uma tabela:**
 ```bash
 docker compose exec postgres psql -U charhub -d charhub_db -c '\d "NomeDaTabela"'
 ```
-Mostra a estrutura completa de uma tabela (colunas, tipos, índices, constraints).
 
-**⚠️ Notas Importantes:**
-- O comando `prisma db push` **não** cria arquivos de migração. Para produção, use `prisma migrate dev` ou `prisma migrate deploy`.
-- Sempre execute `prisma generate` após `db push` para atualizar o cliente TypeScript.
-- Se encontrar erros de "table does not exist" mesmo após a migração estar marcada como aplicada, use `prisma db push` para forçar a sincronização.
-- O Prisma cria automaticamente tabelas de junção para relações many-to-many (ex: `_CharacterToTag`, `_CharacterAttires`).
+##### **Fluxo Recomendado para Adicionar Novas Tabelas**
+
+1. **Editar o schema:**
+   - Abra `backend/prisma/schema.prisma`
+   - Adicione os novos models, enums e relações
+   - Formate o schema: `docker compose exec backend npx prisma format`
+
+2. **Criar a migração:**
+   ```bash
+   docker compose exec backend npx prisma migrate dev --name add_sua_feature
+   ```
+
+3. **Validar no banco:**
+   ```bash
+   # Verificar tabelas
+   docker compose exec postgres psql -U charhub -d charhub_db -c "\dt"
+
+   # Ver estrutura específica
+   docker compose exec postgres psql -U charhub -d charhub_db -c '\d "NomeDaTabela"'
+   ```
+
+4. **Validar no Prisma Studio:**
+   ```bash
+   docker compose exec backend npx prisma studio
+   ```
+   Abra `http://localhost:5555` e verifique se as tabelas aparecem corretamente.
+
+5. **Commitar as mudanças:**
+   ```bash
+   git add backend/prisma/schema.prisma
+   git add backend/prisma/migrations/
+   git commit -m "feat(db): add <sua_feature> models"
+   ```
+
+##### **Notas Importantes**
+
+- **Sempre use migrações em produção** - Nunca use `db push` em ambientes de produção ou staging
+- **Commite os arquivos de migração** - Os arquivos em `backend/prisma/migrations/` devem ser versionados no Git
+- **Uma migração por feature** - Agrupe mudanças relacionadas em uma única migração
+- **Nomes descritivos** - Use nomes claros que expliquem o que a migração faz
+- **Tabelas de junção automáticas** - O Prisma cria automaticamente tabelas com prefixo `_` para relações many-to-many (ex: `_CharacterToTag`)
+- **Caso de erro "drift detected"** - Veja a seção "Resolver migrações com drift" acima
 
 ### Monitoring & Logs
 
