@@ -1,4 +1,4 @@
-import { Prisma, SenderType } from '../generated/prisma';
+import { Prisma } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import type {
@@ -25,7 +25,7 @@ export async function createMessage(data: CreateMessageInput) {
       data: {
         ...messageData,
         attachments: attachments ? JSON.stringify(attachments) : null,
-        metadata: metadata || null,
+        metadata: metadata ? (metadata as Prisma.InputJsonValue) : Prisma.JsonNull,
       },
     });
 

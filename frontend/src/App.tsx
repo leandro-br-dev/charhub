@@ -12,6 +12,9 @@ import CharacterCreatePage from './pages/(characters)/create';
 import CharacterDetailPage from './pages/(characters)/[characterId]';
 import CharacterEditPage from './pages/(characters)/[characterId]/edit';
 import ProfilePage from './pages/profile';
+import ChatIndexPage from './pages/(chat)';
+import ConversationDetailPage from './pages/(chat)/[conversationId]';
+import NewConversationPage from './pages/(chat)/new';
 
 function PublicShell(): JSX.Element {
   const location = useLocation();
@@ -52,6 +55,9 @@ export default function App(): JSX.Element {
         <Route path="/characters/create" element={<CharacterCreatePage />} />
         <Route path="/characters/:characterId" element={<CharacterDetailPage />} />
         <Route path="/characters/:characterId/edit" element={<CharacterEditPage />} />
+        <Route path="/chat" element={<ChatIndexPage />} />
+        <Route path="/chat/new" element={<NewConversationPage />} />
+        <Route path="/chat/:conversationId" element={<ConversationDetailPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
     </Routes>

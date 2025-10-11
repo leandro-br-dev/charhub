@@ -76,7 +76,7 @@ export async function createConversation(
   data: CreateConversationInput
 ) {
   try {
-    const { participantIds, ...conversationData } = data;
+    const { participantIds, settings, projectId, ...conversationData } = data;
 
     // Create conversation with initial participants
     // participantIds should be characterIds or assistantIds
@@ -84,6 +84,8 @@ export async function createConversation(
       data: {
         ...conversationData,
         userId,
+        settings: settings === null ? Prisma.JsonNull : (settings as Prisma.InputJsonValue | undefined),
+        projectId: projectId === null ? null : projectId,
         participants: {
           create: participantIds.map((characterId) => ({
             actingCharacterId: characterId,
@@ -234,12 +236,19 @@ export async function updateConversation(
   data: UpdateConversationInput
 ) {
   try {
+    // Handle JSON null values properly for Prisma
+    const updateData: Prisma.ConversationUpdateInput = {
+      title: data.title,
+      isTitleUserEdited: data.isTitleUserEdited,
+      settings: data.settings === null ? Prisma.JsonNull : (data.settings as Prisma.InputJsonValue | undefined),
+    };
+
     const conversation = await prisma.conversation.update({
       where: {
         id: conversationId,
         userId, // Ensure user owns the conversation
       },
-      data,
+      data: updateData,
       include: conversationInclude,
     });
 

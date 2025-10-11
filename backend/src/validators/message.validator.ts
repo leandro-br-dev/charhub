@@ -11,7 +11,7 @@ export const sendMessageSchema = z.object({
   conversationId: z.string().uuid('Invalid conversation ID'),
   content: z.string().min(1, 'Message content is required').max(10000, 'Message content is too long'),
   attachments: z.array(z.string().url('Invalid attachment URL')).optional().nullable(),
-  metadata: z.record(z.unknown()).optional().nullable(), // Flexible JSON metadata (emotion, action, etc.)
+  metadata: z.record(z.string(), z.unknown()).optional().nullable(), // Flexible JSON metadata (emotion, action, etc.)
 });
 
 // Create message schema (internal use, includes sender info)

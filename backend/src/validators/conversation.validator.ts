@@ -9,14 +9,14 @@ import { z } from 'zod';
 export const createConversationSchema = z.object({
   title: z.string().min(1, 'Title must include at least 1 character').max(200, 'Title cannot exceed 200 characters').optional().default('New Conversation'),
   participantIds: z.array(z.string().uuid()).min(1, 'At least one participant is required'),
-  settings: z.record(z.unknown()).optional().nullable(), // Flexible JSON settings
+  settings: z.record(z.string(), z.unknown()).optional().nullable(), // Flexible JSON settings
   projectId: z.string().uuid().optional().nullable(),
 });
 
 // Update conversation schema
 export const updateConversationSchema = z.object({
   title: z.string().min(1, 'Title must include at least 1 character').max(200, 'Title cannot exceed 200 characters').optional(),
-  settings: z.record(z.unknown()).optional().nullable(),
+  settings: z.record(z.string(), z.unknown()).optional().nullable(),
   isTitleUserEdited: z.boolean().optional(),
 });
 
