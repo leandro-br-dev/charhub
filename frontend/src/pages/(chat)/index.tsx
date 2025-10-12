@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useConversationListQuery } from './shared/hooks/useConversations';
 import { ConversationList } from './shared/components';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ChatIndexPage() {
   const { t } = useTranslation('chat');
   const navigate = useNavigate();
-  const { user } = useAuthStore();
+  const { user } = useAuth();
 
   const { data: conversationsData, isLoading } = useConversationListQuery();
 

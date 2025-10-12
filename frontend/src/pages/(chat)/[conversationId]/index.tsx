@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { useConversationQuery, useConversationMutations } from '../shared/hooks/useConversations';
 import { useMessagesQuery, useMessageMutations } from '../shared/hooks/useMessages';
 import { ConversationHeader, MessageList, MessageInput } from '../shared/components';
-import { useAuthStore } from '@/stores/authStore';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ConversationDetailPage() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation('chat');
-  const { user } = useAuthStore();
+  const { user } = useAuth();
 
   const [typingParticipants] = useState<Set<string>>(new Set()); // Will be populated by WebSocket in Phase 2.4
 
@@ -133,7 +133,7 @@ export default function ConversationDetailPage() {
         <MessageInput
           user={{
             name: user?.displayName || user?.email || t('message.you'),
-            avatar: user?.avatarUrl,
+            avatar: user?.photo,
           }}
           onSendMessage={handleSendMessage}
           disabled={sendMessage.isPending}

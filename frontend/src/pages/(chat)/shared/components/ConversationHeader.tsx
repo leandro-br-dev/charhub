@@ -54,9 +54,10 @@ export const ConversationHeader = ({
    */
   const getParticipantInfo = (participant: ConversationParticipant) => {
     if (participant.actingCharacter) {
+      const char = participant.actingCharacter;
       return {
-        name: participant.actingCharacter.name,
-        avatar: participant.actingCharacter.avatar,
+        name: char.lastName ? `${char.firstName} ${char.lastName}` : char.firstName,
+        avatar: char.avatar,
       };
     }
     if (participant.actingAssistant) {
@@ -67,8 +68,8 @@ export const ConversationHeader = ({
     }
     if (participant.user) {
       return {
-        name: participant.user.name || t('participant.user'),
-        avatar: participant.user.avatar || null,
+        name: participant.user.displayName || t('participant.user'),
+        avatar: participant.user.avatarUrl,
       };
     }
     return {

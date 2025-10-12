@@ -58,8 +58,8 @@ export const MessageList = ({
         );
         if (participant) {
           participantId = participant.id;
-          name = participant.user?.name || t('message.you');
-          avatar = participant.user?.avatar || null;
+          name = participant.user?.displayName || t('message.you');
+          avatar = participant.user?.avatarUrl || null;
         }
       }
     } else if (message.senderType === 'CHARACTER') {
@@ -67,10 +67,11 @@ export const MessageList = ({
       const participant = participants.find(
         (p) => p.actingCharacterId === message.senderId
       );
-      if (participant) {
+      if (participant && participant.actingCharacter) {
         participantId = participant.id;
-        name = participant.actingCharacter?.name || t('participant.character');
-        avatar = participant.actingCharacter?.avatar || null;
+        const char = participant.actingCharacter;
+        name = char.lastName ? `${char.firstName} ${char.lastName}` : char.firstName;
+        avatar = char.avatar || null;
       }
     } else if (message.senderType === 'ASSISTANT') {
       // Find assistant participant
@@ -99,14 +100,15 @@ export const MessageList = ({
       let avatar: string | null = null;
 
       if (participant.actingCharacter) {
-        name = participant.actingCharacter.name;
-        avatar = participant.actingCharacter.avatar;
+        const char = participant.actingCharacter;
+        name = char.lastName ? `${char.firstName} ${char.lastName}` : char.firstName;
+        avatar = char.avatar;
       } else if (participant.actingAssistant) {
         name = participant.actingAssistant.name;
-        avatar = participant.actingAssistant.avatar;
+        avatar = participant.actingAssistant.avatar || null;
       } else if (participant.user) {
-        name = participant.user.name || t('message.you');
-        avatar = participant.user.avatar;
+        name = participant.user.displayName || t('message.you');
+        avatar = participant.user.avatarUrl || null;
       }
 
       return { participantId, name, avatar };

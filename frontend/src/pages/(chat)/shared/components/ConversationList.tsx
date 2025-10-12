@@ -38,14 +38,15 @@ export const ConversationList = ({
     let avatar: string | null = null;
 
     if (firstParticipant.actingCharacter) {
-      name = firstParticipant.actingCharacter.name;
-      avatar = firstParticipant.actingCharacter.avatar;
+      const char = firstParticipant.actingCharacter;
+      name = char.lastName ? `${char.firstName} ${char.lastName}` : char.firstName;
+      avatar = char.avatar;
     } else if (firstParticipant.actingAssistant) {
       name = firstParticipant.actingAssistant.name;
       avatar = firstParticipant.actingAssistant.avatar || null;
     } else if (firstParticipant.user) {
-      name = firstParticipant.user.name || t('participant.user');
-      avatar = firstParticipant.user.avatar || null;
+      name = firstParticipant.user.displayName || t('participant.user');
+      avatar = firstParticipant.user.avatarUrl;
     }
 
     return { name, avatar };

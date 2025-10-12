@@ -88,38 +88,45 @@ export default function NewConversationPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {characters.map((character) => (
-                <button
-                  key={character.id}
-                  onClick={() => setSelectedCharacterId(character.id)}
-                  className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all duration-200 ${
-                    selectedCharacterId === character.id
-                      ? 'border-primary bg-primary/5'
-                      : 'border-normal hover:border-primary/50 hover:bg-light'
-                  }`}
-                >
-                  <Avatar
-                    src={character.avatar}
-                    alt={character.name}
-                    size="medium"
-                  />
-                  <div className="flex-1 text-left min-w-0">
-                    <h3 className="font-medium text-content truncate">
-                      {character.name}
-                    </h3>
-                    {character.tagline && (
-                      <p className="text-sm text-muted truncate">
-                        {character.tagline}
-                      </p>
+              {characters.map((character) => {
+                const displayName = character.lastName
+                  ? `${character.firstName} ${character.lastName}`
+                  : character.firstName;
+
+                return (
+                  <button
+                    key={character.id}
+                    onClick={() => setSelectedCharacterId(character.id)}
+                    className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all duration-200 ${
+                      selectedCharacterId === character.id
+                        ? 'border-primary bg-primary/5'
+                        : 'border-normal hover:border-primary/50 hover:bg-light'
+                    }`}
+                  >
+                    <Avatar
+                      src={character.avatar}
+                      alt={displayName}
+                      size="medium"
+                    />
+                    <div className="flex-1 text-left min-w-0">
+                      <h3 className="font-medium text-content truncate">
+                        {displayName}
+                      </h3>
+                      {character.personality && (
+                        <p className="text-sm text-muted truncate">
+                          {character.personality.substring(0, 50)}
+                          {character.personality.length > 50 ? '...' : ''}
+                        </p>
+                      )}
+                    </div>
+                    {selectedCharacterId === character.id && (
+                      <span className="material-symbols-outlined text-primary">
+                        check_circle
+                      </span>
                     )}
-                  </div>
-                  {selectedCharacterId === character.id && (
-                    <span className="material-symbols-outlined text-primary">
-                      check_circle
-                    </span>
-                  )}
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
