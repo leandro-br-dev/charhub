@@ -1,4 +1,5 @@
-﻿import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
+import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
@@ -30,6 +31,11 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
+    },
     plugins: [react()],
     server: {
       port: 80, // O container do Vite roda internamente na porta 80
