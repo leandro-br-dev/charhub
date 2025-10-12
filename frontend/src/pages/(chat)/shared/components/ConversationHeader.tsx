@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Avatar } from '@/components/ui';
-import type { Conversation, ConversationParticipant } from '@/types/chat';
+import { Button, Avatar } from '../../../../components/ui';
+import type { Conversation, ConversationParticipant } from '../../../../types/chat';
 
 export interface ConversationHeaderProps {
   conversation: Conversation;

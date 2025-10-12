@@ -1,4 +1,4 @@
-import { Avatar } from '@/components/ui';
+import { Avatar } from '../../../../components/ui';
 
 export interface TypingIndicatorProps {
   avatar?: string | null;

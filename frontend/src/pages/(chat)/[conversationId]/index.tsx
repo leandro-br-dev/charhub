@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useConversationQuery, useConversationMutations } from '../shared/hooks/useConversations';
 import { useMessagesQuery, useMessageMutations } from '../shared/hooks/useMessages';
 import { ConversationHeader, MessageList, MessageInput } from '../shared/components';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth';
 
 export default function ConversationDetailPage() {
   const { conversationId } = useParams<{ conversationId: string }>();

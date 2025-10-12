@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useConversationMutations } from '../shared/hooks/useConversations';
-import { Button, Avatar } from '@/components/ui';
-import { characterService } from '@/services/characterService';
-import type { Character } from '@/types/characters';
+import { Button, Avatar } from '../../../components/ui';
+import { characterService } from '../../../services/characterService';
+import type { Character } from '../../../types/characters';
 
 export default function NewConversationPage() {
   const { t } = useTranslation('chat');

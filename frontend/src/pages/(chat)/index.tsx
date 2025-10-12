@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useConversationListQuery } from './shared/hooks/useConversations';
 import { ConversationList } from './shared/components';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function ChatIndexPage() {
   const { t } = useTranslation('chat');

@@ -1,6 +1,6 @@
 import { useState, useCallback, type KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Button, Textarea } from '@/components/ui';
+import { Avatar, Button, Textarea } from '../../../../components/ui';
 
 export interface MessageInputProps {
   user: {

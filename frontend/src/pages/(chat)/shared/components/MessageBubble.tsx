@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Button, Textarea } from '@/components/ui';
-import type { Message } from '@/types/chat';
+import { Avatar, Button, Textarea } from '../../../../components/ui';
+import type { Message } from '../../../../types/chat';
 
 export interface MessageBubbleProps {
   message: Message;

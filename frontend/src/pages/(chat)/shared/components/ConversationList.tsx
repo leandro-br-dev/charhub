@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Avatar } from '@/components/ui';
-import type { Conversation } from '@/types/chat';
+import { Avatar } from '../../../../components/ui';
+import type { Conversation } from '../../../../types/chat';
 
 export interface ConversationListProps {
   conversations: Conversation[];
