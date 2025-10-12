@@ -1,4 +1,4 @@
-import { useState, useCallback, type KeyboardEvent } from 'react';
+import { useState, useCallback, useRef, type KeyboardEvent, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, Button, Textarea } from '../../../../components/ui';
 
@@ -11,6 +11,8 @@ export interface MessageInputProps {
   disabled?: boolean;
   className?: string;
   onUserAvatarClick?: () => void;
+  onTypingStart?: () => void;
+  onTypingStop?: () => void;
 }
 
 export const MessageInput = ({
@@ -19,10 +21,13 @@ export const MessageInput = ({
   disabled = false,
   className = '',
   onUserAvatarClick,
+  onTypingStart,
+  onTypingStop,
 }: MessageInputProps) => {
   const { t } = useTranslation('chat');
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleSend = useCallback(async () => {
     const trimmedMessage = message.trim();
@@ -33,10 +38,15 @@ export const MessageInput = ({
       const success = await onSendMessage(trimmedMessage);
       if (success) {
         setMessage(''); // Clear input only on success
+        notifyTypingStop();
       }
     } catch (error) {
       console.error('[MessageInput] Error sending message:', error);
     } finally {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+        typingTimeoutRef.current = null;
+      }
       setIsSending(false);
     }
   }, [message, disabled, isSending, onSendMessage]);
@@ -50,6 +60,10 @@ export const MessageInput = ({
     },
     [disabled, isSending, handleSend]
   );
+
+  const handleBlur = useCallback(() => {
+    notifyTypingStop();
+  }, [notifyTypingStop]);
 
   const isEffectivelyDisabled = disabled || isSending;
   const placeholderText = isSending
@@ -82,8 +96,9 @@ export const MessageInput = ({
       <div className="w-full bg-light rounded-xl shadow-sm p-2 relative">
         <Textarea
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleInputChange}
           onKeyDown={handleKeyPress}
+          onBlur={handleBlur}
           placeholder={placeholderText}
           className={`w-full min-h-[60px] resize-none bg-transparent border-none focus:ring-0 text-content placeholder-muted ${
             isEffectivelyDisabled ? 'opacity-70' : ''

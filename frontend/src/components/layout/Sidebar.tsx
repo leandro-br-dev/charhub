@@ -48,16 +48,12 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false }: 
   let content: ReactNode;
 
   if (pathname.startsWith("/chat")) {
+    // Lazy load ConversationHistory to avoid circular dependencies
+    const ConversationHistory = require("../../pages/(chat)/shared/components/ConversationHistory").ConversationHistory;
+
     content = (
       <div className="flex h-full flex-col">
-        {/* TODO(chat): mount <MessageHistory onLinkClick={closeIfMobile} /> once the chat module is migrated. */}
-        <PlaceholderPanel
-          title={t("navigation:chatHistory", "Conversation history")}
-          description={t(
-            "navigation:chatHistoryPlaceholder",
-            "Messages and threads will appear here when the chat migration is complete."
-          )}
-        />
+        <ConversationHistory onLinkClick={closeIfMobile} />
       </div>
     );
   } else if (pathname.startsWith("/development")) {
