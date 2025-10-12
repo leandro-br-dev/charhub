@@ -13,7 +13,7 @@ import { Menu, Portal, Transition } from '@headlessui/react';
 
 type ButtonElement = ReactElement<{ className?: string }>;
 
-type SmartDropdownProps = {
+export type SmartDropdownProps = {
   buttonContent: ButtonElement;
   buttonProps?: Record<string, unknown>;
   menuWidth?: string;

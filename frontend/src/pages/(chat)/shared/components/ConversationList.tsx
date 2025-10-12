@@ -43,7 +43,7 @@ export const ConversationList = ({
       avatar = char.avatar;
     } else if (firstParticipant.actingAssistant) {
       name = firstParticipant.actingAssistant.name;
-      avatar = firstParticipant.actingAssistant.avatar || null;
+      avatar = firstParticipant.actingAssistant.avatar;
     } else if (firstParticipant.user) {
       name = firstParticipant.user.displayName || t('participant.user');
       avatar = firstParticipant.user.avatarUrl;

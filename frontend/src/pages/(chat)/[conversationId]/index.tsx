@@ -58,7 +58,6 @@ export default function ConversationDetailPage() {
     try {
       await sendMessage.mutateAsync({
         content,
-        conversationId: conversation.id,
       });
       return true;
     } catch (error) {

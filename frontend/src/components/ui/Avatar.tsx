@@ -1,6 +1,6 @@
 import { type ImgHTMLAttributes } from 'react';
 
-export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'size'> {
+export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'size' | 'alt' | 'src'> {
   src?: string | null;
   alt?: string;
   size?: 'mini' | 'small' | 'medium' | 'large';

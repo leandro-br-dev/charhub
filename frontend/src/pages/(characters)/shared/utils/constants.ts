@@ -17,7 +17,7 @@ export const CONTENT_TAG_OPTIONS: ContentTag[] = [
   'GAMBLING'
 ];
 
-export const CHARACTER_PURPOSE_OPTIONS: CharacterPurpose[] = ['chat', 'story', 'both'];
+export const CHARACTER_PURPOSE_OPTIONS: Exclude<CharacterPurpose, null>[] = ['chat', 'story', 'both'];
 
 export const GENDER_OPTIONS = ['male', 'female', 'non-binary'] as const;
 export type GenderOption = (typeof GENDER_OPTIONS)[number];

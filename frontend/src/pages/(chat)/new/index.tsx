@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useConversationMutations } from '../shared/hooks/useConversations';
 import { Button, Avatar } from '@/components/ui';
 import { characterService } from '@/services/characterService';
+import type { Character } from '@/types/characters';
 
 export default function NewConversationPage() {
   const { t } = useTranslation('chat');
@@ -17,7 +18,7 @@ export default function NewConversationPage() {
   // Fetch user's characters
   const { data: charactersData, isLoading: charactersLoading } = useQuery({
     queryKey: ['characters', 'my-characters'],
-    queryFn: () => characterService.getMyCharacters(),
+    queryFn: () => characterService.list(),
   });
 
   const characters = charactersData?.items || [];
@@ -88,7 +89,7 @@ export default function NewConversationPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {characters.map((character) => {
+              {characters.map((character: Character) => {
                 const displayName = character.lastName
                   ? `${character.firstName} ${character.lastName}`
                   : character.firstName;

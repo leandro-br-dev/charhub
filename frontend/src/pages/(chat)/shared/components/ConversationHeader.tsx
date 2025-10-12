@@ -63,7 +63,7 @@ export const ConversationHeader = ({
     if (participant.actingAssistant) {
       return {
         name: participant.actingAssistant.name,
-        avatar: participant.actingAssistant.avatar || null,
+        avatar: participant.actingAssistant.avatar,
       };
     }
     if (participant.user) {
