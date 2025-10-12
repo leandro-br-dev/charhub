@@ -93,7 +93,10 @@ export const MessageList = ({
    */
   const typingParticipantsData = Array.from(typingParticipants)
     .map((participantId) => {
-      const participant = participants.find((p) => p.id === participantId);
+      const participant =
+        participants.find((p) => p.id === participantId) ||
+        participants.find((p) => p.userId === participantId);
+
       if (!participant) return null;
 
       let name = '';
@@ -111,7 +114,7 @@ export const MessageList = ({
         avatar = participant.user.avatarUrl || null;
       }
 
-      return { participantId, name, avatar };
+      return { participantId: participant.id, name, avatar };
     })
     .filter((data): data is NonNullable<typeof data> => data !== null);
 

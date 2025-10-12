@@ -30,6 +30,7 @@
     "@aws-sdk/client-s3": "^3.744.0",
     "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.16.3",
+    "@types/socket.io": "^3.0.1",
     "bullmq": "^5.61.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
@@ -45,6 +46,7 @@
     "pino": "^10.0.0",
     "pino-http": "^10.5.0",
     "prisma": "^6.16.3",
+    "socket.io": "^4.8.1",
     "zod": "^4.1.12"
   },
   "devDependencies": {

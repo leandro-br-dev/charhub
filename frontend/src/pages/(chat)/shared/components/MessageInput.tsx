@@ -27,7 +27,40 @@ export const MessageInput = ({
   const { t } = useTranslation('chat');
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const typingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const notifyTypingStop = useCallback(() => {
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = null;
+    }
+    onTypingStop?.();
+  }, [onTypingStop]);
+
+  const scheduleTypingStop = useCallback(() => {
+    if (!onTypingStop) {
+      return;
+    }
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+    typingTimeoutRef.current = setTimeout(() => {
+      typingTimeoutRef.current = null;
+      onTypingStop();
+    }, 2000);
+  }, [onTypingStop]);
+
+  const handleInputChange = useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
+    setMessage(value);
+
+    if (!disabled && !isSending && value.trim().length > 0) {
+      onTypingStart?.();
+      scheduleTypingStop();
+    } else if (value.trim().length === 0) {
+      notifyTypingStop();
+    }
+  }, [disabled, isSending, notifyTypingStop, onTypingStart, scheduleTypingStop]);
 
   const handleSend = useCallback(async () => {
     const trimmedMessage = message.trim();
@@ -49,7 +82,7 @@ export const MessageInput = ({
       }
       setIsSending(false);
     }
-  }, [message, disabled, isSending, onSendMessage]);
+  }, [message, disabled, isSending, notifyTypingStop, onSendMessage]);
 
   const handleKeyPress = useCallback(
     (e: KeyboardEvent<HTMLTextAreaElement>) => {

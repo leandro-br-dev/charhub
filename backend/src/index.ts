@@ -1,4 +1,5 @@
-﻿import 'dotenv/config';
+import 'dotenv/config';
+import { createServer } from 'http';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -10,8 +11,10 @@ import { disconnectDatabase } from './config/database';
 import { initializeWorkers } from './queues/workers';
 import { queueManager } from './queues';
 import v1Routes from './routes/v1';
+import { setupChatSocket } from './websocket/chatHandler';
 
 const app = express();
+const server = createServer(app);
 const PORT = Number(process.env.PORT) || 3000;
 
 // HTTP logging middleware
@@ -84,8 +87,10 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 // Initialize queue workers
 initializeWorkers();
 
+const io = setupChatSocket(server);
+
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '0.0.0.0', () => {
   logger.info(`Server running on port ${PORT}`);
   logger.info(`API version: v1`);
   logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
@@ -93,16 +98,34 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 // Graceful shutdown hooks
-process.on('SIGTERM', async () => {
-  logger.info('SIGTERM signal received: closing HTTP server');
+let isShuttingDown = false;
+
+const shutdown = async (signal: string) => {
+  if (isShuttingDown) {
+    return;
+  }
+  isShuttingDown = true;
+
+  logger.info({ signal }, 'shutdown_initiated');
+  io.close();
+
   await queueManager.closeAll();
   await disconnectDatabase();
-  process.exit(0);
+
+  server.close((error) => {
+    if (error) {
+      logger.error({ error }, 'http_server_close_failed');
+      process.exit(1);
+    }
+
+    process.exit(0);
+  });
+};
+
+process.on('SIGTERM', () => {
+  void shutdown('SIGTERM');
 });
 
-process.on('SIGINT', async () => {
-  logger.info('SIGINT signal received: closing HTTP server');
-  await queueManager.closeAll();
-  await disconnectDatabase();
-  process.exit(0);
+process.on('SIGINT', () => {
+  void shutdown('SIGINT');
 });

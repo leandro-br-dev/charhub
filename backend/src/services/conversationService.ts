@@ -355,6 +355,21 @@ export async function removeParticipant(
   }
 }
 
+export async function userHasAccessToConversation(conversationId: string, userId: string): Promise<boolean> {
+  const conversation = await prisma.conversation.findFirst({
+    where: {
+      id: conversationId,
+      OR: [
+        { userId },
+        { participants: { some: { userId } } },
+      ],
+    },
+    select: { id: true },
+  });
+
+  return Boolean(conversation);
+}
+
 /**
  * Archive conversation (soft delete by marking in settings)
  */

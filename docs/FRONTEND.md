@@ -63,6 +63,7 @@ The frontend is a React 18 + TypeScript single-page application built with Vite.
 - `useAuth` stores the authenticated user in `localStorage` under `charhub.auth.user` and removes the `token`/`user` query params once consumed.
 - Theme choice persists via `localStorage` (see `useTheme.tsx`).
 - i18next caches detected language in `localStorage` (`i18nextLng`).
+- `useChatSocket` encapsula a conexão Socket.IO, atualiza caches do React Query e expõe eventos de digitação/mensagens para o chat em tempo real.
 
 ## Build & Deployment
 

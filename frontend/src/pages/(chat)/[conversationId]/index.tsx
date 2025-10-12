@@ -1,18 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { useConversationQuery, useConversationMutations } from '../shared/hooks/useConversations';
 import { useMessagesQuery, useMessageMutations } from '../shared/hooks/useMessages';
 import { ConversationHeader, MessageList, MessageInput } from '../shared/components';
 import { useAuth } from '../../../hooks/useAuth';
+import { useChatSocket } from '../../../hooks/useChatSocket';
 
 export default function ConversationDetailPage() {
   const { conversationId } = useParams<{ conversationId: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation('chat');
   const { user } = useAuth();
-
-  const [typingParticipants] = useState<Set<string>>(new Set()); // Will be populated by WebSocket in Phase 2.4
 
   // Queries
   const { data: conversation, isLoading: conversationLoading } = useConversationQuery(conversationId || null);
@@ -21,6 +20,27 @@ export default function ConversationDetailPage() {
   // Mutations
   const { updateTitle, delete: deleteConversation } = useConversationMutations();
   const { send: sendMessage, delete: deleteMessage } = useMessageMutations(conversationId || '');
+
+  const socketState = useChatSocket({
+    conversationId: conversationId || null,
+    currentUserId: user?.id || null,
+  });
+
+  const userParticipantId = useMemo(() => {
+    if (!conversation || !user?.id) {
+      return undefined;
+    }
+    const participant = conversation.participants.find((entry) => entry.userId === user.id);
+    return participant?.id;
+  }, [conversation, user?.id]);
+
+  const assistantParticipantId = useMemo(() => {
+    if (!conversation) {
+      return undefined;
+    }
+    const participant = conversation.participants.find((entry) => entry.actingAssistantId);
+    return participant?.id;
+  }, [conversation]);
 
   if (!conversationId) {
     return (
@@ -55,13 +75,30 @@ export default function ConversationDetailPage() {
   const messages = messagesData?.items || [];
 
   const handleSendMessage = async (content: string): Promise<boolean> => {
+    if (!conversationId) {
+      return false;
+    }
+
+    if (socketState.isConnected) {
+      try {
+        await socketState.sendMessage({
+          conversationId,
+          content,
+          assistantParticipantId,
+        });
+        return true;
+      } catch (error) {
+        console.warn('[ConversationDetail] WebSocket send failed, falling back to REST', error);
+      }
+    }
+
     try {
       await sendMessage.mutateAsync({
         content,
       });
       return true;
     } catch (error) {
-      console.error('[ConversationDetail] Error sending message:', error);
+      console.error('[ConversationDetail] Error sending message via REST:', error);
       return false;
     }
   };
@@ -114,6 +151,12 @@ export default function ConversationDetailPage() {
         className="group"
       />
 
+      {socketState.connectionError ? (
+        <div className="px-4 py-2 text-sm text-danger bg-danger/10">
+          {socketState.connectionError}
+        </div>
+      ) : null}
+
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4">
         <MessageList
@@ -121,7 +164,7 @@ export default function ConversationDetailPage() {
           participants={conversation.participants}
           currentUserId={user?.id || ''}
           loading={messagesLoading}
-          typingParticipants={typingParticipants}
+          typingParticipants={socketState.typingParticipants}
           onDeleteMessage={handleDeleteMessage}
           onEditMessage={handleEditMessage}
         />
@@ -136,6 +179,8 @@ export default function ConversationDetailPage() {
           }}
           onSendMessage={handleSendMessage}
           disabled={sendMessage.isPending}
+          onTypingStart={() => conversationId && socketState.emitTypingStart(conversationId, userParticipantId)}
+          onTypingStop={() => conversationId && socketState.emitTypingStop(conversationId, userParticipantId)}
         />
       </div>
     </div>

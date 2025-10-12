@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/Button";
+import { ConversationHistory } from "../../pages/(chat)/shared/components/ConversationHistory";
 
 type SidebarProps = {
   onClose?: () => void;
@@ -48,9 +49,6 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false }: 
   let content: ReactNode;
 
   if (pathname.startsWith("/chat")) {
-    // Lazy load ConversationHistory to avoid circular dependencies
-    const ConversationHistory = require("../../pages/(chat)/shared/components/ConversationHistory").ConversationHistory;
-
     content = (
       <div className="flex h-full flex-col">
         <ConversationHistory onLinkClick={closeIfMobile} />

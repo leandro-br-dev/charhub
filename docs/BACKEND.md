@@ -146,6 +146,20 @@ O CharHub utiliza Prisma ORM com PostgreSQL. Consulte `backend/prisma/schema.pri
 4. **Gerar Resposta IA**: Assistant processa histórico, gera resposta usando LLM, cria nova Message
 5. **Histórico**: Busca Messages ordenadas por `timestamp` com paginação
 
+### WebSocket (Real-time Chat)
+
+A camada de tempo real do chat usa Socket.IO e está disponível no caminho `/api/v1/ws`. Use o mesmo token JWT emitido no login para autenticar o handshake (`socket.auth.token` ou query `token`). Cada conversa corresponde a uma sala `conversation:<ID>`.
+
+Eventos principais:
+- `join_conversation` / `leave_conversation` — gerenciam o ingresso do socket em uma conversa e validam se o usuário é dono/participante.
+- `send_message` — payload `{ conversationId, content, attachments?, metadata?, assistantParticipantId? }`. Persiste a mensagem via `messageService` e emite `message_received`.
+- `message_received` — broadcast com a mensagem serializada para todos os sockets na sala.
+- `typing_start` / `typing_stop` — indicadores de digitação; o servidor envia `userId` e, quando disponível, `participantId`.
+- `ai_response_start`, `ai_response_chunk`, `ai_response_complete`, `ai_response_error` — ciclo de geração de respostas do assistente disparado por `assistantService.sendAIMessage`.
+
+A implementação completa está em `backend/src/websocket/chatHandler.ts`, que reutiliza `conversationService`, `messageService`, `assistantService` e `verifyJWT` para orquestrar autenticação, rooms e broadcast.
+
+
 ## Testing & Observability
 
 - Automated tests are not yet defined; future work includes unit tests for translation lookups and OAuth controllers.
