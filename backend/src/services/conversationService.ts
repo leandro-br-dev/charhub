@@ -79,7 +79,8 @@ export async function createConversation(
     const { participantIds, settings, projectId, ...conversationData } = data;
 
     // Create conversation with initial participants
-    // participantIds should be characterIds or assistantIds
+    // participantIds can be: characterIds, assistantIds, or both
+    // The frontend is responsible for specifying what type each participant is
     const conversation = await prisma.conversation.create({
       data: {
         ...conversationData,

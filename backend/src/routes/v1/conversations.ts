@@ -447,4 +447,39 @@ router.post(
   }
 );
 
+/**
+ * DELETE /api/v1/conversations/:id/messages/:messageId
+ * Delete a message from a conversation
+ */
+router.delete(
+  '/:id/messages/:messageId',
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const { id, messageId } = req.params;
+      const userId = req.auth?.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required',
+        });
+      }
+
+      await messageService.deleteMessage(id, messageId, userId);
+
+      return res.json({
+        success: true,
+        message: 'Message deleted successfully',
+      });
+    } catch (error) {
+      logger.error({ error }, 'Error deleting message');
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to delete message',
+      });
+    }
+  }
+);
+
 export default router;

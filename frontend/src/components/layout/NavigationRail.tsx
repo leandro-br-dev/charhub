@@ -89,7 +89,7 @@ export function NavigationRail({
         icon: 'chat_bubble',
         labelKey: 'navigation:chat',
         fallbackLabel: 'Chat',
-        available: false,
+        available: true,
         opensSidebar: true
       },
       {

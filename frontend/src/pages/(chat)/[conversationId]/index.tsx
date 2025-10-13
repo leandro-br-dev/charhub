@@ -34,14 +34,6 @@ export default function ConversationDetailPage() {
     return participant?.id;
   }, [conversation, user?.id]);
 
-  const assistantParticipantId = useMemo(() => {
-    if (!conversation) {
-      return undefined;
-    }
-    const participant = conversation.participants.find((entry) => entry.actingAssistantId);
-    return participant?.id;
-  }, [conversation]);
-
   if (!conversationId) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -81,10 +73,10 @@ export default function ConversationDetailPage() {
 
     if (socketState.isConnected) {
       try {
+        // WebSocket now handles everything: saves message, determines which bots respond, queues responses
         await socketState.sendMessage({
           conversationId,
           content,
-          assistantParticipantId,
         });
         return true;
       } catch (error) {
@@ -92,6 +84,8 @@ export default function ConversationDetailPage() {
       }
     }
 
+    // REST fallback: just save the message (no AI response in REST mode for now)
+    // TODO: Implement REST-based conversation manager flow
     try {
       await sendMessage.mutateAsync({
         content,

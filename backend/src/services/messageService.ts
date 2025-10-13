@@ -150,6 +150,7 @@ export async function getMessageById(
  * For now, we'll hard delete
  */
 export async function deleteMessage(
+  conversationId: string,
   messageId: string,
   userId: string
 ) {
@@ -158,6 +159,7 @@ export async function deleteMessage(
     const message = await prisma.message.findFirst({
       where: {
         id: messageId,
+        conversationId: conversationId,
         conversation: {
           userId,
         },
@@ -165,7 +167,7 @@ export async function deleteMessage(
     });
 
     if (!message) {
-      throw Object.assign(new Error('Message not found'), { statusCode: 404 });
+      throw Object.assign(new Error('Message not found or you do not have permission to delete it'), { statusCode: 404 });
     }
 
     // Delete message
@@ -173,7 +175,7 @@ export async function deleteMessage(
       where: { id: messageId },
     });
 
-    logger.info({ messageId }, 'Message deleted successfully');
+    logger.info({ messageId, conversationId }, 'Message deleted successfully');
 
     return { success: true };
   } catch (error) {

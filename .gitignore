@@ -150,3 +150,5 @@ crashlytics-build.properties
 # Project Analyzer
 project_analyzer.py
 project_context.log
+
+old_project_reference

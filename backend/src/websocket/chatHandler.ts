@@ -6,7 +6,8 @@ import { verifyJWT } from '../services/googleAuth';
 import { findUserById } from '../services/userService';
 import * as conversationService from '../services/conversationService';
 import * as messageService from '../services/messageService';
-import * as assistantService from '../services/assistantService';
+import { agentService } from '../services/agentService';
+import { queueAIResponse, responseWorker } from '../queues/responseQueue';
 import type { AuthenticatedUser } from '../types';
 import type { Message } from '../generated/prisma';
 import { SenderType } from '../generated/prisma';
@@ -25,9 +26,7 @@ const typingEventSchema = z.object({
   participantId: z.string().uuid().optional(),
 });
 
-const realtimeSendMessageSchema = sendMessageSchema.extend({
-  assistantParticipantId: z.string().uuid().optional(),
-});
+// Removed assistantParticipantId - we'll determine which bots respond automatically
 
 function getRoomName(conversationId: string): string {
   return 'conversation:' + conversationId;
@@ -63,62 +62,25 @@ async function ensureConversationAccess(conversationId: string, userId: string) 
   }
 }
 
-async function handleAssistantResponse(
+/**
+ * Helper function to emit typing indicators for bot participants
+ */
+function emitTypingForBots(
   io: Server,
   conversationId: string,
-  participantId: string
+  participantIds: string[],
+  isTyping: boolean
 ) {
   const room = getRoomName(conversationId);
+  const event = isTyping ? 'typing_start' : 'typing_stop';
 
-  io.to(room).emit('ai_response_start', {
-    conversationId,
-    participantId,
+  participantIds.forEach(participantId => {
+    io.to(room).emit(event, {
+      conversationId,
+      participantId,
+      source: 'bot',
+    });
   });
-
-  io.to(room).emit('typing_start', {
-    conversationId,
-    participantId,
-    source: 'assistant',
-  });
-
-  try {
-    const aiMessage = await assistantService.sendAIMessage(
-      conversationId,
-      participantId
-    );
-
-    const serialized = serializeMessage(aiMessage);
-
-    io.to(room).emit('ai_response_chunk', {
-      conversationId,
-      participantId,
-      content: serialized.content,
-    });
-
-    io.to(room).emit('message_received', serialized);
-  } catch (error) {
-    logger.error(
-      { error, conversationId, participantId },
-      'assistant_response_failed'
-    );
-
-    io.to(room).emit('ai_response_error', {
-      conversationId,
-      participantId,
-      error: 'Failed to generate assistant response',
-    });
-  } finally {
-    io.to(room).emit('typing_stop', {
-      conversationId,
-      participantId,
-      source: 'assistant',
-    });
-
-    io.to(room).emit('ai_response_complete', {
-      conversationId,
-      participantId,
-    });
-  }
 }
 
 function resolveCorsOrigins(): string[] | true {
@@ -146,6 +108,35 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
       origin: corsOrigin,
       credentials: true,
     },
+  });
+
+  // Setup global worker event listener to broadcast completed responses
+  responseWorker.on('completed', (job, result) => {
+    const room = getRoomName(job.data.conversationId);
+
+    // Stop typing indicator for this bot
+    io.to(room).emit('typing_stop', {
+      conversationId: job.data.conversationId,
+      participantId: result.participantId,
+      source: 'bot',
+    });
+
+    // Emit the AI message
+    io.to(room).emit('message_received', {
+      id: result.messageId,
+      conversationId: job.data.conversationId,
+      senderId: result.participantId,
+      senderType: 'ASSISTANT',
+      content: result.content,
+      attachments: null,
+      metadata: null,
+      timestamp: new Date().toISOString(),
+    });
+
+    logger.debug(
+      { conversationId: job.data.conversationId, messageId: result.messageId },
+      'AI response broadcasted via WebSocket'
+    );
   });
 
   io.use(async (socket, next) => {
@@ -284,10 +275,11 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
 
     socket.on('send_message', async (rawPayload, callback) => {
       try {
-        const payload = realtimeSendMessageSchema.parse(rawPayload);
+        const payload = sendMessageSchema.parse(rawPayload);
 
         await ensureConversationAccess(payload.conversationId, user.id);
 
+        // Step 1: Save user message
         const message = await messageService.createMessage({
           conversationId: payload.conversationId,
           senderId: user.id,
@@ -300,19 +292,56 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         const serialized = serializeMessage(message);
         const room = getRoomName(payload.conversationId);
 
+        // Step 2: Broadcast user message to room
         io.to(room).emit('message_received', serialized);
 
-        if (typeof callback === 'function') {
-          callback({ success: true, data: serialized });
+        // Step 3: Fetch conversation with full context for ConversationManagerAgent
+        const conversation = await conversationService.getConversationById(
+          payload.conversationId,
+          user.id
+        );
+
+        if (!conversation) {
+          throw new Error('Conversation not found');
         }
 
-        if (payload.assistantParticipantId) {
-          void handleAssistantResponse(
-            io,
-            payload.conversationId,
-            payload.assistantParticipantId
-          );
+        // Step 4: Use ConversationManagerAgent to determine which bots should respond
+        const conversationManager = agentService.getConversationManagerAgent();
+        const respondingParticipantIds = await conversationManager.execute(
+          conversation,
+          message
+        );
+
+        logger.info(
+          {
+            conversationId: payload.conversationId,
+            respondingBots: respondingParticipantIds.length,
+          },
+          'Bots selected to respond'
+        );
+
+        // Step 5: Immediately respond with list of bots that will respond
+        if (typeof callback === 'function') {
+          callback({
+            success: true,
+            data: serialized,
+            respondingBots: respondingParticipantIds,
+          });
         }
+
+        // Step 6: Emit typing indicators for all responding bots
+        emitTypingForBots(io, payload.conversationId, respondingParticipantIds, true);
+
+        // Step 7: Queue AI response generation for each bot
+        // Responses will be broadcasted via the global worker listener
+        for (const participantId of respondingParticipantIds) {
+          await queueAIResponse({
+            conversationId: payload.conversationId,
+            participantId,
+            lastMessageId: message.id,
+          });
+        }
+
       } catch (error) {
         logger.error({ error }, 'send_message_failed');
 

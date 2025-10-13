@@ -8,7 +8,7 @@ export default defineConfig(function (_a) {
     var apiPrefix = (_c = env.VITE_API_VERSION) !== null && _c !== void 0 ? _c : '/api/v1';
     var explicitHosts = (_d = env.VITE_ALLOWED_HOSTS) === null || _d === void 0 ? void 0 : _d.split(',').map(function (entry) { return entry.trim(); }).filter(Boolean);
     var publicHostname = (_e = env.PUBLIC_HOSTNAME) === null || _e === void 0 ? void 0 : _e.trim();
-    var allowedHosts = ['localhost', '127.0.0.1'];
+    var allowedHosts = ['localhost', '127.0.0.1', 'frontend'];
     if (publicHostname) {
         allowedHosts.push(publicHostname);
     }
