@@ -8,6 +8,7 @@
     "createFirst": "Crea tu primera conversación",
     "loading": "Cargando...",
     "error": "Error al cargar el chat",
+    "unknownParticipant": "Desconocido ({{id}})",
     "conversation": {
       "title": "Conversación",
       "participants": "Participantes",
@@ -63,7 +64,7 @@
       "sendFailed": "Error al enviar el mensaje",
       "deleteFailed": "Error al eliminar",
       "updateFailed": "Error al actualizar",
-      "networkError": "Error de red. Comprueba tu conexión.",
+      "networkError": "Error de red. Por favor, comprueba tu conexión.",
       "unauthorized": "No tienes permiso para hacer esto",
       "notFound": "Conversación no encontrada"
     },

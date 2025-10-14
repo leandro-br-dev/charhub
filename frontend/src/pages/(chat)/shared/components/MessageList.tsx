@@ -1,8 +1,11 @@
 // frontend/src/pages/(chat)/shared/components/MessageList.tsx
 import React, { useEffect, useRef, useMemo } from "react";
+import { useTranslation } from 'react-i18next';
 
 import MessageItem from './MessageItem';
 import { TypingIndicator } from './TypingIndicator';
+import type { Message } from '../../../../types/chat';
+import { SenderType } from '../../../../types/chat';
 
 interface BackgroundTaskIndicatorProps {
   name?: string;
@@ -34,11 +37,22 @@ const ImageMessageItem: React.FC<{ messageData?: any }> = ({ messageData }) => (
   </div>
 );
 
+interface ProcessedParticipant {
+  id: string;
+  actorId: string;
+  actorType: string;
+  representation: {
+    name?: string;
+    avatar?: string | null;
+  };
+  [key: string]: unknown;
+}
+
 interface MessageListProps {
-  messages?: any[];
+  messages?: Message[];
   loading?: boolean;
   error?: string | null;
-  participants?: any[];
+  participants?: ProcessedParticipant[];
   userId?: string;
   typingCharacters?: Set<string>;
   activeBackgroundTasks?: Record<string, string>;
@@ -49,7 +63,10 @@ interface MessageListProps {
   onReprocessClick?: (messageId: string, isUserMessage: boolean) => void;
   getSenderDetailsAndParticipantId?: (
     senderId: string
-  ) => { representation: { name?: string; avatar?: string | null }; participantId: string | null } | null;
+  ) => {
+    representation: { name?: string; avatar?: string | null };
+    participantId: string | null;
+  } | null;
   playingAudioState?: {
     messageId: string | null;
     isLoading: boolean;
@@ -82,6 +99,7 @@ const MessageList: React.FC<MessageListProps> = ({
   onSendConfirmation,
   onReviewFileClick,
 }) => {
+  const { t } = useTranslation('chat');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -106,7 +124,7 @@ const MessageList: React.FC<MessageListProps> = ({
     if (!typingCharacters || typingCharacters.size === 0 || !Array.isArray(participants)) return [];
     const typingData: any[] = [];
     typingCharacters.forEach((actorId: any) => {
-      const participantInfo = participants.find((p: any) => String(p.actorId) === String(actorId));
+      const participantInfo = participants.find((p) => String(p.actorId) === String(actorId));
       if (participantInfo && participantInfo.representation) {
         if (!activeBackgroundTasks[actorId]) {
           typingData.push({
@@ -124,7 +142,7 @@ const MessageList: React.FC<MessageListProps> = ({
     if (Object.keys(activeBackgroundTasks).length === 0 || !Array.isArray(participants)) return [];
     const taskDataArray: any[] = [];
     for (const [actorId, taskType] of Object.entries(activeBackgroundTasks)) {
-      const participantInfo = participants.find((p: any) => String(p.actorId) === String(actorId));
+      const participantInfo = participants.find((p) => String(p.actorId) === String(actorId));
       if (participantInfo && participantInfo.representation) {
         taskDataArray.push({
           actorId: actorId,
@@ -144,22 +162,33 @@ const MessageList: React.FC<MessageListProps> = ({
 
       {Array.isArray(messages) &&
         messages.map((msg, index) => {
-          const isSentByUser = msg.sender_type === "USER" && String(msg.sender_id) === String(userId);
+          const senderId = msg.senderId;
+          const isSentByUser = msg.senderType === SenderType.USER && String(senderId) === String(userId);
           const key = msg.id || `message-${index}-${msg.timestamp || Date.now()}`;
-          const senderInfo = typeof getSenderDetailsAndParticipantId === "function" ? getSenderDetailsAndParticipantId(msg.sender_id) : null;
-          const {
-            representation: senderDetails = { name: `Desconhecido (${String(msg.sender_id).substring(0, 4)})`, avatar: null, },
-            participantId = null,
-          } = senderInfo || {};
-          
+          const senderInfo =
+            typeof getSenderDetailsAndParticipantId === 'function'
+              ? getSenderDetailsAndParticipantId(senderId)
+              : null;
+          const participantId = senderInfo?.participantId ?? null;
+          const fallbackName = isSentByUser
+            ? t('message.you', { defaultValue: 'You' })
+            : t('unknownParticipant', {
+                defaultValue: 'Unknown ({{id}})',
+                id: String(senderId || '').substring(0, 4),
+              });
+          const senderDetails = {
+            name: senderInfo?.representation?.name || fallbackName,
+            avatar: senderInfo?.representation?.avatar ?? null,
+          };
+
           const participantForThisMessage = Array.isArray(participants)
-            ? participants.find((p: any) => p.id === participantId)
+            ? participants.find((p) => p.id === participantId)
             : undefined;
           let imageContentData = null;
-          if (msg.sender_type !== "USER") {
+          if (msg.senderType !== SenderType.USER) {
             imageContentData = checkAndParseImageContent(msg.content);
           }
-          const creditsConsumedForThisMessage = msg.credits_consumed_for_message;
+          const creditsConsumedForThisMessage = (msg as any).credits_consumed_for_message;
           const isLastMessage = index === messages.length - 1;
           const isThisMessagePlaying = playingAudioState?.messageId === msg.id && !!playingAudioState?.audioDataUrl;
           const isThisMessageLoadingAudio = playingAudioState?.messageId === msg.id && playingAudioState?.isLoading;

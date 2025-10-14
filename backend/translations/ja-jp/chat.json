@@ -5,9 +5,10 @@
     "newConversation": "新しい会話",
     "conversations": "会話",
     "noConversations": "まだ会話がありません",
-    "createFirst": "最初の会話を作成してください",
+    "createFirst": "最初の会話を作成する",
     "loading": "読み込み中...",
     "error": "チャットの読み込み中にエラーが発生しました",
+    "unknownParticipant": "不明 ({{id}})",
     "conversation": {
       "title": "会話",
       "participants": "参加者",
@@ -19,12 +20,12 @@
       "settings": "設定",
       "lastMessage": "最後のメッセージ",
       "noMessages": "まだメッセージがありません",
-      "startTyping": "入力して会話を開始してください"
+      "startTyping": "入力を開始して会話を始めましょう"
     },
     "message": {
       "send": "送信",
       "sending": "送信中...",
-      "placeholder": "メッセージを入力してください...",
+      "placeholder": "メッセージを入力...",
       "delete": "メッセージを削除",
       "edit": "メッセージを編集",
       "copy": "コピー",
@@ -40,13 +41,13 @@
       "user": "ユーザー",
       "addCharacter": "キャラクターを追加",
       "selectCharacter": "追加するキャラクターを選択してください",
-      "noCharacters": "利用可能なキャラクターはありません",
-      "removed": "参加者を削除しました",
-      "added": "参加者を追加しました"
+      "noCharacters": "利用可能なキャラクターがありません",
+      "removed": "参加者は削除されました",
+      "added": "参加者が追加されました"
     },
     "typing": {
-      "isTyping": "{{name}}が入力中です...",
-      "areTyping": "{{names}}が入力中です...",
+      "isTyping": "{{name}} が入力中です...",
+      "areTyping": "{{names}} が入力中です...",
       "generating": "応答を生成しています..."
     },
     "actions": {
@@ -64,7 +65,7 @@
       "deleteFailed": "削除に失敗しました",
       "updateFailed": "更新に失敗しました",
       "networkError": "ネットワークエラーです。接続を確認してください。",
-      "unauthorized": "この操作を実行する権限がありません",
+      "unauthorized": "この操作を行う権限がありません",
       "notFound": "会話が見つかりません"
     },
     "success": {

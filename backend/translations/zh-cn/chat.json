@@ -3,11 +3,12 @@
   "resources": {
     "title": "聊天",
     "newConversation": "新建对话",
-    "conversations": "对话列表",
-    "noConversations": "还没有对话",
-    "createFirst": "创建你的第一个对话",
+    "conversations": "对话",
+    "noConversations": "暂无对话",
+    "createFirst": "创建您的第一条对话",
     "loading": "正在加载...",
     "error": "加载聊天出错",
+    "unknownParticipant": "未知 ({{id}})",
     "conversation": {
       "title": "对话",
       "participants": "参与者",
@@ -18,19 +19,19 @@
       "archive": "归档",
       "settings": "设置",
       "lastMessage": "最后一条消息",
-      "noMessages": "还没有消息",
+      "noMessages": "暂无消息",
       "startTyping": "开始输入以发起对话"
     },
     "message": {
       "send": "发送",
       "sending": "正在发送...",
-      "placeholder": "输入你的消息...",
+      "placeholder": "输入您的消息...",
       "delete": "删除消息",
       "edit": "编辑消息",
       "copy": "复制",
       "retry": "重试",
       "failed": "发送失败",
-      "you": "你",
+      "you": "您",
       "ai": "AI",
       "system": "系统"
     },
@@ -40,7 +41,7 @@
       "user": "用户",
       "addCharacter": "添加角色",
       "selectCharacter": "选择要添加的角色",
-      "noCharacters": "没有可用角色",
+      "noCharacters": "暂无可用角色",
       "removed": "参与者已移除",
       "added": "参与者已添加"
     },
@@ -63,8 +64,8 @@
       "sendFailed": "发送消息失败",
       "deleteFailed": "删除失败",
       "updateFailed": "更新失败",
-      "networkError": "网络错误。请检查你的连接。",
-      "unauthorized": "你没有权限执行此操作",
+      "networkError": "网络错误。请检查您的连接。",
+      "unauthorized": "您无权执行此操作",
       "notFound": "未找到对话"
     },
     "success": {

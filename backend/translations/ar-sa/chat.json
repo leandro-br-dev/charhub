@@ -8,6 +8,7 @@
     "createFirst": "أنشئ أول محادثة لك",
     "loading": "جارٍ التحميل...",
     "error": "خطأ في تحميل الدردشة",
+    "unknownParticipant": "غير معروف ({{id}})",
     "conversation": {
       "title": "محادثة",
       "participants": "المشاركون",
@@ -29,9 +30,9 @@
       "edit": "تعديل الرسالة",
       "copy": "نسخ",
       "retry": "إعادة المحاولة",
-      "failed": "فشل إرسال الرسالة",
+      "failed": "فشل الإرسال",
       "you": "أنت",
-      "ai": "ذكاء اصطناعي",
+      "ai": "الذكاء الاصطناعي",
       "system": "النظام"
     },
     "participant": {
@@ -39,7 +40,7 @@
       "assistant": "مساعد",
       "user": "مستخدم",
       "addCharacter": "إضافة شخصية",
-      "selectCharacter": "اختر شخصية لإضافتها",
+      "selectCharacter": "اختر شخصية للإضافة",
       "noCharacters": "لا توجد شخصيات متاحة",
       "removed": "تمت إزالة المشارك",
       "added": "تمت إضافة المشارك"

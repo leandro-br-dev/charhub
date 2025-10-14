@@ -6,8 +6,9 @@
     "conversations": "Konversationen",
     "noConversations": "Noch keine Konversationen",
     "createFirst": "Erstellen Sie Ihre erste Konversation",
-    "loading": "Lade...",
+    "loading": "Wird geladen...",
     "error": "Fehler beim Laden des Chats",
+    "unknownParticipant": "Unbekannt ({{id}})",
     "conversation": {
       "title": "Konversation",
       "participants": "Teilnehmer",
@@ -19,12 +20,12 @@
       "settings": "Einstellungen",
       "lastMessage": "Letzte Nachricht",
       "noMessages": "Noch keine Nachrichten",
-      "startTyping": "Beginnen Sie mit der Eingabe, um die Konversation zu starten"
+      "startTyping": "Beginnen Sie zu tippen, um die Konversation zu starten"
     },
     "message": {
       "send": "Senden",
-      "sending": "Sende...",
-      "placeholder": "Geben Sie Ihre Nachricht ein...",
+      "sending": "Wird gesendet...",
+      "placeholder": "Tippen Sie Ihre Nachricht...",
       "delete": "Nachricht löschen",
       "edit": "Nachricht bearbeiten",
       "copy": "Kopieren",
@@ -45,8 +46,8 @@
       "added": "Teilnehmer hinzugefügt"
     },
     "typing": {
-      "isTyping": "{{name}} tippt gerade...",
-      "areTyping": "{{names}} tippen gerade...",
+      "isTyping": "{{name}} tippt...",
+      "areTyping": "{{names}} tippen...",
       "generating": "Antwort wird generiert..."
     },
     "actions": {
@@ -64,7 +65,7 @@
       "deleteFailed": "Löschen fehlgeschlagen",
       "updateFailed": "Aktualisierung fehlgeschlagen",
       "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
-      "unauthorized": "Sie haben keine Berechtigung, dies zu tun",
+      "unauthorized": "Sie haben keine Berechtigung dafür",
       "notFound": "Konversation nicht gefunden"
     },
     "success": {

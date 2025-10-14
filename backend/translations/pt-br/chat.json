@@ -8,6 +8,7 @@
     "createFirst": "Crie sua primeira conversa",
     "loading": "Carregando...",
     "error": "Erro ao carregar chat",
+    "unknownParticipant": "Desconhecido ({{id}})",
     "conversation": {
       "title": "Conversa",
       "participants": "Participantes",
@@ -58,9 +59,9 @@
       "close": "Fechar"
     },
     "errors": {
-      "loadFailed": "Falha ao carregar conversa",
-      "createFailed": "Falha ao criar conversa",
-      "sendFailed": "Falha ao enviar mensagem",
+      "loadFailed": "Falha ao carregar a conversa",
+      "createFailed": "Falha ao criar a conversa",
+      "sendFailed": "Falha ao enviar a mensagem",
       "deleteFailed": "Falha ao excluir",
       "updateFailed": "Falha ao atualizar",
       "networkError": "Erro de rede. Verifique sua conexão.",

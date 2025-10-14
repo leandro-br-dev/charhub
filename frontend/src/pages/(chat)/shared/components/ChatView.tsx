@@ -137,15 +137,11 @@ const ChatView: React.FC<any> = ({
   return (
     <div className="w-full h-full flex flex-col relative">
       <div
-        className={`fixed top-0 left-0 right-0 z-20 bg-normal/80 backdrop-blur-sm px-4 pt-4 pb-2 transition-opacity duration-300 ${
-          isHeaderVisible ? "opacity-0 pointer-events-none" : "opacity-100"
+        className={`fixed top-0 left-0 right-0 z-20 bg-normal/80 backdrop-blur-sm px-4 pt-4 pb-2 shadow-sm transition-opacity duration-300 ease-out ${
+          isHeaderVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
       >
-        <div
-          className={`flex items-center justify-end gap-2 ${
-            uiError ? "mt-8" : ""
-          }`}
-        >
+        <div className={`flex items-center justify-end gap-2 ${uiError ? 'mt-8' : ''}`}>
           <div className="flex items-center gap-2">
             <DisplayAvatarParticipants
               participants={processedParticipants}
@@ -158,7 +154,7 @@ const ChatView: React.FC<any> = ({
               icon="add"
               onClick={openAddParticipantModal}
               className="flex-shrink-0 rounded-full p-2"
-              title={t("displayAvatarParticipants.addParticipantButtonTitle")}
+              title={t('displayAvatarParticipants.addParticipantButtonTitle')}
             />
           </div>
           {conversation && (
@@ -168,7 +164,7 @@ const ChatView: React.FC<any> = ({
                 size="small"
                 icon="photo_library"
                 onClick={fetchAndOpenChatGallery}
-                title={t("conversationSettings.galleryButton")}
+                title={t('conversationSettings.galleryButton')}
                 className="p-2 flex-shrink-0"
                 disabled={actionLoading || loadingConversationData || loadingGallery}
               />
@@ -177,7 +173,7 @@ const ChatView: React.FC<any> = ({
                 size="small"
                 icon="settings"
                 onClick={() => openConversationSettingsModal(conversation)}
-                title={t("chatPage.conversationSettingsTitle")}
+                title={t('chatPage.conversationSettingsTitle')}
                 className="p-2 flex-shrink-0"
                 disabled={actionLoading || loadingConversationData}
               />
@@ -185,17 +181,17 @@ const ChatView: React.FC<any> = ({
           )}
         </div>
       </div>
-      
+
       {uiError && !activeModal && (
         <div className="sticky top-0 z-30 p-2 bg-danger/90 text-white text-sm text-center animate-pulse">
           <span className="material-symbols-outlined text-base align-middle mr-2">
-            {isWebSocketConnected ? "error" : "wifi_off"}
+            {isWebSocketConnected ? 'error' : 'wifi_off'}
           </span>
           {uiError}
         </div>
       )}
 
-      <div className="px-4 flex flex-col flex-grow">
+      <div className="px-4 flex flex-col flex-grow pb-40">
         <div ref={headerRef} className="pt-2 pb-4">
           <div className="flex justify-end mb-2 gap-2">
             {conversation && (
@@ -260,17 +256,19 @@ const ChatView: React.FC<any> = ({
         </div>
       </div>
 
-      <div className="sticky bottom-0 z-10 bg-normal/80 backdrop-blur-sm px-4 pb-4">
-        <MessageInput
-          onSendMessage={onSendMessage}
-          user={currentUserRepresentation}
-          disabled={actionLoading}
-          onUserAvatarClick={() => {
-            const p = processedParticipants.find((p: any) => p.actorType === "USER");
-            if (p) openConfigModal(p);
-          }}
-          onRequestImageGeneration={onRequestImageGeneration}
-        />
+      <div className="fixed bottom-0 left-0 right-0 z-10 bg-normal/90 backdrop-blur-sm px-4 pb-4 shadow-lg">
+        <div className="max-w-5xl mx-auto">
+          <MessageInput
+            onSendMessage={onSendMessage}
+            user={currentUserRepresentation}
+            disabled={actionLoading}
+            onUserAvatarClick={() => {
+              const p = processedParticipants.find((p: any) => p.actorType === 'USER');
+              if (p) openConfigModal(p);
+            }}
+            onRequestImageGeneration={onRequestImageGeneration}
+          />
+        </div>
       </div>
 
       <AddParticipantModal

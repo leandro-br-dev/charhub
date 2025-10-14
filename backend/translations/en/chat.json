@@ -8,6 +8,7 @@
     "createFirst": "Create your first conversation",
     "loading": "Loading...",
     "error": "Error loading chat",
+    "unknownParticipant": "Unknown ({{id}})",
 
     "conversation": {
       "title": "Conversation",

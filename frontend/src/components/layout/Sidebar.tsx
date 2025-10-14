@@ -116,13 +116,18 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false }: 
   }
 
   if (displayMode === "permanent" && !isOpen) {
-    return <aside className="hidden h-screen w-0 md:flex md:pointer-events-none" aria-hidden="true" />;
+    return (
+      <aside
+        className="hidden h-screen w-0 md:flex md:pointer-events-none"
+        aria-hidden="true"
+      />
+    );
   }
 
   const containerClassName =
     displayMode === "overlay"
       ? "flex h-screen w-80 flex-shrink-0 border-r border-dark/40 bg-light/90 backdrop-blur md:hidden"
-      : "hidden h-screen w-80 flex-shrink-0 border-r border-dark/40 bg-light/90 backdrop-blur md:flex";
+      : "hidden md:flex md:h-screen md:w-80 md:flex-shrink-0 md:border-r md:border-dark/40 md:bg-light/90 md:backdrop-blur md:sticky md:top-0";
 
   return <aside className={containerClassName}>{content}</aside>;
 }

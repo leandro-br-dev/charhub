@@ -31,45 +31,53 @@ interface ProcessedParticipant {
 function buildParticipantRepresentation(
   participant: ConversationParticipant
 ): ProcessedParticipant | null {
-  if (participant.userId && participant.user) {
+  if (participant.userId) {
+    const user = participant.user;
+    const name =
+      user?.displayName || `User ${participant.userId.slice(0, 4)}`;
     return {
       id: participant.id,
       actorId: participant.userId,
       actorType: 'USER',
       representation: {
-        name: participant.user.displayName || `User ${participant.userId.slice(0, 4)}`,
-        avatar: participant.user.avatarUrl,
+        name,
+        avatar: user?.avatarUrl || null,
       },
       raw: participant,
     };
   }
 
-  if (participant.actingCharacterId && participant.actingCharacter) {
+  if (participant.actingCharacterId) {
     const character = participant.actingCharacter;
+    const name = character
+      ? character.lastName
+        ? `${character.firstName} ${character.lastName}`
+        : character.firstName
+      : `Character ${participant.actingCharacterId.slice(0, 4)}`;
     return {
       id: participant.id,
       actorId: participant.actingCharacterId,
       actorType: 'CHARACTER',
       representation: {
-        name: character.lastName
-          ? `${character.firstName} ${character.lastName}`
-          : character.firstName,
-        avatar: character.avatar,
+        name,
+        avatar: character?.avatar || null,
       },
       raw: participant,
     };
   }
 
-  if (participant.actingAssistantId && participant.actingAssistant) {
+  if (participant.actingAssistantId) {
     const assistant = participant.actingAssistant;
     const persona = participant.representingCharacter;
+    const name = persona?.firstName || assistant?.name || `Assistant ${participant.actingAssistantId.slice(0, 4)}`;
+    const avatar = persona?.avatar || null;
     return {
       id: participant.id,
       actorId: participant.actingAssistantId,
       actorType: 'ASSISTANT',
       representation: {
-        name: persona?.firstName || assistant.name,
-        avatar: persona?.avatar,
+        name,
+        avatar,
       },
       raw: participant,
     };
@@ -153,8 +161,48 @@ const ChatContainer = () => {
 
   const processedParticipants = useMemo(() => {
     if (!conversation) return [];
-    return mapParticipants(conversation.participants);
-  }, [conversation]);
+
+    const mapped = mapParticipants(conversation.participants);
+
+    const ensureParticipant = (
+      actorId: string | undefined,
+      name: string | undefined,
+      avatar: string | null | undefined
+    ) => {
+      if (!actorId) return;
+      const exists = mapped.some((participant) => participant.actorId === actorId);
+      if (!exists) {
+        mapped.push({
+          id: `synthetic-${actorId}`,
+          actorId,
+          actorType: 'USER',
+          representation: {
+            name: name || `User ${actorId.slice(0, 4)}`,
+            avatar: avatar ?? null,
+          },
+          raw: {
+            id: `synthetic-${actorId}`,
+            conversationId: conversation.id,
+            userId: actorId,
+          } as ConversationParticipant,
+        });
+      }
+    };
+
+    // Ensure owner is represented
+    const ownerAvatar: string | undefined = conversation.owner?.avatarUrl ?? undefined;
+    ensureParticipant(
+      conversation.owner?.id,
+      conversation.owner?.displayName ?? undefined,
+      ownerAvatar
+    );
+
+    // Ensure current authenticated user is represented
+    const currentUserAvatar: string | undefined = user?.photo ?? undefined;
+    ensureParticipant(user?.id, user?.displayName ?? undefined, currentUserAvatar);
+
+    return mapped;
+  }, [conversation, user?.id, user?.displayName, user?.photo]);
 
   const currentUserRepresentation = useMemo(() => {
     return processedParticipants.find((participant) => participant.actorType === 'USER')

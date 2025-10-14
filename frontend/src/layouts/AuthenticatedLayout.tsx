@@ -74,11 +74,11 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
 
   return (
     <div className="relative flex min-h-screen bg-background text-foreground">
-      <div ref={railRef} className="hidden md:flex">
+      <div ref={railRef} className="hidden md:flex md:sticky md:top-0 md:h-screen md:z-40">
         <NavigationRail displayMode="permanent" onNavItemSelect={handleNavSelection} />
       </div>
 
-      <div ref={sidebarRef} className="hidden md:flex">
+      <div ref={sidebarRef} className="hidden md:flex md:sticky md:top-0 md:h-screen md:z-40">
         <Sidebar displayMode="permanent" isOpen={isDesktopSidebarOpen} onClose={() => setIsDesktopSidebarOpen(false)} />
       </div>
 
@@ -114,5 +114,3 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
     </div>
   );
 }
-
-

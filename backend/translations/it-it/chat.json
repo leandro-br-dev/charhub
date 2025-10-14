@@ -8,6 +8,7 @@
     "createFirst": "Crea la tua prima conversazione",
     "loading": "Caricamento in corso...",
     "error": "Errore durante il caricamento della chat",
+    "unknownParticipant": "Sconosciuto ({{id}})",
     "conversation": {
       "title": "Conversazione",
       "participants": "Partecipanti",
@@ -47,7 +48,7 @@
     "typing": {
       "isTyping": "{{name}} sta scrivendo...",
       "areTyping": "{{names}} stanno scrivendo...",
-      "generating": "Generazione della risposta in corso..."
+      "generating": "Generazione risposta in corso..."
     },
     "actions": {
       "create": "Crea",
@@ -58,13 +59,13 @@
       "close": "Chiudi"
     },
     "errors": {
-      "loadFailed": "Caricamento conversazione fallito",
-      "createFailed": "Creazione conversazione fallita",
-      "sendFailed": "Invio messaggio fallito",
-      "deleteFailed": "Eliminazione fallita",
-      "updateFailed": "Aggiornamento fallito",
+      "loadFailed": "Impossibile caricare la conversazione",
+      "createFailed": "Impossibile creare la conversazione",
+      "sendFailed": "Impossibile inviare il messaggio",
+      "deleteFailed": "Impossibile eliminare",
+      "updateFailed": "Impossibile aggiornare",
       "networkError": "Errore di rete. Controlla la tua connessione.",
-      "unauthorized": "Non hai il permesso di eseguire questa operazione",
+      "unauthorized": "Non hai l'autorizzazione per eseguire questa operazione",
       "notFound": "Conversazione non trovata"
     },
     "success": {
