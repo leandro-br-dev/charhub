@@ -13,6 +13,7 @@ export interface AuthUser {
   birthDate?: string;
   gender?: string;
   token?: string;
+  allow_nsfw?: boolean;
 }
 
 export interface AuthResponse {

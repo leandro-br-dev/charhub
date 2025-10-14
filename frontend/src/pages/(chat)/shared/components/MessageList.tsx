@@ -1,164 +1,222 @@
-import { useEffect, useRef, type ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
-import { MessageBubble } from './MessageBubble';
-import { TypingIndicator } from './TypingIndicator';
-import type { Message, ConversationParticipant } from '@/types/chat';
+// frontend/src/pages/(chat)/shared/components/MessageList.tsx
+import React, { useEffect, useRef, useMemo } from "react";
 
-export interface MessageListProps {
-  messages: Message[];
-  participants: ConversationParticipant[];
-  currentUserId: string;
-  loading?: boolean;
-  error?: string | null;
-  typingParticipants?: Set<string>; // Set of participant IDs currently typing
-  className?: string;
-  onAvatarClick?: (participant: ConversationParticipant) => void;
-  onDeleteMessage?: (messageId: string) => void;
-  onEditMessage?: (messageId: string, newContent: string) => Promise<boolean>;
+import MessageItem from './MessageItem';
+import { TypingIndicator } from './TypingIndicator';
+
+interface BackgroundTaskIndicatorProps {
+  name?: string;
+  taskType?: string;
+  avatar?: string | null;
 }
 
-export const MessageList = ({
+const BackgroundTaskIndicator: React.FC<BackgroundTaskIndicatorProps> = ({
+  name,
+  taskType,
+  avatar,
+}) => (
+  <div className="flex items-center gap-2 text-xs text-muted">
+    {avatar ? (
+      <span className="inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-light text-[10px] text-muted">
+        <img src={avatar} alt={name || 'Assistant'} className="h-full w-full object-cover" />
+      </span>
+    ) : null}
+    <span>{name || 'Assistant'}</span>
+    <span className="text-muted/70">•</span>
+    <span>{taskType || 'Processing'}</span>
+  </div>
+);
+
+const ImageMessageItem: React.FC<{ messageData?: any }> = ({ messageData }) => (
+  <div className="text-sm text-muted italic">
+    [Image message placeholder]
+    {messageData?.content ? ` (${messageData.content.substring(0, 16)}…)` : ''}
+  </div>
+);
+
+interface MessageListProps {
+  messages?: any[];
+  loading?: boolean;
+  error?: string | null;
+  participants?: any[];
+  userId?: string;
+  typingCharacters?: Set<string>;
+  activeBackgroundTasks?: Record<string, string>;
+  className?: string;
+  onAvatarClick?: (participant: any) => void;
+  onDeleteClick?: (messageId: string) => void;
+  onSaveEdit?: (messageId: string, content: string) => Promise<boolean>;
+  onReprocessClick?: (messageId: string, isUserMessage: boolean) => void;
+  getSenderDetailsAndParticipantId?: (
+    senderId: string
+  ) => { representation: { name?: string; avatar?: string | null }; participantId: string | null } | null;
+  playingAudioState?: {
+    messageId: string | null;
+    isLoading: boolean;
+    error: string | null;
+    audioDataUrl: string | null;
+  };
+  onPlayAudioRequest?: (options: any) => void;
+  audioCache?: Record<string, boolean>;
+  onSendConfirmation?: (content: string) => Promise<boolean>;
+  onReviewFileClick?: (file: any) => void;
+}
+
+const MessageList: React.FC<MessageListProps> = ({
   messages = [],
-  participants = [],
-  currentUserId,
-  loading = false,
-  error = null,
-  typingParticipants = new Set(),
-  className = '',
+  loading,
+  error,
+  participants,
+  userId,
+  typingCharacters,
+  activeBackgroundTasks = {},
+  className = "",
   onAvatarClick,
-  onDeleteMessage,
-  onEditMessage,
-}: MessageListProps) => {
-  const { t } = useTranslation('chat');
+  onDeleteClick,
+  onSaveEdit,
+  onReprocessClick,
+  getSenderDetailsAndParticipantId,
+  playingAudioState,
+  onPlayAudioRequest,
+  audioCache = {},
+  onSendConfirmation,
+  onReviewFileClick,
+}) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when messages or typing indicators change
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
     }
-  }, [messages, typingParticipants]);
+  }, [messages, typingCharacters, activeBackgroundTasks]);
 
-  /**
-   * Get sender details for a message
-   */
-  const getSenderInfo = (message: Message) => {
-    let participantId: string | null = null;
-    let name = t('message.system'); // Default for SYSTEM messages
-    let avatar: string | null = null;
-
-    if (message.senderType === 'USER') {
-      // For USER messages, check if it's the current user
-      if (message.senderId === currentUserId) {
-        name = t('message.you');
-      } else {
-        // Find user participant
-        const participant = participants.find(
-          (p) => p.userId === message.senderId
-        );
-        if (participant) {
-          participantId = participant.id;
-          name = participant.user?.displayName || t('message.you');
-          avatar = participant.user?.avatarUrl || null;
-        }
+  const checkAndParseImageContent = (content: any) => {
+    if (!content || typeof content !== "string") return null;
+    try {
+      if (content.trim().startsWith("{") && content.trim().endsWith("}")) {
+        const parsed = JSON.parse(content);
+        if (parsed && parsed.type === "image" && parsed.image_url)
+          return parsed;
       }
-    } else if (message.senderType === 'CHARACTER') {
-      // Find character participant
-      const participant = participants.find(
-        (p) => p.actingCharacterId === message.senderId
-      );
-      if (participant && participant.actingCharacter) {
-        participantId = participant.id;
-        const char = participant.actingCharacter;
-        name = char.lastName ? `${char.firstName} ${char.lastName}` : char.firstName;
-        avatar = char.avatar || null;
-      }
-    } else if (message.senderType === 'ASSISTANT') {
-      // Find assistant participant
-      const participant = participants.find(
-        (p) => p.actingAssistantId === message.senderId
-      );
-      if (participant) {
-        participantId = participant.id;
-        name = participant.actingAssistant?.name || t('participant.assistant');
-        avatar = participant.actingAssistant?.avatar || null;
-      }
-    }
-
-    return { participantId, name, avatar };
+    } catch (e) {}
+    return null;
   };
 
-  /**
-   * Get typing participants data
-   */
-  const typingParticipantsData = Array.from(typingParticipants)
-    .map((participantId) => {
-      const participant =
-        participants.find((p) => p.id === participantId) ||
-        participants.find((p) => p.userId === participantId);
-
-      if (!participant) return null;
-
-      let name = '';
-      let avatar: string | null = null;
-
-      if (participant.actingCharacter) {
-        const char = participant.actingCharacter;
-        name = char.lastName ? `${char.firstName} ${char.lastName}` : char.firstName;
-        avatar = char.avatar;
-      } else if (participant.actingAssistant) {
-        name = participant.actingAssistant.name;
-        avatar = participant.actingAssistant.avatar || null;
-      } else if (participant.user) {
-        name = participant.user.displayName || t('message.you');
-        avatar = participant.user.avatarUrl || null;
+  const currentlyTypingParticipantsData = useMemo(() => {
+    if (!typingCharacters || typingCharacters.size === 0 || !Array.isArray(participants)) return [];
+    const typingData: any[] = [];
+    typingCharacters.forEach((actorId: any) => {
+      const participantInfo = participants.find((p: any) => String(p.actorId) === String(actorId));
+      if (participantInfo && participantInfo.representation) {
+        if (!activeBackgroundTasks[actorId]) {
+          typingData.push({
+            actorId: actorId,
+            name: participantInfo.representation.name,
+            avatar: participantInfo.representation.avatar,
+          });
+        }
       }
+    });
+    return typingData;
+  }, [typingCharacters, participants, activeBackgroundTasks]);
 
-      return { participantId: participant.id, name, avatar };
-    })
-    .filter((data): data is NonNullable<typeof data> => data !== null);
+  const participantsWithActiveTasksData = useMemo(() => {
+    if (Object.keys(activeBackgroundTasks).length === 0 || !Array.isArray(participants)) return [];
+    const taskDataArray: any[] = [];
+    for (const [actorId, taskType] of Object.entries(activeBackgroundTasks)) {
+      const participantInfo = participants.find((p: any) => String(p.actorId) === String(actorId));
+      if (participantInfo && participantInfo.representation) {
+        taskDataArray.push({
+          actorId: actorId,
+          name: participantInfo.representation.name,
+          avatar: participantInfo.representation.avatar,
+          taskType: taskType,
+        });
+      }
+    }
+    return taskDataArray;
+  }, [activeBackgroundTasks, participants]);
 
   return (
     <div className={`flex flex-col overflow-x-hidden ${className}`}>
-      {/* Loading state */}
-      {loading && (
-        <div className="text-center text-muted p-4">
-          {t('loading')}
-        </div>
-      )}
+      {loading && <div className="text-center text-muted p-4">Carregando...</div>}
+      {error && <div className="text-center text-danger p-4">{error}</div>}
 
-      {/* Error state */}
-      {error && (
-        <div className="text-center text-danger p-4">{error}</div>
-      )}
+      {Array.isArray(messages) &&
+        messages.map((msg, index) => {
+          const isSentByUser = msg.sender_type === "USER" && String(msg.sender_id) === String(userId);
+          const key = msg.id || `message-${index}-${msg.timestamp || Date.now()}`;
+          const senderInfo = typeof getSenderDetailsAndParticipantId === "function" ? getSenderDetailsAndParticipantId(msg.sender_id) : null;
+          const {
+            representation: senderDetails = { name: `Desconhecido (${String(msg.sender_id).substring(0, 4)})`, avatar: null, },
+            participantId = null,
+          } = senderInfo || {};
+          
+          const participantForThisMessage = Array.isArray(participants)
+            ? participants.find((p: any) => p.id === participantId)
+            : undefined;
+          let imageContentData = null;
+          if (msg.sender_type !== "USER") {
+            imageContentData = checkAndParseImageContent(msg.content);
+          }
+          const creditsConsumedForThisMessage = msg.credits_consumed_for_message;
+          const isLastMessage = index === messages.length - 1;
+          const isThisMessagePlaying = playingAudioState?.messageId === msg.id && !!playingAudioState?.audioDataUrl;
+          const isThisMessageLoadingAudio = playingAudioState?.messageId === msg.id && playingAudioState?.isLoading;
+          const audioErrorForThisMessage = playingAudioState?.messageId === msg.id ? playingAudioState?.error : null;
+          const isAudioCachedForThisMessage = !!audioCache[msg.id];
 
-      {/* Messages */}
-      {messages.map((message) => {
-        const { participantId, name, avatar } = getSenderInfo(message);
-        const isSentByUser = message.senderType === 'USER' && message.senderId === currentUserId;
-        const participant = participantId ? participants.find((p) => p.id === participantId) : null;
+          if (imageContentData) {
+            return <ImageMessageItem key={key} messageData={msg} />;
+          } else {
+            return (
+              <MessageItem
+                key={key}
+                messageId={msg.id}
+                message={msg.content}
+                isSent={isSentByUser}
+                sender={senderDetails}
+                timestamp={msg.timestamp}
+                onAvatarClick={() => {
+                  if (participantForThisMessage && onAvatarClick) {
+                    onAvatarClick(participantForThisMessage);
+                  }
+                }}
+                onDeleteRequest={onDeleteClick}
+                onSaveEditRequest={onSaveEdit}
+                onReprocessRequest={onReprocessClick}
+                isPlayingAudio={isThisMessagePlaying}
+                isAudioLoading={isThisMessageLoadingAudio}
+                audioError={audioErrorForThisMessage}
+                onPlayAudioRequest={onPlayAudioRequest}
+                isAudioCached={isAudioCachedForThisMessage}
+                creditsConsumed={creditsConsumedForThisMessage}
+                onSendConfirmation={onSendConfirmation}
+                isLastMessage={isLastMessage}
+                onReviewFileClick={onReviewFileClick}
+              />
+            );
+          }
+        })}
 
-        return (
-          <MessageBubble
-            key={message.id}
-            message={message}
-            isSentByUser={isSentByUser}
-            senderName={name}
-            senderAvatar={avatar}
-            onAvatarClick={participant && onAvatarClick ? () => onAvatarClick(participant) : undefined}
-            onDelete={onDeleteMessage}
-            onEdit={onEditMessage}
-          />
-        );
-      })}
-
-      {/* Typing indicators */}
-      {typingParticipantsData.map((data) => (
-        <TypingIndicator key={data.participantId} avatar={data.avatar} name={data.name} />
+      {participantsWithActiveTasksData.map((taskData) => (
+        <BackgroundTaskIndicator
+          key={`task-${taskData.actorId}`}
+          avatar={taskData.avatar}
+          name={taskData.name}
+          taskType={String(taskData.taskType)}
+        />
       ))}
-
-      {/* Auto-scroll anchor */}
-      <div ref={scrollRef} style={{ height: '1px' }} />
+      {currentlyTypingParticipantsData.map((typingData) => (
+        <TypingIndicator
+          key={`typing-${typingData.actorId}`}
+          avatar={typingData.avatar}
+          name={typingData.name}
+        />
+      ))}
+      <div ref={scrollRef} style={{ height: "1px" }} />
     </div>
   );
 };
+
+export default MessageList;

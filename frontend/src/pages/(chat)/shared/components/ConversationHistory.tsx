@@ -26,7 +26,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
   const { data: conversationsData, isLoading } = useConversationListQuery();
   const { updateTitle, delete: deleteConversation } = useConversationMutations();
 
-  const conversations = conversationsData?.items || [];
+  const conversations: Conversation[] = conversationsData?.items ?? [];
 
   /**
    * Get time reference for grouping conversations by date
@@ -71,7 +71,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
     // Apply search filter
     if (searchQuery.trim()) {
       const lowerQuery = searchQuery.toLowerCase();
-      filtered = conversations.filter((conv) =>
+      filtered = conversations.filter((conv: Conversation) =>
         conv.title?.toLowerCase().includes(lowerQuery)
       );
     }
@@ -80,7 +80,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
     const grouped: Record<string, Conversation[]> = {};
 
     if (groupBy === 'date') {
-      filtered.forEach((conv) => {
+      filtered.forEach((conv: Conversation) => {
         const timeRef = getTimeReference(conv.lastMessageAt || conv.createdAt);
         if (!grouped[timeRef]) grouped[timeRef] = [];
         grouped[timeRef].push(conv);
@@ -118,7 +118,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
       });
     } else {
       // Group by first letter
-      filtered.forEach((conv) => {
+      filtered.forEach((conv: Conversation) => {
         const firstLetter = conv.title?.[0]?.toUpperCase() || '#';
         if (!grouped[firstLetter]) grouped[firstLetter] = [];
         grouped[firstLetter].push(conv);
@@ -189,7 +189,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
     }
   };
 
-  const deletingConversation = conversations.find((c) => c.id === deletingConvId);
+  const deletingConversation = conversations.find((c: Conversation) => c.id === deletingConvId);
 
   return (
     <div className="p-4 flex flex-col h-full">

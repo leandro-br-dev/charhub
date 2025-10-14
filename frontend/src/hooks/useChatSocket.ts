@@ -128,7 +128,7 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
     const handleConnect = () => {
       setIsConnected(true);
       setConnectionError(null);
-      setSocketId(socket.id);
+      setSocketId(socket.id ?? null);
     };
 
     const handleDisconnect = () => {

@@ -21,151 +21,132 @@ interface ApiResponse<T> {
   message?: string;
 }
 
-/**
- * Chat Service
- * API client for chat/conversation operations
- * Based on backend routes (Phase 2.2) and old project structure
- */
+function unwrapResponse<T>(response: ApiResponse<T>): T {
+  if (!response.success) {
+    throw new Error(response.message || 'Request failed');
+  }
+  return response.data;
+}
+
+function unwrapListResponse<T>(response: ApiResponse<T[]>): { items: T[]; total: number } {
+  if (!response.success) {
+    throw new Error(response.message || 'Request failed');
+  }
+  return {
+    items: response.data || [],
+    total: response.count ?? response.data?.length ?? 0,
+  };
+}
+
 export const chatService = {
-  /**
-   * Create a new conversation with participants
-   */
   async createConversation(payload: CreateConversationPayload): Promise<Conversation> {
-    const response = await api.post<ApiResponse<Conversation>>(BASE_PATH, payload);
-    return response.data.data;
+    const { data } = await api.post<ApiResponse<Conversation>>(BASE_PATH, payload);
+    return unwrapResponse(data);
   },
 
-  /**
-   * Create conversation with a single character (convenience method)
-   */
   async createConversationWithCharacter(characterId: string, title?: string): Promise<Conversation> {
-    return this.createConversation({
+    const basePayload: CreateConversationPayload = {
       title: title || 'New Conversation',
       participantIds: [characterId],
-    });
-  },
-
-  /**
-   * Get conversation by ID with messages
-   */
-  async getConversation(conversationId: string): Promise<Conversation> {
-    const response = await api.get<ApiResponse<Conversation>>(`${BASE_PATH}/${conversationId}`);
-    return response.data.data;
-  },
-
-  /**
-   * List conversations with filters and pagination
-   */
-  async listConversations(query?: ListConversationsQuery): Promise<{ items: Conversation[]; total: number }> {
-    const response = await api.get<ApiResponse<Conversation[]>>(BASE_PATH, { params: query });
-    return {
-      items: response.data.data || [],
-      total: response.data.count || 0,
     };
+    return this.createConversation(basePayload);
   },
 
-  /**
-   * Update conversation (title, settings)
-   */
-  async updateConversation(conversationId: string, payload: UpdateConversationPayload): Promise<Conversation> {
-    const response = await api.patch<ApiResponse<Conversation>>(`${BASE_PATH}/${conversationId}`, payload);
-    return response.data.data;
+  async listConversations(query?: ListConversationsQuery): Promise<{ items: Conversation[]; total: number }> {
+    const { data } = await api.get<ApiResponse<Conversation[]>>(BASE_PATH, {
+      params: query,
+    });
+    return unwrapListResponse(data);
   },
 
-  /**
-   * Update conversation title
-   */
+  async getConversation(conversationId: string): Promise<Conversation> {
+    const { data } = await api.get<ApiResponse<Conversation>>(`${BASE_PATH}/${conversationId}`);
+    return unwrapResponse(data);
+  },
+
+  async updateConversation(
+    conversationId: string,
+    payload: UpdateConversationPayload
+  ): Promise<Conversation> {
+    const { data } = await api.patch<ApiResponse<Conversation>>(
+      `${BASE_PATH}/${conversationId}`,
+      payload
+    );
+    return unwrapResponse(data);
+  },
+
   async updateConversationTitle(conversationId: string, title: string): Promise<Conversation> {
     return this.updateConversation(conversationId, { title, isTitleUserEdited: true });
   },
 
-  /**
-   * Delete conversation (not implemented in backend yet - placeholder)
-   */
   async deleteConversation(conversationId: string): Promise<void> {
-    // TODO: Implement when backend supports deletion
-    await api.delete(`${BASE_PATH}/${conversationId}`);
+    // Endpoint not implemented in backend yet; throw for now to surface intent.
+    throw new Error('Conversation deletion is not supported yet.');
   },
 
-  /**
-   * Add participant to conversation
-   */
-  async addParticipant(conversationId: string, payload: AddParticipantPayload): Promise<any> {
-    const response = await api.post<ApiResponse<any>>(
+  async addParticipant(conversationId: string, payload: AddParticipantPayload): Promise<void> {
+    await api.post<ApiResponse<unknown>>(
       `${BASE_PATH}/${conversationId}/participants`,
       payload
     );
-    return response.data.data;
   },
 
-  /**
-   * Add character as participant (convenience method)
-   */
-  async addCharacterParticipant(conversationId: string, characterId: string): Promise<any> {
-    return this.addParticipant(conversationId, {
-      actingCharacterId: characterId,
-    });
+  async addCharacterParticipant(conversationId: string, characterId: string): Promise<void> {
+    await this.addParticipant(conversationId, { actingCharacterId: characterId });
   },
 
-  /**
-   * Remove participant from conversation
-   */
   async removeParticipant(conversationId: string, participantId: string): Promise<void> {
-    await api.delete(`${BASE_PATH}/${conversationId}/participants/${participantId}`);
-  },
-
-  /**
-   * Send user message to conversation
-   */
-  async sendMessage(payload: SendMessagePayload): Promise<Message> {
-    const { conversationId, ...messageData } = payload;
-    const response = await api.post<ApiResponse<Message>>(
-      `${BASE_PATH}/${conversationId}/messages`,
-      messageData
+    await api.delete<ApiResponse<unknown>>(
+      `${BASE_PATH}/${conversationId}/participants/${participantId}`
     );
-    return response.data.data;
   },
 
-  /**
-   * Get messages from conversation with pagination
-   */
   async getMessages(query: ListMessagesQuery): Promise<{ items: Message[]; total: number }> {
     const { conversationId, ...params } = query;
-    const response = await api.get<ApiResponse<Message[]>>(
+    const { data } = await api.get<ApiResponse<Message[]>>(
       `${BASE_PATH}/${conversationId}/messages`,
       { params }
     );
-    return {
-      items: response.data.data || [],
-      total: response.data.count || 0,
-    };
+    return unwrapListResponse(data);
   },
 
-  /**
-   * Delete message (not fully implemented in backend - placeholder)
-   */
+  async sendMessage(payload: SendMessagePayload): Promise<Message> {
+    const { conversationId, ...messageData } = payload;
+    const { data } = await api.post<ApiResponse<Message>>(
+      `${BASE_PATH}/${conversationId}/messages`,
+      messageData
+    );
+    return unwrapResponse(data);
+  },
+
   async deleteMessage(conversationId: string, messageId: string): Promise<void> {
-    // TODO: Backend needs a dedicated message delete endpoint
-    // For now, would need to use generic delete
-    await api.delete(`${BASE_PATH}/${conversationId}/messages/${messageId}`);
+    await api.delete<ApiResponse<unknown>>(
+      `${BASE_PATH}/${conversationId}/messages/${messageId}`
+    );
   },
 
-  /**
-   * Generate AI response from assistant
-   */
-  async generateAIResponse(conversationId: string, payload: GenerateAIResponsePayload): Promise<Message> {
-    const response = await api.post<ApiResponse<Message>>(
+  async generateAIResponse(
+    conversationId: string,
+    payload: GenerateAIResponsePayload
+  ): Promise<Message> {
+    const { data } = await api.post<ApiResponse<Message>>(
       `${BASE_PATH}/${conversationId}/generate`,
       payload
     );
-    return response.data.data;
+    return unwrapResponse(data);
   },
 
-  /**
-   * Generate AI response for a participant (convenience method)
-   */
-  async generateResponseForParticipant(conversationId: string, participantId: string): Promise<Message> {
-    return this.generateAIResponse(conversationId, { participantId });
+  async updateConversationSettings(
+    conversationId: string,
+    settingsData: Record<string, unknown>
+  ): Promise<Conversation> {
+    return this.updateConversation(conversationId, { settings: settingsData });
+  },
+
+  async getConversationGallery(conversationId: string): Promise<string[]> {
+    // Gallery endpoints are not implemented yet; return empty list to avoid UI errors.
+    console.warn('[chatService] Conversation gallery is not yet supported.');
+    return [];
   },
 };
 

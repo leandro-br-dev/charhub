@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
+import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 export default defineConfig(function (_a) {
     var _b, _c, _d, _e;
@@ -8,7 +9,7 @@ export default defineConfig(function (_a) {
     var apiPrefix = (_c = env.VITE_API_VERSION) !== null && _c !== void 0 ? _c : '/api/v1';
     var explicitHosts = (_d = env.VITE_ALLOWED_HOSTS) === null || _d === void 0 ? void 0 : _d.split(',').map(function (entry) { return entry.trim(); }).filter(Boolean);
     var publicHostname = (_e = env.PUBLIC_HOSTNAME) === null || _e === void 0 ? void 0 : _e.trim();
-    var allowedHosts = ['localhost', '127.0.0.1', 'frontend'];
+    var allowedHosts = ['localhost', '127.0.0.1'];
     if (publicHostname) {
         allowedHosts.push(publicHostname);
     }
@@ -19,11 +20,16 @@ export default defineConfig(function (_a) {
     var hmrConfig = {
         // O host e o protocolo são omitidos intencionalmente.
         // O Vite irá inferi-los a partir do window.location do navegador.
-        // Isso faz com que funcione tanto para 'localhost' (http -> ws) 
+        // Isso faz com que funcione tanto para 'localhost' (http -> ws)
         // quanto para 'dev.charhub.app' (https -> wss).
         clientPort: 5173, // Esta é a porta do host mapeada no docker-compose.yml
     };
     return {
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('./src', import.meta.url)),
+            },
+        },
         plugins: [react()],
         server: {
             port: 80, // O container do Vite roda internamente na porta 80
