@@ -1,0 +1,16 @@
+{
+  "resources": {
+    "title": "Galeria de imagens",
+    "loading": "Carregando imagens...",
+    "error": "Falha ao carregar imagens.",
+    "tabs": {
+      "gallery": "Galeria de Conversas",
+      "avatar": "Avatares",
+      "samples": "Exemplos",
+      "stickers": "Figurinhas"
+    },
+    "upload": "Carregar Imagem",
+    "close": "Fechar",
+    "noImages": "Nenhuma imagem disponível ainda"
+  }
+}

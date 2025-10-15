@@ -5,7 +5,7 @@
     "language": "Idioma",
     "continueGoogle": "Continuar com o Google",
     "continueFacebook": "Continuar com o Facebook",
-    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza a CharHub a acessar suas informações básicas de perfil.",
+    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
     "logout": "Sair",
     "logoutLoading": "Saindo...",
     "authenticatedUser": "Usuário autenticado",
@@ -25,6 +25,16 @@
         "dark": "Escuro",
         "system": "Sistema"
       }
-    }
+    },
+    "none": "Nenhum",
+    "unknown": "Desconhecido",
+    "nameNotAvailable": "Nome não disponível",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "saving": "Salvando...",
+    "enabled": "Ativado",
+    "disabled": "Desativado",
+    "selectOption": "Selecione uma opção",
+    "noResults": "Nenhuma opção encontrada."
   }
 }

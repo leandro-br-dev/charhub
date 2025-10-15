@@ -5,14 +5,14 @@
     "language": "اللغة",
     "continueGoogle": "متابعة باستخدام جوجل",
     "continueFacebook": "متابعة باستخدام فيسبوك",
-    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "privacy": "بالمتابعة، توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
-    "logoutLoading": "تسجيل الخروج...",
+    "logoutLoading": "جارٍ تسجيل الخروج...",
     "authenticatedUser": "المستخدم المصادق عليه",
-    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP فقط",
+    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض توضيحي آمن لـ OAuth",
+    "navTagline": "عرض توضيحي لـ OAuth آمن",
     "providerLabel": {
       "google": "جوجل",
       "facebook": "فيسبوك"
@@ -25,6 +25,16 @@
         "dark": "داكن",
         "system": "النظام"
       }
-    }
+    },
+    "none": "لا شيء",
+    "unknown": "غير معروف",
+    "nameNotAvailable": "الاسم غير متاح",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saving": "جارٍ الحفظ...",
+    "enabled": "ممكّن",
+    "disabled": "معطّل",
+    "selectOption": "اختر خيارًا",
+    "noResults": "لم يتم العثور على خيارات."
   }
 }

@@ -1,6 +1,7 @@
 import { Prisma, $Enums, type User } from '../generated/prisma';
 import { prisma } from '../config/database';
 import type { AuthenticatedUser, OAuthProvider, UserRole } from '../types';
+import { generateUniqueUsername } from '../utils/username';
 
 interface SyncOAuthUserInput {
   provider: OAuthProvider;
@@ -11,6 +12,7 @@ interface SyncOAuthUserInput {
 }
 
 interface UpdateUserProfileParams {
+  username?: string | null;
   displayName: string;
   fullName?: string | null;
   birthDate?: Date | null;
@@ -31,6 +33,7 @@ function mapUser(record: User): AuthenticatedUser {
     id: record.id,
     provider: mapProvider(record.provider),
     providerAccountId: record.providerAccountId,
+    username: record.username ?? undefined,
     displayName: record.displayName ?? undefined,
     email: record.email ?? undefined,
     photo: record.avatarUrl ?? undefined,
@@ -45,6 +48,21 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
   const prismaProvider = providerEnumMap[input.provider];
 
   try {
+    // Check if user exists first
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        provider_providerAccountId: {
+          provider: prismaProvider,
+          providerAccountId: input.providerAccountId,
+        },
+      },
+      select: { id: true, username: true },
+    });
+
+    // Generate username only if creating new user or existing user doesn't have one
+    const needsUsername = !existingUser || !existingUser.username;
+    const username = needsUsername ? await generateUniqueUsername(input.displayName) : undefined;
+
     const user = await prisma.user.upsert({
       where: {
         provider_providerAccountId: {
@@ -57,10 +75,13 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
         displayName: input.displayName ?? undefined,
         avatarUrl: input.photo ?? undefined,
         lastLoginAt: new Date(),
+        // Add username if user doesn't have one
+        ...(existingUser && !existingUser.username && username ? { username } : {}),
       },
       create: {
         provider: prismaProvider,
         providerAccountId: input.providerAccountId,
+        username: username!,
         email: input.email ?? undefined,
         displayName: input.displayName ?? undefined,
         avatarUrl: input.photo ?? undefined,
@@ -107,6 +128,10 @@ export async function updateUserProfile(userId: string, data: UpdateUserProfileP
     displayName: data.displayName,
   };
 
+  if (data.username !== undefined) {
+    updatePayload.username = data.username;
+  }
+
   if (data.fullName !== undefined) {
     updatePayload.fullName = data.fullName;
   }
@@ -119,12 +144,28 @@ export async function updateUserProfile(userId: string, data: UpdateUserProfileP
     updatePayload.gender = data.gender;
   }
 
-  const user = await prisma.user.update({
-    where: { id: userId },
-    data: updatePayload,
-  });
+  try {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: updatePayload,
+    });
 
-  return mapUser(user);
+    return mapUser(user);
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      const targetMeta = error.meta?.target;
+      const targets = Array.isArray(targetMeta)
+        ? targetMeta
+        : typeof targetMeta === 'string'
+        ? [targetMeta]
+        : [];
+
+      if (targets.some(target => target.includes('username'))) {
+        throw new Error('Username is already taken.');
+      }
+    }
+    throw error;
+  }
 }
 
 export async function findUserById(id: string): Promise<AuthenticatedUser | null> {

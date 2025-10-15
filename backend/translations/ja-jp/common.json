@@ -2,29 +2,39 @@
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
     "brand": "CharHub Auth",
-    "language": "言語",
-    "continueGoogle": "Googleで続行",
-    "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを承認したことになります。",
-    "logout": "サインアウト",
-    "logoutLoading": "サインアウト中...",
-    "authenticatedUser": "認証済みユーザー",
-    "tokenStored": "HTTP専用Cookieに保存",
-    "navDashboard": "ダッシュボード",
-    "navCharacters": "キャラクター",
-    "navTagline": "セキュアOAuthデモ",
+    "language": "Language",
+    "continueGoogle": "Continue with Google",
+    "continueFacebook": "Continue with Facebook",
+    "privacy": "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
+    "logout": "Sign out",
+    "logoutLoading": "Signing out...",
+    "authenticatedUser": "Authenticated user",
+    "tokenStored": "Stored in HTTP-only cookie",
+    "navDashboard": "Dashboard",
+    "navCharacters": "Characters",
+    "navTagline": "Secure OAuth demo",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "プロバイダー",
+    "provider": "Provider",
     "theme": {
-      "label": "テーマ",
+      "label": "Theme",
       "option": {
-        "light": "ライト",
-        "dark": "ダーク",
-        "system": "システム"
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
       }
-    }
+    },
+    "none": "None",
+    "unknown": "Unknown",
+    "nameNotAvailable": "Name not available",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "selectOption": "Select an option",
+    "noResults": "No options found."
   }
 }

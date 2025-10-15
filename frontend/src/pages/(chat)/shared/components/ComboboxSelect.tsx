@@ -1,6 +1,7 @@
 
 // frontend/src/pages/(chat)/shared/components/ComboboxSelect.tsx
 import { useState, useRef, useEffect, useCallback, Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import { Combobox, Transition } from "@headlessui/react";
 
 const ComboboxSelect = ({
@@ -8,7 +9,7 @@ const ComboboxSelect = ({
   options = [],
   value,
   onChange,
-  placeholder = "Selecione uma opção",
+  placeholder,
   variant = "primary",
   className = "",
   disabled = false,
@@ -16,9 +17,12 @@ const ComboboxSelect = ({
   labelKey = "label",
   ...props
 }: any) => {
+  const { t } = useTranslation('common');
   const [query, setQuery] = useState("");
   const [optionsStyle, setOptionsStyle] = useState({});
   const comboboxRef = useRef<HTMLDivElement>(null);
+  const resolvedPlaceholder = placeholder ?? t('selectOption', 'Select an option');
+  const noResultsLabel = t('noResults', 'No options found.');
 
   const calculatePosition = useCallback(() => {
     requestAnimationFrame(() => {
@@ -109,7 +113,7 @@ const ComboboxSelect = ({
               <Combobox.Input
                 className={`${inputBaseClasses} ${variants[variant].input}`}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder={placeholder}
+                placeholder={resolvedPlaceholder}
                 displayValue={getDisplayValue}
               />
               <Combobox.Button className={`${buttonBaseClasses} ${variants[variant].button}`}>
@@ -130,7 +134,7 @@ const ComboboxSelect = ({
                   style={optionsStyle}
                 >
                   {filteredOptions.length === 0 && query !== "" ? (
-                    <div className="px-3 py-2 text-muted"> Nenhuma opção. </div>
+                    <div className="px-3 py-2 text-muted">{noResultsLabel}</div>
                   ) : (
                     filteredOptions.map((option: any) => (
                       <Combobox.Option

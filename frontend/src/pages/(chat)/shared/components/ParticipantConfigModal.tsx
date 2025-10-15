@@ -7,10 +7,8 @@ import { Button } from "../../../../components/ui/Button";
 import { Avatar } from "../../../../components/ui/Avatar";
 import { Modal } from "../../../../components/ui/Modal";
 import { Textarea } from "../../../../components/ui/Textarea";
-
-// --- Placeholder Components ---
-const ComboboxSelect: React.FC<any> = (props) => <div {...props} />;
-const ImageGalleryModal: React.FC<any> = (props) => <div {...props} />;
+import ComboboxSelect from "./ComboboxSelect";
+import ImageGalleryModal from "./ImageGalleryModal";
 
 // --- Placeholder Services ---
 const characterService = {
@@ -395,8 +393,10 @@ const ParticipantConfigModal = ({
           mode="view"
           characterId={participant.representation?.id}
           conversationId={participant.conversation_id}
-          initialImageType="lora_samples"
-          title={`Galeria de ${rep.name}`}
+          imageUrls={rep.gallery || []}
+          title={t('participantConfigModal.galleryTitle', {
+            name: rep.name || t('common.unknown'),
+          })}
         />
       </>
     );

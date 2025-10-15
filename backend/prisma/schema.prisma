@@ -50,6 +50,7 @@ model User {
   id                String       @id @default(uuid())
   provider          AuthProvider
   providerAccountId String
+  username          String?      @unique
   email             String?      @unique
   displayName       String?
   fullName          String?

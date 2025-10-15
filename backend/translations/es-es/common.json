@@ -12,7 +12,7 @@
     "tokenStored": "Almacenado en cookie HTTP-only",
     "navDashboard": "Panel",
     "navCharacters": "Personajes",
-    "navTagline": "Demostración segura de OAuth",
+    "navTagline": "Demo segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -25,6 +25,16 @@
         "dark": "Oscuro",
         "system": "Sistema"
       }
-    }
+    },
+    "none": "Ninguno",
+    "unknown": "Desconocido",
+    "nameNotAvailable": "Nombre no disponible",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "selectOption": "Selecciona una opción",
+    "noResults": "No se encontraron opciones."
   }
 }

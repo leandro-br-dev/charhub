@@ -2,29 +2,39 @@
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
     "brand": "CharHub Auth",
-    "language": "Язык",
-    "continueGoogle": "Продолжить с Google",
-    "continueFacebook": "Продолжить с Facebook",
-    "privacy": "Продолжая, вы соглашаетесь с нашей политикой конфиденциальности и разрешаете CharHub доступ к вашей базовой информации профиля.",
-    "logout": "Выйти",
-    "logoutLoading": "Выход...",
-    "authenticatedUser": "Аутентифицированный пользователь",
-    "tokenStored": "Сохранено в HTTP-only cookie",
-    "navDashboard": "Панель управления",
-    "navCharacters": "Персонажи",
-    "navTagline": "Демонстрация безопасного OAuth",
+    "language": "Language",
+    "continueGoogle": "Continue with Google",
+    "continueFacebook": "Continue with Facebook",
+    "privacy": "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
+    "logout": "Sign out",
+    "logoutLoading": "Signing out...",
+    "authenticatedUser": "Authenticated user",
+    "tokenStored": "Stored in HTTP-only cookie",
+    "navDashboard": "Dashboard",
+    "navCharacters": "Characters",
+    "navTagline": "Secure OAuth demo",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Поставщик",
+    "provider": "Provider",
     "theme": {
-      "label": "Тема",
+      "label": "Theme",
       "option": {
-        "light": "Светлая",
-        "dark": "Темная",
-        "system": "Системная"
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
       }
-    }
+    },
+    "none": "None",
+    "unknown": "Unknown",
+    "nameNotAvailable": "Name not available",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "selectOption": "Select an option",
+    "noResults": "No options found."
   }
 }

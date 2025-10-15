@@ -6,11 +6,9 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { Modal } from "../../../../components/ui/Modal";
 import { Button } from "../../../../components/ui/Button";
 import { Textarea } from "../../../../components/ui/Textarea";
-
-// --- Placeholder Components ---
-const Switch: React.FC<any> = (props) => <div {...props} />;
-const ComboboxSelect: React.FC<any> = (props) => <div {...props} />;
-const ImageGalleryModal: React.FC<any> = (props) => <div {...props} />;
+import Switch from "../../../../components/ui/Switch";
+import ComboboxSelect from "./ComboboxSelect";
+import ImageGalleryModal from "./ImageGalleryModal";
 
 // --- Placeholder Services ---
 const chatService = {
@@ -60,10 +58,12 @@ const ConversationSettingsModal = ({
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [loadingGallery, setLoadingGallery] = useState(false);
+  const [galleryError, setGalleryError] = useState<string | null>(null);
 
   const fetchGalleryImages = useCallback(async () => {
     if (!conversation?.id) return;
     setLoadingGallery(true);
+    setGalleryError(null);
     let imageUrls = new Set<string>();
     try {
         const [convGalleryRes, ...charImageRes] = await Promise.all([
@@ -80,15 +80,16 @@ const ConversationSettingsModal = ({
         });
         setGalleryImages(Array.from(imageUrls));
     } catch (err) {
-        setError("Falha ao carregar imagens da galeria.");
+        setGalleryError(t('conversationSettings.errorLoadingGallery'));
     } finally {
         setLoadingGallery(false);
     }
-  }, [conversation]);
+  }, [conversation, t]);
 
   const openGalleryForSelection = () => {
-      fetchGalleryImages();
-      setIsGalleryOpen(true);
+    setGalleryError(null);
+    fetchGalleryImages();
+    setIsGalleryOpen(true);
   };
 
   useEffect(() => {
@@ -387,6 +388,7 @@ const ConversationSettingsModal = ({
         participants={conversation.participants}
         imageUrls={galleryImages}
         loading={loadingGallery}
+        error={galleryError}
         title={t("conversationSettings.selectFromGalleryButton")}
       />
     </>

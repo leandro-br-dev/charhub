@@ -2,29 +2,39 @@
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
     "brand": "CharHub Auth",
-    "language": "Lingua",
-    "continueGoogle": "Continua con Google",
-    "continueFacebook": "Continua con Facebook",
-    "privacy": "Continuando accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di base del profilo.",
-    "logout": "Esci",
-    "logoutLoading": "Uscita in corso...",
-    "authenticatedUser": "Utente autenticato",
-    "tokenStored": "Memorizzato in un cookie HTTP-only",
+    "language": "Language",
+    "continueGoogle": "Continue with Google",
+    "continueFacebook": "Continue with Facebook",
+    "privacy": "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
+    "logout": "Sign out",
+    "logoutLoading": "Signing out...",
+    "authenticatedUser": "Authenticated user",
+    "tokenStored": "Stored in HTTP-only cookie",
     "navDashboard": "Dashboard",
-    "navCharacters": "Personaggi",
-    "navTagline": "Demo OAuth sicura",
+    "navCharacters": "Characters",
+    "navTagline": "Secure OAuth demo",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
     "provider": "Provider",
     "theme": {
-      "label": "Tema",
+      "label": "Theme",
       "option": {
-        "light": "Chiaro",
-        "dark": "Scuro",
-        "system": "Sistema"
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
       }
-    }
+    },
+    "none": "None",
+    "unknown": "Unknown",
+    "nameNotAvailable": "Name not available",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "selectOption": "Select an option",
+    "noResults": "No options found."
   }
 }

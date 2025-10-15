@@ -25,6 +25,16 @@
                                                   "dark":  "Dark",
                                                   "system":  "System"
                                               }
-                                 }
+                                 },
+                      "none": "None",
+                      "unknown": "Unknown",
+                      "nameNotAvailable": "Name not available",
+                      "cancel": "Cancel",
+                      "save": "Save",
+                      "saving": "Saving...",
+                      "enabled": "Enabled",
+                      "disabled": "Disabled",
+                      "selectOption": "Select an option",
+                      "noResults": "No options found."
                   }
 }

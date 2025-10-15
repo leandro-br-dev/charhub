@@ -1,0 +1,16 @@
+{
+  "resources": {
+    "title": "Bildergalerie",
+    "loading": "Bilder werden geladen...",
+    "error": "Fehler beim Laden der Bilder.",
+    "tabs": {
+      "gallery": "Konversationsgalerie",
+      "avatar": "Avatare",
+      "samples": "Beispiele",
+      "stickers": "Sticker"
+    },
+    "upload": "Bild hochladen",
+    "close": "Schließen",
+    "noImages": "Noch keine Bilder verfügbar"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "resources": {
+    "title": "Image gallery",
+    "loading": "Loading images...",
+    "error": "Failed to load images.",
+    "tabs": {
+      "gallery": "Conversation Gallery",
+      "avatar": "Avatars",
+      "samples": "Samples",
+      "stickers": "Stickers"
+    },
+    "upload": "Upload Image",
+    "close": "Close",
+    "noImages": "No images available yet"
+  }
+}

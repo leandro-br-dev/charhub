@@ -37,7 +37,16 @@ const genderSchema = z
   ])
   .optional();
 
+const usernameSchema = z
+  .string()
+  .trim()
+  .min(4, 'Username must contain at least 3 characters after the @')
+  .max(21, 'Username cannot exceed 20 characters after the @')
+  .regex(/^@[a-zA-Z0-9_]+$/, 'Username must start with @ and contain only letters, numbers, and underscores')
+  .optional();
+
 export const updateUserProfileSchema = z.object({
+  username: usernameSchema,
   displayName: displayNameSchema,
   fullName: z
     .string()

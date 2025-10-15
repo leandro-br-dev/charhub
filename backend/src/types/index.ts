@@ -6,6 +6,7 @@ export interface AuthenticatedUser {
   id: string;
   provider: OAuthProvider;
   providerAccountId: string;
+  username?: string;
   displayName?: string;
   email?: string;
   photo?: string;
