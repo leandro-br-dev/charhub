@@ -46,8 +46,8 @@ const usernameSchema = z
   .optional();
 
 export const updateUserProfileSchema = z.object({
-  username: usernameSchema,
-  displayName: displayNameSchema,
+  username: usernameSchema.optional(),
+  displayName: displayNameSchema.optional(),
   fullName: z
     .string()
     .trim()
@@ -59,8 +59,9 @@ export const updateUserProfileSchema = z.object({
       }
       return value.length === 0 ? null : value;
     }),
-  birthDate: birthDateSchema,
-  gender: genderSchema,
+  birthDate: birthDateSchema.optional(),
+  gender: genderSchema.optional(),
+  photo: z.string().url().optional(),
 });
 
 export type UpdateUserProfileInput = z.infer<typeof updateUserProfileSchema>;

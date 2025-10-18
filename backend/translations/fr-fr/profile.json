@@ -1,12 +1,18 @@
 {
   "description": "Profile management surface for authenticated users.",
   "resources": {
+    "tabs": {
+      "profile": "Profil",
+      "password": "Mot de passe",
+      "contentClassification": "Classification du contenu",
+      "deleteAccount": "Supprimer le compte"
+    },
     "sectionTitle": "Compte",
     "title": "Gérer votre profil",
     "subtitle": "Modifiez la façon dont les autres vous voient sur CharHub. Les préférences en cours de migration apparaîtront bientôt ici.",
     "identity": {
       "header": "Photo de profil",
-      "description": "Choisissez un avatar pour vous représenter dans les conversations et auprès des personnages.",
+      "description": "Choisissez un avatar pour vous représenter dans les discussions et auprès des personnages.",
       "upload": "Télécharger une image",
       "placeholderNote": "Les téléchargements d'avatars seront disponibles après la reconnexion du service multimédia."
     },
@@ -14,14 +20,18 @@
       "header": "Détails publics",
       "description": "Ces informations sont partagées avec les collaborateurs et utilisées par défaut dans les conversations."
     },
+    "contentClassification": {
+      "header": "Classification du contenu",
+      "description": "Ces paramètres nous aident à mieux vous recommander du contenu et des personnages."
+    },
     "fields": {
-      "displayName": "Nom affiché",
+      "displayName": "Nom d'affichage",
       "displayNamePlaceholder": "Comment les autres utilisateurs vous appellent",
       "fullName": "Nom complet",
       "fullNamePlaceholder": "Facultatif pour la facturation et les copies par e-mail",
       "username": "Identifiant utilisateur",
       "usernamePlaceholder": "Identifiant unique",
-      "usernameHint": "Cet identifiant provient de votre fournisseur OAuth et ne peut pas être modifié pour le moment.",
+      "usernameHint": "Cet identifiant provient de votre fournisseur OAuth et ne peut pas encore être modifié.",
       "email": "E-mail",
       "emailHint": "Géré par votre fournisseur d'authentification.",
       "birthDate": "Date de naissance",
@@ -38,7 +48,7 @@
     },
     "actions": {
       "save": "Enregistrer les modifications",
-      "saving": "Enregistrement en cours..."
+      "saving": "Enregistrement..."
     },
     "security": {
       "header": "Sécurité",
@@ -50,8 +60,8 @@
       "error": "Nous n'avons pas pu enregistrer vos modifications."
     },
     "errors": {
-      "updateFailed": "Nous n'avons pas pu enregistrer vos modifications. Veuillez réessayer dans un moment.",
-      "displayNameRequired": "Le nom affiché est requis."
+      "updateFailed": "Nous n'avons pas pu enregistrer vos modifications. Veuillez réessayer dans un instant.",
+      "displayNameRequired": "Le nom d'affichage est requis."
     }
   }
 }

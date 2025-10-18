@@ -1,29 +1,39 @@
 {
   "description": "Profile management surface for authenticated users.",
   "resources": {
+    "tabs": {
+      "profile": "プロフィール",
+      "password": "パスワード",
+      "contentClassification": "コンテンツ分類",
+      "deleteAccount": "アカウント削除"
+    },
     "sectionTitle": "アカウント",
     "title": "プロフィールを管理する",
-    "subtitle": "CharHubで他の人に表示される方法を更新します。現在移行中の設定は近日中にここに表示されます。",
+    "subtitle": "CharHubで他のユーザーに表示される方法を更新します。現在移行中の設定は近日中にここに表示されます。",
     "identity": {
       "header": "プロフィール写真",
       "description": "チャットやキャラクター全体であなたを表すアバターを選択してください。",
       "upload": "画像をアップロード",
-      "placeholderNote": "メディアサービスを再接続した後、アバターのアップロードが利用可能になります。"
+      "placeholderNote": "メディアサービスを再接続すると、アバターのアップロードが利用可能になります。"
     },
     "details": {
       "header": "公開情報",
       "description": "これらの値は共同作業者と共有され、会話のデフォルトとして使用されます。"
     },
+    "contentClassification": {
+      "header": "コンテンツ分類",
+      "description": "これらの設定は、より良いコンテンツやキャラクターをおすすめするのに役立ちます。"
+    },
     "fields": {
       "displayName": "表示名",
       "displayNamePlaceholder": "他のユーザーがあなたを呼ぶ方法",
       "fullName": "氏名",
-      "fullNamePlaceholder": "請求書およびメールコピーに任意",
+      "fullNamePlaceholder": "請求書やメールのコピーに任意で入力",
       "username": "ユーザーID",
       "usernamePlaceholder": "一意の識別子",
       "usernameHint": "この識別子はOAuthプロバイダーから提供されるもので、現時点では変更できません。",
       "email": "Eメール",
-      "emailHint": "認証プロバイダーによって管理されます。",
+      "emailHint": "認証プロバイダーによって管理されています。",
       "birthDate": "生年月日",
       "gender": "性別"
     },
@@ -34,7 +44,7 @@
       "unspecified": "回答しない"
     },
     "preferences": {
-      "placeholder": "コンテンツ設定、ぼかし設定、およびセンシティブなテーマは、モデレーションサービスが統合され次第復活します。"
+      "placeholder": "コンテンツの好み、ぼかし設定、センシティブなテーマは、モデレーションサービスが統合され次第利用可能になります。"
     },
     "actions": {
       "save": "変更を保存",
@@ -42,8 +52,8 @@
     },
     "security": {
       "header": "セキュリティ",
-      "description": "CharHubセッションは、GoogleまたはFacebookからのOAuthセキュリティを継承します。多要素認証サポートは近日中に追加されます。",
-      "placeholder": "セッション管理およびパスワードレスログイン制御はロードマップ上にあります。"
+      "description": "CharHubセッションは、GoogleまたはFacebookのOAuthセキュリティを継承します。多要素認証サポートは近日中に追加されます。",
+      "placeholder": "セッション管理とパスワードレスログインのコントロールはロードマップ上にあります。"
     },
     "feedback": {
       "success": "プロフィールが正常に更新されました。",

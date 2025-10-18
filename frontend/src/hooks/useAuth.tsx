@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import api from '../lib/api';
 import { resolveApiBaseUrl } from '../lib/resolveApiBaseUrl';
 import type { AuthUser, OAuthProvider, UserRole } from '../types/auth';
+import { toDataURL } from '../lib/image';
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -102,6 +103,21 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     }
   });
 
+  const [isPhotoCached, setIsPhotoCached] = useState(false);
+
+  useEffect(() => {
+    if (user?.photo && user.photo.startsWith('http') && !isPhotoCached) {
+      toDataURL(user.photo)
+        .then(dataUrl => {
+          updateUser({ photo: dataUrl });
+          setIsPhotoCached(true);
+        })
+        .catch(error => {
+          console.warn('[auth] failed to cache photo', error);
+        });
+    }
+  }, [user, isPhotoCached]);
+
   useEffect(() => {
     if (typeof window === 'undefined') {
       return;
@@ -134,6 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const completeLogin = (payload: AuthUser) => {
     console.debug('[auth] completing login', { provider: payload.provider, id: payload.id });
     setUser(payload);
+    setIsPhotoCached(false);
   };
 
   const logout = async () => {

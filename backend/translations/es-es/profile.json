@@ -1,18 +1,28 @@
 {
   "description": "Profile management surface for authenticated users.",
   "resources": {
+    "tabs": {
+      "profile": "Perfil",
+      "password": "Contraseña",
+      "contentClassification": "Clasificación de contenido",
+      "deleteAccount": "Eliminar cuenta"
+    },
     "sectionTitle": "Cuenta",
     "title": "Gestiona tu perfil",
-    "subtitle": "Actualiza cómo te ven los demás en CharHub. Las preferencias que aún se están migrando aparecerán pronto aquí.",
+    "subtitle": "Actualiza cómo te ven los demás en CharHub. Las preferencias que aún se están migrando aparecerán aquí pronto.",
     "identity": {
       "header": "Foto de perfil",
-      "description": "Elige un avatar para representarte en chats y personajes.",
+      "description": "Elige un avatar que te represente en chats y personajes.",
       "upload": "Subir imagen",
-      "placeholderNote": "Las subidas de avatar estarán disponibles después de que reconectemos el servicio de medios."
+      "placeholderNote": "Las cargas de avatar estarán disponibles después de que reconectemos el servicio multimedia."
     },
     "details": {
       "header": "Detalles públicos",
-      "description": "Estos valores se comparten con colaboradores y se usan como predeterminados en las conversaciones."
+      "description": "Estos valores se comparten con colaboradores y se utilizan como valores predeterminados en las conversaciones."
+    },
+    "contentClassification": {
+      "header": "Clasificación de contenido",
+      "description": "Estas configuraciones nos ayudan a recomendarte mejor contenido y personajes."
     },
     "fields": {
       "displayName": "Nombre a mostrar",
@@ -42,11 +52,11 @@
     },
     "security": {
       "header": "Seguridad",
-      "description": "Tus sesiones de CharHub heredan la seguridad OAuth de Google o Facebook. Pronto se añadirá soporte para autenticación multifactor.",
+      "description": "Tus sesiones de CharHub heredan la seguridad OAuth de Google o Facebook. Pronto se agregará soporte multifactor.",
       "placeholder": "La gestión de sesiones y los controles de inicio de sesión sin contraseña están en el plan de desarrollo."
     },
     "feedback": {
-      "success": "Perfil actualizado correctamente.",
+      "success": "Perfil actualizado con éxito.",
       "error": "No pudimos guardar tus cambios."
     },
     "errors": {

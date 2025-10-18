@@ -1,12 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../../components/ui/Button';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tabs';
 import { ProfileTab } from './components/ProfileTab';
 import { PasswordTab } from './components/PasswordTab';
-import { SessionsTab } from './components/SessionsTab';
-import { ApiKeysTab } from './components/ApiKeysTab';
+import { ContentClassificationTab } from './components/ContentClassificationTab';
 import { DeleteAccountTab } from './components/DeleteAccountTab';
+import { EditableAvatar } from '../../components/ui/EditableAvatar';
 
 export default function ProfilePage(): JSX.Element {
   const { user } = useAuth();
@@ -33,12 +32,7 @@ export default function ProfilePage(): JSX.Element {
           </p>
 
           <div className="mt-6 flex flex-col items-center gap-4">
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-normal text-2xl font-semibold text-content">
-              {user?.displayName?.[0]?.toUpperCase() ?? '?'}
-            </div>
-            <Button variant="light" size="small" icon="upload">
-              {t('profile:identity.upload', 'Upload image')}
-            </Button>
+            <EditableAvatar />
             <p className="text-xs text-muted">
               {t('profile:identity.placeholderNote', 'Avatar uploads will be available after we reconnect the media service.')}
             </p>
@@ -49,8 +43,7 @@ export default function ProfilePage(): JSX.Element {
           <TabList>
             <Tab label="profile">{t('profile:tabs.profile', 'Profile')}</Tab>
             <Tab label="password">{t('profile:tabs.password', 'Password')}</Tab>
-            <Tab label="sessions">{t('profile:tabs.sessions', 'Sessions')}</Tab>
-            <Tab label="api-keys">{t('profile:tabs.apiKeys', 'API Keys')}</Tab>
+            <Tab label="content-classification">{t('profile:tabs.contentClassification', 'Content Classification')}</Tab>
             <Tab label="delete-account">{t('profile:tabs.deleteAccount', 'Delete Account')}</Tab>
           </TabList>
           <TabPanels>
@@ -60,11 +53,8 @@ export default function ProfilePage(): JSX.Element {
             <TabPanel label="password">
               <PasswordTab />
             </TabPanel>
-            <TabPanel label="sessions">
-              <SessionsTab />
-            </TabPanel>
-            <TabPanel label="api-keys">
-              <ApiKeysTab />
+            <TabPanel label="content-classification">
+              <ContentClassificationTab />
             </TabPanel>
             <TabPanel label="delete-account">
               <DeleteAccountTab />

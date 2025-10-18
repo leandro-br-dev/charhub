@@ -1,18 +1,28 @@
 {
   "description": "Profile management surface for authenticated users.",
   "resources": {
+    "tabs": {
+      "profile": "Profilo",
+      "password": "Password",
+      "contentClassification": "Classificazione dei contenuti",
+      "deleteAccount": "Elimina account"
+    },
     "sectionTitle": "Account",
     "title": "Gestisci il tuo profilo",
-    "subtitle": "Aggiorna come gli altri ti vedono su CharHub. Le preferenze che sono ancora in fase di migrazione appariranno presto qui.",
+    "subtitle": "Aggiorna come gli altri ti vedono su CharHub. Le preferenze in fase di migrazione appariranno presto qui.",
     "identity": {
       "header": "Foto del profilo",
-      "description": "Scegli un avatar che ti rappresenti nelle chat e con i personaggi.",
+      "description": "Scegli un avatar che ti rappresenti nelle chat e tra i personaggi.",
       "upload": "Carica immagine",
-      "placeholderNote": "Il caricamento degli avatar sarà disponibile dopo aver riconnesso il servizio multimediale."
+      "placeholderNote": "Il caricamento degli avatar sarà disponibile dopo la riconnessione del servizio multimediale."
     },
     "details": {
       "header": "Dettagli pubblici",
       "description": "Questi valori vengono condivisi con i collaboratori e utilizzati come impostazioni predefinite nelle conversazioni."
+    },
+    "contentClassification": {
+      "header": "Classificazione dei contenuti",
+      "description": "Queste impostazioni ci aiutano a consigliarti contenuti e personaggi migliori."
     },
     "fields": {
       "displayName": "Nome visualizzato",
@@ -21,20 +31,20 @@
       "fullNamePlaceholder": "Opzionale per fatturazione e copie e-mail",
       "username": "ID utente",
       "usernamePlaceholder": "Identificatore univoco",
-      "usernameHint": "Questo identificatore proviene dal tuo provider OAuth e non può essere modificato al momento.",
+      "usernameHint": "Questo identificatore proviene dal tuo provider OAuth e non può ancora essere modificato.",
       "email": "E-mail",
       "emailHint": "Gestito dal tuo provider di autenticazione.",
       "birthDate": "Data di nascita",
       "gender": "Genere"
     },
     "genders": {
-      "feminine": "Donna",
-      "masculine": "Uomo",
+      "feminine": "Femminile",
+      "masculine": "Maschile",
       "nonBinary": "Non binario",
       "unspecified": "Preferisco non rispondere"
     },
     "preferences": {
-      "placeholder": "Le preferenze sui contenuti, le impostazioni di sfocatura e i temi sensibili torneranno disponibili una volta integrato il servizio di moderazione."
+      "placeholder": "Le preferenze sui contenuti, le impostazioni di sfocatura e i temi sensibili torneranno una volta integrato il servizio di moderazione."
     },
     "actions": {
       "save": "Salva modifiche",
@@ -42,15 +52,15 @@
     },
     "security": {
       "header": "Sicurezza",
-      "description": "Le tue sessioni CharHub ereditano la sicurezza OAuth da Google o Facebook. Il supporto multi-fattore verrà aggiunto presto.",
-      "placeholder": "La gestione delle sessioni e i controlli di accesso senza password sono nella roadmap."
+      "description": "Le tue sessioni CharHub ereditano la sicurezza OAuth da Google o Facebook. Il supporto per l'autenticazione a più fattori verrà aggiunto presto.",
+      "placeholder": "La gestione delle sessioni e i controlli di accesso senza password sono sulla roadmap."
     },
     "feedback": {
       "success": "Profilo aggiornato con successo.",
-      "error": "Non siamo riusciti a salvare le tue modifiche."
+      "error": "Impossibile salvare le modifiche."
     },
     "errors": {
-      "updateFailed": "Non siamo riusciti a salvare le tue modifiche. Riprova tra un momento.",
+      "updateFailed": "Impossibile salvare le modifiche. Riprova tra un momento.",
       "displayNameRequired": "Il nome visualizzato è obbligatorio."
     }
   }

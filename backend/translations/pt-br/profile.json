@@ -1,6 +1,12 @@
 {
   "description": "Profile management surface for authenticated users.",
   "resources": {
+    "tabs": {
+      "profile": "Perfil",
+      "password": "Senha",
+      "contentClassification": "Classificação de Conteúdo",
+      "deleteAccount": "Excluir Conta"
+    },
     "sectionTitle": "Conta",
     "title": "Gerencie seu perfil",
     "subtitle": "Atualize como outras pessoas te veem no CharHub. Preferências que ainda estão sendo migradas aparecerão aqui em breve.",
@@ -12,7 +18,11 @@
     },
     "details": {
       "header": "Detalhes públicos",
-      "description": "Estes valores são compartilhados com colaboradores e usados como padrão em conversas."
+      "description": "Esses valores são compartilhados com colaboradores e usados como padrão em conversas."
+    },
+    "contentClassification": {
+      "header": "Classificação de Conteúdo",
+      "description": "Essas configurações nos ajudam a recomendar melhor conteúdo e personagens para você."
     },
     "fields": {
       "displayName": "Nome de exibição",
@@ -42,7 +52,7 @@
     },
     "security": {
       "header": "Segurança",
-      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte multifator será adicionado em breve.",
+      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte a autenticação de múltiplos fatores será adicionado em breve.",
       "placeholder": "Gerenciamento de sessão e controles de login sem senha estão no roteiro."
     },
     "feedback": {
@@ -50,8 +60,8 @@
       "error": "Não foi possível salvar suas alterações."
     },
     "errors": {
-      "updateFailed": "Não conseguimos salvar suas alterações. Tente novamente em instantes.",
-      "displayNameRequired": "Informe um nome de exibição."
+      "updateFailed": "Não foi possível salvar suas alterações. Tente novamente em um momento.",
+      "displayNameRequired": "O nome de exibição é obrigatório."
     }
   }
 }

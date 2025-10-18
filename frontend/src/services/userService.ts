@@ -3,13 +3,9 @@ import type { AuthUser } from '../types/auth';
 
 const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
 const PROFILE_ENDPOINT = API_PREFIX + '/users/me';
+const AVATAR_ENDPOINT = PROFILE_ENDPOINT + '/avatar';
 
-export interface UpdateProfilePayload {
-  displayName: string;
-  fullName?: string | null;
-  birthDate?: string | null;
-  gender?: string;
-}
+export type UpdateProfilePayload = Partial<AuthUser>;
 
 export async function fetchProfile(): Promise<AuthUser> {
   const response = await api.get<{ success: boolean; data: AuthUser }>(PROFILE_ENDPOINT);
@@ -21,9 +17,22 @@ export async function updateProfile(payload: UpdateProfilePayload): Promise<Auth
   return response.data.data;
 }
 
+export async function uploadAvatar(file: File): Promise<AuthUser> {
+  const formData = new FormData();
+  formData.append('avatar', file);
+
+  const response = await api.post<{ success: boolean; data: AuthUser }>(AVATAR_ENDPOINT, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return response.data.data;
+}
+
 export const userService = {
   fetchProfile,
-  updateProfile
+  updateProfile,
+  uploadAvatar,
 };
 
 export type UserService = typeof userService;

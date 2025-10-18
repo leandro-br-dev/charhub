@@ -1,6 +1,12 @@
 {
   "description": "Profile management surface for authenticated users.",
   "resources": {
+    "tabs": {
+      "profile": "Profile",
+      "password": "Password",
+      "contentClassification": "Content Classification",
+      "deleteAccount": "Delete Account"
+    },
     "sectionTitle": "Account",
     "title": "Manage your profile",
     "subtitle": "Update how other people see you on CharHub. Preferences that are still being migrated will appear here soon.",
@@ -13,6 +19,10 @@
     "details": {
       "header": "Public details",
       "description": "These values are shared with collaborators and used as defaults in conversations."
+    },
+    "contentClassification": {
+      "header": "Content Classification",
+      "description": "These settings help us to recommend you better content and characters."
     },
     "fields": {
       "displayName": "Display name",

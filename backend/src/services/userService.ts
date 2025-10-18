@@ -13,11 +13,13 @@ interface SyncOAuthUserInput {
 
 interface UpdateUserProfileParams {
   username?: string | null;
-  displayName: string;
+  displayName?: string;
   fullName?: string | null;
   birthDate?: Date | null;
   gender?: string | null;
+  photo?: string | null;
 }
+
 
 const providerEnumMap: Record<OAuthProvider, $Enums.AuthProvider> = {
   google: $Enums.AuthProvider.GOOGLE,
@@ -48,7 +50,7 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
   const prismaProvider = providerEnumMap[input.provider];
 
   try {
-    // Check if user exists first
+    // Check if user exists first - fetch all relevant fields to check if they're empty
     const existingUser = await prisma.user.findUnique({
       where: {
         provider_providerAccountId: {
@@ -56,12 +58,41 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
           providerAccountId: input.providerAccountId,
         },
       },
-      select: { id: true, username: true },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        displayName: true,
+        avatarUrl: true
+      },
     });
 
     // Generate username only if creating new user or existing user doesn't have one
     const needsUsername = !existingUser || !existingUser.username;
     const username = needsUsername ? await generateUniqueUsername(input.displayName) : undefined;
+
+    // Build update data carefully - only update lastLoginAt and fill empty fields
+    const updateData: Prisma.UserUpdateInput = {
+      lastLoginAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    // Only update fields that are currently empty/null in the database
+    if (existingUser) {
+      if (!existingUser.email && input.email !== undefined && input.email !== null) {
+        updateData.email = input.email;
+      }
+      if (!existingUser.displayName && input.displayName !== undefined && input.displayName !== null) {
+        updateData.displayName = input.displayName;
+      }
+      if (!existingUser.avatarUrl && input.photo !== undefined && input.photo !== null) {
+        updateData.avatarUrl = input.photo;
+      }
+      // Add username only if existing user doesn't have one and we generated one
+      if (!existingUser.username && username) {
+        updateData.username = username;
+      }
+    }
 
     const user = await prisma.user.upsert({
       where: {
@@ -70,21 +101,14 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
           providerAccountId: input.providerAccountId,
         },
       },
-      update: {
-        email: input.email ?? undefined,
-        displayName: input.displayName ?? undefined,
-        avatarUrl: input.photo ?? undefined,
-        lastLoginAt: new Date(),
-        // Add username if user doesn't have one
-        ...(existingUser && !existingUser.username && username ? { username } : {}),
-      },
+      update: updateData,
       create: {
         provider: prismaProvider,
         providerAccountId: input.providerAccountId,
-        username: username!,
-        email: input.email ?? undefined,
-        displayName: input.displayName ?? undefined,
-        avatarUrl: input.photo ?? undefined,
+        username: username ?? '', // This should never be undefined for new users
+        ...(input.email && { email: input.email }),
+        ...(input.displayName && { displayName: input.displayName }),
+        ...(input.photo && { avatarUrl: input.photo }),
       },
     });
 
@@ -103,15 +127,25 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
         const existing = await prisma.user.findUnique({ where: { email: input.email } });
 
         if (existing) {
+          // When linking accounts, only update provider info and lastLoginAt
+          // Don't overwrite user's customized data (displayName, avatarUrl)
+          const updateLinkData: Prisma.UserUpdateInput = {
+            provider: prismaProvider,
+            providerAccountId: input.providerAccountId,
+            lastLoginAt: new Date(),
+          };
+
+          // Only fill empty fields, never overwrite
+          if (!existing.displayName && input.displayName) {
+            updateLinkData.displayName = input.displayName;
+          }
+          if (!existing.avatarUrl && input.photo) {
+            updateLinkData.avatarUrl = input.photo;
+          }
+
           const updated = await prisma.user.update({
             where: { id: existing.id },
-            data: {
-              provider: prismaProvider,
-              providerAccountId: input.providerAccountId,
-              displayName: input.displayName ?? undefined,
-              avatarUrl: input.photo ?? undefined,
-              lastLoginAt: new Date(),
-            },
+            data: updateLinkData,
           });
 
           return mapUser(updated);
@@ -124,9 +158,11 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
 }
 
 export async function updateUserProfile(userId: string, data: UpdateUserProfileParams): Promise<AuthenticatedUser> {
-  const updatePayload: Prisma.UserUpdateInput = {
-    displayName: data.displayName,
-  };
+  const updatePayload: Prisma.UserUpdateInput = {};
+
+  if (data.displayName !== undefined) {
+    updatePayload.displayName = data.displayName;
+  }
 
   if (data.username !== undefined) {
     updatePayload.username = data.username;
@@ -142,6 +178,10 @@ export async function updateUserProfile(userId: string, data: UpdateUserProfileP
 
   if (data.gender !== undefined) {
     updatePayload.gender = data.gender;
+  }
+
+  if (data.photo !== undefined) {
+    updatePayload.avatarUrl = data.photo;
   }
 
   try {
