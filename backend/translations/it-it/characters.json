@@ -12,17 +12,12 @@
       "submitting": "Salvataggio in corso..."
     },
     "ageRatings": {
-      "L": "Per tutti",
+      "L": "Pubblico generale",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
       "SIXTEEN": "16+",
       "EIGHTEEN": "18+"
-    },
-    "purposes": {
-      "chat": "Chat",
-      "story": "Storia",
-      "both": "Chat e Storia"
     },
     "genders": {
       "male": "Maschio",
@@ -31,10 +26,10 @@
     },
     "contentTags": {
       "VIOLENCE": "Violenza",
-      "GORE": "Sangue",
-      "SEXUAL": "Sessuale",
+      "GORE": "Splatter",
+      "SEXUAL": "Sessualità",
       "NUDITY": "Nudità",
-      "LANGUAGE": "Linguaggio volgare",
+      "LANGUAGE": "Linguaggio",
       "DRUGS": "Droghe",
       "ALCOHOL": "Alcol",
       "HORROR": "Horror",
@@ -45,16 +40,16 @@
     },
     "contentTagHints": {
       "VIOLENCE": "Combattimenti, risse o conflitti aggressivi.",
-      "GORE": "Lesioni grafiche e dettagli espliciti.",
-      "SEXUAL": "Temi o allusioni per adulti.",
+      "GORE": "Ferite grafiche e dettagli espliciti.",
+      "SEXUAL": "Temi adulti o allusioni.",
       "NUDITY": "Nudità parziale o completa.",
       "LANGUAGE": "Linguaggio esplicito o forte.",
       "DRUGS": "Uso o riferimenti a droghe.",
       "ALCOHOL": "Consumo di alcol.",
       "HORROR": "Immagini disturbanti o horror.",
       "PSYCHOLOGICAL": "Salute mentale o tensione psicologica.",
-      "DISCRIMINATION": "Incitamento all'odio o pregiudizio.",
-      "CRIME": "Temi legati ad attività criminali.",
+      "DISCRIMINATION": "Discorsi d'odio o pregiudizi.",
+      "CRIME": "Temi di attività criminale.",
       "GAMBLING": "Riferimenti a scommesse o gioco d'azzardo."
     },
     "accessibility": {
@@ -62,8 +57,8 @@
       "removeFromFavorites": "Rimuovi dai preferiti"
     },
     "hub": {
-      "title": "Hub Personaggi",
-      "subtitle": "Crea, organizza ed evolve il cast che anima le tue storie, gli agenti di chat e le esperienze AI.",
+      "title": "Centro personaggi",
+      "subtitle": "Crea, organizza ed evolve il cast che alimenta le tue storie, gli agenti di chat e le esperienze AI.",
       "actions": {
         "createCharacter": "Nuovo personaggio",
         "retry": "Riprova",
@@ -102,7 +97,10 @@
         "profileHint": "Descrivi personalità, tratti e retroscena per guidare l'IA.",
         "configuration": "Disponibilità e moderazione",
         "configurationHint": "Controlla come appare il personaggio, chi può accedervi e quali salvaguardie si applicano.",
-        "contentTagsHint": "Segnala temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze."
+        "contentTagsHint": "Segnala temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze.",
+        "contentTagsCharacterHint": "Questi argomenti definiscono di cosa il personaggio è a suo agio a discutere alla classificazione per età selezionata.",
+        "contentTagsUserHint": "Seleziona i temi che desideri includere. Tutto ciò che non viene selezionato rimane bloccato per questa classificazione.",
+        "contentTagLocked": "Sbloccato a classificazioni per età superiori."
       },
       "fields": {
         "firstName": "Nome",
@@ -111,35 +109,47 @@
         "gender": "Genere",
         "species": "Specie / origine",
         "style": "Stile visivo o narrativo",
-        "avatar": "URL immagine avatar",
         "physicalCharacteristics": "Descrizione fisica",
         "personality": "Personalità",
         "history": "Retroscena",
-        "purpose": "Utilizzo principale",
         "isPublic": "Visibilità",
         "ageRating": "Classificazione per età",
         "originalLanguageCode": "Lingua originale",
-        "contentTags": "Avvisi sui contenuti"
+        "contentTags": "Avvisi sui contenuti",
+        "visibility": "Visibilità"
       },
       "placeholders": {
         "gender": "Es: IA non binaria, androide, cavaliere",
         "species": "Es: Umano, Elfo, Sintetico",
-        "style": "Es: Detective noir, anime pastello, pittorico",
-        "avatar": "https://cdn.example.com/avatar.png"
-      },
-      "hints": {
-        "avatar": "Fornisci un URL di immagine HTTPS mentre il flusso di caricamento è in fase di sviluppo."
+        "style": "Es: Detective noir, anime pastello, pittorico"
       },
       "labels": {
-        "publicToggle": "Consenti ad altri utenti di scoprire questo personaggio",
         "unsavedChanges": "Hai modifiche non salvate",
         "allSaved": "Modifiche salvate",
-        "submitting": "Salvataggio in corso..."
+        "submitting": "Salvataggio in corso...",
+        "visibilityPublic": "Pubblico",
+        "visibilityPrivate": "Privato"
+      },
+      "avatar": {
+        "upload": "Carica immagine",
+        "change": "Cambia immagine",
+        "remove": "Rimuovi",
+        "uploading": "Caricamento in corso...",
+        "helperCreate": "Scegli subito un avatar e lo conserveremo mentre compili il resto del modulo.",
+        "helperEdit": "Aggiorna l'avatar quando vuoi. Le modifiche vengono applicate non appena salvi.",
+        "error": "Impossibile caricare questa immagine. Prova un altro file.",
+        "previewAlt": "Anteprima avatar personaggio"
+      },
+      "tabs": {
+        "identity": "Identità",
+        "profile": "Profilo",
+        "configuration": "Configurazione",
+        "lockedHint": "Compila i dettagli base dell'identità per sbloccare le altre sezioni."
       }
     },
     "create": {
       "title": "Crea un nuovo personaggio",
-      "subtitle": "Combina contesto narrativo, stile visivo e impostazioni di moderazione. Puoi perfezionare tutto in seguito.",
+      "subtitle": "Combina contesto narrativo, stile visivo e impostazioni di moderazione. Potrai perfezionare tutto in seguito.",
       "saveButton": "Salva personaggio",
       "cancelButton": "Annulla e torna indietro"
     },
@@ -147,7 +157,7 @@
       "title": "Modifica personaggio",
       "subtitle": "Aggiornamento di {{name}}",
       "saveButton": "Aggiorna personaggio",
-      "cancelButton": "Scarta modifiche",
+      "cancelButton": "Annulla modifiche",
       "states": {
         "loading": "Caricamento personaggio..."
       }
@@ -158,7 +168,7 @@
         "notFound": "Impossibile trovare questo personaggio."
       },
       "actions": {
-        "backToHub": "Torna all'hub",
+        "backToHub": "Torna al centro",
         "edit": "Modifica",
         "delete": "Elimina",
         "deleting": "Eliminazione in corso..."

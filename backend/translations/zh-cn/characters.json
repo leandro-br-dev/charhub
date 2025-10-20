@@ -5,24 +5,19 @@
       "untitledCharacter": "未命名的角色",
       "updatedAt": "{{date}} 更新",
       "public": "公开",
-      "private": "私密",
+      "private": "私有",
       "identifier": "角色 ID：{{id}}",
-      "unsavedChanges": "未保存的更改",
+      "unsavedChanges": "有未保存的更改",
       "allSaved": "所有更改已保存",
       "submitting": "正在保存..."
     },
     "ageRatings": {
-      "L": "普通观众",
+      "L": "所有观众",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
       "SIXTEEN": "16+",
       "EIGHTEEN": "18+"
-    },
-    "purposes": {
-      "chat": "聊天",
-      "story": "故事",
-      "both": "聊天与故事"
     },
     "genders": {
       "male": "男性",
@@ -32,7 +27,7 @@
     "contentTags": {
       "VIOLENCE": "暴力",
       "GORE": "血腥",
-      "SEXUAL": "性暗示",
+      "SEXUAL": "色情",
       "NUDITY": "裸露",
       "LANGUAGE": "脏话",
       "DRUGS": "毒品",
@@ -45,13 +40,13 @@
     },
     "contentTagHints": {
       "VIOLENCE": "战斗、打斗或攻击性冲突。",
-      "GORE": "血腥伤口和露骨细节。",
+      "GORE": "血腥的伤害和露骨的细节。",
       "SEXUAL": "成人主题或暗示。",
       "NUDITY": "部分或全部裸露。",
       "LANGUAGE": "露骨或强烈的语言。",
       "DRUGS": "药物使用或提及。",
       "ALCOHOL": "饮酒。",
-      "HORROR": "令人不安或恐怖的画面。",
+      "HORROR": "令人不安或恐怖的图像。",
       "PSYCHOLOGICAL": "心理健康或心理紧张。",
       "DISCRIMINATION": "仇恨言论或偏见。",
       "CRIME": "犯罪活动主题。",
@@ -63,32 +58,32 @@
     },
     "hub": {
       "title": "角色中心",
-      "subtitle": "创建、组织和发展驱动您的故事、聊天代理和 AI 体验的角色。",
+      "subtitle": "创建、组织和演变驱动您的故事、聊天代理和 AI 体验的角色。",
       "actions": {
-        "createCharacter": "新角色",
+        "createCharacter": "新建角色",
         "retry": "重试",
         "blurSensitive": "模糊敏感内容",
         "showSensitive": "显示敏感内容"
       },
       "tabs": {
         "myCharacters": "我的角色",
-        "publicGallery": "公开画廊"
+        "publicGallery": "公开图库"
       },
       "filters": {
-        "searchPlaceholder": "按姓名或风格搜索",
+        "searchPlaceholder": "按名称或风格搜索",
         "allAgeRatings": "所有年龄分级"
       },
       "states": {
         "loading": "正在加载您的角色...",
-        "error": "我们无法加载角色。请重试。",
-        "empty": "暂无可用角色。",
+        "error": "无法加载角色。请重试。",
+        "empty": "暂无角色。",
         "empty_private": "您尚未创建任何角色。",
         "empty_public": "没有符合您筛选条件的公开角色。",
-        "emptyHint": "开始创建一个档案或调整您的筛选条件。",
-        "emptySearchHint": "调整您的筛选条件或清除搜索以查看更多结果。"
+        "emptyHint": "开始创建个人资料或调整您的筛选条件。",
+        "emptySearchHint": "调整筛选条件或清除搜索以查看更多结果。"
       },
       "labels": {
-        "total": "有 {{count}} 个角色可用",
+        "total": "共有 {{count}} 个角色可用",
         "quickCreateLink": "直接开始创建"
       }
     },
@@ -97,49 +92,64 @@
       "cancel": "取消",
       "sections": {
         "identity": "身份",
-        "identityHint": "定义人们如何发现并一目了然地识别此角色。",
-        "profile": "叙事档案",
-        "profileHint": "描述个性、特征和背景故事以指导 AI。",
+        "identityHint": "定义人们如何一眼发现和识别此角色。",
+        "profile": "叙述性简介",
+        "profileHint": "描述个性、特质和背景故事以指导 AI。",
         "configuration": "可用性与审核",
-        "configurationHint": "控制角色的显示方式、谁可以访问它以及适用的安全措施。",
-        "contentTagsHint": "标记潜在的敏感主题。用户可以根据自己的偏好过滤掉它们。"
+        "configurationHint": "控制角色的显示方式、谁可以访问它以及适用哪些安全措施。",
+        "contentTagsHint": "标记潜在的敏感主题。用户可以根据自己的偏好过滤掉它们。",
+        "contentTagsCharacterHint": "这些主题定义了角色在选定的年龄分级下可以舒适地讨论的内容。",
+        "contentTagsUserHint": "选择您想要包含的主题。未选中的内容将在此年龄分级下保持屏蔽。",
+        "contentTagLocked": "在更高的年龄分级下解锁。"
       },
       "fields": {
         "firstName": "名字",
         "lastName": "姓氏",
         "age": "年龄",
         "gender": "性别",
-        "species": "物种/来源",
+        "species": "物种/起源",
         "style": "视觉或叙事风格",
-        "avatar": "头像图片 URL",
         "physicalCharacteristics": "外貌描述",
         "personality": "个性",
         "history": "背景故事",
-        "purpose": "主要用途",
         "isPublic": "可见性",
         "ageRating": "年龄分级",
         "originalLanguageCode": "原始语言",
-        "contentTags": "内容警告"
+        "contentTags": "内容警告",
+        "visibility": "可见性"
       },
       "placeholders": {
         "gender": "例如：非二元 AI、机器人、骑士",
         "species": "例如：人类、精灵、合成人",
-        "style": "例如：黑色电影侦探、柔和动漫、绘画风格",
-        "avatar": "https://cdn.example.com/avatar.png"
-      },
-      "hints": {
-        "avatar": "在上传流程开发完成之前，请提供一个 HTTPS 图片 URL。"
+        "style": "例如：黑色电影侦探、粉彩动漫、绘画风格"
       },
       "labels": {
-        "publicToggle": "允许其他用户发现此角色",
         "unsavedChanges": "您有未保存的更改",
         "allSaved": "更改已保存",
-        "submitting": "正在保存..."
+        "submitting": "正在保存...",
+        "visibilityPublic": "公开",
+        "visibilityPrivate": "私有"
+      },
+      "avatar": {
+        "upload": "上传图片",
+        "change": "更改图片",
+        "remove": "移除",
+        "uploading": "正在上传...",
+        "helperCreate": "立即选择一个头像，我们将为您保留，直到您填完其余表单。",
+        "helperEdit": "您可以随时更新头像。更改将在您保存后立即生效。",
+        "error": "无法上传此图片。请尝试其他文件。",
+        "previewAlt": "角色头像预览"
+      },
+      "tabs": {
+        "identity": "身份",
+        "profile": "简介",
+        "configuration": "配置",
+        "lockedHint": "填写基本身份信息以解锁其他部分。"
       }
     },
     "create": {
       "title": "创建新角色",
-      "subtitle": "结合叙事背景、视觉风格和审核设置。您之后可以完善所有内容。",
+      "subtitle": "结合叙事背景、视觉风格和审核设置。您可以稍后全部进行完善。",
       "saveButton": "保存角色",
       "cancelButton": "取消并返回"
     },
@@ -154,7 +164,7 @@
     },
     "detail": {
       "states": {
-        "loading": "正在加载角色详细信息...",
+        "loading": "正在加载角色详情...",
         "notFound": "未找到此角色。"
       },
       "actions": {
@@ -166,9 +176,9 @@
       "confirmDelete": "您确定要删除此角色吗？此操作无法撤销。",
       "labels": {
         "public": "公开",
-        "private": "私密",
+        "private": "私有",
         "createdAt": "创建于",
-        "updatedAt": "最后更新于",
+        "updatedAt": "最后更新",
         "identifier": "角色 ID：{{id}}"
       },
       "sections": {
@@ -180,10 +190,10 @@
       }
     },
     "errors": {
-      "createFailed": "我们未能创建角色。请重试。",
-      "updateFailed": "我们未能更新角色。",
-      "deleteFailed": "我们未能删除角色。",
-      "detailUnavailable": "目前无法加载角色详细信息。"
+      "createFailed": "无法创建角色。请重试。",
+      "updateFailed": "无法更新角色。",
+      "deleteFailed": "无法删除角色。",
+      "detailUnavailable": "暂时无法加载角色详情。"
     }
   }
 }

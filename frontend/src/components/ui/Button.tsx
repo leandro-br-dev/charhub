@@ -17,6 +17,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       icon,
       iconPosition = 'right',
       className = '',
+      disabled = false,
       ...props
     },
     ref
@@ -48,10 +49,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     if (children === undefined && icon && size === 'small') padding = 'p-1';
     if (children !== undefined && size === 'small') padding = 'py-1 px-2';
 
-    const combinedClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${rounded} ${padding} ${className}`.trim();
+    const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '';
+
+    const combinedClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${rounded} ${padding} ${disabledClasses} ${className}`.trim();
 
     return (
-      <button ref={ref} type="button" className={combinedClasses} {...props}>
+      <button ref={ref} type="button" className={combinedClasses} disabled={disabled} {...props}>
         {icon && iconPosition === 'left' && (
           <span className="material-symbols-outlined">{icon}</span>
         )}

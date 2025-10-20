@@ -1,13 +1,15 @@
 import type { ReactNode } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/Button";
 import { ConversationHistory } from "../../pages/(chat)/shared/components/ConversationHistory";
+import { CharacterListSidebar } from "./CharacterListSidebar";
 
 type SidebarProps = {
   onClose?: () => void;
   displayMode?: "permanent" | "overlay";
   isOpen?: boolean;
+  activeView?: string | null;
 };
 
 type PlaceholderPanelProps = {
@@ -18,45 +20,40 @@ type PlaceholderPanelProps = {
 
 function PlaceholderPanel({ title, description, actions }: PlaceholderPanelProps): JSX.Element {
   return (
-    <div className="flex h-full flex-col gap-4 p-6">
-      <div>
+    <div className="flex h-full w-full flex-col gap-4 py-6">
+      <div className="px-6">
         <h2 className="text-base font-semibold text-content">{title}</h2>
         <p className="mt-2 text-sm text-muted">{description}</p>
       </div>
-      {actions ? <div className="mt-auto flex flex-wrap gap-3">{actions}</div> : null}
+      {actions ? <div className="mt-auto flex flex-wrap gap-3 px-6">{actions}</div> : null}
     </div>
   );
 }
 
-export function Sidebar({ onClose, displayMode = "permanent", isOpen = false }: SidebarProps): JSX.Element {
-  const location = useLocation();
+export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, activeView }: SidebarProps): JSX.Element {
   const navigate = useNavigate();
   const { t } = useTranslation(["navigation", "dashboard", "common"]);
 
-  const closeIfMobile = () => {
-    if (typeof window !== "undefined" && window.innerWidth < 768) {
-      onClose?.();
-    }
+  const handleLinkClick = () => {
+    onClose?.();
   };
 
   const handleCreateCharacter = () => {
-    closeIfMobile();
+    handleLinkClick();
     navigate("/characters/create");
   };
 
-  const { pathname } = location;
-
   let content: ReactNode;
 
-  if (pathname.startsWith("/chat")) {
+  if (activeView?.startsWith("/chat")) {
     content = (
-      <div className="flex h-full flex-col">
-        <ConversationHistory onLinkClick={closeIfMobile} />
+      <div className="flex h-full w-full flex-col">
+        <ConversationHistory onLinkClick={handleLinkClick} />
       </div>
     );
-  } else if (pathname.startsWith("/development")) {
+  } else if (activeView?.startsWith("/development")) {
     content = (
-      <div className="flex h-full flex-col">
+      <div className="flex h-full w-full flex-col">
         {/* TODO(development): render <DevSidebarContent /> with build queue summaries. */}
         <PlaceholderPanel
           title={t("navigation:developmentTools", "Developer tools")}
@@ -68,31 +65,34 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false }: 
       </div>
     );
   } else if (
-    pathname.startsWith("/characters") ||
-    pathname.startsWith("/manage") ||
-    pathname.startsWith("/profile") ||
-    pathname.startsWith("/credits-plans")
+    activeView?.startsWith("/characters") ||
+    activeView?.startsWith("/manage") ||
+    activeView?.startsWith("/profile") ||
+    activeView?.startsWith("/credits-plans")
   ) {
     content = (
-      <div className="flex h-full flex-col">
-        {/* TODO(characters): replace placeholder with <CharacterListSidebar onLinkClick={closeIfMobile} /> once migrated. */}
-        <PlaceholderPanel
-          title={t("navigation:characterSidebar", "Characters overview")}
-          description={t(
-            "navigation:characterSidebarPlaceholder",
-            "Browse and pin your favourite characters here as soon as the hub sidebar is rebuilt."
-          )}
-          actions={
-            <Button variant="primary" icon="add" onClick={handleCreateCharacter}>
-              {t("dashboard:createCharacter", "Create character")}
-            </Button>
-          }
-        />
+      <div className="flex h-full w-full flex-col">
+        <CharacterListSidebar onLinkClick={handleLinkClick} />
+        <div className="mt-auto flex flex-col gap-2 p-4">
+          <Button variant="primary" icon="add" onClick={handleCreateCharacter}>
+            {t("dashboard:createCharacter", "Create character")}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="groups"
+            onClick={() => {
+              handleLinkClick();
+              navigate("/characters");
+            }}
+          >
+            {t("navigation:viewAllCharacters", "View all characters")}
+          </Button>
+        </div>
       </div>
     );
-  } else if (pathname.startsWith("/story")) {
+  } else if (activeView?.startsWith("/story")) {
     content = (
-      <div className="flex h-full flex-col">
+      <div className="flex h-full w-full flex-col">
         {/* TODO(story): render <StorySidebarContent /> with drafts and chapters. */}
         <PlaceholderPanel
           title={t("navigation:storySidebar", "Stories")}
@@ -126,8 +126,8 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false }: 
 
   const containerClassName =
     displayMode === "overlay"
-      ? "flex h-screen w-80 flex-shrink-0 border-r border-dark/40 bg-light/90 backdrop-blur md:hidden"
-      : "hidden md:flex md:h-screen md:w-80 md:flex-shrink-0 md:border-r md:border-dark/40 md:bg-light/90 md:backdrop-blur md:sticky md:top-0";
+      ? "flex h-screen w-80 flex-shrink-0 border-r border-border bg-normal/90 backdrop-blur md:hidden dark:bg-dark/80 dark:border-slate-800/80"
+      : "hidden md:flex md:h-screen md:w-80 md:flex-shrink-0 md:border-r md:border-border md:bg-light/90 md:backdrop-blur md:sticky md:top-0 dark:md:bg-dark/80 dark:md:border-slate-800/80";
 
   return <aside className={containerClassName}>{content}</aside>;
 }

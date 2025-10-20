@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { EMPTY_CHARACTER_FORM, type CharacterFormValues, type ContentTag } from '../../../../types/characters';
 
 type FieldName = keyof CharacterFormValues;
@@ -19,16 +19,36 @@ export interface UseCharacterFormReturn {
   isDirty: boolean;
 }
 
-export function useCharacterForm(options: UseCharacterFormOptions = {}): UseCharacterFormReturn {
-  const [values, setValues] = useState<CharacterFormValues>({
+function buildInitialValues(initialValues?: Partial<CharacterFormValues>): CharacterFormValues {
+  return {
     ...EMPTY_CHARACTER_FORM,
-    ...options.initialValues
-  });
+    ...initialValues,
+    contentTags: [...(initialValues?.contentTags ?? EMPTY_CHARACTER_FORM.contentTags)],
+    stickers: initialValues?.stickers ? [...initialValues.stickers] : EMPTY_CHARACTER_FORM.stickers,
+  };
+}
 
-  const [initialSnapshot] = useState(() => JSON.stringify({
-    ...EMPTY_CHARACTER_FORM,
-    ...options.initialValues
-  }));
+export function useCharacterForm(options: UseCharacterFormOptions = {}): UseCharacterFormReturn {
+  // Stabilize the initial values reference by serializing and comparing content
+  const initialValuesKey = useMemo(
+    () => JSON.stringify(options.initialValues ?? {}),
+    [options.initialValues]
+  );
+
+  const [values, setValues] = useState<CharacterFormValues>(() => buildInitialValues(options.initialValues));
+
+  const [initialSnapshot, setInitialSnapshot] = useState(() =>
+    JSON.stringify(buildInitialValues(options.initialValues))
+  );
+
+  useEffect(() => {
+    if (options.initialValues) {
+      const nextValues = buildInitialValues(options.initialValues);
+      setValues(nextValues);
+      setInitialSnapshot(JSON.stringify(nextValues));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialValuesKey]);
 
   const updateField = useCallback(<Key extends FieldName>(field: Key, value: CharacterFormValues[Key]) => {
     setValues(prev => ({
@@ -70,10 +90,9 @@ export function useCharacterForm(options: UseCharacterFormOptions = {}): UseChar
   }, []);
 
   const reset = useCallback((nextValues?: Partial<CharacterFormValues>) => {
-    setValues({
-      ...EMPTY_CHARACTER_FORM,
-      ...nextValues
-    });
+    const computed = buildInitialValues(nextValues);
+    setValues(computed);
+    setInitialSnapshot(JSON.stringify(computed));
   }, []);
 
   const isDirty = useMemo(() => JSON.stringify(values) !== initialSnapshot, [values, initialSnapshot]);

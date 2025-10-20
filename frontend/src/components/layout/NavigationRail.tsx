@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu } from '@headlessui/react';
 import { useAuth } from '../../hooks/useAuth';
@@ -35,6 +35,8 @@ type NavItemProps = {
 function NavItem({ to, icon, label, disabled = false, onSelect }: NavItemProps): JSX.Element {
   const baseClasses =
     'relative group flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-200 ease-in-out';
+  const location = useLocation();
+  const isActive = location.pathname.startsWith(to);
 
   if (disabled) {
     return (
@@ -50,24 +52,23 @@ function NavItem({ to, icon, label, disabled = false, onSelect }: NavItemProps):
   }
 
   return (
-    <NavLink
-      to={to}
-      className={({ isActive }) =>
-        [
-          baseClasses,
-          isActive
-            ? 'bg-primary text-black shadow-lg'
-            : 'bg-light text-muted hover:bg-primary hover:text-black'
-        ].join(' ')
-      }
+    <button
+      type="button"
+      className={[
+        baseClasses,
+        isActive
+          ? 'bg-primary text-black shadow-lg'
+          : 'bg-light text-muted hover:bg-primary hover:text-black'
+      ].join(' ')}
       onClick={onSelect}
+      title={label}
     >
       <span className="material-symbols-outlined text-xl">{icon}</span>
       <span className="sr-only">{label}</span>
-      <span className="absolute left-full ml-4 hidden min-w-max origin-left rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white shadow-lg group-hover:block">
+      <span className="absolute left-full z-[100] ml-4 hidden min-w-max origin-left rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white shadow-lg group-hover:block">
         {label}
       </span>
-    </NavLink>
+    </button>
   );
 }
 
@@ -134,7 +135,7 @@ export function NavigationRail({
   };
 
   const handleProfileNavigate = () => {
-    onNavItemSelect?.({ to: '/profile', opensSidebar: true, available: true });
+    onNavItemSelect?.({ to: '/profile', opensSidebar: false, available: true });
   };
 
   const displayName = user?.displayName ?? user?.email ?? t('common:authenticatedUser', 'User');
@@ -142,8 +143,8 @@ export function NavigationRail({
 
   const containerClassName =
     displayMode === 'overlay'
-      ? 'flex h-screen w-20 flex-col justify-between bg-normal/95 px-3 py-4 shadow-xl backdrop-blur md:hidden'
-      : 'hidden h-screen w-20 flex-col justify-between bg-normal/95 px-3 py-4 shadow-xl backdrop-blur md:flex';
+      ? 'flex h-screen w-20 flex-col justify-between bg-normal/95 px-3 py-4 backdrop-blur md:hidden'
+      : 'hidden h-screen w-20 flex-col justify-between bg-normal/95 px-3 py-4 backdrop-blur md:flex';
 
   return (
     <aside className={containerClassName}>

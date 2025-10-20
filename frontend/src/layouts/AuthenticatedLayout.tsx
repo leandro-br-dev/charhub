@@ -17,6 +17,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
   const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
+  const [activeSidebar, setActiveSidebar] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const railRef = useRef<HTMLDivElement | null>(null);
 
@@ -60,6 +61,12 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
     }
 
     if (selection.opensSidebar) {
+      if (isDesktopSidebarOpen && activeSidebar === selection.to) {
+        setIsDesktopSidebarOpen(false);
+        return;
+      }
+
+      setActiveSidebar(selection.to);
       if (typeof window !== "undefined" && window.innerWidth < 768) {
         setIsDrawerOpen(false);
       } else {
@@ -74,12 +81,22 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
 
   return (
     <div className="relative flex min-h-screen bg-background text-foreground">
-      <div ref={railRef} className="hidden md:flex md:sticky md:top-0 md:h-screen md:z-40">
+      <div
+        ref={railRef}
+        className={`hidden md:flex md:sticky md:top-0 md:h-screen md:z-40 ${
+          !isDesktopSidebarOpen ? "border-r border-border" : ""
+        }`}
+      >
         <NavigationRail displayMode="permanent" onNavItemSelect={handleNavSelection} />
       </div>
 
-      <div ref={sidebarRef} className="hidden md:flex md:sticky md:top-0 md:h-screen md:z-40">
-        <Sidebar displayMode="permanent" isOpen={isDesktopSidebarOpen} onClose={() => setIsDesktopSidebarOpen(false)} />
+      <div ref={sidebarRef} className="hidden md:flex md:sticky md:top-0 md:h-screen md:z-30">
+        <Sidebar
+          displayMode="permanent"
+          isOpen={isDesktopSidebarOpen}
+          onClose={() => setIsDesktopSidebarOpen(false)}
+          activeView={activeSidebar}
+        />
       </div>
 
       <div
@@ -88,7 +105,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
         }`}
       >
         <NavigationRail displayMode="overlay" onNavItemSelect={handleNavSelection} />
-        <Sidebar displayMode="overlay" onClose={closeDrawer} isOpen />
+        <Sidebar displayMode="overlay" onClose={closeDrawer} isOpen activeView={activeSidebar} />
       </div>
 
       {isDrawerOpen ? (

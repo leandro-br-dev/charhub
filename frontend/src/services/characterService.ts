@@ -5,6 +5,7 @@ import {
   type CharacterListParams,
   type CharacterListResponse,
   type CharacterMutationResult,
+  type CharacterAvatarUploadResult,
   EMPTY_CHARACTER_FORM
 } from '../types/characters';
 
@@ -56,6 +57,31 @@ export const characterService = {
       console.error('[characterService] remove failed:', error);
       return { success: false, message: 'characters:errors.deleteFailed' };
     }
+  },
+
+  async uploadAvatar(params: { file: Blob; characterId?: string; draftId?: string }): Promise<CharacterAvatarUploadResult> {
+    const formData = new FormData();
+    formData.append('avatar', params.file);
+
+    if (params.characterId) {
+      formData.append('characterId', params.characterId);
+    }
+
+    if (params.draftId) {
+      formData.append('draftId', params.draftId);
+    }
+
+    const response = await api.post<{ success: boolean; data: CharacterAvatarUploadResult }>(
+      `${BASE_PATH}/avatar`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+
+    return response.data.data;
   }
 };
 

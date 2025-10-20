@@ -19,6 +19,9 @@ export default function CharacterEditPage(): JSX.Element {
   const initialValues = useMemo(() => data ? characterToFormValues(data) : undefined, [data]);
   const form = useCharacterForm({ initialValues });
 
+  // Note: We don't need this useEffect anymore because the hook now handles
+  // initialValues changes internally. Removing it prevents infinite loops.
+
   useEffect(() => {
     if (isError) {
       setError(t('characters:errors.detailUnavailable'));
@@ -56,6 +59,7 @@ export default function CharacterEditPage(): JSX.Element {
       mode="edit"
       characterName={characterName}
       avatarUrl={data.avatar ?? undefined}
+      characterId={characterId}
       form={form}
       error={error}
       isSubmitting={updateMutation.isPending}

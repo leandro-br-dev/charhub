@@ -6,12 +6,7 @@ import {
   type ContentTag
 } from '../../../../types/characters';
 import { useCharacterForm, type UseCharacterFormReturn } from '../hooks/useCharacterForm';
-import {
-  AGE_RATING_OPTIONS,
-  CHARACTER_PURPOSE_OPTIONS,
-  CONTENT_TAG_OPTIONS,
-  GENDER_OPTIONS
-} from '../utils/constants';
+import { AGE_RATING_OPTIONS, CONTENT_TAG_OPTIONS, GENDER_OPTIONS } from '../utils/constants';
 
 export interface CharacterFormProps {
   initialValues?: Partial<CharacterFormValues>;
@@ -223,30 +218,13 @@ export function CharacterForm({
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <label className="flex flex-col gap-2 text-sm">
             <span className="font-medium text-slate-600 dark:text-slate-300">
-              {t('characters:form.fields.purpose')}
-            </span>
-            <select
-              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
-              value={values.purpose ?? 'chat'}
-              onChange={handleSelectChange('purpose')}
-            >
-              {CHARACTER_PURPOSE_OPTIONS.map(option => (
-                <option key={option} value={option}>
-                  {t(`characters:purposes.${option}`)}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label className="flex flex-col gap-2 text-sm">
-            <span className="font-medium text-slate-600 dark:text-slate-300">
               {t('characters:form.fields.isPublic')}
             </span>
             <div className="flex items-center gap-3 rounded-lg border border-slate-300 bg-white px-3 py-2 shadow-sm dark:border-slate-700 dark:bg-slate-900">
               <input
                 type="checkbox"
                 className="h-4 w-4"
-                checked={values.isPublic ?? false}
+                checked={values.isPublic ?? true}
                 onChange={event => formInstance.updateField('isPublic', event.target.checked)}
               />
               <span className="text-sm text-slate-600 dark:text-slate-300">

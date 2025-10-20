@@ -31,7 +31,7 @@ interface ParticipantInfo {
   name: string;
   description?: string;
   personality?: string;
-  purpose?: string;
+  contentScope?: string;
 }
 
 export class ConversationManagerAgent {
@@ -76,21 +76,28 @@ export class ConversationManagerAgent {
       if (p.actingAssistantId && p.actingAssistant) {
         // Assistant bot (may or may not have a character appearance)
         const character = p.representingCharacter;
+        const contentScope = character?.contentTags?.length
+          ? `May cover: ${character.contentTags.join(', ')}`
+          : undefined;
+
         return {
           id: p.id,
           type: 'assistant',
           name: character?.firstName || p.actingAssistant.name,
           description: p.actingAssistant.description || undefined,
-          purpose: p.actingAssistant.description || 'General assistant',
+          contentScope,
         };
       } else if (p.actingCharacterId && p.actingCharacter) {
+        const contentScope = p.actingCharacter.contentTags?.length
+          ? `Prefers themes: ${p.actingCharacter.contentTags.join(', ')}`
+          : undefined;
         // Character bot (entertainment/roleplay)
         return {
           id: p.id,
           type: 'character',
           name: p.actingCharacter.firstName,
           personality: p.actingCharacter.personality || undefined,
-          purpose: p.actingCharacter.purpose || 'Entertainment and conversation',
+          contentScope,
         };
       }
       return {
@@ -122,7 +129,7 @@ ${participantContext.map(p => `- ID: ${p.id}
   Type: ${p.type}
   ${p.description ? `Description: ${p.description}` : ''}
   ${p.personality ? `Personality: ${p.personality}` : ''}
-  Purpose: ${p.purpose || 'General conversation'}`).join('\n\n')}
+  ${p.contentScope ? `Content scope: ${p.contentScope}` : 'Content scope: General conversation'}`).join('\n\n')}
 
 Recent conversation history:
 ${historyContext || 'No previous messages'}

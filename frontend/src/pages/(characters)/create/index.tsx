@@ -11,6 +11,12 @@ export default function CharacterCreatePage(): JSX.Element {
   const navigate = useNavigate();
   const { createMutation } = useCharacterMutations();
   const [error, setError] = useState<string | null>(null);
+  const [draftId] = useState(() => {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
+    return `char-draft-${Math.random().toString(36).slice(2, 11)}`;
+  });
   const form = useCharacterForm({ initialValues: EMPTY_CHARACTER_FORM });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -31,6 +37,7 @@ export default function CharacterCreatePage(): JSX.Element {
   return (
     <CharacterFormLayout
       mode="create"
+      draftId={draftId}
       form={form}
       error={error}
       isSubmitting={createMutation.isPending}

@@ -27,7 +27,7 @@ const MessageInput = React.memo(
     onUserAvatarClick,
     onRequestImageGeneration,
   }: MessageInputProps) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['chat', 'common']);
     const [message, setMessage] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [isSending, setIsSending] = useState(false);
@@ -184,8 +184,14 @@ const MessageInput = React.memo(
 
     const isEffectivelyDisabled = disabled || isSending || isTranscribing;
     const micButtonIcon = isTranscribing ? "hourglass_top" : isRecording ? "stop_circle" : "mic";
-    const micButtonVariant = isRecording ? "danger" : isTranscribing ? "secondary" : "dark";
-    const micButtonClasses = isRecording ? "animate-pulse" : isTranscribing ? "animate-spin" : "";
+    const micButtonVariant = isRecording ? "danger" : isTranscribing ? "secondary" : "light";
+    const micButtonClasses = [
+      isRecording ? 'animate-pulse' : '',
+      isTranscribing ? 'animate-spin' : '',
+      !isRecording && !isTranscribing
+        ? 'bg-slate-200 text-slate-800 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600'
+        : ''
+    ].join(' ').trim();
     const placeholderText = isTranscribing ? t("messageInput.placeholderProcessingAudio") : isRecording ? t("messageInput.placeholderRecording") : isSending ? t("messageInput.placeholderSending") : disabled ? t("messageInput.placeholderWaiting") : t("messageInput.placeholderDefault");
 
     return (
@@ -240,8 +246,24 @@ const MessageInput = React.memo(
             </div>
             
             <div className="flex items-center gap-2">
-              <Button variant={micButtonVariant} size="small" icon={micButtonIcon} className={micButtonClasses} onMouseDown={handleMouseDownMic} onMouseUp={handleMouseUpMic} disabled={isEffectivelyDisabled && !isRecording} title={isRecording ? t("messageInput.micButtonStopRecordingTitle") : isTranscribing ? t("messageInput.micButtonProcessingTitle") : t("messageInput.micButtonRecordTitle")} />
-              <Button variant="dark" size="small" icon={isSending ? "progress_activity" : "send"} className={`${isSending ? "animate-spin" : ""}`} onClick={handleSendMessageInternal} disabled={!message.trim() || isEffectivelyDisabled || isRecording} />
+              <Button
+                variant={micButtonVariant}
+                size="small"
+                icon={micButtonIcon}
+                className={micButtonClasses}
+                onMouseDown={handleMouseDownMic}
+                onMouseUp={handleMouseUpMic}
+                disabled={isEffectivelyDisabled && !isRecording}
+                title={isRecording ? t("messageInput.micButtonStopRecordingTitle") : isTranscribing ? t("messageInput.micButtonProcessingTitle") : t("messageInput.micButtonRecordTitle")}
+              />
+              <Button
+                variant="primary"
+                size="small"
+                icon={isSending ? "progress_activity" : "send"}
+                className={`${isSending ? 'animate-spin' : ''} rounded-full text-black hover:opacity-90 dark:text-black`}
+                onClick={handleSendMessageInternal}
+                disabled={!message.trim() || isEffectivelyDisabled || isRecording}
+              />
             </div>
           </div>
         </div>

@@ -80,8 +80,7 @@ export const chatService = {
   },
 
   async deleteConversation(conversationId: string): Promise<void> {
-    // Endpoint not implemented in backend yet; throw for now to surface intent.
-    throw new Error('Conversation deletion is not supported yet.');
+    await api.delete<ApiResponse<unknown>>(`${BASE_PATH}/${conversationId}`);
   },
 
   async addParticipant(conversationId: string, payload: AddParticipantPayload): Promise<void> {

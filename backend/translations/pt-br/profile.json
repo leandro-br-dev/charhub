@@ -22,16 +22,28 @@
     },
     "contentClassification": {
       "header": "Classificação de Conteúdo",
-      "description": "Essas configurações nos ajudam a recomendar melhor conteúdo e personagens para você."
+      "description": "Configure filtros de conteúdo para controlar quais tipos de personagens e histórias você deseja ver. Apenas o conteúdo que corresponder às suas preferências selecionadas será recomendado a você.",
+      "blockedTags": "Filtros de Conteúdo",
+      "filterNote": "Selecione os tipos de conteúdo que você deseja PERMITIR. Itens desmarcados serão filtrados das recomendações.",
+      "allAgesNote": "Todos os tipos de conteúdo são bloqueados quando a classificação \"Todas as Idades\" é selecionada.",
+      "allowAll": "Permitir Tudo",
+      "birthDateRequired": "Data de Nascimento Obrigatória",
+      "birthDateRequiredMessage": "Por favor, preencha sua data de nascimento na aba Perfil para desbloquear as configurações de classificação de conteúdo. Isso garante recomendações de conteúdo apropriadas para a idade.",
+      "maxAgeRatingLabel": "Classificação Etária Máxima",
+      "maxAgeRatingHint": "Selecione a classificação etária máxima que você deseja ver",
+      "ageRestricted": "Restrito por idade"
     },
     "fields": {
       "displayName": "Nome de exibição",
-      "displayNamePlaceholder": "Como outros usuários se dirigem a você",
+      "displayNamePlaceholder": "Como outros usuários se referem a você",
       "fullName": "Nome completo",
       "fullNamePlaceholder": "Opcional para faturamento e cópias de e-mail",
-      "username": "ID do usuário",
-      "usernamePlaceholder": "Identificador único",
-      "usernameHint": "Este identificador vem do seu provedor OAuth e ainda não pode ser alterado.",
+      "username": "Nome de usuário",
+      "usernamePlaceholder": "nome de usuário",
+      "usernameHint": "Seu identificador único no CharHub.",
+      "usernameChecking": "Verificando disponibilidade...",
+      "usernameAvailable": "Nome de usuário disponível",
+      "usernameUnavailable": "Nome de usuário já em uso",
       "email": "E-mail",
       "emailHint": "Gerenciado pelo seu provedor de autenticação.",
       "birthDate": "Data de nascimento",
@@ -52,7 +64,7 @@
     },
     "security": {
       "header": "Segurança",
-      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte a autenticação de múltiplos fatores será adicionado em breve.",
+      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte a autenticação multifator será adicionado em breve.",
       "placeholder": "Gerenciamento de sessão e controles de login sem senha estão no roteiro."
     },
     "feedback": {
@@ -61,7 +73,12 @@
     },
     "errors": {
       "updateFailed": "Não foi possível salvar suas alterações. Tente novamente em um momento.",
-      "displayNameRequired": "O nome de exibição é obrigatório."
+      "displayNameRequired": "O nome de exibição é obrigatório.",
+      "usernameTooShort": "O nome de usuário deve conter pelo menos 3 caracteres após o @.",
+      "usernameInvalid": "O nome de usuário deve começar com @ e conter apenas letras, números e underscores.",
+      "usernameTaken": "Este nome de usuário já está em uso. Por favor, escolha outro.",
+      "validationFailed": "Por favor, verifique os campos do formulário e tente novamente.",
+      "authenticationRequired": "Sua sessão expirou. Por favor, faça login novamente para continuar."
     }
   }
 }

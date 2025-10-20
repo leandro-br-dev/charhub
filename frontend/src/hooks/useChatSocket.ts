@@ -21,12 +21,17 @@ interface SendMessageOptions {
   assistantParticipantId?: string;
 }
 
+interface SendMessageResult {
+  message: Message;
+  respondingBots: string[];
+}
+
 interface ChatSocketState {
   isConnected: boolean;
   socketId: string | null;
   connectionError: string | null;
   typingParticipants: Set<string>;
-  sendMessage: (payload: SendMessageOptions) => Promise<Message>;
+  sendMessage: (payload: SendMessageOptions) => Promise<SendMessageResult>;
   emitTypingStart: (conversationId: string, participantId?: string) => void;
   emitTypingStop: (conversationId: string, participantId?: string) => void;
 }
@@ -113,34 +118,56 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
   const [connectionError, setConnectionError] = useState<string | null>(null);
   const [typingParticipants, setTypingParticipants] = useState<Set<string>>(new Set());
 
+  // Debug logging for token availability
+  useEffect(() => {
+    console.log('[useChatSocket] Auth state:', {
+      hasUser: !!user,
+      userId: user?.id,
+      hasToken: !!token,
+      tokenPreview: token ? `${token.substring(0, 20)}...` : 'null'
+    });
+  }, [user, token]);
+
   const socket = useMemo(() => {
     if (!token) {
+      console.log('[useChatSocket] Cannot create socket - no token available');
       return null;
     }
+    console.log('[useChatSocket] Creating socket instance with token');
     return getSocket(token);
   }, [token]);
 
   useEffect(() => {
     if (!socket) {
+      console.log('[useChatSocket] No socket instance');
       return;
     }
 
+    console.log('[useChatSocket] Setting up socket event handlers', {
+      connected: socket.connected,
+      id: socket.id
+    });
+
     const handleConnect = () => {
+      console.log('[useChatSocket] ✅ Connected to WebSocket', { socketId: socket.id });
       setIsConnected(true);
       setConnectionError(null);
       setSocketId(socket.id ?? null);
     };
 
     const handleDisconnect = () => {
+      console.log('[useChatSocket] ❌ Disconnected from WebSocket');
       setIsConnected(false);
       setSocketId(null);
     };
 
     const handleConnectError = (error: Error) => {
+      console.error('[useChatSocket] ⚠️ Connection error:', error);
       setConnectionError(error.message);
     };
 
     const handleConnectionEstablished = (payload: { socketId?: string }) => {
+      console.log('[useChatSocket] 🎉 Connection established', payload);
       if (payload?.socketId) {
         setSocketId(payload.socketId);
       }
@@ -152,7 +179,10 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
     socket.on('connection_established', handleConnectionEstablished);
 
     if (!socket.connected) {
+      console.log('[useChatSocket] Connecting to WebSocket...');
       socket.connect();
+    } else {
+      console.log('[useChatSocket] Socket already connected');
     }
 
     return () => {
@@ -294,20 +324,23 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
 
   const sendMessage = useCallback(
     (payload: SendMessageOptions) =>
-      new Promise<Message>((resolve, reject) => {
+      new Promise<SendMessageResult>((resolve, reject) => {
         if (!socket) {
           reject(new Error('Socket is not connected'));
           return;
         }
 
-        socket.emit('send_message', payload, (response?: { success?: boolean; data?: Message; error?: string }) => {
+        socket.emit('send_message', payload, (response?: { success?: boolean; data?: Message; respondingBots?: string[]; error?: string }) => {
           if (!response) {
             reject(new Error('No response from server'));
             return;
           }
 
           if (response.success && response.data) {
-            resolve(response.data);
+            resolve({
+              message: response.data,
+              respondingBots: response.respondingBots || [],
+            });
           } else {
             reject(new Error(response.error || 'Failed to send message'));
           }

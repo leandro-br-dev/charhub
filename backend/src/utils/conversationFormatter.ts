@@ -50,8 +50,10 @@ export function formatParticipantsForLLM(
       if (p.actingCharacter) {
         actorInfo.id = p.actingCharacter.id;
         actorInfo.name = p.actingCharacter.firstName;
-        actorInfo.description =
-          p.actingCharacter.purpose || p.actingCharacter.personality || undefined;
+        actorInfo.description = p.actingCharacter.personality || undefined;
+        if (p.actingCharacter.contentTags?.length) {
+          actorInfo.function = `Comfortable with themes: ${p.actingCharacter.contentTags.join(', ')}`;
+        }
       } else {
         actorInfo.id = p.actingCharacterId;
         actorInfo.name = `Unknown Character (${p.actingCharacterId.slice(0, 8)})`;

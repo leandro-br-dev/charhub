@@ -199,6 +199,46 @@ router.patch('/:id', requireAuth, async (req: Request, res: Response) => {
   }
 });
 
+
+/**
+ * DELETE /api/v1/conversations/:id
+ * Delete conversation
+ */
+router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    await conversationService.deleteConversation(id, userId);
+
+    return res.json({
+      success: true,
+      message: 'Conversation deleted successfully',
+    });
+  } catch (error) {
+    if (error instanceof Error && 'statusCode' in error) {
+      const status = (error as { statusCode?: number }).statusCode ?? 500;
+      return res.status(status).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    logger.error({ error }, 'Error deleting conversation');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete conversation',
+    });
+  }
+});
+
 /**
  * POST /api/v1/conversations/:id/participants
  * Add participant to conversation
@@ -407,7 +447,10 @@ router.post(
       const userId = req.auth?.user?.id;
       const { participantId } = req.body;
 
+      logger.info({ conversationId: id, userId, participantId }, 'Generating AI response');
+
       if (!userId) {
+        logger.warn({ conversationId: id }, 'Generate AI: No userId');
         return res.status(401).json({
           success: false,
           message: 'Authentication required',
@@ -415,6 +458,7 @@ router.post(
       }
 
       if (!participantId) {
+        logger.warn({ conversationId: id, userId }, 'Generate AI: Missing participantId');
         return res.status(400).json({
           success: false,
           message: 'participantId is required',
@@ -424,6 +468,7 @@ router.post(
       // Verify user owns the conversation
       const isOwner = await conversationService.isConversationOwner(id, userId);
       if (!isOwner) {
+        logger.warn({ conversationId: id, userId }, 'Generate AI: User is not owner');
         return res.status(403).json({
           success: false,
           message: 'You can only generate responses in your own conversations',
@@ -431,17 +476,23 @@ router.post(
       }
 
       // Generate and send AI response
+      logger.info({ conversationId: id, participantId }, 'Calling assistantService.sendAIMessage');
       const message = await assistantService.sendAIMessage(id, participantId);
+      logger.info({ conversationId: id, messageId: message.id }, 'AI response generated successfully');
 
       return res.status(201).json({
         success: true,
         data: message,
       });
     } catch (error) {
-      logger.error({ error }, 'Error generating AI response');
+      logger.error({ error, conversationId: req.params.id, participantId: req.body.participantId }, 'Error generating AI response');
+
+      // Send more specific error message to client
+      const errorMessage = error instanceof Error ? error.message : 'Failed to generate AI response';
+
       return res.status(500).json({
         success: false,
-        message: 'Failed to generate AI response',
+        message: errorMessage,
       });
     }
   }

@@ -243,11 +243,21 @@ const ChatContainer = () => {
 
       if (socketState.isConnected) {
         try {
-          await socketState.sendMessage({
+          const result = await socketState.sendMessage({
             conversationId,
             content,
             assistantParticipantId,
           });
+
+          console.log('[ChatContainer] Message sent successfully', {
+            messageId: result.message.id,
+            respondingBots: result.respondingBots,
+          });
+
+          // The typing indicators are already being emitted by the backend
+          // We just need to make sure we're listening to typing_start events
+          // which is already handled in useChatSocket
+
           return true;
         } catch (error) {
           console.warn('[ChatContainer] WebSocket send failed, falling back to REST', error);
@@ -291,7 +301,23 @@ const ChatContainer = () => {
         appendMessageToCache(queryClient, conversationId, message);
       } catch (error) {
         console.error('[ChatContainer] Error generating AI response:', error);
-        setManualError(t('errors.generateAiFailed', { defaultValue: 'Failed to generate response.' }));
+
+        // Extract more detailed error information
+        const apiError = error && typeof error === 'object' && 'response' in error
+          ? (error as any).response?.data
+          : null;
+
+        const errorMessage = apiError?.message ||
+                             (error instanceof Error ? error.message : null) ||
+                             t('errors.generateAiFailed', { defaultValue: 'Failed to generate response.' });
+
+        console.error('[ChatContainer] Detailed error:', {
+          message: errorMessage,
+          status: (error as any).response?.status,
+          data: apiError,
+        });
+
+        setManualError(errorMessage);
       }
     },
     [conversationId, queryClient, t]

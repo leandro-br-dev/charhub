@@ -14,7 +14,7 @@ Character Details:
 - Personality: {personality}
 - Main Attire: {main_attire_description}
 - History: {character_history}
-- Original Purpose: {character_purpose}
+- Preferred Themes (based on age rating {character_age_rating}): {character_content_scope}
 
 Additional Instructions for this Conversation (Override):
 {override_instructions}
@@ -23,13 +23,40 @@ Relationship Memory (Current Context with {user_display_name}):
 {memory_context}
 
 Roleplay Guidelines:
-1. Stay true to the defined personality, history, and purpose for {character_name}.
+1. Stay true to the defined personality and history for {character_name}.
 2. Your responses should be consistent with the information provided above and the conversation context.
 3. Interact with {user_display_name} naturally, engagingly, and believably as {character_name}.
 4. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF ({character_name}). NEVER write, narrate, or describe actions or dialogue for {user_display_name}. Focus solely on your own character's part in the interaction.
+5. LANGUAGE INSTRUCTION: {user_display_name}'s preferred language is {user_language}. You MUST respond in {user_language} unless {user_display_name} explicitly requests a response in a different language. This is CRITICAL - always match the language preference of {user_display_name}.
 `;
 
 export class ResponseGenerationAgent {
+  /**
+   * Maps ISO 639-1 language codes to human-readable language names
+   */
+  private getLanguageName(languageCode?: string | null): string {
+    if (!languageCode) return 'English';
+
+    const languageMap: Record<string, string> = {
+      'en': 'English',
+      'pt': 'Portuguese',
+      'pt-BR': 'Portuguese (Brazil)',
+      'es': 'Spanish',
+      'fr': 'French',
+      'de': 'German',
+      'it': 'Italian',
+      'ja': 'Japanese',
+      'ko': 'Korean',
+      'zh': 'Chinese',
+      'zh-CN': 'Chinese (Simplified)',
+      'ru': 'Russian',
+      'ar': 'Arabic',
+      'hi': 'Hindi',
+    };
+
+    return languageMap[languageCode] || languageCode;
+  }
+
   async execute(
     conversation: Conversation & { participants: any[]; messages: Message[] },
     user: User,
@@ -114,6 +141,8 @@ export class ResponseGenerationAgent {
       historyContext || 'No previous messages.',
     ].join('\n');
 
+    const userLanguage = this.getLanguageName(user.preferredLanguage);
+
     const systemPrompt = CHARACTER_ROLEPLAY_PROMPT.replace(
       /{character_name}/g,
       character.firstName
@@ -122,9 +151,11 @@ export class ResponseGenerationAgent {
       .replace(/{personality}/g, character.personality || 'Not specified.')
       .replace(/{main_attire_description}/g, 'Not specified.') // TODO: Get attire description
       .replace(/{character_history}/g, character.history || 'No history provided.')
-      .replace(/{character_purpose}/g, character.purpose || 'No specific purpose provided.')
+      .replace(/{character_age_rating}/g, character.ageRating || 'L')
+      .replace(/{character_content_scope}/g, this.describeContentScope(character.contentTags))
       .replace(/{override_instructions}/g, respondingParticipant.configOverride || '')
       .replace(/{user_display_name}/g, user.displayName || 'User')
+      .replace(/{user_language}/g, userLanguage)
       .replace(/{memory_context}/g, ''); // TODO: Implement memory
 
     const llmRequest: LLMRequest = {
@@ -141,6 +172,13 @@ export class ResponseGenerationAgent {
       logger.error({ error }, 'Error calling LLM in ResponseGenerationAgent');
       throw error;
     }
+  }
+
+  private describeContentScope(contentTags?: string[]): string {
+    if (!contentTags || contentTags.length === 0) {
+      return 'Family-friendly topics only';
+    }
+    return contentTags.join(', ');
   }
 
   /**
@@ -173,7 +211,7 @@ export class ResponseGenerationAgent {
 
     const systemPrompt = `You are ${assistantName}, an AI assistant.
 
-Your role and purpose:
+Your role and focus:
 ${assistantDescription}
 
 ${configOverride ? `Additional instructions for this conversation:\n${configOverride}\n` : ''}

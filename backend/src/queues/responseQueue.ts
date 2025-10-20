@@ -1,3 +1,4 @@
+import type { Server } from 'socket.io';
 import { Queue, Worker, Job } from 'bullmq';
 import { createRedisClient } from '../config/redis';
 import { logger } from '../config/logger';
@@ -144,12 +145,65 @@ export const responseWorker = new Worker<ResponseJobData>(
   }
 );
 
+// Socket.IO instance (set by setupWebSocketBroadcast)
+let ioInstance: Server | null = null;
+
+/**
+ * Configure Socket.IO broadcasting for completed jobs
+ * Must be called after Socket.IO server is initialized
+ */
+export function setupWebSocketBroadcast(io: Server): void {
+  ioInstance = io;
+  logger.info('WebSocket broadcast configured for response worker');
+}
+
+/**
+ * Helper to get room name for a conversation
+ */
+function getRoomName(conversationId: string): string {
+  return 'conversation:' + conversationId;
+}
+
 // Worker event handlers
-responseWorker.on('completed', (job) => {
+responseWorker.on('completed', (job, result) => {
   logger.debug(
     { jobId: job.id, conversationId: job.data.conversationId },
     'Job completed successfully'
   );
+
+  // Broadcast via WebSocket if io instance is available
+  if (ioInstance && result) {
+    const room = getRoomName(job.data.conversationId);
+
+    // Stop typing indicator for this bot
+    ioInstance.to(room).emit('typing_stop', {
+      conversationId: job.data.conversationId,
+      participantId: result.participantId,
+      source: 'bot',
+    });
+
+    // Emit the AI message
+    ioInstance.to(room).emit('message_received', {
+      id: result.messageId,
+      conversationId: job.data.conversationId,
+      senderId: result.participantId,
+      senderType: 'ASSISTANT',
+      content: result.content,
+      attachments: null,
+      metadata: null,
+      timestamp: new Date().toISOString(),
+    });
+
+    logger.debug(
+      { conversationId: job.data.conversationId, messageId: result.messageId },
+      'AI response broadcasted via WebSocket'
+    );
+  } else {
+    logger.warn(
+      { conversationId: job.data.conversationId },
+      'WebSocket broadcast skipped - io instance not configured'
+    );
+  }
 });
 
 responseWorker.on('failed', (job, error) => {

@@ -19,11 +19,6 @@
       "SIXTEEN": "16+",
       "EIGHTEEN": "18+"
     },
-    "purposes": {
-      "chat": "Chat",
-      "story": "Story",
-      "both": "Chat & Story"
-    },
     "genders": {
       "male": "Male",
       "female": "Female",
@@ -102,7 +97,10 @@
         "profileHint": "Describe personality, traits and backstory to guide the AI.",
         "configuration": "Availability & moderation",
         "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
-        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences."
+        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
+        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
+        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
+        "contentTagLocked": "Unlocked at higher age ratings."
       },
       "fields": {
         "firstName": "First name",
@@ -111,30 +109,42 @@
         "gender": "Gender",
         "species": "Species / origin",
         "style": "Visual or storytelling style",
-        "avatar": "Avatar image URL",
         "physicalCharacteristics": "Physical description",
         "personality": "Personality",
         "history": "Backstory",
-        "purpose": "Primary use",
         "isPublic": "Visibility",
         "ageRating": "Age rating",
         "originalLanguageCode": "Original language",
-        "contentTags": "Content warnings"
+        "contentTags": "Content warnings",
+        "visibility": "Visibility"
       },
       "placeholders": {
         "gender": "Ex: non-binary AI, android, knight",
         "species": "Ex: Human, Elf, Synthetic",
-        "style": "Ex: Noir detective, pastel anime, painterly",
-        "avatar": "https://cdn.example.com/avatar.png"
-      },
-      "hints": {
-        "avatar": "Provide an HTTPS image URL while the upload flow is under construction."
+        "style": "Ex: Noir detective, pastel anime, painterly"
       },
       "labels": {
-        "publicToggle": "Allow other users to discover this character",
         "unsavedChanges": "You have unsaved changes",
         "allSaved": "Changes saved",
-        "submitting": "Saving..."
+        "submitting": "Saving...",
+        "visibilityPublic": "Public",
+        "visibilityPrivate": "Private"
+      },
+      "avatar": {
+        "upload": "Upload image",
+        "change": "Change image",
+        "remove": "Remove",
+        "uploading": "Uploading...",
+        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
+        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
+        "error": "We could not upload this image. Try another file.",
+        "previewAlt": "Character avatar preview"
+      },
+      "tabs": {
+        "identity": "Identity",
+        "profile": "Profile",
+        "configuration": "Configuration",
+        "lockedHint": "Fill in the basic identity details to unlock the other sections."
       }
     },
     "create": {

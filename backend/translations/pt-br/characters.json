@@ -6,23 +6,18 @@
       "updatedAt": "Atualizado em {{date}}",
       "public": "Público",
       "private": "Privado",
-      "identifier": "ID do personagem: {{id}}",
+      "identifier": "ID do Personagem: {{id}}",
       "unsavedChanges": "Alterações não salvas",
       "allSaved": "Todas as alterações salvas",
       "submitting": "Salvando..."
     },
     "ageRatings": {
-      "L": "Livre para todos os públicos",
+      "L": "Público geral",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
       "SIXTEEN": "16+",
       "EIGHTEEN": "18+"
-    },
-    "purposes": {
-      "chat": "Bate-papo",
-      "story": "História",
-      "both": "Bate-papo e História"
     },
     "genders": {
       "male": "Masculino",
@@ -31,7 +26,7 @@
     },
     "contentTags": {
       "VIOLENCE": "Violência",
-      "GORE": "Sangue e vísceras",
+      "GORE": "Gore",
       "SEXUAL": "Sexual",
       "NUDITY": "Nudez",
       "LANGUAGE": "Linguagem",
@@ -44,7 +39,7 @@
       "GAMBLING": "Jogos de azar"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combate, lutas ou conflitos agressivos.",
+      "VIOLENCE": "Combate, brigas ou conflito agressivo.",
       "GORE": "Ferimentos gráficos e detalhes explícitos.",
       "SEXUAL": "Temas adultos ou insinuações.",
       "NUDITY": "Nudez parcial ou total.",
@@ -62,13 +57,13 @@
       "removeFromFavorites": "Remover dos favoritos"
     },
     "hub": {
-      "title": "Central de Personagens",
-      "subtitle": "Crie, organize e evolua o elenco que impulsiona suas histórias, agentes de bate-papo e experiências de IA.",
+      "title": "Hub de Personagens",
+      "subtitle": "Crie, organize e evolua o elenco que impulsiona suas histórias, agentes de chat e experiências de IA.",
       "actions": {
         "createCharacter": "Novo personagem",
         "retry": "Tentar novamente",
-        "blurSensitive": "Ocultar conteúdo sensível",
-        "showSensitive": "Mostrar conteúdo sensível"
+        "blurSensitive": "Desfocar sensível",
+        "showSensitive": "Mostrar sensível"
       },
       "tabs": {
         "myCharacters": "Meus personagens",
@@ -81,7 +76,7 @@
       "states": {
         "loading": "Carregando seus personagens...",
         "error": "Não foi possível carregar os personagens. Por favor, tente novamente.",
-        "empty": "Nenhum personagem disponível ainda.",
+        "empty": "Ainda não há personagens disponíveis.",
         "empty_private": "Você ainda não criou nenhum personagem.",
         "empty_public": "Nenhum personagem público corresponde aos seus filtros.",
         "emptyHint": "Comece criando um perfil ou ajuste seus filtros.",
@@ -89,7 +84,7 @@
       },
       "labels": {
         "total": "{{count}} personagem{{count, plural, one {} other {s}}} disponível{{count, plural, one {} other {s}}}",
-        "quickCreateLink": "Ir direto para a criação"
+        "quickCreateLink": "Vá direto para a criação"
       }
     },
     "form": {
@@ -99,10 +94,13 @@
         "identity": "Identidade",
         "identityHint": "Defina como as pessoas descobrem e identificam este personagem rapidamente.",
         "profile": "Perfil narrativo",
-        "profileHint": "Descreva a personalidade, traços e histórico para guiar a IA.",
+        "profileHint": "Descreva a personalidade, traços e história para guiar a IA.",
         "configuration": "Disponibilidade e moderação",
         "configurationHint": "Controle como o personagem aparece, quem pode acessá-lo e quais salvaguardas se aplicam.",
-        "contentTagsHint": "Marque temas potencialmente sensíveis. Os usuários podem filtrá-los com base em suas preferências."
+        "contentTagsHint": "Marque temas potencialmente sensíveis. Os usuários podem filtrá-los com base em suas preferências.",
+        "contentTagsCharacterHint": "Esses tópicos definem sobre o que o personagem se sente confortável em discutir na classificação etária selecionada.",
+        "contentTagsUserHint": "Selecione os temas que você deseja incluir. Tudo o que ficar desmarcado permanecerá bloqueado para esta classificação.",
+        "contentTagLocked": "Desbloqueado em classificações etárias mais altas."
       },
       "fields": {
         "firstName": "Primeiro nome",
@@ -111,30 +109,42 @@
         "gender": "Gênero",
         "species": "Espécie / origem",
         "style": "Estilo visual ou de narrativa",
-        "avatar": "URL da imagem do avatar",
         "physicalCharacteristics": "Descrição física",
         "personality": "Personalidade",
-        "history": "Histórico",
-        "purpose": "Uso principal",
+        "history": "História pregressa",
         "isPublic": "Visibilidade",
         "ageRating": "Classificação etária",
         "originalLanguageCode": "Idioma original",
-        "contentTags": "Avisos de conteúdo"
+        "contentTags": "Avisos de conteúdo",
+        "visibility": "Visibilidade"
       },
       "placeholders": {
         "gender": "Ex: IA não binária, andróide, cavaleiro",
         "species": "Ex: Humano, Elfo, Sintético",
-        "style": "Ex: Detetive noir, anime pastel, estilo pictórico",
-        "avatar": "https://cdn.example.com/avatar.png"
-      },
-      "hints": {
-        "avatar": "Forneça um URL de imagem HTTPS enquanto o fluxo de upload estiver em construção."
+        "style": "Ex: Detetive noir, anime pastel, pintura"
       },
       "labels": {
-        "publicToggle": "Permitir que outros usuários descubram este personagem",
         "unsavedChanges": "Você tem alterações não salvas",
         "allSaved": "Alterações salvas",
-        "submitting": "Salvando..."
+        "submitting": "Salvando...",
+        "visibilityPublic": "Público",
+        "visibilityPrivate": "Privado"
+      },
+      "avatar": {
+        "upload": "Carregar imagem",
+        "change": "Alterar imagem",
+        "remove": "Remover",
+        "uploading": "Carregando...",
+        "helperCreate": "Escolha um avatar agora e nós o manteremos enquanto você preenche o restante do formulário.",
+        "helperEdit": "Atualize o avatar sempre que quiser. As alterações são aplicadas assim que você salva.",
+        "error": "Não foi possível carregar esta imagem. Tente outro arquivo.",
+        "previewAlt": "Prévia do avatar do personagem"
+      },
+      "tabs": {
+        "identity": "Identidade",
+        "profile": "Perfil",
+        "configuration": "Configuração",
+        "lockedHint": "Preencha os detalhes básicos de identidade para desbloquear as outras seções."
       }
     },
     "create": {
@@ -158,23 +168,23 @@
         "notFound": "Não foi possível encontrar este personagem."
       },
       "actions": {
-        "backToHub": "Voltar para a central",
+        "backToHub": "Voltar para o hub",
         "edit": "Editar",
         "delete": "Excluir",
         "deleting": "Excluindo..."
       },
-      "confirmDelete": "Você tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.",
+      "confirmDelete": "Tem certeza de que deseja excluir este personagem? Esta ação não pode ser desfeita.",
       "labels": {
         "public": "Público",
         "private": "Privado",
         "createdAt": "Criado em",
         "updatedAt": "Última atualização",
-        "identifier": "ID do personagem: {{id}}"
+        "identifier": "ID do Personagem: {{id}}"
       },
       "sections": {
         "physicalCharacteristics": "Aparência",
         "personality": "Personalidade",
-        "history": "Histórico",
+        "history": "História pregressa",
         "contentTags": "Avisos de conteúdo",
         "metadata": "Tags"
       }

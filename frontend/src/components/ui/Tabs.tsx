@@ -43,20 +43,31 @@ export function TabList({ children }: TabListProps) {
 interface TabProps {
   label: string;
   children: ReactNode;
+  disabled?: boolean;
 }
 
-export function Tab({ label, children }: TabProps) {
+export function Tab({ label, children, disabled = false }: TabProps) {
   const { activeTab, setActiveTab } = useTabs();
   const isActive = activeTab === label;
 
+  const handleSelect = () => {
+    if (disabled) {
+      return;
+    }
+    setActiveTab(label);
+  };
+
   return (
     <button
+      type="button"
       className={`-mb-px border-b-2 px-4 py-3 text-sm font-medium transition-colors duration-200 focus:outline-none ${
         isActive
           ? 'border-primary text-primary'
           : 'border-transparent text-muted hover:border-gray-400 hover:text-content'
-      }`}
-      onClick={() => setActiveTab(label)}
+      } ${disabled ? 'cursor-not-allowed opacity-60 hover:border-transparent hover:text-muted' : ''}`.trim()}
+      onClick={handleSelect}
+      disabled={disabled}
+      aria-disabled={disabled || undefined}
     >
       {children}
     </button>

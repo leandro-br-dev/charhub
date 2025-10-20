@@ -24,7 +24,6 @@ export interface CharacterWithRelations {
   personality: string | null;
   history: string | null;
   isPublic: boolean;
-  purpose: string | null;
   originalLanguageCode: string | null;
   ageRating: AgeRating;
   contentTags: ContentTag[];
@@ -91,7 +90,7 @@ const characterInclude = {
  */
 export async function createCharacter(data: CreateCharacterInput) {
   try {
-    const { attireIds, contentTags, ...characterData } = data;
+  const { attireIds, contentTags, ...characterData } = data;
 
     // Create character with relations
     const character = await prisma.character.create({
@@ -248,7 +247,11 @@ export async function getPublicCharacters(options?: {
       where.OR = [
         { firstName: { contains: searchTerm, mode: 'insensitive' } },
         { lastName: { contains: searchTerm, mode: 'insensitive' } },
-        { purpose: { contains: searchTerm, mode: 'insensitive' } },
+        {
+          physicalCharacteristics: { contains: searchTerm, mode: 'insensitive' },
+        },
+        { personality: { contains: searchTerm, mode: 'insensitive' } },
+        { history: { contains: searchTerm, mode: 'insensitive' } },
       ];
     }
 

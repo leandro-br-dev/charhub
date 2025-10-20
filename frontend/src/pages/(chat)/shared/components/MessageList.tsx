@@ -123,9 +123,11 @@ const MessageList: React.FC<MessageListProps> = ({
   const currentlyTypingParticipantsData = useMemo(() => {
     if (!typingCharacters || typingCharacters.size === 0 || !Array.isArray(participants)) return [];
     const typingData: any[] = [];
-    typingCharacters.forEach((actorId: any) => {
-      const participantInfo = participants.find((p) => String(p.actorId) === String(actorId));
+    typingCharacters.forEach((participantId: any) => {
+      // Try to find by participant ID first, then by actor ID (for backwards compatibility)
+      const participantInfo = participants.find((p) => String(p.id) === String(participantId) || String(p.actorId) === String(participantId));
       if (participantInfo && participantInfo.representation) {
+        const actorId = participantInfo.actorId || participantId;
         if (!activeBackgroundTasks[actorId]) {
           typingData.push({
             actorId: actorId,

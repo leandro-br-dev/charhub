@@ -40,6 +40,8 @@ const conversationInclude = {
           lastName: true,
           avatar: true,
           gender: true,
+          contentTags: true,
+          personality: true,
         },
       },
       actingAssistant: {
@@ -56,6 +58,8 @@ const conversationInclude = {
           lastName: true,
           avatar: true,
           gender: true,
+          contentTags: true,
+          personality: true,
         },
       },
     },
@@ -374,6 +378,38 @@ export async function userHasAccessToConversation(conversationId: string, userId
 /**
  * Archive conversation (soft delete by marking in settings)
  */
+
+/**
+ * Delete conversation and cascade related data
+ */
+export async function deleteConversation(
+  conversationId: string,
+  userId: string
+) {
+  try {
+    const conversation = await prisma.conversation.findFirst({
+      where: { id: conversationId, userId },
+      select: { id: true },
+    });
+
+    if (!conversation) {
+      throw Object.assign(new Error('Conversation not found or access denied'), {
+        statusCode: 404,
+      });
+    }
+
+    await prisma.conversation.delete({
+      where: { id: conversationId },
+    });
+
+    logger.info({ conversationId, userId }, 'Conversation deleted successfully');
+    return { success: true };
+  } catch (error) {
+    logger.error({ error, conversationId, userId }, 'Error deleting conversation');
+    throw error;
+  }
+}
+
 export async function archiveConversation(
   conversationId: string,
   userId: string

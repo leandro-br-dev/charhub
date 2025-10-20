@@ -5,11 +5,14 @@ import { type UseCharacterFormReturn } from '../hooks/useCharacterForm';
 import { IdentityTab } from './IdentityTab';
 import { ProfileTab } from './ProfileTab';
 import { ConfigurationTab } from './ConfigurationTab';
+import { CharacterAvatarUploader } from './CharacterAvatarUploader';
 
 interface CharacterFormLayoutProps {
   mode: 'create' | 'edit';
   characterName?: string;
   avatarUrl?: string;
+  characterId?: string;
+  draftId?: string;
   form: UseCharacterFormReturn;
   error?: string | null;
   isSubmitting: boolean;
@@ -23,6 +26,8 @@ export function CharacterFormLayout({
   mode,
   characterName,
   avatarUrl,
+  characterId,
+  draftId,
   form,
   error,
   isSubmitting,
@@ -54,6 +59,7 @@ export function CharacterFormLayout({
     : t('characters:edit.avatar.description', 'Visual representation of your character.');
 
   const displayInitial = characterName?.[0]?.toUpperCase() || form.values.firstName?.[0]?.toUpperCase() || '?';
+  const canAccessAdditionalTabs = mode === 'edit' || (form.values.firstName?.trim().length ?? 0) > 0;
 
   return (
     <section className="flex flex-col gap-8">
@@ -85,33 +91,31 @@ export function CharacterFormLayout({
               {avatarDescription}
             </p>
 
-            <div className="mt-6 flex flex-col items-center gap-4">
-              {avatarUrl || form.values.avatar ? (
-                <img
-                  src={avatarUrl || form.values.avatar || ''}
-                  alt={characterName || 'Character'}
-                  className="h-24 w-24 rounded-full object-cover"
-                />
-              ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-normal text-2xl font-semibold text-content">
-                  {displayInitial}
-                </div>
-              )}
-              <Button variant="light" size="small" icon="upload">
-                {t('characters:form.avatar.upload', 'Upload image')}
-              </Button>
-              <p className="text-xs text-muted">
-                {t('characters:form.avatar.placeholderNote', 'Avatar uploads will be available after we reconnect the media service.')}
-              </p>
-            </div>
+            <CharacterAvatarUploader
+              mode={mode}
+              displayInitial={displayInitial}
+              currentAvatar={avatarUrl ?? form.values.avatar ?? undefined}
+              draftId={draftId}
+              characterId={characterId}
+              onAvatarChange={url => form.updateField('avatar', url)}
+            />
           </div>
 
           <Tabs defaultTab="identity">
             <TabList>
               <Tab label="identity">{t('characters:form.tabs.identity', 'Identity')}</Tab>
-              <Tab label="profile">{t('characters:form.tabs.profile', 'Profile')}</Tab>
-              <Tab label="configuration">{t('characters:form.tabs.configuration', 'Configuration')}</Tab>
+              <Tab label="profile" disabled={!canAccessAdditionalTabs}>
+                {t('characters:form.tabs.profile', 'Profile')}
+              </Tab>
+              <Tab label="configuration" disabled={!canAccessAdditionalTabs}>
+                {t('characters:form.tabs.configuration', 'Configuration')}
+              </Tab>
             </TabList>
+            {mode === 'create' && !canAccessAdditionalTabs && (
+              <p className="mt-3 text-xs text-muted">
+                {t('characters:form.tabs.lockedHint', 'Fill in the basic identity details to unlock the other sections.')}
+              </p>
+            )}
             <TabPanels>
               <TabPanel label="identity">
                 <IdentityTab form={form} />

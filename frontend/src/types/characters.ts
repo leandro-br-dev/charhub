@@ -88,8 +88,6 @@ export interface CharacterSticker {
   updatedAt: string;
 }
 
-export type CharacterPurpose = 'chat' | 'story' | 'both' | null;
-
 export interface CharacterCore {
   id: string;
   firstName: string;
@@ -103,7 +101,6 @@ export interface CharacterCore {
   personality?: string | null;
   history?: string | null;
   isPublic: boolean;
-  purpose?: CharacterPurpose;
   originalLanguageCode?: string | null;
   ageRating: AgeRating;
   contentTags: ContentTag[];
@@ -157,7 +154,6 @@ export interface CharacterPayload {
   personality?: string | null;
   history?: string | null;
   isPublic?: boolean;
-  purpose?: CharacterPurpose;
   originalLanguageCode?: string | null;
   ageRating: AgeRating;
   contentTags: ContentTag[];
@@ -177,12 +173,17 @@ export interface CharacterMutationResult {
   message?: string;
 }
 
+export interface CharacterAvatarUploadResult {
+  url: string;
+  key: string;
+  characterId?: string | null;
+}
+
 export interface CharacterDraftSummary {
   avatar?: string | null;
   displayName: string;
   ageRating: AgeRating;
   contentTags: ContentTag[];
-  purpose?: CharacterPurpose;
 }
 
 export const EMPTY_CHARACTER_FORM: CharacterFormValues = {
@@ -196,8 +197,7 @@ export const EMPTY_CHARACTER_FORM: CharacterFormValues = {
   physicalCharacteristics: null,
   personality: null,
   history: null,
-  isPublic: false,
-  purpose: 'chat',
+  isPublic: true,
   originalLanguageCode: 'en',
   ageRating: 'L',
   contentTags: [],

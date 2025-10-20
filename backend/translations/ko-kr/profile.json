@@ -9,29 +9,41 @@
     },
     "sectionTitle": "계정",
     "title": "프로필 관리",
-    "subtitle": "CharHub에서 다른 사람들에게 보이는 방식을 업데이트하세요. 현재 이전 중인 기본 설정은 곧 여기에 표시됩니다.",
+    "subtitle": "CharHub에서 다른 사람에게 보이는 방식을 업데이트하세요. 아직 마이그레이션 중인 환경 설정은 곧 여기에 표시됩니다.",
     "identity": {
       "header": "프로필 사진",
-      "description": "채팅 및 캐릭터 전반에 걸쳐 당신을 대표할 아바타를 선택하세요.",
+      "description": "채팅 및 캐릭터 전반에 걸쳐 당신을 나타내는 아바타를 선택하세요.",
       "upload": "이미지 업로드",
-      "placeholderNote": "미디어 서비스가 다시 연결된 후 아바타 업로드를 사용할 수 있습니다."
+      "placeholderNote": "미디어 서비스가 다시 연결된 후 아바타 업로드가 가능합니다."
     },
     "details": {
-      "header": "공개 정보",
-      "description": "이 값들은 협력자와 공유되며 대화에서 기본값으로 사용됩니다."
+      "header": "공개 세부 정보",
+      "description": "이 값은 협업자와 공유되며 대화에서 기본값으로 사용됩니다."
     },
     "contentClassification": {
       "header": "콘텐츠 분류",
-      "description": "이 설정은 더 나은 콘텐츠와 캐릭터를 추천하는 데 도움이 됩니다."
+      "description": "보고 싶은 캐릭터 및 스토리 유형을 제어하도록 콘텐츠 필터를 구성하세요. 선택한 환경 설정과 일치하는 콘텐츠만 추천됩니다.",
+      "blockedTags": "콘텐츠 필터",
+      "filterNote": "허용하려는 콘텐츠 유형을 선택하세요. 선택하지 않은 항목은 추천에서 제외됩니다.",
+      "allAgesNote": "\"전체 연령\" 등급을 선택하면 모든 콘텐츠 유형이 차단됩니다.",
+      "allowAll": "모두 허용",
+      "birthDateRequired": "생년월일 필요",
+      "birthDateRequiredMessage": "콘텐츠 분류 설정을 잠금 해제하려면 프로필 탭에서 생년월일을 입력하세요. 이렇게 하면 연령에 적합한 콘텐츠 추천이 보장됩니다.",
+      "maxAgeRatingLabel": "최대 연령 등급",
+      "maxAgeRatingHint": "보고 싶은 최대 연령 등급을 선택하세요.",
+      "ageRestricted": "연령 제한"
     },
     "fields": {
       "displayName": "표시 이름",
       "displayNamePlaceholder": "다른 사용자가 당신을 부르는 방식",
       "fullName": "전체 이름",
       "fullNamePlaceholder": "결제 및 이메일 복사본에 선택 사항",
-      "username": "사용자 ID",
-      "usernamePlaceholder": "고유 식별자",
-      "usernameHint": "이 식별자는 OAuth 제공업체에서 제공되며 아직 변경할 수 없습니다.",
+      "username": "사용자 이름",
+      "usernamePlaceholder": "사용자 이름",
+      "usernameHint": "CharHub에서의 고유 식별자입니다.",
+      "usernameChecking": "사용 가능 여부 확인 중...",
+      "usernameAvailable": "사용자 이름을 사용할 수 있습니다.",
+      "usernameUnavailable": "사용자 이름이 이미 사용 중입니다.",
       "email": "이메일",
       "emailHint": "인증 제공업체에서 관리합니다.",
       "birthDate": "생년월일",
@@ -41,10 +53,10 @@
       "feminine": "여성",
       "masculine": "남성",
       "nonBinary": "논바이너리",
-      "unspecified": "응답하지 않음"
+      "unspecified": "말하고 싶지 않음"
     },
     "preferences": {
-      "placeholder": "콘텐츠 기본 설정, 흐림 설정 및 민감한 테마는 모더레이션 서비스가 통합된 후에 다시 표시됩니다."
+      "placeholder": "콘텐츠 환경 설정, 흐림 설정 및 민감한 테마는 모더레이션 서비스가 통합되면 다시 제공됩니다."
     },
     "actions": {
       "save": "변경 내용 저장",
@@ -52,7 +64,7 @@
     },
     "security": {
       "header": "보안",
-      "description": "CharHub 세션은 Google 또는 Facebook의 OAuth 보안을 상속받습니다. 곧 다단계 인증 지원이 추가될 예정입니다.",
+      "description": "CharHub 세션은 Google 또는 Facebook의 OAuth 보안을 상속합니다. 곧 다단계 인증 지원이 추가될 예정입니다.",
       "placeholder": "세션 관리 및 비밀번호 없는 로그인 제어는 로드맵에 있습니다."
     },
     "feedback": {
@@ -61,7 +73,12 @@
     },
     "errors": {
       "updateFailed": "변경 내용을 저장할 수 없습니다. 잠시 후 다시 시도하세요.",
-      "displayNameRequired": "표시 이름은 필수입니다."
+      "displayNameRequired": "표시 이름은 필수입니다.",
+      "usernameTooShort": "사용자 이름은 @ 뒤에 최소 3자 이상이어야 합니다.",
+      "usernameInvalid": "사용자 이름은 @로 시작해야 하며 문자, 숫자 및 밑줄만 포함해야 합니다.",
+      "usernameTaken": "이 사용자 이름은 이미 사용 중입니다. 다른 이름을 선택하세요.",
+      "validationFailed": "양식 필드를 확인하고 다시 시도하세요.",
+      "authenticationRequired": "세션이 만료되었습니다. 계속하려면 다시 로그인하세요."
     }
   }
 }

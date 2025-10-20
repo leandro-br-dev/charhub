@@ -212,8 +212,7 @@ const ParticipantConfigModal = ({
     const parts = [
       rep.physical_characteristics,
       rep.personality,
-      rep.default_attire,
-      rep.purpose,
+      rep.default_attire
     ].filter(Boolean);
     return parts.join(" \n\n ");
   }, [participant]);

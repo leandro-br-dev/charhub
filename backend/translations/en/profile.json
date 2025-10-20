@@ -22,16 +22,28 @@
     },
     "contentClassification": {
       "header": "Content Classification",
-      "description": "These settings help us to recommend you better content and characters."
+      "description": "Configure content filters to control what types of characters and stories you want to see. Only content matching your selected preferences will be recommended to you.",
+      "blockedTags": "Content Filters",
+      "filterNote": "Select content types you want to ALLOW. Unchecked items will be filtered out from recommendations.",
+      "allAgesNote": "All content types are blocked when \"All Ages\" rating is selected.",
+      "allowAll": "Allow All",
+      "birthDateRequired": "Birth Date Required",
+      "birthDateRequiredMessage": "Please fill in your birth date in the Profile tab to unlock content classification settings. This ensures age-appropriate content recommendations.",
+      "maxAgeRatingLabel": "Maximum Age Rating",
+      "maxAgeRatingHint": "Select the maximum age rating you want to see",
+      "ageRestricted": "Age restricted"
     },
     "fields": {
       "displayName": "Display name",
       "displayNamePlaceholder": "How other users address you",
       "fullName": "Full name",
       "fullNamePlaceholder": "Optional for billing and e-mail copies",
-      "username": "User ID",
-      "usernamePlaceholder": "Unique identifier",
-      "usernameHint": "This identifier comes from your OAuth provider and cannot be changed yet.",
+      "username": "Username",
+      "usernamePlaceholder": "username",
+      "usernameHint": "Your unique identifier on CharHub.",
+      "usernameChecking": "Checking availability...",
+      "usernameAvailable": "Username is available",
+      "usernameUnavailable": "Username is already taken",
       "email": "E-mail",
       "emailHint": "Managed by your authentication provider.",
       "birthDate": "Birth date",
@@ -61,7 +73,12 @@
     },
     "errors": {
       "updateFailed": "We could not save your changes. Try again in a moment.",
-      "displayNameRequired": "Display name is required."
+      "displayNameRequired": "Display name is required.",
+      "usernameTooShort": "Username must contain at least 3 characters after the @.",
+      "usernameInvalid": "Username must start with @ and contain only letters, numbers, and underscores.",
+      "usernameTaken": "This username is already taken. Please choose another one.",
+      "validationFailed": "Please check the form fields and try again.",
+      "authenticationRequired": "Your session has expired. Please log in again to continue."
     }
   }
 }

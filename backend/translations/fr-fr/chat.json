@@ -4,11 +4,33 @@
     "title": "Chat",
     "newConversation": "Nouvelle conversation",
     "conversations": "Conversations",
-    "noConversations": "Aucune conversation pour le moment",
+    "noConversations": "Pas encore de conversations",
     "createFirst": "Créez votre première conversation",
     "loading": "Chargement...",
     "error": "Erreur lors du chargement du chat",
     "unknownParticipant": "Inconnu ({{id}})",
+    "history": {
+      "title": "Historique des conversations",
+      "newChat": "Nouveau chat",
+      "searchPlaceholder": "Rechercher des conversations...",
+      "groupBy": "Grouper par :",
+      "groupByDate": "Date",
+      "groupByName": "Nom",
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "last7Days": "7 derniers jours",
+      "last30Days": "30 derniers jours",
+      "invalidDate": "Date invalide",
+      "noResults": "Aucune conversation trouvée",
+      "empty": "Pas encore de conversations",
+      "untitled": "Conversation sans titre",
+      "editTitle": "Modifier le titre",
+      "deleteConversation": "Supprimer la conversation",
+      "deleteConfirmTitle": "Supprimer la conversation",
+      "deleteConfirmMessage": "Êtes-vous sûr de vouloir supprimer \"{{title}}\" ? Cette action est irréversible.",
+      "thisConversation": "cette conversation",
+      "deleteSuccess": "Conversation supprimée avec succès"
+    },
     "conversation": {
       "title": "Conversation",
       "participants": "Participants",
@@ -19,12 +41,16 @@
       "archive": "Archiver",
       "settings": "Paramètres",
       "lastMessage": "Dernier message",
-      "noMessages": "Aucun message pour le moment",
-      "startTyping": "Commencez à taper pour lancer la conversation"
+      "noMessages": "Pas encore de messages",
+      "startTyping": "Commencez à taper pour débuter la conversation",
+      "justNow": "Maintenant",
+      "minutesAgo": "{{count}}m",
+      "hoursAgo": "{{count}}h",
+      "daysAgo": "{{count}}j"
     },
     "message": {
       "send": "Envoyer",
-      "sending": "Envoi...",
+      "sending": "Envoi en cours...",
       "placeholder": "Tapez votre message...",
       "delete": "Supprimer le message",
       "edit": "Modifier le message",
@@ -56,7 +82,8 @@
       "save": "Enregistrer",
       "delete": "Supprimer",
       "confirm": "Confirmer",
-      "close": "Fermer"
+      "close": "Fermer",
+      "goBack": "Retour aux conversations"
     },
     "errors": {
       "loadFailed": "Échec du chargement de la conversation",
@@ -66,11 +93,21 @@
       "updateFailed": "Échec de la mise à jour",
       "networkError": "Erreur réseau. Veuillez vérifier votre connexion.",
       "unauthorized": "Vous n'avez pas l'autorisation d'effectuer cette action",
-      "notFound": "Conversation introuvable"
+      "notFound": "Conversation introuvable",
+      "generateAiFailed": "Échec de la génération de la réponse.",
+      "addParticipantFailed": "Échec de l'ajout du participant.",
+      "removeParticipantFailed": "Échec de la suppression du participant.",
+      "updateConversationFailed": "Échec de la mise à jour de la conversation.",
+      "reprocessNotAvailable": "La nouvelle génération n'est pas disponible sans participant assistant.",
+      "imageGenerationUnavailable": "La génération d'images n'est pas encore disponible.",
+      "cloneAssistantUnavailable": "Le clonage d'assistant n'est pas encore disponible.",
+      "promoteCharacterUnavailable": "La promotion de personnage n'est pas encore disponible.",
+      "audioPlaybackUnavailable": "La lecture audio n'est pas encore disponible.",
+      "reviewFileUnavailable": "La revue de fichier n'est pas encore disponible."
     },
     "success": {
       "created": "Conversation créée avec succès",
-      "updated": "Mise à jour réussie",
+      "updated": "Mis à jour avec succès",
       "deleted": "Supprimé avec succès",
       "sent": "Message envoyé"
     },
@@ -81,8 +118,8 @@
       "configureUserRoleplayTitle": "Configurer le jeu de rôle de {{name}}",
       "participantNotFound": "Participant introuvable",
       "specificInstructionsLabel": "Instructions spécifiques",
-      "specificInstructionsPlaceholder": "Ajoutez des détails qui devraient influencer les réponses pendant cette conversation",
-      "assumePersonaLabel": "Adopter la persona",
+      "specificInstructionsPlaceholder": "Ajoutez des détails qui influenceront les réponses pendant cette conversation",
+      "assumePersonaLabel": "Adopter une persona",
       "changeVisualPersonaLabel": "Persona visuelle",
       "selectCharacterPlaceholder": "Sélectionnez un personnage",
       "loadingPersonas": "Chargement des personas...",
@@ -95,7 +132,16 @@
       "errorSavingConfig": "Impossible d'enregistrer la configuration.",
       "errorCloningAssistant": "Impossible de cloner cet assistant.",
       "errorPromotingCharacter": "Impossible de promouvoir ce personnage.",
-      "savingConfiguration": "Enregistrement de la configuration..."
+      "savingConfiguration": "Enregistrement de la configuration...",
+      "loadingConversation": "Chargement de la conversation...",
+      "addParticipantsPrompt": "Ajoutez des participants pour commencer la conversation.",
+      "confirmDeleteTitle": "Confirmer la suppression",
+      "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer ce message ?",
+      "confirmReprocessTitle": "Confirmer la régénération",
+      "confirmReprocessUserMessage": "Êtes-vous sûr de vouloir régénérer la réponse à ce message ?",
+      "confirmReprocessBotMessage": "Êtes-vous sûr de vouloir régénérer ce message ?",
+      "regenerateButton": "Régénérer",
+      "conversationSettingsTitle": "Paramètres de la conversation"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "Impossible de récupérer les personas.",
@@ -120,7 +166,7 @@
       "slangMedium": "Souvent",
       "roleplaySpecificTitle": "Détails du jeu de rôle",
       "scenarioGenreLabel": "Genre du scénario",
-      "genreFantasy": "Fantasy",
+      "genreFantasy": "Fantastique",
       "genreSciFi": "Science-fiction",
       "genreModern": "Moderne",
       "genreCustom": "Personnalisé",
@@ -140,7 +186,55 @@
       "selectFromGalleryButton": "Sélectionner dans la galerie",
       "removeBgImageButton": "Supprimer l'image",
       "noImageSelected": "Aucun arrière-plan sélectionné",
-      "errorLoadingGallery": "Impossible de charger les images de la galerie."
+      "errorLoadingGallery": "Impossible de charger les images de la galerie.",
+      "galleryButton": "Ouvrir la galerie",
+      "imageGalleryTitle": "Galerie de chat"
+    },
+    "common": {
+      "deleting": "Suppression...",
+      "processing": "Traitement...",
+      "saving": "Enregistrement...",
+      "unknown": "Inconnu"
+    },
+    "displayAvatarParticipants": {
+      "addParticipantPrompt": "Ajoutez des participants pour commencer la conversation.",
+      "configureParticipantTitle": "Configurer {{name}}",
+      "removeParticipantTitle": "Supprimer {{name}}",
+      "addParticipantButtonTitle": "Ajouter un participant"
+    },
+    "messageInput": {
+      "micNotSupportedError": "Microphone non pris en charge.",
+      "transcriptionFailedError": "Échec de la transcription.",
+      "transcriptionServiceError": "Erreur du service de transcription.",
+      "micAccessError": "Accès au microphone refusé.",
+      "placeholderProcessingAudio": "Traitement audio...",
+      "placeholderRecording": "Enregistrement...",
+      "placeholderSending": "Envoi...",
+      "placeholderWaiting": "Attente de la réponse...",
+      "placeholderDefault": "Tapez un message...",
+      "configureUser": "Configurer {{name}}",
+      "you": "Vous",
+      "actionsMenuTitle": "Autres actions",
+      "generateImageAction": "Générer une image",
+      "micButtonStopRecordingTitle": "Arrêter l'enregistrement",
+      "micButtonProcessingTitle": "Traitement...",
+      "micButtonRecordTitle": "Enregistrer l'audio"
+    },
+    "messageItem": {
+      "generatingAudio": "Génération audio...",
+      "playingAudio": "Lecture audio...",
+      "audioErrorPrefix": "Erreur audio",
+      "playAudioCachedActionTitle": "Lire l'audio",
+      "playAudioActionTitle": "Générer et lire l'audio",
+      "deleteActionTitle": "Supprimer le message",
+      "editActionTitle": "Modifier le message",
+      "regenerateActionTitle": "Régénérer la réponse",
+      "youSender": "Vous",
+      "unknownSender": "Inconnu"
+    },
+    "chatActions": {
+      "actionConfirmedByUser": "Action confirmée par l'utilisateur.",
+      "actionCancelledByUser": "Action annulée par l'utilisateur."
     }
   }
 }

@@ -9,7 +9,28 @@
     "loading": "Loading...",
     "error": "Error loading chat",
     "unknownParticipant": "Unknown ({{id}})",
-
+    "history": {
+      "title": "Conversation History",
+      "newChat": "New Chat",
+      "searchPlaceholder": "Search conversations...",
+      "groupBy": "Group by:",
+      "groupByDate": "Date",
+      "groupByName": "Name",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "last7Days": "Last 7 days",
+      "last30Days": "Last 30 days",
+      "invalidDate": "Invalid Date",
+      "noResults": "No conversations found",
+      "empty": "No conversations yet",
+      "untitled": "Untitled conversation",
+      "editTitle": "Edit title",
+      "deleteConversation": "Delete conversation",
+      "deleteConfirmTitle": "Delete Conversation",
+      "deleteConfirmMessage": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone.",
+      "thisConversation": "this conversation",
+      "deleteSuccess": "Conversation deleted successfully"
+    },
     "conversation": {
       "title": "Conversation",
       "participants": "Participants",
@@ -21,9 +42,12 @@
       "settings": "Settings",
       "lastMessage": "Last message",
       "noMessages": "No messages yet",
-      "startTyping": "Start typing to begin the conversation"
+      "startTyping": "Start typing to begin the conversation",
+      "justNow": "Just now",
+      "minutesAgo": "{{count}}m",
+      "hoursAgo": "{{count}}h",
+      "daysAgo": "{{count}}d"
     },
-
     "message": {
       "send": "Send",
       "sending": "Sending...",
@@ -37,7 +61,6 @@
       "ai": "AI",
       "system": "System"
     },
-
     "participant": {
       "character": "Character",
       "assistant": "Assistant",
@@ -48,22 +71,20 @@
       "removed": "Participant removed",
       "added": "Participant added"
     },
-
     "typing": {
       "isTyping": "{{name}} is typing...",
       "areTyping": "{{names}} are typing...",
       "generating": "Generating response..."
     },
-
     "actions": {
       "create": "Create",
       "cancel": "Cancel",
       "save": "Save",
       "delete": "Delete",
       "confirm": "Confirm",
-      "close": "Close"
+      "close": "Close",
+      "goBack": "Back to conversations"
     },
-
     "errors": {
       "loadFailed": "Failed to load conversation",
       "createFailed": "Failed to create conversation",
@@ -72,16 +93,24 @@
       "updateFailed": "Failed to update",
       "networkError": "Network error. Please check your connection.",
       "unauthorized": "You don't have permission to do this",
-      "notFound": "Conversation not found"
+      "notFound": "Conversation not found",
+      "generateAiFailed": "Failed to generate response.",
+      "addParticipantFailed": "Failed to add participant.",
+      "removeParticipantFailed": "Failed to remove participant.",
+      "updateConversationFailed": "Failed to update conversation.",
+      "reprocessNotAvailable": "Reprocessing is not available without an assistant participant.",
+      "imageGenerationUnavailable": "Image generation is not available yet.",
+      "cloneAssistantUnavailable": "Assistant cloning is not available yet.",
+      "promoteCharacterUnavailable": "Character promotion is not available yet.",
+      "audioPlaybackUnavailable": "Audio playback is not available yet.",
+      "reviewFileUnavailable": "File review is not available yet."
     },
-
     "success": {
       "created": "Conversation created successfully",
       "updated": "Updated successfully",
       "deleted": "Deleted successfully",
       "sent": "Message sent"
     },
-
     "chatPage": {
       "configureParticipantTitle": "Configure participant",
       "configureBotTitle": "Configure {{name}}",
@@ -103,9 +132,17 @@
       "errorSavingConfig": "Could not save configuration.",
       "errorCloningAssistant": "Could not clone this assistant.",
       "errorPromotingCharacter": "Could not promote this character.",
-      "savingConfiguration": "Saving configuration..."
+      "savingConfiguration": "Saving configuration...",
+      "loadingConversation": "Loading conversation...",
+      "addParticipantsPrompt": "Add participants to start the conversation.",
+      "confirmDeleteTitle": "Confirm Deletion",
+      "confirmDeleteMessage": "Are you sure you want to delete this message?",
+      "confirmReprocessTitle": "Confirm Regeneration",
+      "confirmReprocessUserMessage": "Are you sure you want to regenerate the response to this message?",
+      "confirmReprocessBotMessage": "Are you sure you want to regenerate this message?",
+      "regenerateButton": "Regenerate",
+      "conversationSettingsTitle": "Conversation Settings"
     },
-
     "participantConfigModal": {
       "errorFetchingPersonas": "Unable to fetch personas.",
       "errorLoadingPersonas": "Unable to load personas.",
@@ -113,7 +150,6 @@
       "assistantDetails": "Original assistant: {{name}}",
       "galleryTitle": "{{name}}'s gallery"
     },
-
     "conversationSettings": {
       "modalTitle": "Conversation settings",
       "interactionModeLabel": "Interaction mode",
@@ -150,7 +186,55 @@
       "selectFromGalleryButton": "Select from gallery",
       "removeBgImageButton": "Remove image",
       "noImageSelected": "No background selected",
-      "errorLoadingGallery": "Could not load gallery images."
+      "errorLoadingGallery": "Could not load gallery images.",
+      "galleryButton": "Open gallery",
+      "imageGalleryTitle": "Chat Gallery"
+    },
+    "common": {
+      "deleting": "Deleting...",
+      "processing": "Processing...",
+      "saving": "Saving...",
+      "unknown": "Unknown"
+    },
+    "displayAvatarParticipants": {
+      "addParticipantPrompt": "Add participants to start the conversation.",
+      "configureParticipantTitle": "Configure {{name}}",
+      "removeParticipantTitle": "Remove {{name}}",
+      "addParticipantButtonTitle": "Add participant"
+    },
+    "messageInput": {
+      "micNotSupportedError": "Microphone not supported.",
+      "transcriptionFailedError": "Transcription failed.",
+      "transcriptionServiceError": "Transcription service error.",
+      "micAccessError": "Microphone access denied.",
+      "placeholderProcessingAudio": "Processing audio...",
+      "placeholderRecording": "Recording...",
+      "placeholderSending": "Sending...",
+      "placeholderWaiting": "Waiting for response...",
+      "placeholderDefault": "Type a message...",
+      "configureUser": "Configure {{name}}",
+      "you": "You",
+      "actionsMenuTitle": "More actions",
+      "generateImageAction": "Generate Image",
+      "micButtonStopRecordingTitle": "Stop recording",
+      "micButtonProcessingTitle": "Processing...",
+      "micButtonRecordTitle": "Record audio"
+    },
+    "messageItem": {
+      "generatingAudio": "Generating audio...",
+      "playingAudio": "Playing audio...",
+      "audioErrorPrefix": "Audio error",
+      "playAudioCachedActionTitle": "Play audio",
+      "playAudioActionTitle": "Generate and play audio",
+      "deleteActionTitle": "Delete message",
+      "editActionTitle": "Edit message",
+      "regenerateActionTitle": "Regenerate response",
+      "youSender": "You",
+      "unknownSender": "Unknown"
+    },
+    "chatActions": {
+      "actionConfirmedByUser": "User confirmed action.",
+      "actionCancelledByUser": "User cancelled action."
     }
   }
 }

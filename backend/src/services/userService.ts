@@ -18,6 +18,9 @@ interface UpdateUserProfileParams {
   birthDate?: Date | null;
   gender?: string | null;
   photo?: string | null;
+  preferredLanguage?: string | null;
+  maxAgeRating?: import('../types').AgeRating;
+  blockedTags?: import('../types').ContentTag[];
 }
 
 
@@ -43,6 +46,9 @@ function mapUser(record: User): AuthenticatedUser {
     fullName: record.fullName ?? undefined,
     birthDate: record.birthDate ? record.birthDate.toISOString() : undefined,
     gender: record.gender ?? undefined,
+    preferredLanguage: record.preferredLanguage ?? undefined,
+    maxAgeRating: record.maxAgeRating as import('../types').AgeRating,
+    blockedTags: record.blockedTags as import('../types').ContentTag[],
   };
 }
 
@@ -184,6 +190,18 @@ export async function updateUserProfile(userId: string, data: UpdateUserProfileP
     updatePayload.avatarUrl = data.photo;
   }
 
+  if (data.preferredLanguage !== undefined) {
+    updatePayload.preferredLanguage = data.preferredLanguage;
+  }
+
+  if (data.maxAgeRating !== undefined) {
+    updatePayload.maxAgeRating = data.maxAgeRating as $Enums.AgeRating;
+  }
+
+  if (data.blockedTags !== undefined) {
+    updatePayload.blockedTags = data.blockedTags as $Enums.ContentTag[];
+  }
+
   try {
     const user = await prisma.user.update({
       where: { id: userId },
@@ -211,4 +229,24 @@ export async function updateUserProfile(userId: string, data: UpdateUserProfileP
 export async function findUserById(id: string): Promise<AuthenticatedUser | null> {
   const user = await prisma.user.findUnique({ where: { id } });
   return user ? mapUser(user) : null;
+}
+
+export async function checkUsernameAvailability(username: string, currentUserId?: string): Promise<boolean> {
+  const existing = await prisma.user.findUnique({
+    where: { username },
+    select: { id: true },
+  });
+
+  // If no user found, username is available
+  if (!existing) {
+    return true;
+  }
+
+  // If found user is the current user, it's their own username (available to keep)
+  if (currentUserId && existing.id === currentUserId) {
+    return true;
+  }
+
+  // Username is taken by someone else
+  return false;
 }

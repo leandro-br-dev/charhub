@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tabs';
 import { ProfileTab } from './components/ProfileTab';
-import { PasswordTab } from './components/PasswordTab';
 import { ContentClassificationTab } from './components/ContentClassificationTab';
 import { DeleteAccountTab } from './components/DeleteAccountTab';
 import { EditableAvatar } from '../../components/ui/EditableAvatar';
@@ -33,25 +32,18 @@ export default function ProfilePage(): JSX.Element {
 
           <div className="mt-6 flex flex-col items-center gap-4">
             <EditableAvatar />
-            <p className="text-xs text-muted">
-              {t('profile:identity.placeholderNote', 'Avatar uploads will be available after we reconnect the media service.')}
-            </p>
           </div>
         </div>
 
         <Tabs defaultTab="profile">
           <TabList>
             <Tab label="profile">{t('profile:tabs.profile', 'Profile')}</Tab>
-            <Tab label="password">{t('profile:tabs.password', 'Password')}</Tab>
             <Tab label="content-classification">{t('profile:tabs.contentClassification', 'Content Classification')}</Tab>
             <Tab label="delete-account">{t('profile:tabs.deleteAccount', 'Delete Account')}</Tab>
           </TabList>
           <TabPanels>
             <TabPanel label="profile">
               <ProfileTab />
-            </TabPanel>
-            <TabPanel label="password">
-              <PasswordTab />
             </TabPanel>
             <TabPanel label="content-classification">
               <ContentClassificationTab />

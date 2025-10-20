@@ -59,6 +59,7 @@ model User {
   avatarUpdatedAt   DateTime?
   birthDate         DateTime?
   gender            String?
+  preferredLanguage String?      @default("en") // User's preferred language for AI responses (ISO 639-1 code)
   role              UserRole     @default(BASIC)
   lastLoginAt       DateTime     @default(now())
   createdAt         DateTime     @default(now())
@@ -240,8 +241,7 @@ model Character {
   history                 String? @db.Text // Background/backstory
 
   // Configuration
-  isPublic             Boolean @default(false)
-  purpose              String? // "chat", "story", "both"
+  isPublic             Boolean @default(true)
   originalLanguageCode String?
 
   // Content classification

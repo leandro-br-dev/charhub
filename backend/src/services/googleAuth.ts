@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import type { AuthenticatedUser, JwtPayload } from '../types';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION || '15m';
+const TOKEN_EXPIRATION = process.env.TOKEN_EXPIRATION || '7d';
 
 export function generateJWT(user: AuthenticatedUser): string {
   const payload: JwtPayload = {

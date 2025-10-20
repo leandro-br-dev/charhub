@@ -7,7 +7,7 @@ import { findUserById } from '../services/userService';
 import * as conversationService from '../services/conversationService';
 import * as messageService from '../services/messageService';
 import { agentService } from '../services/agentService';
-import { queueAIResponse, responseWorker } from '../queues/responseQueue';
+import { queueAIResponse, setupWebSocketBroadcast } from '../queues/responseQueue';
 import type { AuthenticatedUser } from '../types';
 import type { Message } from '../generated/prisma';
 import { SenderType } from '../generated/prisma';
@@ -110,34 +110,9 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
     },
   });
 
-  // Setup global worker event listener to broadcast completed responses
-  responseWorker.on('completed', (job, result) => {
-    const room = getRoomName(job.data.conversationId);
-
-    // Stop typing indicator for this bot
-    io.to(room).emit('typing_stop', {
-      conversationId: job.data.conversationId,
-      participantId: result.participantId,
-      source: 'bot',
-    });
-
-    // Emit the AI message
-    io.to(room).emit('message_received', {
-      id: result.messageId,
-      conversationId: job.data.conversationId,
-      senderId: result.participantId,
-      senderType: 'ASSISTANT',
-      content: result.content,
-      attachments: null,
-      metadata: null,
-      timestamp: new Date().toISOString(),
-    });
-
-    logger.debug(
-      { conversationId: job.data.conversationId, messageId: result.messageId },
-      'AI response broadcasted via WebSocket'
-    );
-  });
+  // Configure WebSocket broadcasting for the response worker
+  // This allows the worker to emit messages when AI responses are completed
+  setupWebSocketBroadcast(io);
 
   io.use(async (socket, next) => {
     const token =

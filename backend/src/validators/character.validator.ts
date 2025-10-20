@@ -18,8 +18,7 @@ const characterBaseSchema = z.object({
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),
   history: z.string().max(5000).optional().nullable(),
-  purpose: z.string().max(500).optional().nullable(),
-  isPublic: z.boolean().default(false),
+  isPublic: z.boolean().default(true),
   originalLanguageCode: z.string().max(10).optional().nullable(),
 });
 
@@ -45,7 +44,6 @@ export const updateCharacterSchema = z.object({
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),
   history: z.string().max(5000).optional().nullable(),
-  purpose: z.string().max(500).optional().nullable(),
   isPublic: z.boolean().optional(),
   loraId: z.string().uuid().optional().nullable(),
   mainAttireId: z.string().uuid().optional().nullable(),

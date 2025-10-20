@@ -1,3 +1,5 @@
+import type { AgeRating, ContentTag } from './characters';
+
 export type OAuthProvider = 'google' | 'facebook';
 export type UserRole = 'BASIC' | 'PREMIUM' | 'ADMIN';
 
@@ -5,6 +7,7 @@ export interface AuthUser {
   id: string;
   provider: OAuthProvider;
   providerAccountId?: string;
+  username?: string;
   displayName?: string;
   email?: string;
   photo?: string;
@@ -12,6 +15,9 @@ export interface AuthUser {
   fullName?: string;
   birthDate?: string;
   gender?: string;
+  preferredLanguage?: string;
+  maxAgeRating?: AgeRating;
+  blockedTags?: ContentTag[];
   token?: string;
   allow_nsfw?: boolean;
 }

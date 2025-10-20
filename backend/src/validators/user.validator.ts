@@ -45,6 +45,36 @@ const usernameSchema = z
   .regex(/^@[a-zA-Z0-9_]+$/, 'Username must start with @ and contain only letters, numbers, and underscores')
   .optional();
 
+const ageRatingSchema = z.enum(['L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'EIGHTEEN']).optional();
+
+const contentTagSchema = z.enum([
+  'VIOLENCE',
+  'GORE',
+  'SEXUAL',
+  'NUDITY',
+  'LANGUAGE',
+  'DRUGS',
+  'ALCOHOL',
+  'HORROR',
+  'PSYCHOLOGICAL',
+  'DISCRIMINATION',
+  'CRIME',
+  'GAMBLING',
+]);
+
+const preferredLanguageSchema = z
+  .string()
+  .trim()
+  .min(2, 'Language code must be at least 2 characters')
+  .max(10, 'Language code cannot exceed 10 characters')
+  .optional()
+  .transform(value => {
+    if (value === undefined) {
+      return undefined;
+    }
+    return value.length === 0 ? null : value;
+  });
+
 export const updateUserProfileSchema = z.object({
   username: usernameSchema.optional(),
   displayName: displayNameSchema.optional(),
@@ -62,6 +92,9 @@ export const updateUserProfileSchema = z.object({
   birthDate: birthDateSchema.optional(),
   gender: genderSchema.optional(),
   photo: z.string().url().optional(),
+  preferredLanguage: preferredLanguageSchema,
+  maxAgeRating: ageRatingSchema,
+  blockedTags: z.array(contentTagSchema).optional(),
 });
 
 export type UpdateUserProfileInput = z.infer<typeof updateUserProfileSchema>;

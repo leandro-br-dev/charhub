@@ -15,8 +15,8 @@ const characterService = {
     return {
       success: true,
       data: [
-        { id: 'char1', name: 'Character One', purpose: 'To be a character' },
-        { id: 'char2', name: 'Character Two', purpose: 'Another character' },
+        { id: 'char1', name: 'Character One', description: 'Sample character for testing' },
+        { id: 'char2', name: 'Character Two', description: 'Another sample character' },
       ],
     };
   },
@@ -269,7 +269,7 @@ const AddParticipantModal = React.memo(
               availableItems.map((item) => {
                 const descriptionText =
                   activeTab === "characters"
-                    ? item.purpose
+                    ? item.description || item.personality
                     : item.description ||
                       (item.instructions
                         ? item.instructions.substring(0, 70) + "..."

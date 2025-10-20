@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Avatar, Modal } from '../../../../components/ui';
+import { useToast } from '../../../../contexts/ToastContext';
 import { useConversationListQuery, useConversationMutations } from '../hooks/useConversations';
 import type { Conversation } from '../../../../types/chat';
 
@@ -25,6 +26,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
   // Queries and mutations
   const { data: conversationsData, isLoading } = useConversationListQuery();
   const { updateTitle, delete: deleteConversation } = useConversationMutations();
+  const { addToast } = useToast();
 
   const conversations: Conversation[] = conversationsData?.items ?? [];
 
@@ -178,12 +180,21 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
     try {
       await deleteConversation.mutateAsync(deletingConvId);
 
+      addToast(
+        t('history.deleteSuccess', { defaultValue: 'Conversation deleted successfully' }),
+        'success'
+      );
+
       // Navigate away if deleting active conversation
       if (activeConversationId === deletingConvId) {
         navigate('/chat', { replace: true });
       }
     } catch (error) {
       console.error('[ConversationHistory] Error deleting conversation:', error);
+      addToast(
+        t('errors.deleteFailed', { defaultValue: 'Failed to delete conversation' }),
+        'error'
+      );
     } finally {
       setDeletingConvId(null);
     }
@@ -192,9 +203,9 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
   const deletingConversation = conversations.find((c: Conversation) => c.id === deletingConvId);
 
   return (
-    <div className="p-4 flex flex-col h-full">
+    <div className="py-4 flex flex-col h-full">
       {/* Header */}
-      <div className="flex-shrink-0 mb-4">
+      <div className="flex-shrink-0 mb-4 px-4">
         <h3 className="text-xs font-semibold text-muted uppercase mb-3">
           {t('history.title', { defaultValue: 'Conversation History' })}
         </h3>
@@ -355,6 +366,22 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
             ))}
           </div>
         )}
+      </div>
+
+      {/* Footer */}
+      <div className="flex-shrink-0 pt-4 px-4">
+        <Button
+          variant="primary"
+          size="large"
+          icon="add"
+          onClick={() => {
+            onLinkClick?.();
+            navigate('/chat');
+          }}
+          className="w-full"
+        >
+          {t('history.newChat', { defaultValue: 'New Chat' })}
+        </Button>
       </div>
 
       {/* Delete Confirmation Modal */}

@@ -1,13 +1,30 @@
 import { Router, Request, Response } from 'express';
+import multer from 'multer';
+import { randomUUID } from 'node:crypto';
 import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
 import * as characterService from '../../services/characterService';
+import { r2Service } from '../../services/r2Service';
 import {
   createCharacterSchema,
   updateCharacterSchema,
 } from '../../validators';
 
 const router = Router();
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB
+  },
+});
+
+const ALLOWED_IMAGE_TYPES: Record<string, string> = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/webp': 'webp',
+  'image/gif': 'gif',
+};
 
 /**
  * POST /api/v1/characters
@@ -49,6 +66,87 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       success: false,
       message: 'Failed to create character',
     });
+  }
+});
+
+router.post('/avatar', requireAuth, upload.single('avatar'), async (req: Request, res: Response) => {
+  const userId = req.auth?.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ success: false, message: 'Authentication required' });
+  }
+
+  if (!r2Service.isConfigured()) {
+    return res.status(503).json({
+      success: false,
+      message: 'Media storage is not configured for this environment.',
+      missing: r2Service.getMissingConfig(),
+    });
+  }
+
+  const uploadedFile = req.file;
+
+  if (!uploadedFile) {
+    return res.status(400).json({ success: false, message: 'No file uploaded' });
+  }
+
+  const { characterId, draftId } = req.body ?? {};
+  const trimmedCharacterId = typeof characterId === 'string' && characterId.trim().length > 0 ? characterId.trim() : undefined;
+  const trimmedDraftId = typeof draftId === 'string' && draftId.trim().length > 0 ? draftId.trim() : undefined;
+  const targetEntityId = trimmedCharacterId ?? trimmedDraftId;
+
+  if (!targetEntityId) {
+    return res.status(400).json({ success: false, message: 'Provide either characterId or draftId to scope the upload.' });
+  }
+
+  try {
+    if (trimmedCharacterId) {
+      const ownsCharacter = await characterService.isCharacterOwner(trimmedCharacterId, userId);
+      if (!ownsCharacter) {
+        return res.status(403).json({ success: false, message: 'You can only update avatars for your characters.' });
+      }
+    }
+
+    const extension = ALLOWED_IMAGE_TYPES[uploadedFile.mimetype];
+    if (!extension) {
+      return res.status(415).json({ success: false, message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.' });
+    }
+
+    const sanitizedName = uploadedFile.originalname
+      ? uploadedFile.originalname.replace(/[^a-z0-9._-]+/gi, '-').toLowerCase()
+      : 'avatar';
+
+    const baseName = sanitizedName.replace(/\.[^.]+$/, '');
+
+    const key = `characters/${userId}/${targetEntityId}/avatar/${Date.now()}-${randomUUID()}-${baseName}.${extension}`;
+
+    const { publicUrl } = await r2Service.uploadObject({
+      key,
+      body: uploadedFile.buffer,
+      contentType: uploadedFile.mimetype,
+      cacheControl: 'public, max-age=604800',
+    });
+
+    if (trimmedCharacterId) {
+      await characterService.updateCharacter(trimmedCharacterId, { avatar: publicUrl });
+    }
+
+    return res.json({
+      success: true,
+      data: {
+        url: publicUrl,
+        key,
+        characterId: trimmedCharacterId ?? null,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error && 'statusCode' in error && typeof (error as { statusCode?: number }).statusCode === 'number') {
+      const statusCode = (error as { statusCode: number }).statusCode;
+      return res.status(statusCode).json({ success: false, message: error.message });
+    }
+
+    logger.error({ error }, 'Error uploading character avatar');
+    return res.status(500).json({ success: false, message: 'Failed to upload character avatar' });
   }
 });
 

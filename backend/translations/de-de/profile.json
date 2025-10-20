@@ -8,30 +8,42 @@
       "deleteAccount": "Konto löschen"
     },
     "sectionTitle": "Konto",
-    "title": "Profil verwalten",
-    "subtitle": "Aktualisieren Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, erscheinen bald hier.",
+    "title": "Verwalten Sie Ihr Profil",
+    "subtitle": "Aktualisieren Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, werden bald hier angezeigt.",
     "identity": {
       "header": "Profilfoto",
-      "description": "Wählen Sie einen Avatar, der Sie in Chats und Charakteren repräsentiert.",
+      "description": "Wählen Sie einen Avatar, der Sie in Chats und bei Charakteren repräsentiert.",
       "upload": "Bild hochladen",
       "placeholderNote": "Avatar-Uploads sind verfügbar, nachdem wir den Mediendienst wieder verbunden haben."
     },
     "details": {
       "header": "Öffentliche Details",
-      "description": "Diese Werte werden mit Kollaborateuren geteilt und als Standardeinstellungen in Gesprächen verwendet."
+      "description": "Diese Werte werden mit Mitarbeitern geteilt und als Standardeinstellungen in Gesprächen verwendet."
     },
     "contentClassification": {
       "header": "Inhaltsklassifizierung",
-      "description": "Diese Einstellungen helfen uns, Ihnen bessere Inhalte und Charaktere zu empfehlen."
+      "description": "Konfigurieren Sie Inhaltsfilter, um zu steuern, welche Arten von Charakteren und Geschichten Sie sehen möchten. Nur Inhalte, die Ihren ausgewählten Präferenzen entsprechen, werden Ihnen empfohlen.",
+      "blockedTags": "Inhaltsfilter",
+      "filterNote": "Wählen Sie die Inhaltstypen aus, die Sie ZULASSEN möchten. Nicht angekreuzte Elemente werden von den Empfehlungen herausgefiltert.",
+      "allAgesNote": "Alle Inhaltstypen sind blockiert, wenn die Bewertung \"Alle Altersgruppen\" ausgewählt ist.",
+      "allowAll": "Alle zulassen",
+      "birthDateRequired": "Geburtsdatum erforderlich",
+      "birthDateRequiredMessage": "Bitte geben Sie Ihr Geburtsdatum im Tab \"Profil\" ein, um die Einstellungen für die Inhaltsklassifizierung freizuschalten. Dies gewährleistet altersgerechte Inhaltsempfehlungen.",
+      "maxAgeRatingLabel": "Maximale Altersfreigabe",
+      "maxAgeRatingHint": "Wählen Sie die maximale Altersfreigabe, die Sie sehen möchten",
+      "ageRestricted": "Altersbeschränkt"
     },
     "fields": {
       "displayName": "Anzeigename",
       "displayNamePlaceholder": "Wie andere Benutzer Sie ansprechen",
       "fullName": "Vollständiger Name",
-      "fullNamePlaceholder": "Optional für Rechnungsstellung und E-Mail-Kopien",
-      "username": "Benutzer-ID",
-      "usernamePlaceholder": "Eindeutiger Identifikator",
-      "usernameHint": "Dieser Identifikator stammt von Ihrem OAuth-Anbieter und kann noch nicht geändert werden.",
+      "fullNamePlaceholder": "Optional für Abrechnung und E-Mail-Kopien",
+      "username": "Benutzername",
+      "usernamePlaceholder": "Benutzername",
+      "usernameHint": "Ihre eindeutige Kennung auf CharHub.",
+      "usernameChecking": "Verfügbarkeit wird geprüft...",
+      "usernameAvailable": "Benutzername ist verfügbar",
+      "usernameUnavailable": "Benutzername ist bereits vergeben",
       "email": "E-Mail",
       "emailHint": "Verwaltet von Ihrem Authentifizierungsanbieter.",
       "birthDate": "Geburtsdatum",
@@ -44,7 +56,7 @@
       "unspecified": "Keine Angabe"
     },
     "preferences": {
-      "placeholder": "Inhaltspräferenzen, Unschärfeeinstellungen und sensible Themen werden zurückkehren, sobald der Moderationsdienst integriert ist."
+      "placeholder": "Inhaltspräferenzen, Blur-Einstellungen und sensible Themen werden zurückkehren, sobald der Moderationsdienst integriert ist."
     },
     "actions": {
       "save": "Änderungen speichern",
@@ -61,7 +73,12 @@
     },
     "errors": {
       "updateFailed": "Wir konnten Ihre Änderungen nicht speichern. Versuchen Sie es in einem Moment erneut.",
-      "displayNameRequired": "Der Anzeigename ist erforderlich."
+      "displayNameRequired": "Anzeigename ist erforderlich.",
+      "usernameTooShort": "Der Benutzername muss mindestens 3 Zeichen nach dem @ enthalten.",
+      "usernameInvalid": "Der Benutzername muss mit @ beginnen und darf nur Buchstaben, Zahlen und Unterstriche enthalten.",
+      "usernameTaken": "Dieser Benutzername ist bereits vergeben. Bitte wählen Sie einen anderen.",
+      "validationFailed": "Bitte überprüfen Sie die Formularfelder und versuchen Sie es erneut.",
+      "authenticationRequired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an, um fortzufahren."
     }
   }
 }

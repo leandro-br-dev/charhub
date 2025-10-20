@@ -49,11 +49,6 @@ export function CharacterCard({
             <span className="rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white backdrop-blur">
               {t(`characters:ageRatings.${character.ageRating}`)}
             </span>
-            {character.purpose && (
-              <span className="rounded-full bg-primary/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white backdrop-blur">
-                {t(`characters:purposes.${character.purpose}`)}
-              </span>
-            )}
           </div>
           {onFavoriteToggle && (
             <button

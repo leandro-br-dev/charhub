@@ -14,7 +14,6 @@ export function characterToFormValues(character: Character): CharacterFormValues
     personality: character.personality ?? null,
     history: character.history ?? null,
     isPublic: character.isPublic,
-    purpose: character.purpose ?? 'chat',
     originalLanguageCode: character.originalLanguageCode ?? 'en',
     ageRating: character.ageRating,
     contentTags: [...character.contentTags],

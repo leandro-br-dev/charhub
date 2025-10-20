@@ -100,20 +100,6 @@ export function IdentityTab({ form }: IdentityTabProps): JSX.Element {
           />
         </label>
 
-        <label className="flex flex-col gap-2 text-sm sm:col-span-2">
-          <span className="font-medium text-content">
-            {t('characters:form.fields.avatar')}
-          </span>
-          <input
-            className="rounded-lg border border-dashed border-border bg-background px-3 py-2 text-sm text-content shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-            value={values.avatar ?? ''}
-            onChange={handleTextChange('avatar')}
-            placeholder={t('characters:form.placeholders.avatar') ?? ''}
-          />
-          <span className="text-xs text-muted">
-            {t('characters:form.hints.avatar')}
-          </span>
-        </label>
       </div>
     </div>
   );

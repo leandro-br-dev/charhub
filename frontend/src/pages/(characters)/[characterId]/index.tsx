@@ -78,11 +78,6 @@ export default function CharacterDetailPage(): JSX.Element {
             <div className="flex flex-wrap gap-2 text-xs text-slate-500 dark:text-slate-300">
               {data.gender && <span className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800">{data.gender}</span>}
               {data.species && <span className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800">{data.species}</span>}
-              {data.purpose && (
-                <span className="rounded-full bg-primary/80 px-3 py-1 text-white">
-                  {t(`characters:purposes.${data.purpose}`)}
-                </span>
-              )}
               <span className="rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800">
                 {data.isPublic ? t('characters:detail.labels.public') : t('characters:detail.labels.private')}
               </span>

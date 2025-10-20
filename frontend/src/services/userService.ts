@@ -29,10 +29,16 @@ export async function uploadAvatar(file: File): Promise<AuthUser> {
   return response.data.data;
 }
 
+export async function checkUsernameAvailability(username: string): Promise<{ available: boolean }> {
+  const response = await api.get<{ success: boolean; available: boolean }>(`${PROFILE_ENDPOINT.replace('/me', '')}/check-username/${encodeURIComponent(username)}`);
+  return { available: response.data.available };
+}
+
 export const userService = {
   fetchProfile,
   updateProfile,
   uploadAvatar,
+  checkUsernameAvailability,
 };
 
 export type UserService = typeof userService;
