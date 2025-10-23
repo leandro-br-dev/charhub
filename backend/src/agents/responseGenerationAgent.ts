@@ -28,6 +28,7 @@ Roleplay Guidelines:
 3. Interact with {user_display_name} naturally, engagingly, and believably as {character_name}.
 4. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF ({character_name}). NEVER write, narrate, or describe actions or dialogue for {user_display_name}. Focus solely on your own character's part in the interaction.
 5. LANGUAGE INSTRUCTION: {user_display_name}'s preferred language is {user_language}. You MUST respond in {user_language} unless {user_display_name} explicitly requests a response in a different language. This is CRITICAL - always match the language preference of {user_display_name}.
+6. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like "{character_name}:" or "Naruto:"). The UI already displays your name and avatar. Just write the response content directly.
 `;
 
 export class ResponseGenerationAgent {
@@ -60,15 +61,13 @@ export class ResponseGenerationAgent {
   async execute(
     conversation: Conversation & { participants: any[]; messages: Message[] },
     user: User,
-    lastMessage: Message
+    lastMessage: Message,
+    participantId?: string
   ): Promise<string> {
     logger.info(
-      { conversationId: conversation.id },
+      { conversationId: conversation.id, participantId },
       'Executing ResponseGenerationAgent'
     );
-
-    // Note: This agent is now called by the queue worker which already determined
-    // which participant should respond. We don't need to search for it ourselves.
 
     const formattedParticipants = formatParticipantsForLLM(conversation.participants);
     const formattedHistory = formatConversationHistoryForLLM(
@@ -76,14 +75,31 @@ export class ResponseGenerationAgent {
       conversation.participants
     );
 
-    // Find the first bot participant (character or assistant) that can respond
-    const respondingParticipant = conversation.participants.find(
-      (p) => p.actingCharacterId || p.actingAssistantId
-    );
+    // Find the specific participant that should respond
+    // If participantId is provided, use it; otherwise fall back to first bot
+    const respondingParticipant = participantId
+      ? conversation.participants.find((p) => p.id === participantId)
+      : conversation.participants.find(
+          (p) => p.actingCharacterId || p.actingAssistantId
+        );
 
     if (!respondingParticipant) {
-      throw new Error('No bot participant found in conversation');
+      throw new Error(
+        participantId
+          ? `Participant ${participantId} not found in conversation`
+          : 'No bot participant found in conversation'
+      );
     }
+
+    logger.debug(
+      {
+        conversationId: conversation.id,
+        participantId: respondingParticipant.id,
+        characterId: respondingParticipant.actingCharacterId,
+        assistantId: respondingParticipant.actingAssistantId
+      },
+      'Selected participant for response'
+    );
 
     // Determine character for roleplay:
     // - For assistants: use representingCharacter (if set)
@@ -162,12 +178,13 @@ export class ResponseGenerationAgent {
       provider: 'gemini', // Or determine dynamically
       model: 'gemini-2.5-flash-lite', // Or determine dynamically
       systemPrompt,
-      userPrompt: `${conversationContext}\n\nLatest message (respond as ${characterName}):\n${lastMessage.content}\n`,
+      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${characterName}. Remember: DO NOT include "${characterName}:" at the start of your response.`,
     };
 
     try {
       const llmResponse = await callLLM(llmRequest);
-      return llmResponse.content;
+      // Post-process: Remove character name prefix if LLM still added it
+      return this.removeNamePrefix(llmResponse.content, characterName);
     } catch (error) {
       logger.error({ error }, 'Error calling LLM in ResponseGenerationAgent');
       throw error;
@@ -220,21 +237,61 @@ Guidelines:
 1. Stay focused on your area of expertise: ${assistantDescription}
 2. Be helpful, clear, and concise
 3. You can engage in casual conversation, but prioritize your main function
-4. Do not roleplay as the user (${user.displayName || 'User'})`;
+4. Do not roleplay as the user (${user.displayName || 'User'})
+5. FORMATTING INSTRUCTION: DO NOT prefix your response with your name (like "${assistantName}:"). The UI already displays your name and avatar. Just write the response content directly.`;
 
     const llmRequest: LLMRequest = {
       provider: 'gemini',
       model: 'gemini-2.5-flash-lite',
       systemPrompt,
-      userPrompt: `${conversationContext}\n\nLatest message (respond as ${assistantName}):\n${lastMessage.content}\n`,
+      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${assistantName}. Remember: DO NOT include "${assistantName}:" at the start of your response.`,
     };
 
     try {
       const llmResponse = await callLLM(llmRequest);
-      return llmResponse.content;
+      // Post-process: Remove assistant name prefix if LLM still added it
+      return this.removeNamePrefix(llmResponse.content, assistantName);
     } catch (error) {
       logger.error({ error }, 'Error calling LLM for assistant without character');
       throw error;
     }
+  }
+
+  /**
+   * Removes "Name:" or "Name :" prefix from the beginning of LLM responses
+   * Handles various formats like "Naruto:", "Naruto :", "Sakura Haruno:", etc.
+   */
+  private removeNamePrefix(content: string, name: string): string {
+    if (!content || !name) return content;
+
+    // Trim the content first
+    const trimmed = content.trim();
+
+    // Create regex patterns to match various name prefix formats
+    // Matches: "Name:", "Name :", "FirstName LastName:", etc.
+    const patterns = [
+      new RegExp(`^${this.escapeRegex(name)}\\s*:\\s*`, 'i'),
+      new RegExp(`^${this.escapeRegex(name.split(' ')[0])}\\s*:\\s*`, 'i'), // First name only
+    ];
+
+    for (const pattern of patterns) {
+      if (pattern.test(trimmed)) {
+        const cleaned = trimmed.replace(pattern, '').trim();
+        logger.debug(
+          { original: trimmed.substring(0, 50), cleaned: cleaned.substring(0, 50), name },
+          'Removed name prefix from LLM response'
+        );
+        return cleaned;
+      }
+    }
+
+    return trimmed;
+  }
+
+  /**
+   * Escapes special regex characters in a string
+   */
+  private escapeRegex(str: string): string {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 }

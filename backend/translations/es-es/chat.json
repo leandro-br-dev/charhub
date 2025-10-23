@@ -12,7 +12,7 @@
     "history": {
       "title": "Historial de conversaciones",
       "newChat": "Nuevo chat",
-      "searchPlaceholder": "Busca conversaciones...",
+      "searchPlaceholder": "Buscar conversaciones...",
       "groupBy": "Agrupar por:",
       "groupByDate": "Fecha",
       "groupByName": "Nombre",
@@ -83,7 +83,7 @@
       "delete": "Eliminar",
       "confirm": "Confirmar",
       "close": "Cerrar",
-      "goBack": "Volver a conversaciones"
+      "goBack": "Volver a las conversaciones"
     },
     "errors": {
       "loadFailed": "Error al cargar la conversación",
@@ -91,17 +91,18 @@
       "sendFailed": "Error al enviar el mensaje",
       "deleteFailed": "Error al eliminar",
       "updateFailed": "Error al actualizar",
-      "networkError": "Error de red. Por favor, comprueba tu conexión.",
+      "networkError": "Error de red. Comprueba tu conexión.",
       "unauthorized": "No tienes permiso para hacer esto",
       "notFound": "Conversación no encontrada",
-      "generateAiFailed": "Error al generar respuesta.",
+      "generateAiFailed": "Error al generar la respuesta.",
       "addParticipantFailed": "Error al añadir participante.",
       "removeParticipantFailed": "Error al eliminar participante.",
+      "cannotRemoveLastCharacter": "No se puede eliminar el último personaje de la conversación. Debe quedar al menos un personaje o asistente.",
       "updateConversationFailed": "Error al actualizar la conversación.",
       "reprocessNotAvailable": "Reprocesar no está disponible sin un participante asistente.",
       "imageGenerationUnavailable": "La generación de imágenes aún no está disponible.",
-      "cloneAssistantUnavailable": "Clonar asistente aún no está disponible.",
-      "promoteCharacterUnavailable": "Promocionar personaje aún no está disponible.",
+      "cloneAssistantUnavailable": "La clonación de asistentes aún no está disponible.",
+      "promoteCharacterUnavailable": "La promoción de personajes aún no está disponible.",
       "audioPlaybackUnavailable": "La reproducción de audio aún no está disponible.",
       "reviewFileUnavailable": "La revisión de archivos aún no está disponible."
     },
@@ -115,10 +116,10 @@
       "configureParticipantTitle": "Configurar participante",
       "configureBotTitle": "Configurar {{name}}",
       "configureAssistantTitle": "Configurar asistente {{name}}",
-      "configureUserRoleplayTitle": "Configurar el roleplay de {{name}}",
+      "configureUserRoleplayTitle": "Configurar el rol de {{name}}",
       "participantNotFound": "Participante no encontrado",
       "specificInstructionsLabel": "Instrucciones específicas",
-      "specificInstructionsPlaceholder": "Añade detalles que deban influir en las respuestas durante esta conversación",
+      "specificInstructionsPlaceholder": "Añade detalles que influyan en las respuestas durante esta conversación",
       "assumePersonaLabel": "Asumir persona",
       "changeVisualPersonaLabel": "Persona visual",
       "selectCharacterPlaceholder": "Selecciona un personaje",
@@ -126,7 +127,7 @@
       "savingConfigurationButton": "Guardando...",
       "saveConfigurationButton": "Guardar configuración",
       "promotingButton": "Promocionando...",
-      "promoteToAssistantButton": "Promover a asistente",
+      "promoteToAssistantButton": "Promocionar a asistente",
       "cloningButton": "Clonando...",
       "cloneButton": "Clonar asistente",
       "errorSavingConfig": "No se pudo guardar la configuración.",
@@ -144,8 +145,8 @@
       "conversationSettingsTitle": "Configuración de la conversación"
     },
     "participantConfigModal": {
-      "errorFetchingPersonas": "No se pudieron obtener las personas.",
-      "errorLoadingPersonas": "No se pudieron cargar las personas.",
+      "errorFetchingPersonas": "No se pueden obtener las personas.",
+      "errorLoadingPersonas": "No se pueden cargar las personas.",
       "viewGalleryButton": "Abrir galería",
       "assistantDetails": "Asistente original: {{name}}",
       "galleryTitle": "Galería de {{name}}"
@@ -153,8 +154,8 @@
     "conversationSettings": {
       "modalTitle": "Configuración de la conversación",
       "interactionModeLabel": "Modo de interacción",
-      "modeNormal": "Roleplay equilibrado",
-      "modeRoleplay": "Roleplay completo",
+      "modeNormal": "Rol equilibrado",
+      "modeRoleplay": "Rol completo",
       "responseLengthLabel": "Longitud de respuesta",
       "lengthShort": "Corto",
       "lengthMedium": "Medio",
@@ -164,31 +165,32 @@
       "slangNone": "Nunca",
       "slangLow": "Ocasionalmente",
       "slangMedium": "A menudo",
-      "roleplaySpecificTitle": "Detalles del roleplay",
+      "roleplaySpecificTitle": "Detalles del rol",
       "scenarioGenreLabel": "Género del escenario",
+      "genreNone": "Ninguno",
       "genreFantasy": "Fantasía",
       "genreSciFi": "Ciencia ficción",
       "genreModern": "Moderno",
       "genreCustom": "Personalizado",
       "customGenreDetailsLabel": "Detalles del escenario personalizado",
-      "customGenrePlaceholder": "Describe un escenario personalizado para el roleplay",
+      "customGenrePlaceholder": "Describe un escenario personalizado para el rol",
       "allowNsfwLabel": "Permitir contenido para adultos",
       "nsfwGlobalDisabledWarning": "Tu cuenta no permite contenido para adultos.",
       "showThoughtsLabel": "Mostrar pensamientos del asistente",
       "narrationStyleLabel": "Estilo de narración",
       "narrationBalanced": "Equilibrado",
       "narrationDescriptive": "Descriptivo",
-      "narrationDialogue": "Enfocado en diálogos",
+      "narrationDialogue": "Centrado en el diálogo",
       "viewOptionsTitle": "Configuración visual",
       "bgTypeLabel": "Tipo de fondo",
       "bgTypeTheme": "Usar tema",
       "bgTypeImage": "Usar imagen",
       "selectFromGalleryButton": "Seleccionar de la galería",
       "removeBgImageButton": "Eliminar imagen",
-      "noImageSelected": "No se ha seleccionado fondo",
+      "noImageSelected": "No hay fondo seleccionado",
       "errorLoadingGallery": "No se pudieron cargar las imágenes de la galería.",
       "galleryButton": "Abrir galería",
-      "imageGalleryTitle": "Galería de chat"
+      "imageGalleryTitle": "Galería del chat"
     },
     "common": {
       "deleting": "Eliminando...",
@@ -203,9 +205,9 @@
       "addParticipantButtonTitle": "Añadir participante"
     },
     "messageInput": {
-      "micNotSupportedError": "Micrófono no compatible.",
+      "micNotSupportedError": "Micrófono no soportado.",
       "transcriptionFailedError": "Fallo en la transcripción.",
-      "transcriptionServiceError": "Error en el servicio de transcripción.",
+      "transcriptionServiceError": "Error del servicio de transcripción.",
       "micAccessError": "Acceso al micrófono denegado.",
       "placeholderProcessingAudio": "Procesando audio...",
       "placeholderRecording": "Grabando...",
@@ -235,6 +237,22 @@
     "chatActions": {
       "actionConfirmedByUser": "El usuario confirmó la acción.",
       "actionCancelledByUser": "El usuario canceló la acción."
+    },
+    "addParticipantModal": {
+      "title": "Añadir participante",
+      "charactersTab": "Personajes",
+      "myAssistantsTab": "Mis asistentes",
+      "publicAssistantsTab": "Asistentes públicos",
+      "assistantsTab": "Asistentes",
+      "searchCharactersPlaceholder": "Buscar personajes...",
+      "searchAssistantsPlaceholder": "Buscar asistentes...",
+      "noItemsForSearch": "No se encontraron resultados para \"{{searchTerm}}\"",
+      "noItemsAvailable": "No hay elementos disponibles",
+      "alreadyAddedMaybe": "(Todos los elementos disponibles ya están en la conversación)",
+      "noDescription": "No hay descripción disponible",
+      "addToConversationButtonTitle": "Añadir a la conversación",
+      "maxParticipantsError": "Se permiten un máximo de {{max}} participantes",
+      "connectionError": "Error de conexión. Inténtalo de nuevo."
     }
   }
 }

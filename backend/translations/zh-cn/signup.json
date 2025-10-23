@@ -7,10 +7,10 @@
     "facebookButton": "使用 Facebook 注册",
     "termsAgreementPt1": "注册即表示您同意",
     "termsAgreementAnd": "和",
-    "termsAndConditions": "服务条款",
+    "termsAndConditions": "条款和条件",
     "privacyPolicy": "隐私政策",
     "alreadyRegistered": "已有账户？",
     "loginLink": "登录",
-    "checkingAuth": "正在验证身份..."
+    "checkingAuth": "正在检查身份验证..."
   }
 }

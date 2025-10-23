@@ -5,14 +5,14 @@
     "language": "Idioma",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
-    "privacy": "Al continuar, usted acepta nuestra política de privacidad y autoriza a CharHub a acceder a su información básica de perfil.",
+    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a la información básica de tu perfil.",
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
     "tokenStored": "Almacenado en cookie HTTP-only",
     "navDashboard": "Panel",
     "navCharacters": "Personajes",
-    "navTagline": "Demo segura de OAuth",
+    "navTagline": "Demostración segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -32,8 +32,8 @@
     "cancel": "Cancelar",
     "save": "Guardar",
     "saving": "Guardando...",
-    "enabled": "Activado",
-    "disabled": "Desactivado",
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
     "selectOption": "Selecciona una opción",
     "noResults": "No se encontraron opciones."
   }

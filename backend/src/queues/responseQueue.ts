@@ -6,6 +6,7 @@ import { agentService } from '../services/agentService';
 import { prisma } from '../config/database';
 import { SenderType } from '../generated/prisma';
 import * as messageService from '../services/messageService';
+import { isQueuesEnabled } from '../config/features';
 
 // Job data structure
 export interface ResponseJobData {
@@ -17,36 +18,29 @@ export interface ResponseJobData {
 // Queue name
 const QUEUE_NAME = 'ai-response-generation';
 
-// Create connection for queue
-const queueConnection = createRedisClient();
+let responseQueue: Queue<ResponseJobData> | null = null;
+let responseWorker: Worker<ResponseJobData> | null = null;
+let queueConnection: ReturnType<typeof createRedisClient> | null = null;
+let workerConnection: ReturnType<typeof createRedisClient> | null = null;
 
-// Create the queue
-export const responseQueue = new Queue<ResponseJobData>(QUEUE_NAME, {
-  connection: queueConnection,
-  defaultJobOptions: {
-    attempts: 3,
-    backoff: {
-      type: 'exponential',
-      delay: 2000,
+function ensureInitialized() {
+  if (!isQueuesEnabled()) return false;
+  if (responseQueue && responseWorker) return true;
+  queueConnection = createRedisClient();
+  responseQueue = new Queue<ResponseJobData>(QUEUE_NAME, {
+    connection: queueConnection,
+    defaultJobOptions: {
+      attempts: 3,
+      backoff: { type: 'exponential', delay: 2000 },
+      removeOnComplete: { count: 100, age: 24 * 3600 },
+      removeOnFail: { count: 500 },
     },
-    removeOnComplete: {
-      count: 100, // Keep last 100 completed jobs
-      age: 24 * 3600, // Keep for 24 hours
-    },
-    removeOnFail: {
-      count: 500, // Keep last 500 failed jobs for debugging
-    },
-  },
-});
-
-// Worker connection (separate from queue)
-const workerConnection = createRedisClient();
-
-// Create the worker
-export const responseWorker = new Worker<ResponseJobData>(
-  QUEUE_NAME,
-  async (job: Job<ResponseJobData>) => {
-    const { conversationId, participantId, lastMessageId } = job.data;
+  });
+  workerConnection = createRedisClient();
+  responseWorker = new Worker<ResponseJobData>(
+    QUEUE_NAME,
+    async (job: Job<ResponseJobData>) => {
+      const { conversationId, participantId, lastMessageId } = job.data;
 
     logger.info(
       { jobId: job.id, conversationId, participantId },
@@ -96,7 +90,12 @@ export const responseWorker = new Worker<ResponseJobData>(
 
       // Generate response using ResponseGenerationAgent
       const agent = agentService.getResponseGenerationAgent();
-      const content = await agent.execute(conversation, conversation.owner, lastMessage);
+      const content = await agent.execute(
+        conversation,
+        conversation.owner,
+        lastMessage,
+        participantId  // Pass the participant ID to use the correct character
+      );
 
       // Determine sender ID based on participant type
       let senderId: string;
@@ -138,12 +137,44 @@ export const responseWorker = new Worker<ResponseJobData>(
       );
       throw error;
     }
-  },
-  {
-    connection: workerConnection,
-    concurrency: 5, // Process up to 5 jobs concurrently
-  }
-);
+    },
+    { connection: workerConnection, concurrency: 5 }
+  );
+
+  // Attach events
+  responseWorker.on('completed', (job, result) => {
+    logger.debug(
+      { jobId: job.id, conversationId: job.data.conversationId },
+      'Job completed successfully'
+    );
+    if (ioInstance && result) {
+      const room = getRoomName(job.data.conversationId);
+      ioInstance.to(room).emit('typing_stop', {
+        conversationId: job.data.conversationId,
+        participantId: result.participantId,
+        source: 'bot',
+      });
+      ioInstance.to(room).emit('message_received', {
+        id: result.messageId,
+        conversationId: job.data.conversationId,
+        senderId: result.participantId,
+        senderType: 'ASSISTANT',
+        content: result.content,
+        attachments: null,
+        metadata: null,
+        timestamp: new Date().toISOString(),
+      });
+    }
+  });
+  responseWorker.on('failed', (job, error) => {
+    logger.error({ jobId: job?.id, conversationId: job?.data.conversationId, error }, 'Job failed');
+  });
+  responseWorker.on('error', (error) => {
+    logger.error({ error }, 'Worker error');
+  });
+
+  return true;
+}
 
 // Socket.IO instance (set by setupWebSocketBroadcast)
 let ioInstance: Server | null = null;
@@ -165,77 +196,28 @@ function getRoomName(conversationId: string): string {
 }
 
 // Worker event handlers
-responseWorker.on('completed', (job, result) => {
-  logger.debug(
-    { jobId: job.id, conversationId: job.data.conversationId },
-    'Job completed successfully'
-  );
-
-  // Broadcast via WebSocket if io instance is available
-  if (ioInstance && result) {
-    const room = getRoomName(job.data.conversationId);
-
-    // Stop typing indicator for this bot
-    ioInstance.to(room).emit('typing_stop', {
-      conversationId: job.data.conversationId,
-      participantId: result.participantId,
-      source: 'bot',
-    });
-
-    // Emit the AI message
-    ioInstance.to(room).emit('message_received', {
-      id: result.messageId,
-      conversationId: job.data.conversationId,
-      senderId: result.participantId,
-      senderType: 'ASSISTANT',
-      content: result.content,
-      attachments: null,
-      metadata: null,
-      timestamp: new Date().toISOString(),
-    });
-
-    logger.debug(
-      { conversationId: job.data.conversationId, messageId: result.messageId },
-      'AI response broadcasted via WebSocket'
-    );
-  } else {
-    logger.warn(
-      { conversationId: job.data.conversationId },
-      'WebSocket broadcast skipped - io instance not configured'
-    );
-  }
-});
-
-responseWorker.on('failed', (job, error) => {
-  logger.error(
-    { jobId: job?.id, conversationId: job?.data.conversationId, error },
-    'Job failed'
-  );
-});
-
-responseWorker.on('error', (error) => {
-  logger.error({ error }, 'Worker error');
-});
-
 // Helper function to add a job to the queue
 export async function queueAIResponse(data: ResponseJobData): Promise<string> {
-  const job = await responseQueue.add('generate-response', data, {
+  if (!ensureInitialized()) {
+    logger.warn({ conversationId: data.conversationId }, 'Queues are disabled; skipping AI response job');
+    return 'queues-disabled';
+  }
+  const job = await (responseQueue as Queue<ResponseJobData>).add('generate-response', data, {
     jobId: `${data.conversationId}-${data.participantId}-${Date.now()}`,
   });
-
   logger.debug(
     { jobId: job.id, conversationId: data.conversationId, participantId: data.participantId },
     'AI response job queued'
   );
-
   return job.id!;
 }
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
+  if (!responseWorker || !responseQueue) return;
   logger.info('SIGTERM received, closing response worker and queue');
-  await responseWorker.close();
-  await responseQueue.close();
-  await queueConnection.quit();
-  await workerConnection.quit();
+  try { await responseWorker.close(); } catch {}
+  try { await responseQueue.close(); } catch {}
+  try { await queueConnection?.quit(); } catch {}
+  try { await workerConnection?.quit(); } catch {}
 });

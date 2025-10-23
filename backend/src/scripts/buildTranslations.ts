@@ -9,25 +9,7 @@ import type { LLMProvider } from '../services/llm';
 config({ path: path.resolve(__dirname, '../../.env') });
 
 const TRANSLATIONS_ROOT = path.resolve(__dirname, '../../translations');
-const BASE_LANGUAGE = 'en';
-
-// Supported namespaces - must match translationService.ts
-const SUPPORTED_NAMESPACES = [
-  'common',
-  'home',
-  'login',
-  'signup',
-  'callback',
-  'dashboard',
-  'notFound',
-  'legal',
-  'characters',
-  'navigation',
-  'profile',
-  'chat',
-  'imageGallery'
-] as const;
-type Namespace = (typeof SUPPORTED_NAMESPACES)[number];
+const SOURCE_FOLDER = '_source';
 
 // Target languages to build
 const TARGET_LANGUAGES = [
@@ -69,6 +51,65 @@ function normalizeLanguage(language: string): string {
   return language.toLowerCase();
 }
 
+/**
+ * Discover all available namespaces by scanning the source folder
+ */
+async function discoverNamespaces(): Promise<string[]> {
+  const sourceDir = path.join(TRANSLATIONS_ROOT, SOURCE_FOLDER);
+
+  if (!existsSync(sourceDir)) {
+    throw new Error(`Source translation folder not found: ${sourceDir}`);
+  }
+
+  const files = await fs.readdir(sourceDir);
+  const namespaces = files
+    .filter(file => file.endsWith('.json'))
+    .map(file => file.replace('.json', ''))
+    .sort();
+
+  if (namespaces.length === 0) {
+    throw new Error(`No translation files found in ${sourceDir}`);
+  }
+
+  return namespaces;
+}
+
+/**
+ * Get file modification time
+ */
+async function getFileModificationTime(filePath: string): Promise<Date | null> {
+  try {
+    const stats = await fs.stat(filePath);
+    return stats.mtime;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Check if source file is newer than translated file
+ */
+async function isSourceNewer(language: string, namespace: string): Promise<boolean> {
+  const sourceFile = path.join(TRANSLATIONS_ROOT, SOURCE_FOLDER, `${namespace}.json`);
+  const translatedFile = path.join(TRANSLATIONS_ROOT, language, `${namespace}.json`);
+
+  const sourceTime = await getFileModificationTime(sourceFile);
+  const translatedTime = await getFileModificationTime(translatedFile);
+
+  // If translation doesn't exist, source is "newer"
+  if (!translatedTime) {
+    return true;
+  }
+
+  // If source doesn't exist, something is wrong
+  if (!sourceTime) {
+    throw new Error(`Source file not found: ${sourceFile}`);
+  }
+
+  // Compare modification times
+  return sourceTime > translatedTime;
+}
+
 function getProvider(options: BuildOptions): LLMProvider {
   if (options.provider) {
     return options.provider;
@@ -108,7 +149,7 @@ function resolveTranslationMode(options: BuildOptions): { mode: TranslationMode;
   return { mode: 'remote' };
 }
 
-async function readTranslationFile(language: string, namespace: Namespace): Promise<TranslationFile | null> {
+async function readTranslationFile(language: string, namespace: string): Promise<TranslationFile | null> {
   const filePath = path.join(TRANSLATIONS_ROOT, language, `${namespace}.json`);
   if (!existsSync(filePath)) {
     return null;
@@ -117,7 +158,7 @@ async function readTranslationFile(language: string, namespace: Namespace): Prom
   return JSON.parse(raw) as TranslationFile;
 }
 
-async function writeTranslationFile(language: string, namespace: Namespace, data: TranslationFile): Promise<void> {
+async function writeTranslationFile(language: string, namespace: string, data: TranslationFile): Promise<void> {
   const dir = path.join(TRANSLATIONS_ROOT, language);
   await fs.mkdir(dir, { recursive: true });
   const filePath = path.join(dir, `${namespace}.json`);
@@ -230,8 +271,8 @@ function compareKeys(baseKeys: string[], translatedKeys: string[]): { missing: s
   return { missing, extra };
 }
 
-async function validateTranslation(language: string, namespace: Namespace): Promise<boolean> {
-  const baseFile = await readTranslationFile(BASE_LANGUAGE, namespace);
+async function validateTranslation(language: string, namespace: string): Promise<boolean> {
+  const baseFile = await readTranslationFile(SOURCE_FOLDER, namespace);
   const translatedFile = await readTranslationFile(language, namespace);
 
   if (!baseFile || !translatedFile) {
@@ -259,12 +300,12 @@ async function validateTranslation(language: string, namespace: Namespace): Prom
 
 async function writeOfflineFallback(
   language: string,
-  namespace: Namespace,
+  namespace: string,
   baseFile: TranslationFile,
   options: BuildOptions
 ): Promise<void> {
   if (options.verbose) {
-    console.log(`  💤 Offline mode - copying English resources for ${language}/${namespace}`);
+    console.log(`  💤 Offline mode - copying source resources for ${language}/${namespace}`);
   }
 
   await writeTranslationFile(language, namespace, {
@@ -275,12 +316,12 @@ async function writeOfflineFallback(
 
 async function generateTranslation(
   language: string,
-  namespace: Namespace,
+  namespace: string,
   options: BuildOptions
 ): Promise<Record<string, unknown>> {
-  const baseFile = await readTranslationFile(BASE_LANGUAGE, namespace);
+  const baseFile = await readTranslationFile(SOURCE_FOLDER, namespace);
   if (!baseFile) {
-    throw new Error(`Base translation for namespace "${namespace}" not found.`);
+    throw new Error(`Source translation for namespace "${namespace}" not found in ${SOURCE_FOLDER}/ folder.`);
   }
 
   const normalizedLanguage = normalizeLanguage(language);
@@ -357,7 +398,7 @@ async function generateTranslation(
 
 async function buildNamespace(
   language: string,
-  namespace: Namespace,
+  namespace: string,
   options: BuildOptions
 ): Promise<void> {
   const normalizedLang = normalizeLanguage(language);
@@ -365,16 +406,24 @@ async function buildNamespace(
   const exists = await readTranslationFile(normalizedLang, namespace);
 
   if (exists && !options.force) {
-    const isValid = await validateTranslation(normalizedLang, namespace);
+    // Check if source file is newer than translated file
+    const sourceIsNewer = await isSourceNewer(normalizedLang, namespace);
 
-    if (isValid) {
-      if (options.verbose) {
-        console.log(`  ✓ ${namespace} - already valid`);
+    if (!sourceIsNewer) {
+      // Validate translation structure
+      const isValid = await validateTranslation(normalizedLang, namespace);
+
+      if (isValid) {
+        if (options.verbose) {
+          console.log(`  ✓ ${namespace} - up to date`);
+        }
+        return;
       }
-      return;
-    }
 
-    console.log(`  🔄 ${namespace} - invalid, regenerating...`);
+      console.log(`  🔄 ${namespace} - invalid structure, regenerating...`);
+    } else {
+      console.log(`  🔄 ${namespace} - source updated, regenerating...`);
+    }
   } else if (options.force) {
     console.log(`  🔄 ${namespace} - force rebuild...`);
   } else {
@@ -385,10 +434,10 @@ async function buildNamespace(
   console.log(`  ✓ ${namespace} - done`);
 }
 
-async function buildLanguage(language: string, options: BuildOptions): Promise<void> {
+async function buildLanguage(language: string, namespaces: string[], options: BuildOptions): Promise<void> {
   console.log(`\n📦 Building ${language}...`);
 
-  for (const namespace of SUPPORTED_NAMESPACES) {
+  for (const namespace of namespaces) {
     await buildNamespace(language, namespace, options);
   }
 
@@ -399,21 +448,24 @@ async function buildAllTranslations(options: BuildOptions = {}): Promise<void> {
   const provider = getProvider(options);
   const { mode, reason } = resolveTranslationMode(options);
 
+  // Discover namespaces from source folder
+  const namespaces = await discoverNamespaces();
+
   console.log('🌍 Building translations...\n');
   console.log(`Mode: ${mode.toUpperCase()}`);
   if (reason) {
     console.log(`Reason: ${reason}`);
   }
-  console.log(`Base language: ${BASE_LANGUAGE}`);
+  console.log(`Source folder: ${SOURCE_FOLDER}`);
   console.log(`Target languages: ${TARGET_LANGUAGES.join(', ')}`);
-  console.log(`Namespaces: ${SUPPORTED_NAMESPACES.join(', ')}\n`);
+  console.log(`Discovered namespaces (${namespaces.length}): ${namespaces.join(', ')}\n`);
   console.log(`Provider: ${provider}\n`);
 
   const startTime = Date.now();
 
   for (const language of TARGET_LANGUAGES) {
     try {
-      await buildLanguage(language, options);
+      await buildLanguage(language, namespaces, options);
     } catch (error) {
       console.error(`❌ Failed to build ${language}:`, error);
       if (!options.force) {
@@ -468,4 +520,4 @@ if (require.main === module) {
     });
 }
 
-export { buildAllTranslations, buildLanguage, buildNamespace };
+export { buildAllTranslations, buildLanguage, buildNamespace, discoverNamespaces };

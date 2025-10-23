@@ -2,7 +2,7 @@
   "description": "Copy for the fallback 404 page when a route is not found.",
   "resources": {
     "title": "404 - ページが見つかりません",
-    "message": "お探しのページは存在しません。ダッシュボードに戻るか、新しいログインセッションを開始してください。",
+    "message": "アクセスしようとしたページは存在しません。ダッシュボードに戻るか、新しいログインセッションを開始してください。",
     "returnButton": "ログインに戻る"
   }
 }

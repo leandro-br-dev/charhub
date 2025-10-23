@@ -12,9 +12,9 @@
     "subtitle": "Actualiza cómo te ven los demás en CharHub. Las preferencias que aún se están migrando aparecerán aquí pronto.",
     "identity": {
       "header": "Foto de perfil",
-      "description": "Elige un avatar para representarte en chats y personajes.",
+      "description": "Elige un avatar que te represente en chats y personajes.",
       "upload": "Subir imagen",
-      "placeholderNote": "Las cargas de avatar estarán disponibles después de que reconectemos el servicio multimedia."
+      "placeholderNote": "Las subidas de avatares estarán disponibles después de que reconectemos el servicio multimedia."
     },
     "details": {
       "header": "Detalles públicos",
@@ -22,10 +22,10 @@
     },
     "contentClassification": {
       "header": "Clasificación de contenido",
-      "description": "Configura filtros de contenido para controlar qué tipos de personajes e historias deseas ver. Solo el contenido que coincida con tus preferencias seleccionadas te será recomendado.",
+      "description": "Configura filtros de contenido para controlar qué tipos de personajes e historias quieres ver. Solo se te recomendará contenido que coincida con tus preferencias seleccionadas.",
       "blockedTags": "Filtros de contenido",
-      "filterNote": "Selecciona los tipos de contenido que deseas PERMITIR. Los elementos desmarcados se filtrarán de las recomendaciones.",
-      "allAgesNote": "Todos los tipos de contenido están bloqueados cuando se selecciona la calificación \"Para todas las edades\".",
+      "filterNote": "Selecciona los tipos de contenido que quieres PERMITIR. Los elementos desmarcados se filtrarán de las recomendaciones.",
+      "allAgesNote": "Todos los tipos de contenido están bloqueados cuando se selecciona la calificación \"Todas las edades\".",
       "allowAll": "Permitir todo",
       "birthDateRequired": "Fecha de nacimiento requerida",
       "birthDateRequiredMessage": "Por favor, completa tu fecha de nacimiento en la pestaña Perfil para desbloquear la configuración de clasificación de contenido. Esto garantiza recomendaciones de contenido apropiadas para la edad.",
@@ -39,11 +39,11 @@
       "fullName": "Nombre completo",
       "fullNamePlaceholder": "Opcional para facturación y copias por correo electrónico",
       "username": "Nombre de usuario",
-      "usernamePlaceholder": "nombre de usuario",
+      "usernamePlaceholder": "nombredeusuario",
       "usernameHint": "Tu identificador único en CharHub.",
       "usernameChecking": "Comprobando disponibilidad...",
-      "usernameAvailable": "El nombre de usuario está disponible",
-      "usernameUnavailable": "El nombre de usuario ya está en uso",
+      "usernameAvailable": "Nombre de usuario disponible",
+      "usernameUnavailable": "Nombre de usuario ya en uso",
       "email": "Correo electrónico",
       "emailHint": "Gestionado por tu proveedor de autenticación.",
       "birthDate": "Fecha de nacimiento",
@@ -67,15 +67,24 @@
       "description": "Tus sesiones de CharHub heredan la seguridad OAuth de Google o Facebook. Pronto se añadirá soporte para múltiples factores.",
       "placeholder": "La gestión de sesiones y los controles de inicio de sesión sin contraseña están en el plan de desarrollo."
     },
+    "deleteAccount": {
+      "title": "Eliminar cuenta",
+      "description": "Elimina permanentemente tu cuenta y todo tu contenido.",
+      "submit": "Eliminar mi cuenta",
+      "confirmTitle": "¿Estás absolutamente seguro?",
+      "confirmDescription": "Esta acción no se puede deshacer. Eliminará permanentemente tu cuenta y eliminará tus datos de nuestros servidores.",
+      "confirmInstruction": "Por favor, escribe \"ELIMINAR\" para confirmar.",
+      "confirmSubmit": "Eliminar esta cuenta"
+    },
     "feedback": {
-      "success": "Perfil actualizado con éxito.",
+      "success": "Perfil actualizado correctamente.",
       "error": "No pudimos guardar tus cambios."
     },
     "errors": {
       "updateFailed": "No pudimos guardar tus cambios. Inténtalo de nuevo en un momento.",
-      "displayNameRequired": "El nombre para mostrar es obligatorio.",
+      "displayNameRequired": "Se requiere un nombre para mostrar.",
       "usernameTooShort": "El nombre de usuario debe contener al menos 3 caracteres después del @.",
-      "usernameInvalid": "El nombre de usuario debe empezar por @ y contener solo letras, números y guiones bajos.",
+      "usernameInvalid": "El nombre de usuario debe empezar con @ y contener solo letras, números y guiones bajos.",
       "usernameTaken": "Este nombre de usuario ya está en uso. Por favor, elige otro.",
       "validationFailed": "Por favor, revisa los campos del formulario e inténtalo de nuevo.",
       "authenticationRequired": "Tu sesión ha expirado. Por favor, inicia sesión de nuevo para continuar."

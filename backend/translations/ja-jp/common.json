@@ -2,39 +2,39 @@
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
     "brand": "CharHub Auth",
-    "language": "Language",
-    "continueGoogle": "Continue with Google",
-    "continueFacebook": "Continue with Facebook",
-    "privacy": "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
-    "logout": "Sign out",
-    "logoutLoading": "Signing out...",
-    "authenticatedUser": "Authenticated user",
-    "tokenStored": "Stored in HTTP-only cookie",
-    "navDashboard": "Dashboard",
-    "navCharacters": "Characters",
-    "navTagline": "Secure OAuth demo",
+    "language": "言語",
+    "continueGoogle": "Googleで続行",
+    "continueFacebook": "Facebookで続行",
+    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを承認するものとします。",
+    "logout": "サインアウト",
+    "logoutLoading": "サインアウト中...",
+    "authenticatedUser": "認証済みユーザー",
+    "tokenStored": "HTTP専用Cookieに保存",
+    "navDashboard": "ダッシュボード",
+    "navCharacters": "キャラクター",
+    "navTagline": "セキュアなOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Provider",
+    "provider": "プロバイダー",
     "theme": {
-      "label": "Theme",
+      "label": "テーマ",
       "option": {
-        "light": "Light",
-        "dark": "Dark",
-        "system": "System"
+        "light": "ライト",
+        "dark": "ダーク",
+        "system": "システム"
       }
     },
-    "none": "None",
-    "unknown": "Unknown",
-    "nameNotAvailable": "Name not available",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "enabled": "Enabled",
-    "disabled": "Disabled",
-    "selectOption": "Select an option",
-    "noResults": "No options found."
+    "none": "なし",
+    "unknown": "不明",
+    "nameNotAvailable": "名前が利用できません",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "saving": "保存中...",
+    "enabled": "有効",
+    "disabled": "無効",
+    "selectOption": "オプションを選択",
+    "noResults": "オプションが見つかりませんでした。"
   }
 }

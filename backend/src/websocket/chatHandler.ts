@@ -8,6 +8,7 @@ import * as conversationService from '../services/conversationService';
 import * as messageService from '../services/messageService';
 import { agentService } from '../services/agentService';
 import { queueAIResponse, setupWebSocketBroadcast } from '../queues/responseQueue';
+import { isQueuesEnabled } from '../config/features';
 import type { AuthenticatedUser } from '../types';
 import type { Message } from '../generated/prisma';
 import { SenderType } from '../generated/prisma';
@@ -308,13 +309,54 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         emitTypingForBots(io, payload.conversationId, respondingParticipantIds, true);
 
         // Step 7: Queue AI response generation for each bot
-        // Responses will be broadcasted via the global worker listener
-        for (const participantId of respondingParticipantIds) {
-          await queueAIResponse({
-            conversationId: payload.conversationId,
-            participantId,
-            lastMessageId: message.id,
-          });
+        if (isQueuesEnabled()) {
+          // Use queue system if enabled
+          for (const participantId of respondingParticipantIds) {
+            await queueAIResponse({
+              conversationId: payload.conversationId,
+              participantId,
+              lastMessageId: message.id,
+            });
+          }
+        } else {
+          // Fallback: generate responses directly without queues
+          logger.debug(
+            { conversationId: payload.conversationId, botCount: respondingParticipantIds.length },
+            'Generating AI responses directly (queues disabled)'
+          );
+
+          const { sendAIMessage } = await import('../services/assistantService');
+
+          for (const participantId of respondingParticipantIds) {
+            try {
+              const aiMessage = await sendAIMessage(payload.conversationId, participantId);
+
+              // Broadcast the AI response to the room
+              io.to(room).emit('message_received', serializeMessage(aiMessage));
+
+              // Stop typing indicator
+              emitTypingForBots(io, payload.conversationId, [participantId], false);
+
+              logger.info(
+                { conversationId: payload.conversationId, messageId: aiMessage.id, participantId },
+                'AI response generated and broadcasted'
+              );
+            } catch (aiError) {
+              logger.error(
+                { error: aiError, conversationId: payload.conversationId, participantId },
+                'Failed to generate AI response'
+              );
+
+              // Stop typing indicator on error
+              emitTypingForBots(io, payload.conversationId, [participantId], false);
+
+              // Optionally notify the user of the error
+              io.to(room).emit('error', {
+                message: 'Failed to generate AI response',
+                participantId,
+              });
+            }
+          }
         }
 
       } catch (error) {

@@ -9,6 +9,7 @@ import { logger } from './config/logger';
 import { configurePassport } from './config/passport';
 import { disconnectDatabase } from './config/database';
 import { initializeWorkers } from './queues/workers';
+import { isQueuesEnabled } from './config/features';
 import { queueManager } from './queues';
 import v1Routes from './routes/v1';
 import { setupChatSocket } from './websocket/chatHandler';
@@ -84,8 +85,10 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   });
 });
 
-// Initialize queue workers
-initializeWorkers();
+// Initialize queue workers (guarded to avoid Redis errors in environments without Redis)
+if (isQueuesEnabled()) {
+  initializeWorkers();
+}
 
 const io = setupChatSocket(server);
 

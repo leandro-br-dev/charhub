@@ -10,14 +10,14 @@
     "reportBug": "Informar de un problema",
     "storyPlaceholder": "Las herramientas de historia estarán aquí pronto.",
     "chatHistory": "Historial de conversaciones",
-    "chatHistoryPlaceholder": "Los mensajes e hilos aparecerán aquí cuando la migración del chat se complete.",
-    "developmentTools": "Herramientas de desarrollador",
-    "developmentPlaceholder": "Los pipelines de compilación, registros y controles de automatización estarán aquí pronto.",
-    "characterSidebar": "Resumen de personajes",
-    "characterSidebarPlaceholder": "Explora y fija tus personajes favoritos aquí tan pronto como se reconstruya la barra lateral del centro.",
+    "chatHistoryPlaceholder": "Los mensajes y los hilos aparecerán aquí una vez que se complete la migración del chat.",
+    "developmentTools": "Herramientas de desarrollo",
+    "developmentPlaceholder": "Las canalizaciones de compilación, los registros y los controles de automatización estarán aquí pronto.",
+    "characterSidebar": "Descripción general de personajes",
+    "characterSidebarPlaceholder": "Busca y fija tus personajes favoritos aquí tan pronto como se reconstruya la barra lateral del centro.",
     "storySidebar": "Historias",
-    "storySidebarPlaceholder": "Guarda borradores y esquemas de capítulos aquí una vez que se migre el conjunto de herramientas de narración.",
+    "storySidebarPlaceholder": "Guarda borradores y esquemas de capítulos aquí una vez que se migre la suite de narración.",
     "sidebarDefaultTitle": "Explorar CharHub",
-    "sidebarDefaultDescription": "Usa los iconos en la barra de navegación para cambiar entre experiencias."
+    "sidebarDefaultDescription": "Utiliza los iconos de la barra de navegación para cambiar entre experiencias."
   }
 }

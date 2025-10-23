@@ -18,32 +18,32 @@
     },
     "details": {
       "header": "Détails publics",
-      "description": "Ces informations sont partagées avec les collaborateurs et utilisées comme valeurs par défaut dans les conversations."
+      "description": "Ces valeurs sont partagées avec les collaborateurs et utilisées comme valeurs par défaut dans les conversations."
     },
     "contentClassification": {
       "header": "Classification du contenu",
-      "description": "Configurez des filtres de contenu pour contrôler les types de personnages et d'histoires que vous souhaitez voir. Seul le contenu correspondant à vos préférences sélectionnées vous sera recommandé.",
+      "description": "Configurez les filtres de contenu pour contrôler les types de personnages et d'histoires que vous souhaitez voir. Seul le contenu correspondant à vos préférences sélectionnées vous sera recommandé.",
       "blockedTags": "Filtres de contenu",
-      "filterNote": "Sélectionnez les types de contenu que vous souhaitez AUTORISER. Les éléments non cochés seront exclus des recommandations.",
+      "filterNote": "Sélectionnez les types de contenu que vous souhaitez AUTORISER. Les éléments non cochés seront filtrés des recommandations.",
       "allAgesNote": "Tous les types de contenu sont bloqués lorsque la classification \"Tous âges\" est sélectionnée.",
-      "allowAll": "Autoriser tout",
+      "allowAll": "Tout autoriser",
       "birthDateRequired": "Date de naissance requise",
       "birthDateRequiredMessage": "Veuillez renseigner votre date de naissance dans l'onglet Profil pour débloquer les paramètres de classification du contenu. Cela garantit des recommandations de contenu adaptées à l'âge.",
       "maxAgeRatingLabel": "Classification d'âge maximale",
       "maxAgeRatingHint": "Sélectionnez la classification d'âge maximale que vous souhaitez voir",
-      "ageRestricted": "Contenu restreint par âge"
+      "ageRestricted": "Restriction d'âge"
     },
     "fields": {
       "displayName": "Nom d'affichage",
       "displayNamePlaceholder": "Comment les autres utilisateurs vous appellent",
       "fullName": "Nom complet",
-      "fullNamePlaceholder": "Facultatif pour la facturation et les copies par e-mail",
+      "fullNamePlaceholder": "Optionnel pour la facturation et les copies par e-mail",
       "username": "Nom d'utilisateur",
-      "usernamePlaceholder": "nom d'utilisateur",
+      "usernamePlaceholder": "nomdutilisateur",
       "usernameHint": "Votre identifiant unique sur CharHub.",
       "usernameChecking": "Vérification de la disponibilité...",
-      "usernameAvailable": "Nom d'utilisateur disponible",
-      "usernameUnavailable": "Nom d'utilisateur déjà pris",
+      "usernameAvailable": "Le nom d'utilisateur est disponible",
+      "usernameUnavailable": "Le nom d'utilisateur est déjà pris",
       "email": "E-mail",
       "emailHint": "Géré par votre fournisseur d'authentification.",
       "birthDate": "Date de naissance",
@@ -67,12 +67,21 @@
       "description": "Vos sessions CharHub héritent de la sécurité OAuth de Google ou Facebook. La prise en charge de l'authentification multifacteur sera bientôt ajoutée.",
       "placeholder": "La gestion des sessions et les contrôles de connexion sans mot de passe sont prévus."
     },
+    "deleteAccount": {
+      "title": "Supprimer le compte",
+      "description": "Supprimez définitivement votre compte et tout votre contenu.",
+      "submit": "Supprimer mon compte",
+      "confirmTitle": "Êtes-vous absolument sûr ?",
+      "confirmDescription": "Cette action est irréversible. Elle supprimera définitivement votre compte et vos données de nos serveurs.",
+      "confirmInstruction": "Veuillez taper \"SUPPRIMER\" pour confirmer.",
+      "confirmSubmit": "Supprimer ce compte"
+    },
     "feedback": {
       "success": "Profil mis à jour avec succès.",
       "error": "Nous n'avons pas pu enregistrer vos modifications."
     },
     "errors": {
-      "updateFailed": "Nous n'avons pas pu enregistrer vos modifications. Veuillez réessayer dans un instant.",
+      "updateFailed": "Nous n'avons pas pu enregistrer vos modifications. Veuillez réessayer dans un moment.",
       "displayNameRequired": "Le nom d'affichage est requis.",
       "usernameTooShort": "Le nom d'utilisateur doit contenir au moins 3 caractères après le @.",
       "usernameInvalid": "Le nom d'utilisateur doit commencer par @ et ne contenir que des lettres, des chiffres et des underscores.",

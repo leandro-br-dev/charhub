@@ -20,14 +20,14 @@
       "yesterday": "Ontem",
       "last7Days": "Últimos 7 dias",
       "last30Days": "Últimos 30 dias",
-      "invalidDate": "Data Inválida",
+      "invalidDate": "Data inválida",
       "noResults": "Nenhuma conversa encontrada",
       "empty": "Nenhuma conversa ainda",
       "untitled": "Conversa sem título",
       "editTitle": "Editar título",
       "deleteConversation": "Excluir conversa",
       "deleteConfirmTitle": "Excluir Conversa",
-      "deleteConfirmMessage": "Tem certeza que deseja excluir \"{{title}}\"? Esta ação não pode ser desfeita.",
+      "deleteConfirmMessage": "Tem certeza de que deseja excluir \"{{title}}\"? Esta ação não pode ser desfeita.",
       "thisConversation": "esta conversa",
       "deleteSuccess": "Conversa excluída com sucesso"
     },
@@ -55,7 +55,7 @@
       "delete": "Excluir Mensagem",
       "edit": "Editar Mensagem",
       "copy": "Copiar",
-      "retry": "Tentar Novamente",
+      "retry": "Tentar novamente",
       "failed": "Falha ao enviar",
       "you": "Você",
       "ai": "IA",
@@ -97,6 +97,7 @@
       "generateAiFailed": "Falha ao gerar resposta.",
       "addParticipantFailed": "Falha ao adicionar participante.",
       "removeParticipantFailed": "Falha ao remover participante.",
+      "cannotRemoveLastCharacter": "Não é possível remover o último personagem da conversa. Pelo menos um personagem ou assistente deve permanecer.",
       "updateConversationFailed": "Falha ao atualizar conversa.",
       "reprocessNotAvailable": "Reprocessamento não está disponível sem um participante assistente.",
       "imageGenerationUnavailable": "Geração de imagem ainda não está disponível.",
@@ -121,7 +122,7 @@
       "specificInstructionsPlaceholder": "Adicione detalhes que devem influenciar as respostas durante esta conversa",
       "assumePersonaLabel": "Assumir persona",
       "changeVisualPersonaLabel": "Persona visual",
-      "selectCharacterPlaceholder": "Selecionar um personagem",
+      "selectCharacterPlaceholder": "Selecione um personagem",
       "loadingPersonas": "Carregando personas...",
       "savingConfigurationButton": "Salvando...",
       "saveConfigurationButton": "Salvar configuração",
@@ -136,10 +137,10 @@
       "loadingConversation": "Carregando conversa...",
       "addParticipantsPrompt": "Adicione participantes para iniciar a conversa.",
       "confirmDeleteTitle": "Confirmar Exclusão",
-      "confirmDeleteMessage": "Tem certeza que deseja excluir esta mensagem?",
+      "confirmDeleteMessage": "Tem certeza de que deseja excluir esta mensagem?",
       "confirmReprocessTitle": "Confirmar Regeneração",
-      "confirmReprocessUserMessage": "Tem certeza que deseja regenerar a resposta para esta mensagem?",
-      "confirmReprocessBotMessage": "Tem certeza que deseja regenerar esta mensagem?",
+      "confirmReprocessUserMessage": "Tem certeza de que deseja regenerar a resposta para esta mensagem?",
+      "confirmReprocessBotMessage": "Tem certeza de que deseja regenerar esta mensagem?",
       "regenerateButton": "Regenerar",
       "conversationSettingsTitle": "Configurações da Conversa"
     },
@@ -155,7 +156,7 @@
       "interactionModeLabel": "Modo de interação",
       "modeNormal": "Roleplay equilibrado",
       "modeRoleplay": "Roleplay completo",
-      "responseLengthLabel": "Tamanho da resposta",
+      "responseLengthLabel": "Comprimento da resposta",
       "lengthShort": "Curto",
       "lengthMedium": "Médio",
       "lengthLong": "Longo",
@@ -166,6 +167,7 @@
       "slangMedium": "Frequentemente",
       "roleplaySpecificTitle": "Detalhes do roleplay",
       "scenarioGenreLabel": "Gênero do cenário",
+      "genreNone": "Nenhum",
       "genreFantasy": "Fantasia",
       "genreSciFi": "Ficção Científica",
       "genreModern": "Moderno",
@@ -178,7 +180,7 @@
       "narrationStyleLabel": "Estilo de narração",
       "narrationBalanced": "Equilibrado",
       "narrationDescriptive": "Descritivo",
-      "narrationDialogue": "Foco em diálogo",
+      "narrationDialogue": "Focado em diálogo",
       "viewOptionsTitle": "Configurações visuais",
       "bgTypeLabel": "Tipo de fundo",
       "bgTypeTheme": "Usar tema",
@@ -188,7 +190,7 @@
       "noImageSelected": "Nenhum fundo selecionado",
       "errorLoadingGallery": "Não foi possível carregar as imagens da galeria.",
       "galleryButton": "Abrir galeria",
-      "imageGalleryTitle": "Galeria do Chat"
+      "imageGalleryTitle": "Galeria de Chat"
     },
     "common": {
       "deleting": "Excluindo...",
@@ -203,7 +205,7 @@
       "addParticipantButtonTitle": "Adicionar participante"
     },
     "messageInput": {
-      "micNotSupportedError": "Microfone não é compatível.",
+      "micNotSupportedError": "Microfone não suportado.",
       "transcriptionFailedError": "Falha na transcrição.",
       "transcriptionServiceError": "Erro no serviço de transcrição.",
       "micAccessError": "Acesso ao microfone negado.",
@@ -235,6 +237,22 @@
     "chatActions": {
       "actionConfirmedByUser": "Ação confirmada pelo usuário.",
       "actionCancelledByUser": "Ação cancelada pelo usuário."
+    },
+    "addParticipantModal": {
+      "title": "Adicionar Participante",
+      "charactersTab": "Personagens",
+      "myAssistantsTab": "Meus Assistentes",
+      "publicAssistantsTab": "Assistentes Públicos",
+      "assistantsTab": "assistentes",
+      "searchCharactersPlaceholder": "Pesquisar personagens...",
+      "searchAssistantsPlaceholder": "Pesquisar assistentes...",
+      "noItemsForSearch": "Nenhum resultado encontrado para \"{{searchTerm}}\"",
+      "noItemsAvailable": "Nenhum item disponível",
+      "alreadyAddedMaybe": "(Todos os itens disponíveis já estão na conversa)",
+      "noDescription": "Nenhuma descrição disponível",
+      "addToConversationButtonTitle": "Adicionar à conversa",
+      "maxParticipantsError": "Máximo de {{max}} participantes permitidos",
+      "connectionError": "Erro de conexão. Por favor, tente novamente."
     }
   }
 }

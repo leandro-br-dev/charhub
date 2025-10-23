@@ -6,10 +6,12 @@ import queuesRoutes from './queues';
 import classificationRoutes from './classification';
 import storageRoutes from './storage';
 import charactersRoutes from './characters';
+import assistantsRoutes from './assistants';
 import lorasRoutes from './loras';
 import attiresRoutes from './attires';
 import usersRoutes from './users';
 import conversationsRoutes from './conversations';
+import mediaRoutes from './media';
 
 const router = Router();
 
@@ -19,10 +21,12 @@ router.use('/queues', queuesRoutes);
 router.use('/classification', classificationRoutes);
 router.use('/storage', storageRoutes);
 router.use('/characters', charactersRoutes);
+router.use('/assistants', assistantsRoutes);
 router.use('/loras', lorasRoutes);
 router.use('/attires', attiresRoutes);
 router.use('/users', usersRoutes);
 router.use('/conversations', conversationsRoutes);
+router.use('/media', mediaRoutes);
 router.use('/', accessRoutes);
 
 export default router;

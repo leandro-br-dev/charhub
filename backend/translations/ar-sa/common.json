@@ -12,7 +12,7 @@
     "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض توضيحي لـ OAuth آمن",
+    "navTagline": "عرض توضيحي آمن لـ OAuth",
     "providerLabel": {
       "google": "جوجل",
       "facebook": "فيسبوك"
@@ -28,12 +28,12 @@
     },
     "none": "لا شيء",
     "unknown": "غير معروف",
-    "nameNotAvailable": "الاسم غير متاح",
+    "nameNotAvailable": "الاسم غير متوفر",
     "cancel": "إلغاء",
     "save": "حفظ",
     "saving": "جارٍ الحفظ...",
-    "enabled": "ممكّن",
-    "disabled": "معطّل",
+    "enabled": "مُمكّن",
+    "disabled": "مُعطّل",
     "selectOption": "اختر خيارًا",
     "noResults": "لم يتم العثور على خيارات."
   }

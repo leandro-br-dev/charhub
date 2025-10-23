@@ -2,9 +2,9 @@
   "description": "Landing page strings for the home page with call-to-action buttons.",
   "resources": {
     "titleLine1": "あなたの",
-    "titleLine2Highlight": "会話や物語に命を吹き込もう",
-    "subtitle": "魅力的なキャラクターを創造し、AIが生成するインタラクティブな物語に没頭しましょう。あなたの冒険が今、始まります。",
+    "titleLine2Highlight": "会話や物語に命を吹き込む",
+    "subtitle": "魅惑的なキャラクターを作成し、AI生成のインタラクティブな物語に没頭しましょう。あなたの冒険は今始まります。",
     "accessButton": "ログイン",
-    "signupButton": "新規登録"
+    "signupButton": "登録"
   }
 }

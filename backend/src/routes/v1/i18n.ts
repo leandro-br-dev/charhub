@@ -1,11 +1,16 @@
 import type { Request, Response, NextFunction } from 'express';
 import { Router } from 'express';
-import { getTranslationResources, SUPPORTED_NAMESPACES } from '../../services/translationService';
+import { getTranslationResources, discoverNamespaces } from '../../services/translationService';
 
 const router = Router();
 
-router.get('/namespaces/list', (_req: Request, res: Response) => {
-  res.json({ namespaces: SUPPORTED_NAMESPACES });
+router.get('/namespaces/list', async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const namespaces = await discoverNamespaces();
+    res.json({ namespaces });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.get('/:lang/:namespace', async (req: Request, res: Response, next: NextFunction) => {

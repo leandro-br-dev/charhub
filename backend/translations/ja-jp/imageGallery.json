@@ -1,16 +1,16 @@
 {
   "resources": {
-    "title": "Image gallery",
-    "loading": "Loading images...",
-    "error": "Failed to load images.",
+    "title": "画像ギャラリー",
+    "loading": "画像を読み込んでいます...",
+    "error": "画像の読み込みに失敗しました。",
     "tabs": {
-      "gallery": "Conversation Gallery",
-      "avatar": "Avatars",
-      "samples": "Samples",
-      "stickers": "Stickers"
+      "gallery": "会話ギャラリー",
+      "avatar": "アバター",
+      "samples": "サンプル",
+      "stickers": "ステッカー"
     },
-    "upload": "Upload Image",
-    "close": "Close",
-    "noImages": "No images available yet"
+    "upload": "画像をアップロード",
+    "close": "閉じる",
+    "noImages": "画像はまだありません"
   }
 }

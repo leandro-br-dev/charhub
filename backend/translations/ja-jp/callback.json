@@ -4,11 +4,11 @@
     "processingTitle": "ログインを完了しています...",
     "processingMessage": "認証を完了しています...",
     "successTitle": "おかえりなさい！",
-    "redirectingMessage": "認証が完了しました。リダイレクトしています...",
+    "redirectingMessage": "認証が完了しました。リダイレクトします...",
     "errorTitle": "認証エラー",
-    "cancelledMessage": "プロバイダーによって認証がキャンセルされました。",
-    "missingParamsMessage": "認証パラメーターが不足しています。ログインプロセスを再開してください。",
+    "cancelledMessage": "プロバイダーにより認証がキャンセルされました。",
+    "missingParamsMessage": "承認パラメータが不足しています。ログインプロセスを再開してください。",
     "exchangeFailedMessage": "OAuth交換を完了できませんでした。もう一度お試しください。",
-    "returnButton": "ログイン画面に戻る"
+    "returnButton": "ログインに戻る"
   }
 }

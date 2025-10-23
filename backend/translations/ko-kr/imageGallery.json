@@ -1,16 +1,16 @@
 {
   "resources": {
-    "title": "Image gallery",
-    "loading": "Loading images...",
-    "error": "Failed to load images.",
+    "title": "이미지 갤러리",
+    "loading": "이미지 로딩 중...",
+    "error": "이미지를 불러오는 데 실패했습니다.",
     "tabs": {
-      "gallery": "Conversation Gallery",
-      "avatar": "Avatars",
-      "samples": "Samples",
-      "stickers": "Stickers"
+      "gallery": "대화 갤러리",
+      "avatar": "아바타",
+      "samples": "샘플",
+      "stickers": "스티커"
     },
-    "upload": "Upload Image",
-    "close": "Close",
-    "noImages": "No images available yet"
+    "upload": "이미지 업로드",
+    "close": "닫기",
+    "noImages": "아직 이미지가 없습니다"
   }
 }

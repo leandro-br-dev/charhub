@@ -3,23 +3,37 @@ import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 
 const TRANSLATIONS_ROOT = path.resolve(__dirname, '../../translations');
-const BASE_LANGUAGE = 'en';
-const SUPPORTED_NAMESPACES = [
-  'common',
-  'home',
-  'login',
-  'signup',
-  'callback',
-  'dashboard',
-  'notFound',
-  'legal',
-  'characters',
-  'navigation',
-  'profile',
-  'chat',
-  'imageGallery'
-] as const;
-type Namespace = (typeof SUPPORTED_NAMESPACES)[number];
+const SOURCE_FOLDER = '_source';
+
+// Cache for discovered namespaces
+let cachedNamespaces: string[] | null = null;
+
+/**
+ * Discover all available namespaces by scanning the source folder
+ */
+async function discoverNamespaces(): Promise<string[]> {
+  if (cachedNamespaces) {
+    return cachedNamespaces;
+  }
+
+  const sourceDir = path.join(TRANSLATIONS_ROOT, SOURCE_FOLDER);
+
+  if (!existsSync(sourceDir)) {
+    throw new Error(`Source translation folder not found: ${sourceDir}`);
+  }
+
+  const files = await fs.readdir(sourceDir);
+  cachedNamespaces = files
+    .filter(file => file.endsWith('.json'))
+    .map(file => file.replace('.json', ''))
+    .sort();
+
+  if (cachedNamespaces.length === 0) {
+    throw new Error(`No translation files found in ${sourceDir}`);
+  }
+
+  return cachedNamespaces;
+}
 
 type TranslationFile = {
   description: string;
@@ -39,14 +53,16 @@ function languageCandidates(language: string): string[] {
   return [normalized, base];
 }
 
-function resolveNamespace(namespace: string): Namespace {
-  if ((SUPPORTED_NAMESPACES as readonly string[]).includes(namespace)) {
-    return namespace as Namespace;
+async function resolveNamespace(namespace: string): Promise<string> {
+  const supportedNamespaces = await discoverNamespaces();
+
+  if (supportedNamespaces.includes(namespace)) {
+    return namespace;
   }
   throw Object.assign(new Error(`Unsupported namespace: ${namespace}`), { statusCode: 400 });
 }
 
-async function readTranslationFile(language: string, namespace: Namespace): Promise<TranslationFile | null> {
+async function readTranslationFile(language: string, namespace: string): Promise<TranslationFile | null> {
   for (const candidate of languageCandidates(language)) {
     const filePath = path.join(TRANSLATIONS_ROOT, candidate, `${namespace}.json`);
     if (existsSync(filePath)) {
@@ -62,7 +78,7 @@ async function readTranslationFile(language: string, namespace: Namespace): Prom
  * Translations should be pre-built using npm run build:translations
  */
 export async function getTranslationResources(language: string, namespace: string): Promise<Record<string, unknown>> {
-  const resolvedNamespace = resolveNamespace(namespace);
+  const resolvedNamespace = await resolveNamespace(namespace);
   const normalizedLang = normalizeLanguage(language);
 
   try {
@@ -81,8 +97,8 @@ export async function getTranslationResources(language: string, namespace: strin
       }
     }
 
-    // Fallback to base language
-    const baseFallback = await readTranslationFile(BASE_LANGUAGE, resolvedNamespace);
+    // Fallback to source folder
+    const baseFallback = await readTranslationFile(SOURCE_FOLDER, resolvedNamespace);
     if (baseFallback) {
       return baseFallback.resources as Record<string, unknown>;
     }
@@ -99,4 +115,4 @@ export async function getTranslationResources(language: string, namespace: strin
   }
 }
 
-export { SUPPORTED_NAMESPACES };
+export { discoverNamespaces };

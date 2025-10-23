@@ -8,8 +8,13 @@ import { registerTestWorker } from './testWorker';
 export function initializeWorkers(): void {
   logger.info('Initializing queue workers');
 
-  // Register test worker
-  registerTestWorker();
+  try {
+    // Register test worker
+    registerTestWorker();
+  } catch (error) {
+    logger.error({ error }, 'Failed to register workers (queues disabled or Redis unavailable)');
+    return;
+  }
 
   // Future workers will be registered here:
   // registerCharacterWorker();

@@ -1,10 +1,10 @@
 {
   "description": "Landing page strings for the home page with call-to-action buttons.",
   "resources": {
-    "titleLine1": "Dai vita alle tue",
-    "titleLine2Highlight": "conversazioni e storie",
+    "titleLine1": "Dai Vita alle Tue",
+    "titleLine2Highlight": "Conversazioni e Storie",
     "subtitle": "Crea personaggi accattivanti e immergiti in narrazioni interattive generate dall'IA. La tua avventura inizia ora.",
     "accessButton": "Accedi",
-    "signupButton": "Iscriviti"
+    "signupButton": "Registrati"
   }
 }

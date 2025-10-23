@@ -2,14 +2,14 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Personnage sans titre",
+      "untitledCharacter": "Personnage sans nom",
       "updatedAt": "Mis à jour le {{date}}",
       "public": "Public",
       "private": "Privé",
       "identifier": "ID du personnage : {{id}}",
-      "unsavedChanges": "Modifications non sauvegardées",
-      "allSaved": "Toutes les modifications sont sauvegardées",
-      "submitting": "Sauvegarde en cours..."
+      "unsavedChanges": "Modifications non enregistrées",
+      "allSaved": "Toutes les modifications sont enregistrées",
+      "submitting": "Enregistrement..."
     },
     "ageRatings": {
       "L": "Tout public",
@@ -26,7 +26,7 @@
     },
     "contentTags": {
       "VIOLENCE": "Violence",
-      "GORE": "Gore",
+      "GORE": "Sang",
       "SEXUAL": "Sexe",
       "NUDITY": "Nudité",
       "LANGUAGE": "Langage",
@@ -39,12 +39,12 @@
       "GAMBLING": "Jeux d'argent"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, bagarres ou conflits agressifs.",
+      "VIOLENCE": "Combat, bagarres ou conflit agressif.",
       "GORE": "Blessures graphiques et détails explicites.",
       "SEXUAL": "Thèmes adultes ou sous-entendus.",
       "NUDITY": "Nudité partielle ou complète.",
       "LANGUAGE": "Langage explicite ou grossier.",
-      "DRUGS": "Usage ou références à la drogue.",
+      "DRUGS": "Usage ou références à des drogues.",
       "ALCOHOL": "Consommation d'alcool.",
       "HORROR": "Images dérangeantes ou d'horreur.",
       "PSYCHOLOGICAL": "Santé mentale ou tension psychologique.",
@@ -57,8 +57,8 @@
       "removeFromFavorites": "Retirer des favoris"
     },
     "hub": {
-      "title": "Centre de personnages",
-      "subtitle": "Créez, organisez et faites évoluer les personnages qui animent vos histoires, vos agents de discussion et vos expériences d'IA.",
+      "title": "Hub de personnages",
+      "subtitle": "Créez, organisez et faites évoluer le casting qui anime vos histoires, agents de discussion et expériences IA.",
       "actions": {
         "createCharacter": "Nouveau personnage",
         "retry": "Réessayer",
@@ -83,7 +83,8 @@
         "emptySearchHint": "Ajustez vos filtres ou effacez la recherche pour voir plus de résultats."
       },
       "labels": {
-        "total": "{{count}} personnage{{count, plural, one {} other {s}}} disponible{{count, plural, one {} other {s}}}",
+        "total": "{{count}} personnage disponible",
+        "total_plural": "{{count}} personnages disponibles",
         "quickCreateLink": "Accéder directement à la création"
       }
     },
@@ -92,15 +93,15 @@
       "cancel": "Annuler",
       "sections": {
         "identity": "Identité",
-        "identityHint": "Définissez comment les gens découvrent et identifient ce personnage en un coup d'œil.",
+        "identityHint": "Définissez comment les gens découvrent et identifient ce personnage d'un coup d'œil.",
         "profile": "Profil narratif",
         "profileHint": "Décrivez la personnalité, les traits et l'histoire pour guider l'IA.",
         "configuration": "Disponibilité et modération",
-        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles mesures de sécurité s'appliquent.",
-        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer en fonction de leurs préférences.",
+        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles protections s'appliquent.",
+        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer selon leurs préférences.",
         "contentTagsCharacterHint": "Ces sujets définissent ce que le personnage est à l'aise de discuter à la classification d'âge sélectionnée.",
-        "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui n'est pas coché reste bloqué pour cette classification.",
-        "contentTagLocked": "Déverrouillé aux classifications d'âge supérieures."
+        "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui reste décoché reste bloqué pour cette classification.",
+        "contentTagLocked": "Débloqué aux classifications d'âge supérieures."
       },
       "fields": {
         "firstName": "Prénom",
@@ -111,10 +112,10 @@
         "style": "Style visuel ou narratif",
         "physicalCharacteristics": "Description physique",
         "personality": "Personnalité",
-        "history": "Historique",
+        "history": "Contexte",
         "isPublic": "Visibilité",
         "ageRating": "Classification d'âge",
-        "originalLanguageCode": "Langue originale",
+        "originalLanguageCode": "Langue d'origine",
         "contentTags": "Avertissements de contenu",
         "visibility": "Visibilité"
       },
@@ -124,17 +125,17 @@
         "style": "Ex : Détective noir, anime pastel, peinture"
       },
       "labels": {
-        "unsavedChanges": "Vous avez des modifications non sauvegardées",
-        "allSaved": "Modifications sauvegardées",
-        "submitting": "Sauvegarde en cours...",
+        "unsavedChanges": "Vous avez des modifications non enregistrées",
+        "allSaved": "Modifications enregistrées",
+        "submitting": "Enregistrement...",
         "visibilityPublic": "Public",
         "visibilityPrivate": "Privé"
       },
       "avatar": {
         "upload": "Télécharger une image",
-        "change": "Changer d'image",
+        "change": "Changer l'image",
         "remove": "Supprimer",
-        "uploading": "Téléchargement en cours...",
+        "uploading": "Téléchargement...",
         "helperCreate": "Choisissez un avatar maintenant et nous le conserverons pendant que vous remplissez le reste du formulaire.",
         "helperEdit": "Mettez à jour l'avatar quand vous le souhaitez. Les modifications s'appliquent dès que vous enregistrez.",
         "error": "Nous n'avons pas pu télécharger cette image. Essayez un autre fichier.",
@@ -144,14 +145,14 @@
         "identity": "Identité",
         "profile": "Profil",
         "configuration": "Configuration",
-        "lockedHint": "Remplissez les détails d'identité de base pour déverrouiller les autres sections."
+        "lockedHint": "Remplissez les détails d'identité de base pour débloquer les autres sections."
       }
     },
     "create": {
       "title": "Créer un nouveau personnage",
       "subtitle": "Combinez le contexte narratif, le style visuel et les paramètres de modération. Vous pourrez tout affiner plus tard.",
       "saveButton": "Enregistrer le personnage",
-      "cancelButton": "Annuler et revenir en arrière"
+      "cancelButton": "Annuler et revenir"
     },
     "edit": {
       "title": "Modifier le personnage",
@@ -168,10 +169,10 @@
         "notFound": "Nous n'avons pas pu trouver ce personnage."
       },
       "actions": {
-        "backToHub": "Retour au centre",
+        "backToHub": "Retour au hub",
         "edit": "Modifier",
         "delete": "Supprimer",
-        "deleting": "Suppression en cours..."
+        "deleting": "Suppression..."
       },
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce personnage ? Cette action est irréversible.",
       "labels": {
@@ -184,7 +185,7 @@
       "sections": {
         "physicalCharacteristics": "Apparence",
         "personality": "Personnalité",
-        "history": "Historique",
+        "history": "Contexte",
         "contentTags": "Avertissements de contenu",
         "metadata": "Étiquettes"
       }

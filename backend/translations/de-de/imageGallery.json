@@ -2,7 +2,7 @@
   "resources": {
     "title": "Bildergalerie",
     "loading": "Bilder werden geladen...",
-    "error": "Fehler beim Laden der Bilder.",
+    "error": "Bilder konnten nicht geladen werden.",
     "tabs": {
       "gallery": "Konversationsgalerie",
       "avatar": "Avatare",

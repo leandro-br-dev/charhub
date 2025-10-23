@@ -67,6 +67,15 @@
       "description": "Your CharHub sessions inherit OAuth security from Google or Facebook. Multi-factor support will be added soon.",
       "placeholder": "Session management and passwordless login controls are on the roadmap."
     },
+    "deleteAccount": {
+      "title": "Delete Account",
+      "description": "Permanently delete your account and all of your content.",
+      "submit": "Delete my account",
+      "confirmTitle": "Are you absolutely sure?",
+      "confirmDescription": "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
+      "confirmInstruction": "Please type \"DELETE\" to confirm.",
+      "confirmSubmit": "Delete this account"
+    },
     "feedback": {
       "success": "Profile updated successfully.",
       "error": "We could not save your changes."

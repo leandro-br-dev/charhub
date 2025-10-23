@@ -2,15 +2,15 @@
   "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
   "resources": {
     "title": "CharHub에 오신 것을 환영합니다",
-    "subtitle": "소셜 로그인을 통해 플레이어 프로필을 안전하게 보호하세요. Google 또는 Facebook으로 연결하여 몇 초 만에 독점적인 게임 분석에 액세스할 수 있습니다.",
+    "subtitle": "소셜 로그인을 통해 플레이어 프로필을 안전하게 보호하세요. Google 또는 Facebook에 연결하고 몇 초 만에 독점적인 게임 분석에 액세스하세요.",
     "formTitle": "계속하려면 로그인하세요",
-    "formInstructions": "아래에서 선호하는 제공업체를 선택하세요. 액세스 확인을 위해 리디렉션된 후 완료되면 다시 이 페이지로 돌아옵니다.",
+    "formInstructions": "아래에서 선호하는 제공업체를 선택하세요. 액세스를 확인하도록 리디렉션된 후 완료되면 다시 이곳으로 돌아옵니다.",
     "greeting": "다시 오신 것을 환영합니다!",
     "instruction": "계속하려면 로그인하세요",
     "googleButton": "Google로 로그인",
     "facebookButton": "Facebook으로 로그인",
-    "firstAccess": "처음 방문하셨나요?",
-    "signupLink": "회원가입",
+    "firstAccess": "처음이신가요?",
+    "signupLink": "가입하기",
     "checkingAuth": "인증 확인 중..."
   }
 }

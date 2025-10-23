@@ -1,16 +1,16 @@
 {
   "resources": {
-    "title": "Image gallery",
-    "loading": "Loading images...",
-    "error": "Failed to load images.",
+    "title": "Galleria di immagini",
+    "loading": "Caricamento immagini in corso...",
+    "error": "Impossibile caricare le immagini.",
     "tabs": {
-      "gallery": "Conversation Gallery",
-      "avatar": "Avatars",
-      "samples": "Samples",
-      "stickers": "Stickers"
+      "gallery": "Galleria conversazioni",
+      "avatar": "Avatar",
+      "samples": "Esempi",
+      "stickers": "Adesivi"
     },
-    "upload": "Upload Image",
-    "close": "Close",
-    "noImages": "No images available yet"
+    "upload": "Carica immagine",
+    "close": "Chiudi",
+    "noImages": "Nessuna immagine disponibile al momento"
   }
 }

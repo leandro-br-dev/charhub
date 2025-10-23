@@ -140,14 +140,24 @@ ${latestMessage.content}
 Which bot(s) should respond? Output only the JSON array of participant IDs.`;
 
     try {
+      logger.debug(
+        { conversationId: conversation.id, participantCount: participantContext.length },
+        'Calling LLM for bot selection'
+      );
+
       const llmRequest: LLMRequest = {
         provider: 'gemini',
-        model: 'gemini-2.0-flash-lite',
+        model: 'gemini-2.5-flash-lite',
         systemPrompt: CONVERSATION_MANAGER_PROMPT,
         userPrompt: contextPrompt,
       };
 
       const response = await callLLM(llmRequest);
+
+      logger.debug(
+        { conversationId: conversation.id, rawResponse: response.content },
+        'LLM response received'
+      );
 
       // Parse the JSON response
       const cleanedResponse = response.content.trim()
@@ -155,7 +165,17 @@ Which bot(s) should respond? Output only the JSON array of participant IDs.`;
         .replace(/```\n?/g, '')
         .trim();
 
+      logger.debug(
+        { conversationId: conversation.id, cleanedResponse },
+        'Cleaned LLM response'
+      );
+
       const selectedParticipants = JSON.parse(cleanedResponse) as string[];
+
+      logger.debug(
+        { conversationId: conversation.id, selectedParticipants },
+        'Parsed participant IDs'
+      );
 
       // Validate that returned IDs are valid
       const validIds = selectedParticipants.filter(id =>
@@ -164,21 +184,21 @@ Which bot(s) should respond? Output only the JSON array of participant IDs.`;
 
       if (validIds.length === 0) {
         logger.warn(
-          { conversationId: conversation.id, response: cleanedResponse },
+          { conversationId: conversation.id, response: cleanedResponse, availableIds: botParticipants.map(p => p.id) },
           'LLM returned no valid participants, defaulting to first bot'
         );
         return [botParticipants[0].id];
       }
 
       logger.info(
-        { conversationId: conversation.id, selectedCount: validIds.length },
+        { conversationId: conversation.id, selectedCount: validIds.length, validIds },
         'ConversationManagerAgent selected participants'
       );
 
       return validIds;
     } catch (error) {
       logger.error(
-        { error, conversationId: conversation.id },
+        { error, conversationId: conversation.id, errorMessage: error instanceof Error ? error.message : String(error), errorStack: error instanceof Error ? error.stack : undefined },
         'Error in ConversationManagerAgent, defaulting to first bot'
       );
       // Fallback: return first bot

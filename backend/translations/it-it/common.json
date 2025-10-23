@@ -2,39 +2,39 @@
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
     "brand": "CharHub Auth",
-    "language": "Language",
-    "continueGoogle": "Continue with Google",
-    "continueFacebook": "Continue with Facebook",
-    "privacy": "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
-    "logout": "Sign out",
-    "logoutLoading": "Signing out...",
-    "authenticatedUser": "Authenticated user",
-    "tokenStored": "Stored in HTTP-only cookie",
+    "language": "Lingua",
+    "continueGoogle": "Continua con Google",
+    "continueFacebook": "Continua con Facebook",
+    "privacy": "Continuando accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di base del profilo.",
+    "logout": "Esci",
+    "logoutLoading": "Uscita in corso...",
+    "authenticatedUser": "Utente autenticato",
+    "tokenStored": "Memorizzato in cookie HTTP-only",
     "navDashboard": "Dashboard",
-    "navCharacters": "Characters",
-    "navTagline": "Secure OAuth demo",
+    "navCharacters": "Personaggi",
+    "navTagline": "Demo OAuth sicura",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
     "provider": "Provider",
     "theme": {
-      "label": "Theme",
+      "label": "Tema",
       "option": {
-        "light": "Light",
-        "dark": "Dark",
-        "system": "System"
+        "light": "Chiaro",
+        "dark": "Scuro",
+        "system": "Sistema"
       }
     },
-    "none": "None",
-    "unknown": "Unknown",
-    "nameNotAvailable": "Name not available",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "enabled": "Enabled",
-    "disabled": "Disabled",
-    "selectOption": "Select an option",
-    "noResults": "No options found."
+    "none": "Nessuno",
+    "unknown": "Sconosciuto",
+    "nameNotAvailable": "Nome non disponibile",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "saving": "Salvataggio in corso...",
+    "enabled": "Abilitato",
+    "disabled": "Disabilitato",
+    "selectOption": "Seleziona un'opzione",
+    "noResults": "Nessuna opzione trovata."
   }
 }

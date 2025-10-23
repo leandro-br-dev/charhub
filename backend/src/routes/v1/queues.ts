@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { queueManager, QueueName } from '../../queues';
+import { isQueuesEnabled } from '../../config/features';
 import { TestJobData } from '../../queues/jobs/testJob';
 import { logger } from '../../config/logger';
 
@@ -9,7 +10,11 @@ const router = Router();
  * POST /api/v1/queues/test
  * Add a test job to the queue
  */
-router.post('/test', async (req: Request, res: Response) => {
+router.post('/test', async (req: Request, res: Response): Promise<void> => {
+  if (!isQueuesEnabled()) {
+    res.status(503).json({ success: false, message: 'Queues are disabled in this environment' });
+    return;
+  }
   try {
     const { message = 'Hello from test job!', delay = 0 } = req.body as Partial<TestJobData>;
 
@@ -38,7 +43,11 @@ router.post('/test', async (req: Request, res: Response) => {
  * GET /api/v1/queues/stats
  * Get statistics for all queues
  */
-router.get('/stats', async (_req: Request, res: Response) => {
+router.get('/stats', async (_req: Request, res: Response): Promise<void> => {
+  if (!isQueuesEnabled()) {
+    res.status(503).json({ success: false, message: 'Queues are disabled in this environment' });
+    return;
+  }
   try {
     const stats = await queueManager.getQueueStats(QueueName.TEST);
 
@@ -59,7 +68,11 @@ router.get('/stats', async (_req: Request, res: Response) => {
  * GET /api/v1/queues/health
  * Check if queue system is healthy
  */
-router.get('/health', async (_req: Request, res: Response) => {
+router.get('/health', async (_req: Request, res: Response): Promise<void> => {
+  if (!isQueuesEnabled()) {
+    res.status(503).json({ success: false, healthy: false, message: 'Queues are disabled in this environment' });
+    return;
+  }
   try {
     const stats = await queueManager.getQueueStats(QueueName.TEST);
 

@@ -9,10 +9,10 @@
     },
     "sectionTitle": "Conta",
     "title": "Gerencie seu perfil",
-    "subtitle": "Atualize como outras pessoas te veem no CharHub. Preferências que ainda estão sendo migradas aparecerão aqui em breve.",
+    "subtitle": "Atualize como outras pessoas veem você no CharHub. Preferências que ainda estão sendo migradas aparecerão aqui em breve.",
     "identity": {
       "header": "Foto de perfil",
-      "description": "Escolha um avatar para te representar em chats e personagens.",
+      "description": "Escolha um avatar para representá-lo em chats e personagens.",
       "upload": "Carregar imagem",
       "placeholderNote": "O upload de avatares estará disponível após reconectarmos o serviço de mídia."
     },
@@ -27,7 +27,7 @@
       "filterNote": "Selecione os tipos de conteúdo que você deseja PERMITIR. Itens desmarcados serão filtrados das recomendações.",
       "allAgesNote": "Todos os tipos de conteúdo são bloqueados quando a classificação \"Todas as Idades\" é selecionada.",
       "allowAll": "Permitir Tudo",
-      "birthDateRequired": "Data de Nascimento Obrigatória",
+      "birthDateRequired": "Data de Nascimento Necessária",
       "birthDateRequiredMessage": "Por favor, preencha sua data de nascimento na aba Perfil para desbloquear as configurações de classificação de conteúdo. Isso garante recomendações de conteúdo apropriadas para a idade.",
       "maxAgeRatingLabel": "Classificação Etária Máxima",
       "maxAgeRatingHint": "Selecione a classificação etária máxima que você deseja ver",
@@ -35,12 +35,12 @@
     },
     "fields": {
       "displayName": "Nome de exibição",
-      "displayNamePlaceholder": "Como outros usuários se referem a você",
+      "displayNamePlaceholder": "Como outros usuários se dirigem a você",
       "fullName": "Nome completo",
       "fullNamePlaceholder": "Opcional para faturamento e cópias de e-mail",
       "username": "Nome de usuário",
       "usernamePlaceholder": "nome de usuário",
-      "usernameHint": "Seu identificador único no CharHub.",
+      "usernameHint": "Seu identificador exclusivo no CharHub.",
       "usernameChecking": "Verificando disponibilidade...",
       "usernameAvailable": "Nome de usuário disponível",
       "usernameUnavailable": "Nome de usuário já em uso",
@@ -64,8 +64,17 @@
     },
     "security": {
       "header": "Segurança",
-      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte a autenticação multifator será adicionado em breve.",
+      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte a autenticação de múltiplos fatores será adicionado em breve.",
       "placeholder": "Gerenciamento de sessão e controles de login sem senha estão no roteiro."
+    },
+    "deleteAccount": {
+      "title": "Excluir Conta",
+      "description": "Exclua permanentemente sua conta e todo o seu conteúdo.",
+      "submit": "Excluir minha conta",
+      "confirmTitle": "Você tem certeza absoluta?",
+      "confirmDescription": "Esta ação não pode ser desfeita. Isso excluirá permanentemente sua conta e removerá seus dados de nossos servidores.",
+      "confirmInstruction": "Por favor, digite \"EXCLUIR\" para confirmar.",
+      "confirmSubmit": "Excluir esta conta"
     },
     "feedback": {
       "success": "Perfil atualizado com sucesso.",

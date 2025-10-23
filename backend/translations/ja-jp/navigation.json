@@ -6,18 +6,18 @@
     "development": "開発",
     "characters": "キャラクター",
     "assets": "アセット",
-    "profileLink": "マイプロフィール",
+    "profileLink": "プロフィール",
     "reportBug": "問題を報告",
     "storyPlaceholder": "ストーリーツールはまもなくここに表示されます。",
     "chatHistory": "会話履歴",
-    "chatHistoryPlaceholder": "チャット移行が完了すると、メッセージとスレッドがここに表示されます。",
+    "chatHistoryPlaceholder": "チャットの移行が完了すると、メッセージとスレッドがここに表示されます。",
     "developmentTools": "開発者ツール",
     "developmentPlaceholder": "ビルドパイプライン、ログ、自動化コントロールはまもなくここに表示されます。",
     "characterSidebar": "キャラクター概要",
-    "characterSidebarPlaceholder": "ハブサイドバーが再構築され次第、お気に入りのキャラクターをここで閲覧・固定できます。",
+    "characterSidebarPlaceholder": "ハブサイドバーが再構築され次第、お気に入りのキャラクターをここで閲覧・ピン留めできます。",
     "storySidebar": "ストーリー",
-    "storySidebarPlaceholder": "ストーリーテリングスイートが移行され次第、ドラフトと章のアウトラインをここに保存してください。",
+    "storySidebarPlaceholder": "ストーリーテリングスイートが移行されたら、下書きと章のアウトラインをここに保管してください。",
     "sidebarDefaultTitle": "CharHubを探索",
-    "sidebarDefaultDescription": "ナビゲーションレールにあるアイコンを使用して、エクスペリエンスを切り替えます。"
+    "sidebarDefaultDescription": "ナビゲーションレールにあるアイコンを使用して、エクスペリエンスを切り替えてください。"
   }
 }

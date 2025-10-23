@@ -2,8 +2,8 @@
   "description": "Landing page strings for the home page with call-to-action buttons.",
   "resources": {
     "titleLine1": "让您的",
-    "titleLine2Highlight": "对话和故事栩栩如生",
-    "subtitle": "创建引人入胜的角色，沉浸在AI生成的互动故事中。您的冒险现在开始。",
+    "titleLine2Highlight": "对话和故事活起来",
+    "subtitle": "创建引人入胜的角色，沉浸在 AI 生成的互动叙事中。您的冒险现在开始。",
     "accessButton": "登录",
     "signupButton": "注册"
   }

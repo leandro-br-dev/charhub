@@ -387,3 +387,59 @@ export async function getCharacterCountByUser(userId: string): Promise<number> {
     throw error;
   }
 }
+
+/**
+ * Get characters for adding to conversations (excludes already added ones)
+ * This is used by the AddParticipantModal
+ */
+export async function getMyCharactersForConversation(
+  userId: string,
+  options?: {
+    search?: string;
+    excludeIds?: string[];
+    skip?: number;
+    limit?: number;
+  }
+) {
+  try {
+    const { search, excludeIds = [], skip = 0, limit = 20 } = options || {};
+
+    const where: Prisma.CharacterWhereInput = {
+      userId,
+      id: excludeIds.length > 0 ? { notIn: excludeIds } : undefined,
+    };
+
+    if (search && search.trim()) {
+      const searchTerm = search.trim();
+      where.OR = [
+        { firstName: { contains: searchTerm, mode: 'insensitive' } },
+        { lastName: { contains: searchTerm, mode: 'insensitive' } },
+        { personality: { contains: searchTerm, mode: 'insensitive' } },
+      ];
+    }
+
+    const characters = await prisma.character.findMany({
+      where,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        avatar: true,
+        personality: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+    });
+
+    logger.debug(
+      { userId, filters: options, count: characters.length },
+      'Characters fetched for conversation'
+    );
+
+    return characters;
+  } catch (error) {
+    logger.error({ error, userId, options }, 'Error getting characters for conversation');
+    throw error;
+  }
+}

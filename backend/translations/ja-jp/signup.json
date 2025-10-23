@@ -1,16 +1,16 @@
 {
   "description": "Signup page strings for new user registration.",
   "resources": {
-    "greeting": "アカウントを作成！",
-    "instruction": "サインアップのオプションを選択してください",
-    "googleButton": "Googleでサインアップ",
-    "facebookButton": "Facebookでサインアップ",
-    "termsAgreementPt1": "サインアップすることにより、",
-    "termsAgreementAnd": "と",
+    "greeting": "アカウントを作成しましょう！",
+    "instruction": "登録方法を選択してください",
+    "googleButton": "Googleで登録",
+    "facebookButton": "Facebookで登録",
+    "termsAgreementPt1": "登録することにより、あなたは",
+    "termsAgreementAnd": "および",
     "termsAndConditions": "利用規約",
     "privacyPolicy": "プライバシーポリシー",
     "alreadyRegistered": "すでにアカウントをお持ちですか？",
     "loginLink": "サインイン",
-    "checkingAuth": "認証を確認中..."
+    "checkingAuth": "認証を確認しています..."
   }
 }

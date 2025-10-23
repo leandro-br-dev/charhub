@@ -2,13 +2,13 @@
   "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
   "resources": {
     "processingTitle": "로그인 완료 중...",
-    "processingMessage": "인증 처리 중...",
+    "processingMessage": "인증 완료 중...",
     "successTitle": "다시 오신 것을 환영합니다!",
     "redirectingMessage": "인증이 완료되었습니다. 리디렉션 중...",
     "errorTitle": "인증 오류",
-    "cancelledMessage": "제공자에 의해 인증이 취소되었습니다.",
-    "missingParamsMessage": "인증 매개변수가 누락되었습니다. 로그인 과정을 다시 시작해 주십시오.",
-    "exchangeFailedMessage": "OAuth 교환을 완료할 수 없었습니다. 다시 시도해 주십시오.",
+    "cancelledMessage": "인증이 제공업체에 의해 취소되었습니다.",
+    "missingParamsMessage": "권한 부여 매개변수가 누락되었습니다. 로그인 프로세스를 다시 시작해 주세요.",
+    "exchangeFailedMessage": "OAuth 교환을 완료할 수 없었습니다. 다시 시도해 주세요.",
     "returnButton": "로그인으로 돌아가기"
   }
 }

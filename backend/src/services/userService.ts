@@ -250,3 +250,30 @@ export async function checkUsernameAvailability(username: string, currentUserId?
   // Username is taken by someone else
   return false;
 }
+
+export async function deleteUserAccount(userId: string): Promise<void> {
+  const systemUser = await prisma.user.findUnique({
+    where: { username: '@system' },
+  });
+
+  if (!systemUser) {
+    throw new Error('System user not found. Please run the database seed script.');
+  }
+
+  const userCharacters = await prisma.character.findMany({
+    where: { userId },
+  });
+
+  for (const character of userCharacters) {
+    if (character.isPublic) {
+      await prisma.character.update({
+        where: { id: character.id },
+        data: { userId: systemUser.id },
+      });
+    }
+  }
+
+  await prisma.user.delete({
+    where: { id: userId },
+  });
+}

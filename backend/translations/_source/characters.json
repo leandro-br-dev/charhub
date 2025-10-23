@@ -83,7 +83,8 @@
         "emptySearchHint": "Adjust your filters or clear the search to see more results."
       },
       "labels": {
-        "total": "{{count}} character{{count, plural, one {} other {s}}} available",
+        "total": "{{count}} character available",
+        "total_plural": "{{count}} characters available",
         "quickCreateLink": "Jump straight into creation"
       }
     },

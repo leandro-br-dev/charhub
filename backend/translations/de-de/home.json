@@ -1,9 +1,9 @@
 {
   "description": "Landing page strings for the home page with call-to-action buttons.",
   "resources": {
-    "titleLine1": "Erwecke deine",
+    "titleLine1": "Erwecken Sie Ihre",
     "titleLine2Highlight": "Gespräche und Geschichten zum Leben",
-    "subtitle": "Erschaffe fesselnde Charaktere und tauche ein in KI-generierte interaktive Erzählungen. Dein Abenteuer beginnt jetzt.",
+    "subtitle": "Erstellen Sie fesselnde Charaktere und tauchen Sie ein in KI-generierte interaktive Erzählungen. Ihr Abenteuer beginnt jetzt.",
     "accessButton": "Anmelden",
     "signupButton": "Registrieren"
   }

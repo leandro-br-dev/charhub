@@ -97,6 +97,7 @@
       "generateAiFailed": "Failed to generate response.",
       "addParticipantFailed": "Failed to add participant.",
       "removeParticipantFailed": "Failed to remove participant.",
+      "cannotRemoveLastCharacter": "Cannot remove the last character from the conversation. At least one character or assistant must remain.",
       "updateConversationFailed": "Failed to update conversation.",
       "reprocessNotAvailable": "Reprocessing is not available without an assistant participant.",
       "imageGenerationUnavailable": "Image generation is not available yet.",
@@ -166,6 +167,7 @@
       "slangMedium": "Often",
       "roleplaySpecificTitle": "Roleplay details",
       "scenarioGenreLabel": "Scenario genre",
+      "genreNone": "None",
       "genreFantasy": "Fantasy",
       "genreSciFi": "Sci-fi",
       "genreModern": "Modern",
@@ -235,6 +237,22 @@
     "chatActions": {
       "actionConfirmedByUser": "User confirmed action.",
       "actionCancelledByUser": "User cancelled action."
+    },
+    "addParticipantModal": {
+      "title": "Add Participant",
+      "charactersTab": "Characters",
+      "myAssistantsTab": "My Assistants",
+      "publicAssistantsTab": "Public Assistants",
+      "assistantsTab": "assistants",
+      "searchCharactersPlaceholder": "Search characters...",
+      "searchAssistantsPlaceholder": "Search assistants...",
+      "noItemsForSearch": "No results found for \"{{searchTerm}}\"",
+      "noItemsAvailable": "No items available",
+      "alreadyAddedMaybe": "(All available items are already in the conversation)",
+      "noDescription": "No description available",
+      "addToConversationButtonTitle": "Add to conversation",
+      "maxParticipantsError": "Maximum {{max}} participants allowed",
+      "connectionError": "Connection error. Please try again."
     }
   }
 }

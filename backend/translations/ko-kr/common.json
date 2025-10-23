@@ -1,40 +1,40 @@
 {
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
-    "brand": "CharHub Auth",
-    "language": "Language",
-    "continueGoogle": "Continue with Google",
-    "continueFacebook": "Continue with Facebook",
-    "privacy": "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
-    "logout": "Sign out",
-    "logoutLoading": "Signing out...",
-    "authenticatedUser": "Authenticated user",
-    "tokenStored": "Stored in HTTP-only cookie",
-    "navDashboard": "Dashboard",
-    "navCharacters": "Characters",
-    "navTagline": "Secure OAuth demo",
+    "brand": "CharHub 인증",
+    "language": "언어",
+    "continueGoogle": "Google로 계속하기",
+    "continueFacebook": "Facebook으로 계속하기",
+    "privacy": "계속 진행하시면 저희 개인정보처리방침에 동의하시는 것이며, CharHub가 귀하의 기본 프로필 정보에 접근하도록 허용하시는 것입니다.",
+    "logout": "로그아웃",
+    "logoutLoading": "로그아웃 중...",
+    "authenticatedUser": "인증된 사용자",
+    "tokenStored": "HTTP 전용 쿠키에 저장됨",
+    "navDashboard": "대시보드",
+    "navCharacters": "캐릭터",
+    "navTagline": "보안 OAuth 데모",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Provider",
+    "provider": "공급자",
     "theme": {
-      "label": "Theme",
+      "label": "테마",
       "option": {
-        "light": "Light",
-        "dark": "Dark",
-        "system": "System"
+        "light": "밝게",
+        "dark": "어둡게",
+        "system": "시스템"
       }
     },
-    "none": "None",
-    "unknown": "Unknown",
-    "nameNotAvailable": "Name not available",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "enabled": "Enabled",
-    "disabled": "Disabled",
-    "selectOption": "Select an option",
-    "noResults": "No options found."
+    "none": "없음",
+    "unknown": "알 수 없음",
+    "nameNotAvailable": "이름을 사용할 수 없음",
+    "cancel": "취소",
+    "save": "저장",
+    "saving": "저장 중...",
+    "enabled": "사용",
+    "disabled": "사용 안 함",
+    "selectOption": "옵션 선택",
+    "noResults": "옵션을 찾을 수 없습니다."
   }
 }

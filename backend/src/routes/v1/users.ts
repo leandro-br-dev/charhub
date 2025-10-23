@@ -3,7 +3,7 @@ import { ZodError } from 'zod';
 import multer from 'multer';
 import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
-import { updateUserProfile, checkUsernameAvailability } from '../../services/userService';
+import { updateUserProfile, checkUsernameAvailability, deleteUserAccount } from '../../services/userService';
 import { r2Service } from '../../services/r2Service';
 import { updateUserProfileSchema } from '../../validators';
 
@@ -95,6 +95,21 @@ router.post('/me/avatar', requireAuth, upload.single('avatar'), async (req: Requ
   } catch (error) {
     logger.error({ error }, 'avatar_upload_failed');
     res.status(500).json({ success: false, error: 'Failed to upload avatar' });
+  }
+});
+
+router.delete('/me', requireAuth, async (req, res) => {
+  if (!req.auth?.user) {
+    res.status(401).json({ success: false, error: 'Authentication required' });
+    return;
+  }
+
+  try {
+    await deleteUserAccount(req.auth.user.id);
+    res.json({ success: true, message: 'Account deleted successfully' });
+  } catch (error) {
+    logger.error({ error }, 'user_deletion_failed');
+    res.status(500).json({ success: false, error: 'Failed to delete account' });
   }
 });
 

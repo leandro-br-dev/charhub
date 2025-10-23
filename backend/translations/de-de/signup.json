@@ -2,15 +2,15 @@
   "description": "Signup page strings for new user registration.",
   "resources": {
     "greeting": "Erstellen Sie Ihr Konto!",
-    "instruction": "Wählen Sie eine Option zur Registrierung",
+    "instruction": "Wählen Sie eine Option zum Registrieren",
     "googleButton": "Mit Google registrieren",
     "facebookButton": "Mit Facebook registrieren",
-    "termsAgreementPt1": "Durch die Registrierung stimmen Sie den",
-    "termsAgreementAnd": "und der",
+    "termsAgreementPt1": "Mit der Registrierung stimmen Sie den",
+    "termsAgreementAnd": "und den",
     "termsAndConditions": "Allgemeinen Geschäftsbedingungen",
-    "privacyPolicy": "Datenschutzerklärung",
-    "alreadyRegistered": "Sie haben bereits ein Konto?",
+    "privacyPolicy": "Datenschutzrichtlinien",
+    "alreadyRegistered": "Haben Sie bereits ein Konto?",
     "loginLink": "Anmelden",
-    "checkingAuth": "Authentifizierung wird überprüft..."
+    "checkingAuth": "Authentifizierung wird geprüft..."
   }
 }

@@ -14,10 +14,10 @@
     "developmentTools": "Entwicklerwerkzeuge",
     "developmentPlaceholder": "Build-Pipelines, Protokolle und Automatisierungssteuerungen werden bald hier verfügbar sein.",
     "characterSidebar": "Charakterübersicht",
-    "characterSidebarPlaceholder": "Durchsuchen und heften Sie Ihre Lieblingscharaktere hier an, sobald die Hub-Seitenleiste neu erstellt wurde.",
+    "characterSidebarPlaceholder": "Durchsuchen und heften Sie Ihre Lieblingscharaktere hier an, sobald die Hub-Seitenleiste neu aufgebaut ist.",
     "storySidebar": "Stories",
     "storySidebarPlaceholder": "Bewahren Sie Entwürfe und Kapitelübersichten hier auf, sobald die Storytelling-Suite migriert wurde.",
     "sidebarDefaultTitle": "CharHub erkunden",
-    "sidebarDefaultDescription": "Verwenden Sie die Symbole auf der Navigationsleiste, um zwischen den Ansichten zu wechseln."
+    "sidebarDefaultDescription": "Verwenden Sie die Symbole in der Navigationsleiste, um zwischen den Erlebnissen zu wechseln."
   }
 }

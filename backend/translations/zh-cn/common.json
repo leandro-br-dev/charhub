@@ -1,15 +1,15 @@
 {
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
-    "brand": "CharHub 认证",
+    "brand": "CharHub Auth",
     "language": "语言",
     "continueGoogle": "使用 Google 继续",
     "continueFacebook": "使用 Facebook 继续",
-    "privacy": "继续表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
-    "logout": "退出登录",
-    "logoutLoading": "正在退出登录...",
+    "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
+    "logout": "退出",
+    "logoutLoading": "正在退出...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在 HTTP-only cookie 中",
+    "tokenStored": "存储在 HTTP Only Cookie 中",
     "navDashboard": "仪表板",
     "navCharacters": "角色",
     "navTagline": "安全 OAuth 演示",
@@ -32,8 +32,8 @@
     "cancel": "取消",
     "save": "保存",
     "saving": "正在保存...",
-    "enabled": "已启用",
-    "disabled": "已禁用",
+    "enabled": "启用",
+    "disabled": "禁用",
     "selectOption": "选择一个选项",
     "noResults": "未找到选项。"
   }
