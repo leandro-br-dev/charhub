@@ -34,11 +34,16 @@ export async function checkUsernameAvailability(username: string): Promise<{ ava
   return { available: response.data.available };
 }
 
+export async function deleteCurrentUser(): Promise<void> {
+  await api.delete(PROFILE_ENDPOINT);
+}
+
 export const userService = {
   fetchProfile,
   updateProfile,
   uploadAvatar,
   checkUsernameAvailability,
+  deleteCurrentUser,
 };
 
 export type UserService = typeof userService;

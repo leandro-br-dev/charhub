@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { characterService } from '../../services/characterService';
-import type { CharacterSummary } from '../../types/characters';
+import { CachedImage } from '../../../../components/ui/CachedImage';
+import { characterService } from '../../../../services/characterService';
+import type { CharacterSummary } from '../../../../types/characters';
 
 type CharacterListSidebarProps = {
   onLinkClick?: () => void;
@@ -39,7 +40,7 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
 
   return (
     <div className="flex flex-col gap-2 py-4">
-      <h2 className="text-base font-semibold text-content px-4">Characters</h2>
+      <h3 className="text-xs font-semibold text-muted uppercase mb-3 px-4">Characters</h3>
       {characters.length === 0 ? (
         <p className="text-sm text-muted px-4">No characters found.</p>
       ) : (
@@ -51,13 +52,13 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
                 <Link
                   to={`/characters/${character.id}`}
                   onClick={onLinkClick}
-                  className="flex items-center gap-3 rounded-md p-2 hover:bg-primary/10"
+                  className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <img
-                    src={character.avatar ?? '/logo.png'}
-                    alt={fullName}
-                    className="h-8 w-8 rounded-full object-cover"
-                  />
+                  {character.avatar ? (
+                    <CachedImage src={character.avatar} alt={fullName} className="h-8 w-8 rounded-full object-cover" />
+                  ) : (
+                    <img src="/logo.png" alt={fullName} className="h-8 w-8 rounded-full object-cover" />
+                  )}
                   <span className="text-sm font-medium text-content">{fullName}</span>
                 </Link>
               </li>

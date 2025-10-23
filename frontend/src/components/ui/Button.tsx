@@ -2,7 +2,7 @@ import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'light' | 'secondary' | 'danger' | 'dark';
-  size?: 'small' | 'regular' | 'large';
+  size?: 'extra-small' | 'small' | 'regular' | 'large';
   icon?: string;
   iconPosition?: 'left' | 'right';
   children?: ReactNode;
@@ -35,6 +35,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
+      'extra-small': 'w-fit text-xs',
       small: 'w-fit text-sm',
       regular: 'text-sm',
       large: 'text-sm',
@@ -46,8 +47,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         : 'rounded-lg';
 
     let padding = 'px-3 py-2';
-    if (children === undefined && icon && size === 'small') padding = 'p-1';
+    if (children === undefined && icon && (size === 'small' || size === 'extra-small')) padding = 'p-1';
     if (children !== undefined && size === 'small') padding = 'py-1 px-2';
+    if (children !== undefined && size === 'extra-small') padding = 'py-1 px-1';
 
     const disabledClasses = disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : '';
 

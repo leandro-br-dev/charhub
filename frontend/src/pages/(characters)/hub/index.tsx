@@ -40,10 +40,10 @@ export default function CharacterHubPage(): JSX.Element {
 
   return (
     <section className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10">
-      <header className="flex flex-col gap-6 rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-lg dark:border-slate-800 dark:bg-slate-900/80 lg:flex-row lg:items-center lg:justify-between">
+      <header className="flex flex-col gap-6 rounded-3xl border border-border bg-card p-8 shadow-lg lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">{t('characters:hub.title')}</h1>
-          <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-300">
+          <h1 className="text-3xl font-semibold text-title">{t('characters:hub.title')}</h1>
+          <p className="mt-2 max-w-2xl text-sm text-description">
             {t('characters:hub.subtitle')}
           </p>
         </div>
@@ -57,19 +57,19 @@ export default function CharacterHubPage(): JSX.Element {
         </div>
       </header>
 
-      <div className="flex flex-col gap-6 rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-lg dark:border-slate-800 dark:bg-slate-900/80">
+      <div className="flex flex-col gap-6 rounded-3xl border border-border bg-card p-6 shadow-lg">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex rounded-2xl border border-slate-200 bg-slate-100 p-1 text-sm dark:border-slate-700 dark:bg-slate-800">
+          <div className="flex rounded-2xl border border-border bg-background p-1 text-sm">
             <button
               type="button"
-              className={`flex-1 rounded-xl px-4 py-2 font-medium transition ${viewMode === 'private' ? 'bg-white text-slate-900 shadow dark:bg-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-300'}`}
+              className={`flex-1 rounded-xl px-4 py-2 font-medium transition ${viewMode === 'private' ? 'bg-card text-title shadow' : 'text-description'}`}
               onClick={() => setViewMode('private')}
             >
               {t('characters:hub.tabs.myCharacters')}
             </button>
             <button
               type="button"
-              className={`flex-1 rounded-xl px-4 py-2 font-medium transition ${viewMode === 'public' ? 'bg-white text-slate-900 shadow dark:bg-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-300'}`}
+              className={`flex-1 rounded-xl px-4 py-2 font-medium transition ${viewMode === 'public' ? 'bg-card text-title shadow' : 'text-description'}`}
               onClick={() => setViewMode('public')}
             >
               {t('characters:hub.tabs.publicGallery')}
@@ -80,14 +80,14 @@ export default function CharacterHubPage(): JSX.Element {
               <span className="material-symbols-outlined pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
               <input
                 type="search"
-                className="w-full rounded-2xl border border-slate-200 bg-white py-2 pl-10 pr-4 text-sm text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="w-full rounded-2xl border border-border bg-input py-2 pl-10 pr-4 text-sm text-title shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                 placeholder={t('characters:hub.filters.searchPlaceholder') ?? ''}
                 value={search}
                 onChange={event => setSearch(event.target.value)}
               />
             </div>
             <select
-              className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+              className="rounded-2xl border border-border bg-input px-4 py-2 text-sm text-description shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
               value={ageRatingFilter}
               onChange={event => setAgeRatingFilter(event.target.value === 'all' ? 'all' : (event.target.value as AgeRating))}
             >
@@ -102,14 +102,14 @@ export default function CharacterHubPage(): JSX.Element {
         </div>
 
         {isLoading && (
-          <div className="flex h-64 flex-col items-center justify-center gap-3 text-slate-500 dark:text-slate-300">
+          <div className="flex h-64 flex-col items-center justify-center gap-3 text-description">
             <span className="material-symbols-outlined animate-spin text-5xl">progress_activity</span>
             <p>{t('characters:hub.states.loading')}</p>
           </div>
         )}
 
         {isError && !isLoading && (
-          <div className="flex h-64 flex-col items-center justify-center gap-4 text-center text-slate-500 dark:text-slate-300">
+          <div className="flex h-64 flex-col items-center justify-center gap-4 text-center text-description">
             <span className="material-symbols-outlined text-6xl text-red-500">error</span>
             <p>{t('characters:hub.states.error')}</p>
             <Button type="button" variant="secondary" icon="refresh" onClick={() => refetch()}>
@@ -119,11 +119,11 @@ export default function CharacterHubPage(): JSX.Element {
         )}
 
         {!isLoading && !isError && items.length === 0 && (
-          <div className="flex h-64 flex-col items-center justify-center gap-4 text-center text-slate-500 dark:text-slate-300">
+          <div className="flex h-64 flex-col items-center justify-center gap-4 text-center text-description">
             <span className="material-symbols-outlined text-6xl">sentiment_dissatisfied</span>
             <div className="space-y-2">
               <p>{t('characters:hub.states.empty', { context: viewMode })}</p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted">
                 {search ? t('characters:hub.states.emptySearchHint') : t('characters:hub.states.emptyHint')}
               </p>
             </div>
@@ -142,8 +142,8 @@ export default function CharacterHubPage(): JSX.Element {
         )}
 
         {items.length > 0 && (
-          <footer className="flex items-center justify-between border-t border-slate-200 pt-4 text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
-            <span>{t('characters:hub.labels.total', { count: items.length })}</span>
+          <footer className="flex items-center justify-between border-t border-border pt-4 text-xs text-muted">
+            <span>{t(items.length === 1 ? 'characters:hub.labels.total' : 'characters:hub.labels.total_plural', { count: items.length })}</span>
             <Link to="/characters/create" className="text-primary underline-offset-2 hover:underline">
               {t('characters:hub.labels.quickCreateLink')}
             </Link>

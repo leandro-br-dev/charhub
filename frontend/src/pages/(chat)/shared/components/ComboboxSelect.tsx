@@ -45,7 +45,7 @@ const ComboboxSelect = ({
     });
   }, []);
 
-  const wrapperBaseClasses = "relative w-fit";
+  const wrapperBaseClasses = "relative w-full";
   const inputBaseClasses = "w-full rounded-lg pl-3 pr-10 py-2 text-sm shadow-sm border focus:ring-2 focus:outline-none";
   const buttonBaseClasses = "absolute inset-y-0 right-0 flex items-center px-2 cursor-pointer";
   const optionsBaseClasses = "absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-lg border bg-light py-1 text-sm shadow-lg";

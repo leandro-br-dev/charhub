@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
+import { CachedImage } from '../ui/CachedImage';
 
 export function UserMenu(): JSX.Element | null {
   const { user, logout } = useAuth();
@@ -22,7 +23,7 @@ export function UserMenu(): JSX.Element | null {
   return (
     <div className="flex items-center gap-4">
       {user.photo ? (
-        <img src={user.photo} alt={displayName} className="h-10 w-10 rounded-full object-cover border-2 border-slate-400" />
+        <CachedImage src={user.photo} alt={displayName} className="h-10 w-10 rounded-full object-cover border-2 border-slate-400" />
       ) : (
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-white">
           {displayName.charAt(0).toUpperCase()}

@@ -29,8 +29,7 @@ const AGE_RATING_UNLOCK_STEPS: Record<AgeRating, number> = {
 
 export function getUnlockedContentTags(ageRating: AgeRating): ContentTag[] {
   const sliceIndex = AGE_RATING_UNLOCK_STEPS[ageRating] ?? 0;
-  const unlocked = new Set(TAG_UNLOCK_ORDER.slice(0, sliceIndex));
-  return CONTENT_TAG_OPTIONS.filter(tag => unlocked.has(tag));
+  return TAG_UNLOCK_ORDER.slice(0, sliceIndex);
 }
 
 export function normalizeAllowedContentTags(

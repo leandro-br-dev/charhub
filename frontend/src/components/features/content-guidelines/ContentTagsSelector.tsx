@@ -31,11 +31,11 @@ export function ContentTagsSelector({
   const unlockedSet = useMemo(() => new Set(unlockedTags), [unlockedTags]);
 
   useEffect(() => {
-    const normalized = normalizeAllowedContentTags(ageRating, allowedTags);
+    const normalized = allowedTags.filter(tag => unlockedSet.has(tag));
     if (!haveSameContentTags(normalized, allowedTags)) {
       onChange(normalized);
     }
-  }, [ageRating, allowedTags, onChange]);
+  }, [unlockedSet, allowedTags, onChange]);
 
   const contentTagsByColumn = useMemo(() => {
     const midpoint = Math.ceil(CONTENT_TAG_OPTIONS.length / 2);
@@ -76,38 +76,67 @@ export function ContentTagsSelector({
             {column.map(tag => {
               const isUnlocked = unlockedSet.has(tag);
               const isChecked = isUnlocked && allowedTags.includes(tag);
-              const baseClasses = 'rounded-lg border px-3 py-2 text-sm shadow-sm transition';
-              const unavailableClasses = 'border-border bg-muted/10 text-muted cursor-not-allowed opacity-60';
-              const availableClasses = 'border-border bg-background hover:border-primary cursor-pointer';
-              const labelClasses = [
-                baseClasses,
-                isUnlocked && !disabled ? availableClasses : unavailableClasses,
-              ].join(' ');
+
+              // Base classes for the label
+              const labelBaseClasses = 'block rounded-lg border px-3 py-2 text-sm shadow-sm transition-all duration-200';
+
+              // State-specific classes
+              let labelStateClasses = '';
+              let titleTextClasses = '';
+              let hintTextClasses = '';
+
+              if (!isUnlocked) {
+                // Locked state - grayed out and disabled
+                labelStateClasses = 'border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/30 cursor-not-allowed opacity-60';
+                titleTextClasses = 'text-gray-400 dark:text-gray-600';
+                hintTextClasses = 'text-gray-400 dark:text-gray-600';
+              } else if (disabled) {
+                // Disabled but unlocked
+                labelStateClasses = 'border-gray-300 dark:border-gray-700 bg-background cursor-not-allowed opacity-70';
+                titleTextClasses = 'text-content dark:text-content-dark';
+                hintTextClasses = 'text-muted';
+              } else if (isChecked) {
+                // Checked and active state - only yellow border, text remains normal
+                labelStateClasses = 'border-primary bg-background cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50';
+                titleTextClasses = 'text-content dark:text-content-dark';
+                hintTextClasses = 'text-muted';
+              } else {
+                // Unchecked but available
+                labelStateClasses = 'border-border dark:border-gray-700 bg-background cursor-pointer hover:border-primary/50 hover:bg-gray-50 dark:hover:bg-gray-800/50';
+                titleTextClasses = 'text-content dark:text-content-dark';
+                hintTextClasses = 'text-muted';
+              }
+
+              const labelClasses = `${labelBaseClasses} ${labelStateClasses}`;
 
               return (
                 <label
                   key={tag}
+                  htmlFor={tag}
                   className={labelClasses}
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-content">
+                    <div className="flex flex-col flex-1">
+                      <span className={`font-medium ${titleTextClasses}`}>
                         {t('characters:contentTags.' + tag)}
                       </span>
-                      <span className="text-xs text-muted">
-                        {t('characters:contentTagHints.' + tag, { defaultValue: '' })}
-                      </span>
+                      {t('characters:contentTagHints.' + tag, { defaultValue: '' }) && (
+                        <span className={`text-xs mt-0.5 ${hintTextClasses}`}>
+                          {t('characters:contentTagHints.' + tag, { defaultValue: '' })}
+                        </span>
+                      )}
                     </div>
                     <input
+                      id={tag}
                       type="checkbox"
-                      className="mt-1 h-4 w-4"
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
                       checked={isChecked}
                       onChange={() => handleToggle(tag)}
                       disabled={disabled || !isUnlocked}
                     />
                   </div>
                   {!isUnlocked && (
-                    <p className="mt-2 text-xs text-muted">
+                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-500 italic">
                       {t('characters:form.sections.contentTagLocked', 'Unlocked at higher age ratings.')}
                     </p>
                   )}

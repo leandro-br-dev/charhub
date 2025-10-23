@@ -216,7 +216,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
           placeholder={t('history.searchPlaceholder', { defaultValue: 'Search conversations...' })}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-3 py-2 mb-2 bg-background border border-normal rounded-lg text-sm text-content placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+          className="w-full px-3 py-2 mb-2 bg-background border border-border rounded-lg text-sm text-content placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
         />
 
         {/* Group By Toggle */}
@@ -295,7 +295,16 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
                           />
                         </form>
                       ) : (
-                        <div className="flex items-center">
+                        <NavLink
+                          to={`/chat/${conv.id}`}
+                          onClick={onLinkClick}
+                          className={({ isActive }) =>
+                            `flex items-center rounded p-2 pr-16 text-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                              isActive ? 'bg-primary/20 font-semibold' : ''
+                            }`
+                          }
+                          title={conv.title || t('history.untitled', { defaultValue: 'Untitled conversation' })}
+                        >
                           {/* Character Avatars */}
                           <div className="flex flex-shrink-0 items-center -space-x-2 mr-2">
                             {conv.participants
@@ -321,42 +330,31 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
                             )}
                           </div>
 
-                          {/* Conversation Link */}
-                          <NavLink
-                            to={`/chat/${conv.id}`}
-                            onClick={onLinkClick}
-                            className={({ isActive }) =>
-                              `flex-grow block p-2 rounded text-sm truncate pr-16 text-content hover:bg-normal transition-colors ${
-                                isActive ? 'bg-primary/20 font-semibold' : ''
-                              }`
-                            }
-                            title={conv.title || t('history.untitled', { defaultValue: 'Untitled conversation' })}
-                          >
+                          {/* Conversation Title */}
+                          <span className="flex-grow block truncate text-content">
                             {conv.title ||
                               t('history.untitled', { defaultValue: 'Untitled conversation' })}
-                          </NavLink>
-                        </div>
+                          </span>
+                        </NavLink>
                       )}
 
                       {/* Action Buttons */}
                       {editingConvId !== conv.id && (
                         <div className="absolute top-1/2 right-1 transform -translate-y-1/2 flex opacity-0 group-hover:opacity-100 transition-opacity gap-1">
-                          <Button
-                            variant="light"
-                            size="small"
-                            icon="edit"
+                          <button
+                            className="px-2 py-1 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600"
                             onClick={() => handleEditClick(conv)}
                             title={t('history.editTitle', { defaultValue: 'Edit title' })}
-                            className="p-1"
-                          />
-                          <Button
-                            variant="light"
-                            size="small"
-                            icon="delete"
+                          >
+                            <span className="material-symbols-outlined text-base">edit</span>
+                          </button>
+                          <button
+                            className="px-2 py-1 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600"
                             onClick={() => handleDeleteClick(conv.id)}
                             title={t('history.deleteConversation', { defaultValue: 'Delete conversation' })}
-                            className="p-1 text-danger hover:bg-danger/10"
-                          />
+                          >
+                            <span className="material-symbols-outlined text-base">delete</span>
+                          </button>
                         </div>
                       )}
                     </li>

@@ -195,19 +195,35 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
 
   useEffect(() => {
     if (!socket || !conversationId || !autoJoin) {
+      console.log('[useChatSocket] Skipping join_conversation', {
+        hasSocket: !!socket,
+        conversationId,
+        autoJoin
+      });
       return;
     }
 
     let joined = true;
 
+    console.log('[useChatSocket] Emitting join_conversation', { conversationId });
+
     socket.emit('join_conversation', { conversationId }, (response?: { success?: boolean; error?: string }) => {
+      console.log('[useChatSocket] join_conversation callback', {
+        conversationId,
+        response
+      });
+
       if (response && response.success === false) {
+        console.error('[useChatSocket] Failed to join conversation', response.error);
         setConnectionError(response.error || 'Unable to join conversation');
+      } else {
+        console.log('[useChatSocket] Successfully joined conversation room');
       }
     });
 
     return () => {
       if (joined && socket.connected) {
+        console.log('[useChatSocket] Leaving conversation', { conversationId });
         socket.emit('leave_conversation', { conversationId });
       }
       setTypingParticipants(new Set());
@@ -217,13 +233,32 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
 
   useEffect(() => {
     if (!socket) {
+      console.log('[useChatSocket] Skipping message handlers - no socket');
       return;
     }
 
+    console.log('[useChatSocket] Registering message handlers', {
+      conversationId,
+      currentUserId
+    });
+
     const handleMessageReceived = (message: Message) => {
+      console.log('[useChatSocket] message_received event received', {
+        messageId: message?.id,
+        conversationId: message?.conversationId,
+        senderType: message?.senderType,
+        contentPreview: message?.content?.substring(0, 50)
+      });
+
       if (!message || !message.conversationId) {
+        console.warn('[useChatSocket] Invalid message received - missing data', message);
         return;
       }
+
+      console.log('[useChatSocket] Appending message to cache', {
+        messageId: message.id,
+        conversationId: message.conversationId
+      });
 
       appendMessageToCache(queryClient, message.conversationId, message);
 
@@ -232,6 +267,7 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
           if (prev.size === 0) {
             return prev;
           }
+          console.log('[useChatSocket] Clearing typing participants');
           return new Set();
         });
       }
@@ -326,22 +362,53 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
     (payload: SendMessageOptions) =>
       new Promise<SendMessageResult>((resolve, reject) => {
         if (!socket) {
+          console.error('[useChatSocket] sendMessage failed: socket is null');
+          reject(new Error('Socket is not initialized'));
+          return;
+        }
+
+        if (!socket.connected) {
+          console.error('[useChatSocket] sendMessage failed: socket not connected', {
+            socketId: socket.id,
+            connected: socket.connected
+          });
           reject(new Error('Socket is not connected'));
           return;
         }
 
+        console.log('[useChatSocket] Emitting send_message event', {
+          conversationId: payload.conversationId,
+          contentLength: payload.content.length,
+          socketId: socket.id
+        });
+
         socket.emit('send_message', payload, (response?: { success?: boolean; data?: Message; respondingBots?: string[]; error?: string }) => {
+          console.log('[useChatSocket] send_message callback received', {
+            hasResponse: !!response,
+            success: response?.success,
+            hasData: !!response?.data,
+            error: response?.error
+          });
+
           if (!response) {
+            console.error('[useChatSocket] sendMessage failed: no response from server');
             reject(new Error('No response from server'));
             return;
           }
 
           if (response.success && response.data) {
+            console.log('[useChatSocket] sendMessage succeeded', {
+              messageId: response.data.id,
+              respondingBots: response.respondingBots
+            });
             resolve({
               message: response.data,
               respondingBots: response.respondingBots || [],
             });
           } else {
+            console.error('[useChatSocket] sendMessage failed', {
+              error: response.error
+            });
             reject(new Error(response.error || 'Failed to send message'));
           }
         });

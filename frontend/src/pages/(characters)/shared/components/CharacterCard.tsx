@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { type CharacterSummary } from '../../../../types/characters';
+import { CachedImage } from '../../../../components/ui/CachedImage';
 
 export interface CharacterCardProps {
   character: CharacterSummary;
@@ -34,7 +35,7 @@ export function CharacterCard({
       <Link to={destination} className="flex h-full flex-col">
         <div className="relative h-48 w-full overflow-hidden">
           {character.avatar ? (
-            <img
+            <CachedImage
               src={character.avatar}
               alt={title}
               loading="lazy"

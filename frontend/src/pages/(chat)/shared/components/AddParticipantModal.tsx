@@ -7,32 +7,8 @@ import { Button } from "../../../../components/ui/Button";
 import { Avatar } from "../../../../components/ui/Avatar";
 import { Modal } from "../../../../components/ui/Modal";
 import { Input } from "../../../../components/ui";
-
-// --- Placeholder Services ---
-const characterService = {
-  getCharacters: async (userId: string, options: any) => {
-    console.log("Fetching characters with options:", options);
-    return {
-      success: true,
-      data: [
-        { id: 'char1', name: 'Character One', description: 'Sample character for testing' },
-        { id: 'char2', name: 'Character Two', description: 'Another sample character' },
-      ],
-    };
-  },
-};
-
-const assistantService = {
-  getMyAssistants: async (options: any) => {
-    console.log("Fetching my assistants with options:", options);
-    return { success: true, data: [] };
-  },
-  getPublicAssistants: async (options: any) => {
-    console.log("Fetching public assistants with options:", options);
-    return { success: true, data: [] };
-  },
-};
-// --- End Placeholder Services ---
+import { characterService } from "../../../../services/characterService";
+import { assistantService } from "../../../../services/assistantService";
 
 interface AddParticipantModalProps {
   isOpen: boolean;
@@ -48,7 +24,7 @@ const AddParticipantModal = React.memo(
     currentParticipants = [],
     onAddParticipant,
   }: AddParticipantModalProps) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('chat');
     const { user } = useAuth();
     const userId = user?.id;
 
@@ -93,10 +69,7 @@ const AddParticipantModal = React.memo(
               : t("addParticipantModal.assistantsTab").toLowerCase();
 
           if (activeTab === "characters") {
-            result = await characterService.getCharacters(userId, {
-              isPublic: false,
-              ...options,
-            });
+            result = await characterService.getMyCharactersForConversation(options);
           } else if (activeTab === "myAssistants") {
             result = await assistantService.getMyAssistants(options);
           } else if (activeTab === "publicAssistants") {
@@ -165,9 +138,11 @@ const AddParticipantModal = React.memo(
         const actorData = {
           type,
           id: item.id,
-          name: item.name,
+          name: activeTab === "characters"
+            ? (item.lastName ? `${item.firstName} ${item.lastName}` : item.firstName)
+            : item.name,
           defaultCharacterId:
-            type === "ASSISTANT" ? item.default_character_id : undefined,
+            type === "ASSISTANT" ? item.defaultCharacterId : undefined,
         };
         onAddParticipant(actorData);
       },
@@ -237,7 +212,7 @@ const AddParticipantModal = React.memo(
             disabled={loading}
           />
           <Button
-            variant="dark"
+            variant="primary"
             onClick={handleSearch}
             icon="search"
             disabled={loading}
@@ -267,13 +242,27 @@ const AddParticipantModal = React.memo(
               </div>
             ) : (
               availableItems.map((item) => {
-                const descriptionText =
-                  activeTab === "characters"
-                    ? item.description || item.personality
-                    : item.description ||
-                      (item.instructions
-                        ? item.instructions.substring(0, 70) + "..."
-                        : "");
+                let itemName = "";
+                let itemAvatar = null;
+                let descriptionText = "";
+
+                if (activeTab === "characters") {
+                  // Character structure
+                  itemName = item.lastName
+                    ? `${item.firstName} ${item.lastName}`
+                    : item.firstName;
+                  itemAvatar = item.avatar;
+                  descriptionText = item.personality?.substring(0, 100) || "";
+                } else {
+                  // Assistant structure
+                  itemName = item.name;
+                  itemAvatar = item.defaultCharacter?.avatar || null;
+                  descriptionText = item.description ||
+                    (item.instructions
+                      ? item.instructions.substring(0, 70) + "..."
+                      : "");
+                }
+
                 return (
                   <li
                     key={item.id}
@@ -281,14 +270,14 @@ const AddParticipantModal = React.memo(
                   >
                     <div className="flex items-center overflow-hidden mr-2">
                       <Avatar
-                        src={item.avatar || item.default_character?.avatar}
+                        src={itemAvatar}
                         size="small"
-                        alt={item.name}
+                        alt={itemName}
                         className="flex-shrink-0"
                       />
                       <div className="ml-3 overflow-hidden">
                         <h3 className="font-medium text-content dark:text-content-dark truncate">
-                          {item.name}
+                          {itemName}
                         </h3>
                         <p className="text-sm text-description truncate">
                           {descriptionText ||

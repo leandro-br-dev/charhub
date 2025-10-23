@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { CachedImage } from './CachedImage';
 import { useAuth } from '../../hooks/useAuth';
 import { ImageCropperModal } from './ImageCropperModal';
 import { Button } from './Button';
@@ -47,7 +48,7 @@ export function EditableAvatar() {
       />
       <div className="cursor-pointer" onClick={handleAvatarClick}>
         {user?.photo ? (
-          <img src={user.photo} alt="Avatar" className="h-24 w-24 rounded-full" />
+        <CachedImage src={user.photo} alt="Avatar" className="h-24 w-24 rounded-full" />
         ) : (
           <div className="flex h-24 w-24 items-center justify-center rounded-full bg-normal text-2xl font-semibold text-content">
             {user?.displayName?.[0]?.toUpperCase() ?? '?'}

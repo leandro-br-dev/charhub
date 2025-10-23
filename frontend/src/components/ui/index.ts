@@ -3,5 +3,7 @@ export { Button, type ButtonProps } from './Button';
 export { Dialog, type DialogProps } from './Dialog';
 export { Input, type InputProps } from './Input';
 export { Modal, type ModalProps } from './Modal';
+export { Select } from './Select';
 export { SmartDropdown, type SmartDropdownProps } from './SmartDropdown';
 export { Textarea, type TextareaProps } from './Textarea';
+export { CachedImage, type CachedImageProps, prefetchImage } from './CachedImage';

@@ -6,22 +6,11 @@ import { useAuth } from "../../../../hooks/useAuth";
 import { Modal } from "../../../../components/ui/Modal";
 import { Button } from "../../../../components/ui/Button";
 import { Textarea } from "../../../../components/ui/Textarea";
+import { Select } from "../../../../components/ui/Select";
 import Switch from "../../../../components/ui/Switch";
-import ComboboxSelect from "./ComboboxSelect";
 import ImageGalleryModal from "./ImageGalleryModal";
-
-// --- Placeholder Services ---
-const chatService = {
-  getConversationGallery: async (conversationId: string) => ({ success: true, data: [] }),
-};
-const characterService = {
-  getCharacterImages: async (characterId: string, imageType: string) => ({ success: true, data: [] }),
-};
-
-// In a real scenario, this would be in a context
-const useView = () => ({
-    setBackground: (background: string | null) => console.log('Set background to:', background)
-});
+import { chatService } from "../../../../services/chatService";
+import { characterService } from "../../../../services/characterService";
 
 
 const ConversationSettingsModal = ({
@@ -31,9 +20,8 @@ const ConversationSettingsModal = ({
   onSave,
   isLoading,
 }: any) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('chat');
   const { user } = useAuth();
-  const { setBackground } = useView();
 
   const defaultSettings = {
     interaction_mode: "normal",
@@ -64,23 +52,13 @@ const ConversationSettingsModal = ({
     if (!conversation?.id) return;
     setLoadingGallery(true);
     setGalleryError(null);
-    let imageUrls = new Set<string>();
     try {
-        const [convGalleryRes, ...charImageRes] = await Promise.all([
-            chatService.getConversationGallery(conversation.id),
-            ...(conversation.participants || [])
-                .map((p: any) => p.acting_character_id)
-                .filter(Boolean)
-                .map((id: string) => characterService.getCharacterImages(id, 'lora_samples'))
-        ]);
-
-        if (convGalleryRes.success) convGalleryRes.data.forEach((url: string) => imageUrls.add(url));
-        charImageRes.forEach((res: any) => {
-            if (res.success) res.data.forEach((url: string) => imageUrls.add(url));
-        });
-        setGalleryImages(Array.from(imageUrls));
+        const images = await chatService.getConversationGallery(conversation.id);
+        setGalleryImages(images || []);
     } catch (err) {
+        console.error('[ConversationSettings] Error loading gallery:', err);
         setGalleryError(t('conversationSettings.errorLoadingGallery'));
+        setGalleryImages([]);
     } finally {
         setLoadingGallery(false);
     }
@@ -154,7 +132,8 @@ const ConversationSettingsModal = ({
       }
 
       await onSave(conversation.id, finalSettings);
-      setBackground(finalSettings.view.background_value);
+      // TODO: Implement setBackground when view context is available
+      // setBackground(finalSettings.view.background_value);
       onClose(); 
     } catch (err: any) {
       setError(err.message || t("chatPage.errorSavingConfig"));
@@ -176,7 +155,7 @@ const ConversationSettingsModal = ({
     { value: "medium", label: t("conversationSettings.slangMedium") },
   ];
   const scenarioGenreOptions = [
-    { value: "none", label: t("common.none") },
+    { value: "none", label: t("conversationSettings.genreNone") },
     { value: "fantasy", label: t("conversationSettings.genreFantasy") },
     { value: "sci_fi", label: t("conversationSettings.genreSciFi") },
     { value: "modern", label: t("conversationSettings.genreModern") },
@@ -209,18 +188,18 @@ const ConversationSettingsModal = ({
         size="lg"
       >
         <div className="space-y-6 max-h-[70vh] overflow-y-auto p-1 pr-3">
-          <ComboboxSelect
+          <Select
             label={t("conversationSettings.interactionModeLabel")}
             options={interactionModeOptions}
             value={settings.interaction_mode}
-            onChange={(v: any) => handleChange("interaction_mode", v)}
+            onChange={(v: string) => handleChange("interaction_mode", v)}
             disabled={isLoading}
           />
-          <ComboboxSelect
+          <Select
             label={t("conversationSettings.responseLengthLabel")}
             options={responseLengthOptions}
             value={settings.response_length}
-            onChange={(v: any) => handleChange("response_length", v)}
+            onChange={(v: string) => handleChange("response_length", v)}
             disabled={isLoading}
           />
           <Switch
@@ -233,11 +212,11 @@ const ConversationSettingsModal = ({
               false: t("common.disabled"),
             }}
           />
-          <ComboboxSelect
+          <Select
             label={t("conversationSettings.useSlangLabel")}
             options={slangOptions}
             value={settings.use_slang}
-            onChange={(v: any) => handleChange("use_slang", v)}
+            onChange={(v: string) => handleChange("use_slang", v)}
             disabled={isLoading}
           />
 
@@ -245,11 +224,11 @@ const ConversationSettingsModal = ({
             <h3 className="text-md font-semibold text-content">
               {t("conversationSettings.viewOptionsTitle")}
             </h3>
-            <ComboboxSelect
+            <Select
               label={t("conversationSettings.bgTypeLabel")}
               options={backgroundTypeOptions}
               value={settings.view.background_type}
-              onChange={(v: any) => handleViewChange("background_type", v)}
+              onChange={(v: string) => handleViewChange("background_type", v)}
               disabled={isLoading}
             />
             {settings.view.background_type === "image" && (
@@ -294,11 +273,11 @@ const ConversationSettingsModal = ({
               <h3 className="text-md font-semibold text-content">
                 {t("conversationSettings.roleplaySpecificTitle")}
               </h3>
-              <ComboboxSelect
+              <Select
                 label={t("conversationSettings.scenarioGenreLabel")}
                 options={scenarioGenreOptions}
                 value={settings.roleplay_specific.scenario_genre}
-                onChange={(v: any) => handleRoleplayChange("scenario_genre", v)}
+                onChange={(v: string) => handleRoleplayChange("scenario_genre", v)}
                 disabled={isLoading}
               />
               {settings.roleplay_specific.scenario_genre === "custom" && (
@@ -318,11 +297,11 @@ const ConversationSettingsModal = ({
                   disabled={isLoading}
                 />
               )}
-              <ComboboxSelect
+              <Select
                 label={t("conversationSettings.narrationStyleLabel")}
                 options={narrationStyleOptions}
                 value={settings.roleplay_specific.narration_style}
-                onChange={(v: any) => handleRoleplayChange("narration_style", v)}
+                onChange={(v: string) => handleRoleplayChange("narration_style", v)}
                 disabled={isLoading}
               />
               <Switch

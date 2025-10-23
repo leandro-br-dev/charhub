@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu } from '@headlessui/react';
 import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../ui/Button';
+// Button removed from imports as related actions were removed
 import { SmartDropdown } from '../ui/SmartDropdown';
+import { CachedImage } from '../ui/CachedImage';
 import { LanguageSwitcher } from '../features/LanguageSwitcher';
 import { ThemeToggle } from '../features/ThemeToggle';
 
@@ -79,7 +80,6 @@ export function NavigationRail({
 }: NavigationRailProps): JSX.Element {
   const { t } = useTranslation(['navigation', 'dashboard', 'common']);
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
 
   const isAdmin = user?.role === 'ADMIN';
 
@@ -179,61 +179,6 @@ export function NavigationRail({
 
         <div className="my-5 h-px w-12 bg-dark/60" />
 
-        <SmartDropdown
-          menuWidth="w-52"
-          buttonContent={
-            <Button
-              variant="light"
-              size="small"
-              icon="person_add"
-              className="rounded-full"
-              title={t('dashboard:createCharacter', 'Create character')}
-            />
-          }
-        >
-          <Menu.Item>
-            {({ active }) => (
-              <button
-                type="button"
-                onClick={() => navigate('/characters/create')}
-                className={`group flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm ${
-                  active ? 'bg-primary/10 text-content' : 'text-content'
-                }`}
-              >
-                <span className="material-symbols-outlined text-base">edit</span>
-                {t('dashboard:createManually', 'Create manually')}
-              </button>
-            )}
-          </Menu.Item>
-          {/* TODO(chat-automation): Reintroduce AI-assisted creation options when the chat/story modules are migrated. */}
-        </SmartDropdown>
-
-        <SmartDropdown
-          menuWidth="w-52"
-          buttonContent={
-            <Button
-              variant="light"
-              size="small"
-              icon="history_edu"
-              className="rounded-full"
-              title={t('dashboard:createStory', 'Create story')}
-            />
-          }
-        >
-          {/* TODO(story): Attach story creation shortcuts once the story builder is available. */}
-          <div className="px-3 py-2 text-xs text-muted">
-            {t('navigation:storyPlaceholder', 'Story tools will live here soon.')}
-          </div>
-        </SmartDropdown>
-
-        <Button
-          variant="light"
-          size="small"
-          icon="bug_report"
-          className="rounded-full"
-          title={t('navigation:reportBug', 'Report a problem')}
-          onClick={onBugReportClick}
-        />
       </div>
 
       <div className="flex flex-col items-center gap-4">
@@ -247,7 +192,7 @@ export function NavigationRail({
               className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-dark bg-light shadow"
             >
               {user?.photo ? (
-                <img src={user.photo} alt={displayName} className="h-12 w-12 rounded-full object-cover" />
+                <CachedImage src={user.photo} alt={displayName} className="h-12 w-12 rounded-full object-cover" />
               ) : (
                 <span className="text-lg font-semibold text-content">{fallbackInitial}</span>
               )}

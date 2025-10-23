@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/Button";
 import { ConversationHistory } from "../../pages/(chat)/shared/components/ConversationHistory";
-import { CharacterListSidebar } from "./CharacterListSidebar";
+import { CharacterListSidebar } from "../../pages/(characters)/shared/components";
 
 type SidebarProps = {
   onClose?: () => void;

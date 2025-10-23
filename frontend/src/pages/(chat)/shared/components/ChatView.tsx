@@ -60,6 +60,61 @@ const ChatView: React.FC<any> = ({
   onSendConfirmation,
 }) => {
   const { t } = useTranslation();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const prevMessageCountRef = useRef<number>(Array.isArray(messages) ? messages.length : 0);
+
+  const doScrollToBottom = (behavior: ScrollBehavior = 'auto') => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    // Simply scroll to the very bottom of the container
+    // The container has pb-40 (160px) padding-bottom to ensure content is above the fixed input
+    if (behavior === 'smooth') {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
+    } else {
+      container.scrollTop = container.scrollHeight;
+    }
+  };
+
+  // Ensure we always land at the end when messages or typing/tasks change
+  useEffect(() => {
+    const currentCount = Array.isArray(messages) ? messages.length : 0;
+    const wasCount = prevMessageCountRef.current;
+    const behavior: ScrollBehavior = currentCount > wasCount ? 'smooth' : 'auto';
+
+    // Scroll after paint; also schedule a second pass to catch late image loads
+    const raf1 = requestAnimationFrame(() => doScrollToBottom(behavior));
+    const timeoutId = window.setTimeout(() => doScrollToBottom('auto'), 120);
+
+    // Attach image load listeners to handle late-loading content within the container
+    const container = scrollContainerRef.current;
+    const imgs = container ? Array.from(container.querySelectorAll('img')) : [];
+    const listeners: Array<() => void> = [];
+    imgs.forEach(img => {
+      if (!img.complete) {
+        const handler = () => doScrollToBottom('auto');
+        img.addEventListener('load', handler, { once: true });
+        listeners.push(() => img.removeEventListener('load', handler));
+      }
+    });
+
+    prevMessageCountRef.current = currentCount;
+    return () => {
+      cancelAnimationFrame(raf1);
+      clearTimeout(timeoutId);
+      listeners.forEach(off => off());
+    };
+  }, [messages, typingCharacters, activeBackgroundTasks]);
+
+  // Initial mount scroll to bottom (when conversation is first shown)
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => doScrollToBottom('auto'));
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const {
     activeModal,
     modalData,
@@ -191,8 +246,8 @@ const ChatView: React.FC<any> = ({
         </div>
       )}
 
-      <div className="px-4 flex flex-col flex-grow pb-40">
-        <div ref={headerRef} className="pt-2 pb-4">
+      <div className="px-4 flex flex-col flex-grow overflow-hidden">
+        <div ref={headerRef} className="pt-2 pb-4 flex-shrink-0">
           <div className="flex justify-end mb-2 gap-2">
             {conversation && (
               <>
@@ -233,7 +288,7 @@ const ChatView: React.FC<any> = ({
             )}
         </div>
 
-        <div className="flex-grow overflow-y-auto">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-40">
           <MessageList
             messages={messages}
             loading={loadingConversationData}

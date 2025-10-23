@@ -224,96 +224,73 @@ const MessageItem = memo(
 
     const shouldShowActions = showActions && !isEditing && !confirmationRequest;
 
-    const ActionButtons = useCallback(
-      () => (
-        <div
-          className={`flex items-center space-x-1 transition-opacity duration-150 ${ 
-            shouldShowActions ? "opacity-100" : "opacity-0 pointer-events-none" 
-          }`}
-        >
-          {!isSent && !isLikelyJson(message) && onPlayAudioRequest && (
-            <Button
-              variant="light"
-              size="small"
-              icon={
-                isAudioLoading
-                  ? "hourglass_top"
-                  : isPlayingAudio
-                  ? "volume_up"
-                  : audioError
-                  ? "error_outline"
-                  : isAudioCached
-                  ? "play_arrow"
-                  : "volume_up"
-              }
-              className={`p-[2px] ${ 
-                isAudioLoading
-                  ? "text-info/80 animate-spin"
-                  : isPlayingAudio
-                  ? "text-success/90"
-                  : audioError
-                  ? "text-danger/80"
-                  : isAudioCached
-                  ? "text-primary/80 hover:bg-primary/10 hover:text-primary"
-                  : "text-muted/80 hover:bg-secondary/10 hover:text-secondary"
+        const ActionButtons = useCallback(
+          () => (
+            <div
+              className={`flex items-center space-x-0 transition-opacity duration-150 ${
+                shouldShowActions ? "opacity-100" : "opacity-0 pointer-events-none" 
               }`}
-              onClick={handlePlayAudioClick}
-              title={
-                isAudioLoading
-                  ? t("messageItem.generatingAudio")
-                  : isPlayingAudio
-                  ? t("messageItem.playingAudio")
-                  : audioError
-                  ? `${t("messageItem.audioErrorPrefix")}: ${audioError}`
-                  : isAudioCached
-                  ? t("messageItem.playAudioCachedActionTitle")
-                  : t("messageItem.playAudioActionTitle")
-              }
-              disabled={isAudioLoading}
-            />
-          )}
-          <Button
-            variant="light"
-            size="small"
-            icon="delete"
-            className="p-[2px] text-danger/80 hover:bg-danger/10 hover:text-danger"
-            onClick={handleDelete}
-            title={t("messageItem.deleteActionTitle")}
-          />
-          <Button
-            variant="light"
-            size="small"
-            icon="edit"
-            className="p-[2px] text-primary/80 hover:bg-primary/10 hover:text-primary"
-            onClick={handleEditClick}
-            title={t("messageItem.editActionTitle")}
-          />
-          <Button
-            variant="light"
-            size="small"
-            icon="refresh"
-            className="p-[2px] text-info/80 hover:bg-info/10 hover:text-info"
-            onClick={handleReprocess}
-            title={t("messageItem.regenerateActionTitle")}
-          />
-        </div>
-      ),
-      [
-        shouldShowActions,
-        isSent,
-        message,
-        onPlayAudioRequest,
-        isAudioLoading,
-        isPlayingAudio,
-        audioError,
-        isAudioCached,
-        handleDelete,
-        handleEditClick,
-        handleReprocess,
-        t,
-      ]
-    );
-
+            >
+              {!isSent && !isLikelyJson(message) && onPlayAudioRequest && (
+                <button
+                  className="px-2 py-1 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600"
+                  onClick={handlePlayAudioClick}
+                  title={
+                    isAudioLoading
+                      ? t("messageItem.generatingAudio")
+                      : isPlayingAudio
+                      ? t("messageItem.playingAudio")
+                      : audioError
+                      ? `${t("messageItem.audioErrorPrefix")}: ${audioError}`
+                      : isAudioCached
+                      ? t("messageItem.playAudioCachedActionTitle")
+                      : t("messageItem.playAudioActionTitle")
+                  }
+                  disabled={isAudioLoading}
+                >
+                  <span className="material-symbols-outlined text-base">
+                    {isAudioLoading ? "hourglass_top" : isPlayingAudio ? "volume_up" : audioError ? "error_outline" : isAudioCached ? "play_arrow" : "volume_up"}
+                  </span>
+                </button>
+              )}
+              <button
+                className="px-2 py-1 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600"
+                onClick={handleDelete}
+                title={t("messageItem.deleteActionTitle")}
+              >
+                <span className="material-symbols-outlined text-base">delete</span>
+              </button>
+              <button
+                className="px-2 py-1 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600"
+                onClick={handleEditClick}
+                title={t("messageItem.editActionTitle")}
+              >
+                <span className="material-symbols-outlined text-base">edit</span>
+              </button>
+              <button
+                className="px-2 py-1 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600"
+                onClick={handleReprocess}
+                title={t("messageItem.regenerateActionTitle")}
+              >
+                <span className="material-symbols-outlined text-base">refresh</span>
+              </button>
+            </div>
+          ),
+          [
+            shouldShowActions,
+            isSent,
+            message,
+            onPlayAudioRequest,
+            isAudioLoading,
+            isPlayingAudio,
+            audioError,
+            isAudioCached,
+            handleDelete,
+            handleEditClick,
+            handleReprocess,
+            t,
+          ]
+        );
     const handleAvatarClickInternal = useCallback(() => {
       if (!isSent && onAvatarClick) {
         onAvatarClick();
@@ -375,7 +352,6 @@ const MessageItem = memo(
               >
                 {displayName}
               </span>
-              {!confirmationRequest && <ActionButtons />}
             </div>
           </div>
           <div
@@ -494,7 +470,7 @@ const MessageItem = memo(
               </div>
             ) : (
               <div
-                className={`px-4 py-2 rounded-lg ${bubbleColorClasses} ${ 
+                className={`px-4 py-2 rounded-xl ${bubbleColorClasses} ${ 
                   isSent ? "rounded-tr-none" : "rounded-tl-none" 
                 } shadow-sm relative break-words w-full`}
               >
@@ -537,12 +513,15 @@ const MessageItem = memo(
                   isSent ? "self-end" : "self-start" 
                 }`}
               >
-                <span>
-                  {new Date(timestamp).toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </span>
+                <div className={`flex items-center ${isSent ? 'flex-row-reverse' : ''}`}>
+                  <span className="mx-2">
+                    {new Date(timestamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                  {!confirmationRequest && <ActionButtons />}
+                </div>
                 {!isSent &&
                   typeof creditsConsumed === "number" &&
                   creditsConsumed > 0 && (

@@ -82,6 +82,21 @@ export const characterService = {
     );
 
     return response.data.data;
+  },
+
+  async getMyCharactersForConversation(params?: { search?: string }): Promise<{ success: boolean; data: Array<{ id: string; firstName: string; lastName: string | null; avatar: string | null; personality: string | null }> }> {
+    try {
+      const response = await api.get<{ success: boolean; data: Array<{ id: string; firstName: string; lastName: string | null; avatar: string | null; personality: string | null }> }>(BASE_PATH, {
+        params: {
+          ...params,
+          public: 'false'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('[characterService] getMyCharactersForConversation failed:', error);
+      return { success: false, data: [] };
+    }
   }
 };
 

@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import MessageItem from './MessageItem';
 import { TypingIndicator } from './TypingIndicator';
+import { CachedImage } from '../../../../components/ui/CachedImage';
 import type { Message } from '../../../../types/chat';
 import { SenderType } from '../../../../types/chat';
 
@@ -21,7 +22,7 @@ const BackgroundTaskIndicator: React.FC<BackgroundTaskIndicatorProps> = ({
   <div className="flex items-center gap-2 text-xs text-muted">
     {avatar ? (
       <span className="inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-light text-[10px] text-muted">
-        <img src={avatar} alt={name || 'Assistant'} className="h-full w-full object-cover" />
+        <CachedImage src={avatar} alt={name || 'Assistant'} className="h-full w-full object-cover" />
       </span>
     ) : null}
     <span>{name || 'Assistant'}</span>
@@ -99,14 +100,35 @@ const MessageList: React.FC<MessageListProps> = ({
   onSendConfirmation,
   onReviewFileClick,
 }) => {
-  const { t } = useTranslation('chat');
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const { t, i18n } = useTranslation('chat');
 
-  useEffect(() => {
-    if (scrollRef.current) {
-        scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-    }
-  }, [messages, typingCharacters, activeBackgroundTasks]);
+  const getDateKey = (ts: any): string => {
+    const d = ts instanceof Date ? ts : new Date(ts);
+    if (Number.isNaN(d.getTime())) return '';
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+
+  const formatDateLabel = (ts: any): string => {
+    const d = ts instanceof Date ? ts : new Date(ts);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(i18n.language || undefined, {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  };
+
+  const DateSeparator: React.FC<{ timestamp: any }> = ({ timestamp }) => (
+    <div className="my-4 flex items-center justify-center text-xs text-muted relative">
+      <div className="absolute left-0 right-0 h-px bg-border" />
+      <span className="relative z-10 rounded-full border border-border bg-background px-2 py-0.5">
+        {formatDateLabel(timestamp)}
+      </span>
+    </div>
+  );
 
   const checkAndParseImageContent = (content: any) => {
     if (!content || typeof content !== "string") return null;
@@ -164,6 +186,10 @@ const MessageList: React.FC<MessageListProps> = ({
 
       {Array.isArray(messages) &&
         messages.map((msg, index) => {
+          // Insert a date separator when the date changes compared to previous message
+          const currentKey = getDateKey(msg.timestamp);
+          const prevKey = index > 0 ? getDateKey(messages[index - 1]?.timestamp) : null;
+          const showDateSeparator = !prevKey || currentKey !== prevKey;
           const senderId = msg.senderId;
           const isSentByUser = msg.senderType === SenderType.USER && String(senderId) === String(userId);
           const key = msg.id || `message-${index}-${msg.timestamp || Date.now()}`;
@@ -197,37 +223,42 @@ const MessageList: React.FC<MessageListProps> = ({
           const audioErrorForThisMessage = playingAudioState?.messageId === msg.id ? playingAudioState?.error : null;
           const isAudioCachedForThisMessage = !!audioCache[msg.id];
 
-          if (imageContentData) {
-            return <ImageMessageItem key={key} messageData={msg} />;
-          } else {
-            return (
-              <MessageItem
-                key={key}
-                messageId={msg.id}
-                message={msg.content}
-                isSent={isSentByUser}
-                sender={senderDetails}
-                timestamp={msg.timestamp}
-                onAvatarClick={() => {
-                  if (participantForThisMessage && onAvatarClick) {
-                    onAvatarClick(participantForThisMessage);
-                  }
-                }}
-                onDeleteRequest={onDeleteClick}
-                onSaveEditRequest={onSaveEdit}
-                onReprocessRequest={onReprocessClick}
-                isPlayingAudio={isThisMessagePlaying}
-                isAudioLoading={isThisMessageLoadingAudio}
-                audioError={audioErrorForThisMessage}
-                onPlayAudioRequest={onPlayAudioRequest}
-                isAudioCached={isAudioCachedForThisMessage}
-                creditsConsumed={creditsConsumedForThisMessage}
-                onSendConfirmation={onSendConfirmation}
-                isLastMessage={isLastMessage}
-                onReviewFileClick={onReviewFileClick}
-              />
-            );
-          }
+          const contentNode = imageContentData ? (
+            <ImageMessageItem key={key} messageData={msg} />
+          ) : (
+            <MessageItem
+              key={key}
+              messageId={msg.id}
+              message={msg.content}
+              isSent={isSentByUser}
+              sender={senderDetails}
+              timestamp={msg.timestamp}
+              onAvatarClick={() => {
+                if (participantForThisMessage && onAvatarClick) {
+                  onAvatarClick(participantForThisMessage);
+                }
+              }}
+              onDeleteRequest={onDeleteClick}
+              onSaveEditRequest={onSaveEdit}
+              onReprocessRequest={onReprocessClick}
+              isPlayingAudio={isThisMessagePlaying}
+              isAudioLoading={isThisMessageLoadingAudio}
+              audioError={audioErrorForThisMessage}
+              onPlayAudioRequest={onPlayAudioRequest}
+              isAudioCached={isAudioCachedForThisMessage}
+              creditsConsumed={creditsConsumedForThisMessage}
+              onSendConfirmation={onSendConfirmation}
+              isLastMessage={isLastMessage}
+              onReviewFileClick={onReviewFileClick}
+            />
+          );
+
+          return (
+            <React.Fragment key={`wrap-${key}`}>
+              {showDateSeparator && <DateSeparator timestamp={msg.timestamp} />}
+              {contentNode}
+            </React.Fragment>
+          );
         })}
 
       {participantsWithActiveTasksData.map((taskData) => (
@@ -245,7 +276,7 @@ const MessageList: React.FC<MessageListProps> = ({
           name={typingData.name}
         />
       ))}
-      <div ref={scrollRef} style={{ height: "1px" }} />
+
     </div>
   );
 };

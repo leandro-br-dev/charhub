@@ -324,7 +324,7 @@ const ChatContainer = () => {
   );
 
   const handleAddParticipant = useCallback(
-    async (actorData: { type: string; id: string }) => {
+    async (actorData: { type: string; id: string; defaultCharacterId?: string }) => {
       if (!conversationId) return;
 
       try {
@@ -332,8 +332,13 @@ const ChatContainer = () => {
           await chatService.addParticipant(conversationId, {
             actingCharacterId: actorData.id,
           });
+        } else if (actorData.type === 'ASSISTANT') {
+          await chatService.addParticipant(conversationId, {
+            actingAssistantId: actorData.id,
+            representingCharacterId: actorData.defaultCharacterId,
+          });
         } else {
-          throw new Error('Only character participants are supported right now.');
+          throw new Error('Unsupported participant type.');
         }
 
         await queryClient.invalidateQueries({ queryKey: conversationKeys.detail(conversationId) });
@@ -347,7 +352,26 @@ const ChatContainer = () => {
 
   const handleRemoveParticipant = useCallback(
     async (participantId: string) => {
-      if (!conversationId) return;
+      if (!conversationId || !conversation) return;
+
+      // Count bot participants (characters and assistants)
+      const botParticipants = conversation.participants.filter(
+        p => p.actingCharacterId || p.actingAssistantId
+      );
+
+      // Check if trying to remove the last bot participant
+      const participantToRemove = conversation.participants.find(p => p.id === participantId);
+      const isBot = participantToRemove?.actingCharacterId || participantToRemove?.actingAssistantId;
+
+      if (isBot && botParticipants.length === 1) {
+        setManualError(
+          t('errors.cannotRemoveLastCharacter', {
+            defaultValue: 'Cannot remove the last character from the conversation. At least one character or assistant must remain.'
+          })
+        );
+        setTimeout(() => setManualError(null), 5000); // Clear error after 5 seconds
+        return;
+      }
 
       try {
         await chatService.removeParticipant(conversationId, participantId);
@@ -357,7 +381,7 @@ const ChatContainer = () => {
         setManualError(t('errors.removeParticipantFailed', { defaultValue: 'Failed to remove participant.' }));
       }
     },
-    [conversationId, queryClient, t]
+    [conversationId, conversation, queryClient, t]
   );
 
   const handleSaveConversationSettings = useCallback(
