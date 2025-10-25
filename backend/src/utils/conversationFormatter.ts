@@ -5,6 +5,8 @@ import {
   Assistant,
   Message,
 } from '../generated/prisma';
+import { decryptMessage } from '../services/encryption';
+import { logger } from '../config/logger';
 
 type ParticipantWithRelations = ConversationParticipant & {
   user?: User | null;
@@ -136,9 +138,22 @@ export function formatConversationHistoryForLLM(
     const senderNameForHistory =
       idToDisplayNameMap.get(msg.senderId) || `Unknown_${msg.senderId.slice(0, 4)}`;
 
+    // Decrypt message content before adding to history
+    let decryptedContent = msg.content;
+    try {
+      decryptedContent = decryptMessage(msg.content);
+    } catch (error) {
+      logger.error(
+        { error, messageId: msg.id },
+        'Failed to decrypt message for LLM context'
+      );
+      // If decryption fails, use placeholder to prevent LLM from seeing encrypted data
+      decryptedContent = '[Message decryption failed]';
+    }
+
     formattedHistory.push({
       sender_name: senderNameForHistory,
-      content: msg.content,
+      content: decryptedContent,
     });
   }
 

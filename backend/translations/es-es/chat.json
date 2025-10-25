@@ -29,7 +29,7 @@
       "deleteConfirmTitle": "Eliminar conversación",
       "deleteConfirmMessage": "¿Estás seguro de que quieres eliminar \"{{title}}\"? Esta acción no se puede deshacer.",
       "thisConversation": "esta conversación",
-      "deleteSuccess": "Conversación eliminada correctamente"
+      "deleteSuccess": "Conversación eliminada con éxito"
     },
     "conversation": {
       "title": "Conversación",
@@ -83,7 +83,7 @@
       "delete": "Eliminar",
       "confirm": "Confirmar",
       "close": "Cerrar",
-      "goBack": "Volver a las conversaciones"
+      "goBack": "Volver a conversaciones"
     },
     "errors": {
       "loadFailed": "Error al cargar la conversación",
@@ -107,27 +107,27 @@
       "reviewFileUnavailable": "La revisión de archivos aún no está disponible."
     },
     "success": {
-      "created": "Conversación creada correctamente",
-      "updated": "Actualizado correctamente",
-      "deleted": "Eliminado correctamente",
+      "created": "Conversación creada con éxito",
+      "updated": "Actualizado con éxito",
+      "deleted": "Eliminado con éxito",
       "sent": "Mensaje enviado"
     },
     "chatPage": {
       "configureParticipantTitle": "Configurar participante",
       "configureBotTitle": "Configurar {{name}}",
       "configureAssistantTitle": "Configurar asistente {{name}}",
-      "configureUserRoleplayTitle": "Configurar el rol de {{name}}",
+      "configureUserRoleplayTitle": "Configurar juego de rol de {{name}}",
       "participantNotFound": "Participante no encontrado",
       "specificInstructionsLabel": "Instrucciones específicas",
       "specificInstructionsPlaceholder": "Añade detalles que influyan en las respuestas durante esta conversación",
-      "assumePersonaLabel": "Asumir persona",
-      "changeVisualPersonaLabel": "Persona visual",
+      "assumePersonaLabel": "Asumir personalidad",
+      "changeVisualPersonaLabel": "Personalidad visual",
       "selectCharacterPlaceholder": "Selecciona un personaje",
-      "loadingPersonas": "Cargando personas...",
+      "loadingPersonas": "Cargando personalidades...",
       "savingConfigurationButton": "Guardando...",
       "saveConfigurationButton": "Guardar configuración",
       "promotingButton": "Promocionando...",
-      "promoteToAssistantButton": "Promocionar a asistente",
+      "promoteToAssistantButton": "Promover a asistente",
       "cloningButton": "Clonando...",
       "cloneButton": "Clonar asistente",
       "errorSavingConfig": "No se pudo guardar la configuración.",
@@ -145,8 +145,8 @@
       "conversationSettingsTitle": "Configuración de la conversación"
     },
     "participantConfigModal": {
-      "errorFetchingPersonas": "No se pueden obtener las personas.",
-      "errorLoadingPersonas": "No se pueden cargar las personas.",
+      "errorFetchingPersonas": "No se pudieron obtener las personalidades.",
+      "errorLoadingPersonas": "No se pudieron cargar las personalidades.",
       "viewGalleryButton": "Abrir galería",
       "assistantDetails": "Asistente original: {{name}}",
       "galleryTitle": "Galería de {{name}}"
@@ -154,8 +154,8 @@
     "conversationSettings": {
       "modalTitle": "Configuración de la conversación",
       "interactionModeLabel": "Modo de interacción",
-      "modeNormal": "Rol equilibrado",
-      "modeRoleplay": "Rol completo",
+      "modeNormal": "Juego de rol equilibrado",
+      "modeRoleplay": "Juego de rol completo",
       "responseLengthLabel": "Longitud de respuesta",
       "lengthShort": "Corto",
       "lengthMedium": "Medio",
@@ -165,7 +165,7 @@
       "slangNone": "Nunca",
       "slangLow": "Ocasionalmente",
       "slangMedium": "A menudo",
-      "roleplaySpecificTitle": "Detalles del rol",
+      "roleplaySpecificTitle": "Detalles del juego de rol",
       "scenarioGenreLabel": "Género del escenario",
       "genreNone": "Ninguno",
       "genreFantasy": "Fantasía",
@@ -173,14 +173,14 @@
       "genreModern": "Moderno",
       "genreCustom": "Personalizado",
       "customGenreDetailsLabel": "Detalles del escenario personalizado",
-      "customGenrePlaceholder": "Describe un escenario personalizado para el rol",
+      "customGenrePlaceholder": "Describe un escenario personalizado para el juego de rol",
       "allowNsfwLabel": "Permitir contenido para adultos",
       "nsfwGlobalDisabledWarning": "Tu cuenta no permite contenido para adultos.",
       "showThoughtsLabel": "Mostrar pensamientos del asistente",
       "narrationStyleLabel": "Estilo de narración",
       "narrationBalanced": "Equilibrado",
       "narrationDescriptive": "Descriptivo",
-      "narrationDialogue": "Centrado en el diálogo",
+      "narrationDialogue": "Enfocado en diálogos",
       "viewOptionsTitle": "Configuración visual",
       "bgTypeLabel": "Tipo de fondo",
       "bgTypeTheme": "Usar tema",
@@ -190,9 +190,17 @@
       "noImageSelected": "No hay fondo seleccionado",
       "errorLoadingGallery": "No se pudieron cargar las imágenes de la galería.",
       "galleryButton": "Abrir galería",
-      "imageGalleryTitle": "Galería del chat"
+      "imageGalleryTitle": "Galería de chat"
     },
     "common": {
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "save": "Guardar",
+      "confirm": "Confirmar",
+      "enabled": "Activado",
+      "disabled": "Desactivado",
+      "allowed": "Permitido",
+      "denied": "Denegado",
       "deleting": "Eliminando...",
       "processing": "Procesando...",
       "saving": "Guardando...",
@@ -206,7 +214,7 @@
     },
     "messageInput": {
       "micNotSupportedError": "Micrófono no soportado.",
-      "transcriptionFailedError": "Fallo en la transcripción.",
+      "transcriptionFailedError": "La transcripción falló.",
       "transcriptionServiceError": "Error del servicio de transcripción.",
       "micAccessError": "Acceso al micrófono denegado.",
       "placeholderProcessingAudio": "Procesando audio...",
@@ -232,7 +240,9 @@
       "editActionTitle": "Editar mensaje",
       "regenerateActionTitle": "Regenerar respuesta",
       "youSender": "Tú",
-      "unknownSender": "Desconocido"
+      "unknownSender": "Desconocido",
+      "creditsUsedTitle": "{{count}} créditos usados",
+      "filesToReviewTitle": "Archivos para revisar:"
     },
     "chatActions": {
       "actionConfirmedByUser": "El usuario confirmó la acción.",
@@ -249,10 +259,10 @@
       "noItemsForSearch": "No se encontraron resultados para \"{{searchTerm}}\"",
       "noItemsAvailable": "No hay elementos disponibles",
       "alreadyAddedMaybe": "(Todos los elementos disponibles ya están en la conversación)",
-      "noDescription": "No hay descripción disponible",
+      "noDescription": "Sin descripción disponible",
       "addToConversationButtonTitle": "Añadir a la conversación",
       "maxParticipantsError": "Se permiten un máximo de {{max}} participantes",
-      "connectionError": "Error de conexión. Inténtalo de nuevo."
+      "connectionError": "Error de conexión. Por favor, inténtalo de nuevo."
     }
   }
 }

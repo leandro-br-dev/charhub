@@ -51,12 +51,13 @@ COPY package*.json ./
 RUN npm config set fetch-retry-mintimeout 20000 && \
     npm config set fetch-retry-maxtimeout 120000 && \
     npm config set fetch-retries 5 && \
+    echo "[DEBUG] NODE_ENV is set to: $NODE_ENV" && \
     if [ "$NODE_ENV" = "development" ]; then \
       echo "Installing all dependencies (dev mode)"; \
       npm ci; \
     else \
       echo "Installing production dependencies only"; \
-      npm ci --omit=dev; \
+      npm ci --omit dev; \
     fi && \
     npm cache clean --force
 

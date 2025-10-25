@@ -60,12 +60,20 @@ function defaultRedirect(): string {
   return `${firstOrigin.replace(/\/$/, '')}/auth/callback`;
 }
 
-function sanitizeRedirectUri(candidate?: string): string {
+function sanitizeRedirectUri(candidate?: string, req?: Request): string {
   if (!candidate) {
     return defaultRedirect();
   }
 
   const allowedOrigins = getAllowedFrontendOrigins();
+
+  // In development, be more lenient and allow origin from the request
+  if ((process.env.NODE_ENV as string) === 'development' && req) {
+    const origin = req.get('Origin');
+    if (origin && !allowedOrigins.includes(origin)) {
+      allowedOrigins.push(origin);
+    }
+  }
 
   try {
     const target = new URL(candidate);
@@ -158,8 +166,9 @@ function handlePassportSuccess(
 }
 
 router.get('/google', (req: Request, res: Response, next: NextFunction): void => {
-  const redirectUri = sanitizeRedirectUri(req.query.redirect_uri as string | undefined);
+  const redirectUri = sanitizeRedirectUri(req.query.redirect_uri as string | undefined, req);
   const state = generateState(redirectUri, req);
+
   passport.authenticate('google', {
     scope: ['profile', 'email'],
     state,
@@ -195,7 +204,7 @@ router.get(
 );
 
 router.get('/facebook', (req: Request, res: Response, next: NextFunction): void => {
-  const redirectUri = sanitizeRedirectUri(req.query.redirect_uri as string | undefined);
+  const redirectUri = sanitizeRedirectUri(req.query.redirect_uri as string | undefined, req);
   const state = generateState(redirectUri, req);
   passport.authenticate('facebook', {
     scope: ['email'],

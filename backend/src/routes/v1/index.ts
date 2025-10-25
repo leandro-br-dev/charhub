@@ -12,6 +12,7 @@ import attiresRoutes from './attires';
 import usersRoutes from './users';
 import conversationsRoutes from './conversations';
 import mediaRoutes from './media';
+import transcriptionRoutes from './transcription';
 
 const router = Router();
 
@@ -27,6 +28,7 @@ router.use('/attires', attiresRoutes);
 router.use('/users', usersRoutes);
 router.use('/conversations', conversationsRoutes);
 router.use('/media', mediaRoutes);
+router.use('/transcribe', transcriptionRoutes);
 router.use('/', accessRoutes);
 
 export default router;

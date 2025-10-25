@@ -1,4 +1,5 @@
 import type { AuthenticatedUser } from './index';
+import type { Logger } from 'pino';
 
 declare global {
   namespace Express {
@@ -7,6 +8,7 @@ declare global {
         user: AuthenticatedUser;
         token: string;
       };
+      log: Logger;
     }
   }
 }

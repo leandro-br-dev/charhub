@@ -443,3 +443,127 @@ export async function getMyCharactersForConversation(
     throw error;
   }
 }
+
+/**
+ * Toggle favorite status for a character
+ */
+export async function toggleFavoriteCharacter(
+  userId: string,
+  characterId: string,
+  isFavorite: boolean
+): Promise<{ success: boolean; isFavorite: boolean }> {
+  try {
+    // Verify character exists
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+      select: { id: true },
+    });
+
+    if (!character) {
+      throw new Error('Character not found');
+    }
+
+    if (isFavorite) {
+      // Add to favorites
+      await prisma.favoriteCharacter.upsert({
+        where: {
+          userId_characterId: {
+            userId,
+            characterId,
+          },
+        },
+        create: {
+          userId,
+          characterId,
+        },
+        update: {}, // No-op if already exists
+      });
+
+      logger.debug({ userId, characterId }, 'Character added to favorites');
+      return { success: true, isFavorite: true };
+    } else {
+      // Remove from favorites
+      await prisma.favoriteCharacter.deleteMany({
+        where: {
+          userId,
+          characterId,
+        },
+      });
+
+      logger.debug({ userId, characterId }, 'Character removed from favorites');
+      return { success: true, isFavorite: false };
+    }
+  } catch (error) {
+    logger.error({ error, userId, characterId, isFavorite }, 'Error toggling favorite');
+    throw error;
+  }
+}
+
+/**
+ * Get user's favorite characters
+ */
+export async function getFavoriteCharacters(
+  userId: string,
+  options: {
+    skip?: number;
+    limit?: number;
+  } = {}
+): Promise<CharacterWithRelations[]> {
+  try {
+    const { skip = 0, limit = 20 } = options;
+
+    // Get favorite character IDs
+    const favorites = await prisma.favoriteCharacter.findMany({
+      where: { userId },
+      select: { characterId: true },
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+    });
+
+    if (favorites.length === 0) {
+      return [];
+    }
+
+    const characterIds = favorites.map(f => f.characterId);
+
+    // Fetch full character data
+    const characters = await prisma.character.findMany({
+      where: {
+        id: { in: characterIds },
+        isPublic: true, // Only show public favorites
+      },
+      include: characterInclude,
+    });
+
+    logger.debug({ userId, count: characters.length }, 'Favorite characters fetched');
+    return characters as CharacterWithRelations[];
+  } catch (error) {
+    logger.error({ error, userId }, 'Error getting favorite characters');
+    throw error;
+  }
+}
+
+/**
+ * Check if a character is favorited by user
+ */
+export async function isCharacterFavorited(
+  userId: string,
+  characterId: string
+): Promise<boolean> {
+  try {
+    const favorite = await prisma.favoriteCharacter.findUnique({
+      where: {
+        userId_characterId: {
+          userId,
+          characterId,
+        },
+      },
+    });
+
+    return !!favorite;
+  } catch (error) {
+    logger.error({ error, userId, characterId }, 'Error checking favorite status');
+    return false;
+  }
+}

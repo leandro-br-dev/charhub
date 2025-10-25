@@ -11,7 +11,7 @@
     "authenticatedUser": "प्रमाणित उपयोगकर्ता",
     "tokenStored": "HTTP-ओनली कुकी में संग्रहीत",
     "navDashboard": "डैशबोर्ड",
-    "navCharacters": "कैरेक्टर",
+    "navCharacters": "चरित्र",
     "navTagline": "सुरक्षित OAuth डेमो",
     "providerLabel": {
       "google": "Google",
@@ -32,6 +32,8 @@
     "cancel": "रद्द करें",
     "save": "सहेजें",
     "saving": "सहेजा जा रहा है...",
+    "delete": "हटाएँ",
+    "deleting": "हटाया जा रहा है...",
     "enabled": "सक्षम",
     "disabled": "अक्षम",
     "selectOption": "एक विकल्प चुनें",

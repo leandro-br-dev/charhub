@@ -5,19 +5,19 @@
     "language": "اللغة",
     "continueGoogle": "متابعة باستخدام جوجل",
     "continueFacebook": "متابعة باستخدام فيسبوك",
-    "privacy": "بالمتابعة، توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "privacy": "بالمتابعة، أنت توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
-    "logoutLoading": "جارٍ تسجيل الخروج...",
-    "authenticatedUser": "المستخدم المصادق عليه",
+    "logoutLoading": "جاري تسجيل الخروج...",
+    "authenticatedUser": "مستخدم مصادق عليه",
     "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض توضيحي آمن لـ OAuth",
+    "navTagline": "عرض توضيحي لـ OAuth آمن",
     "providerLabel": {
       "google": "جوجل",
       "facebook": "فيسبوك"
     },
-    "provider": "الموفر",
+    "provider": "المزود",
     "theme": {
       "label": "السمة",
       "option": {
@@ -31,10 +31,12 @@
     "nameNotAvailable": "الاسم غير متوفر",
     "cancel": "إلغاء",
     "save": "حفظ",
-    "saving": "جارٍ الحفظ...",
-    "enabled": "مُمكّن",
-    "disabled": "مُعطّل",
-    "selectOption": "اختر خيارًا",
+    "saving": "جاري الحفظ...",
+    "delete": "حذف",
+    "deleting": "جاري الحذف...",
+    "enabled": "ممكّن",
+    "disabled": "معطّل",
+    "selectOption": "حدد خيارًا",
     "noResults": "لم يتم العثور على خيارات."
   }
 }

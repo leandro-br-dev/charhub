@@ -1,6 +1,7 @@
 import { Prisma } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
+import { encryptMessage, decryptMessage } from './encryption';
 import type {
   CreateMessageInput,
   ListMessagesQuery,
@@ -11,7 +12,31 @@ import type {
  *
  * Handles message CRUD operations and conversation history.
  * Based on Phase 2 (Chat System) requirements.
+ *
+ * Security: All message content is encrypted at rest using AES-256-GCM.
  */
+
+/**
+ * Decrypt a message object's content
+ */
+function decryptMessageContent<T extends { content: string }>(message: T): T {
+  try {
+    return {
+      ...message,
+      content: decryptMessage(message.content),
+    };
+  } catch (error) {
+    logger.error(
+      { error, messageId: 'id' in message ? (message as any).id : 'unknown' },
+      'Failed to decrypt message content'
+    );
+    // Return message with placeholder content if decryption fails
+    return {
+      ...message,
+      content: '[Decryption failed - content unavailable]',
+    };
+  }
+}
 
 /**
  * Create a new message in a conversation
@@ -20,10 +45,14 @@ export async function createMessage(data: CreateMessageInput) {
   try {
     const { attachments, metadata, ...messageData } = data;
 
+    // Encrypt message content before storing
+    const encryptedContent = encryptMessage(data.content);
+
     // Create message
     const message = await prisma.message.create({
       data: {
         ...messageData,
+        content: encryptedContent, // Store encrypted content
         attachments: attachments ? JSON.stringify(attachments) : null,
         metadata: metadata ? (metadata as Prisma.InputJsonValue) : Prisma.JsonNull,
       },
@@ -37,10 +66,14 @@ export async function createMessage(data: CreateMessageInput) {
 
     logger.info(
       { messageId: message.id, conversationId: data.conversationId },
-      'Message created successfully'
+      'Message created successfully (encrypted)'
     );
 
-    return message;
+    // Return message with decrypted content for immediate use
+    return {
+      ...message,
+      content: data.content, // Return original plaintext
+    };
   } catch (error) {
     logger.error({ error, data }, 'Error creating message');
     throw error;
@@ -96,7 +129,8 @@ export async function listMessages(
       'Messages fetched for conversation'
     );
 
-    return messages;
+    // Decrypt all message content before returning
+    return messages.map(decryptMessageContent);
   } catch (error) {
     logger.error(
       { error, conversationId, query },
@@ -135,7 +169,8 @@ export async function getMessageById(
       return null;
     }
 
-    return message;
+    // Decrypt message content before returning
+    return decryptMessageContent(message);
   } catch (error) {
     logger.error(
       { error, messageId, userId },
@@ -214,8 +249,8 @@ export async function getLastMessages(
       take: limit,
     });
 
-    // Return in chronological order (oldest first)
-    return messages.reverse();
+    // Decrypt and return in chronological order (oldest first)
+    return messages.reverse().map(decryptMessageContent);
   } catch (error) {
     logger.error(
       { error, conversationId, limit },

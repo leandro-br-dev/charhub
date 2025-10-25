@@ -3,13 +3,13 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Sprache",
-    "continueGoogle": "Weiter mit Google",
-    "continueFacebook": "Weiter mit Facebook",
-    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzrichtlinie zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "continueGoogle": "Fortfahren mit Google",
+    "continueFacebook": "Fortfahren mit Facebook",
+    "privacy": "Durch Fortfahren stimmen Sie unserer Datenschutzrichtlinie zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
-    "logoutLoading": "Abmelden...",
+    "logoutLoading": "Melde mich ab...",
     "authenticatedUser": "Authentifizierter Benutzer",
-    "tokenStored": "Gespeichert in einem HTTP-Only-Cookie",
+    "tokenStored": "Gespeichert in HTTP-only Cookie",
     "navDashboard": "Dashboard",
     "navCharacters": "Charaktere",
     "navTagline": "Sichere OAuth-Demo",
@@ -31,10 +31,12 @@
     "nameNotAvailable": "Name nicht verfügbar",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "saving": "Speichern...",
+    "saving": "Speichere...",
+    "delete": "Löschen",
+    "deleting": "Lösche...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Wählen Sie eine Option",
+    "selectOption": "Option auswählen",
     "noResults": "Keine Optionen gefunden."
   }
 }

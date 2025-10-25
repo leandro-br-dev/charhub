@@ -151,6 +151,43 @@ router.post('/avatar', requireAuth, upload.single('avatar'), async (req: Request
 });
 
 /**
+ * GET /api/v1/characters/favorites
+ * Get user's favorite characters
+ * NOTE: Must be before /:id route to avoid route conflict
+ */
+router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    const { skip, limit } = req.query;
+
+    const characters = await characterService.getFavoriteCharacters(userId, {
+      skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
+      limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
+    });
+
+    return res.json({
+      success: true,
+      data: characters,
+      count: characters.length,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting favorite characters');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get favorite characters',
+    });
+  }
+});
+
+/**
  * GET /api/v1/characters/:id
  * Get character by ID
  */
@@ -352,6 +389,46 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to delete character',
+    });
+  }
+});
+
+/**
+ * POST /api/v1/characters/:id/favorite
+ * Toggle favorite status for a character
+ */
+router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { id: characterId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    const { isFavorite } = req.body;
+
+    if (typeof isFavorite !== 'boolean') {
+      return res.status(400).json({
+        success: false,
+        message: 'isFavorite must be a boolean',
+      });
+    }
+
+    const result = await characterService.toggleFavoriteCharacter(userId, characterId, isFavorite);
+
+    return res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error toggling favorite');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to toggle favorite',
     });
   }
 });

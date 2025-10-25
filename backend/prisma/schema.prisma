@@ -79,6 +79,9 @@ model User {
   conversations         Conversation[]            @relation("UserConversations")
   conversationParticipations ConversationParticipant[] @relation("UserParticipations")
 
+  // Favorites
+  favoriteCharacters FavoriteCharacter[] @relation("UserFavoriteCharacters")
+
   @@unique([provider, providerAccountId])
 }
 
@@ -462,4 +465,26 @@ model Message {
   @@index([conversationId])
   @@index([senderId])
   @@index([conversationId, timestamp])
+}
+
+// ============================================================================
+// FAVORITES SYSTEM
+// ============================================================================
+
+// FavoriteCharacter represents a user's favorite character
+model FavoriteCharacter {
+  id String @id @default(uuid())
+
+  userId      String
+  user        User      @relation("UserFavoriteCharacters", fields: [userId], references: [id], onDelete: Cascade)
+
+  characterId String
+  // Note: We don't add a relation to Character model to avoid circular dependency issues
+  // The characterId is validated at the service level
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, characterId]) // A user can favorite a character only once
+  @@index([userId])
+  @@index([characterId])
 }

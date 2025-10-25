@@ -193,6 +193,14 @@
       "imageGalleryTitle": "Chat Gallery"
     },
     "common": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "save": "Save",
+      "confirm": "Confirm",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "allowed": "Allowed",
+      "denied": "Denied",
       "deleting": "Deleting...",
       "processing": "Processing...",
       "saving": "Saving...",
@@ -232,7 +240,9 @@
       "editActionTitle": "Edit message",
       "regenerateActionTitle": "Regenerate response",
       "youSender": "You",
-      "unknownSender": "Unknown"
+      "unknownSender": "Unknown",
+      "creditsUsedTitle": "{{count}} credits used",
+      "filesToReviewTitle": "Files for Review:"
     },
     "chatActions": {
       "actionConfirmedByUser": "User confirmed action.",

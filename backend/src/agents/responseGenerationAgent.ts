@@ -5,57 +5,52 @@ import {
   formatConversationHistoryForLLM,
 } from '../utils/conversationFormatter';
 import { Conversation, Message, User } from '../generated/prisma';
-
-// TODO: Move prompts to a dedicated prompt service
-const CHARACTER_ROLEPLAY_PROMPT = `You are roleplaying as the character: {character_name}.
-
-Character Details:
-- Physical Characteristics: {physical_characteristics}
-- Personality: {personality}
-- Main Attire: {main_attire_description}
-- History: {character_history}
-- Preferred Themes (based on age rating {character_age_rating}): {character_content_scope}
-
-Additional Instructions for this Conversation (Override):
-{override_instructions}
-
-Relationship Memory (Current Context with {user_display_name}):
-{memory_context}
-
-Roleplay Guidelines:
-1. Stay true to the defined personality and history for {character_name}.
-2. Your responses should be consistent with the information provided above and the conversation context.
-3. Interact with {user_display_name} naturally, engagingly, and believably as {character_name}.
-4. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF ({character_name}). NEVER write, narrate, or describe actions or dialogue for {user_display_name}. Focus solely on your own character's part in the interaction.
-5. LANGUAGE INSTRUCTION: {user_display_name}'s preferred language is {user_language}. You MUST respond in {user_language} unless {user_display_name} explicitly requests a response in a different language. This is CRITICAL - always match the language preference of {user_display_name}.
-6. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like "{character_name}:" or "Naruto:"). The UI already displays your name and avatar. Just write the response content directly.
-`;
+import { StyleGuideService } from './style-guides';
+import { calculateAge, getLanguageName } from '../utils/agentUtils';
 
 export class ResponseGenerationAgent {
+  private styleGuideService = new StyleGuideService();
+
   /**
-   * Maps ISO 639-1 language codes to human-readable language names
+   * Formats user information for context in prompts
    */
-  private getLanguageName(languageCode?: string | null): string {
-    if (!languageCode) return 'English';
+  private formatUserContext(user: User): string {
+    const contextParts: string[] = [];
 
-    const languageMap: Record<string, string> = {
-      'en': 'English',
-      'pt': 'Portuguese',
-      'pt-BR': 'Portuguese (Brazil)',
-      'es': 'Spanish',
-      'fr': 'French',
-      'de': 'German',
-      'it': 'Italian',
-      'ja': 'Japanese',
-      'ko': 'Korean',
-      'zh': 'Chinese',
-      'zh-CN': 'Chinese (Simplified)',
-      'ru': 'Russian',
-      'ar': 'Arabic',
-      'hi': 'Hindi',
-    };
+    // Display name only (fullName is for invoicing, not chat)
+    if (user.displayName) {
+      contextParts.push(`- Name: ${user.displayName}`);
+    }
 
-    return languageMap[languageCode] || languageCode;
+    // Birth date and age
+    if (user.birthDate) {
+      const birthDate = new Date(user.birthDate);
+      const age = calculateAge(birthDate);
+      const formattedDate = birthDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      contextParts.push(`- Birth Date: ${formattedDate} (${age} years old)`);
+    }
+
+    // Gender
+    if (user.gender) {
+      contextParts.push(`- Gender: ${user.gender}`);
+    }
+
+    // Preferred language
+    if (user.preferredLanguage) {
+      const languageName = getLanguageName(user.preferredLanguage);
+      contextParts.push(`- Preferred Language: ${languageName}`);
+    }
+
+    // If no information available
+    if (contextParts.length === 0) {
+      return '- No additional information available about the user';
+    }
+
+    return contextParts.join('\n');
   }
 
   async execute(
@@ -157,28 +152,30 @@ export class ResponseGenerationAgent {
       historyContext || 'No previous messages.',
     ].join('\n');
 
-    const userLanguage = this.getLanguageName(user.preferredLanguage);
+    const userLanguage = getLanguageName(user.preferredLanguage);
+    const userContext = this.formatUserContext(user);
 
-    const systemPrompt = CHARACTER_ROLEPLAY_PROMPT.replace(
-      /{character_name}/g,
-      character.firstName
-    )
-      .replace(/{physical_characteristics}/g, character.physicalCharacteristics || 'Not specified.')
-      .replace(/{personality}/g, character.personality || 'Not specified.')
-      .replace(/{main_attire_description}/g, 'Not specified.') // TODO: Get attire description
-      .replace(/{character_history}/g, character.history || 'No history provided.')
-      .replace(/{character_age_rating}/g, character.ageRating || 'L')
-      .replace(/{character_content_scope}/g, this.describeContentScope(character.contentTags))
-      .replace(/{override_instructions}/g, respondingParticipant.configOverride || '')
-      .replace(/{user_display_name}/g, user.displayName || 'User')
-      .replace(/{user_language}/g, userLanguage)
-      .replace(/{memory_context}/g, ''); // TODO: Implement memory
+    logger.debug({
+      userId: user.id,
+      displayName: user.displayName,
+      birthDate: user.birthDate,
+      gender: user.gender,
+      preferredLanguage: user.preferredLanguage,
+      formattedContext: userContext
+    }, 'User context for character response');
+
+    const styleGuidePrompt = this.styleGuideService.buildPrompt({
+      ageRating: character.ageRating,
+      contentFilters: character.contentTags,
+    });
+
+    const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n\nUser Information (Person you're talking to):\n${userContext}\n\nAdditional Instructions for this Conversation (Override):\n${respondingParticipant.configOverride || ''}\n\nStyle Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context with ${user.displayName || 'User'}):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.\n4. You have access to the user's information above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for ${user.displayName || 'User'}. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: ${user.displayName || 'User'}'s preferred language is ${userLanguage}. You MUST respond in ${userLanguage} unless ${user.displayName || 'User'} explicitly requests a response in a different language. This is CRITICAL - always match the language preference of ${user.displayName || 'User'}.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like \"${characterName}:" or \"Naruto:\"). The UI already displays your name and avatar. Just write the response content directly.\n`;
 
     const llmRequest: LLMRequest = {
       provider: 'gemini', // Or determine dynamically
       model: 'gemini-2.5-flash-lite', // Or determine dynamically
       systemPrompt,
-      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${characterName}. Remember: DO NOT include "${characterName}:" at the start of your response.`,
+      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${characterName}. Remember: DO NOT include \"${characterName}:\" at the start of your response.`,
     };
 
     try {
@@ -191,12 +188,7 @@ export class ResponseGenerationAgent {
     }
   }
 
-  private describeContentScope(contentTags?: string[]): string {
-    if (!contentTags || contentTags.length === 0) {
-      return 'Family-friendly topics only';
-    }
-    return contentTags.join(', ');
-  }
+
 
   /**
    * Generate response for assistant without character (pure functional assistant)
@@ -226,25 +218,15 @@ export class ResponseGenerationAgent {
       historyContext || 'No previous messages.',
     ].join('\n');
 
-    const systemPrompt = `You are ${assistantName}, an AI assistant.
+    const userContext = this.formatUserContext(user);
 
-Your role and focus:
-${assistantDescription}
-
-${configOverride ? `Additional instructions for this conversation:\n${configOverride}\n` : ''}
-
-Guidelines:
-1. Stay focused on your area of expertise: ${assistantDescription}
-2. Be helpful, clear, and concise
-3. You can engage in casual conversation, but prioritize your main function
-4. Do not roleplay as the user (${user.displayName || 'User'})
-5. FORMATTING INSTRUCTION: DO NOT prefix your response with your name (like "${assistantName}:"). The UI already displays your name and avatar. Just write the response content directly.`;
+    const systemPrompt = `You are ${assistantName}, an AI assistant.\n\nYour role and focus:\n${assistantDescription}\n\nUser Information (Person you're assisting):\n${userContext}\n\n${configOverride ? `Additional instructions for this conversation:\n${configOverride}\n` : ''}\n\nGuidelines:\n1. Stay focused on your area of expertise: ${assistantDescription}\n2. Be helpful, clear, and concise\n3. You can engage in casual conversation, but prioritize your main function\n4. You have access to the user's information above. Use this knowledge naturally when appropriate.\n5. Do not roleplay as the user (${user.displayName || 'User'})\n6. FORMATTING INSTRUCTION: DO NOT prefix your response with your name (like \"${assistantName}:\"). The UI already displays your name and avatar. Just write the response content directly.`;
 
     const llmRequest: LLMRequest = {
       provider: 'gemini',
       model: 'gemini-2.5-flash-lite',
       systemPrompt,
-      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${assistantName}. Remember: DO NOT include "${assistantName}:" at the start of your response.`,
+      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${assistantName}. Remember: DO NOT include \"${assistantName}:\" at the start of your response.`,
     };
 
     try {
@@ -258,8 +240,8 @@ Guidelines:
   }
 
   /**
-   * Removes "Name:" or "Name :" prefix from the beginning of LLM responses
-   * Handles various formats like "Naruto:", "Naruto :", "Sakura Haruno:", etc.
+   * Removes \"Name:\" or \"Name :\" prefix from the beginning of LLM responses
+   * Handles various formats like \"Naruto:\", \"Naruto :\", \"Sakura Haruno:\", etc.
    */
   private removeNamePrefix(content: string, name: string): string {
     if (!content || !name) return content;
@@ -268,10 +250,10 @@ Guidelines:
     const trimmed = content.trim();
 
     // Create regex patterns to match various name prefix formats
-    // Matches: "Name:", "Name :", "FirstName LastName:", etc.
+    // Matches: \"Name:\", \"Name :\", \"FirstName LastName:\", etc.
     const patterns = [
-      new RegExp(`^${this.escapeRegex(name)}\\s*:\\s*`, 'i'),
-      new RegExp(`^${this.escapeRegex(name.split(' ')[0])}\\s*:\\s*`, 'i'), // First name only
+      new RegExp(`^${this.escapeRegex(name)}\\s*:\s*`, 'i'),
+      new RegExp(`^${this.escapeRegex(name.split(' ')[0])}\\s*:\s*`, 'i'), // First name only
     ];
 
     for (const pattern of patterns) {
@@ -292,6 +274,6 @@ Guidelines:
    * Escapes special regex characters in a string
    */
   private escapeRegex(str: string): string {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return str.replace(/[.*+?^${}()|[\\]/g, '\\$&');
   }
 }
