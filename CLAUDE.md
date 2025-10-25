@@ -14,19 +14,47 @@ Welcome to CharHub. This guide is shared by every automation agent (GitHub Copil
 ## Before You Start
 
 1. Read the following reference material **before any implementation**:
-   - Root `README.md`
-   - `docs/PROJECT_OVERVIEW.md`
-   - `docs/BACKEND.md`
-   - `docs/FRONTEND.md`
-   - `docs/DEV_OPERATIONS.md`
-   - `docs/TODO.md` (ongoing priorities)
-   - **For Migration Tasks**: `docs/MIGRATION/README.MD` (current migration status and next steps)
-   - **For Migration Tasks**: `docs/MIGRATION/01_RESUMO_EXECUTIVO.md`
-   - **For Migration Tasks**: `docs/MIGRATION/02_PLANO_DE_MIGRACAO.md`
-   - **For Migration Tasks**: `docs/MIGRATION/03_GUIA_TECNICO_E_REFERENCIA.md`
-   - **For Finding Old Files**: `docs/MIGRATION/04_OLD_PROJECT_INVENTORY.md` (complete file inventory)
+   - **Project Overview**: `README.md` (root), `docs/PROJECT_OVERVIEW.md`
+   - **Backend**: `docs/BACKEND.md` (complete backend reference)
+     - Includes: OAuth setup, LLM integration, translations, database operations
+     - Detailed docs: `backend/translations/README.md`, `backend/docs/LLM_API.md`, `backend/src/agents/style-guides/README.md`
+   - **Frontend**: `docs/FRONTEND.md` (complete frontend reference)
+     - Also see: `frontend/README.md` for detailed component architecture
+   - **Operations**: `docs/DEV_OPERATIONS.md` (Docker, deployment, infrastructure)
+   - **Roadmap**: `docs/ROADMAP.md` (strategic plan and feature priorities)
+   - **TODO**: `docs/TODO.md` (ongoing priorities and pending tasks)
+   - **For Migration Tasks**:
+     - `docs/MIGRATION/README.MD` (current migration status and next steps)
+     - `docs/MIGRATION/01_RESUMO_EXECUTIVO.md`
+     - `docs/MIGRATION/02_PLANO_DE_MIGRACAO.md`
+     - `docs/MIGRATION/03_GUIA_TECNICO_E_REFERENCIA.md`
+     - `docs/MIGRATION/04_OLD_PROJECT_INVENTORY.md` (complete file inventory)
 2. Confirm that `.env` files are **never** committed. Work from the `*.example` templates.
 3. Make sure you understand the current state by scanning the latest commit history when in doubt.
+
+## Documentation Structure
+
+```
+docs/                           # Project-level documentation
+├── PROJECT_OVERVIEW.md         # Architecture and system design
+├── BACKEND.md                  # Complete backend reference ⭐
+├── FRONTEND.md                 # Complete frontend reference ⭐
+├── DEV_OPERATIONS.md           # Infrastructure and deployment
+├── ROADMAP.md                  # Strategic plan
+├── TODO.md                     # Current priorities
+└── MIGRATION/                  # Migration-specific docs
+
+backend/                        # Backend-specific documentation
+├── README.md                   # Quick start guide
+├── translations/README.md      # Translation system ⭐
+├── docs/LLM_API.md            # LLM integration reference ⭐
+└── src/agents/style-guides/README.md  # AI response customization
+
+frontend/                       # Frontend-specific documentation
+└── README.md                   # Architecture and component patterns ⭐
+```
+
+**⭐ Key References:** These documents contain comprehensive, authoritative information for their respective areas.
 
 ## Migration-Specific Guidelines
 
@@ -71,8 +99,25 @@ For a deeper tree, see `docs/PROJECT_OVERVIEW.md`.
 2. **Translations**: Run `npm run build:translations` (backend) after changing locale source files.
 3. **Docker**: `docker compose up --build` to run the full stack; services mount translations and tunnel configs automatically.
 4. **Local Dev**: Back-end `npm run dev`; front-end `npm run dev`. Keep Vite proxy aligned with backend base URL.
-5. **Testing**: Formal test suites are pending; when adding them, follow the guidance in `docs/BACKEND.md` and `docs/FRONTEND.md`.
-6. **Commits/PRs**: Use Conventional Commits. Document manual tests. Rebase before opening PRs. Reference open TODO items.
+5. **Database Operations**: All Prisma commands must run inside the backend container:
+   ```bash
+   # Generate Prisma Client after schema changes
+   docker compose exec backend npx prisma generate
+
+   # Create and apply migrations
+   docker compose exec backend npx prisma migrate dev --name your_migration_name
+
+   # Apply migrations in production
+   docker compose exec backend npx prisma migrate deploy
+
+   # Open Prisma Studio (database GUI)
+   docker compose exec backend npx prisma studio
+
+   # Restart backend after Prisma changes
+   docker compose restart backend
+   ```
+6. **Testing**: Formal test suites are pending; when adding them, follow the guidance in `docs/BACKEND.md` and `docs/FRONTEND.md`.
+7. **Commits/PRs**: Use Conventional Commits. Document manual tests. Rebase before opening PRs. Reference open TODO items.
 
 ## Coding Standards
 

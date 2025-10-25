@@ -47,15 +47,106 @@ Backend container reads `backend/.env`. Important keys:
 
 ## Commands
 
+### Local Development (outside Docker)
+
 Run these from `backend/`:
 
 - `npm run dev` – ts-node-dev hot-reload server (requires local Postgres running via Docker Compose).
 - `npm run build` – transpile TypeScript to `dist/`.
 - `npm start` – run compiled output (used inside Docker).
 - `npm run build:translations` – executes `scripts/buildTranslations.ts`; add `-- --offline` for a no-network seed or `-- --force` to rebuild every locale via the selected provider.
+
+### Docker Container Commands
+
+**IMPORTANT**: When the backend is running in Docker (as is typical for development), all Prisma and database-related commands must run inside the container:
+
+```bash
+# Generate Prisma Client after schema changes
+docker compose exec backend npx prisma generate
+
+# Create and apply migrations
+docker compose exec backend npx prisma migrate dev --name your_migration_name
+
+# Apply migrations (production)
+docker compose exec backend npx prisma migrate deploy
+
+# Open Prisma Studio (database GUI)
+docker compose exec backend npx prisma studio
+
+# Run database seed
+docker compose exec backend npm run db:seed
+
+# Restart backend after Prisma changes
+docker compose restart backend
+
+# View backend logs
+docker compose logs backend --tail 50 -f
+```
+
+### Translation System
+
+See `backend/translations/README.md` for comprehensive translation workflow documentation.
+
+**Quick Commands:**
+
+```bash
+# Build all translations (incremental - only updates changed files)
+npm run build:translations
+
+# Force rebuild everything (ignores timestamps)
+npm run build:translations -- --force
+
+# Verbose output (shows what's being skipped/updated)
+npm run build:translations -- -v
+
+# Offline mode (copies English instead of translating)
+npm run build:translations -- --offline
+```
+
+**Translation Workflow:**
+
+1. Edit source files in `backend/translations/_source/*.json`
+2. Run `npm run build:translations`
+3. Translations are auto-generated for 11 languages (pt-BR, es-ES, fr-FR, de-DE, zh-CN, hi-IN, ar-SA, ru-RU, ja-JP, ko-KR, it-IT)
+4. Files are mounted to Docker container via volume
+
+**Performance:** Incremental builds detect file changes via timestamps - only modified namespaces are retranslated (~0.5s vs ~90s full rebuild).
 ## API Overview
 
 ### OAuth (`/api/v1/oauth`)
+
+#### Configuration
+
+**IMPORTANT**: OAuth callback URLs use `PUBLIC_FACING_URL` instead of `BASE_URL` to ensure callbacks work from external access points (not localhost).
+
+Environment variables in `backend/.env`:
+
+```bash
+# Internal/local communication
+BASE_URL=http://localhost
+
+# Public-facing URL for OAuth callbacks
+PUBLIC_FACING_URL=https://dev.charhub.app
+
+# OAuth credentials
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_client_secret
+GOOGLE_CALLBACK_PATH=/api/v1/oauth/google/callback
+
+FACEBOOK_CLIENT_ID=your_client_id
+FACEBOOK_CLIENT_SECRET=your_client_secret
+FACEBOOK_CALLBACK_PATH=/api/v1/oauth/facebook/callback
+```
+
+**Callback URLs Registered in Provider Dashboards:**
+
+Must match `PUBLIC_FACING_URL + CALLBACK_PATH`:
+- Google: `https://dev.charhub.app/api/v1/oauth/google/callback`
+- Facebook: `https://dev.charhub.app/api/v1/oauth/facebook/callback`
+
+**Configuration Location:** `backend/src/config/passport.ts` uses `OAUTH_BASE_URL = PUBLIC_FACING_URL || BASE_URL`
+
+#### Endpoints
 
 | Method & Path | Description |
 |---------------|-------------|
@@ -75,11 +166,52 @@ Run these from `backend/`:
 
 ### LLM (`/api/v1/llm`)
 
+CharHub integrates **Google Gemini**, **OpenAI**, and **XAI Grok** for AI-powered conversations.
+
+#### Configuration
+
+Add API keys to `backend/.env`:
+
+```bash
+GEMINI_API_KEY=AIza...          # From https://ai.google.dev/
+OPENAI_API_KEY=sk-proj-...      # From https://platform.openai.com/api-keys
+GROK_API_KEY=xai-...            # From https://console.x.ai/
+```
+
+#### Endpoints
+
 | Method & Path | Description |
 |---------------|-------------|
-| `GET /models` | Returns all supported models extracted from `data/llm-models.json`. |
+| `GET /models` | Returns all supported models from `data/llm-models.json`. |
 | `GET /models/:provider` | Filters models by `gemini`, `openai`, or `grok`. |
-| `POST /chat` | Body `{ provider, model, userPrompt, systemPrompt?, temperature?, maxTokens? }`. Proxies to provider adapters and returns the raw completion. |
+| `POST /chat` | Generate AI response. Body: `{ provider, model, userPrompt, systemPrompt?, temperature?, maxTokens? }` |
+
+#### Model Classifications (October 2025)
+
+**⚡ Fast** (optimized for speed/cost):
+- `gemini-2.5-flash-lite`, `gpt-4.1-nano`, `grok-4-fast-non-reasoning`
+
+**📈 Medium** (balanced quality/speed):
+- `gemini-2.5-flash`, `gemini-2.0-flash`, `gpt-5-mini`, `grok-code-fast-1`
+
+**🧠 High Performance** (maximum reasoning quality):
+- `gemini-2.5-pro` (adaptive thinking), `gpt-5` (74.9% SWE-bench), `grok-4` (real-time search), `grok-4-fast-reasoning`
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost/api/v1/llm/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider": "gemini",
+    "model": "gemini-2.5-flash-lite",
+    "userPrompt": "Explain Docker in one sentence"
+  }'
+```
+
+**Note:** GPT-5 and GPT-Realtime models do not accept `temperature` or `maxTokens` parameters (they use defaults only).
+
+Full API documentation: `backend/docs/LLM_API.md`
 
 ### Localization (`/api/v1/i18n/:language/:namespace`)
 
@@ -160,10 +292,43 @@ Eventos principais:
 A implementação completa está em `backend/src/websocket/chatHandler.ts`, que reutiliza `conversationService`, `messageService`, `assistantService` e `verifyJWT` para orquestrar autenticação, rooms e broadcast.
 
 
+## AI Response Generation (Agents & Style Guides)
+
+The backend includes an extensible style guide system for controlling AI response generation tone, formatting, and behavior.
+
+**Location:** `backend/src/agents/style-guides/`
+
+### How It Works
+
+1. **StyleGuideService** (`index.ts`) loads all available guides
+2. Each guide implements the `StyleGuide` interface
+3. The `buildPrompt` method combines context and returns instructions for the LLM
+4. Guides are combined into a single prompt before sending to LLM providers
+
+### Adding a New Style Guide
+
+1. Create `backend/src/agents/style-guides/myGuide.ts`
+2. Implement the `StyleGuide` interface
+3. Add to the `guides` array in `StyleGuideService`
+
+### Future Improvements
+
+- **Comprehensive Style Guide**: Tone, personality, dos/don'ts, formatting rules
+- **Granular Guides**: Sensitive topics, roleplay scenarios, languages/cultures
+- **Dynamic Loading**: Load guides based on conversation context instead of all at once
+
+For implementation details, see `backend/src/agents/style-guides/README.md`.
+
 ## Testing & Observability
 
 - Automated tests are not yet defined; future work includes unit tests for translation lookups and OAuth controllers.
 - Health endpoints: `/healthz` (see `index.ts`) for container readiness; `/api/v1/access/public/ping` for API-level reachability.
 - When running in Docker, check logs with `docker compose logs backend`.
 
-Refer to `docs/DEV_OPERATIONS.md` for environment preparation, and `docs/TODO.md` for pending backend enhancements (e.g., R2 usage, premium feature completion).
+## Related Documentation
+
+- **Translations**: `backend/translations/README.md` - Complete translation workflow
+- **LLM Integration**: `backend/docs/LLM_API.md` - Full API documentation for AI providers
+- **Style Guides**: `backend/src/agents/style-guides/README.md` - AI response customization
+- **Infrastructure**: `docs/DEV_OPERATIONS.md` - Environment setup and deployment
+- **Project TODO**: `docs/TODO.md` - Pending features and enhancements

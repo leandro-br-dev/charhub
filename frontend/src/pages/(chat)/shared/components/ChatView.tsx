@@ -1,6 +1,6 @@
 
 // frontend/src/pages/(chat)/shared/components/ChatView.tsx
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 // These components will be created later
@@ -59,27 +59,43 @@ const ChatView: React.FC<any> = ({
   onReviewFileClick,
   onSendConfirmation,
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('chat');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const bottomSentinelRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+  const [bottomPad, setBottomPad] = useState<number>(160);
   const prevMessageCountRef = useRef<number>(Array.isArray(messages) ? messages.length : 0);
 
   const doScrollToBottom = (behavior: ScrollBehavior = 'auto') => {
     const container = scrollContainerRef.current;
     if (!container) return;
-
-    // Simply scroll to the very bottom of the container
-    // The container has pb-40 (160px) padding-bottom to ensure content is above the fixed input
-    if (behavior === 'smooth') {
-      container.scrollTo({
-        top: container.scrollHeight,
-        behavior: 'smooth'
-      });
+    const target = container.scrollHeight;
+    if (behavior === 'smooth' && 'scrollTo' in container) {
+      container.scrollTo({ top: target, behavior: 'smooth' });
     } else {
-      container.scrollTop = container.scrollHeight;
+      container.scrollTop = target;
     }
   };
 
-  // Ensure we always land at the end when messages or typing/tasks change
+  // Compute dynamic bottom padding based on the fixed footer (input) height
+  useLayoutEffect(() => {
+    const updatePad = () => {
+      const h = footerRef.current?.offsetHeight ?? 0;
+      // Add a small margin (8px) to ensure clear separation
+      setBottomPad(h + 8);
+    };
+    updatePad();
+    window.addEventListener('resize', updatePad);
+    return () => window.removeEventListener('resize', updatePad);
+  }, []);
+
+  // Ensure we always land at the end when messages or typing/tasks or padding change
+  useLayoutEffect(() => {
+    // Immediate pass before paint
+    doScrollToBottom('auto');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages, bottomPad]);
+
   useEffect(() => {
     const currentCount = Array.isArray(messages) ? messages.length : 0;
     const wasCount = prevMessageCountRef.current;
@@ -87,7 +103,7 @@ const ChatView: React.FC<any> = ({
 
     // Scroll after paint; also schedule a second pass to catch late image loads
     const raf1 = requestAnimationFrame(() => doScrollToBottom(behavior));
-    const timeoutId = window.setTimeout(() => doScrollToBottom('auto'), 120);
+    const timeoutId = window.setTimeout(() => doScrollToBottom('auto'), 160);
 
     // Attach image load listeners to handle late-loading content within the container
     const container = scrollContainerRef.current;
@@ -107,7 +123,7 @@ const ChatView: React.FC<any> = ({
       clearTimeout(timeoutId);
       listeners.forEach(off => off());
     };
-  }, [messages, typingCharacters, activeBackgroundTasks]);
+  }, [messages, typingCharacters, activeBackgroundTasks, bottomPad]);
 
   // Initial mount scroll to bottom (when conversation is first shown)
   useEffect(() => {
@@ -288,7 +304,7 @@ const ChatView: React.FC<any> = ({
             )}
         </div>
 
-        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto pb-40">
+        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto" style={{ paddingBottom: bottomPad }}>
           <MessageList
             messages={messages}
             loading={loadingConversationData}
@@ -308,10 +324,12 @@ const ChatView: React.FC<any> = ({
             onSendConfirmation={onSendConfirmation}
             onReviewFileClick={onReviewFileClick}
           />
+          {/* bottom sentinel ensures last message is fully visible above input */}
+          <div ref={bottomSentinelRef} className="h-px" />
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 z-10 bg-normal/90 backdrop-blur-sm px-4 pb-4 shadow-lg">
+      <div ref={footerRef} className="fixed bottom-0 left-0 right-0 z-10 bg-normal/90 backdrop-blur-sm px-4 pb-4 shadow-lg">
         <div className="max-w-5xl mx-auto">
           <MessageInput
             onSendMessage={onSendMessage}

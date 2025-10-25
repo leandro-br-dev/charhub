@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { NavigationRail, Sidebar } from "../components/layout";
+import { NavigationRail, Sidebar, MobileFooterNav } from "../components/layout";
 import { Button } from "../components/ui/Button";
 
 type NavigationSelection = {
@@ -78,6 +78,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
   };
 
   const mainContent = children ?? <Outlet />;
+  const isChatRoute = location.pathname.startsWith('/chat');
 
   return (
     <div className="relative flex min-h-screen bg-background text-foreground">
@@ -125,9 +126,12 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
 
       <div className="flex flex-1 flex-col">
         <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-12">{mainContent}</div>
+          <div className="mx-auto w-full max-w-6xl px-4 py-8 pb-20 md:px-8 md:py-12 md:pb-12">{mainContent}</div>
         </main>
       </div>
+
+      {/* Mobile footer navigation (hidden on chat to avoid overlapping the chat input) */}
+      {!isChatRoute && <MobileFooterNav />}
     </div>
   );
 }

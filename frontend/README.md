@@ -1,59 +1,104 @@
-# Frontend OAuth Client
+# CharHub Frontend
 
 ## Overview
-React + TypeScript single-page application that triggers OAuth 2.0 flows for Google and Facebook via the backend service. It delivers a branded login area, a callback handler, and a restricted dashboard that is only available to authenticated users. Styling is powered by Tailwind CSS and the bundle is produced with Vite.
+React 18 + TypeScript SPA built with Vite and Tailwind. It implements OAuth-first auth, chat, characters, and profile. Authenticated UI uses a desktop Navigation Rail + Sidebar and a mobile bottom navigation.
 
-## Tech Stack
-- Node.js 20 as the toolchain version
-- React 18 with TypeScript
-- Vite for bundling and dev server
-- Tailwind CSS (stable 3.x) with `@tailwindcss/forms`
-- Axios for backend API calls
-- TanStack Query for future data synchronization
-- React Router for client-side navigation
+## Stack
+- React 18 + TypeScript
+- Vite + Tailwind CSS
+- React Router v6
+- i18next
+- Axios for API (`src/lib/api.ts`)
 
-## Project Structure
+## App Architecture
+- Routing shell: `src/App.tsx`
+  - Public routes (home, login, signup, auth callback)
+  - Protected routes under `AuthenticatedLayout` (dashboard, chat, characters, profile)
+- Authenticated layout: `src/layouts/AuthenticatedLayout.tsx`
+  - Desktop: `NavigationRail` + `Sidebar`
+  - Mobile: `MobileFooterNav` (bottom nav)
+  - Main content via `<Outlet />`
+
+## Notable Components
+- Layout (`src/components/layout/`)
+  - `NavigationRail`, `Sidebar`, `ProtectedRoute`, `MobileFooterNav`
+- UI (`src/components/ui/`)
+  - `Button`, `Dialog`, `Modal`, `SmartDropdown`, `Avatar`, `CachedImage`, `Textarea`, `Input`, `Select`
+- Features (`src/components/features/`)
+  - `LanguageSwitcher`, `ThemeToggle`, `UserMenu`
+
+## Pages (Colocation)
+Pages are grouped by feature with colocated components/hooks.
+
 ```
-frontend/
-|- index.html
-|- package.json
-|- tsconfig.json
-|- tsconfig.node.json
-|- postcss.config.js
-|- tailwind.config.ts
-|- vite.config.ts
-|- .env.example
-|- Dockerfile
-|- public/
-|- src/
-|  |- App.tsx
-|  |- main.tsx
-|  |- index.css
-|  |- vite-env.d.ts
-|  |- components/
-|  |  |- features/
-|  |  |  |- LanguageSwitcher.tsx
-|  |  |  |- ThemeToggle.tsx
-|  |  |  |- UserMenu.tsx
-|  |  |- forms/
-|  |  |  |- LoginButton.tsx
-|  |  |- layout/
-|  |  |  |- Header.tsx
-|  |  |  |- ProtectedRoute.tsx
-|  |  |- ui/
-|  |  |  |- Button.tsx
-|  |  |  |- SmartDropdown.tsx
-|  |- hooks/useAuth.tsx
-|  |- lib/api.ts
-|  |- pages/
-|  |  |- Callback.tsx
-|  |  |- Dashboard.tsx
-|  |  |- Login.tsx
-|  |  |- NotFound.tsx
-|  |- types/auth.ts
+src/pages/
+  (auth)/
+    login/               # Login
+    signup/              # Signup
+    callback/            # OAuth callback handler
+    shared/
+      components/
+      hooks/
+
+  (characters)/
+    hub/                 # Gallery/listing
+    create/              # Create character
+    [characterId]/       # Detail
+      edit/              # Edit
+    shared/
+      components/
+        CharacterCard.tsx
+        CharacterFormLayout.tsx
+        CharacterAvatarUploader.tsx
+        CharacterListSidebar.tsx
+      hooks/
+      utils/
+
+  (chat)/
+    index.tsx            # Chat landing
+    new/                 # Create new conversation
+    [conversationId]/    # Conversation view
+    shared/
+      components/
+        ChatView.tsx
+        MessageList.tsx
+        MessageItem.tsx
+        ConversationHistory.tsx
+        ConversationHeader.tsx
+        MessageInput.tsx
+      hooks/
+
+  dashboard/
+  home/
+  not-found/
+  profile/
 ```
+
+## Data & Services
+- `src/services/characterService.ts`, `chatService.ts`, `userService.ts`
+- API base and version via env (see below).
+
+## Images & Caching
+- Use `CachedImage` to avoid redundant R2 fetches; it dedupes concurrent requests and caches Blob URLs with TTL.
+- Avatars (`Avatar`) are implemented on top of `CachedImage`.
+
+## Character Cards
+- `CharacterCard.tsx` mirrors the legacy layout and behaviour:
+  - Large cover, blur for sensitive, age badge, favorite toggle
+  - Click action: view/edit/startChat
+  - Optional stats footer (chats, favorites, stickers)
+
+## Chat UX
+- `ChatView.tsx` provides the chat surface with a fixed input and auto-scroll.
+- `MessageList.tsx` renders messages with date separators.
+
+## Auth Flow
+- `(auth)/login`, `(auth)/signup` start OAuth via backend
+- `(auth)/callback` finalizes login using `token` or exchanging `code + state`
+- `ProtectedRoute` guards authenticated routes
 
 ## Environment Variables
+Build-time vars (must be prefixed with `VITE_`):
 ```
 VITE_API_BASE_URL=http://localhost
 VITE_API_VERSION=/api/v1
@@ -61,49 +106,25 @@ VITE_GOOGLE_AUTH_PATH=/api/v1/oauth/google
 VITE_FACEBOOK_AUTH_PATH=/api/v1/oauth/facebook
 VITE_GOOGLE_CALLBACK_PATH=/api/v1/oauth/google/callback
 VITE_FACEBOOK_CALLBACK_PATH=/api/v1/oauth/facebook/callback
+VITE_ALLOWED_HOSTS=localhost
 ```
-All build-time variables must be prefixed with `VITE_` so Vite exposes them to the client bundle.
 
-## Authentication Flow
-1. The login page renders provider buttons that redirect to `VITE_API_BASE_URL + VITE_*_AUTH_PATH`.
-2. The backend starts the OAuth flow and ultimately redirects back to `/auth/callback` with either:
-   - `token` and an encoded `user` payload, or
-   - `code` and `state`, allowing the frontend to exchange them with the backend via `/api/v1/oauth/{provider}/callback`.
-3. `pages/Callback.tsx` finalizes the flow, persists the session via `useAuth`, and routes the user to `/dashboard`.
-4. Protected routes are wrapped with `ProtectedRoute` to ensure only logged-in users gain access.
+## Development
+- `cp frontend/.env.example frontend/.env`
+- `npm install`
+- `npm run dev` (Vite dev server)
+- `npm run build` (build to `dist/`)
+- `npm run preview` (serve built output)
 
-## Key Modules
-- `hooks/useAuth.tsx`: centralizes session state, provides helpers to start provider logins, finalize sessions, and call logout.
-- `lib/api.ts`: Axios instance configured with `withCredentials` for cookie-based sessions and version-aware fallbacks.
-- `components/features/LanguageSwitcher.tsx`: Flag-based selector that syncs the interface language.
-- `components/forms/LoginButton.tsx`: Tailwind-styled buttons for each provider.
-- `components/features/UserMenu.tsx`: Displays the active user and issues logout requests.
-- `components/ui/SmartDropdown.tsx`: Headless UI wrapper that positions floating menus.
-- `pages/Dashboard.tsx`: Restricted area showing profile details and follow-up actions.
+## Styling
+- Tailwind CSS 3.x; prefer semantic tokens used across the app:
+  - Text: `text-title`, `text-content`, `text-description`, `text-muted`
+  - Surfaces: `bg-card`, `bg-input`, `bg-background`, `bg-normal`
+  - Borders: `border-border`
 
-## Local Development
-1. `cp frontend/.env.example frontend/.env` and adjust the URLs.
-2. `npm install` to fetch dependencies.
-3. `npm run dev` starts Vite at `http://localhost:5173` with proxy rules for `/api` and `/health` hitting the backend (`vite.config.ts`).
-4. `npm run build` generates production assets in `dist/`.
-5. `npm run preview` serves the built bundle locally for smoke testing.
+## Removed Header
+- The old top `Header` has been removed in favour of `NavigationRail` + `Sidebar` for desktop and `MobileFooterNav` for mobile.
 
-## Docker & Orchestration
-- The `Dockerfile` exposes a development stage that runs Vite (`npm run dev`) and a production stage that builds `dist/` and serves it via Nginx; `docker-compose.yml` picks the correct stage based on the root `NODE_ENV` value.
-- `docker-compose.yml` wires the frontend container behind the shared Nginx gateway and networks it with the backend service.
-- When serving the dev server through tunnels or custom domains, list the hostnames in `VITE_ALLOWED_HOSTS` (comma separated) so Vite accepts the forwarded Host header.
-
-## Testing Recommendations
-- Component tests for login buttons and protected route behaviour.
-- Integration tests mocking the callback exchange with tools like MSW.
-- E2E scenarios (Cypress/Playwright) validating the redirect loop with staging credentials.
-
-## Security Notes
-- Always validate the `state` returned from providers (handled server-side).
-- Prefer HTTP-only cookies for long-lived sessions; the UI is ready to skip storing tokens locally when that is the case.
-- Serve the app over HTTPS in production to protect OAuth redirects.
-
-## Next Steps
-- Connect Unity clients to the same session endpoints exposed by the backend.
-- Add analytics or telemetry to track auth success/failure events.
-- Integrate feature flags or role-based guards once backend authorization rules are available.
+## Notes
+- Use colocation pattern for new pages and shared group resources.
+- Prefer `CachedImage` for any external images (avatars, covers, galleries).

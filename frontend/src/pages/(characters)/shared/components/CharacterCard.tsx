@@ -1,26 +1,40 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { type CharacterSummary } from '../../../../types/characters';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 
 export interface CharacterCardProps {
   character: CharacterSummary;
   to?: string;
+  clickAction?: 'edit' | 'view' | 'startChat';
   onFavoriteToggle?: (characterId: string, nextValue: boolean) => void;
   isFavorite?: boolean;
   blurSensitive?: boolean;
+  onPlay?: (characterId: string) => void;
+  ownerName?: string;
+  chatCount?: number;
+  favoriteCount?: number;
+  stickerCount?: number;
 }
 
 export function CharacterCard({
   character,
   to,
+  clickAction = 'view',
   onFavoriteToggle,
   isFavorite = false,
-  blurSensitive = false
+  blurSensitive = false,
+  onPlay,
+  ownerName,
+  chatCount,
+  favoriteCount,
+  stickerCount,
 }: CharacterCardProps): JSX.Element {
   const { t } = useTranslation(['characters']);
+  const navigate = useNavigate();
   const destination = to ?? `/characters/${character.id}`;
+  const [isCreatingChat, setIsCreatingChat] = useState(false);
 
   const title = useMemo(() => {
     const name = [character.firstName, character.lastName].filter(Boolean).join(' ');
@@ -29,80 +43,116 @@ export function CharacterCard({
 
   const isSensitive = character.ageRating === 'EIGHTEEN' || character.contentTags.length > 0;
   const shouldBlur = blurSensitive && isSensitive;
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onFavoriteToggle) onFavoriteToggle(character.id, !isFavorite);
+  };
+
+  const handleCardClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isCreatingChat) return;
+    if (onPlay) {
+      onPlay(character.id);
+      return;
+    }
+    if (clickAction === 'edit') {
+      navigate(`/characters/${character.id}/edit`);
+    } else if (clickAction === 'view') {
+      navigate(`/characters/${character.id}`);
+    } else if (clickAction === 'startChat') {
+      setIsCreatingChat(true);
+      // Route to chat creation page with character pre-selected; adjust when API is hooked
+      navigate(`/chat/new?characterId=${character.id}`);
+    }
+  };
+
+  const chips = (character.contentTags || []).slice(0, 3);
+  const owner = ownerName ?? '';
+  const stats = {
+    chats: chatCount ?? 0,
+    favorites: favoriteCount ?? 0,
+    stickers: stickerCount ?? (character.stickerCount ?? 0),
+  };
 
   return (
-    <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white/80 shadow transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900/70">
-      <Link to={destination} className="flex h-full flex-col">
-        <div className="relative h-48 w-full overflow-hidden">
-          {character.avatar ? (
-            <CachedImage
-              src={character.avatar}
-              alt={title}
-              loading="lazy"
-              className={`h-full w-full object-cover transition duration-300 ${shouldBlur ? 'blur-sm brightness-75' : ''}`}
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-slate-100 text-6xl text-slate-400 dark:bg-slate-800 dark:text-slate-600">
-              <span className="material-symbols-outlined text-6xl">person</span>
+    <article
+      onClick={handleCardClick}
+      className="h-full cursor-pointer overflow-hidden rounded-lg bg-light shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+    >
+      <div className="relative">
+        {character.avatar ? (
+          <CachedImage
+            src={character.avatar}
+            alt={title}
+            loading="lazy"
+            className={`h-48 w-full rounded-t-lg object-cover ${shouldBlur ? 'blur-sm brightness-75' : ''}`}
+          />
+        ) : (
+          <div className="flex h-48 w-full items-center justify-center rounded-t-lg bg-slate-100 text-6xl text-slate-400 dark:bg-slate-800 dark:text-slate-600">
+            <span className="material-symbols-outlined text-6xl">person</span>
+          </div>
+        )}
+        {isCreatingChat && (
+          <div className="absolute inset-0 rounded-t-lg bg-black/70 backdrop-blur-sm">
+            <div className="flex h-full items-center justify-center">
+              <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary" />
             </div>
-          )}
-          <div className="absolute left-3 top-3 flex gap-2">
-            <span className="rounded-full bg-slate-900/80 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white backdrop-blur">
-              {t(`characters:ageRatings.${character.ageRating}`)}
+          </div>
+        )}
+        <div className="absolute left-2 top-2 flex gap-2">
+          <span className="rounded-full bg-slate-900/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+            {t(`characters:ageRatings.${character.ageRating}`)}
+          </span>
+        </div>
+        {onFavoriteToggle && (
+          <button
+            onClick={handleFavorite}
+            className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70"
+            title={isFavorite ? t('characters:accessibility.removeFromFavorites') : t('characters:accessibility.addToFavorites')}
+          >
+            <span className={`material-symbols-outlined text-xl ${isFavorite ? 'text-yellow-400' : 'text-white/80'}`}>
+              {isFavorite ? 'star' : 'star_outline'}
             </span>
-          </div>
-          {onFavoriteToggle && (
-            <button
-              type="button"
-              className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/70 text-white backdrop-blur transition hover:bg-primary"
-              onClick={event => {
-                event.preventDefault();
-                event.stopPropagation();
-                onFavoriteToggle(character.id, !isFavorite);
-              }}
-              aria-label={isFavorite ? t('characters:accessibility.removeFromFavorites') : t('characters:accessibility.addToFavorites')}
-            >
-              <span className="material-symbols-outlined text-2xl">
-                {isFavorite ? 'favorite' : 'favorite_border'}
+          </button>
+        )}
+      </div>
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="truncate text-lg font-bold text-content" title={title}>
+          {title}
+        </h3>
+        {owner && (
+          <p className="mb-2 text-xs text-muted">
+            {t('characters:labels.owner', { defaultValue: 'by' })} <span className="font-semibold">{owner}</span>
+          </p>
+        )}
+        <p className={`flex-grow text-sm text-description line-clamp-2 ${shouldBlur ? 'blur-sm select-none' : ''}`}>
+          {character.personality || character.style || t('characters:labels.noDescription', 'No description')}
+        </p>
+        {chips.length > 0 && (
+          <div className={`mt-3 flex flex-nowrap gap-1.5 overflow-hidden ${shouldBlur ? 'blur-sm select-none' : ''}`}>
+            {chips.map(tag => (
+              <span key={`${character.id}-${tag}`} className="flex-shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-black">
+                {t(`characters:contentTags.${tag}`)}
               </span>
-            </button>
-          )}
-        </div>
-        <div className="flex flex-1 flex-col gap-3 px-4 pb-5 pt-4">
-          <div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h3>
-            {character.style && (
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{character.style}</p>
-            )}
+            ))}
           </div>
-          {character.contentTags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {character.contentTags.slice(0, 4).map(tag => (
-                <span
-                  key={`${character.id}-${tag}`}
-                  className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-medium uppercase tracking-wide text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                >
-                  {t(`characters:contentTags.${tag}`)}
-                </span>
-              ))}
-              {character.contentTags.length > 4 && (
-                <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
-                  +{character.contentTags.length - 4}
-                </span>
-              )}
-            </div>
-          )}
-          <div className="mt-auto flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <span>{t('characters:labels.updatedAt', { date: new Date(character.updatedAt).toLocaleDateString() })}</span>
-            {character.tagCount != null && (
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-base">sell</span>
-                {character.tagCount}
-              </span>
-            )}
+        )}
+        <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-xs text-muted">
+          <div className="flex items-center gap-1" title={t('characters:labels.conversations', 'Conversations')}>
+            <span className="material-symbols-outlined text-base">chat_bubble</span>
+            <span>{stats.chats}</span>
+          </div>
+          <div className="flex items-center gap-1" title={t('characters:labels.favorites', 'Favorites')}>
+            <span className="material-symbols-outlined text-base text-yellow-400">star</span>
+            <span>{stats.favorites}</span>
+          </div>
+          <div className="flex items-center gap-1" title={t('characters:labels.stickers', 'Stickers')}>
+            <span className="material-symbols-outlined text-base">photo_library</span>
+            <span>{stats.stickers}</span>
           </div>
         </div>
-      </Link>
+      </div>
     </article>
   );
 }

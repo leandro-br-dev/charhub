@@ -96,7 +96,7 @@ export default function Callback(): JSX.Element {
         cleanCallbackQueryParams();
         setStatus('success');
         setMessage(t('callback:redirectingMessage'));
-        setTimeout(() => navigate('/dashboard', { replace: true }), 900);
+        setTimeout(() => navigate('/dashboard', { replace: true }), 100);
         return;
       }
 
@@ -115,7 +115,7 @@ export default function Callback(): JSX.Element {
           cleanCallbackQueryParams();
           setStatus('success');
           setMessage(t('callback:redirectingMessage'));
-          setTimeout(() => navigate('/dashboard', { replace: true }), 900);
+          setTimeout(() => navigate('/dashboard', { replace: true }), 100);
           return;
         } catch (err) {
           console.error('Callback exchange failed', err);
@@ -133,35 +133,10 @@ export default function Callback(): JSX.Element {
   }, [completeLogin, isAuthenticated, navigate, searchParams, t, user]);
 
   return (
-    <section className="mx-auto flex min-h-[calc(100vh-120px)] max-w-lg flex-col items-center justify-center px-6 text-center">
-      <div className="w-full rounded-2xl border border-slate-800 bg-slate-900/80 p-10 shadow-lg">
-        {status === 'processing' ? (
-          <>
-            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent" />
-            <h1 className="mt-6 text-xl font-semibold text-white">{t('callback:processingTitle')}</h1>
-            <p className="mt-3 text-sm text-slate-300">{message}</p>
-          </>
-        ) : null}
-
-        {status === 'success' ? (
-          <>
-            <h1 className="text-2xl font-semibold text-white">{t('callback:successTitle')}</h1>
-            <p className="mt-3 text-sm text-slate-300">{message}</p>
-          </>
-        ) : null}
-
-        {status === 'error' ? (
-          <>
-            <h1 className="text-2xl font-semibold text-white">{t('callback:errorTitle')}</h1>
-            <p className="mt-3 text-sm text-slate-300">{message}</p>
-            <Link
-              to="/"
-              className="mt-6 inline-flex rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-500"
-            >
-              {t('callback:returnButton')}
-            </Link>
-          </>
-        ) : null}
+    <section className="flex h-screen flex-col items-center justify-center bg-background">
+      <div className="flex items-center gap-4 text-description">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <p className="text-lg">{message}</p>
       </div>
     </section>
   );

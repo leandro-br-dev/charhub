@@ -97,6 +97,60 @@ export const characterService = {
       console.error('[characterService] getMyCharactersForConversation failed:', error);
       return { success: false, data: [] };
     }
+  },
+
+  /**
+   * Get popular characters for dashboard
+   * TODO: Implement backend endpoint for actual popularity metrics
+   */
+  async getPopular(limit = 10): Promise<Character[]> {
+    try {
+      // TODO: Replace with actual popular endpoint when available
+      // const response = await api.get<{ success: boolean; data: Character[] }>(
+      //   `${BASE_PATH}/popular`,
+      //   { params: { limit } }
+      // );
+      // return response.data.data;
+
+      // For now, fetch public characters
+      const response = await this.list({ isPublic: true });
+      return response.items.slice(0, limit);
+    } catch (error) {
+      console.error('[characterService] getPopular failed:', error);
+      return [];
+    }
+  },
+
+  /**
+   * Get user's favorite characters
+   */
+  async getFavorites(limit = 10): Promise<Character[]> {
+    try {
+      const response = await api.get<{ success: boolean; data: Character[]; count: number }>(
+        `${BASE_PATH}/favorites`,
+        { params: { limit } }
+      );
+      return response.data.data || [];
+    } catch (error) {
+      console.error('[characterService] getFavorites failed:', error);
+      return [];
+    }
+  },
+
+  /**
+   * Toggle favorite status for a character
+   */
+  async toggleFavorite(characterId: string, isFavorite: boolean): Promise<{ success: boolean }> {
+    try {
+      const response = await api.post<{ success: boolean; data: { success: boolean; isFavorite: boolean } }>(
+        `${BASE_PATH}/${characterId}/favorite`,
+        { isFavorite }
+      );
+      return response.data;
+    } catch (error) {
+      console.error('[characterService] toggleFavorite failed:', error);
+      return { success: false };
+    }
   }
 };
 

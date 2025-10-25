@@ -5,7 +5,7 @@ credentials-file: /etc/cloudflared/config/dev/28d1c2b3-ebf7-479f-b8de-18c29a0f3d
 protocol: http2
 
 ingress:
-  - hostname: dev.charhub.app
+  - hostname: dev.charhub
     service: http://nginx:80
     originRequest:
       noTLSVerify: true

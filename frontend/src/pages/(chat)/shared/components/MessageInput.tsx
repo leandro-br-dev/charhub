@@ -105,8 +105,8 @@ const MessageInput = React.memo(
             setIsTranscribing(true);
             try {
               const result = await audioService.transcribeAudio(audioBlob);
-              if (result.success && result.data?.transcription) {
-                setMessage((prev) => prev + result.data.transcription + " ");
+              if (result.success && result.data?.text) {
+                setMessage((prev) => prev + result.data.text + " ");
                 if (textareaRef.current) textareaRef.current.focus();
               } else {
                 setTranscriptionError((result as any).error || t("messageInput.transcriptionFailedError"));

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import Switch from '../../../../components/ui/Switch';
+import Switch from '../../../../components/ui/switch';
 import { ContentTagsSelector } from '../../../../components/features/content-guidelines/ContentTagsSelector';
 import { normalizeAllowedContentTags, haveSameContentTags } from '../../../../components/features/content-guidelines/rules';
 import { AGE_RATING_OPTIONS } from '../utils/constants';

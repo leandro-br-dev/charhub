@@ -1,10 +1,5 @@
 
-// frontend/src/services/audioService.ts
-
-// Placeholder for the API client
-const api = {
-    post: async (url: string, data?: any, config?: any) => ({ data: {} }),
-};
+import api from '../lib/api';
 
 const apiBasePath = '/api/v1';
 
@@ -20,13 +15,13 @@ export const audioService = {
       return createServiceResult(null, "Audio Blob is missing.");
     }
     const formData = new FormData();
-    formData.append("audio_file", audioBlob, filename);
+    formData.append("audio", audioBlob, filename);
     try {
       console.log(
         `Sending audio blob (size: ${audioBlob.size}, type: ${audioBlob.type}) as ${filename}`
       );
       const response = await api.post(
-        `${apiBasePath}/audio/transcribe`,
+        `${apiBasePath}/transcribe`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

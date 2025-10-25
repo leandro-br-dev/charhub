@@ -1,6 +1,18 @@
 
-// frontend/src/pages/(chat)/shared/components/Switch.tsx
+// frontend/src/components/ui/switch.tsx
 import { Switch as HeadlessSwitch } from '@headlessui/react';
+
+interface SwitchProps {
+  label?: string;
+  description?: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  variant?: 'primary' | 'secondary' | 'success' | 'danger';
+  size?: 'small' | 'medium' | 'large';
+  disabled?: boolean;
+  className?: string;
+  stateLabels?: { true: string; false: string };
+}
 
 const Switch = ({
   label = '',
@@ -12,8 +24,7 @@ const Switch = ({
   disabled = false,
   className = '',
   stateLabels = { true: '', false: '' },
-  ...props
-}: any) => {
+}: SwitchProps) => {
   const labelClasses = 
     'block text-sm font-medium text-content mb-1';
 
@@ -23,7 +34,7 @@ const Switch = ({
   const stateLabelClasses = 
     'ml-3 text-sm text-content';
 
-  const variants: any = {
+  const variants: Record<string, Record<string, string>> = {
     primary: {
       active: 'bg-primary-600',
       inactive: 'bg-gray-200',
@@ -46,7 +57,7 @@ const Switch = ({
     }
   };
 
-  const sizes: any = {
+  const sizes: Record<string, Record<string, string>> = {
     small: {
       switch: 'h-5 w-9',
       thumb: 'h-3 w-3',
@@ -110,7 +121,6 @@ const Switch = ({
           onChange={disabled ? undefined : onChange}
           className={getBaseClasses()}
           disabled={disabled}
-          {...props}
         >
           <span 
             aria-hidden="true" 

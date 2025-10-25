@@ -1,5 +1,5 @@
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
-import { Header, ProtectedRoute } from './components/layout';
+import { Outlet, Route, Routes } from 'react-router-dom';
+import { ProtectedRoute } from './components/layout';
 import { AuthenticatedLayout } from './layouts';
 import Home from './pages/home';
 import Login from './pages/(auth)/login';
@@ -17,15 +17,9 @@ import ConversationDetailPage from './pages/(chat)/[conversationId]';
 import NewConversationPage from './pages/(chat)/new';
 
 function PublicShell(): JSX.Element {
-  const location = useLocation();
-  const hideHeaderPaths = new Set(['/', '/login', '/signup']);
-  const showHeader = !hideHeaderPaths.has(location.pathname);
-  const mainClassName = showHeader ? 'mx-auto max-w-7xl px-6 py-10' : '';
-
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {showHeader ? <Header /> : null}
-      <main className={mainClassName}>
+      <main>
         <Outlet />
       </main>
     </div>

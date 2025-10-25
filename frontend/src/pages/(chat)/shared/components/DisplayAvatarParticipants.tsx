@@ -31,7 +31,7 @@ const DisplayAvatarParticipants = React.memo(
     onAvatarClick,
     isSticky = false,
   }: DisplayAvatarParticipantsProps) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('chat');
 
     const displayableParticipants = useMemo(() => {
       return Array.isArray(participants)

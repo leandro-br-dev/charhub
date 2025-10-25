@@ -7,7 +7,7 @@ import { Modal } from "../../../../components/ui/Modal";
 import { Button } from "../../../../components/ui/Button";
 import { Textarea } from "../../../../components/ui/Textarea";
 import { Select } from "../../../../components/ui/Select";
-import Switch from "../../../../components/ui/Switch";
+import Switch from "../../../../components/ui/switch";
 import ImageGalleryModal from "./ImageGalleryModal";
 import { chatService } from "../../../../services/chatService";
 import { characterService } from "../../../../services/characterService";

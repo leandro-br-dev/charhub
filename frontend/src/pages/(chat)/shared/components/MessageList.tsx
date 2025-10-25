@@ -179,6 +179,7 @@ const MessageList: React.FC<MessageListProps> = ({
     return taskDataArray;
   }, [activeBackgroundTasks, participants]);
 
+
   return (
     <div className={`flex flex-col overflow-x-hidden ${className}`}>
       {loading && <div className="text-center text-muted p-4">Carregando...</div>}
@@ -276,7 +277,7 @@ const MessageList: React.FC<MessageListProps> = ({
           name={typingData.name}
         />
       ))}
-
+      {/* Bottom spacer: reserved for parent scroll container's padding-bottom */}
     </div>
   );
 };

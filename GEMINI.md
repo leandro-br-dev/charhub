@@ -1,80 +1,209 @@
-# Gemini Project Context: CharHub
+# Engineering Playbook
 
-This document provides an overview of the CharHub project, its architecture, and key operational commands to be used as a reference for Gemini.
+Welcome to CharHub. This guide is shared by every automation agent (GitHub Copilot, Claude, Cursor, etc.) and MUST be read before touching the codebase.
 
-## Project Overview
+## Encoding Requirements
 
-CharHub is a full-stack web application designed to connect users with various generative AI providers. It's built as a Dockerized stack featuring a Node.js/Express backend and a React frontend. The platform handles user authentication via OAuth (Google and Facebook), provides a proxy for interacting with multiple Large Language Models (LLMs) like Gemini, OpenAI, and Grok, and includes a localization system for serving content in different languages. A migration from an older Python/FastAPI project is in progress to incorporate features like a real-time chat system, character management, and story generation.
+- Always save source and docs using UTF-8 **without** BOM to prevent garbled characters (e.g., `Ã¢â‚¬â€œ`).
+- Use LF newlines. On Windows set `files.eol`: `"\n"` and `git config core.autocrlf false` (per repo is fine).
+- Prefer plain ASCII punctuation (regular hyphen `-`, straight quotes) unless a file already needs accented text.
+- Configure your editor (`files.encoding`: `"utf8"`, disable "BOM") and confirm before committing.
+- If in doubt, run `find . -type f -name '*.md' -print0 | xargs -0 file` (or a tiny Python script) to confirm no file starts with `0xEFBBBF`.
+- **Never delete API keys or overwrite `.env` files** with their example counterparts unless the user explicitly instructs you. If a change is required, edit only the specific lines to avoid losing existing secrets or local configuration.
 
-### Core Technologies
+## Before You Start
 
-*   **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, React Router, i18next
-*   **Backend:** Node.js 20, Express.js, TypeScript, Passport.js, Prisma
-*   **Database:** PostgreSQL 16
-*   **LLM Integrations:** Gemini, OpenAI, XAI Grok
-*   **Infrastructure:** Docker Compose, Nginx, Cloudflare Tunnel
+1. Read the following reference material **before any implementation**:
+   - **Project Overview**: `README.md` (root), `docs/PROJECT_OVERVIEW.md`
+   - **Backend**: `docs/BACKEND.md` (complete backend reference)
+     - Includes: OAuth setup, LLM integration, translations, database operations
+     - Detailed docs: `backend/translations/README.md`, `backend/docs/LLM_API.md`, `backend/src/agents/style-guides/README.md`
+   - **Frontend**: `docs/FRONTEND.md` (complete frontend reference)
+     - Also see: `frontend/README.md` for detailed component architecture
+   - **Operations**: `docs/DEV_OPERATIONS.md` (Docker, deployment, infrastructure)
+   - **Roadmap**: `docs/ROADMAP.md` (strategic plan and feature priorities)
+   - **TODO**: `docs/TODO.md` (ongoing priorities and pending tasks)
+   - **For Migration Tasks**:
+     - `docs/MIGRATION/README.MD` (current migration status and next steps)
+     - `docs/MIGRATION/01_RESUMO_EXECUTIVO.md`
+     - `docs/MIGRATION/02_PLANO_DE_MIGRACAO.md`
+     - `docs/MIGRATION/03_GUIA_TECNICO_E_REFERENCIA.md`
+     - `docs/MIGRATION/04_OLD_PROJECT_INVENTORY.md` (complete file inventory)
+2. Confirm that `.env` files are **never** committed. Work from the `*.example` templates.
+3. Make sure you understand the current state by scanning the latest commit history when in doubt.
 
-## Building and Running
+## Documentation Structure
 
-The primary method for running the project is through Docker Compose.
+```
+docs/                           # Project-level documentation
+├── PROJECT_OVERVIEW.md         # Architecture and system design
+├── BACKEND.md                  # Complete backend reference ⭐
+├── FRONTEND.md                 # Complete frontend reference ⭐
+├── DEV_OPERATIONS.md           # Infrastructure and deployment
+├── ROADMAP.md                  # Strategic plan
+├── TODO.md                     # Current priorities
+└── MIGRATION/                  # Migration-specific docs
 
-*   **Build and run all services:**
-    ```bash
-    docker compose up --build
-    ```
-*   **Accessing the application:**
-    *   **Frontend:** `http://localhost`
-    *   **API:** `http://localhost/api/v1`
-*   **Viewing logs:**
-    ```bash
-    docker compose logs -f backend
-    docker compose logs -f frontend
-    ```
+backend/                        # Backend-specific documentation
+├── README.md                   # Quick start guide
+├── translations/README.md      # Translation system ⭐
+├── docs/LLM_API.md            # LLM integration reference ⭐
+└── src/agents/style-guides/README.md  # AI response customization
 
-### Manual Development
+frontend/                       # Frontend-specific documentation
+└── README.md                   # Architecture and component patterns ⭐
+```
 
-For more granular control during development:
+**⭐ Key References:** These documents contain comprehensive, authoritative information for their respective areas.
 
-1.  **Start the database:**
-    ```bash
-    docker compose up postgres
-    ```
-2.  **Run the backend (from the `backend/` directory):**
-    ```bash
-    npm install
-    npm run dev
-    ```
-3.  **Run the frontend (from the `frontend/` directory):**
-    ```bash
-    npm install
-    npm run dev
-    ```
+## Migration-Specific Guidelines
 
-## Development Conventions
+When working on migration tasks:
 
-*   **Commit Messages:** Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification (e.g., `feat:`, `fix:`, `docs:`).
-*   **Code Style:** The project uses Prettier and ESLint for code formatting and linting.
-*   **Translations:** The backend manages localization files. To update or add translations, use the following command from the `backend/` directory:
-    ```bash
-    npm run build:translations
-    ```
-*   **Testing:** Automated tests are not yet implemented.
+1. **Read First**: Check `docs/MIGRATION_START.md` for current phase and assigned tasks
+2. **Reference Old Code**: Use `docs/OLD_PROJECT_INVENTORY.md` to locate files in `E:\Projects\charhub_dev_old_version\`
+3. **Document Decisions**: Update `docs/MIGRATION_DECISIONS.md` for any architectural choices
+4. **Mark Progress**: Update `docs/MIGRATION_CHECKLIST.md` when completing tasks
+5. **Clean Up**: Remove completed items from migration docs as you finish them
+6. **Conventional Commits**: Use format `feat(module): description` for migration work
 
-## Project Structure
+## Project Summary
 
-*   `backend/`: Contains the Node.js/Express API.
-    *   `src/`: Main source code.
-        *   `config/`: Database, Passport, and other configurations.
-        *   `routes/`: API route definitions.
-        *   `services/`: Business logic for different parts of the application.
-        *   `websocket/`: Real-time chat implementation.
-    *   `prisma/`: Database schema and migrations.
-*   `frontend/`: Contains the React single-page application.
-    *   `src/`: Main source code.
-        *   `components/`: Reusable UI components.
-        *   `pages/`: Top-level page components.
-        *   `services/`: API client and other services.
-*   `docs/`: Contains detailed project documentation.
-*   `docker-compose.yml`: Defines the services, networks, and volumes for the Dockerized environment.
-*   `nginx/`: Nginx configuration for the reverse proxy.
-*   `cloudflared/`: Configuration for Cloudflare Tunnels.
+- **Purpose**: OAuth-first platform that supplies localized content and proxies multiple LLM providers (Gemini, OpenAI, XAI Grok).
+- **Backend**: Node.js 20 + Express + Passport + Prisma, exposed under `/api/v1`, packaged with Docker.
+- **Frontend**: React 18 + TypeScript + Vite + Tailwind, consumes the API via Axios, handles session, theme, and localization.
+- **Infra**: Docker Compose orchestrates backend, frontend, PostgreSQL, Nginx, and Cloudflare Tunnel. Translations are generated files mounted as a volume. Cloudflare R2 credentials are present but integration is pending.
+
+## Folder Map (Essentials Only)
+
+```
+backend/    TypeScript API (OAuth, LLM proxy, translations)
+frontend/   React SPA and UI primitives
+nginx/      Reverse proxy config
+cloudflared/ Tunnel configuration per environment
+docs/       Authoritative documentation bundle
+```
+
+For a deeper tree, see `docs/PROJECT_OVERVIEW.md`.
+
+## Core Technologies
+
+- Node.js 20, Express, Passport, Prisma, Pino
+- React 18, TypeScript, Vite, Tailwind CSS, React Router, i18next
+- PostgreSQL 16, Docker Compose, Nginx, Cloudflare Tunnel
+- LLM integrations: Gemini, OpenAI, XAI Grok
+
+## Development Workflow
+
+1. **Environment**: Copy `.env.example` to `.env` (root, backend, frontend) and fill values locally. Keep secrets out of git.
+2. **Translations**: Run `npm run build:translations` (backend) after changing locale source files.
+3. **Docker**: `docker compose up --build` to run the full stack; services mount translations and tunnel configs automatically.
+4. **Local Dev**: Back-end `npm run dev`; front-end `npm run dev`. Keep Vite proxy aligned with backend base URL.
+5. **Database Operations**: All Prisma commands must run inside the backend container:
+   ```bash
+   # Generate Prisma Client after schema changes
+   docker compose exec backend npx prisma generate
+
+   # Create and apply migrations
+   docker compose exec backend npx prisma migrate dev --name your_migration_name
+
+   # Apply migrations in production
+   docker compose exec backend npx prisma migrate deploy
+
+   # Open Prisma Studio (database GUI)
+   docker compose exec backend npx prisma studio
+
+   # Restart backend after Prisma changes
+   docker compose restart backend
+   ```
+6. **Testing**: Formal test suites are pending; when adding them, follow the guidance in `docs/BACKEND.md` and `docs/FRONTEND.md`.
+7. **Commits/PRs**: Use Conventional Commits. Document manual tests. Rebase before opening PRs. Reference open TODO items.
+
+## Coding Standards
+
+- TypeScript strict mode everywhere. Prefer explicit types and early returns.
+- 2-space indentation. camelCase for variables/functions, PascalCase for components/types.
+- Comments in concise en-US; document only non-obvious logic.
+- Tailwind utilities ordered: layout > spacing > color/typography.
+- Never import one OAuth provider's service into another; keep shared types in `backend/src/types`.
+- When cloning React elements, preserve refs correctly (see `SmartDropdown` pattern).
+
+### Frontend Page Structure Pattern (Colocation)
+
+All pages must follow the **colocation pattern** to encapsulate page-specific dependencies:
+
+```
+frontend/src/pages/
+  ├── (auth)/                    # Group: authentication flow
+  │   ├── login/
+  │   │   └── index.tsx          # Login page
+  │   ├── signup/
+  │   │   └── index.tsx          # Signup page
+  │   ├── callback/
+  │   │   └── index.tsx          # OAuth callback handler
+  │   └── shared/                # Shared resources for auth group
+  │       ├── components/
+  │       │   ├── GoogleIcon.tsx
+  │       │   ├── FacebookIcon.tsx
+  │       │   ├── OAuthButton.tsx
+  │       │   └── index.ts       # Barrel export
+  │       └── hooks/
+  │           ├── useAuthRedirect.tsx
+  │           └── index.ts       # Barrel export
+  │
+  ├── home/
+  │   └── index.tsx
+  │
+  ├── dashboard/
+  │   └── index.tsx
+  │
+  └── not-found/
+      └── index.tsx
+```
+
+**Key Rules:**
+1. **Each page gets its own folder** with an `index.tsx` entry point
+2. **Group related pages** using parentheses `(group-name)/` when they share logic or components
+3. **Shared resources** go in `(group)/shared/{components,hooks,services,utils}`
+4. **Page-specific dependencies** (components, hooks, utils) live inside the page folder
+5. **Generic reusables** stay in `src/components` and `src/hooks` (not page-specific)
+6. **Use barrel exports** (`index.ts`) for cleaner imports from shared folders
+7. **Delete entire folders** when removing features (colocation ensures cleanup)
+
+**Example: Adding a forgot-password page**
+```
+pages/
+  └── (auth)/
+      ├── forgot-password/
+      │   ├── index.tsx
+      │   └── components/
+      │       └── ResetForm.tsx
+      └── shared/
+          └── components/
+              └── OAuthButton.tsx  # Still shared with login/signup
+```
+
+**Import Pattern:**
+```typescript
+// ✅ Good: Clean barrel imports
+import { OAuthButton, GoogleIcon } from '../shared/components';
+import { useAuthRedirect } from '../shared/hooks';
+
+// ❌ Bad: Direct file imports when barrel exists
+import { OAuthButton } from '../shared/components/OAuthButton';
+```
+
+## Operational Notes
+
+- Tunnels: each environment needs its own credential JSON in `cloudflared/config/<env>/`. Update `ENV_SUFFIX` accordingly.
+- R2: credentials exist but code has not been connected yet; avoid assuming storage is live.
+- Premium endpoints currently return placeholder data; future work is tracked in `docs/TODO.md`.
+
+## Expectations for New Engineers
+
+- Study the docs listed above to understand current capabilities and limitations.
+- Align any new feature with the priorities in `docs/TODO.md` and the strategic plan in `docs/ROADMAP.md`.
+- Ask for clarification if requirements conflict; the roadmap document takes precedence for long-term direction.
+- Keep documentation up to date when behaviour changes; the docs folder is the single source of truth.
+
+Welcome aboard; keep the playbook handy and update it whenever the workflow evolves.

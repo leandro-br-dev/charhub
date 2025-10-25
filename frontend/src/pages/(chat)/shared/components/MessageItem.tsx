@@ -64,7 +64,7 @@ const MessageItem = memo(
     isLastMessage,
     onReviewFileClick,
   }: MessageItemProps) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('chat');
     const [showActions, setShowActions] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(message);
@@ -428,7 +428,7 @@ const MessageItem = memo(
                   confirmationRequest.files_to_review.length > 0 && (
                     <div className="my-3 border-t border-gray-500/50 pt-3">
                       <h4 className="text-sm font-semibold mb-2">
-                        Arquivos para Revisão:
+                        {t("messageItem.filesToReviewTitle")}
                       </h4>
                       <ul className="space-y-1">
                         {confirmationRequest.files_to_review.map((file: any) => (
@@ -527,7 +527,7 @@ const MessageItem = memo(
                   creditsConsumed > 0 && (
                     <span
                       className="ml-2 flex items-center"
-                      title={`${creditsConsumed} créditos usados`}
+                      title={t("messageItem.creditsUsedTitle", { count: creditsConsumed })}
                     >
                       <span className="material-symbols-outlined text-sm mr-0.5 text-amber-500">
                         monetization_on
