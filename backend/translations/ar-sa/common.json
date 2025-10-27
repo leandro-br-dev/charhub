@@ -3,21 +3,21 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "اللغة",
-    "continueGoogle": "متابعة باستخدام جوجل",
-    "continueFacebook": "متابعة باستخدام فيسبوك",
-    "privacy": "بالمتابعة، أنت توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "continueGoogle": "متابعة باستخدام Google",
+    "continueFacebook": "متابعة باستخدام Facebook",
+    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
     "logoutLoading": "جاري تسجيل الخروج...",
-    "authenticatedUser": "مستخدم مصادق عليه",
+    "authenticatedUser": "المستخدم المصادق عليه",
     "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
     "navTagline": "عرض توضيحي لـ OAuth آمن",
     "providerLabel": {
-      "google": "جوجل",
-      "facebook": "فيسبوك"
+      "google": "Google",
+      "facebook": "Facebook"
     },
-    "provider": "المزود",
+    "provider": "مزود الخدمة",
     "theme": {
       "label": "السمة",
       "option": {
@@ -36,7 +36,16 @@
     "deleting": "جاري الحذف...",
     "enabled": "ممكّن",
     "disabled": "معطّل",
-    "selectOption": "حدد خيارًا",
-    "noResults": "لم يتم العثور على خيارات."
+    "selectOption": "اختر خيارًا",
+    "noResults": "لم يتم العثور على خيارات.",
+    "chat": {
+      "with": "الدردشة مع"
+    },
+    "messages": {
+      "linkCopied": "تم نسخ الرابط إلى الحافظة!"
+    },
+    "errors": {
+      "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+    }
   }
 }

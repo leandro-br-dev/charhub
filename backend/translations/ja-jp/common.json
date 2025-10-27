@@ -5,14 +5,14 @@
     "language": "言語",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを許可したことになります。",
+    "privacy": "続行することにより、お客様はプライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを許可します。",
     "logout": "サインアウト",
     "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
     "tokenStored": "HTTP専用Cookieに保存",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
-    "navTagline": "セキュアなOAuthデモ",
+    "navTagline": "セキュアOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -37,6 +37,15 @@
     "enabled": "有効",
     "disabled": "無効",
     "selectOption": "オプションを選択",
-    "noResults": "オプションが見つかりませんでした。"
+    "noResults": "オプションが見つかりませんでした。",
+    "chat": {
+      "with": "とチャット"
+    },
+    "messages": {
+      "linkCopied": "リンクがクリップボードにコピーされました！"
+    },
+    "errors": {
+      "generic": "問題が発生しました。もう一度お試しください。"
+    }
   }
 }

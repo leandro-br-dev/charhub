@@ -207,8 +207,7 @@ export function CharacterFormLayout({
               {form.isDirty ? t('characters:form.labels.unsavedChanges') : t('characters:form.labels.allSaved')}
             </span>
             <div className="flex flex-wrap gap-3">
-              {mode === 'create' && (
-                <SmartDropdown
+              <SmartDropdown
                   buttonContent={
                     <Button
                       type="button"
@@ -246,7 +245,7 @@ export function CharacterFormLayout({
                         }
                       }}
                     >
-                      <span className="material-symbols-outlined text-base">sparkles</span>
+                      <span className="material-symbols-outlined text-base">auto_fix_high</span>
                       {t('characters:form.autocomplete.ai', 'Autocomplete with AI')}
                     </button>
                     <button
@@ -277,7 +276,6 @@ export function CharacterFormLayout({
                     </button>
                   </div>
                 </SmartDropdown>
-              )}
               <Button
                 type="button"
                 variant="light"

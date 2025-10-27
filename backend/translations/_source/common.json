@@ -37,6 +37,15 @@
                       "enabled": "Enabled",
                       "disabled": "Disabled",
                       "selectOption": "Select an option",
-                      "noResults": "No options found."
+                      "noResults": "No options found.",
+                      "chat": {
+                        "with": "Chat with"
+                      },
+                      "messages": {
+                        "linkCopied": "Link copied to clipboard!"
+                      },
+                      "errors": {
+                        "generic": "Something went wrong. Please try again."
+                      }
                   }
 }

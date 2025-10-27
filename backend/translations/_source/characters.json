@@ -196,7 +196,10 @@
         "backToHub": "Back to hub",
         "edit": "Edit",
         "delete": "Delete",
-        "deleting": "Deleting..."
+        "deleting": "Deleting...",
+        "share": "Share",
+        "startChat": "Start conversation",
+        "startingChat": "Starting..."
       },
       "confirmDelete": "Are you sure you want to delete this character? This action cannot be undone.",
       "labels": {
@@ -204,7 +207,12 @@
         "private": "Private",
         "createdAt": "Created",
         "updatedAt": "Last updated",
-        "identifier": "Character ID: {{id}}"
+        "identifier": "Character ID: {{id}}",
+        "messageCount": "{{count}} message",
+        "messageCount_plural": "{{count}} messages",
+        "favoriteCount": "{{count}} favorite",
+        "favoriteCount_plural": "{{count}} favorites",
+        "stats": "Statistics"
       },
       "sections": {
         "physicalCharacteristics": "Appearance",

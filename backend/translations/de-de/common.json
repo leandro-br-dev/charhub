@@ -7,7 +7,7 @@
     "continueFacebook": "Fortfahren mit Facebook",
     "privacy": "Durch Fortfahren stimmen Sie unserer Datenschutzrichtlinie zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
-    "logoutLoading": "Melde mich ab...",
+    "logoutLoading": "Abmelden...",
     "authenticatedUser": "Authentifizierter Benutzer",
     "tokenStored": "Gespeichert in HTTP-only Cookie",
     "navDashboard": "Dashboard",
@@ -37,6 +37,15 @@
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
     "selectOption": "Option auswählen",
-    "noResults": "Keine Optionen gefunden."
+    "noResults": "Keine Optionen gefunden.",
+    "chat": {
+      "with": "Chat mit"
+    },
+    "messages": {
+      "linkCopied": "Link in die Zwischenablage kopiert!"
+    },
+    "errors": {
+      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    }
   }
 }

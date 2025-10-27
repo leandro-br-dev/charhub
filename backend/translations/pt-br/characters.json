@@ -22,7 +22,7 @@
     "genders": {
       "male": "Masculino",
       "female": "Feminino",
-      "non-binary": "Não-binário"
+      "non-binary": "Não binário"
     },
     "contentTags": {
       "VIOLENCE": "Violência",
@@ -39,10 +39,10 @@
       "GAMBLING": "Jogo"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combate, lutas ou conflitos agressivos.",
+      "VIOLENCE": "Combate, lutas ou conflito agressivo.",
       "GORE": "Ferimentos gráficos e detalhes explícitos.",
       "SEXUAL": "Temas adultos ou insinuações.",
-      "NUDITY": "Nudez parcial ou total.",
+      "NUDITY": "Nudez parcial ou completa.",
       "LANGUAGE": "Linguagem explícita ou forte.",
       "DRUGS": "Uso ou referências a drogas.",
       "ALCOHOL": "Consumo de álcool.",
@@ -80,7 +80,7 @@
         "empty_private": "Você ainda não criou nenhum personagem.",
         "empty_public": "Nenhum personagem público corresponde aos seus filtros.",
         "emptyHint": "Comece criando um perfil ou ajuste seus filtros.",
-        "emptySearchHint": "Ajuste seus filtros ou limpe a busca para ver mais resultados."
+        "emptySearchHint": "Ajuste seus filtros ou limpe a pesquisa para ver mais resultados."
       },
       "labels": {
         "total": "{{count}} personagem disponível",
@@ -95,7 +95,7 @@
         "identity": "Identidade",
         "identityHint": "Defina como as pessoas descobrem e identificam este personagem rapidamente.",
         "profile": "Perfil narrativo",
-        "profileHint": "Descreva personalidade, traços e história para guiar a IA.",
+        "profileHint": "Descreva a personalidade, traços e história para guiar a IA.",
         "configuration": "Disponibilidade e moderação",
         "configurationHint": "Controle como o personagem aparece, quem pode acessá-lo e quais salvaguardas se aplicam.",
         "contentTagsHint": "Marque temas potencialmente sensíveis. Os usuários podem filtrá-los com base em suas preferências.",
@@ -112,7 +112,7 @@
         "style": "Estilo visual ou de narrativa",
         "physicalCharacteristics": "Descrição física",
         "personality": "Personalidade",
-        "history": "História de fundo",
+        "history": "História pregressa",
         "isPublic": "Visibilidade",
         "ageRating": "Classificação etária",
         "originalLanguageCode": "Idioma original",
@@ -120,9 +120,9 @@
         "visibility": "Visibilidade"
       },
       "placeholders": {
-        "gender": "Ex: IA não-binária, androide, cavaleiro",
+        "gender": "Ex: IA não binária, androide, cavaleiro",
         "species": "Ex: Humano, Elfo, Sintético",
-        "style": "Ex: Detetive noir, anime pastel, estilo pintura",
+        "style": "Ex: Detetive noir, anime pastel, estilo pictórico",
         "genderSelect": "Selecione o gênero"
       },
       "labels": {
@@ -137,14 +137,14 @@
         "change": "Alterar imagem",
         "remove": "Remover",
         "uploading": "Carregando...",
-        "helperCreate": "Escolha um avatar agora e nós o manteremos enquanto você preenche o restante do formulário.",
+        "helperCreate": "Escolha um avatar agora e o manteremos enquanto você preenche o restante do formulário.",
         "helperEdit": "Atualize o avatar quando quiser. As alterações são aplicadas assim que você salva.",
         "error": "Não foi possível carregar esta imagem. Tente outro arquivo.",
         "previewAlt": "Prévia do avatar do personagem"
       },
       "images": {
         "coverHeader": "Capa do personagem",
-        "coverDescription": "Imagem orientada em retrato usada como capa do personagem.",
+        "coverDescription": "Imagem em orientação retrato usada como capa do personagem.",
         "upload": "Carregar capa",
         "change": "Alterar capa",
         "uploading": "Carregando...",
@@ -196,20 +196,28 @@
         "backToHub": "Voltar para a central",
         "edit": "Editar",
         "delete": "Excluir",
-        "deleting": "Excluindo..."
+        "deleting": "Excluindo...",
+        "share": "Compartilhar",
+        "startChat": "Iniciar conversa",
+        "startingChat": "Iniciando..."
       },
-      "confirmDelete": "Você tem certeza que deseja excluir este personagem? Esta ação não pode ser desfeita.",
+      "confirmDelete": "Tem certeza de que deseja excluir este personagem? Esta ação não pode ser desfeita.",
       "labels": {
         "public": "Público",
         "private": "Privado",
         "createdAt": "Criado em",
         "updatedAt": "Última atualização",
-        "identifier": "ID do Personagem: {{id}}"
+        "identifier": "ID do Personagem: {{id}}",
+        "messageCount": "{{count}} mensagem",
+        "messageCount_plural": "{{count}} mensagens",
+        "favoriteCount": "{{count}} favorito",
+        "favoriteCount_plural": "{{count}} favoritos",
+        "stats": "Estatísticas"
       },
       "sections": {
         "physicalCharacteristics": "Aparência",
         "personality": "Personalidade",
-        "history": "História de fundo",
+        "history": "História pregressa",
         "contentTags": "Avisos de conteúdo",
         "metadata": "Tags"
       }

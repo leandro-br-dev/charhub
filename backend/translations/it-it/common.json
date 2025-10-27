@@ -9,7 +9,7 @@
     "logout": "Esci",
     "logoutLoading": "Uscita in corso...",
     "authenticatedUser": "Utente autenticato",
-    "tokenStored": "Archiviato in cookie HTTP-only",
+    "tokenStored": "Memorizzato in cookie HTTP-only",
     "navDashboard": "Dashboard",
     "navCharacters": "Personaggi",
     "navTagline": "Demo OAuth sicura",
@@ -37,6 +37,15 @@
     "enabled": "Abilitato",
     "disabled": "Disabilitato",
     "selectOption": "Seleziona un'opzione",
-    "noResults": "Nessuna opzione trovata."
+    "noResults": "Nessuna opzione trovata.",
+    "chat": {
+      "with": "Chatta con"
+    },
+    "messages": {
+      "linkCopied": "Link copiato negli appunti!"
+    },
+    "errors": {
+      "generic": "Si è verificato un errore. Riprova."
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { callLLM } from '../services/llm';
+import { parseJsonSafe } from '../utils/json';
 type ContentTag =
   | 'VIOLENCE'
   | 'GORE'
@@ -108,12 +109,10 @@ export async function runCharacterAutocomplete(
   // Parse JSON safely
   const text = llmResponse.content?.trim() || '{}';
   try {
-    const parsed = JSON.parse(text);
-    if (parsed && typeof parsed === 'object') {
-      return parsed as CharacterAutocompleteResult;
-    }
-  } catch (e) {
+    const parsed = parseJsonSafe<CharacterAutocompleteResult>(text);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_e) {
     logger.warn({ text }, 'Failed to parse LLM JSON for character autocomplete');
+    return {};
   }
-  return {};
 }

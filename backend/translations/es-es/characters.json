@@ -6,7 +6,7 @@
       "updatedAt": "Actualizado {{date}}",
       "public": "Público",
       "private": "Privado",
-      "identifier": "ID de personaje: {{id}}",
+      "identifier": "ID del personaje: {{id}}",
       "unsavedChanges": "Cambios sin guardar",
       "allSaved": "Todos los cambios guardados",
       "submitting": "Guardando..."
@@ -36,7 +36,7 @@
       "PSYCHOLOGICAL": "Psicológico",
       "DISCRIMINATION": "Discriminación",
       "CRIME": "Crimen",
-      "GAMBLING": "Juegos de azar"
+      "GAMBLING": "Juego"
     },
     "contentTagHints": {
       "VIOLENCE": "Combate, peleas o conflicto agresivo.",
@@ -57,7 +57,7 @@
       "removeFromFavorites": "Eliminar de favoritos"
     },
     "hub": {
-      "title": "Centro de personajes",
+      "title": "Centro de Personajes",
       "subtitle": "Crea, organiza y evoluciona el elenco que impulsa tus historias, agentes de chat y experiencias de IA.",
       "actions": {
         "createCharacter": "Nuevo personaje",
@@ -78,8 +78,8 @@
         "error": "No pudimos cargar los personajes. Por favor, inténtalo de nuevo.",
         "empty": "Aún no hay personajes disponibles.",
         "empty_private": "Aún no has creado ningún personaje.",
-        "empty_public": "No hay personajes públicos que coincidan con tus filtros.",
-        "emptyHint": "Empieza creando un perfil o ajusta tus filtros.",
+        "empty_public": "Ningún personaje público coincide con tus filtros.",
+        "emptyHint": "Comienza creando un perfil o ajusta tus filtros.",
         "emptySearchHint": "Ajusta tus filtros o borra la búsqueda para ver más resultados."
       },
       "labels": {
@@ -93,26 +93,26 @@
       "cancel": "Cancelar",
       "sections": {
         "identity": "Identidad",
-        "identityHint": "Define cómo las personas descubren y identifican a este personaje de un vistazo.",
+        "identityHint": "Define cómo las personas descubren e identifican a este personaje de un vistazo.",
         "profile": "Perfil narrativo",
-        "profileHint": "Describe la personalidad, los rasgos y la historia de fondo para guiar a la IA.",
+        "profileHint": "Describe la personalidad, rasgos y trasfondo para guiar a la IA.",
         "configuration": "Disponibilidad y moderación",
-        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardias se aplican.",
+        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardas se aplican.",
         "contentTagsHint": "Marca temas potencialmente sensibles. Los usuarios pueden filtrarlos según sus preferencias.",
-        "contentTagsCharacterHint": "Estos temas definen de qué está cómodo hablando el personaje con la clasificación por edad seleccionada.",
-        "contentTagsUserHint": "Selecciona los temas que quieres incluir. Todo lo que quede sin marcar permanecerá bloqueado para esta clasificación.",
-        "contentTagLocked": "Desbloqueado en clasificaciones por edad más altas."
+        "contentTagsCharacterHint": "Estos temas definen de qué se siente cómodo hablando el personaje con la clasificación por edad seleccionada.",
+        "contentTagsUserHint": "Selecciona los temas que deseas incluir. Todo lo que quede sin marcar permanecerá bloqueado para esta clasificación.",
+        "contentTagLocked": "Desbloqueado en clasificaciones por edad superiores."
       },
       "fields": {
         "firstName": "Nombre",
         "lastName": "Apellido",
         "age": "Edad",
         "gender": "Género",
-        "species": "Especie / Origen",
-        "style": "Estilo visual o narrativo",
+        "species": "Especie / origen",
+        "style": "Estilo visual o de narración",
         "physicalCharacteristics": "Descripción física",
         "personality": "Personalidad",
-        "history": "Historia de fondo",
+        "history": "Trasfondo",
         "isPublic": "Visibilidad",
         "ageRating": "Clasificación por edad",
         "originalLanguageCode": "Idioma original",
@@ -122,8 +122,8 @@
       "placeholders": {
         "gender": "Ej: IA no binaria, androide, caballero",
         "species": "Ej: Humano, Elfo, Sintético",
-        "style": "Ej: Detective noir, anime pastel, pictórico",
-        "genderSelect": "Selecciona género"
+        "style": "Ej: Detective noir, anime pastel, estilo pictórico",
+        "genderSelect": "Seleccionar género"
       },
       "labels": {
         "unsavedChanges": "Tienes cambios sin guardar",
@@ -137,14 +137,14 @@
         "change": "Cambiar imagen",
         "remove": "Eliminar",
         "uploading": "Subiendo...",
-        "helperCreate": "Elige un avatar ahora y lo conservaremos mientras completas el resto del formulario.",
+        "helperCreate": "Elige un avatar ahora y lo mantendremos mientras completas el resto del formulario.",
         "helperEdit": "Actualiza el avatar cuando quieras. Los cambios se aplican tan pronto como guardas.",
-        "error": "No pudimos subir esta imagen. Intenta con otro archivo.",
+        "error": "No pudimos subir esta imagen. Prueba con otro archivo.",
         "previewAlt": "Vista previa del avatar del personaje"
       },
       "images": {
         "coverHeader": "Portada del personaje",
-        "coverDescription": "Imagen en orientación retrato utilizada como portada del personaje.",
+        "coverDescription": "Imagen orientada a retrato utilizada como portada del personaje.",
         "upload": "Subir portada",
         "change": "Cambiar portada",
         "uploading": "Subiendo...",
@@ -153,7 +153,7 @@
         "previewAlt": "Vista previa de la portada del personaje"
       },
       "tags": {
-        "searchPlaceholder": "Buscar etiquetas (ej: VTuber, Ama de llaves)",
+        "searchPlaceholder": "Buscar etiquetas (ej: VTuber, Doncella)",
         "selected": "Etiquetas seleccionadas",
         "none": "Ninguna etiqueta seleccionada",
         "suggestions": "Sugerencias",
@@ -169,11 +169,11 @@
         "configuration": "Configuración",
         "tags": "Etiquetas",
         "images": "Imágenes",
-        "lockedHint": "Completa los detalles básicos de identidad para desbloquear las otras secciones."
+        "lockedHint": "Completa los detalles básicos de identidad para desbloquear las demás secciones."
       }
     },
     "create": {
-      "title": "Crear un personaje nuevo",
+      "title": "Crear un nuevo personaje",
       "subtitle": "Combina contexto narrativo, estilo visual y ajustes de moderación. Puedes refinar todo más tarde.",
       "saveButton": "Guardar personaje",
       "cancelButton": "Cancelar y volver"
@@ -196,7 +196,10 @@
         "backToHub": "Volver al centro",
         "edit": "Editar",
         "delete": "Eliminar",
-        "deleting": "Eliminando..."
+        "deleting": "Eliminando...",
+        "share": "Compartir",
+        "startChat": "Iniciar conversación",
+        "startingChat": "Iniciando..."
       },
       "confirmDelete": "¿Estás seguro de que quieres eliminar este personaje? Esta acción no se puede deshacer.",
       "labels": {
@@ -204,12 +207,17 @@
         "private": "Privado",
         "createdAt": "Creado",
         "updatedAt": "Última actualización",
-        "identifier": "ID de personaje: {{id}}"
+        "identifier": "ID del personaje: {{id}}",
+        "messageCount": "{{count}} mensaje",
+        "messageCount_plural": "{{count}} mensajes",
+        "favoriteCount": "{{count}} favorito",
+        "favoriteCount_plural": "{{count}} favoritos",
+        "stats": "Estadísticas"
       },
       "sections": {
         "physicalCharacteristics": "Apariencia",
         "personality": "Personalidad",
-        "history": "Historia de fondo",
+        "history": "Trasfondo",
         "contentTags": "Advertencias de contenido",
         "metadata": "Etiquetas"
       }

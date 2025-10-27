@@ -9,7 +9,7 @@
     "logout": "साइन आउट",
     "logoutLoading": "साइन आउट हो रहा है...",
     "authenticatedUser": "प्रमाणित उपयोगकर्ता",
-    "tokenStored": "HTTP-ओनली कुकी में संग्रहीत",
+    "tokenStored": "HTTP-ओनली कुकी में सहेजा गया",
     "navDashboard": "डैशबोर्ड",
     "navCharacters": "चरित्र",
     "navTagline": "सुरक्षित OAuth डेमो",
@@ -37,6 +37,15 @@
     "enabled": "सक्षम",
     "disabled": "अक्षम",
     "selectOption": "एक विकल्प चुनें",
-    "noResults": "कोई विकल्प नहीं मिला।"
+    "noResults": "कोई विकल्प नहीं मिला।",
+    "chat": {
+      "with": "से चैट करें"
+    },
+    "messages": {
+      "linkCopied": "लिंक क्लिपबोर्ड पर कॉपी हो गया!"
+    },
+    "errors": {
+      "generic": "कुछ गलत हो गया। कृपया पुनः प्रयास करें।"
+    }
   }
 }

@@ -5,7 +5,7 @@
     "language": "Idioma",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
-    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a la información básica de tu perfil.",
+    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información básica de perfil.",
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
@@ -37,6 +37,15 @@
     "enabled": "Habilitado",
     "disabled": "Deshabilitado",
     "selectOption": "Selecciona una opción",
-    "noResults": "No se encontraron opciones."
+    "noResults": "No se encontraron opciones.",
+    "chat": {
+      "with": "Chatear con"
+    },
+    "messages": {
+      "linkCopied": "¡Enlace copiado al portapapeles!"
+    },
+    "errors": {
+      "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
+    }
   }
 }
