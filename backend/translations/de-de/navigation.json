@@ -11,13 +11,15 @@
     "storyPlaceholder": "Story-Tools werden bald hier verfügbar sein.",
     "chatHistory": "Konversationsverlauf",
     "chatHistoryPlaceholder": "Nachrichten und Threads werden hier angezeigt, sobald die Chat-Migration abgeschlossen ist.",
-    "developmentTools": "Entwicklerwerkzeuge",
+    "developmentTools": "Entwickler-Tools",
     "developmentPlaceholder": "Build-Pipelines, Protokolle und Automatisierungssteuerungen werden bald hier verfügbar sein.",
     "characterSidebar": "Charakterübersicht",
-    "characterSidebarPlaceholder": "Durchsuchen und heften Sie Ihre Lieblingscharaktere hier an, sobald die Hub-Seitenleiste neu aufgebaut ist.",
+    "characterSidebarPlaceholder": "Durchsuchen und heften Sie Ihre Lieblingscharaktere hier an, sobald die Hub-Seitenleiste neu erstellt wurde.",
     "storySidebar": "Stories",
     "storySidebarPlaceholder": "Bewahren Sie Entwürfe und Kapitelübersichten hier auf, sobald die Storytelling-Suite migriert wurde.",
+    "viewAllCharacters": "Alle Charaktere anzeigen",
+    "viewAllStories": "Alle Stories anzeigen",
     "sidebarDefaultTitle": "CharHub erkunden",
-    "sidebarDefaultDescription": "Verwenden Sie die Symbole in der Navigationsleiste, um zwischen den Erlebnissen zu wechseln."
+    "sidebarDefaultDescription": "Verwenden Sie die Symbole in der Navigationsleiste, um zwischen den Bereichen zu wechseln."
   }
 }

@@ -9,8 +9,8 @@
     "email": "Correo electrónico",
     "provider": "Proveedor",
     "token": "Token",
-    "insightSyncUnity": "Sincroniza esta sesión con el cliente Unity a través de WebSockets o REST seguros.",
-    "insightPersist": "Almacena perfiles OAuth en tu almacén de identidades de backend.",
+    "insightSyncUnity": "Sincroniza esta sesión con el cliente Unity a través de WebSockets seguros o REST.",
+    "insightPersist": "Almacena los perfiles OAuth en tu almacén de identidad de backend.",
     "insightTokens": "Emite tokens de acceso de corta duración y actualízalos cuando sea necesario."
   }
 }

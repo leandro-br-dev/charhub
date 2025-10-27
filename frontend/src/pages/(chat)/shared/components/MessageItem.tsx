@@ -26,6 +26,7 @@ interface MessageItemProps {
   isSent: boolean;
   sender: any;
   timestamp: string;
+  senderType?: string; // 'USER' | 'CHARACTER' | 'ASSISTANT' | 'SYSTEM'
   className?: string;
   onAvatarClick?: () => void;
   onDeleteRequest?: (messageId: string) => void;
@@ -43,12 +44,13 @@ interface MessageItemProps {
 }
 
 const MessageItem = memo(
-  ({ 
+  ({
     messageId,
     message,
     isSent,
     sender,
     timestamp,
+    senderType,
     className = "",
     onAvatarClick,
     onDeleteRequest,
@@ -309,10 +311,56 @@ const MessageItem = memo(
       [message]
     );
 
+    const isNarrator = senderType === 'SYSTEM';
+
+    // Special rendering for narrator/system messages
+    if (isNarrator) {
+      return (
+        <div className={`flex justify-center w-full mb-6 ${className}`}>
+          <div className="max-w-[80%] w-full">
+            <div className="flex flex-col items-center">
+              <div className="bg-light/50 dark:bg-dark/50 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-md border border-border/30 text-center">
+                <div className="text-sm italic text-content/90 whitespace-pre-wrap leading-relaxed">
+                  {formattedOriginalMessageParts.map((part: any, index: number) => {
+                    if (part.type === "italic")
+                      return (
+                        <em key={index} className="text-current opacity-80 inline">
+                          {part.content}
+                        </em>
+                      );
+                    if (part.type === "quote")
+                      return (
+                        <blockquote key={index} className="border-l-4 border-gray-400 pl-2 italic my-1">
+                          {part.content}
+                        </blockquote>
+                      );
+                    return part.content.split("\n").map((line: string, i: number) => (
+                      <React.Fragment key={`${index}-${i}`}>
+                        {line}
+                        {i < part.content.split("\n").length - 1 && <br />}
+                      </React.Fragment>
+                    ));
+                  })}
+                </div>
+                {timestamp && (
+                  <div className="text-xs text-muted/70 mt-2">
+                    {new Date(timestamp).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div
-        className={`flex ${ 
-          isSent ? "justify-end" : "justify-start" 
+        className={`flex ${
+          isSent ? "justify-end" : "justify-start"
         } w-full mb-4 group ${className}`}
         onMouseEnter={() => {
           if (!isEditing) setShowActions(true);

@@ -87,6 +87,7 @@ See [`MIGRATION_SUMMARY.md`](./MIGRATION_SUMMARY.md) for complete overview.
 
 - `docs/PROJECT_OVERVIEW.md` - architecture summary and repository layout.
 - `docs/BACKEND.md` - routes, services, environment variables, and commands.
+- `backend/docs/TAGS_SYSTEM.md` - content classification and filtering with tags.
 - `docs/FRONTEND.md` - UI flows, component organization, and Vite configuration.
 - `docs/DEV_OPERATIONS.md` - environment prep, Docker usage, Cloudflare tunnel setup, translation pipeline.
 - `docs/TODO.md` - current priorities (see `docs/ROADMAP.md` for long-term plans).

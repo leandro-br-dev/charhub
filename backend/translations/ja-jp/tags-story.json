@@ -1,0 +1,261 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "resources": {
+    "Fantasy": {
+      "name": "ファンタジー",
+      "description": "ファンタジー（幻想文学）のジャンル"
+    },
+    "Sci-Fi": {
+      "name": "SF",
+      "description": "サイエンス・フィクション（空想科学小説）のジャンル"
+    },
+    "Romance": {
+      "name": "ロマンス",
+      "description": "ロマンス（恋愛）のジャンル"
+    },
+    "Horror": {
+      "name": "ホラー",
+      "description": "ホラー（恐怖）のジャンル"
+    },
+    "Mystery": {
+      "name": "ミステリー",
+      "description": "ミステリー（推理小説）のジャンル"
+    },
+    "Thriller": {
+      "name": "スリラー",
+      "description": "スリラー（サスペンス）のジャンル"
+    },
+    "Adventure": {
+      "name": "アドベンチャー",
+      "description": "アドベンチャー（冒険）のジャンル"
+    },
+    "Action": {
+      "name": "アクション",
+      "description": "アクション（行動、活動）中心の物語"
+    },
+    "Comedy": {
+      "name": "コメディ",
+      "description": "コメディ（喜劇）のジャンル"
+    },
+    "Drama": {
+      "name": "ドラマ",
+      "description": "ドラマ（劇）のジャンル"
+    },
+    "Slice of Life": {
+      "name": "日常",
+      "description": "日常の出来事を描いた物語"
+    },
+    "Isekai": {
+      "name": "異世界",
+      "description": "異世界転生・転移の物語"
+    },
+    "Harem": {
+      "name": "ハーレム",
+      "description": "複数の恋愛対象がいる関係"
+    },
+    "Reverse Harem": {
+      "name": "逆ハーレム",
+      "description": "女性主人公に複数の男性が好意を寄せる関係"
+    },
+    "Yaoi": {
+      "name": "やおい",
+      "description": "男性同士の恋愛"
+    },
+    "Yuri": {
+      "name": "百合",
+      "description": "女性同士の恋愛"
+    },
+    "Ecchi": {
+      "name": "エッチ",
+      "description": "性的な要素を示唆する内容"
+    },
+    "Hentai": {
+      "name": "ヘンタイ",
+      "description": "露骨な性的な内容"
+    },
+    "Gore": {
+      "name": "ゴア",
+      "description": "生々しい暴力や血の描写"
+    },
+    "Psychological": {
+      "name": "サイコロジカル",
+      "description": "心理的なテーマ"
+    },
+    "Dark Fantasy": {
+      "name": "ダークファンタジー",
+      "description": "暗く、成熟したファンタジーのテーマ"
+    },
+    "Urban Fantasy": {
+      "name": "アーバンファンタジー",
+      "description": "現代を舞台にしたファンタジー"
+    },
+    "High Fantasy": {
+      "name": "ハイファンタジー",
+      "description": "架空の世界を舞台にした壮大なファンタジー"
+    },
+    "Cyberpunk": {
+      "name": "サイバーパンク",
+      "description": "ディストピア的なハイテク未来"
+    },
+    "Steampunk": {
+      "name": "スチームパンク",
+      "description": "蒸気機関時代のテクノロジー"
+    },
+    "Post-Apocalyptic": {
+      "name": "ポストアポカリプス",
+      "description": "災害後の世界"
+    },
+    "Dystopian": {
+      "name": "ディストピア",
+      "description": "抑圧的な社会設定"
+    },
+    "Historical": {
+      "name": "歴史",
+      "description": "歴史的な時代設定"
+    },
+    "Supernatural": {
+      "name": "スーパーナチュラル",
+      "description": "超自然的な要素"
+    },
+    "Martial Arts": {
+      "name": "武術",
+      "description": "武術に焦点を当てた物語"
+    },
+    "Mecha": {
+      "name": "メカ",
+      "description": "巨大ロボット/メカ"
+    },
+    "School Life": {
+      "name": "学園",
+      "description": "学校を舞台にした物語"
+    },
+    "Sports": {
+      "name": "スポーツ",
+      "description": "スポーツをテーマにした物語"
+    },
+    "Music": {
+      "name": "音楽",
+      "description": "音楽をテーマにした物語"
+    },
+    "Military": {
+      "name": "ミリタリー",
+      "description": "軍事をテーマにした物語"
+    },
+    "Crime": {
+      "name": "クライム",
+      "description": "犯罪および犯罪活動"
+    },
+    "Noir": {
+      "name": "ノワール",
+      "description": "暗い犯罪物語"
+    },
+    "Western": {
+      "name": "ウェスタン",
+      "description": "西部開拓時代を舞台にした物語"
+    },
+    "Space Opera": {
+      "name": "スペースオペラ",
+      "description": "壮大な宇宙冒険物語"
+    },
+    "Time Travel": {
+      "name": "タイムトラベル",
+      "description": "時間旅行をテーマにした物語"
+    },
+    "Survival": {
+      "name": "サバイバル",
+      "description": "サバイバル状況"
+    },
+    "Mafia": {
+      "name": "マフィア",
+      "description": "組織犯罪をテーマにした物語"
+    },
+    "Vampire": {
+      "name": "ヴァンパイア",
+      "description": "吸血鬼をテーマにした物語"
+    },
+    "Werewolf": {
+      "name": "ワーウルフ",
+      "description": "狼男をテーマにした物語"
+    },
+    "Mythology": {
+      "name": "神話",
+      "description": "神話的なテーマ"
+    },
+    "Religion": {
+      "name": "宗教",
+      "description": "宗教的なテーマ"
+    },
+    "Political": {
+      "name": "政治",
+      "description": "政治的な陰謀"
+    },
+    "Parody": {
+      "name": "パロディ",
+      "description": "パロディまたは風刺"
+    },
+    "Wholesome": {
+      "name": "ほのぼの",
+      "description": "心温まるコンテンツ"
+    },
+    "Grimdark": {
+      "name": "グリムダーク",
+      "description": "極めて暗く残酷な世界観"
+    },
+    "Erotic": {
+      "name": "エロティック",
+      "description": "性的に露骨な内容"
+    },
+    "NTR": {
+      "name": "NTR",
+      "description": "寝取られ（浮気、裏切り）のテーマ"
+    },
+    "Incest": {
+      "name": "近親相姦",
+      "description": "近親相姦の関係"
+    },
+    "Tentacle": {
+      "name": "触手",
+      "description": "触手ものエロティカ"
+    },
+    "Furry": {
+      "name": "ケモノ",
+      "description": "擬人化された動物キャラクター"
+    },
+    "Monster Girl": {
+      "name": "モンスター娘",
+      "description": "女性のモンスターキャラクター"
+    },
+    "Transformation": {
+      "name": "変身",
+      "description": "身体的な変身のテーマ"
+    },
+    "Gender Bender": {
+      "name": "性転換",
+      "description": "性別が変わる、または入れ替わる"
+    },
+    "Cooking": {
+      "name": "料理",
+      "description": "料理をテーマにした物語"
+    },
+    "Villainess": {
+      "name": "悪役令嬢",
+      "description": "悪役の女性主人公"
+    },
+    "Regression": {
+      "name": "転生（過去に戻る）",
+      "description": "過去への回帰/退行"
+    },
+    "Dungeon": {
+      "name": "ダンジョン",
+      "description": "ダンジョン探索"
+    },
+    "Game World": {
+      "name": "ゲーム世界",
+      "description": "ゲームの世界を舞台にした物語"
+    },
+    "LitRPG": {
+      "name": "LitRPG",
+      "description": "物語におけるゲームの仕組み"
+    }
+  }
+}

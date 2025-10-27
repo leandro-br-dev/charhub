@@ -234,6 +234,7 @@ const MessageList: React.FC<MessageListProps> = ({
               isSent={isSentByUser}
               sender={senderDetails}
               timestamp={msg.timestamp}
+              senderType={msg.senderType}
               onAvatarClick={() => {
                 if (participantForThisMessage && onAvatarClick) {
                   onAvatarClick(participantForThisMessage);

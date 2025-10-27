@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "Créer une nouvelle histoire",
+      "subtitle": "Créez une histoire interactive avec des personnages et des objectifs"
+    },
+    "form": {
+      "title": "Titre",
+      "titlePlaceholder": "Entrez le titre de l'histoire",
+      "synopsis": "Synopsis",
+      "synopsisPlaceholder": "Décrivez brièvement votre histoire",
+      "coverImage": "Image de couverture",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "Aperçu de la couverture",
+      "coverImageError": "Échec du chargement de l'image",
+      "coverImageHint": "Collez une URL d'image pour la couverture de l'histoire",
+      "initialText": "Texte initial",
+      "initialTextPlaceholder": "Écrivez l'ouverture de votre histoire...",
+      "initialTextHint": "Ce texte sera affiché au début de l'histoire",
+      "objectives": "Objectifs",
+      "objectivePlaceholder": "Ajouter un objectif à l'histoire",
+      "noObjectives": "Pas encore d'objectifs. Ajoutez-en pour guider le récit.",
+      "characters": "Personnages",
+      "selectedCharacters": "Personnages sélectionnés",
+      "searchCharacters": "Rechercher des personnages",
+      "noCharactersFound": "Aucun personnage trouvé",
+      "noCharactersAvailable": "Créez d'abord des personnages",
+      "tags": "Tags",
+      "selectedTags": "Tags sélectionnés",
+      "searchTags": "Rechercher des tags",
+      "noTagsFound": "Aucun tag trouvé",
+      "noTagsAvailable": "Aucun tag disponible",
+      "ageRating": "Classification par âge",
+      "contentTags": "Tags de contenu",
+      "makePublic": "Rendre cette histoire publique"
+    },
+    "validation": {
+      "titleRequired": "Le titre est requis",
+      "titleTooLong": "Le titre doit faire 100 caractères maximum",
+      "synopsisTooLong": "Le synopsis doit faire 2000 caractères maximum",
+      "initialTextTooLong": "Le texte initial doit faire 5000 caractères maximum"
+    },
+    "errors": {
+      "createFailed": "Échec de la création de l'histoire",
+      "updateFailed": "Échec de la mise à jour de l'histoire",
+      "deleteFailed": "Échec de la suppression de l'histoire",
+      "failedToLoad": "Échec du chargement des histoires",
+      "noCharacters": "Cette histoire n'a pas de personnages",
+      "failedToStart": "Échec du démarrage de l'histoire",
+      "notFound": "Histoire introuvable"
+    },
+    "sidebar": {
+      "myStories": "Mes histoires",
+      "noStories": "Pas encore d'histoires"
+    },
+    "list": {
+      "title": "Mes histoires",
+      "subtitle": "Gérez vos histoires interactives",
+      "public": "Public",
+      "private": "Privé",
+      "empty": {
+        "title": "Pas encore d'histoires",
+        "description": "Créez votre première histoire interactive",
+        "action": "Créer une histoire"
+      }
+    },
+    "detail": {
+      "synopsis": "Synopsis",
+      "initialScene": "Scène d'ouverture",
+      "objectives": "Objectifs de l'histoire",
+      "characters": "Personnages"
+    },
+    "start": "Démarrer l'histoire",
+    "starting": "Démarrage..."
+  }
+}

@@ -144,12 +144,22 @@ export class ResponseGenerationAgent {
       .map((entry) => `${entry.sender_name}: ${entry.content}`)
       .join('\n');
 
+    // Extract story context from conversation settings if available
+    let storyContext = '';
+    if (conversation.settings && typeof conversation.settings === 'object') {
+      const settings = conversation.settings as any;
+      if (settings.storyContext) {
+        storyContext = `\n\nSTORY CONTEXT:\n${settings.storyContext}\n`;
+      }
+    }
+
     const conversationContext = [
       'Participants:',
       participantsContext || 'No participants context available.',
       '',
       'Conversation history:',
       historyContext || 'No previous messages.',
+      storyContext,
     ].join('\n');
 
     const userLanguage = getLanguageName(user.preferredLanguage);

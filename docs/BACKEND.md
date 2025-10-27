@@ -327,6 +327,7 @@ For implementation details, see `backend/src/agents/style-guides/README.md`.
 
 ## Related Documentation
 
+- **Tag System**: `backend/docs/TAGS_SYSTEM.md` - Content classification and filtering with tags
 - **Translations**: `backend/translations/README.md` - Complete translation workflow
 - **LLM Integration**: `backend/docs/LLM_API.md` - Full API documentation for AI providers
 - **Style Guides**: `backend/src/agents/style-guides/README.md` - AI response customization

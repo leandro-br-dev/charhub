@@ -5,14 +5,14 @@
       "untitledCharacter": "未命名的角色",
       "updatedAt": "{{date}} 更新",
       "public": "公开",
-      "private": "私有",
+      "private": "私密",
       "identifier": "角色 ID: {{id}}",
       "unsavedChanges": "未保存的更改",
-      "allSaved": "所有更改已保存",
+      "allSaved": "所有更改均已保存",
       "submitting": "正在保存..."
     },
     "ageRatings": {
-      "L": "普通观众",
+      "L": "适合所有观众",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -27,7 +27,7 @@
     "contentTags": {
       "VIOLENCE": "暴力",
       "GORE": "血腥",
-      "SEXUAL": "性",
+      "SEXUAL": "性内容",
       "NUDITY": "裸露",
       "LANGUAGE": "脏话",
       "DRUGS": "毒品",
@@ -39,26 +39,26 @@
       "GAMBLING": "赌博"
     },
     "contentTagHints": {
-      "VIOLENCE": "战斗、打斗或激烈的冲突。",
-      "GORE": "血腥的伤口和露骨的细节。",
+      "VIOLENCE": "战斗、打斗或攻击性冲突。",
+      "GORE": "触目惊心的伤情和露骨细节。",
       "SEXUAL": "成人主题或暗示。",
       "NUDITY": "部分或全部裸露。",
-      "LANGUAGE": "露骨或强烈的语言。",
-      "DRUGS": "药物使用或提及。",
+      "LANGUAGE": "露骨或粗俗的语言。",
+      "DRUGS": "吸毒或相关描述。",
       "ALCOHOL": "饮酒。",
       "HORROR": "令人不安或恐怖的画面。",
       "PSYCHOLOGICAL": "心理健康或心理紧张。",
       "DISCRIMINATION": "仇恨言论或偏见。",
       "CRIME": "犯罪活动主题。",
-      "GAMBLING": "投注或赌博提及。"
+      "GAMBLING": "打赌或赌博相关内容。"
     },
     "accessibility": {
       "addToFavorites": "添加到收藏夹",
-      "removeFromFavorites": "从收藏夹中移除"
+      "removeFromFavorites": "从收藏夹移除"
     },
     "hub": {
       "title": "角色中心",
-      "subtitle": "创建、组织和演变构成您故事、聊天机器人和 AI 体验的演员阵容。",
+      "subtitle": "创建、组织和发展驱动您的故事、聊天机器人和 AI 体验的角色。",
       "actions": {
         "createCharacter": "新角色",
         "retry": "重试",
@@ -76,15 +76,15 @@
       "states": {
         "loading": "正在加载您的角色...",
         "error": "我们无法加载角色。请重试。",
-        "empty": "尚无角色。",
+        "empty": "尚无可用的角色。",
         "empty_private": "您尚未创建任何角色。",
-        "empty_public": "没有符合您筛选条件的公开角色。",
-        "emptyHint": "开始创建个人资料或调整您的筛选条件。",
+        "empty_public": "没有公开角色符合您的筛选条件。",
+        "emptyHint": "开始创建个人资料或调整筛选条件。",
         "emptySearchHint": "调整筛选条件或清除搜索以查看更多结果。"
       },
       "labels": {
-        "total": "{{count}} 个可用角色",
-        "total_plural": "{{count}} 个可用角色",
+        "total": "可用角色 {{count}} 个",
+        "total_plural": "可用角色 {{count}} 个",
         "quickCreateLink": "直接开始创建"
       }
     },
@@ -93,14 +93,14 @@
       "cancel": "取消",
       "sections": {
         "identity": "身份",
-        "identityHint": "定义人们如何一眼发现并识别此角色。",
+        "identityHint": "定义人们如何发现和一眼认出这个角色。",
         "profile": "叙事简介",
-        "profileHint": "描述个性、特质和背景故事，以指导 AI。",
-        "configuration": "可用性和审核",
+        "profileHint": "描述个性、特质和背景故事以指导 AI。",
+        "configuration": "可用性与审核",
         "configurationHint": "控制角色的显示方式、谁可以访问它以及适用哪些安全措施。",
-        "contentTagsHint": "标记潜在的敏感主题。用户可以根据自己的偏好过滤掉它们。",
-        "contentTagsCharacterHint": "这些主题定义了角色在选定的年龄分级下愿意讨论的内容。",
-        "contentTagsUserHint": "选择您想要包含的主题。未勾选的任何内容在该年龄分级下都将被屏蔽。",
+        "contentTagsHint": "标记潜在的敏感主题。用户可以根据偏好筛选掉它们。",
+        "contentTagsCharacterHint": "这些主题定义了角色在选定的年龄分级下可以舒适地讨论的内容。",
+        "contentTagsUserHint": "选择您想包含的主题。未勾选的任何内容在此分级下都会被屏蔽。",
         "contentTagLocked": "在更高的年龄分级下解锁。"
       },
       "fields": {
@@ -108,10 +108,10 @@
         "lastName": "姓氏",
         "age": "年龄",
         "gender": "性别",
-        "species": "物种/来源",
+        "species": "物种/起源",
         "style": "视觉或叙事风格",
         "physicalCharacteristics": "外貌描述",
-        "personality": "性格",
+        "personality": "个性",
         "history": "背景故事",
         "isPublic": "可见性",
         "ageRating": "年龄分级",
@@ -122,41 +122,65 @@
       "placeholders": {
         "gender": "例如：非二元 AI、机器人、骑士",
         "species": "例如：人类、精灵、合成人",
-        "style": "例如：黑色电影侦探、粉彩动漫、绘画风格"
+        "style": "例如：黑色电影侦探、粉彩动漫、绘画风格",
+        "genderSelect": "选择性别"
       },
       "labels": {
         "unsavedChanges": "您有未保存的更改",
         "allSaved": "更改已保存",
         "submitting": "正在保存...",
         "visibilityPublic": "公开",
-        "visibilityPrivate": "私有"
+        "visibilityPrivate": "私密"
       },
       "avatar": {
         "upload": "上传图片",
-        "change": "更改图片",
+        "change": "更换图片",
         "remove": "移除",
         "uploading": "正在上传...",
-        "helperCreate": "现在选择一个头像，我们会在您填写其他表单时为您保留。",
-        "helperEdit": "随时更新头像。更改会在您保存后立即生效。",
+        "helperCreate": "立即选择一个头像，我们将在您填写其他表格时为您保留。",
+        "helperEdit": "您可以随时更新头像。更改将在您保存后立即生效。",
         "error": "我们无法上传此图片。请尝试其他文件。",
         "previewAlt": "角色头像预览"
+      },
+      "images": {
+        "coverHeader": "角色封面",
+        "coverDescription": "用作角色封面的竖版图片。",
+        "upload": "上传封面",
+        "change": "更换封面",
+        "uploading": "正在上传...",
+        "urlModalTitle": "使用 URL 中的图片",
+        "urlLabel": "图片 URL",
+        "previewAlt": "角色封面预览"
+      },
+      "tags": {
+        "searchPlaceholder": "搜索标签（例如：VTuber、女仆）",
+        "selected": "已选标签",
+        "none": "未选择标签",
+        "suggestions": "建议",
+        "loading": "正在加载...",
+        "noResults": "无结果",
+        "incompatibleToast": "部分选定标签与当前年龄分级不兼容。请检查。",
+        "incompatibleHint": "突出显示的标签与当前年龄分级不兼容。请移除它们以继续。",
+        "incompatibleChip": "与当前年龄分级不兼容"
       },
       "tabs": {
         "identity": "身份",
         "profile": "简介",
         "configuration": "配置",
+        "tags": "标签",
+        "images": "图片",
         "lockedHint": "填写基本身份信息以解锁其他部分。"
       }
     },
     "create": {
       "title": "创建新角色",
-      "subtitle": "结合叙事背景、视觉风格和审核设置。您之后可以进行所有方面的完善。",
+      "subtitle": "结合叙事背景、视觉风格和审核设置。您可以稍后进行所有方面的完善。",
       "saveButton": "保存角色",
       "cancelButton": "取消并返回"
     },
     "edit": {
       "title": "编辑角色",
-      "subtitle": "更新 {{name}}",
+      "subtitle": "正在更新 {{name}}",
       "saveButton": "更新角色",
       "cancelButton": "放弃更改",
       "states": {
@@ -177,14 +201,14 @@
       "confirmDelete": "您确定要删除此角色吗？此操作无法撤销。",
       "labels": {
         "public": "公开",
-        "private": "私有",
+        "private": "私密",
         "createdAt": "创建于",
         "updatedAt": "最后更新于",
         "identifier": "角色 ID: {{id}}"
       },
       "sections": {
         "physicalCharacteristics": "外貌",
-        "personality": "性格",
+        "personality": "个性",
         "history": "背景故事",
         "contentTags": "内容警告",
         "metadata": "标签"

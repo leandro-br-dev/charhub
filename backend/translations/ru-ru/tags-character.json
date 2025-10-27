@@ -1,0 +1,345 @@
+{
+  "description": "Character classification tags with age ratings and content warnings. Used for filtering and categorizing characters.",
+  "resources": {
+    "VTuber": {
+      "name": "VTuber",
+      "description": "Виртуальный ютубер или создатель контента"
+    },
+    "Anime": {
+      "name": "Anime",
+      "description": "Персонаж в стиле аниме"
+    },
+    "Manga": {
+      "name": "Manga",
+      "description": "Персонаж в стиле манги"
+    },
+    "Elf": {
+      "name": "Elf",
+      "description": "Фэнтезийный эльф"
+    },
+    "Demon": {
+      "name": "Demon",
+      "description": "Демон или демонический персонаж"
+    },
+    "Angel": {
+      "name": "Angel",
+      "description": "Ангельский персонаж"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "Персонаж-вампир"
+    },
+    "Werewolf": {
+      "name": "Werewolf",
+      "description": "Персонаж-оборотень или ликантроп"
+    },
+    "Robot": {
+      "name": "Robot",
+      "description": "Робот или андроид"
+    },
+    "Cyborg": {
+      "name": "Cyborg",
+      "description": "Кибернетический организм"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "Антропоморфный животный персонаж"
+    },
+    "Kemonomimi": {
+      "name": "Kemonomimi",
+      "description": "Персонаж с ушами/хвостом животного"
+    },
+    "Catgirl": {
+      "name": "Catgirl",
+      "description": "Персонаж с кошачьими чертами"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "Персонаж-лиса-дух"
+    },
+    "Maid": {
+      "name": "Maid",
+      "description": "Профессия или наряд горничной"
+    },
+    "Butler": {
+      "name": "Butler",
+      "description": "Профессия или наряд дворецкого"
+    },
+    "Student": {
+      "name": "Student",
+      "description": "Персонаж-студент"
+    },
+    "Teacher": {
+      "name": "Teacher",
+      "description": "Учитель или преподаватель"
+    },
+    "Warrior": {
+      "name": "Warrior",
+      "description": "Персонаж, ориентированный на бой"
+    },
+    "Knight": {
+      "name": "Knight",
+      "description": "Персонаж-рыцарь или паладин"
+    },
+    "Samurai": {
+      "name": "Samurai",
+      "description": "Японский воин"
+    },
+    "Ninja": {
+      "name": "Ninja",
+      "description": "Персонаж-воин-ниндзя"
+    },
+    "Mage": {
+      "name": "Mage",
+      "description": "Заклинатель"
+    },
+    "Witch": {
+      "name": "Witch",
+      "description": "Ведьма или колдунья"
+    },
+    "Wizard": {
+      "name": "Wizard",
+      "description": "Мужчина-заклинатель"
+    },
+    "Healer": {
+      "name": "Healer",
+      "description": "Поддерживающая/лечащая роль"
+    },
+    "Assassin": {
+      "name": "Assassin",
+      "description": "Персонаж-убийца"
+    },
+    "Thief": {
+      "name": "Thief",
+      "description": "Персонаж-плут или вор"
+    },
+    "Pirate": {
+      "name": "Pirate",
+      "description": "Персонаж-пират"
+    },
+    "Detective": {
+      "name": "Detective",
+      "description": "Детектив или следователь"
+    },
+    "Scientist": {
+      "name": "Scientist",
+      "description": "Ученый или исследователь"
+    },
+    "Doctor": {
+      "name": "Doctor",
+      "description": "Медицинский работник"
+    },
+    "Nurse": {
+      "name": "Nurse",
+      "description": "Медсестра или медицинский работник"
+    },
+    "Idol": {
+      "name": "Idol",
+      "description": "Поп-идол или исполнитель"
+    },
+    "Musician": {
+      "name": "Musician",
+      "description": "Музыкальный артист"
+    },
+    "Artist": {
+      "name": "Artist",
+      "description": "Художник или живописец"
+    },
+    "Athlete": {
+      "name": "Athlete",
+      "description": "Спортсмен"
+    },
+    "Chef": {
+      "name": "Chef",
+      "description": "Кулинар"
+    },
+    "Royalty": {
+      "name": "Royalty",
+      "description": "Королевский или знатный персонаж"
+    },
+    "Princess": {
+      "name": "Princess",
+      "description": "Персонаж-принцесса"
+    },
+    "Prince": {
+      "name": "Prince",
+      "description": "Персонаж-принц"
+    },
+    "Tsundere": {
+      "name": "Tsundere",
+      "description": "Сначала холодный, постепенно теплый характер"
+    },
+    "Yandere": {
+      "name": "Yandere",
+      "description": "Одержимый, потенциально жестокий любовный интерес"
+    },
+    "Kuudere": {
+      "name": "Kuudere",
+      "description": "Холодный, эмоционально отстраненный характер"
+    },
+    "Dandere": {
+      "name": "Dandere",
+      "description": "Застенчивый, тихий характер"
+    },
+    "Genki": {
+      "name": "Genki",
+      "description": "Энергичный, восторженный характер"
+    },
+    "Tomboy": {
+      "name": "Tomboy",
+      "description": "Девушка с мальчишескими чертами"
+    },
+    "Femboy": {
+      "name": "Femboy",
+      "description": "Юноша с женственными чертами"
+    },
+    "BDSM": {
+      "name": "BDSM",
+      "description": "Темы БДСМ (связывание, дисциплина, доминирование/подчинение)"
+    },
+    "Dominatrix": {
+      "name": "Dominatrix",
+      "description": "Доминирующая сексуальная роль"
+    },
+    "Submissive": {
+      "name": "Submissive",
+      "description": "Подчиненная сексуальная роль"
+    },
+    "Succubus": {
+      "name": "Succubus",
+      "description": "Демон-искусительница"
+    },
+    "Monster Girl": {
+      "name": "Monster Girl",
+      "description": "Женский персонаж-монстр"
+    },
+    "Monster Boy": {
+      "name": "Monster Boy",
+      "description": "Мужской персонаж-монстр"
+    },
+    "Giantess": {
+      "name": "Giantess",
+      "description": "Гигантская женская персонаж"
+    },
+    "Loli": {
+      "name": "Loli",
+      "description": "Юная на вид женская персонаж (в несексуальном контексте)"
+    },
+    "Shota": {
+      "name": "Shota",
+      "description": "Юный на вид мужской персонаж (в несексуальном контексте)"
+    },
+    "MILF": {
+      "name": "MILF",
+      "description": "Привлекательная зрелая женщина"
+    },
+    "DILF": {
+      "name": "DILF",
+      "description": "Привлекательный зрелый мужчина"
+    },
+    "Schoolgirl": {
+      "name": "Schoolgirl",
+      "description": "Женский персонаж-школьница"
+    },
+    "Schoolboy": {
+      "name": "Schoolboy",
+      "description": "Мужской персонаж-школьник"
+    },
+    "Office Lady": {
+      "name": "Office Lady",
+      "description": "Женщина-офисный работник"
+    },
+    "Salaryman": {
+      "name": "Salaryman",
+      "description": "Мужчина-офисный работник"
+    },
+    "Gyaru": {
+      "name": "Gyaru",
+      "description": "Японский стиль субкультуры моды"
+    },
+    "Goth": {
+      "name": "Goth",
+      "description": "Готический стиль моды"
+    },
+    "Punk": {
+      "name": "Punk",
+      "description": "Панк-мода/отношение"
+    },
+    "Zombie": {
+      "name": "Zombie",
+      "description": "Персонаж-зомби"
+    },
+    "Ghost": {
+      "name": "Ghost",
+      "description": "Дух или призрачный персонаж"
+    },
+    "Alien": {
+      "name": "Alien",
+      "description": "Внеземной персонаж"
+    },
+    "Mercenary": {
+      "name": "Mercenary",
+      "description": "Наемный солдат или боец"
+    },
+    "Gladiator": {
+      "name": "Gladiator",
+      "description": "Боец арены"
+    },
+    "Barbarian": {
+      "name": "Barbarian",
+      "description": "Персонаж-воин из племени"
+    },
+    "Necromancer": {
+      "name": "Necromancer",
+      "description": "Заклинатель темной магии смерти"
+    },
+    "Druid": {
+      "name": "Druid",
+      "description": "Заклинатель магии природы"
+    },
+    "Bard": {
+      "name": "Bard",
+      "description": "Музыкальный искатель приключений"
+    },
+    "Monk": {
+      "name": "Monk",
+      "description": "Мастер боевых искусств или религиозный отшельник"
+    },
+    "Ranger": {
+      "name": "Ranger",
+      "description": "Воин дикой природы"
+    },
+    "Paladin": {
+      "name": "Paladin",
+      "description": "Святой воин"
+    },
+    "Cleric": {
+      "name": "Cleric",
+      "description": "Религиозный целитель или священник"
+    },
+    "Warlock": {
+      "name": "Warlock",
+      "description": "Заклинатель темной магии по договору"
+    },
+    "Sorcerer": {
+      "name": "Sorcerer",
+      "description": "Заклинатель, обладающий врожденной магией"
+    },
+    "Alchemist": {
+      "name": "Alchemist",
+      "description": "Создатель зелий или химик"
+    },
+    "Blacksmith": {
+      "name": "Blacksmith",
+      "description": "Кузнец оружия и брони"
+    },
+    "Merchant": {
+      "name": "Merchant",
+      "description": "Торговец или лавочник"
+    },
+    "Adventurer": {
+      "name": "Adventurer",
+      "description": "Общий персонаж-авантюрист"
+    }
+  }
+}

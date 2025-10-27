@@ -98,7 +98,7 @@ export function NavigationRail({
         icon: 'auto_stories',
         labelKey: 'navigation:story',
         fallbackLabel: 'Story',
-        available: false,
+        available: true,
         opensSidebar: true
       },
       {

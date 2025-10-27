@@ -90,7 +90,7 @@ const characterInclude = {
  */
 export async function createCharacter(data: CreateCharacterInput) {
   try {
-  const { attireIds, contentTags, ...characterData } = data;
+    const { attireIds, tagIds, contentTags, ...characterData } = data;
 
     // Create character with relations
     const character = await prisma.character.create({
@@ -114,6 +114,14 @@ export async function createCharacter(data: CreateCharacterInput) {
                   ...(attireIds?.map(id => ({ id })) || []),
                   { id: data.mainAttireId },
                 ],
+              },
+            }
+          : {}),
+        // Connect tags if provided
+        ...(tagIds && tagIds.length > 0
+          ? {
+              tags: {
+                connect: tagIds.map(id => ({ id })),
               },
             }
           : {}),
@@ -173,6 +181,7 @@ export async function getCharactersByUserId(
     // Build where clause
     const where: Prisma.CharacterWhereInput = {
       userId,
+      isSystemCharacter: false, // Hide system characters
     };
 
     // Add search filter
@@ -239,6 +248,7 @@ export async function getPublicCharacters(options?: {
 
     const where: Prisma.CharacterWhereInput = {
       isPublic: true,
+      isSystemCharacter: false, // Hide system characters
     };
 
     // Add search filter
@@ -299,7 +309,7 @@ export async function updateCharacter(
   data: UpdateCharacterInput
 ) {
   try {
-    const { attireIds, contentTags, ...updateData } = data;
+    const { attireIds, tagIds, contentTags, ...updateData } = data;
 
     const character = await prisma.character.update({
       where: { id: characterId },
@@ -318,6 +328,12 @@ export async function updateCharacter(
         !attireIds.includes(data.mainAttireId) && {
           attires: {
             connect: { id: data.mainAttireId },
+          },
+        }),
+        // Replace tags if provided
+        ...(tagIds !== undefined && {
+          tags: {
+            set: tagIds.map(id => ({ id })),
           },
         }),
       },
@@ -406,6 +422,7 @@ export async function getMyCharactersForConversation(
 
     const where: Prisma.CharacterWhereInput = {
       userId,
+      isSystemCharacter: false, // Hide system characters
       id: excludeIds.length > 0 ? { notIn: excludeIds } : undefined,
     };
 
@@ -532,6 +549,7 @@ export async function getFavoriteCharacters(
       where: {
         id: { in: characterIds },
         isPublic: true, // Only show public favorites
+        isSystemCharacter: false, // Hide system characters
       },
       include: characterInclude,
     });

@@ -2,15 +2,15 @@
   "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
   "resources": {
     "title": "制限エリア",
-    "subtitle": "{{provider}} を介して正常に認証されました。このダッシュボードはログインユーザーのみアクセス可能です。",
+    "subtitle": "{{provider}} を介して正常に認証されました。このダッシュボードはサインイン済みユーザーのみアクセス可能です。",
     "accountDetails": "アカウント詳細",
     "nextSteps": "次のステップ",
     "displayName": "表示名",
     "email": "メールアドレス",
     "provider": "プロバイダー",
     "token": "トークン",
-    "insightSyncUnity": "このセッションを、セキュアなWebSocketまたはREST経由でUnityクライアントと同期します。",
-    "insightPersist": "OAuthプロフィールをバックエンドのIDストアに永続化します。",
-    "insightTokens": "短命なアクセストークンを発行し、必要に応じて更新します。"
+    "insightSyncUnity": "このセッションをUnityクライアントと同期するには、セキュアなWebSocketまたはRESTを使用してください。",
+    "insightPersist": "OAuthプロファイルをバックエンドのIDストアに永続化します。",
+    "insightTokens": "短期間有効なアクセストークンを発行し、必要に応じて更新します。"
   }
 }

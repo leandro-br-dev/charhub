@@ -13,6 +13,8 @@ import usersRoutes from './users';
 import conversationsRoutes from './conversations';
 import mediaRoutes from './media';
 import transcriptionRoutes from './transcription';
+import tagsRoutes from './tags';
+import storyRoutes from './story';
 
 const router = Router();
 
@@ -29,6 +31,8 @@ router.use('/users', usersRoutes);
 router.use('/conversations', conversationsRoutes);
 router.use('/media', mediaRoutes);
 router.use('/transcribe', transcriptionRoutes);
+router.use('/tags', tagsRoutes);
+router.use('/stories', storyRoutes);
 router.use('/', accessRoutes);
 
 export default router;

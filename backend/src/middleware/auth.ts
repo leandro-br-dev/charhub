@@ -37,6 +37,36 @@ async function resolveAuthenticatedUser(req: Request, res: Response): Promise<Au
   }
 }
 
+export async function optionalAuth(req: Request, _res: Response, next: NextFunction): Promise<void> {
+  // Try to populate req.auth if token is present, but don't fail if missing
+  if (req.auth?.user) {
+    return next();
+  }
+
+  const authorization = req.headers.authorization;
+  if (!authorization?.startsWith('Bearer ')) {
+    return next(); // Continue without auth
+  }
+
+  const token = authorization.slice('Bearer '.length).trim();
+  if (!token) {
+    return next(); // Continue without auth
+  }
+
+  try {
+    const payload = verifyJWT(token);
+    const user = await findUserById(payload.sub);
+    if (user) {
+      req.auth = { user, token };
+    }
+  } catch (error) {
+    // Silently ignore auth errors for optional auth
+    req.log.debug({ error }, 'optional_auth_failed');
+  }
+
+  next();
+}
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
   const user = await resolveAuthenticatedUser(req, res);
   if (!user) {

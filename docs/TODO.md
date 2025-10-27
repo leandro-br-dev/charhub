@@ -305,3 +305,15 @@ Estas tarefas podem ser feitas em paralelo por um 3º agente ou nos intervalos:
 
 **Última atualização**: 2025-10-10
 **Fase atual**: Preparação para iniciar Fase 2 (Chat)
+
+
+## LLM: Tools & Web Browsing Support (New)
+- Add structured tool-calling support to LLM service
+  - backend/src/services/llm/index.ts: wire tools, toolChoice, allowBrowsing
+  - Update provider adapters (OpenAI/Gemini/Grok) to pass tool schemas
+  - Add a simple web-search fetcher tool (server-side HTTP + parser)
+- Character Autocomplete (web mode)
+  - Switch to actual web search tool when available
+  - Ground suggestions with citations in agent output (optional)
+  - Rate-limit and cache queries
+

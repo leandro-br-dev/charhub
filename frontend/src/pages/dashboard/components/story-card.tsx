@@ -1,14 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../../../components/ui';
-
-interface Story {
-  id: string;
-  title: string;
-  synopsis?: string;
-  coverImage?: string;
-  ageRating?: string;
-  contentTags?: string[];
-}
+import type { Story } from '../../../types/story';
 
 interface StoryCardProps {
   story: Story;

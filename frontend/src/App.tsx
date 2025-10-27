@@ -15,6 +15,9 @@ import ProfilePage from './pages/profile';
 import ChatIndexPage from './pages/(chat)';
 import ConversationDetailPage from './pages/(chat)/[conversationId]';
 import NewConversationPage from './pages/(chat)/new';
+import { CreateStoryPage } from './pages/story/create/CreateStoryPage';
+import { StoryListPage } from './pages/story/list';
+import { StoryDetailPage } from './pages/story/[storyId]';
 
 function PublicShell(): JSX.Element {
   return (
@@ -53,6 +56,9 @@ export default function App(): JSX.Element {
         <Route path="/chat/new" element={<NewConversationPage />} />
         <Route path="/chat/:conversationId" element={<ConversationDetailPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/stories" element={<StoryListPage />} />
+        <Route path="/stories/create" element={<CreateStoryPage />} />
+        <Route path="/stories/:storyId" element={<StoryDetailPage />} />
       </Route>
     </Routes>
   );

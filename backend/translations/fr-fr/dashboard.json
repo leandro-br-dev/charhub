@@ -4,13 +4,13 @@
     "title": "Zone restreinte",
     "subtitle": "Vous vous êtes authentifié avec succès via {{provider}}. Ce tableau de bord n'est accessible qu'aux utilisateurs connectés.",
     "accountDetails": "Détails du compte",
-    "nextSteps": "Étapes suivantes",
+    "nextSteps": "Prochaines étapes",
     "displayName": "Nom d'affichage",
     "email": "E-mail",
     "provider": "Fournisseur",
     "token": "Jeton",
     "insightSyncUnity": "Synchronisez cette session avec le client Unity via des WebSockets sécurisés ou REST.",
-    "insightPersist": "Persistez les profils OAuth dans votre magasin d'identité backend.",
-    "insightTokens": "Émettez des jetons d'accès de courte durée et rafraîchissez-les si nécessaire."
+    "insightPersist": "Enregistrez les profils OAuth dans votre propre système d'identité.",
+    "insightTokens": "Émettez des jetons d'accès de courte durée et actualisez-les si nécessaire."
   }
 }

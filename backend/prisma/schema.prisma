@@ -71,7 +71,7 @@ model User {
 
   // Relations
   createdCharacters Character[] @relation("CharacterCreator")
-  createdStories    Story[]     @relation("StoryCreator")
+  stories           Story[]      @relation("StoryAuthor")
   createdAttires    Attire[]    @relation("AttireCreator")
 
   // Chat system relations
@@ -124,8 +124,12 @@ enum StickerStatus {
 
 // Tag type classification
 enum TagType {
-  CHARACTER
-  STORY
+  CHARACTER // Character traits, roles, occupations
+  STORY // Story genres, themes
+  ASSET // Visual assets, clothing, accessories
+  GAME // Game-related tags
+  MEDIA // Media types (anime, manga, etc.)
+  GENERAL // General classification tags
 }
 
 // LoRA model from Civitai
@@ -206,12 +210,23 @@ model Attire {
 
 // Tag system for categorization
 model Tag {
-  id                   String    @id @default(uuid())
-  name                 String
-  type                 TagType
-  weight               Int       @default(1)
-  ageRating            AgeRating @default(L)
-  originalLanguageCode String?
+  id   String  @id @default(uuid())
+  name String // Tag name in English (used for search/filtering)
+  description String? @db.Text // Description of the tag
+  type TagType // What this tag classifies (character, story, asset, etc.)
+
+  // Content classification (mandatory age rating)
+  ageRating AgeRating @default(L) // Minimum age rating required
+
+  // Optional content warnings (can be multiple)
+  contentTags ContentTag[] // Additional content warnings (violence, nudity, etc.)
+
+  // Translation and metadata
+  originalLanguageCode String? // Language code if translated from another language
+  weight               Int     @default(1) // Priority/importance weight
+
+  // Search optimization - denormalized for faster queries
+  searchable Boolean @default(true) // Whether this tag appears in searches
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -220,9 +235,10 @@ model Tag {
   characters Character[]
   stories    Story[]
 
-  @@unique([name, type])
+  @@unique([name, type]) // Same tag name can exist for different types
   @@index([type])
   @@index([ageRating])
+  @@index([searchable])
 }
 
 // Character model (full implementation)
@@ -245,6 +261,7 @@ model Character {
 
   // Configuration
   isPublic             Boolean @default(true)
+  isSystemCharacter    Boolean @default(false) // System characters are hidden from users (e.g., narrator)
   originalLanguageCode String?
 
   // Content classification
@@ -266,6 +283,7 @@ model Character {
   updatedAt DateTime @updatedAt
 
   // Relations
+  stories  Story[]
   attires  Attire[]           @relation("CharacterAttires")
   tags     Tag[]
   stickers CharacterSticker[]
@@ -277,6 +295,7 @@ model Character {
 
   @@index([userId])
   @@index([isPublic])
+  @@index([isSystemCharacter])
   @@index([ageRating])
   @@index([loraId])
   @@index([mainAttireId])
@@ -301,24 +320,27 @@ model CharacterSticker {
   @@index([status])
 }
 
-// Story model (for future phases)
 model Story {
-  id       String  @id @default(uuid())
-  title    String
-  synopsis String?
-
-  creatorId String
-  creator   User   @relation("StoryCreator", fields: [creatorId], references: [id], onDelete: Cascade)
-
-  isPublic Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String       @id @default(uuid())
+  title         String
+  synopsis      String?      @db.Text
+  initialText   String?      @db.Text
+  coverImage    String?
+  objectives    Json?
+  authorId      String
+  author        User         @relation("StoryAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  characters    Character[]
+  tags          Tag[]
+  ageRating     AgeRating    @default(L)
+  contentTags   ContentTag[]
+  isPublic      Boolean      @default(false)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   // Relations
-  tags Tag[]
+  conversations Conversation[]
 
-  @@index([creatorId])
+  @@index([authorId])
   @@index([isPublic])
 }
 
@@ -370,6 +392,10 @@ model Conversation {
   // Optional: link conversation to a project (for future use)
   projectId String?
 
+  // Optional: link conversation to a story
+  story   Story?  @relation(fields: [storyId], references: [id])
+  storyId String?
+
   // Settings stored as JSON (LLM preferences, roleplay settings, etc.)
   settings Json? // Will store: { view, llm_settings, roleplay_specific, etc. }
 
@@ -392,6 +418,7 @@ model Conversation {
   @@index([userId])
   @@index([lastMessageAt])
   @@index([projectId])
+  @@index([storyId])
 }
 
 // Sender type for messages

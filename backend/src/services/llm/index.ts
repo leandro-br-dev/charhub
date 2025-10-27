@@ -12,6 +12,13 @@ export interface LLMRequest {
   userPrompt: string;
   temperature?: number;
   maxTokens?: number;
+  // TODO(tools): Add structured tool definitions and execution results.
+  // The providers currently ignore tool calls; extend provider adapters to support
+  // OpenAI tool_choice/functions and Gemini tool execution where available.
+  // For now, these flags are accepted but unused.
+  tools?: Array<{ name: string; description?: string; schema?: unknown }>;
+  toolChoice?: 'auto' | 'none' | string;
+  allowBrowsing?: boolean; // Hint for agents to use web search when supported
 }
 
 export interface LLMResponse {

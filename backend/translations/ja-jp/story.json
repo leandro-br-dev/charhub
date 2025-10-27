@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "新しいストーリーを作成",
+      "subtitle": "キャラクターと目標を設定して、インタラクティブなストーリーを作成しましょう"
+    },
+    "form": {
+      "title": "タイトル",
+      "titlePlaceholder": "ストーリーのタイトルを入力",
+      "synopsis": "あらすじ",
+      "synopsisPlaceholder": "ストーリーを簡潔に説明してください",
+      "coverImage": "表紙画像",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "表紙プレビュー",
+      "coverImageError": "画像の読み込みに失敗しました",
+      "coverImageHint": "ストーリーの表紙として画像URLを貼り付けてください",
+      "initialText": "冒頭のテキスト",
+      "initialTextPlaceholder": "ストーリーの始まりを書いてください...",
+      "initialTextHint": "このテキストはストーリー開始時に表示されます",
+      "objectives": "目標",
+      "objectivePlaceholder": "ストーリーの目標を追加",
+      "noObjectives": "まだ目標がありません。物語の指針となる目標を追加してください。",
+      "characters": "キャラクター",
+      "selectedCharacters": "選択中のキャラクター",
+      "searchCharacters": "キャラクターを検索",
+      "noCharactersFound": "キャラクターが見つかりませんでした",
+      "noCharactersAvailable": "まずキャラクターを作成してください",
+      "tags": "タグ",
+      "selectedTags": "選択中のタグ",
+      "searchTags": "タグを検索",
+      "noTagsFound": "タグが見つかりませんでした",
+      "noTagsAvailable": "タグが利用できません",
+      "ageRating": "年齢制限",
+      "contentTags": "コンテンツタグ",
+      "makePublic": "このストーリーを公開する"
+    },
+    "validation": {
+      "titleRequired": "タイトルは必須です",
+      "titleTooLong": "タイトルは100文字以内にする必要があります",
+      "synopsisTooLong": "あらすじは2000文字以内にする必要があります",
+      "initialTextTooLong": "冒頭のテキストは5000文字以内にする必要があります"
+    },
+    "errors": {
+      "createFailed": "ストーリーの作成に失敗しました",
+      "updateFailed": "ストーリーの更新に失敗しました",
+      "deleteFailed": "ストーリーの削除に失敗しました",
+      "failedToLoad": "ストーリーの読み込みに失敗しました",
+      "noCharacters": "このストーリーにはキャラクターがいません",
+      "failedToStart": "ストーリーの開始に失敗しました",
+      "notFound": "ストーリーが見つかりませんでした"
+    },
+    "sidebar": {
+      "myStories": "マイストーリー",
+      "noStories": "まだストーリーがありません"
+    },
+    "list": {
+      "title": "マイストーリー",
+      "subtitle": "インタラクティブなストーリーを管理する",
+      "public": "公開",
+      "private": "非公開",
+      "empty": {
+        "title": "まだストーリーがありません",
+        "description": "最初のインタラクティブストーリーを作成しましょう",
+        "action": "ストーリーを作成"
+      }
+    },
+    "detail": {
+      "synopsis": "あらすじ",
+      "initialScene": "冒頭シーン",
+      "objectives": "ストーリー目標",
+      "characters": "キャラクター"
+    },
+    "start": "ストーリーを開始",
+    "starting": "開始中..."
+  }
+}

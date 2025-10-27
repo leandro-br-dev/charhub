@@ -1,0 +1,261 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "resources": {
+    "Fantasy": {
+      "name": "Фэнтези",
+      "description": "Жанр фэнтези"
+    },
+    "Sci-Fi": {
+      "name": "Научная фантастика",
+      "description": "Жанр научной фантастики"
+    },
+    "Romance": {
+      "name": "Романтика",
+      "description": "Жанр романтики"
+    },
+    "Horror": {
+      "name": "Хоррор",
+      "description": "Жанр ужасов"
+    },
+    "Mystery": {
+      "name": "Мистика",
+      "description": "Жанр детектива"
+    },
+    "Thriller": {
+      "name": "Триллер",
+      "description": "Жанр триллера"
+    },
+    "Adventure": {
+      "name": "Приключения",
+      "description": "Жанр приключений"
+    },
+    "Action": {
+      "name": "Боевик",
+      "description": "Истории с упором на экшен"
+    },
+    "Comedy": {
+      "name": "Комедия",
+      "description": "Жанр комедии"
+    },
+    "Drama": {
+      "name": "Драма",
+      "description": "Жанр драмы"
+    },
+    "Slice of Life": {
+      "name": "Повседневность",
+      "description": "Истории из повседневной жизни"
+    },
+    "Isekai": {
+      "name": "Исекай",
+      "description": "Истории о попадании в другой мир/реинкарнации"
+    },
+    "Harem": {
+      "name": "Гарем",
+      "description": "Несколько романтических интересов"
+    },
+    "Reverse Harem": {
+      "name": "Обратный гарем",
+      "description": "Главная героиня с несколькими мужскими интересами"
+    },
+    "Yaoi": {
+      "name": "Яой",
+      "description": "Романтика между мужчинами"
+    },
+    "Yuri": {
+      "name": "Юри",
+      "description": "Романтика между женщинами"
+    },
+    "Ecchi": {
+      "name": "Этти",
+      "description": "Намеки на сексуальный контент"
+    },
+    "Hentai": {
+      "name": "Хентай",
+      "description": "Откровенный сексуальный контент"
+    },
+    "Gore": {
+      "name": "Кровь и кишки",
+      "description": "Графическое насилие и кровь"
+    },
+    "Psychological": {
+      "name": "Психологический",
+      "description": "Психологические темы"
+    },
+    "Dark Fantasy": {
+      "name": "Темное фэнтези",
+      "description": "Мрачные, взрослые фэнтезийные темы"
+    },
+    "Urban Fantasy": {
+      "name": "Городское фэнтези",
+      "description": "Фэнтези в современном сеттинге"
+    },
+    "High Fantasy": {
+      "name": "Эпическое фэнтези",
+      "description": "Эпическое фэнтези в вымышленных мирах"
+    },
+    "Cyberpunk": {
+      "name": "Киберпанк",
+      "description": "Дистопическое высокотехнологичное будущее"
+    },
+    "Steampunk": {
+      "name": "Стимпанк",
+      "description": "Паровые технологии викторианской эпохи"
+    },
+    "Post-Apocalyptic": {
+      "name": "Постапокалипсис",
+      "description": "Мир после катастрофы"
+    },
+    "Dystopian": {
+      "name": "Дистопия",
+      "description": "Сеттинг угнетающего общества"
+    },
+    "Historical": {
+      "name": "Исторический",
+      "description": "Сеттинг исторического периода"
+    },
+    "Supernatural": {
+      "name": "Сверхъестественное",
+      "description": "Сверхъестественные элементы"
+    },
+    "Martial Arts": {
+      "name": "Боевые искусства",
+      "description": "С упором на боевые искусства"
+    },
+    "Mecha": {
+      "name": "Меха",
+      "description": "Гигантские роботы/мехи"
+    },
+    "School Life": {
+      "name": "Школьная жизнь",
+      "description": "Истории из школьной жизни"
+    },
+    "Sports": {
+      "name": "Спорт",
+      "description": "Истории на спортивную тематику"
+    },
+    "Music": {
+      "name": "Музыка",
+      "description": "Истории на музыкальную тематику"
+    },
+    "Military": {
+      "name": "Военный",
+      "description": "Военная тематика"
+    },
+    "Crime": {
+      "name": "Криминал",
+      "description": "Преступность и криминальная деятельность"
+    },
+    "Noir": {
+      "name": "Нуар",
+      "description": "Мрачные криминальные истории"
+    },
+    "Western": {
+      "name": "Вестерн",
+      "description": "Сеттинг Дикого Запада"
+    },
+    "Space Opera": {
+      "name": "Космическая опера",
+      "description": "Эпические космические приключения"
+    },
+    "Time Travel": {
+      "name": "Путешествия во времени",
+      "description": "Темы путешествий во времени"
+    },
+    "Survival": {
+      "name": "Выживание",
+      "description": "Ситуации выживания"
+    },
+    "Mafia": {
+      "name": "Мафия",
+      "description": "Темы организованной преступности"
+    },
+    "Vampire": {
+      "name": "Вампиры",
+      "description": "Истории на вампирскую тематику"
+    },
+    "Werewolf": {
+      "name": "Оборотни",
+      "description": "Истории на тему оборотней"
+    },
+    "Mythology": {
+      "name": "Мифология",
+      "description": "Мифологические темы"
+    },
+    "Religion": {
+      "name": "Религия",
+      "description": "Религиозные темы"
+    },
+    "Political": {
+      "name": "Политический",
+      "description": "Политические интриги"
+    },
+    "Parody": {
+      "name": "Пародия",
+      "description": "Пародия или сатира"
+    },
+    "Wholesome": {
+      "name": "Душевный",
+      "description": "Позитивный контент"
+    },
+    "Grimdark": {
+      "name": "Гримдарк",
+      "description": "Крайне мрачный и жестокий"
+    },
+    "Erotic": {
+      "name": "Эротика",
+      "description": "Откровенный сексуальный контент"
+    },
+    "NTR": {
+      "name": "NTR",
+      "description": "Темы измены (Netorare)"
+    },
+    "Incest": {
+      "name": "Инцест",
+      "description": "Инцестуозные отношения"
+    },
+    "Tentacle": {
+      "name": "Щупальца",
+      "description": "Эротика со щупальцами"
+    },
+    "Furry": {
+      "name": "Фурри",
+      "description": "Антропоморфные животные персонажи"
+    },
+    "Monster Girl": {
+      "name": "Девушки-монстры",
+      "description": "Женские персонажи-монстры"
+    },
+    "Transformation": {
+      "name": "Трансформация",
+      "description": "Темы физической трансформации"
+    },
+    "Gender Bender": {
+      "name": "Смена пола",
+      "description": "Смена или переключение пола"
+    },
+    "Cooking": {
+      "name": "Кулинария",
+      "description": "Кулинарные темы"
+    },
+    "Villainess": {
+      "name": "Злодейка",
+      "description": "Главная героиня - злодейка"
+    },
+    "Regression": {
+      "name": "Регрессия",
+      "description": "Возвращение в прошлое/регрессия"
+    },
+    "Dungeon": {
+      "name": "Подземелье",
+      "description": "Исследование подземелий"
+    },
+    "Game World": {
+      "name": "Игровой мир",
+      "description": "Действие происходит в игровом мире"
+    },
+    "LitRPG": {
+      "name": "LitRPG",
+      "description": "Игровые механики в повествовании"
+    }
+  }
+}

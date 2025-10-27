@@ -1,0 +1,345 @@
+{
+  "description": "Character classification tags with age ratings and content warnings. Used for filtering and categorizing characters.",
+  "resources": {
+    "VTuber": {
+      "name": "VTuber",
+      "description": "虚拟主播或内容创作者"
+    },
+    "Anime": {
+      "name": "Anime",
+      "description": "动漫风格角色"
+    },
+    "Manga": {
+      "name": "Manga",
+      "description": "漫画风格角色"
+    },
+    "Elf": {
+      "name": "Elf",
+      "description": "奇幻精灵角色"
+    },
+    "Demon": {
+      "name": "Demon",
+      "description": "恶魔或恶魔角色"
+    },
+    "Angel": {
+      "name": "Angel",
+      "description": "天使角色"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "吸血鬼角色"
+    },
+    "Werewolf": {
+      "name": "Werewolf",
+      "description": "狼人或兽人角色"
+    },
+    "Robot": {
+      "name": "Robot",
+      "description": "机器人或仿生人角色"
+    },
+    "Cyborg": {
+      "name": "Cyborg",
+      "description": "半机械人"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "拟人化动物角色"
+    },
+    "Kemonomimi": {
+      "name": "Kemonomimi",
+      "description": "拥有动物耳朵/尾巴的角色"
+    },
+    "Catgirl": {
+      "name": "Catgirl",
+      "description": "拥有猫特征的角色"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "狐狸精角色"
+    },
+    "Maid": {
+      "name": "Maid",
+      "description": "女仆职业或服装"
+    },
+    "Butler": {
+      "name": "Butler",
+      "description": "管家职业或服装"
+    },
+    "Student": {
+      "name": "Student",
+      "description": "学生角色"
+    },
+    "Teacher": {
+      "name": "Teacher",
+      "description": "教师或教育者"
+    },
+    "Warrior": {
+      "name": "Warrior",
+      "description": "战斗型角色"
+    },
+    "Knight": {
+      "name": "Knight",
+      "description": "骑士或圣骑士角色"
+    },
+    "Samurai": {
+      "name": "Samurai",
+      "description": "日本武士"
+    },
+    "Ninja": {
+      "name": "Ninja",
+      "description": "潜行战士角色"
+    },
+    "Mage": {
+      "name": "Mage",
+      "description": "魔法使用者"
+    },
+    "Witch": {
+      "name": "Witch",
+      "description": "女巫或女巫师"
+    },
+    "Wizard": {
+      "name": "Wizard",
+      "description": "男性魔法使用者"
+    },
+    "Healer": {
+      "name": "Healer",
+      "description": "支援/治疗角色"
+    },
+    "Assassin": {
+      "name": "Assassin",
+      "description": "潜行杀手角色"
+    },
+    "Thief": {
+      "name": "Thief",
+      "description": "盗贼或小偷角色"
+    },
+    "Pirate": {
+      "name": "Pirate",
+      "description": "海盗角色"
+    },
+    "Detective": {
+      "name": "Detective",
+      "description": "侦探或调查员"
+    },
+    "Scientist": {
+      "name": "Scientist",
+      "description": "科学家或研究员"
+    },
+    "Doctor": {
+      "name": "Doctor",
+      "description": "医疗专业人士"
+    },
+    "Nurse": {
+      "name": "Nurse",
+      "description": "护理专业人士"
+    },
+    "Idol": {
+      "name": "Idol",
+      "description": "流行偶像或表演者"
+    },
+    "Musician": {
+      "name": "Musician",
+      "description": "音乐艺术家"
+    },
+    "Artist": {
+      "name": "Artist",
+      "description": "视觉艺术家或画家"
+    },
+    "Athlete": {
+      "name": "Athlete",
+      "description": "体育专业人士"
+    },
+    "Chef": {
+      "name": "Chef",
+      "description": "烹饪专业人士"
+    },
+    "Royalty": {
+      "name": "Royalty",
+      "description": "皇室或贵族角色"
+    },
+    "Princess": {
+      "name": "Princess",
+      "description": "公主角色"
+    },
+    "Prince": {
+      "name": "Prince",
+      "description": "王子角色"
+    },
+    "Tsundere": {
+      "name": "Tsundere",
+      "description": "初期冷淡，逐渐温暖的性格"
+    },
+    "Yandere": {
+      "name": "Yandere",
+      "description": "痴迷的、潜在暴力的恋爱对象"
+    },
+    "Kuudere": {
+      "name": "Kuudere",
+      "description": "冷静、情感疏远的性格"
+    },
+    "Dandere": {
+      "name": "Dandere",
+      "description": "害羞、安静的性格"
+    },
+    "Genki": {
+      "name": "Genki",
+      "description": "充满活力、热情的性格"
+    },
+    "Tomboy": {
+      "name": "Tomboy",
+      "description": "男性化打扮的女性角色"
+    },
+    "Femboy": {
+      "name": "Femboy",
+      "description": "女性化打扮的男性角色"
+    },
+    "BDSM": {
+      "name": "BDSM",
+      "description": "束缚、管教、支配/臣服主题"
+    },
+    "Dominatrix": {
+      "name": "Dominatrix",
+      "description": "主导的性角色"
+    },
+    "Submissive": {
+      "name": "Submissive",
+      "description": "臣服的性角色"
+    },
+    "Succubus": {
+      "name": "Succubus",
+      "description": "魅魔"
+    },
+    "Monster Girl": {
+      "name": "Monster Girl",
+      "description": "女性怪物角色"
+    },
+    "Monster Boy": {
+      "name": "Monster Boy",
+      "description": "男性怪物角色"
+    },
+    "Giantess": {
+      "name": "Giantess",
+      "description": "巨型女性角色"
+    },
+    "Loli": {
+      "name": "Loli",
+      "description": "看起来年轻的女性角色（非性含义）"
+    },
+    "Shota": {
+      "name": "Shota",
+      "description": "看起来年轻的男性角色（非性含义）"
+    },
+    "MILF": {
+      "name": "MILF",
+      "description": "有魅力的成熟女性"
+    },
+    "DILF": {
+      "name": "DILF",
+      "description": "有魅力的成熟男性"
+    },
+    "Schoolgirl": {
+      "name": "Schoolgirl",
+      "description": "女学生角色"
+    },
+    "Schoolboy": {
+      "name": "Schoolboy",
+      "description": "男学生角色"
+    },
+    "Office Lady": {
+      "name": "Office Lady",
+      "description": "女性办公室职员"
+    },
+    "Salaryman": {
+      "name": "Salaryman",
+      "description": "男性办公室职员"
+    },
+    "Gyaru": {
+      "name": "Gyaru",
+      "description": "日本时尚亚文化风格"
+    },
+    "Goth": {
+      "name": "Goth",
+      "description": "哥特时尚风格"
+    },
+    "Punk": {
+      "name": "Punk",
+      "description": "朋克时尚/态度"
+    },
+    "Zombie": {
+      "name": "Zombie",
+      "description": "不死僵尸角色"
+    },
+    "Ghost": {
+      "name": "Ghost",
+      "description": "灵魂或鬼魂角色"
+    },
+    "Alien": {
+      "name": "Alien",
+      "description": "外星角色"
+    },
+    "Mercenary": {
+      "name": "Mercenary",
+      "description": "雇佣兵或战士"
+    },
+    "Gladiator": {
+      "name": "Gladiator",
+      "description": "竞技场斗士"
+    },
+    "Barbarian": {
+      "name": "Barbarian",
+      "description": "部落战士角色"
+    },
+    "Necromancer": {
+      "name": "Necromancer",
+      "description": "死亡魔法使用者"
+    },
+    "Druid": {
+      "name": "Druid",
+      "description": "自然魔法使用者"
+    },
+    "Bard": {
+      "name": "Bard",
+      "description": "音乐冒险者"
+    },
+    "Monk": {
+      "name": "Monk",
+      "description": "武术家或宗教苦行僧"
+    },
+    "Ranger": {
+      "name": "Ranger",
+      "description": "荒野战士"
+    },
+    "Paladin": {
+      "name": "Paladin",
+      "description": "圣骑士"
+    },
+    "Cleric": {
+      "name": "Cleric",
+      "description": "宗教治疗师或牧师"
+    },
+    "Warlock": {
+      "name": "Warlock",
+      "description": "签订契约的黑暗魔法使用者"
+    },
+    "Sorcerer": {
+      "name": "Sorcerer",
+      "description": "天生魔法使用者"
+    },
+    "Alchemist": {
+      "name": "Alchemist",
+      "description": "炼金术士或化学家"
+    },
+    "Blacksmith": {
+      "name": "Blacksmith",
+      "description": "武器和盔甲制造者"
+    },
+    "Merchant": {
+      "name": "Merchant",
+      "description": "商人或店主"
+    },
+    "Adventurer": {
+      "name": "Adventurer",
+      "description": "通用冒险者角色"
+    }
+  }
+}

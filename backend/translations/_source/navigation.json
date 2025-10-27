@@ -17,6 +17,8 @@
     "characterSidebarPlaceholder": "Browse and pin your favourite characters here as soon as the hub sidebar is rebuilt.",
     "storySidebar": "Stories",
     "storySidebarPlaceholder": "Keep drafts and chapter outlines here once the storytelling suite is migrated.",
+    "viewAllCharacters": "View all characters",
+    "viewAllStories": "View all stories",
     "sidebarDefaultTitle": "Explore CharHub",
     "sidebarDefaultDescription": "Use the icons on the navigation rail to switch between experiences."
   }

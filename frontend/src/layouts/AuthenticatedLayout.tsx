@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import { NavigationRail, Sidebar, MobileFooterNav } from "../components/layout";
+import { NavigationRail, Sidebar } from "../components/layout";
 import { Button } from "../components/ui/Button";
 
 type NavigationSelection = {
@@ -130,8 +130,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
         </main>
       </div>
 
-      {/* Mobile footer navigation (hidden on chat to avoid overlapping the chat input) */}
-      {!isChatRoute && <MobileFooterNav />}
+      
     </div>
   );
 }

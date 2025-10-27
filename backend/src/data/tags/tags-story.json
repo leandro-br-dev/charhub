@@ -1,0 +1,453 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "tags": [
+    {
+      "name": "Fantasy",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Fantasy genre"
+    },
+    {
+      "name": "Sci-Fi",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Science fiction genre"
+    },
+    {
+      "name": "Romance",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Romance genre"
+    },
+    {
+      "name": "Horror",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Horror genre"
+    },
+    {
+      "name": "Mystery",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Mystery genre"
+    },
+    {
+      "name": "Thriller",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Thriller genre"
+    },
+    {
+      "name": "Adventure",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Adventure genre"
+    },
+    {
+      "name": "Action",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Action-oriented stories"
+    },
+    {
+      "name": "Comedy",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Comedy genre"
+    },
+    {
+      "name": "Drama",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Drama genre"
+    },
+    {
+      "name": "Slice of Life",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Everyday life stories"
+    },
+    {
+      "name": "Isekai",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Another world/reincarnation stories"
+    },
+    {
+      "name": "Harem",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Multiple romantic interests"
+    },
+    {
+      "name": "Reverse Harem",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Female protagonist with multiple male interests"
+    },
+    {
+      "name": "Yaoi",
+      "type": "STORY",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Male/male romance"
+    },
+    {
+      "name": "Yuri",
+      "type": "STORY",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Female/female romance"
+    },
+    {
+      "name": "Ecchi",
+      "type": "STORY",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Suggestive sexual content"
+    },
+    {
+      "name": "Hentai",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Explicit sexual content"
+    },
+    {
+      "name": "Gore",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["GORE", "VIOLENCE"],
+      "description": "Graphic violence and blood"
+    },
+    {
+      "name": "Psychological",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["PSYCHOLOGICAL"],
+      "description": "Psychological themes"
+    },
+    {
+      "name": "Dark Fantasy",
+      "type": "STORY",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "HORROR"],
+      "description": "Dark, mature fantasy themes"
+    },
+    {
+      "name": "Urban Fantasy",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Fantasy in modern setting"
+    },
+    {
+      "name": "High Fantasy",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Epic fantasy in fictional worlds"
+    },
+    {
+      "name": "Cyberpunk",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE", "DRUGS"],
+      "description": "Dystopian high-tech future"
+    },
+    {
+      "name": "Steampunk",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Victorian-era steam technology"
+    },
+    {
+      "name": "Post-Apocalyptic",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "After-disaster world"
+    },
+    {
+      "name": "Dystopian",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Oppressive society setting"
+    },
+    {
+      "name": "Historical",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Historical period setting"
+    },
+    {
+      "name": "Supernatural",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Supernatural elements"
+    },
+    {
+      "name": "Martial Arts",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Martial arts focused"
+    },
+    {
+      "name": "Mecha",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Giant robots/mechs"
+    },
+    {
+      "name": "School Life",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "School setting stories"
+    },
+    {
+      "name": "Sports",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Sports-themed stories"
+    },
+    {
+      "name": "Music",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Music-themed stories"
+    },
+    {
+      "name": "Military",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "Military themes"
+    },
+    {
+      "name": "Crime",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["CRIME", "VIOLENCE"],
+      "description": "Crime and criminal activities"
+    },
+    {
+      "name": "Noir",
+      "type": "STORY",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "CRIME"],
+      "description": "Dark crime stories"
+    },
+    {
+      "name": "Western",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Wild West setting"
+    },
+    {
+      "name": "Space Opera",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Epic space adventures"
+    },
+    {
+      "name": "Time Travel",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Time travel themes"
+    },
+    {
+      "name": "Survival",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "Survival situations"
+    },
+    {
+      "name": "Mafia",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["VIOLENCE", "CRIME"],
+      "description": "Organized crime themes"
+    },
+    {
+      "name": "Vampire",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "Vampire-themed stories"
+    },
+    {
+      "name": "Werewolf",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "Werewolf-themed stories"
+    },
+    {
+      "name": "Mythology",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Mythological themes"
+    },
+    {
+      "name": "Religion",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Religious themes"
+    },
+    {
+      "name": "Political",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Political intrigue"
+    },
+    {
+      "name": "Parody",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Parody or satire"
+    },
+    {
+      "name": "Wholesome",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Feel-good content"
+    },
+    {
+      "name": "Grimdark",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["VIOLENCE", "GORE", "PSYCHOLOGICAL"],
+      "description": "Extremely dark and brutal"
+    },
+    {
+      "name": "Erotic",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Sexually explicit content"
+    },
+    {
+      "name": "NTR",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "PSYCHOLOGICAL"],
+      "description": "Netorare (infidelity) themes"
+    },
+    {
+      "name": "Incest",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Incestuous relationships"
+    },
+    {
+      "name": "Tentacle",
+      "type": "STORY",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Tentacle erotica"
+    },
+    {
+      "name": "Furry",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Anthropomorphic animal characters"
+    },
+    {
+      "name": "Monster Girl",
+      "type": "STORY",
+      "ageRating": "FOURTEEN",
+      "contentTags": [],
+      "description": "Female monster characters"
+    },
+    {
+      "name": "Transformation",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Physical transformation themes"
+    },
+    {
+      "name": "Gender Bender",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Gender change or swap"
+    },
+    {
+      "name": "Cooking",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Culinary themes"
+    },
+    {
+      "name": "Villainess",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Female villain protagonist"
+    },
+    {
+      "name": "Regression",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Return to past/regression"
+    },
+    {
+      "name": "Dungeon",
+      "type": "STORY",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Dungeon exploration"
+    },
+    {
+      "name": "Game World",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Set in a game world"
+    },
+    {
+      "name": "LitRPG",
+      "type": "STORY",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Game mechanics in narrative"
+    }
+  ]
+}

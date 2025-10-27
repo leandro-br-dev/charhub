@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "Create New Story",
+      "subtitle": "Build an interactive story with characters and objectives"
+    },
+    "form": {
+      "title": "Title",
+      "titlePlaceholder": "Enter story title",
+      "synopsis": "Synopsis",
+      "synopsisPlaceholder": "Briefly describe your story",
+      "coverImage": "Cover Image",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "Cover preview",
+      "coverImageError": "Failed to load image",
+      "coverImageHint": "Paste an image URL for the story cover",
+      "initialText": "Initial Text",
+      "initialTextPlaceholder": "Write the opening of your story...",
+      "initialTextHint": "This text will be shown when the story begins",
+      "objectives": "Objectives",
+      "objectivePlaceholder": "Add a story objective",
+      "noObjectives": "No objectives yet. Add some to guide the narrative.",
+      "characters": "Characters",
+      "selectedCharacters": "Selected characters",
+      "searchCharacters": "Search characters",
+      "noCharactersFound": "No characters found",
+      "noCharactersAvailable": "Create characters first",
+      "tags": "Tags",
+      "selectedTags": "Selected tags",
+      "searchTags": "Search tags",
+      "noTagsFound": "No tags found",
+      "noTagsAvailable": "No tags available",
+      "ageRating": "Age Rating",
+      "contentTags": "Content Tags",
+      "makePublic": "Make this story public"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "titleTooLong": "Title must be 100 characters or less",
+      "synopsisTooLong": "Synopsis must be 2000 characters or less",
+      "initialTextTooLong": "Initial text must be 5000 characters or less"
+    },
+    "errors": {
+      "createFailed": "Failed to create story",
+      "updateFailed": "Failed to update story",
+      "deleteFailed": "Failed to delete story",
+      "failedToLoad": "Failed to load stories",
+      "noCharacters": "This story has no characters",
+      "failedToStart": "Failed to start story",
+      "notFound": "Story not found"
+    },
+    "sidebar": {
+      "myStories": "My Stories",
+      "noStories": "No stories yet"
+    },
+    "list": {
+      "title": "My Stories",
+      "subtitle": "Manage your interactive stories",
+      "public": "Public",
+      "private": "Private",
+      "empty": {
+        "title": "No stories yet",
+        "description": "Create your first interactive story",
+        "action": "Create Story"
+      }
+    },
+    "detail": {
+      "synopsis": "Synopsis",
+      "initialScene": "Opening Scene",
+      "objectives": "Story Objectives",
+      "characters": "Characters"
+    },
+    "start": "Start Story",
+    "starting": "Starting..."
+  }
+}

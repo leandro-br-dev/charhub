@@ -1,24 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ContentFilter, HorizontalScroller, CharacterCard } from '../../components/ui';
+import { ContentFilter, HorizontalScroller } from '../../components/ui';
+import { CharacterCard } from '../(characters)/shared/components';
 import { DashboardCarousel, RecentConversations, StoryCard } from './components';
 import { useContentFilter } from './hooks';
 import { dashboardService, characterService, storyService } from '../../services';
 import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
+import type { Story } from '../../types/story';
 
 type AgeRating = 'L' | 'TEN' | 'TWELVE' | 'FOURTEEN' | 'SIXTEEN' | 'EIGHTEEN';
-
-// Local Story type that matches StoryCard component expectations
-interface Story {
-  id: string;
-  title: string;
-  synopsis?: string;
-  coverImage?: string;
-  ageRating?: string;
-  contentTags?: string[];
-}
 
 type TabValue = 'discover' | 'chat' | 'story';
 
@@ -42,6 +34,7 @@ export default function Dashboard(): JSX.Element {
   const [favoriteCharacters, setFavoriteCharacters] = useState<Character[]>([]);
   const [favoriteCharacterIds, setFavoriteCharacterIds] = useState<Set<string>>(new Set());
   const [popularStories, setPopularStories] = useState<Story[]>([]);
+  const [myStories, setMyStories] = useState<Story[]>([]);
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
   const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [isLoadingStories, setIsLoadingStories] = useState(true);
@@ -101,13 +94,17 @@ export default function Dashboard(): JSX.Element {
     fetchCharacters();
   }, []);
 
-  // Fetch popular stories
+  // Fetch popular stories and user's stories
   useEffect(() => {
     const fetchStories = async () => {
       setIsLoadingStories(true);
       try {
-        const stories = await storyService.getPopular(8);
-        setPopularStories(stories);
+        const [popular, myStoriesData] = await Promise.all([
+          storyService.getPopular(8),
+          storyService.getMyStories({ limit: 8 }),
+        ]);
+        setPopularStories(popular);
+        setMyStories(myStoriesData.items);
       } catch (error) {
         console.error('[Dashboard] Failed to fetch stories:', error);
       } finally {
@@ -320,6 +317,23 @@ export default function Dashboard(): JSX.Element {
         {/* Story Tab */}
         {activeTab === 'story' && (
           <div className="space-y-8">
+            {/* My Stories */}
+            {!isLoadingStories && myStories.length > 0 && (
+              <HorizontalScroller
+                title={t('dashboard:sections.myStories', 'My Stories')}
+                cardType="vertical"
+              >
+                {myStories.map((story) => (
+                  <StoryCard
+                    key={story.id}
+                    story={story}
+                    onPlay={handleStoryPlay}
+                    blurNsfw={blurNsfw}
+                  />
+                ))}
+              </HorizontalScroller>
+            )}
+
             {/* Popular Stories */}
             {isLoadingStories ? (
               <div className="h-64 bg-light animate-pulse rounded-lg" />
@@ -342,11 +356,17 @@ export default function Dashboard(): JSX.Element {
             )}
 
             {/* Story Module Notice */}
-            {!isLoadingStories && popularStories.length === 0 && (
+            {!isLoadingStories && popularStories.length === 0 && myStories.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-muted">
-                  {t('dashboard:storyModuleComingSoon', 'Story module coming soon!')}
+                <p className="text-muted mb-4">
+                  {t('dashboard:noStories', 'No stories yet. Create your first story!')}
                 </p>
+                <button
+                  onClick={() => navigate('/stories/create')}
+                  className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
+                >
+                  {t('dashboard:createStory', 'Create Story')}
+                </button>
               </div>
             )}
           </div>

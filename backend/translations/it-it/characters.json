@@ -2,7 +2,7 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Personaggio senza titolo",
+      "untitledCharacter": "Personaggio senza nome",
       "updatedAt": "Aggiornato il {{date}}",
       "public": "Pubblico",
       "private": "Privato",
@@ -12,7 +12,7 @@
       "submitting": "Salvataggio in corso..."
     },
     "ageRatings": {
-      "L": "Tutti",
+      "L": "Per tutti",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -26,29 +26,29 @@
     },
     "contentTags": {
       "VIOLENCE": "Violenza",
-      "GORE": "Sangue e violenza esplicita",
-      "SEXUAL": "Contenuti sessuali",
+      "GORE": "Gore",
+      "SEXUAL": "Sesso",
       "NUDITY": "Nudità",
-      "LANGUAGE": "Linguaggio esplicito",
-      "DRUGS": "Droghe",
+      "LANGUAGE": "Linguaggio",
+      "DRUGS": "Droga",
       "ALCOHOL": "Alcol",
-      "HORROR": "Horror",
+      "HORROR": "Orrore",
       "PSYCHOLOGICAL": "Psicologico",
       "DISCRIMINATION": "Discriminazione",
       "CRIME": "Crimine",
       "GAMBLING": "Gioco d'azzardo"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combattimenti, risse o conflitti aggressivi.",
+      "VIOLENCE": "Combattimenti, scontri o conflitti aggressivi.",
       "GORE": "Ferite grafiche e dettagli espliciti.",
-      "SEXUAL": "Temi adulti o allusioni.",
-      "NUDITY": "Nudità parziale o completa.",
-      "LANGUAGE": "Linguaggio esplicito o forte.",
+      "SEXUAL": "Temi o allusioni per adulti.",
+      "NUDITY": "Nudità parziale o totale.",
+      "LANGUAGE": "Linguaggio esplicito o volgare.",
       "DRUGS": "Uso o riferimenti a droghe.",
       "ALCOHOL": "Consumo di alcol.",
       "HORROR": "Immagini disturbanti o horror.",
       "PSYCHOLOGICAL": "Salute mentale o tensione psicologica.",
-      "DISCRIMINATION": "Incitamento all'odio o pregiudizio.",
+      "DISCRIMINATION": "Discorsi d'odio o pregiudizi.",
       "CRIME": "Temi legati ad attività criminali.",
       "GAMBLING": "Riferimenti a scommesse o gioco d'azzardo."
     },
@@ -57,8 +57,8 @@
       "removeFromFavorites": "Rimuovi dai preferiti"
     },
     "hub": {
-      "title": "Hub Personaggi",
-      "subtitle": "Crea, organizza ed evolve il cast che alimenta le tue storie, gli agenti di chat e le esperienze AI.",
+      "title": "Hub personaggi",
+      "subtitle": "Crea, organizza e fai evolvere il cast che alimenta le tue storie, gli agenti di chat e le esperienze AI.",
       "actions": {
         "createCharacter": "Nuovo personaggio",
         "retry": "Riprova",
@@ -71,10 +71,10 @@
       },
       "filters": {
         "searchPlaceholder": "Cerca per nome o stile",
-        "allAgeRatings": "Tutte le fasce d'età"
+        "allAgeRatings": "Tutte le classificazioni per età"
       },
       "states": {
-        "loading": "Caricamento dei tuoi personaggi in corso...",
+        "loading": "Caricamento dei tuoi personaggi...",
         "error": "Impossibile caricare i personaggi. Riprova.",
         "empty": "Nessun personaggio disponibile al momento.",
         "empty_private": "Non hai ancora creato alcun personaggio.",
@@ -95,34 +95,35 @@
         "identity": "Identità",
         "identityHint": "Definisci come le persone scoprono e identificano questo personaggio a colpo d'occhio.",
         "profile": "Profilo narrativo",
-        "profileHint": "Descrivi personalità, tratti e background per guidare l'IA.",
+        "profileHint": "Descrivi personalità, tratti e retroscena per guidare l'AI.",
         "configuration": "Disponibilità e moderazione",
-        "configurationHint": "Controlla come appare il personaggio, chi può accedervi e quali protezioni si applicano.",
-        "contentTagsHint": "Segnala temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze.",
-        "contentTagsCharacterHint": "Questi argomenti definiscono ciò di cui il personaggio è a suo agio a discutere alla fascia d'età selezionata.",
-        "contentTagsUserHint": "Seleziona i temi che vuoi includere. Tutto ciò che non viene selezionato rimane bloccato per questa fascia d'età.",
-        "contentTagLocked": "Sbloccato a fasce d'età superiori."
+        "configurationHint": "Controlla come appare il personaggio, chi può accedervi e quali salvaguardie si applicano.",
+        "contentTagsHint": "Segna i temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze.",
+        "contentTagsCharacterHint": "Questi argomenti definiscono con cosa il personaggio è a suo agio nel discutere alla classificazione per età selezionata.",
+        "contentTagsUserHint": "Seleziona i temi che vuoi includere. Tutto ciò che non è selezionato rimarrà bloccato per questa classificazione.",
+        "contentTagLocked": "Sbloccato con classificazioni per età superiori."
       },
       "fields": {
         "firstName": "Nome",
         "lastName": "Cognome",
         "age": "Età",
         "gender": "Genere",
-        "species": "Specie / Origine",
+        "species": "Specie / origine",
         "style": "Stile visivo o narrativo",
         "physicalCharacteristics": "Descrizione fisica",
         "personality": "Personalità",
-        "history": "Background",
+        "history": "Retroscena",
         "isPublic": "Visibilità",
-        "ageRating": "Fascia d'età",
+        "ageRating": "Classificazione per età",
         "originalLanguageCode": "Lingua originale",
         "contentTags": "Avvisi sui contenuti",
         "visibility": "Visibilità"
       },
       "placeholders": {
-        "gender": "Es: IA non binaria, androide, cavaliere",
+        "gender": "Es: AI non binaria, androide, cavaliere",
         "species": "Es: Umano, Elfo, Sintetico",
-        "style": "Es: Detective noir, anime pastello, pittorico"
+        "style": "Es: Detective noir, anime pastello, pittorico",
+        "genderSelect": "Seleziona genere"
       },
       "labels": {
         "unsavedChanges": "Hai modifiche non salvate",
@@ -136,21 +137,44 @@
         "change": "Cambia immagine",
         "remove": "Rimuovi",
         "uploading": "Caricamento in corso...",
-        "helperCreate": "Scegli un avatar ora e lo conserveremo mentre completi il resto del modulo.",
-        "helperEdit": "Aggiorna l'avatar quando vuoi. Le modifiche si applicano non appena salvi.",
+        "helperCreate": "Scegli subito un avatar e lo conserveremo mentre compili il resto del modulo.",
+        "helperEdit": "Aggiorna l'avatar quando vuoi. Le modifiche vengono applicate non appena salvi.",
         "error": "Impossibile caricare questa immagine. Prova un altro file.",
         "previewAlt": "Anteprima avatar personaggio"
+      },
+      "images": {
+        "coverHeader": "Copertina personaggio",
+        "coverDescription": "Immagine orientata verticalmente utilizzata come copertina del personaggio.",
+        "upload": "Carica copertina",
+        "change": "Cambia copertina",
+        "uploading": "Caricamento in corso...",
+        "urlModalTitle": "Usa immagine da URL",
+        "urlLabel": "URL immagine",
+        "previewAlt": "Anteprima copertina personaggio"
+      },
+      "tags": {
+        "searchPlaceholder": "Cerca tag (es. VTuber, Maid)",
+        "selected": "Tag selezionati",
+        "none": "Nessun tag selezionato",
+        "suggestions": "Suggerimenti",
+        "loading": "Caricamento...",
+        "noResults": "Nessun risultato",
+        "incompatibleToast": "Alcuni tag selezionati sono incompatibili con la classificazione per età attuale. Si prega di rivedere.",
+        "incompatibleHint": "I tag evidenziati sono incompatibili con la classificazione per età selezionata. Rimuovili per continuare.",
+        "incompatibleChip": "Incompatibile con la classificazione per età attuale"
       },
       "tabs": {
         "identity": "Identità",
         "profile": "Profilo",
         "configuration": "Configurazione",
-        "lockedHint": "Compila i dettagli di base dell'identità per sbloccare le altre sezioni."
+        "tags": "Tag",
+        "images": "Immagini",
+        "lockedHint": "Compila i dettagli di identità di base per sbloccare le altre sezioni."
       }
     },
     "create": {
       "title": "Crea un nuovo personaggio",
-      "subtitle": "Combina contesto narrativo, stile visivo e impostazioni di moderazione. Puoi perfezionare tutto in seguito.",
+      "subtitle": "Combina contesto narrativo, stile visivo e impostazioni di moderazione. Puoi rifinire tutto in seguito.",
       "saveButton": "Salva personaggio",
       "cancelButton": "Annulla e torna indietro"
     },
@@ -160,12 +184,12 @@
       "saveButton": "Aggiorna personaggio",
       "cancelButton": "Annulla modifiche",
       "states": {
-        "loading": "Caricamento personaggio in corso..."
+        "loading": "Caricamento personaggio..."
       }
     },
     "detail": {
       "states": {
-        "loading": "Caricamento dettagli personaggio in corso...",
+        "loading": "Caricamento dettagli personaggio...",
         "notFound": "Impossibile trovare questo personaggio."
       },
       "actions": {
@@ -178,14 +202,14 @@
       "labels": {
         "public": "Pubblico",
         "private": "Privato",
-        "createdAt": "Creato",
+        "createdAt": "Creato il",
         "updatedAt": "Ultimo aggiornamento",
         "identifier": "ID personaggio: {{id}}"
       },
       "sections": {
         "physicalCharacteristics": "Aspetto",
         "personality": "Personalità",
-        "history": "Background",
+        "history": "Retroscena",
         "contentTags": "Avvisi sui contenuti",
         "metadata": "Tag"
       }

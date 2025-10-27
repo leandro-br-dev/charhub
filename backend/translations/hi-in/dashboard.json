@@ -2,15 +2,15 @@
   "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
   "resources": {
     "title": "प्रतिबंधित क्षेत्र",
-    "subtitle": "आपने {{provider}} के माध्यम से सफलतापूर्वक प्रमाणीकरण कर लिया है। यह डैशबोर्ड केवल साइन-इन किए हुए उपयोगकर्ताओं के लिए सुलभ है।",
+    "subtitle": "आपने {{provider}} के माध्यम से सफलतापूर्वक प्रमाणीकरण किया है। यह डैशबोर्ड केवल साइन-इन किए हुए उपयोगकर्ताओं के लिए सुलभ है।",
     "accountDetails": "खाता विवरण",
     "nextSteps": "अगले कदम",
-    "displayName": "प्रदर्शित नाम",
+    "displayName": "प्रदर्शन नाम",
     "email": "ईमेल",
     "provider": "प्रदाता",
     "token": "टोकन",
-    "insightSyncUnity": "इस सत्र को सुरक्षित वेबसॉकेट्स या REST के माध्यम से यूनिटी क्लाइंट के साथ सिंक करें।",
-    "insightPersist": "अपने बैकएंड पहचान स्टोर में OAuth प्रोफाइल को स्थायी करें।",
-    "insightTokens": "अल्पकालिक एक्सेस टोकन जारी करें और आवश्यकता पड़ने पर रीफ्रेश करें।"
+    "insightSyncUnity": "इस सत्र को सुरक्षित WebSockets या REST के माध्यम से Unity क्लाइंट के साथ सिंक करें।",
+    "insightPersist": "अपने बैकएंड पहचान स्टोर में OAuth प्रोफाइल को बनाए रखें।",
+    "insightTokens": "लघु-अवधि के एक्सेस टोकन जारी करें और आवश्यकतानुसार रीफ़्रेश करें।"
   }
 }

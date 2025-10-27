@@ -28,6 +28,7 @@ export const createCharacterSchema = characterBaseSchema.extend({
   loraId: z.string().uuid('Invalid LoRA ID').optional().nullable(),
   mainAttireId: z.string().uuid('Invalid main attire ID').optional().nullable(),
   attireIds: z.array(z.string().uuid()).optional().default([]),
+  tagIds: z.array(z.string().uuid()).optional().default([]),
   ageRating: z.nativeEnum(AgeRating).default(AgeRating.L),
   contentTags: z.array(z.nativeEnum(ContentTag)).optional().default([]),
 });
@@ -48,6 +49,7 @@ export const updateCharacterSchema = z.object({
   loraId: z.string().uuid().optional().nullable(),
   mainAttireId: z.string().uuid().optional().nullable(),
   attireIds: z.array(z.string().uuid()).optional(),
+  tagIds: z.array(z.string().uuid()).optional(),
   ageRating: z.nativeEnum(AgeRating).optional(),
   contentTags: z.array(z.nativeEnum(ContentTag)).optional(),
 });

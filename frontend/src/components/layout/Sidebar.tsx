@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../ui/Button";
 import { ConversationHistory } from "../../pages/(chat)/shared/components/ConversationHistory";
 import { CharacterListSidebar } from "../../pages/(characters)/shared/components";
+import { StoryListSidebar } from "../../pages/story/shared/components";
 
 type SidebarProps = {
   onClose?: () => void;
@@ -41,6 +42,11 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   const handleCreateCharacter = () => {
     handleLinkClick();
     navigate("/characters/create");
+  };
+
+  const handleCreateStory = () => {
+    handleLinkClick();
+    navigate("/stories/create");
   };
 
   let content: ReactNode;
@@ -90,17 +96,25 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
         </div>
       </div>
     );
-  } else if (activeView?.startsWith("/story")) {
+  } else if (activeView?.startsWith("/story") || activeView?.startsWith("/stories")) {
     content = (
       <div className="flex h-full w-full flex-col">
-        {/* TODO(story): render <StorySidebarContent /> with drafts and chapters. */}
-        <PlaceholderPanel
-          title={t("navigation:storySidebar", "Stories")}
-          description={t(
-            "navigation:storySidebarPlaceholder",
-            "Keep drafts and chapter outlines here once the storytelling suite is migrated."
-          )}
-        />
+        <StoryListSidebar onLinkClick={handleLinkClick} />
+        <div className="mt-auto flex flex-col gap-2 p-4">
+          <Button variant="primary" icon="add" onClick={handleCreateStory}>
+            {t("dashboard:createStory", "Create story")}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="book"
+            onClick={() => {
+              handleLinkClick();
+              navigate("/stories");
+            }}
+          >
+            {t("navigation:viewAllStories", "View all stories")}
+          </Button>
+        </div>
       </div>
     );
   } else {

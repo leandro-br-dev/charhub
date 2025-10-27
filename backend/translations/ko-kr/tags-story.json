@@ -1,0 +1,261 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "resources": {
+    "Fantasy": {
+      "name": "판타지",
+      "description": "판타지 장르"
+    },
+    "Sci-Fi": {
+      "name": "SF",
+      "description": "SF 장르"
+    },
+    "Romance": {
+      "name": "로맨스",
+      "description": "로맨스 장르"
+    },
+    "Horror": {
+      "name": "호러",
+      "description": "호러 장르"
+    },
+    "Mystery": {
+      "name": "미스터리",
+      "description": "미스터리 장르"
+    },
+    "Thriller": {
+      "name": "스릴러",
+      "description": "스릴러 장르"
+    },
+    "Adventure": {
+      "name": "모험",
+      "description": "모험 장르"
+    },
+    "Action": {
+      "name": "액션",
+      "description": "액션 중심의 이야기"
+    },
+    "Comedy": {
+      "name": "코미디",
+      "description": "코미디 장르"
+    },
+    "Drama": {
+      "name": "드라마",
+      "description": "드라마 장르"
+    },
+    "Slice of Life": {
+      "name": "일상",
+      "description": "일상적인 이야기"
+    },
+    "Isekai": {
+      "name": "이세계",
+      "description": "다른 세계/환생 이야기"
+    },
+    "Harem": {
+      "name": "하렘",
+      "description": "다수의 연애 상대"
+    },
+    "Reverse Harem": {
+      "name": "역하렘",
+      "description": "여성 주인공과 다수의 남성 상대"
+    },
+    "Yaoi": {
+      "name": "야오이",
+      "description": "남성 간의 로맨스"
+    },
+    "Yuri": {
+      "name": "백합",
+      "description": "여성 간의 로맨스"
+    },
+    "Ecchi": {
+      "name": "에로",
+      "description": "선정적인 성적인 내용"
+    },
+    "Hentai": {
+      "name": "헨타이",
+      "description": "노골적인 성적인 내용"
+    },
+    "Gore": {
+      "name": "고어",
+      "description": "그래픽적인 폭력과 피"
+    },
+    "Psychological": {
+      "name": "심리",
+      "description": "심리적인 주제"
+    },
+    "Dark Fantasy": {
+      "name": "다크 판타지",
+      "description": "어둡고 성숙한 판타지 주제"
+    },
+    "Urban Fantasy": {
+      "name": "도시 판타지",
+      "description": "현대적인 배경의 판타지"
+    },
+    "High Fantasy": {
+      "name": "하이 판타지",
+      "description": "가상의 세계에서의 서사 판타지"
+    },
+    "Cyberpunk": {
+      "name": "사이버펑크",
+      "description": "디스토피아적인 첨단 기술 미래"
+    },
+    "Steampunk": {
+      "name": "스팀펑크",
+      "description": "빅토리아 시대 증기 기술"
+    },
+    "Post-Apocalyptic": {
+      "name": "포스트 아포칼립스",
+      "description": "재난 이후의 세계"
+    },
+    "Dystopian": {
+      "name": "디스토피아",
+      "description": "억압적인 사회 배경"
+    },
+    "Historical": {
+      "name": "시대극",
+      "description": "역사적 시대 배경"
+    },
+    "Supernatural": {
+      "name": "초자연",
+      "description": "초자연적인 요소"
+    },
+    "Martial Arts": {
+      "name": "무협",
+      "description": "무술 중심"
+    },
+    "Mecha": {
+      "name": "메카",
+      "description": "거대 로봇/메카"
+    },
+    "School Life": {
+      "name": "학원물",
+      "description": "학교 배경의 이야기"
+    },
+    "Sports": {
+      "name": "스포츠",
+      "description": "스포츠 테마의 이야기"
+    },
+    "Music": {
+      "name": "음악",
+      "description": "음악 테마의 이야기"
+    },
+    "Military": {
+      "name": "밀리터리",
+      "description": "군사 테마"
+    },
+    "Crime": {
+      "name": "범죄",
+      "description": "범죄 및 범죄 활동"
+    },
+    "Noir": {
+      "name": "느와르",
+      "description": "어두운 범죄 이야기"
+    },
+    "Western": {
+      "name": "서부",
+      "description": "서부 개척 시대 배경"
+    },
+    "Space Opera": {
+      "name": "스페이스 오페라",
+      "description": "웅장한 우주 모험"
+    },
+    "Time Travel": {
+      "name": "시간 여행",
+      "description": "시간 여행 테마"
+    },
+    "Survival": {
+      "name": "생존",
+      "description": "생존 상황"
+    },
+    "Mafia": {
+      "name": "마피아",
+      "description": "조직 범죄 테마"
+    },
+    "Vampire": {
+      "name": "뱀파이어",
+      "description": "뱀파이어 테마의 이야기"
+    },
+    "Werewolf": {
+      "name": "늑대인간",
+      "description": "늑대인간 테마의 이야기"
+    },
+    "Mythology": {
+      "name": "신화",
+      "description": "신화적인 테마"
+    },
+    "Religion": {
+      "name": "종교",
+      "description": "종교적인 테마"
+    },
+    "Political": {
+      "name": "정치",
+      "description": "정치적 음모"
+    },
+    "Parody": {
+      "name": "패러디",
+      "description": "패러디 또는 풍자"
+    },
+    "Wholesome": {
+      "name": "힐링",
+      "description": "기분 좋아지는 콘텐츠"
+    },
+    "Grimdark": {
+      "name": "그림다크",
+      "description": "극도로 어둡고 잔인함"
+    },
+    "Erotic": {
+      "name": "에로틱",
+      "description": "성적으로 노골적인 내용"
+    },
+    "NTR": {
+      "name": "NTR",
+      "description": "불륜 (Netorare) 테마"
+    },
+    "Incest": {
+      "name": "근친",
+      "description": "근친상간 관계"
+    },
+    "Tentacle": {
+      "name": "촉수",
+      "description": "촉수 에로티카"
+    },
+    "Furry": {
+      "name": "퍼리",
+      "description": "의인화된 동물 캐릭터"
+    },
+    "Monster Girl": {
+      "name": "몬스터 걸",
+      "description": "여성 괴물 캐릭터"
+    },
+    "Transformation": {
+      "name": "변신",
+      "description": "신체 변형 테마"
+    },
+    "Gender Bender": {
+      "name": "성전환",
+      "description": "성별 변경 또는 전환"
+    },
+    "Cooking": {
+      "name": "요리",
+      "description": "요리 테마"
+    },
+    "Villainess": {
+      "name": "악녀",
+      "description": "악녀 주인공"
+    },
+    "Regression": {
+      "name": "회귀",
+      "description": "과거로 돌아감/회귀"
+    },
+    "Dungeon": {
+      "name": "던전",
+      "description": "던전 탐험"
+    },
+    "Game World": {
+      "name": "게임 세계",
+      "description": "게임 세계를 배경으로 함"
+    },
+    "LitRPG": {
+      "name": "LitRPG",
+      "description": "서사 속 게임 메커니즘"
+    }
+  }
+}

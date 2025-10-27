@@ -1,112 +1,102 @@
 import api from '../lib/api';
+import type {
+  Story,
+  StoryFormData,
+  CreateStoryPayload,
+  StoryListParams,
+  StoryListResponse,
+} from '../types/story';
 
 const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
 const BASE_PATH = `${API_PREFIX}/stories`;
 
-export interface Story {
-  id: string;
-  title: string;
-  synopsis?: string;
-  coverImage?: string;
-  ageRating?: 'L' | 'TEN' | 'TWELVE' | 'FOURTEEN' | 'SIXTEEN' | 'EIGHTEEN';
-  contentTags?: string[];
-  author?: {
-    id: string;
-    username: string;
-  };
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface StoryListParams {
-  page?: number;
-  limit?: number;
-  search?: string;
-  ageRating?: string;
-}
-
-export interface StoryListResponse {
-  items: Story[];
-  total: number;
-  page: number;
-  pageSize: number;
+export interface StoryMutationResult {
+  success: boolean;
+  story?: Story;
+  message?: string;
 }
 
 /**
  * Story service for managing interactive stories
- * Currently returns mock data as the story module is not yet implemented
- * TODO: Implement actual backend endpoints when story module is ready
  */
 export const storyService = {
+  /**
+   * Create a new story
+   * @param payload - Story data
+   */
+  async create(payload: StoryFormData): Promise<StoryMutationResult> {
+    try {
+      const createPayload: CreateStoryPayload = {
+        title: payload.title,
+        synopsis: payload.synopsis,
+        initialText: payload.initialText,
+        coverImage: payload.coverImage,
+        objectives: payload.objectives,
+        characterIds: payload.characterIds,
+        tagIds: payload.tagIds,
+        ageRating: payload.ageRating,
+        contentTags: payload.contentTags,
+        isPublic: payload.isPublic,
+      };
+
+      const response = await api.post<Story>(BASE_PATH, createPayload);
+      return { success: true, story: response.data };
+    } catch (error) {
+      console.error('[storyService] create failed:', error);
+      return { success: false, message: 'story:errors.createFailed' };
+    }
+  },
+
+  /**
+   * Update an existing story
+   * @param storyId - Story ID
+   * @param payload - Updated story data
+   */
+  async update(storyId: string, payload: StoryFormData): Promise<StoryMutationResult> {
+    try {
+      const updatePayload: CreateStoryPayload = {
+        title: payload.title,
+        synopsis: payload.synopsis,
+        initialText: payload.initialText,
+        coverImage: payload.coverImage,
+        objectives: payload.objectives,
+        characterIds: payload.characterIds,
+        tagIds: payload.tagIds,
+        ageRating: payload.ageRating,
+        contentTags: payload.contentTags,
+        isPublic: payload.isPublic,
+      };
+
+      const response = await api.put<Story>(`${BASE_PATH}/${storyId}`, updatePayload);
+      return { success: true, story: response.data };
+    } catch (error) {
+      console.error('[storyService] update failed:', error);
+      return { success: false, message: 'story:errors.updateFailed' };
+    }
+  },
+
+  /**
+   * Delete a story
+   * @param storyId - Story ID
+   */
+  async remove(storyId: string): Promise<{ success: boolean; message?: string }> {
+    try {
+      await api.delete(`${BASE_PATH}/${storyId}`);
+      return { success: true };
+    } catch (error) {
+      console.error('[storyService] remove failed:', error);
+      return { success: false, message: 'story:errors.deleteFailed' };
+    }
+  },
+
   /**
    * Get list of stories
    * @param params - Filter and pagination parameters
    */
   async list(params?: StoryListParams): Promise<StoryListResponse> {
     try {
-      // TODO: Uncomment when backend endpoint is ready
-      // const response = await api.get<{ success: boolean; data: Story[]; count: number }>(
-      //   BASE_PATH,
-      //   { params }
-      // );
-      // return {
-      //   items: response.data.data || [],
-      //   total: response.data.count || 0,
-      //   page: params?.page || 1,
-      //   pageSize: params?.limit || 20
-      // };
-
-      // Mock data for now
-      const mockStories: Story[] = [
-        {
-          id: '1',
-          title: 'The Dragon\'s Quest',
-          synopsis: 'Embark on an epic adventure to save the kingdom from an ancient dragon.',
-          coverImage: '/placeholder-story-1.jpg',
-          ageRating: 'TWELVE',
-          contentTags: ['FANTASY', 'ADVENTURE'],
-          author: {
-            id: 'user1',
-            username: 'StoryMaster',
-          },
-        },
-        {
-          id: '2',
-          title: 'Mystery at Midnight Manor',
-          synopsis: 'Solve the mysterious disappearance in a haunted Victorian mansion.',
-          coverImage: '/placeholder-story-2.jpg',
-          ageRating: 'FOURTEEN',
-          contentTags: ['MYSTERY', 'HORROR'],
-          author: {
-            id: 'user2',
-            username: 'MysteryWriter',
-          },
-        },
-        {
-          id: '3',
-          title: 'Love in the Stars',
-          synopsis: 'A romantic tale of two souls meeting across the galaxy.',
-          coverImage: '/placeholder-story-3.jpg',
-          ageRating: 'SIXTEEN',
-          contentTags: ['ROMANCE', 'SCI_FI'],
-          author: {
-            id: 'user3',
-            username: 'RomanceAuthor',
-          },
-        },
-      ];
-
-      const limit = params?.limit || 20;
-      const page = params?.page || 1;
-      const start = (page - 1) * limit;
-      const end = start + limit;
-
-      return {
-        items: mockStories.slice(start, end),
-        total: mockStories.length,
-        page,
-        pageSize: limit,
-      };
+      const response = await api.get<StoryListResponse>(BASE_PATH, { params });
+      return response.data;
     } catch (error) {
       console.error('[storyService] list failed:', error);
       return {
@@ -119,24 +109,20 @@ export const storyService = {
   },
 
   /**
-   * Get popular stories
-   * @param limit - Number of stories to fetch
+   * Get user's stories
    */
-  async getPopular(limit = 10): Promise<Story[]> {
+  async getMyStories(params?: { page?: number; limit?: number; sortBy?: string; sortOrder?: string }): Promise<StoryListResponse> {
     try {
-      // TODO: Uncomment when backend endpoint is ready
-      // const response = await api.get<{ success: boolean; data: Story[] }>(
-      //   `${BASE_PATH}/popular`,
-      //   { params: { limit } }
-      // );
-      // return response.data.data;
-
-      // Mock data for now
-      const response = await this.list({ limit });
-      return response.items;
+      const response = await api.get<StoryListResponse>(`${BASE_PATH}/my`, { params });
+      return response.data;
     } catch (error) {
-      console.error('[storyService] getPopular failed:', error);
-      return [];
+      console.error('[storyService] getMyStories failed:', error);
+      return {
+        items: [],
+        total: 0,
+        page: 1,
+        pageSize: 20,
+      };
     }
   },
 
@@ -146,18 +132,27 @@ export const storyService = {
    */
   async getById(storyId: string): Promise<Story | null> {
     try {
-      // TODO: Uncomment when backend endpoint is ready
-      // const response = await api.get<{ success: boolean; data: Story }>(
-      //   `${BASE_PATH}/${storyId}`
-      // );
-      // return response.data.data;
-
-      // Mock data for now
-      const response = await this.list();
-      return response.items.find(story => story.id === storyId) || null;
+      const response = await api.get<Story>(`${BASE_PATH}/${storyId}`);
+      return response.data;
     } catch (error) {
       console.error('[storyService] getById failed:', error);
       return null;
+    }
+  },
+
+  /**
+   * Get popular stories
+   * @param limit - Number of stories to fetch
+   */
+  async getPopular(limit = 10): Promise<Story[]> {
+    try {
+      // TODO: Implement backend endpoint for actual popularity metrics
+      // For now, fetch public stories
+      const response = await this.list({ isPublic: true, limit });
+      return response.items;
+    } catch (error) {
+      console.error('[storyService] getPopular failed:', error);
+      return [];
     }
   },
 
@@ -167,15 +162,9 @@ export const storyService = {
    */
   async play(storyId: string): Promise<{ success: boolean; sessionId?: string }> {
     try {
-      // TODO: Uncomment when backend endpoint is ready
-      // const response = await api.post<{ success: boolean; data: { sessionId: string } }>(
-      //   `${BASE_PATH}/${storyId}/play`
-      // );
-      // return { success: true, sessionId: response.data.data.sessionId };
-
-      // Mock response for now
-      console.log(`[storyService] play story: ${storyId}`);
-      return { success: true, sessionId: `session-${storyId}-${Date.now()}` };
+      // TODO: Implement when story session system is ready
+      const response = await api.post<{ sessionId: string }>(`${BASE_PATH}/${storyId}/play`);
+      return { success: true, sessionId: response.data.sessionId };
     } catch (error) {
       console.error('[storyService] play failed:', error);
       return { success: false };

@@ -7,6 +7,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: string;
   iconPosition?: 'left' | 'right';
   label?: string;
+  error?: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -19,6 +20,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       iconPosition = 'right',
       className = '',
       label = '',
+      error,
       ...props
     },
     ref
@@ -31,7 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const inputBaseClasses = `
       w-full rounded-lg py-2 px-3 text-sm shadow-sm border bg-light text-content
-      focus:ring-2 focus:outline-none 
+      focus:ring-2 focus:outline-none
       ${inputPaddingClasses}
     `;
 
@@ -41,11 +43,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       danger: 'border-red-300 text-red-900 focus:border-red-500 focus:ring-red-500',
     };
 
+    const effectiveVariant = error ? 'danger' : variant;
     const iconBaseClasses = 'absolute inset-y-0 flex items-center text-content pointer-events-none';
     const iconPositionClasses = iconPosition === 'left' ? 'left-0 pl-3' : 'right-0 pr-3';
     const iconClasses = `${iconBaseClasses} ${iconPositionClasses}`;
 
-    const combinedInputClasses = `${inputBaseClasses} ${variants[variant]}`.trim();
+    const combinedInputClasses = `${inputBaseClasses} ${variants[effectiveVariant]}`.trim();
 
     return (
       <div className={className}>
@@ -68,6 +71,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
         </div>
+        {error && (
+          <p className="mt-1 text-xs text-red-500">{error}</p>
+        )}
       </div>
     );
   }

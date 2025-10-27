@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "创建新故事",
+      "subtitle": "构建一个包含角色和目标的故事"
+    },
+    "form": {
+      "title": "标题",
+      "titlePlaceholder": "请输入故事标题",
+      "synopsis": "概要",
+      "synopsisPlaceholder": "简要描述你的故事",
+      "coverImage": "封面图",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "封面预览",
+      "coverImageError": "加载图片失败",
+      "coverImageHint": "粘贴故事封面的图片URL",
+      "initialText": "初始文本",
+      "initialTextPlaceholder": "写下你故事的开篇...",
+      "initialTextHint": "故事开始时将显示此文本",
+      "objectives": "目标",
+      "objectivePlaceholder": "添加一个故事目标",
+      "noObjectives": "还没有目标。添加一些来引导叙事。",
+      "characters": "角色",
+      "selectedCharacters": "已选角色",
+      "searchCharacters": "搜索角色",
+      "noCharactersFound": "未找到角色",
+      "noCharactersAvailable": "请先创建角色",
+      "tags": "标签",
+      "selectedTags": "已选标签",
+      "searchTags": "搜索标签",
+      "noTagsFound": "未找到标签",
+      "noTagsAvailable": "没有可用的标签",
+      "ageRating": "年龄分级",
+      "contentTags": "内容标签",
+      "makePublic": "公开此故事"
+    },
+    "validation": {
+      "titleRequired": "标题是必填项",
+      "titleTooLong": "标题必须在100个字符以内",
+      "synopsisTooLong": "概要必须在2000个字符以内",
+      "initialTextTooLong": "初始文本必须在5000个字符以内"
+    },
+    "errors": {
+      "createFailed": "创建故事失败",
+      "updateFailed": "更新故事失败",
+      "deleteFailed": "删除故事失败",
+      "failedToLoad": "加载故事失败",
+      "noCharacters": "此故事没有角色",
+      "failedToStart": "开始故事失败",
+      "notFound": "未找到故事"
+    },
+    "sidebar": {
+      "myStories": "我的故事",
+      "noStories": "还没有故事"
+    },
+    "list": {
+      "title": "我的故事",
+      "subtitle": "管理你的互动故事",
+      "public": "公开",
+      "private": "私密",
+      "empty": {
+        "title": "还没有故事",
+        "description": "创建你的第一个互动故事",
+        "action": "创建故事"
+      }
+    },
+    "detail": {
+      "synopsis": "概要",
+      "initialScene": "开场场景",
+      "objectives": "故事目标",
+      "characters": "角色"
+    },
+    "start": "开始故事",
+    "starting": "正在开始..."
+  }
+}

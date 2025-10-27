@@ -1,0 +1,261 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "resources": {
+    "Fantasy": {
+      "name": "خيال",
+      "description": "نوع الخيال"
+    },
+    "Sci-Fi": {
+      "name": "خيال علمي",
+      "description": "نوع الخيال العلمي"
+    },
+    "Romance": {
+      "name": "رومانسية",
+      "description": "نوع الرومانسية"
+    },
+    "Horror": {
+      "name": "رعب",
+      "description": "نوع الرعب"
+    },
+    "Mystery": {
+      "name": "غموض",
+      "description": "نوع الغموض"
+    },
+    "Thriller": {
+      "name": "إثارة",
+      "description": "نوع الإثارة"
+    },
+    "Adventure": {
+      "name": "مغامرة",
+      "description": "نوع المغامرة"
+    },
+    "Action": {
+      "name": "أكشن",
+      "description": "قصص مليئة بالإثارة"
+    },
+    "Comedy": {
+      "name": "كوميديا",
+      "description": "نوع الكوميديا"
+    },
+    "Drama": {
+      "name": "دراما",
+      "description": "نوع الدراما"
+    },
+    "Slice of Life": {
+      "name": "شريحة من الحياة",
+      "description": "قصص عن الحياة اليومية"
+    },
+    "Isekai": {
+      "name": "Isekai",
+      "description": "قصص عن عوالم أخرى/تجسد"
+    },
+    "Harem": {
+      "name": "حريم",
+      "description": "اهتمامات رومانسية متعددة"
+    },
+    "Reverse Harem": {
+      "name": "حريم معكوس",
+      "description": "بطلة لديها اهتمامات ذكورية متعددة"
+    },
+    "Yaoi": {
+      "name": "Yaoi",
+      "description": "رومانسية بين الذكور"
+    },
+    "Yuri": {
+      "name": "Yuri",
+      "description": "رومانسية بين الإناث"
+    },
+    "Ecchi": {
+      "name": "Ecchi",
+      "description": "محتوى جنسي إيحائي"
+    },
+    "Hentai": {
+      "name": "Hentai",
+      "description": "محتوى جنسي صريح"
+    },
+    "Gore": {
+      "name": "دماء",
+      "description": "عنف دموي وجرافيكي"
+    },
+    "Psychological": {
+      "name": "نفسي",
+      "description": "مواضيع نفسية"
+    },
+    "Dark Fantasy": {
+      "name": "خيال مظلم",
+      "description": "مواضيع خيالية مظلمة وناضجة"
+    },
+    "Urban Fantasy": {
+      "name": "خيال حضري",
+      "description": "خيال في بيئة حديثة"
+    },
+    "High Fantasy": {
+      "name": "خيال ملحمي",
+      "description": "خيال ملحمي في عوالم خيالية"
+    },
+    "Cyberpunk": {
+      "name": "سايبربانك",
+      "description": "مستقبل ديستوبي عالي التقنية"
+    },
+    "Steampunk": {
+      "name": "ستيم بانك",
+      "description": "تكنولوجيا البخار في العصر الفيكتوري"
+    },
+    "Post-Apocalyptic": {
+      "name": "ما بعد نهاية العالم",
+      "description": "عالم بعد كارثة"
+    },
+    "Dystopian": {
+      "name": "ديستوبيا",
+      "description": "بيئة مجتمع قمعي"
+    },
+    "Historical": {
+      "name": "تاريخي",
+      "description": "بيئة فترة تاريخية"
+    },
+    "Supernatural": {
+      "name": "خوارق",
+      "description": "عناصر خارقة للطبيعة"
+    },
+    "Martial Arts": {
+      "name": "فنون قتالية",
+      "description": "مركز على الفنون القتالية"
+    },
+    "Mecha": {
+      "name": "ميكا",
+      "description": "روبوتات/ميكا عملاقة"
+    },
+    "School Life": {
+      "name": "حياة مدرسية",
+      "description": "قصص في بيئة مدرسية"
+    },
+    "Sports": {
+      "name": "رياضة",
+      "description": "قصص ذات طابع رياضي"
+    },
+    "Music": {
+      "name": "موسيقى",
+      "description": "قصص ذات طابع موسيقي"
+    },
+    "Military": {
+      "name": "عسكري",
+      "description": "مواضيع عسكرية"
+    },
+    "Crime": {
+      "name": "جريمة",
+      "description": "جرائم وأنشطة إجرامية"
+    },
+    "Noir": {
+      "name": "نوار",
+      "description": "قصص جريمة مظلمة"
+    },
+    "Western": {
+      "name": "ويسترن",
+      "description": "بيئة الغرب المتوحش"
+    },
+    "Space Opera": {
+      "name": "أوبرا فضاء",
+      "description": "مغامرات فضائية ملحمية"
+    },
+    "Time Travel": {
+      "name": "سفر عبر الزمن",
+      "description": "مواضيع السفر عبر الزمن"
+    },
+    "Survival": {
+      "name": "بقاء",
+      "description": "مواقف بقاء"
+    },
+    "Mafia": {
+      "name": "مافيا",
+      "description": "مواضيع الجريمة المنظمة"
+    },
+    "Vampire": {
+      "name": "مصاص دماء",
+      "description": "قصص ذات طابع مصاصي الدماء"
+    },
+    "Werewolf": {
+      "name": "مستذئب",
+      "description": "قصص ذات طابع المستذئبين"
+    },
+    "Mythology": {
+      "name": "أساطير",
+      "description": "مواضيع أسطورية"
+    },
+    "Religion": {
+      "name": "دين",
+      "description": "مواضيع دينية"
+    },
+    "Political": {
+      "name": "سياسي",
+      "description": "مؤامرات سياسية"
+    },
+    "Parody": {
+      "name": "محاكاة ساخرة",
+      "description": "محاكاة ساخرة أو هجاء"
+    },
+    "Wholesome": {
+      "name": "دافئ",
+      "description": "محتوى مبهج"
+    },
+    "Grimdark": {
+      "name": "Grimdark",
+      "description": "مظلم وعنيف للغاية"
+    },
+    "Erotic": {
+      "name": "إيروتيكي",
+      "description": "محتوى جنسي صريح"
+    },
+    "NTR": {
+      "name": "NTR",
+      "description": "مواضيع الخيانة (Netorare)"
+    },
+    "Incest": {
+      "name": "سفاح القربى",
+      "description": "علاقات سفاح القربى"
+    },
+    "Tentacle": {
+      "name": "مجانسة",
+      "description": "إيروتيكا المجانسة"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "شخصيات حيوانية مجسمة"
+    },
+    "Monster Girl": {
+      "name": "فتاة وحش",
+      "description": "شخصيات وحوش أنثوية"
+    },
+    "Transformation": {
+      "name": "تحول",
+      "description": "مواضيع التحول الجسدي"
+    },
+    "Gender Bender": {
+      "name": "تبديل الجنس",
+      "description": "تغيير أو تبديل الجنس"
+    },
+    "Cooking": {
+      "name": "طبخ",
+      "description": "مواضيع الطهي"
+    },
+    "Villainess": {
+      "name": "شريرة",
+      "description": "بطلة شريرة"
+    },
+    "Regression": {
+      "name": "انحدار",
+      "description": "عودة إلى الماضي/انحدار"
+    },
+    "Dungeon": {
+      "name": "زنزانة",
+      "description": "استكشاف الزنزانات"
+    },
+    "Game World": {
+      "name": "عالم لعبة",
+      "description": "موجود في عالم لعبة"
+    },
+    "LitRPG": {
+      "name": "LitRPG",
+      "description": "آليات اللعبة في السرد"
+    }
+  }
+}

@@ -20,4 +20,3 @@ export { ComboboxSelect } from './combobox-select';
 export { default as Switch } from './switch';
 export { HorizontalScroller } from './horizontal-scroller';
 export { ContentFilter } from './content-filter';
-export { CharacterCard } from './character-card';

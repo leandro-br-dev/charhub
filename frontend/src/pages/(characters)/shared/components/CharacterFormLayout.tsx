@@ -1,11 +1,14 @@
 import { useTranslation } from 'react-i18next';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Button } from '../../../../components/ui/Button';
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../../../components/ui/Tabs';
+import { SmartDropdown } from '../../../../components/ui/SmartDropdown';
+import { Tabs, TabList, Tab, TabPanels, TabPanel, useTabs } from '../../../../components/ui/Tabs';
+import { useToast } from '../../../../contexts/ToastContext';
+import { tagService } from '../../../../services/tagService';
+import { characterService } from '../../../../services/characterService';
+import type { AgeRating, Tag } from '../../../../types/characters';
 import { type UseCharacterFormReturn } from '../hooks/useCharacterForm';
-import { IdentityTab } from './IdentityTab';
-import { ProfileTab } from './ProfileTab';
-import { ConfigurationTab } from './ConfigurationTab';
-import { CharacterAvatarUploader } from './CharacterAvatarUploader';
+import { IdentityTab, ProfileTab, ConfigurationTab, CharacterAvatarUploader, TagsTab, ImagesTab } from './index';
 
 interface CharacterFormLayoutProps {
   mode: 'create' | 'edit';
@@ -37,6 +40,10 @@ export function CharacterFormLayout({
   cancelLabel
 }: CharacterFormLayoutProps): JSX.Element {
   const { t } = useTranslation(['characters']);
+  const { addToast } = useToast();
+  const [tabsApi, setTabsApi] = useState<{ setActiveTab: (label: string) => void } | null>(null);
+  const [incompatibleTagIds, setIncompatibleTagIds] = useState<string[]>([]);
+  const [isAutoCompleting, setIsAutoCompleting] = useState(false);
 
   const sectionTitle = mode === 'create'
     ? t('characters:create.sectionTitle', 'Character')
@@ -81,7 +88,53 @@ export function CharacterFormLayout({
         </div>
       )}
 
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={async (event) => {
+          event.preventDefault();
+          // Validate age rating vs selected tagIds
+          try {
+            const selectedIds = form.values.tagIds ?? [];
+            if (selectedIds.length > 0) {
+              // Load tag catalog (paged) and build map
+              const pageSize = 200;
+              let all: Tag[] = [];
+              let skip = 0;
+              let total = Infinity;
+              while (all.length < total) {
+                const { items, total: cnt } = await tagService.list({ type: 'CHARACTER', limit: pageSize, skip });
+                total = cnt;
+                all = all.concat(items || []);
+                if (!items || items.length < pageSize) break;
+                skip += pageSize;
+              }
+              const map = new Map(all.map(t => [t.id, t]));
+              const AGE_RANK: Record<AgeRating, number> = { L: 0, TEN: 1, TWELVE: 2, FOURTEEN: 3, SIXTEEN: 4, EIGHTEEN: 5 };
+              const limitRank = AGE_RANK[(form.values.ageRating as AgeRating) || 'L'] ?? 0;
+              const incompatible = selectedIds.filter(id => {
+                const tag = map.get(id);
+                if (!tag) return false;
+                const rank = AGE_RANK[(tag.ageRating as AgeRating) || 'L'] ?? 0;
+                return rank > limitRank;
+              });
+              if (incompatible.length > 0) {
+                setIncompatibleTagIds(incompatible);
+                addToast(
+                  t('characters:form.tags.incompatibleToast', 'Some selected tags are incompatible with the current age rating. Please review.'),
+                  'danger',
+                  6000
+                );
+                tabsApi?.setActiveTab('tags');
+                return;
+              }
+            }
+            setIncompatibleTagIds([]);
+            onSubmit(event);
+          } catch (_e) {
+            // In case of failure, allow submit to avoid blocking user unexpectedly
+            onSubmit(event);
+          }
+        }}
+      >
         <div className="grid gap-6 md:grid-cols-[320px_1fr]">
           <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-title">
@@ -102,6 +155,7 @@ export function CharacterFormLayout({
           </div>
 
           <Tabs defaultTab="identity">
+            <TabsApiBridge onReady={(api) => setTabsApi(api)} />
             <TabList>
               <Tab label="identity">{t('characters:form.tabs.identity', 'Identity')}</Tab>
               <Tab label="profile" disabled={!canAccessAdditionalTabs}>
@@ -109,6 +163,12 @@ export function CharacterFormLayout({
               </Tab>
               <Tab label="configuration" disabled={!canAccessAdditionalTabs}>
                 {t('characters:form.tabs.configuration', 'Configuration')}
+              </Tab>
+              <Tab label="tags" disabled={!canAccessAdditionalTabs}>
+                {t('characters:form.tabs.tags', 'Tags')}
+              </Tab>
+              <Tab label="images" disabled={!canAccessAdditionalTabs}>
+                {t('characters:form.tabs.images', 'Images')}
               </Tab>
             </TabList>
             {mode === 'create' && !canAccessAdditionalTabs && (
@@ -126,6 +186,17 @@ export function CharacterFormLayout({
               <TabPanel label="configuration">
                 <ConfigurationTab form={form} />
               </TabPanel>
+              <TabPanel label="tags">
+                <TagsTab form={form} />
+                {incompatibleTagIds.length > 0 && (
+                  <p className="mt-2 text-xs text-danger">
+                    {t('characters:form.tags.incompatibleHint', 'Tags highlighted are incompatible with the selected age rating. Remove them to continue.')}
+                  </p>
+                )}
+              </TabPanel>
+              <TabPanel label="images">
+                <ImagesTab form={form} />
+              </TabPanel>
             </TabPanels>
           </Tabs>
         </div>
@@ -136,6 +207,77 @@ export function CharacterFormLayout({
               {form.isDirty ? t('characters:form.labels.unsavedChanges') : t('characters:form.labels.allSaved')}
             </span>
             <div className="flex flex-wrap gap-3">
+              {mode === 'create' && (
+                <SmartDropdown
+                  buttonContent={
+                    <Button
+                      type="button"
+                      variant="light"
+                      size="small"
+                      icon="auto_awesome"
+                      disabled={isSubmitting || isAutoCompleting}
+                    >
+                      {t('characters:form.autocomplete.button', 'Autocomplete')}
+                    </Button>
+                  }
+                  menuWidth="w-72"
+                >
+                  <div className="py-1 text-sm">
+                    <button
+                      type="button"
+                      className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10"
+                      onClick={async () => {
+                        setIsAutoCompleting(true);
+                        try {
+                          const patch = await characterService.autocomplete(form.values, 'ai');
+                          const entries = Object.entries(patch || {});
+                          if (entries.length === 0) {
+                            addToast(t('characters:form.autocomplete.nothing', 'No suggestions available.'), 'info');
+                          } else {
+                            for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
+                              if (key in form.values) form.updateField(key as any, value as any);
+                            }
+                            addToast(t('characters:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
+                          }
+                        } catch (e) {
+                          addToast(t('characters:form.autocomplete.failed', 'Failed to autocomplete.'), 'danger');
+                        } finally {
+                          setIsAutoCompleting(false);
+                        }
+                      }}
+                    >
+                      <span className="material-symbols-outlined text-base">sparkles</span>
+                      {t('characters:form.autocomplete.ai', 'Autocomplete with AI')}
+                    </button>
+                    <button
+                      type="button"
+                      className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10"
+                      onClick={async () => {
+                        setIsAutoCompleting(true);
+                        try {
+                          const patch = await characterService.autocomplete(form.values, 'web');
+                          const entries = Object.entries(patch || {});
+                          if (entries.length === 0) {
+                            addToast(t('characters:form.autocomplete.nothing', 'No suggestions available.'), 'info');
+                          } else {
+                            for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
+                              if (key in form.values) form.updateField(key as any, value as any);
+                            }
+                            addToast(t('characters:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
+                          }
+                        } catch (e) {
+                          addToast(t('characters:form.autocomplete.failed', 'Failed to autocomplete.'), 'danger');
+                        } finally {
+                          setIsAutoCompleting(false);
+                        }
+                      }}
+                    >
+                      <span className="material-symbols-outlined text-base">language</span>
+                      {t('characters:form.autocomplete.web', 'Autocomplete with web search')}
+                    </button>
+                  </div>
+                </SmartDropdown>
+              )}
               <Button
                 type="button"
                 variant="light"
@@ -153,4 +295,15 @@ export function CharacterFormLayout({
       </form>
     </section>
   );
+}
+function TabsApiBridge({ onReady }: { onReady: (api: { setActiveTab: (label: string) => void }) => void }) {
+  const { setActiveTab } = useTabs();
+  const initializedRef = useRef(false);
+  useEffect(() => {
+    if (!initializedRef.current) {
+      onReady({ setActiveTab });
+      initializedRef.current = true;
+    }
+  }, [onReady, setActiveTab]);
+  return null;
 }

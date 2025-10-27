@@ -133,6 +133,8 @@ export interface CharacterListParams {
   isPublic?: boolean;
   gender?: string;
   sortBy?: 'createdAt' | 'updatedAt' | 'name';
+  limit?: number;
+  page?: number;
 }
 
 export interface CharacterListResponse {
@@ -165,6 +167,7 @@ export interface CharacterPayload {
 
 export interface CharacterFormValues extends CharacterPayload {
   stickers?: CharacterSticker[];
+  cover?: string | null;
 }
 
 export interface CharacterMutationResult {
@@ -205,5 +208,6 @@ export const EMPTY_CHARACTER_FORM: CharacterFormValues = {
   mainAttireId: null,
   tagIds: [],
   attireIds: [],
-  stickers: []
+  stickers: [],
+  cover: null
 };

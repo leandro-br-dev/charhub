@@ -12,5 +12,29 @@
     "insightSyncUnity": "Sync this session with the Unity client via secure WebSockets or REST.",
     "insightPersist": "Persist OAuth profiles in your backend identity store.",
     "insightTokens": "Issue short-lived access tokens and refresh when needed."
+  },
+  "tabs": {
+    "discover": "Discover",
+    "chat": "Chat",
+    "story": "Story"
+  },
+  "sections": {
+    "popularCharacters": "Popular Characters",
+    "favoriteCharacters": "Your Favorites",
+    "suggestedChats": "Start a Conversation",
+    "popularStories": "Popular Stories",
+    "myStories": "My Stories"
+  },
+  "recentConversations": "Recent Conversations",
+  "createCharacter": "Create Character",
+  "createStory": "Create Story",
+  "noStories": "No stories yet. Create your first story!",
+  "storyModuleComingSoon": "Story module coming soon!",
+  "states": {
+    "loading": "Loading...",
+    "error": "Something went wrong. Please try again."
+  },
+  "actions": {
+    "retry": "Retry"
   }
 }

@@ -193,6 +193,8 @@ CRITICAL RULES:
 - Preserve placeholders like {{provider}}, {{name}}, etc. exactly as they are
 - Maintain the same level of formality and tone
 - Use natural, idiomatic expressions in the target language
+- For technical terms, acronyms, or words better recognized in English (e.g., "VTuber", "Anime", "BDSM", "LitRPG"), KEEP THEM IN ENGLISH
+- Only translate when there is a clear, widely-used equivalent in ${langName}
 - Respond with ONLY valid JSON - no explanations, no markdown fences, no comments
 - IMPORTANT: Ensure all strings are properly quoted and escaped
 - IMPORTANT: Do not truncate the response - translate ALL content completely

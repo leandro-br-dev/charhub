@@ -1,0 +1,345 @@
+{
+  "description": "Character classification tags with age ratings and content warnings. Used for filtering and categorizing characters.",
+  "resources": {
+    "VTuber": {
+      "name": "VTuber",
+      "description": "वर्चुअल यूट्यूबर या कंटेंट क्रिएटर"
+    },
+    "Anime": {
+      "name": "Anime",
+      "description": "एनिमे-शैली का कैरेक्टर"
+    },
+    "Manga": {
+      "name": "Manga",
+      "description": "मंगा-शैली का कैरेक्टर"
+    },
+    "Elf": {
+      "name": "Elf",
+      "description": "फैंटेसी एल्फ कैरेक्टर"
+    },
+    "Demon": {
+      "name": "Demon",
+      "description": "दानव या राक्षसी कैरेक्टर"
+    },
+    "Angel": {
+      "name": "Angel",
+      "description": "देवदूत कैरेक्टर"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "वैम्पायर कैरेक्टर"
+    },
+    "Werewolf": {
+      "name": "Werewolf",
+      "description": "वेयरवोल्फ या लाइकेन्थ्रोप कैरेक्टर"
+    },
+    "Robot": {
+      "name": "Robot",
+      "description": "रोबोट या एंड्रॉइड कैरेक्टर"
+    },
+    "Cyborg": {
+      "name": "Cyborg",
+      "description": "साइबरनेटिक जीव"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "मानव-पशु कैरेक्टर"
+    },
+    "Kemonomimi": {
+      "name": "Kemonomimi",
+      "description": "जानवर के कान/पूंछ वाला कैरेक्टर"
+    },
+    "Catgirl": {
+      "name": "Catgirl",
+      "description": "बिल्ली की विशेषताओं वाला कैरेक्टर"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "लोमड़ी आत्मा कैरेक्टर"
+    },
+    "Maid": {
+      "name": "Maid",
+      "description": "नौकरानी का पेशा या पोशाक"
+    },
+    "Butler": {
+      "name": "Butler",
+      "description": "बटलर का पेशा या पोशाक"
+    },
+    "Student": {
+      "name": "Student",
+      "description": "छात्र कैरेक्टर"
+    },
+    "Teacher": {
+      "name": "Teacher",
+      "description": "शिक्षक या शिक्षाविद"
+    },
+    "Warrior": {
+      "name": "Warrior",
+      "description": "लड़ाई-उन्मुख कैरेक्टर"
+    },
+    "Knight": {
+      "name": "Knight",
+      "description": "नाइट या पैलाडिन कैरेक्टर"
+    },
+    "Samurai": {
+      "name": "Samurai",
+      "description": "जापानी योद्धा"
+    },
+    "Ninja": {
+      "name": "Ninja",
+      "description": "चुपके से वार करने वाला योद्धा कैरेक्टर"
+    },
+    "Mage": {
+      "name": "Mage",
+      "description": "जादू का उपयोगकर्ता"
+    },
+    "Witch": {
+      "name": "Witch",
+      "description": "चुड़ैल या जादूगरनी"
+    },
+    "Wizard": {
+      "name": "Wizard",
+      "description": "पुरुष जादू का उपयोगकर्ता"
+    },
+    "Healer": {
+      "name": "Healer",
+      "description": "समर्थन/उपचार भूमिका"
+    },
+    "Assassin": {
+      "name": "Assassin",
+      "description": "चुपके से हत्या करने वाला कैरेक्टर"
+    },
+    "Thief": {
+      "name": "Thief",
+      "description": "रोग या चोर कैरेक्टर"
+    },
+    "Pirate": {
+      "name": "Pirate",
+      "description": "समुद्री डाकू कैरेक्टर"
+    },
+    "Detective": {
+      "name": "Detective",
+      "description": "जासूस या अन्वेषक"
+    },
+    "Scientist": {
+      "name": "Scientist",
+      "description": "वैज्ञानिक या शोधकर्ता"
+    },
+    "Doctor": {
+      "name": "Doctor",
+      "description": "चिकित्सा पेशेवर"
+    },
+    "Nurse": {
+      "name": "Nurse",
+      "description": "नर्सिंग पेशेवर"
+    },
+    "Idol": {
+      "name": "Idol",
+      "description": "पॉप आइडल या कलाकार"
+    },
+    "Musician": {
+      "name": "Musician",
+      "description": "संगीत कलाकार"
+    },
+    "Artist": {
+      "name": "Artist",
+      "description": "दृश्य कलाकार या चित्रकार"
+    },
+    "Athlete": {
+      "name": "Athlete",
+      "description": "खेल पेशेवर"
+    },
+    "Chef": {
+      "name": "Chef",
+      "description": "पाक कला पेशेवर"
+    },
+    "Royalty": {
+      "name": "Royalty",
+      "description": "शाही या कुलीन कैरेक्टर"
+    },
+    "Princess": {
+      "name": "Princess",
+      "description": "राजकुमारी कैरेक्टर"
+    },
+    "Prince": {
+      "name": "Prince",
+      "description": "राजकुमार कैरेक्टर"
+    },
+    "Tsundere": {
+      "name": "Tsundere",
+      "description": "शुरुआत में ठंडे, धीरे-धीरे गर्म व्यक्तित्व वाले"
+    },
+    "Yandere": {
+      "name": "Yandere",
+      "description": "सनकी, संभावित रूप से हिंसक प्रेम रुचि"
+    },
+    "Kuudere": {
+      "name": "Kuudere",
+      "description": "शांत, भावनात्मक रूप से दूर व्यक्तित्व"
+    },
+    "Dandere": {
+      "name": "Dandere",
+      "description": "शर्मीला, शांत व्यक्तित्व"
+    },
+    "Genki": {
+      "name": "Genki",
+      "description": "ऊर्जावान, उत्साही व्यक्तित्व"
+    },
+    "Tomboy": {
+      "name": "Tomboy",
+      "description": "पुरुषों जैसी दिखने वाली महिला कैरेक्टर"
+    },
+    "Femboy": {
+      "name": "Femboy",
+      "description": "स्त्रियों जैसी दिखने वाली पुरुष कैरेक्टर"
+    },
+    "BDSM": {
+      "name": "BDSM",
+      "description": "बंधन, अनुशासन, प्रभुत्व/अधीनता के विषय"
+    },
+    "Dominatrix": {
+      "name": "Dominatrix",
+      "description": "प्रभुत्वशाली यौन भूमिका"
+    },
+    "Submissive": {
+      "name": "Submissive",
+      "description": "अधीन यौन भूमिका"
+    },
+    "Succubus": {
+      "name": "Succubus",
+      "description": "दानवी मोहिनी"
+    },
+    "Monster Girl": {
+      "name": "Monster Girl",
+      "description": "महिला राक्षस कैरेक्टर"
+    },
+    "Monster Boy": {
+      "name": "Monster Boy",
+      "description": "पुरुष राक्षस कैरेक्टर"
+    },
+    "Giantess": {
+      "name": "Giantess",
+      "description": "विशालकाय महिला कैरेक्टर"
+    },
+    "Loli": {
+      "name": "Loli",
+      "description": "युवा दिखने वाली महिला कैरेक्टर (गैर-यौन संदर्भ)"
+    },
+    "Shota": {
+      "name": "Shota",
+      "description": "युवा दिखने वाला पुरुष कैरेक्टर (गैर-यौन संदर्भ)"
+    },
+    "MILF": {
+      "name": "MILF",
+      "description": "आकर्षक परिपक्व महिला"
+    },
+    "DILF": {
+      "name": "DILF",
+      "description": "आकर्षक परिपक्व पुरुष"
+    },
+    "Schoolgirl": {
+      "name": "Schoolgirl",
+      "description": "महिला छात्र कैरेक्टर"
+    },
+    "Schoolboy": {
+      "name": "Schoolboy",
+      "description": "पुरुष छात्र कैरेक्टर"
+    },
+    "Office Lady": {
+      "name": "Office Lady",
+      "description": "महिला कार्यालय कर्मचारी"
+    },
+    "Salaryman": {
+      "name": "Salaryman",
+      "description": "पुरुष कार्यालय कर्मचारी"
+    },
+    "Gyaru": {
+      "name": "Gyaru",
+      "description": "जापानी फैशन उपसंस्कृति शैली"
+    },
+    "Goth": {
+      "name": "Goth",
+      "description": "गॉथिक फैशन शैली"
+    },
+    "Punk": {
+      "name": "Punk",
+      "description": "पंक फैशन/रवैया"
+    },
+    "Zombie": {
+      "name": "Zombie",
+      "description": "मरे हुए ज़ोंबी कैरेक्टर"
+    },
+    "Ghost": {
+      "name": "Ghost",
+      "description": "आत्मा या भूत कैरेक्टर"
+    },
+    "Alien": {
+      "name": "Alien",
+      "description": "बाह्य-ग्रहवासी कैरेक्टर"
+    },
+    "Mercenary": {
+      "name": "Mercenary",
+      "description": "किराए का सैनिक या लड़ाका"
+    },
+    "Gladiator": {
+      "name": "Gladiator",
+      "description": "अखाड़े का लड़ाका"
+    },
+    "Barbarian": {
+      "name": "Barbarian",
+      "description": "आदिवासी योद्धा कैरेक्टर"
+    },
+    "Necromancer": {
+      "name": "Necromancer",
+      "description": "मृत्यु जादू का उपयोगकर्ता"
+    },
+    "Druid": {
+      "name": "Druid",
+      "description": "प्रकृति जादू का उपयोगकर्ता"
+    },
+    "Bard": {
+      "name": "Bard",
+      "description": "संगीत साहसी"
+    },
+    "Monk": {
+      "name": "Monk",
+      "description": "मार्शल आर्टिस्ट या धार्मिक तपस्वी"
+    },
+    "Ranger": {
+      "name": "Ranger",
+      "description": "जंगल का योद्धा"
+    },
+    "Paladin": {
+      "name": "Paladin",
+      "description": "पवित्र योद्धा"
+    },
+    "Cleric": {
+      "name": "Cleric",
+      "description": "धार्मिक उपचारक या पुजारी"
+    },
+    "Warlock": {
+      "name": "Warlock",
+      "description": "समझौते के साथ डार्क मैजिक यूजर"
+    },
+    "Sorcerer": {
+      "name": "Sorcerer",
+      "description": "सहज जादू का उपयोगकर्ता"
+    },
+    "Alchemist": {
+      "name": "Alchemist",
+      "description": "औषधि निर्माता या रसायनज्ञ"
+    },
+    "Blacksmith": {
+      "name": "Blacksmith",
+      "description": "हथियार और कवच निर्माता"
+    },
+    "Merchant": {
+      "name": "Merchant",
+      "description": "व्यापारी या दुकानदार"
+    },
+    "Adventurer": {
+      "name": "Adventurer",
+      "description": "सामान्य साहसी कैरेक्टर"
+    }
+  }
+}

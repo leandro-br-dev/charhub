@@ -67,7 +67,7 @@ export function IdentityTab({ form }: IdentityTabProps): JSX.Element {
             value={values.gender ?? ''}
             onChange={handleSelectChange('gender')}
           >
-            <option value="">Select gender</option>
+            <option value="">{t('characters:form.placeholders.genderSelect', 'Select gender')}</option>
             {GENDER_OPTIONS.map(option => (
               <option key={option} value={option}>
                 {t(`characters:genders.${option}`)}

@@ -1,0 +1,261 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "resources": {
+    "Fantasy": {
+      "name": "奇幻",
+      "description": "奇幻类型"
+    },
+    "Sci-Fi": {
+      "name": "科幻",
+      "description": "科幻类型"
+    },
+    "Romance": {
+      "name": "浪漫",
+      "description": "浪漫类型"
+    },
+    "Horror": {
+      "name": "恐怖",
+      "description": "恐怖类型"
+    },
+    "Mystery": {
+      "name": "悬疑",
+      "description": "悬疑类型"
+    },
+    "Thriller": {
+      "name": "惊悚",
+      "description": "惊悚类型"
+    },
+    "Adventure": {
+      "name": "冒险",
+      "description": "冒险类型"
+    },
+    "Action": {
+      "name": "动作",
+      "description": "动作类故事"
+    },
+    "Comedy": {
+      "name": "喜剧",
+      "description": "喜剧类型"
+    },
+    "Drama": {
+      "name": "剧情",
+      "description": "剧情类型"
+    },
+    "Slice of Life": {
+      "name": "日常生活",
+      "description": "日常生活故事"
+    },
+    "Isekai": {
+      "name": "异世界",
+      "description": "异世界/转生故事"
+    },
+    "Harem": {
+      "name": "后宫",
+      "description": "多位恋爱对象"
+    },
+    "Reverse Harem": {
+      "name": "逆后宫",
+      "description": "女性主角拥有多位男性追求者"
+    },
+    "Yaoi": {
+      "name": "Yaoi",
+      "description": "男性/男性浪漫"
+    },
+    "Yuri": {
+      "name": "Yuri",
+      "description": "女性/女性浪漫"
+    },
+    "Ecchi": {
+      "name": "Ecchi",
+      "description": "暗示性性内容"
+    },
+    "Hentai": {
+      "name": "Hentai",
+      "description": "露骨的性内容"
+    },
+    "Gore": {
+      "name": "血腥",
+      "description": "暴力和血液场面"
+    },
+    "Psychological": {
+      "name": "心理",
+      "description": "心理主题"
+    },
+    "Dark Fantasy": {
+      "name": "黑暗奇幻",
+      "description": "黑暗、成熟的奇幻主题"
+    },
+    "Urban Fantasy": {
+      "name": "都市奇幻",
+      "description": "现代背景下的奇幻"
+    },
+    "High Fantasy": {
+      "name": "史诗奇幻",
+      "description": "虚构世界中的宏大奇幻"
+    },
+    "Cyberpunk": {
+      "name": "赛博朋克",
+      "description": "反乌托邦式高科技未来"
+    },
+    "Steampunk": {
+      "name": "蒸汽朋克",
+      "description": "维多利亚时代蒸汽技术"
+    },
+    "Post-Apocalyptic": {
+      "name": "末世后",
+      "description": "灾难后的世界"
+    },
+    "Dystopian": {
+      "name": "反乌托邦",
+      "description": "压迫性社会背景"
+    },
+    "Historical": {
+      "name": "历史",
+      "description": "历史时期背景"
+    },
+    "Supernatural": {
+      "name": "超自然",
+      "description": "超自然元素"
+    },
+    "Martial Arts": {
+      "name": "武侠",
+      "description": "以武术为中心"
+    },
+    "Mecha": {
+      "name": "机甲",
+      "description": "巨型机器人/机甲"
+    },
+    "School Life": {
+      "name": "校园生活",
+      "description": "校园背景故事"
+    },
+    "Sports": {
+      "name": "体育",
+      "description": "体育主题故事"
+    },
+    "Music": {
+      "name": "音乐",
+      "description": "音乐主题故事"
+    },
+    "Military": {
+      "name": "军事",
+      "description": "军事主题"
+    },
+    "Crime": {
+      "name": "犯罪",
+      "description": "犯罪和刑事活动"
+    },
+    "Noir": {
+      "name": "黑色",
+      "description": "黑暗犯罪故事"
+    },
+    "Western": {
+      "name": "西部",
+      "description": "狂野西部背景"
+    },
+    "Space Opera": {
+      "name": "太空歌剧",
+      "description": "宏大的太空冒险"
+    },
+    "Time Travel": {
+      "name": "时间旅行",
+      "description": "时间旅行主题"
+    },
+    "Survival": {
+      "name": "生存",
+      "description": "生存情境"
+    },
+    "Mafia": {
+      "name": "黑手党",
+      "description": "有组织犯罪主题"
+    },
+    "Vampire": {
+      "name": "吸血鬼",
+      "description": "吸血鬼主题故事"
+    },
+    "Werewolf": {
+      "name": "狼人",
+      "description": "狼人主题故事"
+    },
+    "Mythology": {
+      "name": "神话",
+      "description": "神话主题"
+    },
+    "Religion": {
+      "name": "宗教",
+      "description": "宗教主题"
+    },
+    "Political": {
+      "name": "政治",
+      "description": "政治阴谋"
+    },
+    "Parody": {
+      "name": "戏仿",
+      "description": "戏仿或讽刺"
+    },
+    "Wholesome": {
+      "name": "温馨",
+      "description": "令人愉悦的内容"
+    },
+    "Grimdark": {
+      "name": "黑暗残酷",
+      "description": "极其黑暗和残忍"
+    },
+    "Erotic": {
+      "name": "情色",
+      "description": "露骨的性内容"
+    },
+    "NTR": {
+      "name": "NTR",
+      "description": "背叛（不忠）主题"
+    },
+    "Incest": {
+      "name": "乱伦",
+      "description": "乱伦关系"
+    },
+    "Tentacle": {
+      "name": "触手",
+      "description": "触手色情"
+    },
+    "Furry": {
+      "name": "兽人",
+      "description": "拟人化动物角色"
+    },
+    "Monster Girl": {
+      "name": "怪物娘",
+      "description": "女性怪物角色"
+    },
+    "Transformation": {
+      "name": "变形",
+      "description": "身体变形主题"
+    },
+    "Gender Bender": {
+      "name": "性别转换",
+      "description": "性别改变或交换"
+    },
+    "Cooking": {
+      "name": "烹饪",
+      "description": "烹饪主题"
+    },
+    "Villainess": {
+      "name": "恶役千金",
+      "description": "女性反派主角"
+    },
+    "Regression": {
+      "name": "重生/回溯",
+      "description": "回到过去/回溯"
+    },
+    "Dungeon": {
+      "name": "地下城",
+      "description": "地下城探索"
+    },
+    "Game World": {
+      "name": "游戏世界",
+      "description": "设定在游戏世界中"
+    },
+    "LitRPG": {
+      "name": "LitRPG",
+      "description": "叙事中的游戏机制"
+    }
+  }
+}

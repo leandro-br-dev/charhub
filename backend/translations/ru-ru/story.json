@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "Создать новую историю",
+      "subtitle": "Создайте интерактивную историю с персонажами и целями"
+    },
+    "form": {
+      "title": "Название",
+      "titlePlaceholder": "Введите название истории",
+      "synopsis": "Синопсис",
+      "synopsisPlaceholder": "Кратко опишите свою историю",
+      "coverImage": "Изображение обложки",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "Предварительный просмотр обложки",
+      "coverImageError": "Не удалось загрузить изображение",
+      "coverImageHint": "Вставьте URL изображения для обложки истории",
+      "initialText": "Начальный текст",
+      "initialTextPlaceholder": "Напишите вступление к своей истории...",
+      "initialTextHint": "Этот текст будет показан при начале истории",
+      "objectives": "Цели",
+      "objectivePlaceholder": "Добавить цель истории",
+      "noObjectives": "Целей пока нет. Добавьте их, чтобы направить повествование.",
+      "characters": "Персонажи",
+      "selectedCharacters": "Выбранные персонажи",
+      "searchCharacters": "Поиск персонажей",
+      "noCharactersFound": "Персонажи не найдены",
+      "noCharactersAvailable": "Сначала создайте персонажей",
+      "tags": "Теги",
+      "selectedTags": "Выбранные теги",
+      "searchTags": "Поиск тегов",
+      "noTagsFound": "Теги не найдены",
+      "noTagsAvailable": "Теги недоступны",
+      "ageRating": "Возрастной рейтинг",
+      "contentTags": "Теги контента",
+      "makePublic": "Сделать эту историю публичной"
+    },
+    "validation": {
+      "titleRequired": "Название обязательно",
+      "titleTooLong": "Название должно быть не более 100 символов",
+      "synopsisTooLong": "Синопсис должен быть не более 2000 символов",
+      "initialTextTooLong": "Начальный текст должен быть не более 5000 символов"
+    },
+    "errors": {
+      "createFailed": "Не удалось создать историю",
+      "updateFailed": "Не удалось обновить историю",
+      "deleteFailed": "Не удалось удалить историю",
+      "failedToLoad": "Не удалось загрузить истории",
+      "noCharacters": "У этой истории нет персонажей",
+      "failedToStart": "Не удалось начать историю",
+      "notFound": "История не найдена"
+    },
+    "sidebar": {
+      "myStories": "Мои истории",
+      "noStories": "Историй пока нет"
+    },
+    "list": {
+      "title": "Мои истории",
+      "subtitle": "Управление вашими интерактивными историями",
+      "public": "Публичная",
+      "private": "Приватная",
+      "empty": {
+        "title": "Историй пока нет",
+        "description": "Создайте свою первую интерактивную историю",
+        "action": "Создать историю"
+      }
+    },
+    "detail": {
+      "synopsis": "Синопсис",
+      "initialScene": "Вступительная сцена",
+      "objectives": "Цели истории",
+      "characters": "Персонажи"
+    },
+    "start": "Начать историю",
+    "starting": "Запуск..."
+  }
+}

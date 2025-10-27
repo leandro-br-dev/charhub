@@ -19,7 +19,7 @@ export function RecentConversations({ limit = 8 }: RecentConversationsProps) {
   const conversations = (data?.items ?? []) as Conversation[];
 
   const formatTimestamp = useCallback(
-    (timestamp?: string) => {
+    (timestamp?: string | null) => {
       if (!timestamp) return '';
       const date = new Date(timestamp);
       return date.toLocaleString(i18n.language, {

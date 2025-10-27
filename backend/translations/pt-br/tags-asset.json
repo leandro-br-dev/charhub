@@ -1,0 +1,317 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "resources": {
+    "Casual Wear": {
+      "name": "Roupa Casual",
+      "description": "Roupas casuais do dia a dia"
+    },
+    "Formal Wear": {
+      "name": "Roupa Formal",
+      "description": "Ternos e vestidos formais"
+    },
+    "School Uniform": {
+      "name": "Uniforme Escolar",
+      "description": "Roupas de uniforme escolar"
+    },
+    "Maid Outfit": {
+      "name": "Traje de Empregada Doméstica",
+      "description": "Uniforme de empregada doméstica"
+    },
+    "Butler Outfit": {
+      "name": "Traje de Mordomo",
+      "description": "Uniforme de mordomo"
+    },
+    "Kimono": {
+      "name": "Kimono",
+      "description": "Vestimenta tradicional japonesa"
+    },
+    "Yukata": {
+      "name": "Yukata",
+      "description": "Kimono de verão"
+    },
+    "Armor": {
+      "name": "Armadura",
+      "description": "Armadura protetora"
+    },
+    "Knight Armor": {
+      "name": "Armadura de Cavaleiro",
+      "description": "Armadura de cavaleiro medieval"
+    },
+    "Samurai Armor": {
+      "name": "Armadura de Samurai",
+      "description": "Armadura de guerreiro japonês"
+    },
+    "Tactical Gear": {
+      "name": "Equipamento Tático",
+      "description": "Equipamento militar/tático"
+    },
+    "Fantasy Armor": {
+      "name": "Armadura de Fantasia",
+      "description": "Armadura estilo fantasia"
+    },
+    "Robe": {
+      "name": "Robe",
+      "description": "Robe mágico ou cerimonial"
+    },
+    "Cloak": {
+      "name": "Capa",
+      "description": "Capa ou manto"
+    },
+    "Dress": {
+      "name": "Vestido",
+      "description": "Vestuário de vestido"
+    },
+    "Wedding Dress": {
+      "name": "Vestido de Noiva",
+      "description": "Vestido de noiva"
+    },
+    "Ball Gown": {
+      "name": "Vestido de Baile",
+      "description": "Vestido formal de baile"
+    },
+    "Swimsuit": {
+      "name": "Roupa de Banho",
+      "description": "Traje de natação"
+    },
+    "Bikini": {
+      "name": "Biquíni",
+      "description": "Traje de banho de duas peças"
+    },
+    "Lingerie": {
+      "name": "Lingerie",
+      "description": "Roupas íntimas"
+    },
+    "Latex": {
+      "name": "Látex",
+      "description": "Roupa de látex/borracha"
+    },
+    "Leather": {
+      "name": "Couro",
+      "description": "Roupa de couro"
+    },
+    "Bondage Gear": {
+      "name": "Equipamento de Bondage",
+      "description": "Equipamento BDSM"
+    },
+    "Ninja Outfit": {
+      "name": "Traje de Ninja",
+      "description": "Traje de ninja/shinobi"
+    },
+    "Pirate Outfit": {
+      "name": "Traje de Pirata",
+      "description": "Roupa de pirata"
+    },
+    "Cowboy Outfit": {
+      "name": "Traje de Cowboy",
+      "description": "Traje western/cowboy"
+    },
+    "Steampunk Outfit": {
+      "name": "Traje Steampunk",
+      "description": "Roupa steampunk vitoriana"
+    },
+    "Cyberpunk Outfit": {
+      "name": "Traje Cyberpunk",
+      "description": "Traje cyberpunk futurista"
+    },
+    "Military Uniform": {
+      "name": "Uniforme Militar",
+      "description": "Uniforme militar de gala"
+    },
+    "Police Uniform": {
+      "name": "Uniforme de Polícia",
+      "description": "Uniforme de policial"
+    },
+    "Nurse Uniform": {
+      "name": "Uniforme de Enfermeira",
+      "description": "Uniforme de enfermeira médica"
+    },
+    "Doctor Coat": {
+      "name": "Jaleco de Médico",
+      "description": "Jaleco de médico"
+    },
+    "Lab Coat": {
+      "name": "Jaleco de Laboratório",
+      "description": "Jaleco de cientista/pesquisador"
+    },
+    "Chef Uniform": {
+      "name": "Uniforme de Chef",
+      "description": "Traje de profissional culinário"
+    },
+    "Bunny Suit": {
+      "name": "Traje de Bunny",
+      "description": "Fantasia de coelhinha da Playboy"
+    },
+    "Cat Costume": {
+      "name": "Fantasia de Gato",
+      "description": "Fantasia temática de gato"
+    },
+    "Fox Costume": {
+      "name": "Fantasia de Raposa",
+      "description": "Fantasia temática de raposa"
+    },
+    "Fursuit": {
+      "name": "Fursuit",
+      "description": "Fantasia de animal antropomórfico"
+    },
+    "Idol Outfit": {
+      "name": "Traje de Idol",
+      "description": "Traje de palco de idol pop"
+    },
+    "Gothic Lolita": {
+      "name": "Gothic Lolita",
+      "description": "Moda Gothic Lolita"
+    },
+    "Punk Fashion": {
+      "name": "Moda Punk",
+      "description": "Roupas punk rock"
+    },
+    "Goth Fashion": {
+      "name": "Moda Gótica",
+      "description": "Estilo de moda gótico"
+    },
+    "Gyaru Fashion": {
+      "name": "Moda Gyaru",
+      "description": "Estilo gyaru japonês"
+    },
+    "Cosplay": {
+      "name": "Cosplay",
+      "description": "Fantasia de cosplay de personagem"
+    },
+    "Sportswear": {
+      "name": "Roupa Esportiva",
+      "description": "Roupas atléticas"
+    },
+    "Gym Clothes": {
+      "name": "Roupa de Academia",
+      "description": "Traje de exercício"
+    },
+    "Pajamas": {
+      "name": "Pijama",
+      "description": "Roupa de dormir"
+    },
+    "Nightgown": {
+      "name": "Camisola",
+      "description": "Vestido de noite"
+    },
+    "Bathrobe": {
+      "name": "Roupão",
+      "description": "Roupão de banho ou de casa"
+    },
+    "Towel": {
+      "name": "Toalha",
+      "description": "Enrolado em toalha"
+    },
+    "Naked": {
+      "name": "Nua",
+      "description": "Nua/sem roupa"
+    },
+    "Topless": {
+      "name": "Sem Topo",
+      "description": "Sem roupa na parte superior"
+    },
+    "Covered Nude": {
+      "name": "Nua Coberta",
+      "description": "Nudez estrategicamente coberta"
+    },
+    "Business Suit": {
+      "name": "Terno de Negócios",
+      "description": "Traje de negócios profissional"
+    },
+    "Tuxedo": {
+      "name": "Terno de Gala",
+      "description": "Terno de gala formal"
+    },
+    "Crown": {
+      "name": "Coroa",
+      "description": "Acessório de coroa real"
+    },
+    "Tiara": {
+      "name": "Tiarra",
+      "description": "Tiarra de princesa"
+    },
+    "Glasses": {
+      "name": "Óculos",
+      "description": "Acessório de óculos"
+    },
+    "Sunglasses": {
+      "name": "Óculos de Sol",
+      "description": "Acessório de óculos de sol"
+    },
+    "Hat": {
+      "name": "Chapéu",
+      "description": "Acessório de chapéu"
+    },
+    "Witch Hat": {
+      "name": "Chapéu de Bruxa",
+      "description": "Chapéu pontudo de bruxa"
+    },
+    "Cat Ears": {
+      "name": "Orelhas de Gato",
+      "description": "Tiara com orelhas de gato"
+    },
+    "Fox Ears": {
+      "name": "Orelhas de Raposa",
+      "description": "Acessório de orelhas de raposa"
+    },
+    "Horns": {
+      "name": "Chifres",
+      "description": "Chifres de demônio/dragão"
+    },
+    "Halo": {
+      "name": "Auréola",
+      "description": "Auréola de anjo"
+    },
+    "Wings": {
+      "name": "Asas",
+      "description": "Asas de anjo/demônio"
+    },
+    "Tail": {
+      "name": "Cauda",
+      "description": "Acessório de cauda de animal"
+    },
+    "Collar": {
+      "name": "Coleira",
+      "description": "Acessório de coleira para pescoço"
+    },
+    "Choker": {
+      "name": "Choker",
+      "description": "Colar gargantilha"
+    },
+    "Jewelry": {
+      "name": "Joias",
+      "description": "Acessórios de joias"
+    },
+    "Weapon": {
+      "name": "Arma",
+      "description": "Acessórios de arma"
+    },
+    "Sword": {
+      "name": "Espada",
+      "description": "Arma de espada"
+    },
+    "Gun": {
+      "name": "Arma de Fogo",
+      "description": "Arma de fogo"
+    },
+    "Bow": {
+      "name": "Arco",
+      "description": "Arco e flecha"
+    },
+    "Staff": {
+      "name": "Cajado",
+      "description": "Cajado mágico"
+    },
+    "Wand": {
+      "name": "Varinha",
+      "description": "Varinha mágica"
+    },
+    "Shield": {
+      "name": "Escudo",
+      "description": "Escudo protetor"
+    },
+    "Scythe": {
+      "name": "Foice",
+      "description": "Arma de foice"
+    }
+  }
+}

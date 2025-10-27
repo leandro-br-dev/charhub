@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "새 이야기 만들기",
+      "subtitle": "캐릭터와 목표를 설정하여 인터랙티브 스토리를 만드세요."
+    },
+    "form": {
+      "title": "제목",
+      "titlePlaceholder": "이야기 제목 입력",
+      "synopsis": "시놉시스",
+      "synopsisPlaceholder": "이야기를 간략하게 설명하세요.",
+      "coverImage": "커버 이미지",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "커버 미리보기",
+      "coverImageError": "이미지 로드 실패",
+      "coverImageHint": "이야기 커버 이미지를 URL로 붙여넣으세요.",
+      "initialText": "시작 텍스트",
+      "initialTextPlaceholder": "이야기의 시작 부분을 작성하세요...",
+      "initialTextHint": "이 텍스트는 이야기가 시작될 때 표시됩니다.",
+      "objectives": "목표",
+      "objectivePlaceholder": "이야기 목표 추가",
+      "noObjectives": "아직 목표가 없습니다. 스토리를 안내할 목표를 추가하세요.",
+      "characters": "캐릭터",
+      "selectedCharacters": "선택된 캐릭터",
+      "searchCharacters": "캐릭터 검색",
+      "noCharactersFound": "캐릭터를 찾을 수 없습니다.",
+      "noCharactersAvailable": "먼저 캐릭터를 만드세요.",
+      "tags": "태그",
+      "selectedTags": "선택된 태그",
+      "searchTags": "태그 검색",
+      "noTagsFound": "태그를 찾을 수 없습니다.",
+      "noTagsAvailable": "사용 가능한 태그가 없습니다.",
+      "ageRating": "연령 등급",
+      "contentTags": "콘텐츠 태그",
+      "makePublic": "이 이야기를 공개로 설정"
+    },
+    "validation": {
+      "titleRequired": "제목은 필수입니다.",
+      "titleTooLong": "제목은 100자 이하이어야 합니다.",
+      "synopsisTooLong": "시놉시스는 2000자 이하이어야 합니다.",
+      "initialTextTooLong": "시작 텍스트는 5000자 이하이어야 합니다."
+    },
+    "errors": {
+      "createFailed": "이야기 생성 실패",
+      "updateFailed": "이야기 업데이트 실패",
+      "deleteFailed": "이야기 삭제 실패",
+      "failedToLoad": "이야기 로드 실패",
+      "noCharacters": "이 이야기에 캐릭터가 없습니다.",
+      "failedToStart": "이야기 시작 실패",
+      "notFound": "이야기를 찾을 수 없습니다."
+    },
+    "sidebar": {
+      "myStories": "내 이야기",
+      "noStories": "아직 이야기가 없습니다."
+    },
+    "list": {
+      "title": "내 이야기",
+      "subtitle": "인터랙티브 스토리를 관리하세요.",
+      "public": "공개",
+      "private": "비공개",
+      "empty": {
+        "title": "아직 이야기가 없습니다.",
+        "description": "첫 번째 인터랙티브 스토리를 만들어 보세요.",
+        "action": "이야기 만들기"
+      }
+    },
+    "detail": {
+      "synopsis": "시놉시스",
+      "initialScene": "시작 장면",
+      "objectives": "이야기 목표",
+      "characters": "캐릭터"
+    },
+    "start": "이야기 시작",
+    "starting": "시작 중..."
+  }
+}

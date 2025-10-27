@@ -1,16 +1,17 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { type CharacterSummary } from '../../../../types/characters';
+import { type CharacterSummary, type Character } from '../../../../types/characters';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 
 export interface CharacterCardProps {
-  character: CharacterSummary;
+  character: CharacterSummary | Character;
   to?: string;
-  clickAction?: 'edit' | 'view' | 'startChat';
+  clickAction?: 'edit' | 'view' | 'startChat' | 'chat'; // Added 'chat' alias for 'startChat'
   onFavoriteToggle?: (characterId: string, nextValue: boolean) => void;
   isFavorite?: boolean;
   blurSensitive?: boolean;
+  blurNsfw?: boolean; // Alias for blurSensitive for backward compatibility
   onPlay?: (characterId: string) => void;
   ownerName?: string;
   chatCount?: number;
@@ -25,6 +26,7 @@ export function CharacterCard({
   onFavoriteToggle,
   isFavorite = false,
   blurSensitive = false,
+  blurNsfw = false,
   onPlay,
   ownerName,
   chatCount,
@@ -42,7 +44,7 @@ export function CharacterCard({
   }, [character.firstName, character.lastName, t]);
 
   const isSensitive = character.ageRating === 'EIGHTEEN' || character.contentTags.length > 0;
-  const shouldBlur = blurSensitive && isSensitive;
+  const shouldBlur = (blurSensitive || blurNsfw) && isSensitive;
   const handleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -60,7 +62,7 @@ export function CharacterCard({
       navigate(`/characters/${character.id}/edit`);
     } else if (clickAction === 'view') {
       navigate(`/characters/${character.id}`);
-    } else if (clickAction === 'startChat') {
+    } else if (clickAction === 'startChat' || clickAction === 'chat') {
       setIsCreatingChat(true);
       // Route to chat creation page with character pre-selected; adjust when API is hooked
       navigate(`/chat/new?characterId=${character.id}`);
@@ -72,7 +74,7 @@ export function CharacterCard({
   const stats = {
     chats: chatCount ?? 0,
     favorites: favoriteCount ?? 0,
-    stickers: stickerCount ?? (character.stickerCount ?? 0),
+    stickers: stickerCount ?? ('stickerCount' in character ? character.stickerCount ?? 0 : 0),
   };
 
   return (

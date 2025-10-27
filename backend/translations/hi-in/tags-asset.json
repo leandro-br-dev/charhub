@@ -1,0 +1,317 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "resources": {
+    "Casual Wear": {
+      "name": "कैज़ुअल वियर",
+      "description": "रोज़मर्रा के कैज़ुअल कपड़े"
+    },
+    "Formal Wear": {
+      "name": "फॉर्मल वियर",
+      "description": "फॉर्मल सूट और ड्रेस"
+    },
+    "School Uniform": {
+      "name": "स्कूल यूनिफॉर्म",
+      "description": "स्कूल यूनिफॉर्म के कपड़े"
+    },
+    "Maid Outfit": {
+      "name": "मेड आउटफिट",
+      "description": "मेड यूनिफॉर्म"
+    },
+    "Butler Outfit": {
+      "name": "बटलर आउटफिट",
+      "description": "बटलर यूनिफॉर्म"
+    },
+    "Kimono": {
+      "name": "किमोनो",
+      "description": "पारंपरिक जापानी कपड़े"
+    },
+    "Yukata": {
+      "name": "युकाटा",
+      "description": "गर्मी का किमोनो"
+    },
+    "Armor": {
+      "name": "आर्मर",
+      "description": "सुरक्षात्मक कवच"
+    },
+    "Knight Armor": {
+      "name": "नाइट आर्मर",
+      "description": "मध्ययुगीन नाइट का कवच"
+    },
+    "Samurai Armor": {
+      "name": "समुराई आर्मर",
+      "description": "जापानी योद्धा का कवच"
+    },
+    "Tactical Gear": {
+      "name": "टैक्टिकल गियर",
+      "description": "सैन्य/टैक्टिकल उपकरण"
+    },
+    "Fantasy Armor": {
+      "name": "फैंटेसी आर्मर",
+      "description": "फैंटेसी-शैली का कवच"
+    },
+    "Robe": {
+      "name": "रोब",
+      "description": "जादुई या औपचारिक रोब"
+    },
+    "Cloak": {
+      "name": "क्लोक",
+      "description": "केप या क्लोक"
+    },
+    "Dress": {
+      "name": "ड्रेस",
+      "description": "ड्रेस के कपड़े"
+    },
+    "Wedding Dress": {
+      "name": "वेडिंग ड्रेस",
+      "description": "दुल्हन की गाउन"
+    },
+    "Ball Gown": {
+      "name": "बॉल गाउन",
+      "description": "औपचारिक बॉल गाउन"
+    },
+    "Swimsuit": {
+      "name": "स्विमसूट",
+      "description": "तैराकी के कपड़े"
+    },
+    "Bikini": {
+      "name": "बिकिनी",
+      "description": "दो-पीस स्विमसूट"
+    },
+    "Lingerie": {
+      "name": "लिंगरी",
+      "description": "अंदरूनी वस्त्र"
+    },
+    "Latex": {
+      "name": "लेटेक्स",
+      "description": "लेटेक्स/रबर के कपड़े"
+    },
+    "Leather": {
+      "name": "लेदर",
+      "description": "चमड़े के कपड़े"
+    },
+    "Bondage Gear": {
+      "name": "बॉन्डेज गियर",
+      "description": "BDSM उपकरण"
+    },
+    "Ninja Outfit": {
+      "name": "निंजा आउटफिट",
+      "description": "निंजा/शिनोबी के कपड़े"
+    },
+    "Pirate Outfit": {
+      "name": "पाइरेट आउटफिट",
+      "description": "समुद्री डाकू के कपड़े"
+    },
+    "Cowboy Outfit": {
+      "name": "काउबॉय आउटफिट",
+      "description": "वेस्टर्न/काउबॉय के कपड़े"
+    },
+    "Steampunk Outfit": {
+      "name": "स्टीमपंक आउटफिट",
+      "description": "विक्टोरियन स्टीमपंक कपड़े"
+    },
+    "Cyberpunk Outfit": {
+      "name": "साइबरपंक आउटफिट",
+      "description": "भविष्यवादी साइबरपंक कपड़े"
+    },
+    "Military Uniform": {
+      "name": "मिलिट्री यूनिफॉर्म",
+      "description": "सैन्य ड्रेस यूनिफॉर्म"
+    },
+    "Police Uniform": {
+      "name": "पुलिस यूनिफॉर्म",
+      "description": "पुलिस अधिकारी की यूनिफॉर्म"
+    },
+    "Nurse Uniform": {
+      "name": "नर्स यूनिफॉर्म",
+      "description": "मेडिकल नर्स यूनिफॉर्म"
+    },
+    "Doctor Coat": {
+      "name": "डॉक्टर कोट",
+      "description": "मेडिकल डॉक्टर का कोट"
+    },
+    "Lab Coat": {
+      "name": "लैब कोट",
+      "description": "वैज्ञानिक/शोधकर्ता का कोट"
+    },
+    "Chef Uniform": {
+      "name": "शेफ यूनिफॉर्म",
+      "description": "पाक कला पेशेवर के कपड़े"
+    },
+    "Bunny Suit": {
+      "name": "बनी सूट",
+      "description": "प्लेबॉय बनी कॉस्ट्यूम"
+    },
+    "Cat Costume": {
+      "name": "कैट कॉस्ट्यूम",
+      "description": "बिल्ली-थीम वाली कॉस्ट्यूम"
+    },
+    "Fox Costume": {
+      "name": "फॉक्स कॉस्ट्यूम",
+      "description": "लोमड़ी-थीम वाली कॉस्ट्यूम"
+    },
+    "Fursuit": {
+      "name": "फर्सूट",
+      "description": "मानवरूपी पशु कॉस्ट्यूम"
+    },
+    "Idol Outfit": {
+      "name": "आइडल आउटफिट",
+      "description": "पॉप आइडल स्टेज कॉस्ट्यूम"
+    },
+    "Gothic Lolita": {
+      "name": "गॉथिक लोहिता",
+      "description": "गॉथिक लोहिता फैशन"
+    },
+    "Punk Fashion": {
+      "name": "पंक फैशन",
+      "description": "पंक रॉक कपड़े"
+    },
+    "Goth Fashion": {
+      "name": "गॉथ फैशन",
+      "description": "गॉथिक फैशन शैली"
+    },
+    "Gyaru Fashion": {
+      "name": "ग्यारू फैशन",
+      "description": "जापानी ग्यारू शैली"
+    },
+    "Cosplay": {
+      "name": "कॉस्प्ले",
+      "description": "किरदार कॉस्प्ले कॉस्ट्यूम"
+    },
+    "Sportswear": {
+      "name": "स्पोर्ट्सवियर",
+      "description": "एथलेटिक कपड़े"
+    },
+    "Gym Clothes": {
+      "name": "जिम क्लोथ्स",
+      "description": "व्यायाम के कपड़े"
+    },
+    "Pajamas": {
+      "name": "पजामा",
+      "description": "सोने के कपड़े"
+    },
+    "Nightgown": {
+      "name": "नाइटगाउन",
+      "description": "रात की ड्रेस"
+    },
+    "Bathrobe": {
+      "name": "बाथरोब",
+      "description": "बाथ या हाउस रोब"
+    },
+    "Towel": {
+      "name": "तौलिया",
+      "description": "तौलिये में लिपटा हुआ"
+    },
+    "Naked": {
+      "name": "नग्न",
+      "description": "नग्न/बिना कपड़ों के"
+    },
+    "Topless": {
+      "name": "टॉपलेस",
+      "description": "ऊपरी वस्त्र नहीं"
+    },
+    "Covered Nude": {
+      "name": "ढका हुआ नग्न",
+      "description": "रणनीतिक रूप से ढकी हुई नग्नता"
+    },
+    "Business Suit": {
+      "name": "बिजनेस सूट",
+      "description": "पेशेवर व्यावसायिक कपड़े"
+    },
+    "Tuxedo": {
+      "name": "टक्सीडो",
+      "description": "औपचारिक टक्सीडो"
+    },
+    "Crown": {
+      "name": "ताज",
+      "description": "शाही ताज एक्सेसरी"
+    },
+    "Tiara": {
+      "name": "टायरा",
+      "description": "राजकुमारी का टायरा"
+    },
+    "Glasses": {
+      "name": "चश्मा",
+      "description": "एयग्लास एक्सेसरी"
+    },
+    "Sunglasses": {
+      "name": "धूप का चश्मा",
+      "description": "धूप का चश्मा एक्सेसरी"
+    },
+    "Hat": {
+      "name": "टोपी",
+      "description": "टोपी एक्सेसरी"
+    },
+    "Witch Hat": {
+      "name": "चुड़ैल की टोपी",
+      "description": "नुकीली चुड़ैल की टोपी"
+    },
+    "Cat Ears": {
+      "name": "बिल्ली के कान",
+      "description": "बिल्ली के कान वाला हेडबैंड"
+    },
+    "Fox Ears": {
+      "name": "लोमड़ी के कान",
+      "description": "लोमड़ी के कान वाली एक्सेसरी"
+    },
+    "Horns": {
+      "name": "सींग",
+      "description": "दानव/ड्रैगन के सींग"
+    },
+    "Halo": {
+      "name": "ऑरा",
+      "description": "एंजेल ऑरा"
+    },
+    "Wings": {
+      "name": "पंख",
+      "description": "एंजेल/दानव के पंख"
+    },
+    "Tail": {
+      "name": "पूंछ",
+      "description": "जानवर की पूंछ एक्सेसरी"
+    },
+    "Collar": {
+      "name": "कॉलर",
+      "description": "गर्दन का कॉलर एक्सेसरी"
+    },
+    "Choker": {
+      "name": "चोकर",
+      "description": "चोकर हार"
+    },
+    "Jewelry": {
+      "name": "गहने",
+      "description": "गहने की एक्सेसरीज़"
+    },
+    "Weapon": {
+      "name": "हथियार",
+      "description": "हथियार एक्सेसरीज़"
+    },
+    "Sword": {
+      "name": "तलवार",
+      "description": "तलवार हथियार"
+    },
+    "Gun": {
+      "name": "बंदूक",
+      "description": "आग्नेयास्त्र हथियार"
+    },
+    "Bow": {
+      "name": "धनुष",
+      "description": "धनुष और तीर"
+    },
+    "Staff": {
+      "name": "छड़ी",
+      "description": "जादुई छड़ी"
+    },
+    "Wand": {
+      "name": "जादुई छड़ी",
+      "description": "जादुई छड़ी"
+    },
+    "Shield": {
+      "name": "ढाल",
+      "description": "सुरक्षात्मक ढाल"
+    },
+    "Scythe": {
+      "name": "दरांती",
+      "description": "दरांती हथियार"
+    }
+  }
+}

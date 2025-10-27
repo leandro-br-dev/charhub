@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "Crea Nuova Storia",
+      "subtitle": "Costruisci una storia interattiva con personaggi e obiettivi"
+    },
+    "form": {
+      "title": "Titolo",
+      "titlePlaceholder": "Inserisci il titolo della storia",
+      "synopsis": "Sinossi",
+      "synopsisPlaceholder": "Descrivi brevemente la tua storia",
+      "coverImage": "Immagine di copertina",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "Anteprima copertina",
+      "coverImageError": "Impossibile caricare l'immagine",
+      "coverImageHint": "Incolla un URL di immagine per la copertina della storia",
+      "initialText": "Testo iniziale",
+      "initialTextPlaceholder": "Scrivi l'inizio della tua storia...",
+      "initialTextHint": "Questo testo verrà mostrato all'inizio della storia",
+      "objectives": "Obiettivi",
+      "objectivePlaceholder": "Aggiungi un obiettivo della storia",
+      "noObjectives": "Nessun obiettivo ancora. Aggiungine alcuni per guidare la narrazione.",
+      "characters": "Personaggi",
+      "selectedCharacters": "Personaggi selezionati",
+      "searchCharacters": "Cerca personaggi",
+      "noCharactersFound": "Nessun personaggio trovato",
+      "noCharactersAvailable": "Crea prima i personaggi",
+      "tags": "Tag",
+      "selectedTags": "Tag selezionati",
+      "searchTags": "Cerca tag",
+      "noTagsFound": "Nessun tag trovato",
+      "noTagsAvailable": "Nessun tag disponibile",
+      "ageRating": "Classificazione per età",
+      "contentTags": "Tag di contenuto",
+      "makePublic": "Rendi pubblica questa storia"
+    },
+    "validation": {
+      "titleRequired": "Il titolo è obbligatorio",
+      "titleTooLong": "Il titolo deve essere di massimo 100 caratteri",
+      "synopsisTooLong": "La sinossi deve essere di massimo 2000 caratteri",
+      "initialTextTooLong": "Il testo iniziale deve essere di massimo 5000 caratteri"
+    },
+    "errors": {
+      "createFailed": "Creazione storia fallita",
+      "updateFailed": "Aggiornamento storia fallito",
+      "deleteFailed": "Eliminazione storia fallita",
+      "failedToLoad": "Caricamento storie fallito",
+      "noCharacters": "Questa storia non ha personaggi",
+      "failedToStart": "Avvio storia fallito",
+      "notFound": "Storia non trovata"
+    },
+    "sidebar": {
+      "myStories": "Le mie storie",
+      "noStories": "Nessuna storia ancora"
+    },
+    "list": {
+      "title": "Le mie storie",
+      "subtitle": "Gestisci le tue storie interattive",
+      "public": "Pubblica",
+      "private": "Privata",
+      "empty": {
+        "title": "Nessuna storia ancora",
+        "description": "Crea la tua prima storia interattiva",
+        "action": "Crea Storia"
+      }
+    },
+    "detail": {
+      "synopsis": "Sinossi",
+      "initialScene": "Scena iniziale",
+      "objectives": "Obiettivi della storia",
+      "characters": "Personaggi"
+    },
+    "start": "Avvia Storia",
+    "starting": "Avvio in corso..."
+  }
+}

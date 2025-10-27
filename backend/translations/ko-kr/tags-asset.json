@@ -1,0 +1,317 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "resources": {
+    "Casual Wear": {
+      "name": "캐주얼 의상",
+      "description": "일상적인 편안한 옷"
+    },
+    "Formal Wear": {
+      "name": "정장",
+      "description": "격식 있는 정장 및 드레스"
+    },
+    "School Uniform": {
+      "name": "교복",
+      "description": "학교 교복 의상"
+    },
+    "Maid Outfit": {
+      "name": "메이드 복장",
+      "description": "메이드 제복"
+    },
+    "Butler Outfit": {
+      "name": "집사 복장",
+      "description": "집사 제복"
+    },
+    "Kimono": {
+      "name": "기모노",
+      "description": "전통 일본 의상"
+    },
+    "Yukata": {
+      "name": "유카타",
+      "description": "여름 기모노"
+    },
+    "Armor": {
+      "name": "갑옷",
+      "description": "보호용 갑옷"
+    },
+    "Knight Armor": {
+      "name": "기사 갑옷",
+      "description": "중세 기사 갑옷"
+    },
+    "Samurai Armor": {
+      "name": "사무라이 갑옷",
+      "description": "일본 전사 갑옷"
+    },
+    "Tactical Gear": {
+      "name": "전술 장비",
+      "description": "군사/전술 장비"
+    },
+    "Fantasy Armor": {
+      "name": "판타지 갑옷",
+      "description": "판타지 스타일 갑옷"
+    },
+    "Robe": {
+      "name": "로브",
+      "description": "마법 또는 의식용 로브"
+    },
+    "Cloak": {
+      "name": "망토",
+      "description": "케이프 또는 망토"
+    },
+    "Dress": {
+      "name": "드레스",
+      "description": "드레스 의상"
+    },
+    "Wedding Dress": {
+      "name": "웨딩드레스",
+      "description": "신부 가운"
+    },
+    "Ball Gown": {
+      "name": "볼가운",
+      "description": "격식 있는 무도회용 가운"
+    },
+    "Swimsuit": {
+      "name": "수영복",
+      "description": "수영복 의상"
+    },
+    "Bikini": {
+      "name": "비키니",
+      "description": "투피스 수영복"
+    },
+    "Lingerie": {
+      "name": "란제리",
+      "description": "속옷"
+    },
+    "Latex": {
+      "name": "라텍스",
+      "description": "라텍스/고무 의류"
+    },
+    "Leather": {
+      "name": "가죽",
+      "description": "가죽 의류"
+    },
+    "Bondage Gear": {
+      "name": "BDSM 장비",
+      "description": "BDSM 장비"
+    },
+    "Ninja Outfit": {
+      "name": "닌자 복장",
+      "description": "닌자/시노비 복장"
+    },
+    "Pirate Outfit": {
+      "name": "해적 복장",
+      "description": "해적 의상"
+    },
+    "Cowboy Outfit": {
+      "name": "카우보이 복장",
+      "description": "서부/카우보이 복장"
+    },
+    "Steampunk Outfit": {
+      "name": "스팀펑크 복장",
+      "description": "빅토리아 시대 스팀펑크 의상"
+    },
+    "Cyberpunk Outfit": {
+      "name": "사이버펑크 복장",
+      "description": "미래 지향적인 사이버펑크 복장"
+    },
+    "Military Uniform": {
+      "name": "군복",
+      "description": "군대 정복"
+    },
+    "Police Uniform": {
+      "name": "경찰 제복",
+      "description": "경찰관 제복"
+    },
+    "Nurse Uniform": {
+      "name": "간호사 제복",
+      "description": "의료 간호사 제복"
+    },
+    "Doctor Coat": {
+      "name": "의사 가운",
+      "description": "의사 가운"
+    },
+    "Lab Coat": {
+      "name": "실험복",
+      "description": "과학자/연구원 가운"
+    },
+    "Chef Uniform": {
+      "name": "요리사 제복",
+      "description": "요리 전문가 의상"
+    },
+    "Bunny Suit": {
+      "name": "버니 슈트",
+      "description": "플레이보이 버니 코스튬"
+    },
+    "Cat Costume": {
+      "name": "고양이 의상",
+      "description": "고양이 테마 코스튬"
+    },
+    "Fox Costume": {
+      "name": "여우 의상",
+      "description": "여우 테마 코스튬"
+    },
+    "Fursuit": {
+      "name": "퍼슈트",
+      "description": "의인화된 동물 코스튬"
+    },
+    "Idol Outfit": {
+      "name": "아이돌 의상",
+      "description": "팝 아이돌 무대 의상"
+    },
+    "Gothic Lolita": {
+      "name": "고딕 로리타",
+      "description": "고딕 로리타 패션"
+    },
+    "Punk Fashion": {
+      "name": "펑크 패션",
+      "description": "펑크 록 의류"
+    },
+    "Goth Fashion": {
+      "name": "고스 패션",
+      "description": "고딕 패션 스타일"
+    },
+    "Gyaru Fashion": {
+      "name": "갸루 패션",
+      "description": "일본 갸루 스타일"
+    },
+    "Cosplay": {
+      "name": "코스프레",
+      "description": "캐릭터 코스프레 의상"
+    },
+    "Sportswear": {
+      "name": "스포츠웨어",
+      "description": "운동복"
+    },
+    "Gym Clothes": {
+      "name": "운동복",
+      "description": "운동복"
+    },
+    "Pajamas": {
+      "name": "잠옷",
+      "description": "수면복"
+    },
+    "Nightgown": {
+      "name": "나이트가운",
+      "description": "나이트 드레스"
+    },
+    "Bathrobe": {
+      "name": "목욕 가운",
+      "description": "목욕 또는 집에서 입는 가운"
+    },
+    "Towel": {
+      "name": "수건",
+      "description": "수건으로 감싸고 있음"
+    },
+    "Naked": {
+      "name": "나체",
+      "description": "벌거벗은/옷을 입지 않은"
+    },
+    "Topless": {
+      "name": "상의 탈의",
+      "description": "상의 옷 없음"
+    },
+    "Covered Nude": {
+      "name": "가려진 나체",
+      "description": "전략적으로 가려진 나체"
+    },
+    "Business Suit": {
+      "name": "비즈니스 정장",
+      "description": "전문 비즈니스 복장"
+    },
+    "Tuxedo": {
+      "name": "턱시도",
+      "description": "격식 있는 턱시도"
+    },
+    "Crown": {
+      "name": "왕관",
+      "description": "왕실 왕관 액세서리"
+    },
+    "Tiara": {
+      "name": "티아라",
+      "description": "공주 티아라"
+    },
+    "Glasses": {
+      "name": "안경",
+      "description": "안경 액세서리"
+    },
+    "Sunglasses": {
+      "name": "선글라스",
+      "description": "선글라스 액세서리"
+    },
+    "Hat": {
+      "name": "모자",
+      "description": "모자 액세서리"
+    },
+    "Witch Hat": {
+      "name": "마녀 모자",
+      "description": "뾰족한 마녀 모자"
+    },
+    "Cat Ears": {
+      "name": "고양이 귀",
+      "description": "고양이 귀 머리띠"
+    },
+    "Fox Ears": {
+      "name": "여우 귀",
+      "description": "여우 귀 액세서리"
+    },
+    "Horns": {
+      "name": "뿔",
+      "description": "악마/용 뿔"
+    },
+    "Halo": {
+      "name": "후광",
+      "description": "천사 후광"
+    },
+    "Wings": {
+      "name": "날개",
+      "description": "천사/악마 날개"
+    },
+    "Tail": {
+      "name": "꼬리",
+      "description": "동물 꼬리 액세서리"
+    },
+    "Collar": {
+      "name": "목걸이",
+      "description": "목걸이 액세서리"
+    },
+    "Choker": {
+      "name": "초커",
+      "description": "초커 목걸이"
+    },
+    "Jewelry": {
+      "name": "보석",
+      "description": "보석 액세서리"
+    },
+    "Weapon": {
+      "name": "무기",
+      "description": "무기 액세서리"
+    },
+    "Sword": {
+      "name": "검",
+      "description": "검 무기"
+    },
+    "Gun": {
+      "name": "총",
+      "description": "총기 무기"
+    },
+    "Bow": {
+      "name": "활",
+      "description": "활과 화살"
+    },
+    "Staff": {
+      "name": "지팡이",
+      "description": "마법 지팡이"
+    },
+    "Wand": {
+      "name": "지팡이",
+      "description": "마법 지팡이"
+    },
+    "Shield": {
+      "name": "방패",
+      "description": "보호용 방패"
+    },
+    "Scythe": {
+      "name": "낫",
+      "description": "낫 무기"
+    }
+  }
+}

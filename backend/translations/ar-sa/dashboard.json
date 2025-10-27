@@ -1,16 +1,16 @@
 {
   "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
   "resources": {
-    "title": "منطقة محظورة",
-    "subtitle": "لقد تم تسجيل دخولك بنجاح عبر {{provider}}. لوحة التحكم هذه متاحة فقط للمستخدمين المسجلين.",
+    "title": "منطقة مقيدة",
+    "subtitle": "لقد قمت بالمصادقة بنجاح عبر {{provider}}. هذه لوحة المعلومات متاحة فقط للمستخدمين المسجلين.",
     "accountDetails": "تفاصيل الحساب",
     "nextSteps": "الخطوات التالية",
     "displayName": "اسم العرض",
     "email": "البريد الإلكتروني",
     "provider": "الموفر",
-    "token": "الرمز المميز",
-    "insightSyncUnity": "مزامنة هذه الجلسة مع عميل Unity عبر WebSockets أو REST الآمنة.",
-    "insightPersist": "الاحتفاظ بملفات تعريف OAuth في مخزن هويتك الخلفي.",
+    "token": "رمز",
+    "insightSyncUnity": "مزامنة هذه الجلسة مع عميل Unity عبر WebSockets آمنة أو REST.",
+    "insightPersist": "احتفظ بملفات تعريف OAuth في مخزن الهوية الخاص بك في الواجهة الخلفية.",
     "insightTokens": "إصدار رموز وصول قصيرة الأجل وتحديثها عند الحاجة."
   }
 }

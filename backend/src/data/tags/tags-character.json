@@ -1,0 +1,600 @@
+{
+  "description": "Character classification tags with age ratings and content warnings. Used for filtering and categorizing characters.",
+  "tags": [
+    {
+      "name": "VTuber",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Virtual YouTuber or content creator"
+    },
+    {
+      "name": "Anime",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Anime-style character"
+    },
+    {
+      "name": "Manga",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Manga-style character"
+    },
+    {
+      "name": "Elf",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Fantasy elf character"
+    },
+    {
+      "name": "Demon",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Demon or demonic character"
+    },
+    {
+      "name": "Angel",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Angelic character"
+    },
+    {
+      "name": "Vampire",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Vampire character"
+    },
+    {
+      "name": "Werewolf",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Werewolf or lycanthrope character"
+    },
+    {
+      "name": "Robot",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Robot or android character"
+    },
+    {
+      "name": "Cyborg",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Cybernetic organism"
+    },
+    {
+      "name": "Furry",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Anthropomorphic animal character"
+    },
+    {
+      "name": "Kemonomimi",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Character with animal ears/tail"
+    },
+    {
+      "name": "Catgirl",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Character with cat features"
+    },
+    {
+      "name": "Kitsune",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Fox spirit character"
+    },
+    {
+      "name": "Maid",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Maid occupation or outfit"
+    },
+    {
+      "name": "Butler",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Butler occupation or outfit"
+    },
+    {
+      "name": "Student",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Student character"
+    },
+    {
+      "name": "Teacher",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Teacher or educator"
+    },
+    {
+      "name": "Warrior",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Combat-oriented character"
+    },
+    {
+      "name": "Knight",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Knight or paladin character"
+    },
+    {
+      "name": "Samurai",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Japanese warrior"
+    },
+    {
+      "name": "Ninja",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Stealth warrior character"
+    },
+    {
+      "name": "Mage",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Magic user"
+    },
+    {
+      "name": "Witch",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Witch or sorceress"
+    },
+    {
+      "name": "Wizard",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Male magic user"
+    },
+    {
+      "name": "Healer",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Support/healing role"
+    },
+    {
+      "name": "Assassin",
+      "type": "CHARACTER",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "CRIME"],
+      "description": "Stealth killer character"
+    },
+    {
+      "name": "Thief",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["CRIME"],
+      "description": "Rogue or thief character"
+    },
+    {
+      "name": "Pirate",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE", "CRIME"],
+      "description": "Pirate character"
+    },
+    {
+      "name": "Detective",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Detective or investigator"
+    },
+    {
+      "name": "Scientist",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Scientist or researcher"
+    },
+    {
+      "name": "Doctor",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Medical professional"
+    },
+    {
+      "name": "Nurse",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Nursing professional"
+    },
+    {
+      "name": "Idol",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Pop idol or performer"
+    },
+    {
+      "name": "Musician",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Musical artist"
+    },
+    {
+      "name": "Artist",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Visual artist or painter"
+    },
+    {
+      "name": "Athlete",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Sports professional"
+    },
+    {
+      "name": "Chef",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Culinary professional"
+    },
+    {
+      "name": "Royalty",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Royal or noble character"
+    },
+    {
+      "name": "Princess",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Princess character"
+    },
+    {
+      "name": "Prince",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Prince character"
+    },
+    {
+      "name": "Tsundere",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Initially cold, gradually warm personality"
+    },
+    {
+      "name": "Yandere",
+      "type": "CHARACTER",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "PSYCHOLOGICAL"],
+      "description": "Obsessive, potentially violent love interest"
+    },
+    {
+      "name": "Kuudere",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Cool, emotionally distant personality"
+    },
+    {
+      "name": "Dandere",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Shy, quiet personality"
+    },
+    {
+      "name": "Genki",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Energetic, enthusiastic personality"
+    },
+    {
+      "name": "Tomboy",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Masculine-presenting female character"
+    },
+    {
+      "name": "Femboy",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Feminine-presenting male character"
+    },
+    {
+      "name": "BDSM",
+      "type": "CHARACTER",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Bondage, discipline, dominance/submission themes"
+    },
+    {
+      "name": "Dominatrix",
+      "type": "CHARACTER",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Dominant sexual role"
+    },
+    {
+      "name": "Submissive",
+      "type": "CHARACTER",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Submissive sexual role"
+    },
+    {
+      "name": "Succubus",
+      "type": "CHARACTER",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Demon seductress"
+    },
+    {
+      "name": "Monster Girl",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Female monster character"
+    },
+    {
+      "name": "Monster Boy",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Male monster character"
+    },
+    {
+      "name": "Giantess",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Giant-sized female character"
+    },
+    {
+      "name": "Loli",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Young-looking female character (nonsexual context)"
+    },
+    {
+      "name": "Shota",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Young-looking male character (nonsexual context)"
+    },
+    {
+      "name": "MILF",
+      "type": "CHARACTER",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Attractive mature woman"
+    },
+    {
+      "name": "DILF",
+      "type": "CHARACTER",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Attractive mature man"
+    },
+    {
+      "name": "Schoolgirl",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Female student character"
+    },
+    {
+      "name": "Schoolboy",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Male student character"
+    },
+    {
+      "name": "Office Lady",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Female office worker"
+    },
+    {
+      "name": "Salaryman",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Male office worker"
+    },
+    {
+      "name": "Gyaru",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese fashion subculture style"
+    },
+    {
+      "name": "Goth",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Gothic fashion style"
+    },
+    {
+      "name": "Punk",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Punk fashion/attitude"
+    },
+    {
+      "name": "Zombie",
+      "type": "CHARACTER",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE", "GORE", "HORROR"],
+      "description": "Undead zombie character"
+    },
+    {
+      "name": "Ghost",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Spirit or ghost character"
+    },
+    {
+      "name": "Alien",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Extraterrestrial character"
+    },
+    {
+      "name": "Mercenary",
+      "type": "CHARACTER",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "CRIME"],
+      "description": "Hired soldier or fighter"
+    },
+    {
+      "name": "Gladiator",
+      "type": "CHARACTER",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE", "GORE"],
+      "description": "Arena fighter"
+    },
+    {
+      "name": "Barbarian",
+      "type": "CHARACTER",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "Tribal warrior character"
+    },
+    {
+      "name": "Necromancer",
+      "type": "CHARACTER",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Death magic user"
+    },
+    {
+      "name": "Druid",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Nature magic user"
+    },
+    {
+      "name": "Bard",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Musical adventurer"
+    },
+    {
+      "name": "Monk",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Martial artist or religious ascetic"
+    },
+    {
+      "name": "Ranger",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Wilderness warrior"
+    },
+    {
+      "name": "Paladin",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Holy warrior"
+    },
+    {
+      "name": "Cleric",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Religious healer or priest"
+    },
+    {
+      "name": "Warlock",
+      "type": "CHARACTER",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Dark magic user with pact"
+    },
+    {
+      "name": "Sorcerer",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Innate magic user"
+    },
+    {
+      "name": "Alchemist",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Potion maker or chemist"
+    },
+    {
+      "name": "Blacksmith",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Weapon and armor crafter"
+    },
+    {
+      "name": "Merchant",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Trader or shopkeeper"
+    },
+    {
+      "name": "Adventurer",
+      "type": "CHARACTER",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "General adventurer character"
+    }
+  ]
+}

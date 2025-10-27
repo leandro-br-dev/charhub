@@ -1,0 +1,345 @@
+{
+  "description": "Character classification tags with age ratings and content warnings. Used for filtering and categorizing characters.",
+  "resources": {
+    "VTuber": {
+      "name": "VTuber",
+      "description": "Virtual YouTuber o creatore di contenuti"
+    },
+    "Anime": {
+      "name": "Anime",
+      "description": "Personaggio in stile Anime"
+    },
+    "Manga": {
+      "name": "Manga",
+      "description": "Personaggio in stile Manga"
+    },
+    "Elf": {
+      "name": "Elf",
+      "description": "Personaggio elfo fantasy"
+    },
+    "Demon": {
+      "name": "Demon",
+      "description": "Personaggio demone o demoniaco"
+    },
+    "Angel": {
+      "name": "Angel",
+      "description": "Personaggio angelico"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "Personaggio vampiro"
+    },
+    "Werewolf": {
+      "name": "Werewolf",
+      "description": "Personaggio lupo mannaro o licantropo"
+    },
+    "Robot": {
+      "name": "Robot",
+      "description": "Personaggio robot o androide"
+    },
+    "Cyborg": {
+      "name": "Cyborg",
+      "description": "Organismo cibernetico"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "Personaggio animale antropomorfo"
+    },
+    "Kemonomimi": {
+      "name": "Kemonomimi",
+      "description": "Personaggio con orecchie/coda da animale"
+    },
+    "Catgirl": {
+      "name": "Catgirl",
+      "description": "Personaggio con caratteristiche feline"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "Spirito volpe"
+    },
+    "Maid": {
+      "name": "Maid",
+      "description": "Occupazione o abito da cameriera"
+    },
+    "Butler": {
+      "name": "Butler",
+      "description": "Occupazione o abito da maggiordomo"
+    },
+    "Student": {
+      "name": "Student",
+      "description": "Personaggio studente"
+    },
+    "Teacher": {
+      "name": "Teacher",
+      "description": "Insegnante o educatore"
+    },
+    "Warrior": {
+      "name": "Warrior",
+      "description": "Personaggio orientato al combattimento"
+    },
+    "Knight": {
+      "name": "Knight",
+      "description": "Personaggio cavaliere o paladino"
+    },
+    "Samurai": {
+      "name": "Samurai",
+      "description": "Guerriero giapponese"
+    },
+    "Ninja": {
+      "name": "Ninja",
+      "description": "Guerriero furtivo"
+    },
+    "Mage": {
+      "name": "Mage",
+      "description": "Utilizzatore di magia"
+    },
+    "Witch": {
+      "name": "Witch",
+      "description": "Strega o maga"
+    },
+    "Wizard": {
+      "name": "Wizard",
+      "description": "Utilizzatore di magia maschio"
+    },
+    "Healer": {
+      "name": "Healer",
+      "description": "Ruolo di supporto/guarigione"
+    },
+    "Assassin": {
+      "name": "Assassin",
+      "description": "Personaggio assassino furtivo"
+    },
+    "Thief": {
+      "name": "Thief",
+      "description": "Personaggio furfante o ladro"
+    },
+    "Pirate": {
+      "name": "Pirate",
+      "description": "Personaggio pirata"
+    },
+    "Detective": {
+      "name": "Detective",
+      "description": "Detective o investigatore"
+    },
+    "Scientist": {
+      "name": "Scientist",
+      "description": "Scienziato o ricercatore"
+    },
+    "Doctor": {
+      "name": "Doctor",
+      "description": "Professionista medico"
+    },
+    "Nurse": {
+      "name": "Nurse",
+      "description": "Professionista infermieristico"
+    },
+    "Idol": {
+      "name": "Idol",
+      "description": "Idol pop o performer"
+    },
+    "Musician": {
+      "name": "Musician",
+      "description": "Artista musicale"
+    },
+    "Artist": {
+      "name": "Artist",
+      "description": "Artista visivo o pittore"
+    },
+    "Athlete": {
+      "name": "Athlete",
+      "description": "Professionista sportivo"
+    },
+    "Chef": {
+      "name": "Chef",
+      "description": "Professionista culinario"
+    },
+    "Royalty": {
+      "name": "Royalty",
+      "description": "Personaggio reale o nobile"
+    },
+    "Princess": {
+      "name": "Princess",
+      "description": "Personaggio principessa"
+    },
+    "Prince": {
+      "name": "Prince",
+      "description": "Personaggio principe"
+    },
+    "Tsundere": {
+      "name": "Tsundere",
+      "description": "Personalità inizialmente fredda, gradualmente calorosa"
+    },
+    "Yandere": {
+      "name": "Yandere",
+      "description": "Interesse amoroso ossessivo, potenzialmente violento"
+    },
+    "Kuudere": {
+      "name": "Kuudere",
+      "description": "Personalità fredda, emotivamente distante"
+    },
+    "Dandere": {
+      "name": "Dandere",
+      "description": "Personalità timida, silenziosa"
+    },
+    "Genki": {
+      "name": "Genki",
+      "description": "Personalità energica, entusiasta"
+    },
+    "Tomboy": {
+      "name": "Tomboy",
+      "description": "Personaggio femminile dall'atteggiamento mascolino"
+    },
+    "Femboy": {
+      "name": "Femboy",
+      "description": "Personaggio maschile dall'atteggiamento femminile"
+    },
+    "BDSM": {
+      "name": "BDSM",
+      "description": "Tematiche di bondage, disciplina, dominazione/sottomissione"
+    },
+    "Dominatrix": {
+      "name": "Dominatrix",
+      "description": "Ruolo sessuale dominante"
+    },
+    "Submissive": {
+      "name": "Submissive",
+      "description": "Ruolo sessuale sottomesso"
+    },
+    "Succubus": {
+      "name": "Succubus",
+      "description": "Demone seduttrice"
+    },
+    "Monster Girl": {
+      "name": "Monster Girl",
+      "description": "Personaggio mostro femminile"
+    },
+    "Monster Boy": {
+      "name": "Monster Boy",
+      "description": "Personaggio mostro maschile"
+    },
+    "Giantess": {
+      "name": "Giantess",
+      "description": "Personaggio femminile di dimensioni gigantesche"
+    },
+    "Loli": {
+      "name": "Loli",
+      "description": "Personaggio femminile dall'aspetto giovane (contesto non sessuale)"
+    },
+    "Shota": {
+      "name": "Shota",
+      "description": "Personaggio maschile dall'aspetto giovane (contesto non sessuale)"
+    },
+    "MILF": {
+      "name": "MILF",
+      "description": "Donna matura attraente"
+    },
+    "DILF": {
+      "name": "DILF",
+      "description": "Uomo maturo attraente"
+    },
+    "Schoolgirl": {
+      "name": "Schoolgirl",
+      "description": "Personaggio studentessa"
+    },
+    "Schoolboy": {
+      "name": "Schoolboy",
+      "description": "Personaggio studente"
+    },
+    "Office Lady": {
+      "name": "Office Lady",
+      "description": "Impiegata d'ufficio"
+    },
+    "Salaryman": {
+      "name": "Salaryman",
+      "description": "Impiegato d'ufficio"
+    },
+    "Gyaru": {
+      "name": "Gyaru",
+      "description": "Stile di sottocultura della moda giapponese"
+    },
+    "Goth": {
+      "name": "Goth",
+      "description": "Stile di moda gotico"
+    },
+    "Punk": {
+      "name": "Punk",
+      "description": "Moda/atteggiamento punk"
+    },
+    "Zombie": {
+      "name": "Zombie",
+      "description": "Personaggio zombie non morto"
+    },
+    "Ghost": {
+      "name": "Ghost",
+      "description": "Personaggio spirito o fantasma"
+    },
+    "Alien": {
+      "name": "Alien",
+      "description": "Personaggio extraterrestre"
+    },
+    "Mercenary": {
+      "name": "Mercenary",
+      "description": "Soldato o combattente assoldato"
+    },
+    "Gladiator": {
+      "name": "Gladiator",
+      "description": "Combattente d'arena"
+    },
+    "Barbarian": {
+      "name": "Barbarian",
+      "description": "Personaggio guerriero tribale"
+    },
+    "Necromancer": {
+      "name": "Necromancer",
+      "description": "Utilizzatore di magia della morte"
+    },
+    "Druid": {
+      "name": "Druid",
+      "description": "Utilizzatore di magia della natura"
+    },
+    "Bard": {
+      "name": "Bard",
+      "description": "Avventuriero musicale"
+    },
+    "Monk": {
+      "name": "Monk",
+      "description": "Artista marziale o asceta religioso"
+    },
+    "Ranger": {
+      "name": "Ranger",
+      "description": "Guerriero della natura selvaggia"
+    },
+    "Paladin": {
+      "name": "Paladin",
+      "description": "Guerriero sacro"
+    },
+    "Cleric": {
+      "name": "Cleric",
+      "description": "Guaritore religioso o sacerdote"
+    },
+    "Warlock": {
+      "name": "Warlock",
+      "description": "Utilizzatore di magia oscura con patto"
+    },
+    "Sorcerer": {
+      "name": "Sorcerer",
+      "description": "Utilizzatore di magia innata"
+    },
+    "Alchemist": {
+      "name": "Alchemist",
+      "description": "Creatore di pozioni o chimico"
+    },
+    "Blacksmith": {
+      "name": "Blacksmith",
+      "description": "Fabbricante di armi e armature"
+    },
+    "Merchant": {
+      "name": "Merchant",
+      "description": "Commerciante o negoziante"
+    },
+    "Adventurer": {
+      "name": "Adventurer",
+      "description": "Personaggio avventuriero generico"
+    }
+  }
+}

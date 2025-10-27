@@ -152,6 +152,23 @@ export const characterService = {
       return { success: false };
     }
   }
+  ,
+
+  /**
+   * Ask backend agent to autocomplete missing fields
+   */
+  async autocomplete(payload: Partial<CharacterFormValues>, mode: 'ai' | 'web' = 'ai'): Promise<Partial<CharacterFormValues>> {
+    try {
+      const response = await api.post<{ success: boolean; data: Partial<CharacterFormValues> }>(
+        `${BASE_PATH}/autocomplete`,
+        { mode, payload }
+      );
+      return response.data.data || {};
+    } catch (error) {
+      console.error('[characterService] autocomplete failed:', error);
+      return {};
+    }
+  }
 };
 
 export type CharacterService = typeof characterService;

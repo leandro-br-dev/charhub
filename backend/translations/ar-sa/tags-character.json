@@ -1,0 +1,345 @@
+{
+  "description": "Character classification tags with age ratings and content warnings. Used for filtering and categorizing characters.",
+  "resources": {
+    "VTuber": {
+      "name": "VTuber",
+      "description": "يوتيوبر افتراضي أو صانع محتوى"
+    },
+    "Anime": {
+      "name": "Anime",
+      "description": "شخصية بأسلوب الأنمي"
+    },
+    "Manga": {
+      "name": "Manga",
+      "description": "شخصية بأسلوب المانجا"
+    },
+    "Elf": {
+      "name": "Elf",
+      "description": "شخصية جني خيالي"
+    },
+    "Demon": {
+      "name": "Demon",
+      "description": "شخصية شيطان أو شيطانية"
+    },
+    "Angel": {
+      "name": "Angel",
+      "description": "شخصية ملائكية"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "شخصية مصاص دماء"
+    },
+    "Werewolf": {
+      "name": "Werewolf",
+      "description": "شخصية مستذئب أو ليبكانثروب"
+    },
+    "Robot": {
+      "name": "Robot",
+      "description": "شخصية روبوت أو أندرويد"
+    },
+    "Cyborg": {
+      "name": "Cyborg",
+      "description": "كائن سيبراني"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "شخصية حيوان مجسم"
+    },
+    "Kemonomimi": {
+      "name": "Kemonomimi",
+      "description": "شخصية بأذنين/ذيل حيوان"
+    },
+    "Catgirl": {
+      "name": "Catgirl",
+      "description": "شخصية بملامح قطة"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "شخصية روح ثعلب"
+    },
+    "Maid": {
+      "name": "Maid",
+      "description": "مهنة أو زي خادمة"
+    },
+    "Butler": {
+      "name": "Butler",
+      "description": "مهنة أو زي خادم"
+    },
+    "Student": {
+      "name": "Student",
+      "description": "شخصية طالب"
+    },
+    "Teacher": {
+      "name": "Teacher",
+      "description": "معلم أو مربي"
+    },
+    "Warrior": {
+      "name": "Warrior",
+      "description": "شخصية موجهة للقتال"
+    },
+    "Knight": {
+      "name": "Knight",
+      "description": "شخصية فارس أو بالادين"
+    },
+    "Samurai": {
+      "name": "Samurai",
+      "description": "محارب ياباني"
+    },
+    "Ninja": {
+      "name": "Ninja",
+      "description": "شخصية محارب متخفي"
+    },
+    "Mage": {
+      "name": "Mage",
+      "description": "مستخدم سحر"
+    },
+    "Witch": {
+      "name": "Witch",
+      "description": "ساحرة"
+    },
+    "Wizard": {
+      "name": "Wizard",
+      "description": "مستخدم سحر ذكر"
+    },
+    "Healer": {
+      "name": "Healer",
+      "description": "دور داعم/علاج"
+    },
+    "Assassin": {
+      "name": "Assassin",
+      "description": "شخصية قاتل متخفي"
+    },
+    "Thief": {
+      "name": "Thief",
+      "description": "شخصية لص أو محتال"
+    },
+    "Pirate": {
+      "name": "Pirate",
+      "description": "شخصية قرصان"
+    },
+    "Detective": {
+      "name": "Detective",
+      "description": "محقق أو مستقصي"
+    },
+    "Scientist": {
+      "name": "Scientist",
+      "description": "عالم أو باحث"
+    },
+    "Doctor": {
+      "name": "Doctor",
+      "description": "مهني طبي"
+    },
+    "Nurse": {
+      "name": "Nurse",
+      "description": "مهني تمريض"
+    },
+    "Idol": {
+      "name": "Idol",
+      "description": "نجم بوب أو مؤدٍ"
+    },
+    "Musician": {
+      "name": "Musician",
+      "description": "فنان موسيقي"
+    },
+    "Artist": {
+      "name": "Artist",
+      "description": "فنان بصري أو رسام"
+    },
+    "Athlete": {
+      "name": "Athlete",
+      "description": "رياضي محترف"
+    },
+    "Chef": {
+      "name": "Chef",
+      "description": "مهني في الطهي"
+    },
+    "Royalty": {
+      "name": "Royalty",
+      "description": "شخصية ملكية أو نبيلة"
+    },
+    "Princess": {
+      "name": "Princess",
+      "description": "شخصية أميرة"
+    },
+    "Prince": {
+      "name": "Prince",
+      "description": "شخصية أمير"
+    },
+    "Tsundere": {
+      "name": "Tsundere",
+      "description": "شخصية باردة في البداية، تصبح دافئة تدريجيًا"
+    },
+    "Yandere": {
+      "name": "Yandere",
+      "description": "مهووس، قد يكون اهتمام حب عنيفًا"
+    },
+    "Kuudere": {
+      "name": "Kuudere",
+      "description": "شخصية هادئة، منفصلة عاطفيًا"
+    },
+    "Dandere": {
+      "name": "Dandere",
+      "description": "شخصية خجولة، هادئة"
+    },
+    "Genki": {
+      "name": "Genki",
+      "description": "شخصية نشيطة، متحمسة"
+    },
+    "Tomboy": {
+      "name": "Tomboy",
+      "description": "شخصية أنثى ذات سلوك ذكوري"
+    },
+    "Femboy": {
+      "name": "Femboy",
+      "description": "شخصية ذكر ذات سلوك أنثوي"
+    },
+    "BDSM": {
+      "name": "BDSM",
+      "description": "موضوعات الربط، الانضباط، الهيمنة/الخضوع"
+    },
+    "Dominatrix": {
+      "name": "Dominatrix",
+      "description": "دور جنسي مهيمن"
+    },
+    "Submissive": {
+      "name": "Submissive",
+      "description": "دور جنسي خاضع"
+    },
+    "Succubus": {
+      "name": "Succubus",
+      "description": "شيطانة مغوية"
+    },
+    "Monster Girl": {
+      "name": "Monster Girl",
+      "description": "شخصية وحش أنثى"
+    },
+    "Monster Boy": {
+      "name": "Monster Boy",
+      "description": "شخصية وحش ذكر"
+    },
+    "Giantess": {
+      "name": "Giantess",
+      "description": "شخصية أنثى بحجم عملاق"
+    },
+    "Loli": {
+      "name": "Loli",
+      "description": "شخصية أنثى تبدو شابة (سياق غير جنسي)"
+    },
+    "Shota": {
+      "name": "Shota",
+      "description": "شخصية ذكر تبدو شابًا (سياق غير جنسي)"
+    },
+    "MILF": {
+      "name": "MILF",
+      "description": "امرأة ناضجة جذابة"
+    },
+    "DILF": {
+      "name": "DILF",
+      "description": "رجل ناضج جذاب"
+    },
+    "Schoolgirl": {
+      "name": "Schoolgirl",
+      "description": "شخصية طالبة"
+    },
+    "Schoolboy": {
+      "name": "Schoolboy",
+      "description": "شخصية طالب"
+    },
+    "Office Lady": {
+      "name": "Office Lady",
+      "description": "موظفة مكتب"
+    },
+    "Salaryman": {
+      "name": "Salaryman",
+      "description": "موظف مكتب"
+    },
+    "Gyaru": {
+      "name": "Gyaru",
+      "description": "أسلوب ثقافة فرعية يابانية للموضة"
+    },
+    "Goth": {
+      "name": "Goth",
+      "description": "أسلوب موضة قوطي"
+    },
+    "Punk": {
+      "name": "Punk",
+      "description": "موضة/موقف بانك"
+    },
+    "Zombie": {
+      "name": "Zombie",
+      "description": "شخصية زومبي من الموتى الأحياء"
+    },
+    "Ghost": {
+      "name": "Ghost",
+      "description": "شخصية روح أو شبح"
+    },
+    "Alien": {
+      "name": "Alien",
+      "description": "شخصية خارج كوكب الأرض"
+    },
+    "Mercenary": {
+      "name": "Mercenary",
+      "description": "جندي أو مقاتل مأجور"
+    },
+    "Gladiator": {
+      "name": "Gladiator",
+      "description": "مقاتل ساحة"
+    },
+    "Barbarian": {
+      "name": "Barbarian",
+      "description": "شخصية محارب قبلي"
+    },
+    "Necromancer": {
+      "name": "Necromancer",
+      "description": "مستخدم سحر الموت"
+    },
+    "Druid": {
+      "name": "Druid",
+      "description": "مستخدم سحر الطبيعة"
+    },
+    "Bard": {
+      "name": "Bard",
+      "description": "مغامر موسيقي"
+    },
+    "Monk": {
+      "name": "Monk",
+      "description": "فنان قتالي أو ناسك ديني"
+    },
+    "Ranger": {
+      "name": "Ranger",
+      "description": "محارب بري"
+    },
+    "Paladin": {
+      "name": "Paladin",
+      "description": "محارب مقدس"
+    },
+    "Cleric": {
+      "name": "Cleric",
+      "description": "معالج ديني أو كاهن"
+    },
+    "Warlock": {
+      "name": "Warlock",
+      "description": "مستخدم سحر مظلم بعقد"
+    },
+    "Sorcerer": {
+      "name": "Sorcerer",
+      "description": "مستخدم سحر فطري"
+    },
+    "Alchemist": {
+      "name": "Alchemist",
+      "description": "صانع جرعات أو كيميائي"
+    },
+    "Blacksmith": {
+      "name": "Blacksmith",
+      "description": "صانع أسلحة ودروع"
+    },
+    "Merchant": {
+      "name": "Merchant",
+      "description": "تاجر أو صاحب متجر"
+    },
+    "Adventurer": {
+      "name": "Adventurer",
+      "description": "شخصية مغامر عامة"
+    }
+  }
+}

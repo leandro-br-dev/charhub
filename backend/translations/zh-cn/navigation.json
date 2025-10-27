@@ -8,16 +8,18 @@
     "assets": "素材",
     "profileLink": "我的个人资料",
     "reportBug": "报告问题",
-    "storyPlaceholder": "故事工具即将上线。",
+    "storyPlaceholder": "故事工具将很快在此处提供。",
     "chatHistory": "对话历史",
     "chatHistoryPlaceholder": "聊天迁移完成后，消息和对话将在此处显示。",
     "developmentTools": "开发者工具",
-    "developmentPlaceholder": "构建管道、日志和自动化控件即将上线。",
+    "developmentPlaceholder": "构建管道、日志和自动化控件将很快在此处提供。",
     "characterSidebar": "角色概览",
-    "characterSidebarPlaceholder": "中心侧边栏重建后，您可以在此处浏览和固定您喜欢的角色。",
+    "characterSidebarPlaceholder": "一旦中心边栏重建完成，您就可以在此处浏览和固定您喜欢的角色。",
     "storySidebar": "故事",
-    "storySidebarPlaceholder": "故事套件迁移后，请在此处保存草稿和章节大纲。",
+    "storySidebarPlaceholder": "故事套件迁移完成后，请将草稿和章节大纲保存在此处。",
+    "viewAllCharacters": "查看所有角色",
+    "viewAllStories": "查看所有故事",
     "sidebarDefaultTitle": "探索 CharHub",
-    "sidebarDefaultDescription": "使用导航栏上的图标切换体验。"
+    "sidebarDefaultDescription": "使用导航栏中的图标切换体验。"
   }
 }

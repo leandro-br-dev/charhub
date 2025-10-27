@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "Crear Nueva Historia",
+      "subtitle": "Construye una historia interactiva con personajes y objetivos"
+    },
+    "form": {
+      "title": "Título",
+      "titlePlaceholder": "Introduce el título de la historia",
+      "synopsis": "Sinopsis",
+      "synopsisPlaceholder": "Describe brevemente tu historia",
+      "coverImage": "Imagen de portada",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "Vista previa de la portada",
+      "coverImageError": "Error al cargar la imagen",
+      "coverImageHint": "Pega una URL de imagen para la portada de la historia",
+      "initialText": "Texto inicial",
+      "initialTextPlaceholder": "Escribe la introducción de tu historia...",
+      "initialTextHint": "Este texto se mostrará al inicio de la historia",
+      "objectives": "Objetivos",
+      "objectivePlaceholder": "Añadir un objetivo de historia",
+      "noObjectives": "Aún no hay objetivos. Añade algunos para guiar la narrativa.",
+      "characters": "Personajes",
+      "selectedCharacters": "Personajes seleccionados",
+      "searchCharacters": "Buscar personajes",
+      "noCharactersFound": "No se encontraron personajes",
+      "noCharactersAvailable": "Crea personajes primero",
+      "tags": "Etiquetas",
+      "selectedTags": "Etiquetas seleccionadas",
+      "searchTags": "Buscar etiquetas",
+      "noTagsFound": "No se encontraron etiquetas",
+      "noTagsAvailable": "No hay etiquetas disponibles",
+      "ageRating": "Clasificación por edad",
+      "contentTags": "Etiquetas de contenido",
+      "makePublic": "Hacer pública esta historia"
+    },
+    "validation": {
+      "titleRequired": "El título es obligatorio",
+      "titleTooLong": "El título debe tener 100 caracteres o menos",
+      "synopsisTooLong": "La sinopsis debe tener 2000 caracteres o menos",
+      "initialTextTooLong": "El texto inicial debe tener 5000 caracteres o menos"
+    },
+    "errors": {
+      "createFailed": "Error al crear la historia",
+      "updateFailed": "Error al actualizar la historia",
+      "deleteFailed": "Error al eliminar la historia",
+      "failedToLoad": "Error al cargar las historias",
+      "noCharacters": "Esta historia no tiene personajes",
+      "failedToStart": "Error al iniciar la historia",
+      "notFound": "Historia no encontrada"
+    },
+    "sidebar": {
+      "myStories": "Mis Historias",
+      "noStories": "Aún no hay historias"
+    },
+    "list": {
+      "title": "Mis Historias",
+      "subtitle": "Gestiona tus historias interactivas",
+      "public": "Pública",
+      "private": "Privada",
+      "empty": {
+        "title": "Aún no hay historias",
+        "description": "Crea tu primera historia interactiva",
+        "action": "Crear Historia"
+      }
+    },
+    "detail": {
+      "synopsis": "Sinopsis",
+      "initialScene": "Escena de apertura",
+      "objectives": "Objetivos de la historia",
+      "characters": "Personajes"
+    },
+    "start": "Iniciar Historia",
+    "starting": "Iniciando..."
+  }
+}

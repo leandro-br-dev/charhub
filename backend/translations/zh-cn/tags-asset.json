@@ -1,0 +1,317 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "resources": {
+    "Casual Wear": {
+      "name": "休闲装",
+      "description": "日常休闲服装"
+    },
+    "Formal Wear": {
+      "name": "正装",
+      "description": "正装西服和连衣裙"
+    },
+    "School Uniform": {
+      "name": "校服",
+      "description": "学校制服"
+    },
+    "Maid Outfit": {
+      "name": "女仆装",
+      "description": "女仆制服"
+    },
+    "Butler Outfit": {
+      "name": "管家服",
+      "description": "管家制服"
+    },
+    "Kimono": {
+      "name": "和服",
+      "description": "日本传统服装"
+    },
+    "Yukata": {
+      "name": "浴衣",
+      "description": "夏季和服"
+    },
+    "Armor": {
+      "name": "盔甲",
+      "description": "防护盔甲"
+    },
+    "Knight Armor": {
+      "name": "骑士盔甲",
+      "description": "中世纪骑士盔甲"
+    },
+    "Samurai Armor": {
+      "name": "武士盔甲",
+      "description": "日本战士盔甲"
+    },
+    "Tactical Gear": {
+      "name": "战术装备",
+      "description": "军事/战术装备"
+    },
+    "Fantasy Armor": {
+      "name": "奇幻盔甲",
+      "description": "奇幻风格盔甲"
+    },
+    "Robe": {
+      "name": "长袍",
+      "description": "魔法或仪式长袍"
+    },
+    "Cloak": {
+      "name": "斗篷",
+      "description": "披风或斗篷"
+    },
+    "Dress": {
+      "name": "连衣裙",
+      "description": "连衣裙服饰"
+    },
+    "Wedding Dress": {
+      "name": "婚纱",
+      "description": "新娘礼服"
+    },
+    "Ball Gown": {
+      "name": "晚礼服",
+      "description": "正式的舞会礼服"
+    },
+    "Swimsuit": {
+      "name": "泳衣",
+      "description": "游泳服饰"
+    },
+    "Bikini": {
+      "name": "比基尼",
+      "description": "两件式泳衣"
+    },
+    "Lingerie": {
+      "name": "内衣",
+      "description": "私密服装"
+    },
+    "Latex": {
+      "name": "乳胶",
+      "description": "乳胶/橡胶服装"
+    },
+    "Leather": {
+      "name": "皮革",
+      "description": "皮革服装"
+    },
+    "Bondage Gear": {
+      "name": "束缚装备",
+      "description": "BDSM装备"
+    },
+    "Ninja Outfit": {
+      "name": "忍者服",
+      "description": "忍者/忍者的服装"
+    },
+    "Pirate Outfit": {
+      "name": "海盗服",
+      "description": "海盗服装"
+    },
+    "Cowboy Outfit": {
+      "name": "牛仔服",
+      "description": "西部/牛仔服装"
+    },
+    "Steampunk Outfit": {
+      "name": "蒸汽朋克服装",
+      "description": "维多利亚时代蒸汽朋克服装"
+    },
+    "Cyberpunk Outfit": {
+      "name": "赛博朋克服装",
+      "description": "未来赛博朋克服装"
+    },
+    "Military Uniform": {
+      "name": "军装",
+      "description": "军事礼服"
+    },
+    "Police Uniform": {
+      "name": "警服",
+      "description": "警察制服"
+    },
+    "Nurse Uniform": {
+      "name": "护士服",
+      "description": "医护人员制服"
+    },
+    "Doctor Coat": {
+      "name": "医生白大褂",
+      "description": "医生的外套"
+    },
+    "Lab Coat": {
+      "name": "实验服",
+      "description": "科学家/研究员外套"
+    },
+    "Chef Uniform": {
+      "name": "厨师服",
+      "description": "烹饪专业人士服装"
+    },
+    "Bunny Suit": {
+      "name": "兔女郎装",
+      "description": "花花公子兔女郎服装"
+    },
+    "Cat Costume": {
+      "name": "猫咪服装",
+      "description": "猫咪主题服装"
+    },
+    "Fox Costume": {
+      "name": "狐狸服装",
+      "description": "狐狸主题服装"
+    },
+    "Fursuit": {
+      "name": "Fursuit",
+      "description": "拟人化动物服装"
+    },
+    "Idol Outfit": {
+      "name": "偶像服装",
+      "description": "流行偶像舞台服装"
+    },
+    "Gothic Lolita": {
+      "name": "哥特萝莉",
+      "description": "哥特萝莉时尚"
+    },
+    "Punk Fashion": {
+      "name": "朋克时尚",
+      "description": "朋克摇滚服装"
+    },
+    "Goth Fashion": {
+      "name": "哥特时尚",
+      "description": "哥特时尚风格"
+    },
+    "Gyaru Fashion": {
+      "name": "辣妹时尚",
+      "description": "日本辣妹风格"
+    },
+    "Cosplay": {
+      "name": "Cosplay",
+      "description": "角色扮演服装"
+    },
+    "Sportswear": {
+      "name": "运动服",
+      "description": "运动服装"
+    },
+    "Gym Clothes": {
+      "name": "健身服",
+      "description": "锻炼服饰"
+    },
+    "Pajamas": {
+      "name": "睡衣",
+      "description": "睡衣"
+    },
+    "Nightgown": {
+      "name": "睡裙",
+      "description": "睡袍"
+    },
+    "Bathrobe": {
+      "name": "浴袍",
+      "description": "沐浴或居家袍"
+    },
+    "Towel": {
+      "name": "毛巾",
+      "description": "裹着毛巾"
+    },
+    "Naked": {
+      "name": "裸体",
+      "description": "裸体/未着衣物"
+    },
+    "Topless": {
+      "name": "上身裸体",
+      "description": "无上衣"
+    },
+    "Covered Nude": {
+      "name": "遮盖裸体",
+      "description": "策略性遮盖的裸体"
+    },
+    "Business Suit": {
+      "name": "商务西装",
+      "description": "专业商务着装"
+    },
+    "Tuxedo": {
+      "name": "燕尾服",
+      "description": "正式燕尾服"
+    },
+    "Crown": {
+      "name": "皇冠",
+      "description": "皇家皇冠饰品"
+    },
+    "Tiara": {
+      "name": "头饰",
+      "description": "公主头饰"
+    },
+    "Glasses": {
+      "name": "眼镜",
+      "description": "眼镜饰品"
+    },
+    "Sunglasses": {
+      "name": "太阳镜",
+      "description": "太阳镜饰品"
+    },
+    "Hat": {
+      "name": "帽子",
+      "description": "帽子饰品"
+    },
+    "Witch Hat": {
+      "name": "女巫帽",
+      "description": "尖顶女巫帽"
+    },
+    "Cat Ears": {
+      "name": "猫耳朵",
+      "description": "猫耳朵发箍"
+    },
+    "Fox Ears": {
+      "name": "狐狸耳朵",
+      "description": "狐狸耳朵饰品"
+    },
+    "Horns": {
+      "name": "角",
+      "description": "恶魔/龙角"
+    },
+    "Halo": {
+      "name": "光环",
+      "description": "天使光环"
+    },
+    "Wings": {
+      "name": "翅膀",
+      "description": "天使/恶魔翅膀"
+    },
+    "Tail": {
+      "name": "尾巴",
+      "description": "动物尾巴饰品"
+    },
+    "Collar": {
+      "name": "项圈",
+      "description": "颈部项圈饰品"
+    },
+    "Choker": {
+      "name": "颈链",
+      "description": "颈链"
+    },
+    "Jewelry": {
+      "name": "珠宝",
+      "description": "珠宝饰品"
+    },
+    "Weapon": {
+      "name": "武器",
+      "description": "武器饰品"
+    },
+    "Sword": {
+      "name": "剑",
+      "description": "剑武器"
+    },
+    "Gun": {
+      "name": "枪",
+      "description": "枪械武器"
+    },
+    "Bow": {
+      "name": "弓",
+      "description": "弓箭"
+    },
+    "Staff": {
+      "name": "法杖",
+      "description": "魔法法杖"
+    },
+    "Wand": {
+      "name": "魔杖",
+      "description": "魔法魔杖"
+    },
+    "Shield": {
+      "name": "盾牌",
+      "description": "防护盾牌"
+    },
+    "Scythe": {
+      "name": "镰刀",
+      "description": "镰刀武器"
+    }
+  }
+}

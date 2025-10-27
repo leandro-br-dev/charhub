@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "नई कहानी बनाएँ",
+      "subtitle": "पात्रों और उद्देश्यों के साथ एक इंटरैक्टिव कहानी बनाएँ"
+    },
+    "form": {
+      "title": "शीर्षक",
+      "titlePlaceholder": "कहानी का शीर्षक दर्ज करें",
+      "synopsis": "सारांश",
+      "synopsisPlaceholder": "अपनी कहानी का संक्षिप्त विवरण दें",
+      "coverImage": "कवर इमेज",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "कवर पूर्वावलोकन",
+      "coverImageError": "छवि लोड करने में विफल",
+      "coverImageHint": "कहानी कवर के लिए एक छवि URL पेस्ट करें",
+      "initialText": "प्रारंभिक पाठ",
+      "initialTextPlaceholder": "अपनी कहानी की शुरुआत लिखें...",
+      "initialTextHint": "कहानी शुरू होने पर यह पाठ दिखाया जाएगा",
+      "objectives": "उद्देश्य",
+      "objectivePlaceholder": "एक कहानी उद्देश्य जोड़ें",
+      "noObjectives": "अभी तक कोई उद्देश्य नहीं है। कथा का मार्गदर्शन करने के लिए कुछ जोड़ें।",
+      "characters": "पात्र",
+      "selectedCharacters": "चयनित पात्र",
+      "searchCharacters": "पात्र खोजें",
+      "noCharactersFound": "कोई पात्र नहीं मिला",
+      "noCharactersAvailable": "पहले पात्र बनाएँ",
+      "tags": "टैग",
+      "selectedTags": "चयनित टैग",
+      "searchTags": "टैग खोजें",
+      "noTagsFound": "कोई टैग नहीं मिला",
+      "noTagsAvailable": "कोई टैग उपलब्ध नहीं है",
+      "ageRating": "आयु रेटिंग",
+      "contentTags": "सामग्री टैग",
+      "makePublic": "इस कहानी को सार्वजनिक करें"
+    },
+    "validation": {
+      "titleRequired": "शीर्षक आवश्यक है",
+      "titleTooLong": "शीर्षक 100 अक्षरों से अधिक नहीं होना चाहिए",
+      "synopsisTooLong": "सारांश 2000 अक्षरों से अधिक नहीं होना चाहिए",
+      "initialTextTooLong": "प्रारंभिक पाठ 5000 अक्षरों से अधिक नहीं होना चाहिए"
+    },
+    "errors": {
+      "createFailed": "कहानी बनाने में विफल",
+      "updateFailed": "कहानी अपडेट करने में विफल",
+      "deleteFailed": "कहानी हटाने में विफल",
+      "failedToLoad": "कहानियां लोड करने में विफल",
+      "noCharacters": "इस कहानी में कोई पात्र नहीं है",
+      "failedToStart": "कहानी शुरू करने में विफल",
+      "notFound": "कहानी नहीं मिली"
+    },
+    "sidebar": {
+      "myStories": "मेरी कहानियाँ",
+      "noStories": "अभी तक कोई कहानी नहीं"
+    },
+    "list": {
+      "title": "मेरी कहानियाँ",
+      "subtitle": "अपनी इंटरैक्टिव कहानियों का प्रबंधन करें",
+      "public": "सार्वजनिक",
+      "private": "निजी",
+      "empty": {
+        "title": "अभी तक कोई कहानी नहीं",
+        "description": "अपनी पहली इंटरैक्टिव कहानी बनाएँ",
+        "action": "कहानी बनाएँ"
+      }
+    },
+    "detail": {
+      "synopsis": "सारांश",
+      "initialScene": "शुरुआती दृश्य",
+      "objectives": "कहानी के उद्देश्य",
+      "characters": "पात्र"
+    },
+    "start": "कहानी शुरू करें",
+    "starting": "शुरू हो रहा है..."
+  }
+}

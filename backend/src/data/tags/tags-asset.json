@@ -1,0 +1,551 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "tags": [
+    {
+      "name": "Casual Wear",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Everyday casual clothing"
+    },
+    {
+      "name": "Formal Wear",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Formal suits and dresses"
+    },
+    {
+      "name": "School Uniform",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "School uniform clothing"
+    },
+    {
+      "name": "Maid Outfit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Maid uniform"
+    },
+    {
+      "name": "Butler Outfit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Butler uniform"
+    },
+    {
+      "name": "Kimono",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Traditional Japanese clothing"
+    },
+    {
+      "name": "Yukata",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Summer kimono"
+    },
+    {
+      "name": "Armor",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Protective armor"
+    },
+    {
+      "name": "Knight Armor",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Medieval knight armor"
+    },
+    {
+      "name": "Samurai Armor",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese warrior armor"
+    },
+    {
+      "name": "Tactical Gear",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Military/tactical equipment"
+    },
+    {
+      "name": "Fantasy Armor",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Fantasy-style armor"
+    },
+    {
+      "name": "Robe",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Magical or ceremonial robe"
+    },
+    {
+      "name": "Cloak",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Cape or cloak"
+    },
+    {
+      "name": "Dress",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Dress clothing"
+    },
+    {
+      "name": "Wedding Dress",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Bridal gown"
+    },
+    {
+      "name": "Ball Gown",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Formal ball gown"
+    },
+    {
+      "name": "Swimsuit",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Swimming attire"
+    },
+    {
+      "name": "Bikini",
+      "type": "ASSET",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["NUDITY"],
+      "description": "Two-piece swimsuit"
+    },
+    {
+      "name": "Lingerie",
+      "type": "ASSET",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Intimate apparel"
+    },
+    {
+      "name": "Latex",
+      "type": "ASSET",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "Latex/rubber clothing"
+    },
+    {
+      "name": "Leather",
+      "type": "ASSET",
+      "ageRating": "FOURTEEN",
+      "contentTags": [],
+      "description": "Leather clothing"
+    },
+    {
+      "name": "Bondage Gear",
+      "type": "ASSET",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "NUDITY"],
+      "description": "BDSM equipment"
+    },
+    {
+      "name": "Ninja Outfit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Ninja/shinobi attire"
+    },
+    {
+      "name": "Pirate Outfit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Pirate clothing"
+    },
+    {
+      "name": "Cowboy Outfit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Western/cowboy attire"
+    },
+    {
+      "name": "Steampunk Outfit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Victorian steampunk clothing"
+    },
+    {
+      "name": "Cyberpunk Outfit",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Futuristic cyberpunk attire"
+    },
+    {
+      "name": "Military Uniform",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Military dress uniform"
+    },
+    {
+      "name": "Police Uniform",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Police officer uniform"
+    },
+    {
+      "name": "Nurse Uniform",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Medical nurse uniform"
+    },
+    {
+      "name": "Doctor Coat",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Medical doctor's coat"
+    },
+    {
+      "name": "Lab Coat",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Scientist/researcher coat"
+    },
+    {
+      "name": "Chef Uniform",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Culinary professional attire"
+    },
+    {
+      "name": "Bunny Suit",
+      "type": "ASSET",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["SEXUAL"],
+      "description": "Playboy bunny costume"
+    },
+    {
+      "name": "Cat Costume",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Cat-themed costume"
+    },
+    {
+      "name": "Fox Costume",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Fox-themed costume"
+    },
+    {
+      "name": "Fursuit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Anthropomorphic animal costume"
+    },
+    {
+      "name": "Idol Outfit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Pop idol stage costume"
+    },
+    {
+      "name": "Gothic Lolita",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Gothic Lolita fashion"
+    },
+    {
+      "name": "Punk Fashion",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Punk rock clothing"
+    },
+    {
+      "name": "Goth Fashion",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Gothic fashion style"
+    },
+    {
+      "name": "Gyaru Fashion",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese gyaru style"
+    },
+    {
+      "name": "Cosplay",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Character cosplay costume"
+    },
+    {
+      "name": "Sportswear",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Athletic clothing"
+    },
+    {
+      "name": "Gym Clothes",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Exercise attire"
+    },
+    {
+      "name": "Pajamas",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Sleepwear"
+    },
+    {
+      "name": "Nightgown",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Night dress"
+    },
+    {
+      "name": "Bathrobe",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Bath or house robe"
+    },
+    {
+      "name": "Towel",
+      "type": "ASSET",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["NUDITY"],
+      "description": "Wrapped in towel"
+    },
+    {
+      "name": "Naked",
+      "type": "ASSET",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["NUDITY"],
+      "description": "Nude/unclothed"
+    },
+    {
+      "name": "Topless",
+      "type": "ASSET",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["NUDITY"],
+      "description": "No upper clothing"
+    },
+    {
+      "name": "Covered Nude",
+      "type": "ASSET",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["NUDITY"],
+      "description": "Strategically covered nudity"
+    },
+    {
+      "name": "Business Suit",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Professional business attire"
+    },
+    {
+      "name": "Tuxedo",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Formal tuxedo"
+    },
+    {
+      "name": "Crown",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Royal crown accessory"
+    },
+    {
+      "name": "Tiara",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Princess tiara"
+    },
+    {
+      "name": "Glasses",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Eyeglasses accessory"
+    },
+    {
+      "name": "Sunglasses",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Sunglasses accessory"
+    },
+    {
+      "name": "Hat",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Hat accessory"
+    },
+    {
+      "name": "Witch Hat",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Pointed witch hat"
+    },
+    {
+      "name": "Cat Ears",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Cat ear headband"
+    },
+    {
+      "name": "Fox Ears",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Fox ear accessory"
+    },
+    {
+      "name": "Horns",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Demon/dragon horns"
+    },
+    {
+      "name": "Halo",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Angel halo"
+    },
+    {
+      "name": "Wings",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Angel/demon wings"
+    },
+    {
+      "name": "Tail",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Animal tail accessory"
+    },
+    {
+      "name": "Collar",
+      "type": "ASSET",
+      "ageRating": "FOURTEEN",
+      "contentTags": [],
+      "description": "Neck collar accessory"
+    },
+    {
+      "name": "Choker",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Choker necklace"
+    },
+    {
+      "name": "Jewelry",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Jewelry accessories"
+    },
+    {
+      "name": "Weapon",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Weapon accessories"
+    },
+    {
+      "name": "Sword",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Sword weapon"
+    },
+    {
+      "name": "Gun",
+      "type": "ASSET",
+      "ageRating": "FOURTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "Firearm weapon"
+    },
+    {
+      "name": "Bow",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Bow and arrow"
+    },
+    {
+      "name": "Staff",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Magical staff"
+    },
+    {
+      "name": "Wand",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Magic wand"
+    },
+    {
+      "name": "Shield",
+      "type": "ASSET",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Protective shield"
+    },
+    {
+      "name": "Scythe",
+      "type": "ASSET",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Scythe weapon"
+    }
+  ]
+}

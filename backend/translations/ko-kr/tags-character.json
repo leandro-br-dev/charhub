@@ -1,0 +1,345 @@
+{
+  "description": "Character classification tags with age ratings and content warnings. Used for filtering and categorizing characters.",
+  "resources": {
+    "VTuber": {
+      "name": "VTuber",
+      "description": "가상 유튜버 또는 콘텐츠 크리에이터"
+    },
+    "Anime": {
+      "name": "Anime",
+      "description": "애니메이션 스타일 캐릭터"
+    },
+    "Manga": {
+      "name": "Manga",
+      "description": "만화 스타일 캐릭터"
+    },
+    "Elf": {
+      "name": "Elf",
+      "description": "판타지 엘프 캐릭터"
+    },
+    "Demon": {
+      "name": "Demon",
+      "description": "악마 또는 악마적인 캐릭터"
+    },
+    "Angel": {
+      "name": "Angel",
+      "description": "천사적인 캐릭터"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "뱀파이어 캐릭터"
+    },
+    "Werewolf": {
+      "name": "Werewolf",
+      "description": "늑대인간 또는 라이칸스로프 캐릭터"
+    },
+    "Robot": {
+      "name": "Robot",
+      "description": "로봇 또는 안드로이드 캐릭터"
+    },
+    "Cyborg": {
+      "name": "Cyborg",
+      "description": "사이버네틱 유기체"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "의인화된 동물 캐릭터"
+    },
+    "Kemonomimi": {
+      "name": "Kemonomimi",
+      "description": "동물 귀/꼬리가 달린 캐릭터"
+    },
+    "Catgirl": {
+      "name": "Catgirl",
+      "description": "고양이 특징을 가진 캐릭터"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "여우 요정 캐릭터"
+    },
+    "Maid": {
+      "name": "Maid",
+      "description": "하녀 직업 또는 복장"
+    },
+    "Butler": {
+      "name": "Butler",
+      "description": "집사 직업 또는 복장"
+    },
+    "Student": {
+      "name": "Student",
+      "description": "학생 캐릭터"
+    },
+    "Teacher": {
+      "name": "Teacher",
+      "description": "교사 또는 교육자"
+    },
+    "Warrior": {
+      "name": "Warrior",
+      "description": "전투 중심 캐릭터"
+    },
+    "Knight": {
+      "name": "Knight",
+      "description": "기사 또는 성기사 캐릭터"
+    },
+    "Samurai": {
+      "name": "Samurai",
+      "description": "일본 전사"
+    },
+    "Ninja": {
+      "name": "Ninja",
+      "description": "잠행 전사 캐릭터"
+    },
+    "Mage": {
+      "name": "Mage",
+      "description": "마법 사용자"
+    },
+    "Witch": {
+      "name": "Witch",
+      "description": "마녀 또는 마법사"
+    },
+    "Wizard": {
+      "name": "Wizard",
+      "description": "남성 마법 사용자"
+    },
+    "Healer": {
+      "name": "Healer",
+      "description": "지원/치유 역할"
+    },
+    "Assassin": {
+      "name": "Assassin",
+      "description": "잠행 암살자 캐릭터"
+    },
+    "Thief": {
+      "name": "Thief",
+      "description": "도적 또는 도둑 캐릭터"
+    },
+    "Pirate": {
+      "name": "Pirate",
+      "description": "해적 캐릭터"
+    },
+    "Detective": {
+      "name": "Detective",
+      "description": "탐정 또는 수사관"
+    },
+    "Scientist": {
+      "name": "Scientist",
+      "description": "과학자 또는 연구원"
+    },
+    "Doctor": {
+      "name": "Doctor",
+      "description": "의료 전문가"
+    },
+    "Nurse": {
+      "name": "Nurse",
+      "description": "간호 전문가"
+    },
+    "Idol": {
+      "name": "Idol",
+      "description": "팝 아이돌 또는 공연가"
+    },
+    "Musician": {
+      "name": "Musician",
+      "description": "음악가"
+    },
+    "Artist": {
+      "name": "Artist",
+      "description": "시각 예술가 또는 화가"
+    },
+    "Athlete": {
+      "name": "Athlete",
+      "description": "스포츠 전문가"
+    },
+    "Chef": {
+      "name": "Chef",
+      "description": "요리 전문가"
+    },
+    "Royalty": {
+      "name": "Royalty",
+      "description": "왕족 또는 귀족 캐릭터"
+    },
+    "Princess": {
+      "name": "Princess",
+      "description": "공주 캐릭터"
+    },
+    "Prince": {
+      "name": "Prince",
+      "description": "왕자 캐릭터"
+    },
+    "Tsundere": {
+      "name": "Tsundere",
+      "description": "처음에는 차갑다가 점차 따뜻해지는 성격"
+    },
+    "Yandere": {
+      "name": "Yandere",
+      "description": "집착적이고 잠재적으로 폭력적인 연인"
+    },
+    "Kuudere": {
+      "name": "Kuudere",
+      "description": "쿨하고 감정적으로 거리를 두는 성격"
+    },
+    "Dandere": {
+      "name": "Dandere",
+      "description": "수줍고 조용한 성격"
+    },
+    "Genki": {
+      "name": "Genki",
+      "description": "활기차고 열정적인 성격"
+    },
+    "Tomboy": {
+      "name": "Tomboy",
+      "description": "남성적인 여성 캐릭터"
+    },
+    "Femboy": {
+      "name": "Femboy",
+      "description": "여성스러운 남성 캐릭터"
+    },
+    "BDSM": {
+      "name": "BDSM",
+      "description": "결박, 훈련, 지배/복종 테마"
+    },
+    "Dominatrix": {
+      "name": "Dominatrix",
+      "description": "지배적인 성적 역할"
+    },
+    "Submissive": {
+      "name": "Submissive",
+      "description": "복종적인 성적 역할"
+    },
+    "Succubus": {
+      "name": "Succubus",
+      "description": "악마적 유혹자"
+    },
+    "Monster Girl": {
+      "name": "Monster Girl",
+      "description": "여성 괴물 캐릭터"
+    },
+    "Monster Boy": {
+      "name": "Monster Boy",
+      "description": "남성 괴물 캐릭터"
+    },
+    "Giantess": {
+      "name": "Giantess",
+      "description": "거대한 여성 캐릭터"
+    },
+    "Loli": {
+      "name": "Loli",
+      "description": "어려 보이는 여성 캐릭터 (비성적 맥락)"
+    },
+    "Shota": {
+      "name": "Shota",
+      "description": "어려 보이는 남성 캐릭터 (비성적 맥락)"
+    },
+    "MILF": {
+      "name": "MILF",
+      "description": "매력적인 중년 여성"
+    },
+    "DILF": {
+      "name": "DILF",
+      "description": "매력적인 중년 남성"
+    },
+    "Schoolgirl": {
+      "name": "Schoolgirl",
+      "description": "여학생 캐릭터"
+    },
+    "Schoolboy": {
+      "name": "Schoolboy",
+      "description": "남학생 캐릭터"
+    },
+    "Office Lady": {
+      "name": "Office Lady",
+      "description": "여성 사무직원"
+    },
+    "Salaryman": {
+      "name": "Salaryman",
+      "description": "남성 사무직원"
+    },
+    "Gyaru": {
+      "name": "Gyaru",
+      "description": "일본 패션 하위문화 스타일"
+    },
+    "Goth": {
+      "name": "Goth",
+      "description": "고딕 패션 스타일"
+    },
+    "Punk": {
+      "name": "Punk",
+      "description": "펑크 패션/태도"
+    },
+    "Zombie": {
+      "name": "Zombie",
+      "description": "언데드 좀비 캐릭터"
+    },
+    "Ghost": {
+      "name": "Ghost",
+      "description": "영혼 또는 유령 캐릭터"
+    },
+    "Alien": {
+      "name": "Alien",
+      "description": "외계인 캐릭터"
+    },
+    "Mercenary": {
+      "name": "Mercenary",
+      "description": "고용된 군인 또는 전투원"
+    },
+    "Gladiator": {
+      "name": "Gladiator",
+      "description": "경기장 투사"
+    },
+    "Barbarian": {
+      "name": "Barbarian",
+      "description": "부족 전사 캐릭터"
+    },
+    "Necromancer": {
+      "name": "Necromancer",
+      "description": "죽음의 마법 사용자"
+    },
+    "Druid": {
+      "name": "Druid",
+      "description": "자연 마법 사용자"
+    },
+    "Bard": {
+      "name": "Bard",
+      "description": "음악 모험가"
+    },
+    "Monk": {
+      "name": "Monk",
+      "description": "무술가 또는 종교적 고행자"
+    },
+    "Ranger": {
+      "name": "Ranger",
+      "description": "야생 전사"
+    },
+    "Paladin": {
+      "name": "Paladin",
+      "description": "성스러운 전사"
+    },
+    "Cleric": {
+      "name": "Cleric",
+      "description": "종교적 치유사 또는 사제"
+    },
+    "Warlock": {
+      "name": "Warlock",
+      "description": "계약에 의한 어둠의 마법 사용자"
+    },
+    "Sorcerer": {
+      "name": "Sorcerer",
+      "description": "타고난 마법 사용자"
+    },
+    "Alchemist": {
+      "name": "Alchemist",
+      "description": "물약 제조사 또는 화학자"
+    },
+    "Blacksmith": {
+      "name": "Blacksmith",
+      "description": "무기 및 갑옷 제작자"
+    },
+    "Merchant": {
+      "name": "Merchant",
+      "description": "상인 또는 가게 주인"
+    },
+    "Adventurer": {
+      "name": "Adventurer",
+      "description": "일반 모험가 캐릭터"
+    }
+  }
+}

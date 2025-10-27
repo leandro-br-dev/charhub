@@ -122,7 +122,8 @@
       "placeholders": {
         "gender": "Ex: non-binary AI, android, knight",
         "species": "Ex: Human, Elf, Synthetic",
-        "style": "Ex: Noir detective, pastel anime, painterly"
+        "style": "Ex: Noir detective, pastel anime, painterly",
+        "genderSelect": "Select gender"
       },
       "labels": {
         "unsavedChanges": "You have unsaved changes",
@@ -141,10 +142,33 @@
         "error": "We could not upload this image. Try another file.",
         "previewAlt": "Character avatar preview"
       },
+      "images": {
+        "coverHeader": "Character cover",
+        "coverDescription": "Portrait-oriented image used as the character cover.",
+        "upload": "Upload cover",
+        "change": "Change cover",
+        "uploading": "Uploading...",
+        "urlModalTitle": "Use image from URL",
+        "urlLabel": "Image URL",
+        "previewAlt": "Character cover preview"
+      },
+      "tags": {
+        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
+        "selected": "Selected tags",
+        "none": "No tags selected",
+        "suggestions": "Suggestions",
+        "loading": "Loading...",
+        "noResults": "No results",
+        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
+        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
+        "incompatibleChip": "Incompatible with current age rating"
+      },
       "tabs": {
         "identity": "Identity",
         "profile": "Profile",
         "configuration": "Configuration",
+        "tags": "Tags",
+        "images": "Images",
         "lockedHint": "Fill in the basic identity details to unlock the other sections."
       }
     },

@@ -1,0 +1,261 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "resources": {
+    "Fantasy": {
+      "name": "फैंटेसी",
+      "description": "फैंटेसी शैली"
+    },
+    "Sci-Fi": {
+      "name": "विज्ञान-फाई",
+      "description": "विज्ञान फिक्शन शैली"
+    },
+    "Romance": {
+      "name": "रोमांस",
+      "description": "रोमांस शैली"
+    },
+    "Horror": {
+      "name": "हॉरर",
+      "description": "हॉरर शैली"
+    },
+    "Mystery": {
+      "name": "रहस्य",
+      "description": "रहस्य शैली"
+    },
+    "Thriller": {
+      "name": "थ्रिलर",
+      "description": "थ्रिलर शैली"
+    },
+    "Adventure": {
+      "name": "एडवेंचर",
+      "description": "एडवेंचर शैली"
+    },
+    "Action": {
+      "name": "एक्शन",
+      "description": "एक्शन-ओरिएंटेड कहानियाँ"
+    },
+    "Comedy": {
+      "name": "कॉमेडी",
+      "description": "कॉमेडी शैली"
+    },
+    "Drama": {
+      "name": "ड्रामा",
+      "description": "ड्रामा शैली"
+    },
+    "Slice of Life": {
+      "name": "स्लाइस ऑफ़ लाइफ",
+      "description": "रोज़मर्रा की ज़िंदगी की कहानियाँ"
+    },
+    "Isekai": {
+      "name": "इज़ेकाई",
+      "description": "अन्य दुनिया/पुनर्जन्म की कहानियाँ"
+    },
+    "Harem": {
+      "name": "हरेम",
+      "description": "कई रोमांटिक रुचियाँ"
+    },
+    "Reverse Harem": {
+      "name": "रिवर्स हरेम",
+      "description": "एक महिला नायक के साथ कई पुरुष रुचियाँ"
+    },
+    "Yaoi": {
+      "name": "याओई",
+      "description": "पुरुष/पुरुष रोमांस"
+    },
+    "Yuri": {
+      "name": "युरी",
+      "description": "महिला/महिला रोमांस"
+    },
+    "Ecchi": {
+      "name": "एच्ची",
+      "description": "सुझावात्मक यौन सामग्री"
+    },
+    "Hentai": {
+      "name": "हेंताई",
+      "description": "स्पष्ट यौन सामग्री"
+    },
+    "Gore": {
+      "name": "गोर",
+      "description": "ग्राफिक हिंसा और रक्त"
+    },
+    "Psychological": {
+      "name": "मनोवैज्ञानिक",
+      "description": "मनोवैज्ञानिक विषय"
+    },
+    "Dark Fantasy": {
+      "name": "डार्क फैंटेसी",
+      "description": "डार्क, परिपक्व फैंटेसी विषय"
+    },
+    "Urban Fantasy": {
+      "name": "अर्बन फैंटेसी",
+      "description": "आधुनिक सेटिंग में फैंटेसी"
+    },
+    "High Fantasy": {
+      "name": "हाई फैंटेसी",
+      "description": "काल्पनिक दुनिया में महाकाव्य फैंटेसी"
+    },
+    "Cyberpunk": {
+      "name": "साइबरपंक",
+      "description": "डायस्टोपियन हाई-टेक भविष्य"
+    },
+    "Steampunk": {
+      "name": "स्टीमपंक",
+      "description": "विक्टोरियन-युग की स्टीम तकनीक"
+    },
+    "Post-Apocalyptic": {
+      "name": "पोस्ट-अपोकैलिप्टिक",
+      "description": "आपदा के बाद की दुनिया"
+    },
+    "Dystopian": {
+      "name": "डायस्टोपियन",
+      "description": "दमनकारी समाज सेटिंग"
+    },
+    "Historical": {
+      "name": "ऐतिहासिक",
+      "description": "ऐतिहासिक काल सेटिंग"
+    },
+    "Supernatural": {
+      "name": "अलौकिक",
+      "description": "अलौकिक तत्व"
+    },
+    "Martial Arts": {
+      "name": "मार्शल आर्ट्स",
+      "description": "मार्शल आर्ट्स पर केंद्रित"
+    },
+    "Mecha": {
+      "name": "मेका",
+      "description": "विशाल रोबोट/मेक"
+    },
+    "School Life": {
+      "name": "स्कूल लाइफ",
+      "description": "स्कूल सेटिंग वाली कहानियाँ"
+    },
+    "Sports": {
+      "name": "खेल",
+      "description": "खेल-थीम वाली कहानियाँ"
+    },
+    "Music": {
+      "name": "संगीत",
+      "description": "संगीत-थीम वाली कहानियाँ"
+    },
+    "Military": {
+      "name": "सैन्य",
+      "description": "सैन्य विषय"
+    },
+    "Crime": {
+      "name": "अपराध",
+      "description": "अपराध और आपराधिक गतिविधियाँ"
+    },
+    "Noir": {
+      "name": "नोयर",
+      "description": "डार्क अपराध कहानियाँ"
+    },
+    "Western": {
+      "name": "वेस्टर्न",
+      "description": "वाइल्ड वेस्ट सेटिंग"
+    },
+    "Space Opera": {
+      "name": "स्पेस ओपेरा",
+      "description": "महाकाव्य अंतरिक्ष रोमांच"
+    },
+    "Time Travel": {
+      "name": "टाइम ट्रैवल",
+      "description": "टाइम ट्रैवल विषय"
+    },
+    "Survival": {
+      "name": "सर्वाइवल",
+      "description": "सर्वाइवल स्थितियाँ"
+    },
+    "Mafia": {
+      "name": "माफिया",
+      "description": "संगठित अपराध विषय"
+    },
+    "Vampire": {
+      "name": "वैम्पायर",
+      "description": "वैम्पायर-थीम वाली कहानियाँ"
+    },
+    "Werewolf": {
+      "name": "वेयरवोल्फ",
+      "description": "वेयरवोल्फ-थीम वाली कहानियाँ"
+    },
+    "Mythology": {
+      "name": "पौराणिक कथाएँ",
+      "description": "पौराणिक विषय"
+    },
+    "Religion": {
+      "name": "धर्म",
+      "description": "धार्मिक विषय"
+    },
+    "Political": {
+      "name": "राजनीतिक",
+      "description": "राजनीतिक साज़िश"
+    },
+    "Parody": {
+      "name": "पैरोडी",
+      "description": "पैरोडी या व्यंग्य"
+    },
+    "Wholesome": {
+      "name": "होलसम",
+      "description": "अच्छा महसूस कराने वाली सामग्री"
+    },
+    "Grimdark": {
+      "name": "ग्रिमडार्क",
+      "description": "अत्यधिक डार्क और क्रूर"
+    },
+    "Erotic": {
+      "name": "इरोटिक",
+      "description": "यौन रूप से स्पष्ट सामग्री"
+    },
+    "NTR": {
+      "name": "NTR",
+      "description": "नेटोरे (विश्वासघात) विषय"
+    },
+    "Incest": {
+      "name": "अवैध संबंध",
+      "description": "अवैध संबंध"
+    },
+    "Tentacle": {
+      "name": "टेंटेकल",
+      "description": "टेंटेकल इरोटिका"
+    },
+    "Furry": {
+      "name": "फ़री",
+      "description": "मानव-जानवर चरित्र"
+    },
+    "Monster Girl": {
+      "name": "मॉन्स्टर गर्ल",
+      "description": "महिला राक्षस चरित्र"
+    },
+    "Transformation": {
+      "name": "रूपांतरण",
+      "description": "शारीरिक रूपांतरण विषय"
+    },
+    "Gender Bender": {
+      "name": "जेंडर बेंडर",
+      "description": "लिंग परिवर्तन या स्वैप"
+    },
+    "Cooking": {
+      "name": "खाना पकाना",
+      "description": "पाक विषय"
+    },
+    "Villainess": {
+      "name": "विलेनिस",
+      "description": "महिला खलनायक नायिका"
+    },
+    "Regression": {
+      "name": "रिग्रेशन",
+      "description": "अतीत में वापसी/रिग्रेशन"
+    },
+    "Dungeon": {
+      "name": "डंजन",
+      "description": "डंजन अन्वेषण"
+    },
+    "Game World": {
+      "name": "गेम वर्ल्ड",
+      "description": "गेम की दुनिया में सेट"
+    },
+    "LitRPG": {
+      "name": "LitRPG",
+      "description": "कथा में गेम मैकेनिक्स"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "Neue Geschichte erstellen",
+      "subtitle": "Erstellen Sie eine interaktive Geschichte mit Charakteren und Zielen"
+    },
+    "form": {
+      "title": "Titel",
+      "titlePlaceholder": "Geben Sie den Geschlechtitel ein",
+      "synopsis": "Zusammenfassung",
+      "synopsisPlaceholder": "Beschreiben Sie Ihre Geschichte kurz",
+      "coverImage": "Titelbild",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "Vorschau des Titelbilds",
+      "coverImageError": "Bild konnte nicht geladen werden",
+      "coverImageHint": "Fügen Sie eine Bild-URL für das Titelbild der Geschichte ein",
+      "initialText": "Anfangstext",
+      "initialTextPlaceholder": "Schreiben Sie den Anfang Ihrer Geschichte...",
+      "initialTextHint": "Dieser Text wird angezeigt, wenn die Geschichte beginnt",
+      "objectives": "Ziele",
+      "objectivePlaceholder": "Fügen Sie ein Ziel für die Geschichte hinzu",
+      "noObjectives": "Noch keine Ziele. Fügen Sie einige hinzu, um die Erzählung zu leiten.",
+      "characters": "Charaktere",
+      "selectedCharacters": "Ausgewählte Charaktere",
+      "searchCharacters": "Charaktere suchen",
+      "noCharactersFound": "Keine Charaktere gefunden",
+      "noCharactersAvailable": "Erstellen Sie zuerst Charaktere",
+      "tags": "Tags",
+      "selectedTags": "Ausgewählte Tags",
+      "searchTags": "Tags suchen",
+      "noTagsFound": "Keine Tags gefunden",
+      "noTagsAvailable": "Keine Tags verfügbar",
+      "ageRating": "Altersfreigabe",
+      "contentTags": "Inhaltliche Tags",
+      "makePublic": "Diese Geschichte öffentlich machen"
+    },
+    "validation": {
+      "titleRequired": "Titel ist erforderlich",
+      "titleTooLong": "Der Titel darf höchstens 100 Zeichen lang sein",
+      "synopsisTooLong": "Die Zusammenfassung darf höchstens 2000 Zeichen lang sein",
+      "initialTextTooLong": "Der Anfangstext darf höchstens 5000 Zeichen lang sein"
+    },
+    "errors": {
+      "createFailed": "Geschichte konnte nicht erstellt werden",
+      "updateFailed": "Geschichte konnte nicht aktualisiert werden",
+      "deleteFailed": "Geschichte konnte nicht gelöscht werden",
+      "failedToLoad": "Geschichten konnten nicht geladen werden",
+      "noCharacters": "Diese Geschichte hat keine Charaktere",
+      "failedToStart": "Geschichte konnte nicht gestartet werden",
+      "notFound": "Geschichte nicht gefunden"
+    },
+    "sidebar": {
+      "myStories": "Meine Geschichten",
+      "noStories": "Noch keine Geschichten"
+    },
+    "list": {
+      "title": "Meine Geschichten",
+      "subtitle": "Verwalten Sie Ihre interaktiven Geschichten",
+      "public": "Öffentlich",
+      "private": "Privat",
+      "empty": {
+        "title": "Noch keine Geschichten",
+        "description": "Erstellen Sie Ihre erste interaktive Geschichte",
+        "action": "Geschichte erstellen"
+      }
+    },
+    "detail": {
+      "synopsis": "Zusammenfassung",
+      "initialScene": "Erste Szene",
+      "objectives": "Ziele der Geschichte",
+      "characters": "Charaktere"
+    },
+    "start": "Geschichte starten",
+    "starting": "Wird gestartet..."
+  }
+}

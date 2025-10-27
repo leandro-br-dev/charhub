@@ -1,0 +1,317 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "resources": {
+    "Casual Wear": {
+      "name": "ملابس كاجوال",
+      "description": "ملابس يومية غير رسمية"
+    },
+    "Formal Wear": {
+      "name": "ملابس رسمية",
+      "description": "بدلات رسمية وفساتين"
+    },
+    "School Uniform": {
+      "name": "زي مدرسي",
+      "description": "ملابس زي مدرسي"
+    },
+    "Maid Outfit": {
+      "name": "زي خادمة",
+      "description": "زي خادمة"
+    },
+    "Butler Outfit": {
+      "name": "زي نادل",
+      "description": "زي نادل"
+    },
+    "Kimono": {
+      "name": "كيمونو",
+      "description": "ملابس يابانية تقليدية"
+    },
+    "Yukata": {
+      "name": "يوكاتا",
+      "description": "كيمونو صيفي"
+    },
+    "Armor": {
+      "name": "دروع",
+      "description": "دروع واقية"
+    },
+    "Knight Armor": {
+      "name": "دروع فارس",
+      "description": "دروع فارس من العصور الوسطى"
+    },
+    "Samurai Armor": {
+      "name": "دروع ساموراي",
+      "description": "دروع محارب ياباني"
+    },
+    "Tactical Gear": {
+      "name": "معدات تكتيكية",
+      "description": "معدات عسكرية / تكتيكية"
+    },
+    "Fantasy Armor": {
+      "name": "دروع خيالية",
+      "description": "دروع بأسلوب خيالي"
+    },
+    "Robe": {
+      "name": "رداء",
+      "description": "رداء سحري أو احتفالي"
+    },
+    "Cloak": {
+      "name": "عباءة",
+      "description": "رداء أو عباءة"
+    },
+    "Dress": {
+      "name": "فستان",
+      "description": "ملابس فستان"
+    },
+    "Wedding Dress": {
+      "name": "فستان زفاف",
+      "description": "فستان عروس"
+    },
+    "Ball Gown": {
+      "name": "فستان سهرة",
+      "description": "فستان سهرة رسمي"
+    },
+    "Swimsuit": {
+      "name": "ملابس سباحة",
+      "description": "ملابس سباحة"
+    },
+    "Bikini": {
+      "name": "بيكيني",
+      "description": "ملابس سباحة من قطعتين"
+    },
+    "Lingerie": {
+      "name": "ملابس داخلية",
+      "description": "ملابس حميمية"
+    },
+    "Latex": {
+      "name": "لاتكس",
+      "description": "ملابس لاتكس / مطاط"
+    },
+    "Leather": {
+      "name": "جلد",
+      "description": "ملابس جلدية"
+    },
+    "Bondage Gear": {
+      "name": "معدات تقييد",
+      "description": "معدات BDSM"
+    },
+    "Ninja Outfit": {
+      "name": "زي نينجا",
+      "description": "ملابس نينجا / شينوبي"
+    },
+    "Pirate Outfit": {
+      "name": "زي قرصان",
+      "description": "ملابس قرصان"
+    },
+    "Cowboy Outfit": {
+      "name": "زي رعاة بقر",
+      "description": "ملابس غربية / رعاة بقر"
+    },
+    "Steampunk Outfit": {
+      "name": "زي ستيم بانك",
+      "description": "ملابس ستيم بانك فيكتورية"
+    },
+    "Cyberpunk Outfit": {
+      "name": "زي سايبر بانك",
+      "description": "ملابس سايبر بانك مستقبلية"
+    },
+    "Military Uniform": {
+      "name": "زي عسكري",
+      "description": "زي عسكري رسمي"
+    },
+    "Police Uniform": {
+      "name": "زي شرطة",
+      "description": "زي ضابط شرطة"
+    },
+    "Nurse Uniform": {
+      "name": "زي ممرضة",
+      "description": "زي ممرضة طبية"
+    },
+    "Doctor Coat": {
+      "name": "معطف طبيب",
+      "description": "معطف طبيب"
+    },
+    "Lab Coat": {
+      "name": "معطف مختبر",
+      "description": "معطف عالم / باحث"
+    },
+    "Chef Uniform": {
+      "name": "زي طاهي",
+      "description": "ملابس مهنية طهي"
+    },
+    "Bunny Suit": {
+      "name": "بدلة أرنب",
+      "description": "زي بلاي بوي أرنب"
+    },
+    "Cat Costume": {
+      "name": "زي قطة",
+      "description": "زي على طابع قطة"
+    },
+    "Fox Costume": {
+      "name": "زي ثعلب",
+      "description": "زي على طابع ثعلب"
+    },
+    "Fursuit": {
+      "name": "Fursuit",
+      "description": "زي حيوان مجسم"
+    },
+    "Idol Outfit": {
+      "name": "زي آيدول",
+      "description": "زي مسرحي لآيدول بوب"
+    },
+    "Gothic Lolita": {
+      "name": "قوطي لوليتا",
+      "description": "أزياء قوطي لوليتا"
+    },
+    "Punk Fashion": {
+      "name": "أزياء بانك",
+      "description": "ملابس موسيقى البانك روك"
+    },
+    "Goth Fashion": {
+      "name": "أزياء غوث",
+      "description": "أسلوب أزياء قوطي"
+    },
+    "Gyaru Fashion": {
+      "name": "أزياء غيارو",
+      "description": "أسلوب غيارو ياباني"
+    },
+    "Cosplay": {
+      "name": "كوسبلاي",
+      "description": "زي شخصية كوسبلاي"
+    },
+    "Sportswear": {
+      "name": "ملابس رياضية",
+      "description": "ملابس رياضية"
+    },
+    "Gym Clothes": {
+      "name": "ملابس صالة الألعاب الرياضية",
+      "description": "ملابس تمرين"
+    },
+    "Pajamas": {
+      "name": "بيجاما",
+      "description": "ملابس نوم"
+    },
+    "Nightgown": {
+      "name": "قميص نوم",
+      "description": "فستان نوم"
+    },
+    "Bathrobe": {
+      "name": "روب استحمام",
+      "description": "روب استحمام أو منزلي"
+    },
+    "Towel": {
+      "name": "منشفة",
+      "description": "ملفوف بمنشفة"
+    },
+    "Naked": {
+      "name": "عارٍ",
+      "description": "عارٍ / غير مرتدٍ للملابس"
+    },
+    "Topless": {
+      "name": "عارٍ الصدر",
+      "description": "بدون ملابس علوية"
+    },
+    "Covered Nude": {
+      "name": "عارٍ مغطى",
+      "description": "تعرٍ مغطى بشكل استراتيجي"
+    },
+    "Business Suit": {
+      "name": "بدلة عمل",
+      "description": "ملابس عمل احترافية"
+    },
+    "Tuxedo": {
+      "name": "بدلة توكسيدو",
+      "description": "بدلة توكسيدو رسمية"
+    },
+    "Crown": {
+      "name": "تاج",
+      "description": "إكسسوار تاج ملكي"
+    },
+    "Tiara": {
+      "name": "تيارا",
+      "description": "تيارا أميرة"
+    },
+    "Glasses": {
+      "name": "نظارات",
+      "description": "إكسسوار نظارات"
+    },
+    "Sunglasses": {
+      "name": "نظارات شمسية",
+      "description": "إكسسوار نظارات شمسية"
+    },
+    "Hat": {
+      "name": "قبعة",
+      "description": "إكسسوار قبعة"
+    },
+    "Witch Hat": {
+      "name": "قبعة ساحرة",
+      "description": "قبعة ساحرة مدببة"
+    },
+    "Cat Ears": {
+      "name": "آذان قطة",
+      "description": "عصابة رأس بآذان قطة"
+    },
+    "Fox Ears": {
+      "name": "آذان ثعلب",
+      "description": "إكسسوار آذان ثعلب"
+    },
+    "Horns": {
+      "name": "قرون",
+      "description": "قرون شيطان / تنين"
+    },
+    "Halo": {
+      "name": "هالة",
+      "description": "هالة ملاك"
+    },
+    "Wings": {
+      "name": "أجنحة",
+      "description": "أجنحة ملاك / شيطان"
+    },
+    "Tail": {
+      "name": "ذيل",
+      "description": "إكسسوار ذيل حيوان"
+    },
+    "Collar": {
+      "name": "طوق",
+      "description": "إكسسوار طوق للرقبة"
+    },
+    "Choker": {
+      "name": "قلادة ضيقة",
+      "description": "قلادة ضيقة"
+    },
+    "Jewelry": {
+      "name": "مجوهرات",
+      "description": "إكسسوارات مجوهرات"
+    },
+    "Weapon": {
+      "name": "سلاح",
+      "description": "إكسسوارات أسلحة"
+    },
+    "Sword": {
+      "name": "سيف",
+      "description": "سلاح سيف"
+    },
+    "Gun": {
+      "name": "مسدس",
+      "description": "سلاح ناري"
+    },
+    "Bow": {
+      "name": "قوس",
+      "description": "قوس وسهم"
+    },
+    "Staff": {
+      "name": "عصا",
+      "description": "عصا سحرية"
+    },
+    "Wand": {
+      "name": "عصا سحرية",
+      "description": "عصا سحر"
+    },
+    "Shield": {
+      "name": "درع",
+      "description": "درع واقٍ"
+    },
+    "Scythe": {
+      "name": "منجل",
+      "description": "سلاح منجل"
+    }
+  }
+}

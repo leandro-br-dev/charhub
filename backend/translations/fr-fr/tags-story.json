@@ -1,0 +1,261 @@
+{
+  "description": "Story and narrative classification tags with age ratings and content warnings. Used for filtering and categorizing stories.",
+  "resources": {
+    "Fantasy": {
+      "name": "Fantasy",
+      "description": "Genre de fantasy"
+    },
+    "Sci-Fi": {
+      "name": "Sci-Fi",
+      "description": "Genre de science-fiction"
+    },
+    "Romance": {
+      "name": "Romance",
+      "description": "Genre de romance"
+    },
+    "Horror": {
+      "name": "Horror",
+      "description": "Genre d'horreur"
+    },
+    "Mystery": {
+      "name": "Mystery",
+      "description": "Genre de mystère"
+    },
+    "Thriller": {
+      "name": "Thriller",
+      "description": "Genre de thriller"
+    },
+    "Adventure": {
+      "name": "Adventure",
+      "description": "Genre d'aventure"
+    },
+    "Action": {
+      "name": "Action",
+      "description": "Histoires axées sur l'action"
+    },
+    "Comedy": {
+      "name": "Comedy",
+      "description": "Genre de comédie"
+    },
+    "Drama": {
+      "name": "Drama",
+      "description": "Genre dramatique"
+    },
+    "Slice of Life": {
+      "name": "Slice of Life",
+      "description": "Histoires sur la vie quotidienne"
+    },
+    "Isekai": {
+      "name": "Isekai",
+      "description": "Histoires d'un autre monde/réincarnation"
+    },
+    "Harem": {
+      "name": "Harem",
+      "description": "Multiples intérêts romantiques"
+    },
+    "Reverse Harem": {
+      "name": "Reverse Harem",
+      "description": "Protagoniste féminine avec plusieurs intérêts masculins"
+    },
+    "Yaoi": {
+      "name": "Yaoi",
+      "description": "Romance entre hommes"
+    },
+    "Yuri": {
+      "name": "Yuri",
+      "description": "Romance entre femmes"
+    },
+    "Ecchi": {
+      "name": "Ecchi",
+      "description": "Contenu sexuellement suggestif"
+    },
+    "Hentai": {
+      "name": "Hentai",
+      "description": "Contenu sexuellement explicite"
+    },
+    "Gore": {
+      "name": "Gore",
+      "description": "Violence graphique et sang"
+    },
+    "Psychological": {
+      "name": "Psychological",
+      "description": "Thèmes psychologiques"
+    },
+    "Dark Fantasy": {
+      "name": "Dark Fantasy",
+      "description": "Thèmes de fantasy sombres et matures"
+    },
+    "Urban Fantasy": {
+      "name": "Urban Fantasy",
+      "description": "Fantasy dans un cadre moderne"
+    },
+    "High Fantasy": {
+      "name": "High Fantasy",
+      "description": "Fantasy épique dans des mondes fictifs"
+    },
+    "Cyberpunk": {
+      "name": "Cyberpunk",
+      "description": "Futur dystopique de haute technologie"
+    },
+    "Steampunk": {
+      "name": "Steampunk",
+      "description": "Technologie à vapeur de l'époque victorienne"
+    },
+    "Post-Apocalyptic": {
+      "name": "Post-Apocalyptic",
+      "description": "Monde après une catastrophe"
+    },
+    "Dystopian": {
+      "name": "Dystopian",
+      "description": "Cadre de société oppressive"
+    },
+    "Historical": {
+      "name": "Historical",
+      "description": "Cadre d'époque historique"
+    },
+    "Supernatural": {
+      "name": "Supernatural",
+      "description": "Éléments surnaturels"
+    },
+    "Martial Arts": {
+      "name": "Martial Arts",
+      "description": "Axé sur les arts martiaux"
+    },
+    "Mecha": {
+      "name": "Mecha",
+      "description": "Robots géants/mechs"
+    },
+    "School Life": {
+      "name": "School Life",
+      "description": "Histoires se déroulant à l'école"
+    },
+    "Sports": {
+      "name": "Sports",
+      "description": "Histoires sur le thème du sport"
+    },
+    "Music": {
+      "name": "Music",
+      "description": "Histoires sur le thème de la musique"
+    },
+    "Military": {
+      "name": "Military",
+      "description": "Thèmes militaires"
+    },
+    "Crime": {
+      "name": "Crime",
+      "description": "Crime et activités criminelles"
+    },
+    "Noir": {
+      "name": "Noir",
+      "description": "Histoires de crime sombres"
+    },
+    "Western": {
+      "name": "Western",
+      "description": "Cadre du Far West"
+    },
+    "Space Opera": {
+      "name": "Space Opera",
+      "description": "Aventures spatiales épiques"
+    },
+    "Time Travel": {
+      "name": "Time Travel",
+      "description": "Thèmes de voyage dans le temps"
+    },
+    "Survival": {
+      "name": "Survival",
+      "description": "Situations de survie"
+    },
+    "Mafia": {
+      "name": "Mafia",
+      "description": "Thèmes du crime organisé"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "Histoires sur le thème des vampires"
+    },
+    "Werewolf": {
+      "name": "Werewolf",
+      "description": "Histoires sur le thème des loups-garous"
+    },
+    "Mythology": {
+      "name": "Mythology",
+      "description": "Thèmes mythologiques"
+    },
+    "Religion": {
+      "name": "Religion",
+      "description": "Thèmes religieux"
+    },
+    "Political": {
+      "name": "Political",
+      "description": "Intrigue politique"
+    },
+    "Parody": {
+      "name": "Parody",
+      "description": "Parodie ou satire"
+    },
+    "Wholesome": {
+      "name": "Wholesome",
+      "description": "Contenu réconfortant"
+    },
+    "Grimdark": {
+      "name": "Grimdark",
+      "description": "Extrêmement sombre et brutal"
+    },
+    "Erotic": {
+      "name": "Erotic",
+      "description": "Contenu sexuellement explicite"
+    },
+    "NTR": {
+      "name": "NTR",
+      "description": "Thèmes de Netorare (infidélité)"
+    },
+    "Incest": {
+      "name": "Incest",
+      "description": "Relations incestueuses"
+    },
+    "Tentacle": {
+      "name": "Tentacle",
+      "description": "Érotisme de tentacules"
+    },
+    "Furry": {
+      "name": "Furry",
+      "description": "Personnages animaux anthropomorphes"
+    },
+    "Monster Girl": {
+      "name": "Monster Girl",
+      "description": "Personnages féminins monstres"
+    },
+    "Transformation": {
+      "name": "Transformation",
+      "description": "Thèmes de transformation physique"
+    },
+    "Gender Bender": {
+      "name": "Gender Bender",
+      "description": "Changement ou échange de genre"
+    },
+    "Cooking": {
+      "name": "Cooking",
+      "description": "Thèmes culinaires"
+    },
+    "Villainess": {
+      "name": "Villainess",
+      "description": "Protagoniste féminine méchante"
+    },
+    "Regression": {
+      "name": "Regression",
+      "description": "Retour au passé/régression"
+    },
+    "Dungeon": {
+      "name": "Dungeon",
+      "description": "Exploration de donjons"
+    },
+    "Game World": {
+      "name": "Game World",
+      "description": "Se déroule dans un monde de jeu"
+    },
+    "LitRPG": {
+      "name": "LitRPG",
+      "description": "Mécaniques de jeu dans le récit"
+    }
+  }
+}

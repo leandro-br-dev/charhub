@@ -1,0 +1,77 @@
+{
+  "description": "Story management and creation interface translations",
+  "resources": {
+    "create": {
+      "title": "Criar Nova História",
+      "subtitle": "Construa uma história interativa com personagens e objetivos"
+    },
+    "form": {
+      "title": "Título",
+      "titlePlaceholder": "Digite o título da história",
+      "synopsis": "Sinopse",
+      "synopsisPlaceholder": "Descreva sua história brevemente",
+      "coverImage": "Imagem de Capa",
+      "coverImagePlaceholder": "https://example.com/image.jpg",
+      "coverImagePreview": "Prévia da capa",
+      "coverImageError": "Falha ao carregar imagem",
+      "coverImageHint": "Cole um URL de imagem para a capa da história",
+      "initialText": "Texto Inicial",
+      "initialTextPlaceholder": "Escreva o início da sua história...",
+      "initialTextHint": "Este texto será exibido quando a história começar",
+      "objectives": "Objetivos",
+      "objectivePlaceholder": "Adicionar um objetivo para a história",
+      "noObjectives": "Ainda não há objetivos. Adicione alguns para guiar a narrativa.",
+      "characters": "Personagens",
+      "selectedCharacters": "Personagens selecionados",
+      "searchCharacters": "Buscar personagens",
+      "noCharactersFound": "Nenhum personagem encontrado",
+      "noCharactersAvailable": "Crie personagens primeiro",
+      "tags": "Tags",
+      "selectedTags": "Tags selecionadas",
+      "searchTags": "Buscar tags",
+      "noTagsFound": "Nenhuma tag encontrada",
+      "noTagsAvailable": "Nenhuma tag disponível",
+      "ageRating": "Classificação Indicativa",
+      "contentTags": "Tags de Conteúdo",
+      "makePublic": "Tornar esta história pública"
+    },
+    "validation": {
+      "titleRequired": "O título é obrigatório",
+      "titleTooLong": "O título deve ter no máximo 100 caracteres",
+      "synopsisTooLong": "A sinopse deve ter no máximo 2000 caracteres",
+      "initialTextTooLong": "O texto inicial deve ter no máximo 5000 caracteres"
+    },
+    "errors": {
+      "createFailed": "Falha ao criar história",
+      "updateFailed": "Falha ao atualizar história",
+      "deleteFailed": "Falha ao excluir história",
+      "failedToLoad": "Falha ao carregar histórias",
+      "noCharacters": "Esta história não possui personagens",
+      "failedToStart": "Falha ao iniciar história",
+      "notFound": "História não encontrada"
+    },
+    "sidebar": {
+      "myStories": "Minhas Histórias",
+      "noStories": "Ainda não há histórias"
+    },
+    "list": {
+      "title": "Minhas Histórias",
+      "subtitle": "Gerencie suas histórias interativas",
+      "public": "Pública",
+      "private": "Privada",
+      "empty": {
+        "title": "Ainda não há histórias",
+        "description": "Crie sua primeira história interativa",
+        "action": "Criar História"
+      }
+    },
+    "detail": {
+      "synopsis": "Sinopse",
+      "initialScene": "Cena de Abertura",
+      "objectives": "Objetivos da História",
+      "characters": "Personagens"
+    },
+    "start": "Iniciar História",
+    "starting": "Iniciando..."
+  }
+}

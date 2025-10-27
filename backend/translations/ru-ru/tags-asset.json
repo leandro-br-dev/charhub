@@ -1,0 +1,317 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "resources": {
+    "Casual Wear": {
+      "name": "Повседневная одежда",
+      "description": "Повседневная повседневная одежда"
+    },
+    "Formal Wear": {
+      "name": "Формальная одежда",
+      "description": "Формальные костюмы и платья"
+    },
+    "School Uniform": {
+      "name": "Школьная форма",
+      "description": "Школьная форма"
+    },
+    "Maid Outfit": {
+      "name": "Наряд горничной",
+      "description": "Форма горничной"
+    },
+    "Butler Outfit": {
+      "name": "Наряд дворецкого",
+      "description": "Форма дворецкого"
+    },
+    "Kimono": {
+      "name": "Кимоно",
+      "description": "Традиционная японская одежда"
+    },
+    "Yukata": {
+      "name": "Юката",
+      "description": "Летнее кимоно"
+    },
+    "Armor": {
+      "name": "Броня",
+      "description": "Защитная броня"
+    },
+    "Knight Armor": {
+      "name": "Рыцарская броня",
+      "description": "Средневековая рыцарская броня"
+    },
+    "Samurai Armor": {
+      "name": "Самурайская броня",
+      "description": "Броня японского воина"
+    },
+    "Tactical Gear": {
+      "name": "Тактическое снаряжение",
+      "description": "Военное/тактическое снаряжение"
+    },
+    "Fantasy Armor": {
+      "name": "Фэнтезийная броня",
+      "description": "Броня в стиле фэнтези"
+    },
+    "Robe": {
+      "name": "Мантия",
+      "description": "Магическая или церемониальная мантия"
+    },
+    "Cloak": {
+      "name": "Плащ",
+      "description": "Накидка или плащ"
+    },
+    "Dress": {
+      "name": "Платье",
+      "description": "Платье"
+    },
+    "Wedding Dress": {
+      "name": "Свадебное платье",
+      "description": "Свадебное платье невесты"
+    },
+    "Ball Gown": {
+      "name": "Бальное платье",
+      "description": "Формальное бальное платье"
+    },
+    "Swimsuit": {
+      "name": "Купальник",
+      "description": "Купальная одежда"
+    },
+    "Bikini": {
+      "name": "Бикини",
+      "description": "Раздельный купальник"
+    },
+    "Lingerie": {
+      "name": "Нижнее белье",
+      "description": "Интимная одежда"
+    },
+    "Latex": {
+      "name": "Латекс",
+      "description": "Латексная/резиновая одежда"
+    },
+    "Leather": {
+      "name": "Кожа",
+      "description": "Кожаная одежда"
+    },
+    "Bondage Gear": {
+      "name": "Снаряжение для бондажа",
+      "description": "BDSM-снаряжение"
+    },
+    "Ninja Outfit": {
+      "name": "Наряд ниндзя",
+      "description": "Наряд ниндзя/синоби"
+    },
+    "Pirate Outfit": {
+      "name": "Пиратский костюм",
+      "description": "Пиратская одежда"
+    },
+    "Cowboy Outfit": {
+      "name": "Ковбойский костюм",
+      "description": "Вестерн/ковбойский наряд"
+    },
+    "Steampunk Outfit": {
+      "name": "Стимпанк-костюм",
+      "description": "Викторианская стимпанк-одежда"
+    },
+    "Cyberpunk Outfit": {
+      "name": "Киберпанк-костюм",
+      "description": "Футуристический киберпанк-наряд"
+    },
+    "Military Uniform": {
+      "name": "Военная форма",
+      "description": "Формальная военная форма"
+    },
+    "Police Uniform": {
+      "name": "Полицейская форма",
+      "description": "Форма сотрудника полиции"
+    },
+    "Nurse Uniform": {
+      "name": "Форма медсестры",
+      "description": "Форма медицинской медсестры"
+    },
+    "Doctor Coat": {
+      "name": "Халат врача",
+      "description": "Халат врача"
+    },
+    "Lab Coat": {
+      "name": "Лабораторный халат",
+      "description": "Халат ученого/исследователя"
+    },
+    "Chef Uniform": {
+      "name": "Форма повара",
+      "description": "Форма кулинарного специалиста"
+    },
+    "Bunny Suit": {
+      "name": "Костюм кролика",
+      "description": "Костюм Playboy bunny"
+    },
+    "Cat Costume": {
+      "name": "Кошачий костюм",
+      "description": "Костюм в тематике кошки"
+    },
+    "Fox Costume": {
+      "name": "Лисий костюм",
+      "description": "Костюм в тематике лисы"
+    },
+    "Fursuit": {
+      "name": "Fursuit",
+      "description": "Костюм антропоморфного животного"
+    },
+    "Idol Outfit": {
+      "name": "Наряд айдола",
+      "description": "Сценический костюм поп-айдола"
+    },
+    "Gothic Lolita": {
+      "name": "Готическая Лолита",
+      "description": "Готическая Лолита"
+    },
+    "Punk Fashion": {
+      "name": "Панк-мода",
+      "description": "Панк-рок одежда"
+    },
+    "Goth Fashion": {
+      "name": "Готическая мода",
+      "description": "Готический стиль моды"
+    },
+    "Gyaru Fashion": {
+      "name": "Гяру-мода",
+      "description": "Японский стиль гяру"
+    },
+    "Cosplay": {
+      "name": "Косплей",
+      "description": "Костюм для косплея персонажа"
+    },
+    "Sportswear": {
+      "name": "Спортивная одежда",
+      "description": "Спортивная одежда"
+    },
+    "Gym Clothes": {
+      "name": "Одежда для спортзала",
+      "description": "Одежда для тренировок"
+    },
+    "Pajamas": {
+      "name": "Пижама",
+      "description": "Одежда для сна"
+    },
+    "Nightgown": {
+      "name": "Ночная рубашка",
+      "description": "Ночное платье"
+    },
+    "Bathrobe": {
+      "name": "Халат",
+      "description": "Купальный или домашний халат"
+    },
+    "Towel": {
+      "name": "Полотенце",
+      "description": "Обернутый в полотенце"
+    },
+    "Naked": {
+      "name": "Обнаженный",
+      "description": "Обнаженный/без одежды"
+    },
+    "Topless": {
+      "name": "С обнаженной грудью",
+      "description": "Без верхней одежды"
+    },
+    "Covered Nude": {
+      "name": "Частично прикрытая нагота",
+      "description": "Стратегически прикрытая нагота"
+    },
+    "Business Suit": {
+      "name": "Деловой костюм",
+      "description": "Профессиональная деловая одежда"
+    },
+    "Tuxedo": {
+      "name": "Смокинг",
+      "description": "Формальный смокинг"
+    },
+    "Crown": {
+      "name": "Корона",
+      "description": "Королевский коронный аксессуар"
+    },
+    "Tiara": {
+      "name": "Диадема",
+      "description": "Диадема принцессы"
+    },
+    "Glasses": {
+      "name": "Очки",
+      "description": "Аксессуар для очков"
+    },
+    "Sunglasses": {
+      "name": "Солнечные очки",
+      "description": "Аксессуар для солнечных очков"
+    },
+    "Hat": {
+      "name": "Шляпа",
+      "description": "Аксессуар для шляпы"
+    },
+    "Witch Hat": {
+      "name": "Шляпа ведьмы",
+      "description": "Заостренная шляпа ведьмы"
+    },
+    "Cat Ears": {
+      "name": "Кошачьи ушки",
+      "description": "Ободок с кошачьими ушками"
+    },
+    "Fox Ears": {
+      "name": "Лисьи ушки",
+      "description": "Аксессуар для лисьих ушек"
+    },
+    "Horns": {
+      "name": "Рога",
+      "description": "Рога демона/дракона"
+    },
+    "Halo": {
+      "name": "Нимб",
+      "description": "Нимб ангела"
+    },
+    "Wings": {
+      "name": "Крылья",
+      "description": "Крылья ангела/демона"
+    },
+    "Tail": {
+      "name": "Хвост",
+      "description": "Аксессуар для хвоста животного"
+    },
+    "Collar": {
+      "name": "Ошейник",
+      "description": "Аксессуар для ошейника на шею"
+    },
+    "Choker": {
+      "name": "Чокер",
+      "description": "Ожерелье-чокер"
+    },
+    "Jewelry": {
+      "name": "Ювелирные изделия",
+      "description": "Ювелирные аксессуары"
+    },
+    "Weapon": {
+      "name": "Оружие",
+      "description": "Аксессуары для оружия"
+    },
+    "Sword": {
+      "name": "Меч",
+      "description": "Оружие-меч"
+    },
+    "Gun": {
+      "name": "Пистолет",
+      "description": "Оружие-огнестрельное"
+    },
+    "Bow": {
+      "name": "Лук",
+      "description": "Лук и стрелы"
+    },
+    "Staff": {
+      "name": "Посох",
+      "description": "Магический посох"
+    },
+    "Wand": {
+      "name": "Волшебная палочка",
+      "description": "Волшебная палочка"
+    },
+    "Shield": {
+      "name": "Щит",
+      "description": "Защитный щит"
+    },
+    "Scythe": {
+      "name": "Коса",
+      "description": "Оружие-коса"
+    }
+  }
+}

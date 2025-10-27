@@ -2,6 +2,8 @@ export { CharacterCard } from './CharacterCard';
 export { CharacterForm } from './CharacterForm';
 export { CharacterFormLayout } from './CharacterFormLayout';
 export { CharacterAvatarUploader } from './CharacterAvatarUploader';
+export { TagsTab } from './TagsTab';
+export { ImagesTab } from './ImagesTab';
 export { IdentityTab } from './IdentityTab';
 export { ProfileTab } from './ProfileTab';
 export { ConfigurationTab } from './ConfigurationTab';

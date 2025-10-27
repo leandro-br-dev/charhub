@@ -5,6 +5,7 @@ import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
 import * as characterService from '../../services/characterService';
 import { r2Service } from '../../services/r2Service';
+import { runCharacterAutocomplete, CharacterAutocompleteMode } from '../../agents/characterAutocompleteAgent';
 import {
   createCharacterSchema,
   updateCharacterSchema,
@@ -66,6 +67,40 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       success: false,
       message: 'Failed to create character',
     });
+  }
+});
+
+/**
+ * POST /api/v1/characters/autocomplete
+ * Given partial character fields, return proposed values for missing ones.
+ * Body: { mode: 'ai' | 'web', payload: Partial<CharacterFormValues> }
+ */
+router.post('/autocomplete', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const userId = req.auth?.user?.id;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Authentication required' });
+    }
+
+    const { mode, payload } = req.body || {};
+    const selectedMode: CharacterAutocompleteMode = mode === 'web' ? 'web' : 'ai';
+
+    // Sanitize payload: only accept known keys
+    const allowedKeys = new Set([
+      'firstName','lastName','age','gender','species','style','avatar','physicalCharacteristics','personality','history','isPublic','originalLanguageCode','ageRating','contentTags','loraId','mainAttireId','tagIds','attireIds','cover'
+    ]);
+    const safePayload: Record<string, unknown> = {};
+    if (payload && typeof payload === 'object') {
+      for (const [k, v] of Object.entries(payload)) {
+        if (allowedKeys.has(k)) safePayload[k] = v;
+      }
+    }
+
+    const suggestions = await runCharacterAutocomplete(safePayload as any, selectedMode);
+    return res.json({ success: true, data: suggestions });
+  } catch (error) {
+    logger.error({ error }, 'Error running character autocomplete');
+    return res.status(500).json({ success: false, message: 'Failed to autocomplete character' });
   }
 });
 

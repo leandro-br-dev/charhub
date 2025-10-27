@@ -1,6 +1,7 @@
 import { Prisma } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
+import { createMessage } from './messageService';
 import type {
   CreateConversationInput,
   UpdateConversationInput,
@@ -104,6 +105,29 @@ export async function createConversation(
       { conversationId: conversation.id, userId },
       'Conversation created successfully'
     );
+
+    // If settings contains initialMessage, create it as the first message using the system narrator
+    if (settings && typeof settings === 'object' && 'initialMessage' in settings && settings.initialMessage) {
+      const SYSTEM_NARRATOR_ID = '00000000-0000-0000-0000-000000000001';
+
+      try {
+        await createMessage({
+          conversationId: conversation.id,
+          content: String(settings.initialMessage),
+          senderId: SYSTEM_NARRATOR_ID,
+          senderType: 'SYSTEM',
+        });
+        logger.info(
+          { conversationId: conversation.id },
+          'Initial narration message created for story'
+        );
+      } catch (error) {
+        logger.error(
+          { error, conversationId: conversation.id },
+          'Failed to create initial narration message'
+          );
+      }
+    }
 
     return conversation;
   } catch (error) {

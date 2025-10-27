@@ -1,0 +1,317 @@
+{
+  "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
+  "resources": {
+    "Casual Wear": {
+      "name": "カジュアルウェア",
+      "description": "日常的なカジュアル衣料"
+    },
+    "Formal Wear": {
+      "name": "フォーマルウェア",
+      "description": "フォーマルなスーツやドレス"
+    },
+    "School Uniform": {
+      "name": "制服",
+      "description": "学校の制服"
+    },
+    "Maid Outfit": {
+      "name": "メイド服",
+      "description": "メイドの制服"
+    },
+    "Butler Outfit": {
+      "name": "執事服",
+      "description": "執事の制服"
+    },
+    "Kimono": {
+      "name": "着物",
+      "description": "日本の伝統的な衣装"
+    },
+    "Yukata": {
+      "name": "浴衣",
+      "description": "夏の着物"
+    },
+    "Armor": {
+      "name": "鎧",
+      "description": "防具"
+    },
+    "Knight Armor": {
+      "name": "騎士の鎧",
+      "description": "中世の騎士の鎧"
+    },
+    "Samurai Armor": {
+      "name": "侍の鎧",
+      "description": "日本の武士の鎧"
+    },
+    "Tactical Gear": {
+      "name": "タクティカルギア",
+      "description": "軍事/タクティカル装備"
+    },
+    "Fantasy Armor": {
+      "name": "ファンタジー鎧",
+      "description": "ファンタジー風の鎧"
+    },
+    "Robe": {
+      "name": "ローブ",
+      "description": "魔法や儀式のローブ"
+    },
+    "Cloak": {
+      "name": "マント",
+      "description": "ケープまたはマント"
+    },
+    "Dress": {
+      "name": "ドレス",
+      "description": "ドレス衣料"
+    },
+    "Wedding Dress": {
+      "name": "ウェディングドレス",
+      "description": "花嫁のドレス"
+    },
+    "Ball Gown": {
+      "name": "ボールガウン",
+      "description": "フォーマルなボールガウン"
+    },
+    "Swimsuit": {
+      "name": "水着",
+      "description": "水泳用具"
+    },
+    "Bikini": {
+      "name": "ビキニ",
+      "description": "ツーピース水着"
+    },
+    "Lingerie": {
+      "name": "ランジェリー",
+      "description": "下着"
+    },
+    "Latex": {
+      "name": "ラテックス",
+      "description": "ラテックス/ゴム製衣料"
+    },
+    "Leather": {
+      "name": "レザー",
+      "description": "革製衣料"
+    },
+    "Bondage Gear": {
+      "name": "ボンデージギア",
+      "description": "BDSM用具"
+    },
+    "Ninja Outfit": {
+      "name": "忍者衣装",
+      "description": "忍者/忍びの衣装"
+    },
+    "Pirate Outfit": {
+      "name": "海賊衣装",
+      "description": "海賊の衣料"
+    },
+    "Cowboy Outfit": {
+      "name": "カウボーイ衣装",
+      "description": "西部劇/カウボーイの衣装"
+    },
+    "Steampunk Outfit": {
+      "name": "スチームパンク衣装",
+      "description": "ヴィクトリア朝スチームパンク風衣料"
+    },
+    "Cyberpunk Outfit": {
+      "name": "サイバーパンク衣装",
+      "description": "未来的なサイバーパンク風衣装"
+    },
+    "Military Uniform": {
+      "name": "軍服",
+      "description": "軍の正装"
+    },
+    "Police Uniform": {
+      "name": "警察官の制服",
+      "description": "警察官の制服"
+    },
+    "Nurse Uniform": {
+      "name": "看護師の制服",
+      "description": "医療系看護師の制服"
+    },
+    "Doctor Coat": {
+      "name": "白衣",
+      "description": "医師の白衣"
+    },
+    "Lab Coat": {
+      "name": "実験着",
+      "description": "科学者/研究者のコート"
+    },
+    "Chef Uniform": {
+      "name": "コックコート",
+      "description": "調理師の服装"
+    },
+    "Bunny Suit": {
+      "name": "バニースーツ",
+      "description": "プレイボーイバニーのコスチューム"
+    },
+    "Cat Costume": {
+      "name": "猫のコスチューム",
+      "description": "猫をテーマにしたコスチューム"
+    },
+    "Fox Costume": {
+      "name": "狐のコスチューム",
+      "description": "狐をテーマにしたコスチューム"
+    },
+    "Fursuit": {
+      "name": "ファーファスーツ",
+      "description": "擬人化された動物のコスチューム"
+    },
+    "Idol Outfit": {
+      "name": "アイドル衣装",
+      "description": "ポップアイドルのステージ衣装"
+    },
+    "Gothic Lolita": {
+      "name": "ゴシックロリータ",
+      "description": "ゴシックロリータファッション"
+    },
+    "Punk Fashion": {
+      "name": "パンクファッション",
+      "description": "パンクロック衣料"
+    },
+    "Goth Fashion": {
+      "name": "ゴスファッション",
+      "description": "ゴシックファッションスタイル"
+    },
+    "Gyaru Fashion": {
+      "name": "ギャルファッション",
+      "description": "日本のギャルスタイル"
+    },
+    "Cosplay": {
+      "name": "コスプレ",
+      "description": "キャラクターコスチューム"
+    },
+    "Sportswear": {
+      "name": "スポーツウェア",
+      "description": "運動用衣料"
+    },
+    "Gym Clothes": {
+      "name": "ジムウェア",
+      "description": "エクササイズ用具"
+    },
+    "Pajamas": {
+      "name": "パジャマ",
+      "description": "寝間着"
+    },
+    "Nightgown": {
+      "name": "ナイトガウン",
+      "description": "夜用ドレス"
+    },
+    "Bathrobe": {
+      "name": "バスローブ",
+      "description": "バスローブまたは部屋着用ローブ"
+    },
+    "Towel": {
+      "name": "タオル",
+      "description": "タオルで巻かれている"
+    },
+    "Naked": {
+      "name": "裸",
+      "description": "ヌード/衣服なし"
+    },
+    "Topless": {
+      "name": "上半身裸",
+      "description": "上半身の衣料なし"
+    },
+    "Covered Nude": {
+      "name": "部分的に隠された裸",
+      "description": "戦略的に隠されたヌード"
+    },
+    "Business Suit": {
+      "name": "ビジネススーツ",
+      "description": "プロフェッショナルなビジネス用衣料"
+    },
+    "Tuxedo": {
+      "name": "タキシード",
+      "description": "フォーマルなタキシード"
+    },
+    "Crown": {
+      "name": "王冠",
+      "description": "王冠アクセサリー"
+    },
+    "Tiara": {
+      "name": "ティアラ",
+      "description": "プリンセスのティアラ"
+    },
+    "Glasses": {
+      "name": "メガネ",
+      "description": "眼鏡アクセサリー"
+    },
+    "Sunglasses": {
+      "name": "サングラス",
+      "description": "サングラスアクセサリー"
+    },
+    "Hat": {
+      "name": "帽子",
+      "description": "帽子アクセサリー"
+    },
+    "Witch Hat": {
+      "name": "魔女の帽子",
+      "description": "とがった魔女の帽子"
+    },
+    "Cat Ears": {
+      "name": "猫耳",
+      "description": "猫耳ヘッドバンド"
+    },
+    "Fox Ears": {
+      "name": "狐耳",
+      "description": "狐耳アクセサリー"
+    },
+    "Horns": {
+      "name": "角",
+      "description": "悪魔/ドラゴンの角"
+    },
+    "Halo": {
+      "name": "光輪",
+      "description": "天使の光輪"
+    },
+    "Wings": {
+      "name": "翼",
+      "description": "天使/悪魔の翼"
+    },
+    "Tail": {
+      "name": "尻尾",
+      "description": "動物の尻尾アクセサリー"
+    },
+    "Collar": {
+      "name": "首輪",
+      "description": "首輪アクセサリー"
+    },
+    "Choker": {
+      "name": "チョーカー",
+      "description": "チョーカーネックレス"
+    },
+    "Jewelry": {
+      "name": "ジュエリー",
+      "description": "ジュエリーアクセサリー"
+    },
+    "Weapon": {
+      "name": "武器",
+      "description": "武器アクセサリー"
+    },
+    "Sword": {
+      "name": "剣",
+      "description": "剣武器"
+    },
+    "Gun": {
+      "name": "銃",
+      "description": "銃器武器"
+    },
+    "Bow": {
+      "name": "弓",
+      "description": "弓矢"
+    },
+    "Staff": {
+      "name": "杖",
+      "description": "魔法の杖"
+    },
+    "Wand": {
+      "name": "魔法の杖",
+      "description": "魔法の杖"
+    },
+    "Shield": {
+      "name": "盾",
+      "description": "防護盾"
+    },
+    "Scythe": {
+      "name": "鎌",
+      "description": "鎌武器"
+    }
+  }
+}
