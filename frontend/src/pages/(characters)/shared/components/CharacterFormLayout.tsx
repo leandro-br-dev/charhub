@@ -234,7 +234,17 @@ export function CharacterFormLayout({
                             addToast(t('characters:form.autocomplete.nothing', 'No suggestions available.'), 'info');
                           } else {
                             for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
-                              if (key in form.values) form.updateField(key as any, value as any);
+                              if (key === 'cover' || key === 'avatar') continue; // avoid media fields from autocomplete
+                              if (typeof value === 'object' && value !== null) {
+                                // Convert objects to a readable string
+                                const text = Object.entries(value as Record<string, unknown>)
+                                  .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
+                                // @ts-expect-error dynamic index
+                                form.updateField(key, text as any);
+                              } else if (key in form.values) {
+                                // @ts-expect-error dynamic index
+                                form.updateField(key, value as any);
+                              }
                             }
                             addToast(t('characters:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
                           }
@@ -260,7 +270,16 @@ export function CharacterFormLayout({
                             addToast(t('characters:form.autocomplete.nothing', 'No suggestions available.'), 'info');
                           } else {
                             for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
-                              if (key in form.values) form.updateField(key as any, value as any);
+                              if (key === 'cover' || key === 'avatar') continue; // avoid media fields
+                              if (typeof value === 'object' && value !== null) {
+                                const text = Object.entries(value as Record<string, unknown>)
+                                  .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
+                                // @ts-expect-error dynamic index
+                                form.updateField(key, text as any);
+                              } else if (key in form.values) {
+                                // @ts-expect-error dynamic index
+                                form.updateField(key, value as any);
+                              }
                             }
                             addToast(t('characters:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
                           }

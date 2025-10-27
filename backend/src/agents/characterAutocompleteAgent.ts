@@ -83,9 +83,19 @@ function buildUserPrompt(input: CharacterAutocompleteInput) {
     'Return JSON object with only these missing fields if applicable:',
     JSON.stringify(wanted),
     '',
-    'Allowed keys: ["lastName","age","gender","species","style","physicalCharacteristics","personality","history","contentTags","cover"]',
-    'If unsure about contentTags, propose a small, relevant subset from: ["VIOLENCE","GORE","SEXUAL","NUDITY","LANGUAGE","DRUGS","ALCOHOL","HORROR","PSYCHOLOGICAL","DISCRIMINATION","CRIME","GAMBLING"]; omit if not needed.',
-    'For numbers like age, provide a number. For lists like contentTags, provide an array of strings. For text fields, keep a few sentences max.',
+    'Allowed keys ONLY (omit avatar/cover/media/urls): ["lastName","age","gender","species","style","physicalCharacteristics","personality","history","contentTags"]',
+    'Types:',
+    '- lastName: string',
+    '- age: number',
+    '- gender: string',
+    '- species: string',
+    '- style: string',
+    '- physicalCharacteristics: string (not object). If you have multiple attributes like height/weight, merge into one short paragraph.',
+    '- personality: string (1-3 sentences)',
+    '- history: string (1-4 sentences)',
+    '- contentTags: array of strings from this set only: ["VIOLENCE","GORE","SEXUAL","NUDITY","LANGUAGE","DRUGS","ALCOHOL","HORROR","PSYCHOLOGICAL","DISCRIMINATION","CRIME","GAMBLING"]',
+    'Do NOT invent or include image URLs or media fields (avatar, cover).',
+    'For numbers like age, provide a number (not string). For arrays, provide valid JSON arrays. For text fields, keep them concise.',
   ].join('\n');
 }
 
@@ -109,10 +119,61 @@ export async function runCharacterAutocomplete(
   // Parse JSON safely
   const text = llmResponse.content?.trim() || '{}';
   try {
-    const parsed = parseJsonSafe<CharacterAutocompleteResult>(text);
-    return parsed && typeof parsed === 'object' ? parsed : {};
+    const parsed = parseJsonSafe<Record<string, unknown>>(text) || {};
+    const sanitized = sanitizeAutocomplete(parsed);
+    return sanitized;
   } catch (_e) {
     logger.warn({ text }, 'Failed to parse LLM JSON for character autocomplete');
     return {};
   }
+}
+
+function sanitizeAutocomplete(obj: Record<string, unknown>): CharacterAutocompleteResult {
+  const out: Record<string, unknown> = {};
+  const allowed = new Set([
+    'lastName','age','gender','species','style','physicalCharacteristics','personality','history','contentTags'
+  ]);
+
+  for (const [key, value] of Object.entries(obj)) {
+    if (!allowed.has(key)) continue;
+    switch (key) {
+      case 'age':
+        if (typeof value === 'number' && Number.isFinite(value)) out.age = value as number;
+        else if (typeof value === 'string') {
+          const n = Number(value);
+          if (Number.isFinite(n)) out.age = n;
+        }
+        break;
+      case 'contentTags': {
+        const allowedTags = new Set([
+          'VIOLENCE','GORE','SEXUAL','NUDITY','LANGUAGE','DRUGS','ALCOHOL','HORROR','PSYCHOLOGICAL','DISCRIMINATION','CRIME','GAMBLING'
+        ]);
+        if (Array.isArray(value)) {
+          const filtered = value
+            .map(v => (typeof v === 'string' ? v.toUpperCase().trim() : ''))
+            .filter(v => allowedTags.has(v));
+          if (filtered.length > 0) out.contentTags = filtered as any;
+        }
+        break;
+      }
+      case 'physicalCharacteristics':
+        if (typeof value === 'string') out.physicalCharacteristics = value;
+        else if (value && typeof value === 'object') {
+          // Convert object into a succinct string
+          const entries = Object.entries(value as Record<string, unknown>)
+            .filter(([, v]) => v != null && v !== '')
+            .map(([k, v]) => `${capitalize(k)}: ${String(v)}`);
+          if (entries.length > 0) out.physicalCharacteristics = entries.join('; ');
+        }
+        break;
+      default:
+        if (typeof value === 'string') (out as any)[key] = value;
+        break;
+    }
+  }
+  return out as CharacterAutocompleteResult;
+}
+
+function capitalize(s: string): string {
+  return s.length ? s.charAt(0).toUpperCase() + s.slice(1) : s;
 }

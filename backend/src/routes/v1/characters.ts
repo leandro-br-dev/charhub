@@ -87,7 +87,7 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
 
     // Sanitize payload: only accept known keys
     const allowedKeys = new Set([
-      'firstName','lastName','age','gender','species','style','avatar','physicalCharacteristics','personality','history','isPublic','originalLanguageCode','ageRating','contentTags','loraId','mainAttireId','tagIds','attireIds','cover'
+      'firstName','lastName','age','gender','species','style','avatar','physicalCharacteristics','personality','history','isPublic','originalLanguageCode','ageRating','contentTags','loraId','mainAttireId','tagIds','attireIds'
     ]);
     const safePayload: Record<string, unknown> = {};
     if (payload && typeof payload === 'object') {

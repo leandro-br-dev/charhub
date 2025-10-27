@@ -29,8 +29,8 @@ export default function CharacterDetailPage(): JSX.Element {
   }, [user, data]);
 
   // Mock data for stats (substituir com dados reais do backend no futuro)
-  const messageCount = 0;
-  const favoriteCount = 0;
+  const messageCount = 380300;
+  const favoriteCount = 12700;
 
   const handleDelete = async () => {
     if (!data) return;
@@ -52,7 +52,6 @@ export default function CharacterDetailPage(): JSX.Element {
         text: data?.personality || '',
         url: url,
       }).catch(() => {
-        // Fallback to clipboard
         navigator.clipboard.writeText(url);
         alert(t('common:messages.linkCopied'));
       });
@@ -101,255 +100,262 @@ export default function CharacterDetailPage(): JSX.Element {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
-      {/* Background image with blur */}
-      <div className="absolute inset-0 -z-10">
-        {data.avatar && (
-          <div className="h-full w-full">
-            <CachedImage
-              src={data.avatar}
-              alt=""
-              className="h-full w-full object-cover opacity-20 blur-3xl"
-            />
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/90 to-background" />
+    <div className="min-h-screen bg-background">
+      {/* Header bar */}
+      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-4 py-3 backdrop-blur-sm">
+        <button
+          onClick={() => navigate('/characters')}
+          className="flex items-center gap-2 text-content transition-colors hover:text-primary"
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-2 rounded-lg px-3 py-2 text-content transition-colors hover:bg-input"
+          >
+            <span className="material-symbols-outlined text-xl">share</span>
+          </button>
+          {isOwner && (
+            <>
+              <button
+                onClick={() => navigate(`/characters/${data.id}/edit`)}
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-content transition-colors hover:bg-input"
+              >
+                <span className="material-symbols-outlined text-xl">edit</span>
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={deleteMutation.isPending}
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-danger transition-colors hover:bg-danger/10"
+              >
+                <span className="material-symbols-outlined text-xl">delete</span>
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Main content */}
-      <div className="container mx-auto px-4 py-8 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          {/* Hero section with image and main info */}
-          <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card/80 shadow-2xl backdrop-blur-md">
-            <div className="grid gap-6 lg:grid-cols-[400px_1fr] lg:gap-8">
-              {/* Left side - Cover image */}
-              <div className="relative">
-                <div className="relative aspect-[3/4] w-full overflow-hidden lg:h-[600px] lg:rounded-l-3xl">
-                  {data.avatar ? (
-                    <CachedImage
-                      src={data.avatar}
-                      alt={fullName}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
-                      <span className="material-symbols-outlined text-9xl text-muted/30">person</span>
-                    </div>
-                  )}
-
-                  {/* Age rating badge on image */}
-                  <div className="absolute left-4 top-4">
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-black/70 px-4 py-2 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-sm">
-                      <span className="material-symbols-outlined text-base">shield</span>
-                      {t(`characters:ageRatings.${data.ageRating}`)}
-                    </span>
+      <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+          {/* Left side - Character card */}
+          <div className="space-y-4">
+            {/* Character image */}
+            <div className="overflow-hidden rounded-2xl bg-card shadow-lg">
+              <div className="relative aspect-[3/4]">
+                {data.avatar ? (
+                  <CachedImage
+                    src={data.avatar}
+                    alt={fullName}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+                    <span className="material-symbols-outlined text-9xl text-muted/30">person</span>
                   </div>
+                )}
+              </div>
 
-                  {/* Stats overlay on image */}
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-around gap-2 rounded-2xl bg-black/70 px-4 py-3 backdrop-blur-sm">
-                    <div className="flex flex-col items-center">
-                      <span className="material-symbols-outlined text-2xl text-white">chat_bubble</span>
-                      <span className="mt-1 text-sm font-semibold text-white">{messageCount}</span>
-                    </div>
-                    <div className="h-8 w-px bg-white/30" />
-                    <div className="flex flex-col items-center">
-                      <span className="material-symbols-outlined text-2xl text-white">favorite</span>
-                      <span className="mt-1 text-sm font-semibold text-white">{favoriteCount}</span>
-                    </div>
+              {/* Stats bar */}
+              <div className="grid grid-cols-3 border-t border-border bg-card">
+                <button className="flex flex-col items-center gap-1 border-r border-border px-4 py-3 transition-colors hover:bg-input">
+                  <div className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-xl text-primary">thumb_up</span>
+                    <span className="text-lg font-semibold text-content">316</span>
                   </div>
+                </button>
+                <button className="flex flex-col items-center gap-1 border-r border-border px-4 py-3 transition-colors hover:bg-input">
+                  <div className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-xl text-primary">star</span>
+                    <span className="text-lg font-semibold text-content">2.2K</span>
+                  </div>
+                </button>
+                <button className="flex flex-col items-center gap-1 px-4 py-3 transition-colors hover:bg-input">
+                  <div className="flex items-center gap-1">
+                    <span className="material-symbols-outlined text-xl text-danger">favorite</span>
+                    <span className="text-lg font-semibold text-content">1.2K</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Supporters section (if owner) */}
+            {isOwner && (
+              <div className="rounded-2xl bg-card p-4 shadow-lg">
+                <h3 className="mb-3 text-sm font-semibold text-title">
+                  Apoiadores
+                </h3>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary">
+                    <span className="material-symbols-outlined text-2xl text-white">person_add</span>
+                  </div>
+                  <span className="text-sm text-muted">Seja o primeiro apoiador!</span>
+                </div>
+                <Button
+                  type="button"
+                  variant="primary"
+                  className="mt-4 w-full !rounded-xl"
+                  size="small"
+                >
+                  Personagem de suporte
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {/* Right side - Character info */}
+          <div className="space-y-4">
+            {/* Title and stats */}
+            <div className="rounded-2xl bg-card p-6 shadow-lg">
+              <h1 className="mb-4 text-3xl font-bold text-title lg:text-4xl">
+                {fullName}
+              </h1>
+
+              {/* Stats row */}
+              <div className="mb-6 grid grid-cols-3 gap-4">
+                <div>
+                  <div className="text-2xl font-bold text-content">{messageCount.toLocaleString()}</div>
+                  <div className="text-sm text-muted">Mensagens</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-content">{favoriteCount.toLocaleString()}</div>
+                  <div className="text-sm text-muted">Total de caracteres</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-content">{new Date(data.createdAt).toLocaleDateString()}</div>
+                  <div className="text-sm text-muted">Criar tempo</div>
                 </div>
               </div>
 
-              {/* Right side - Character info */}
-              <div className="flex flex-col gap-6 p-6 lg:p-8">
-                {/* Header with name and actions */}
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-wrap items-start justify-between gap-4">
-                    <h1 className="text-4xl font-bold tracking-tight text-title lg:text-5xl">
-                      {fullName}
-                    </h1>
-                    <div className="flex flex-wrap gap-2">
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        icon="share"
-                        size="small"
-                        onClick={handleShare}
-                        className="!rounded-full"
-                      >
-                        {t('characters:detail.actions.share')}
-                      </Button>
-                      {isOwner && (
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          icon="edit"
-                          size="small"
-                          onClick={() => navigate(`/characters/${data.id}/edit`)}
-                          className="!rounded-full"
-                        >
-                          {t('characters:detail.actions.edit')}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
+              {/* Start chat button */}
+              <Button
+                type="button"
+                variant="primary"
+                icon="chat"
+                onClick={handleStartChat}
+                disabled={isStartingChat}
+                className="w-full !rounded-xl !bg-gradient-to-r !from-pink-500 !to-purple-600 !py-4 text-lg font-semibold !text-white shadow-lg transition-all hover:shadow-xl"
+              >
+                {isStartingChat
+                  ? t('characters:detail.actions.startingChat')
+                  : 'Início o bate-papo'}
+              </Button>
+            </div>
 
-                  {/* Metadata row */}
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted">
-                    <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-base">calendar_today</span>
-                      <span>{new Date(data.createdAt).toLocaleDateString()}</span>
+            {/* Gallery thumbnails */}
+            {data.avatar && (
+              <div className="rounded-2xl bg-card p-4 shadow-lg">
+                <div className="grid grid-cols-4 gap-2">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20"
+                    >
+                      <CachedImage
+                        src={data.avatar}
+                        alt={`${fullName} ${i}`}
+                        className="h-full w-full object-cover opacity-80"
+                      />
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-base">chat_bubble</span>
-                      <span>{t('characters:detail.labels.messageCount', { count: messageCount })}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-base">favorite</span>
-                      <span>{t('characters:detail.labels.favoriteCount', { count: favoriteCount })}</span>
-                    </div>
-                  </div>
-
-                  {/* Quick info badges */}
-                  <div className="flex flex-wrap gap-2">
-                    {data.gender && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-medium text-primary">
-                        <span className="material-symbols-outlined text-base">person</span>
-                        {data.gender}
-                      </span>
-                    )}
-                    {data.species && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-secondary/10 px-3 py-1.5 text-sm font-medium text-secondary">
-                        <span className="material-symbols-outlined text-base">stars</span>
-                        {data.species}
-                      </span>
-                    )}
-                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium ${
-                      data.isPublic
-                        ? 'bg-success/10 text-success'
-                        : 'bg-warning/10 text-warning'
-                    }`}>
-                      <span className="material-symbols-outlined text-base">
-                        {data.isPublic ? 'public' : 'lock'}
-                      </span>
-                      {data.isPublic
-                        ? t('characters:detail.labels.public')
-                        : t('characters:detail.labels.private')}
-                    </span>
-                  </div>
+                  ))}
                 </div>
+              </div>
+            )}
 
-                {/* Tags */}
-                {data.tags && data.tags.length > 0 && (
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
-                      {t('characters:detail.sections.metadata')}
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {data.tags.map(tag => (
-                        <span
-                          key={tag.id}
-                          className="rounded-full border border-border bg-input px-3 py-1 text-sm text-content transition-colors hover:bg-input/70"
-                        >
-                          {tag.name}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+            {/* Introduction */}
+            <div className="rounded-2xl bg-card p-6 shadow-lg">
+              <h2 className="mb-4 text-xl font-semibold text-title">Introdução</h2>
+
+              {/* Tags */}
+              <div className="mb-4 flex flex-wrap gap-2">
+                {/* Age rating badge */}
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-success/20 px-3 py-1.5 text-xs font-semibold text-success">
+                  <span className="material-symbols-outlined text-sm">verified</span>
+                  {t(`characters:ageRatings.${data.ageRating}`)}
+                </span>
+
+                {/* Content tags */}
+                {data.contentTags && data.contentTags.length > 0 && data.contentTags.map(tag => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted"
+                  >
+                    {t(`characters:contentTags.${tag}`)}
+                  </span>
+                ))}
+
+                {/* Regular tags */}
+                {data.tags && data.tags.length > 0 && data.tags.map(tag => (
+                  <span
+                    key={tag.id}
+                    className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+
+                {/* Gender and species */}
+                {data.gender && (
+                  <span className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted">
+                    {data.gender}
+                  </span>
                 )}
-
-                {/* Content warnings */}
-                {data.contentTags && data.contentTags.length > 0 && (
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
-                      {t('characters:detail.sections.contentTags')}
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {data.contentTags.map(tag => (
-                        <span
-                          key={tag}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-warning/30 bg-warning/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-warning"
-                        >
-                          <span className="material-symbols-outlined text-sm">warning</span>
-                          {t(`characters:contentTags.${tag}`)}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+                {data.species && (
+                  <span className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted">
+                    {data.species}
+                  </span>
                 )}
+              </div>
 
-                {/* Character description - scrollable area */}
-                <div className="flex-1 space-y-4 overflow-y-auto pr-2" style={{ maxHeight: '400px' }}>
+              {/* Description box with gradient background */}
+              <div className="rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 p-6 dark:from-purple-900/30 dark:to-pink-900/30">
+                <div className="space-y-4 text-sm leading-relaxed">
                   {data.personality && (
-                    <div className="space-y-2">
-                      <h2 className="flex items-center gap-2 text-lg font-semibold text-title">
-                        <span className="material-symbols-outlined">psychology</span>
-                        {t('characters:detail.sections.personality')}
-                      </h2>
-                      <p className="text-sm leading-relaxed text-content">{data.personality}</p>
-                    </div>
-                  )}
-
-                  {data.physicalCharacteristics && (
-                    <div className="space-y-2">
-                      <h2 className="flex items-center gap-2 text-lg font-semibold text-title">
-                        <span className="material-symbols-outlined">face</span>
-                        {t('characters:detail.sections.physicalCharacteristics')}
-                      </h2>
-                      <p className="text-sm leading-relaxed text-content">{data.physicalCharacteristics}</p>
+                    <div>
+                      <p className="italic text-content/90">"{data.personality.substring(0, 100)}..."</p>
                     </div>
                   )}
 
                   {data.history && (
-                    <div className="space-y-2">
-                      <h2 className="flex items-center gap-2 text-lg font-semibold text-title">
-                        <span className="material-symbols-outlined">auto_stories</span>
-                        {t('characters:detail.sections.history')}
-                      </h2>
-                      <p className="whitespace-pre-line text-sm leading-relaxed text-content">{data.history}</p>
+                    <div className="max-h-[300px] overflow-y-auto pr-2">
+                      <p className="whitespace-pre-line text-content/80">{data.history}</p>
+                    </div>
+                  )}
+
+                  {data.physicalCharacteristics && (
+                    <div>
+                      <p className="text-content/80">{data.physicalCharacteristics}</p>
                     </div>
                   )}
                 </div>
 
-                {/* Start chat button - always visible */}
-                <div className="sticky bottom-0 border-t border-border bg-card/90 pt-4 backdrop-blur-sm">
-                  <Button
-                    type="button"
-                    variant="primary"
-                    icon="chat"
-                    onClick={handleStartChat}
-                    disabled={isStartingChat}
-                    className="w-full !rounded-2xl !py-4 text-lg font-semibold shadow-lg transition-all hover:shadow-xl"
-                  >
-                    {isStartingChat
-                      ? t('characters:detail.actions.startingChat')
-                      : t('characters:detail.actions.startChat')}
-                  </Button>
+                {/* Expand button */}
+                <button className="mt-4 flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80">
+                  <span>Veja mais</span>
+                  <span className="material-symbols-outlined text-base">expand_more</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Update notes */}
+            <div className="rounded-2xl bg-card p-6 shadow-lg">
+              <div className="mb-2 flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-title">Nota de atualização</h2>
+                <button className="text-sm font-medium text-primary hover:text-primary/80">
+                  Veja mais →
+                </button>
+              </div>
+              <div className="space-y-2 text-sm text-content">
+                <div className="flex items-start gap-2">
+                  <span className="text-primary">•</span>
+                  <span>Última atualização: {new Date(data.updatedAt).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Additional actions (only for owner) */}
-          {isOwner && (
-            <div className="mt-6 flex justify-end">
-              <Button
-                type="button"
-                variant="danger"
-                icon="delete"
-                size="small"
-                onClick={handleDelete}
-                disabled={deleteMutation.isPending}
-                className="!rounded-full"
-              >
-                {deleteMutation.isPending
-                  ? t('characters:detail.actions.deleting')
-                  : t('characters:detail.actions.delete')}
-              </Button>
-            </div>
-          )}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

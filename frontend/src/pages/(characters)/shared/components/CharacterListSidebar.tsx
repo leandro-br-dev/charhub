@@ -8,8 +8,12 @@ type CharacterListSidebarProps = {
   onLinkClick?: () => void;
 };
 
+interface CharacterWithFavorite extends CharacterSummary {
+  isFavorite: boolean;
+}
+
 export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps) {
-  const [characters, setCharacters] = useState<CharacterSummary[]>([]);
+  const [characters, setCharacters] = useState<CharacterWithFavorite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,8 +21,21 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
     const fetchCharacters = async () => {
       try {
         setIsLoading(true);
-        const response = await characterService.list();
-        setCharacters(response.items.slice(0, 10));
+        const [favoriteResponse, allResponse] = await Promise.all([
+          characterService.getFavorites(100), // Assuming a limit for favorites
+          characterService.list({ limit: 10 }), // Fetching all/recent
+        ]);
+        const favoriteIds = new Set(favoriteResponse.map(c => c.id));
+        const combined = allResponse.items.map(char => ({
+          ...char,
+          isFavorite: favoriteIds.has(char.id),
+        }));
+        combined.sort((a, b) => {
+          if (a.isFavorite && !b.isFavorite) return -1;
+          if (!a.isFavorite && b.isFavorite) return 1;
+          return 0;
+        });
+        setCharacters(combined);
       } catch (err) {
         setError('Failed to load characters.');
         console.error(err);
@@ -26,7 +43,6 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
         setIsLoading(false);
       }
     };
-
     fetchCharacters();
   }, []);
 
@@ -59,7 +75,8 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
                   ) : (
                     <img src="/logo.png" alt={fullName} className="h-8 w-8 rounded-full object-cover" />
                   )}
-                  <span className="text-sm font-medium text-content">{fullName}</span>
+                  <span className="text-sm font-medium text-content flex-grow">{fullName}</span>
+                  {character.isFavorite && <span className="material-symbols-outlined text-yellow-500">star</span>}
                 </Link>
               </li>
             );
