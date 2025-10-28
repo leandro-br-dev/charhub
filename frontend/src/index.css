@@ -15,18 +15,18 @@
   --color-content: #1F2328;
   --color-content-dark: #FFFFFF;
 
-  /* Cyberpunk Neon Colors */
-  --color-primary: #ff0080;        /* Hot Pink / Neon Magenta */
-  --color-primary-100: #ffe6f2;    /* Light pink tint */
-  --color-primary-500: #ff0080;    /* Main neon pink */
-  --color-primary-900: #990050;    /* Dark pink */
-  --color-secondary: #00d9ff;      /* Neon Cyan / Electric Blue */
+  /* Cyberpunk Neon Colors - Optimized for readability */
+  --color-primary: #8b5cf6;        /* Electric Purple / Neon Violet - Excellent contrast with white/black */
+  --color-primary-100: #ede9fe;    /* Very light purple tint */
+  --color-primary-500: #8b5cf6;    /* Main electric purple */
+  --color-primary-900: #5b21b6;    /* Deep purple */
+  --color-secondary: #06b6d4;      /* Bright Cyan - Great contrast */
 
-  --color-accent: #b967ff;         /* Purple accent for tertiary elements */
+  --color-accent: #ec4899;         /* Hot pink accent for highlights */
   --color-muted: #656D76;
-  --color-danger: #ff1744;         /* Neon red */
-  --color-success: #00ff9f;        /* Neon green */
-  --color-info: #00d9ff;           /* Same as secondary for consistency */
+  --color-danger: #ef4444;         /* Bright red */
+  --color-success: #10b981;        /* Emerald green */
+  --color-info: #06b6d4;           /* Same as secondary for consistency */
 
   --color-background: #FFFFFF;
   --color-foreground: #1F2328;
@@ -46,17 +46,17 @@
   --color-content-dark: #0f0f1e;
 
   /* Cyberpunk Neon Colors - Enhanced for dark mode */
-  --color-primary: #ff0080;        /* Hot Pink / Neon Magenta */
-  --color-primary-100: #2d0a1f;    /* Very dark pink for backgrounds */
-  --color-primary-500: #ff0080;    /* Main neon pink */
-  --color-primary-900: #ff33a0;    /* Lighter pink for highlights */
-  --color-secondary: #00d9ff;      /* Neon Cyan / Electric Blue */
+  --color-primary: #a78bfa;        /* Lighter electric purple for dark backgrounds */
+  --color-primary-100: #1e1b4b;    /* Very dark purple for backgrounds */
+  --color-primary-500: #a78bfa;    /* Main lighter purple */
+  --color-primary-900: #c4b5fd;    /* Even lighter purple for highlights */
+  --color-secondary: #22d3ee;      /* Bright cyan for dark mode */
 
-  --color-accent: #b967ff;         /* Purple accent */
-  --color-muted: #8888aa;
-  --color-danger: #ff1744;         /* Neon red */
-  --color-success: #00ff9f;        /* Neon green */
-  --color-info: #00d9ff;           /* Neon cyan */
+  --color-accent: #f472b6;         /* Bright hot pink accent */
+  --color-muted: #9ca3af;
+  --color-danger: #f87171;         /* Bright red for dark */
+  --color-success: #34d399;        /* Bright emerald */
+  --color-info: #22d3ee;           /* Bright cyan */
 
   --color-background: #0f0f1e;     /* Deep dark blue-black */
   --color-foreground: #e0e0ff;     /* Slight blue tint white */
