@@ -7,22 +7,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Cor principal amarelo/dourado #FFC917
+        // Cyberpunk Neon Colors - Using CSS variables for theme switching
         primary: {
-          DEFAULT: '#FFC917',
-          100: '#FFDE72',
-          500: '#FFC917',
-          900: '#967300'
+          DEFAULT: 'var(--color-primary)',
+          100: 'var(--color-primary-100)',
+          500: 'var(--color-primary-500)',
+          900: 'var(--color-primary-900)'
         },
         secondary: {
-          DEFAULT: '#10b981',
-          500: '#10b981'
+          DEFAULT: 'var(--color-secondary)',
+          500: 'var(--color-secondary)'
         },
-        accent: '#f59e0b',
-        muted: '#6b7280',
-        danger: '#ef4444',
-        success: '#22c55e',
-        info: '#0ea5e9',
+        accent: 'var(--color-accent)',
+        muted: 'var(--color-muted)',
+        danger: 'var(--color-danger)',
+        success: 'var(--color-success)',
+        info: 'var(--color-info)',
 
         // Cores de fundo e texto
         background: 'var(--color-background)',
