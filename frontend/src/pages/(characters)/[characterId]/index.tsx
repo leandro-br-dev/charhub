@@ -138,11 +138,11 @@ export default function CharacterDetailPage(): JSX.Element {
 
       {/* Main content */}
       <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[400px_1fr]">
           {/* Left side - Character card */}
           <div className="space-y-4">
-            {/* Character image */}
-            <div className="overflow-hidden rounded-2xl bg-card shadow-lg">
+            {/* Character image with overlay stats */}
+            <div className="relative overflow-hidden rounded-2xl bg-card shadow-lg">
               <div className="relative aspect-[3/4]">
                 {data.avatar ? (
                   <CachedImage
@@ -155,53 +155,28 @@ export default function CharacterDetailPage(): JSX.Element {
                     <span className="material-symbols-outlined text-9xl text-muted/30">person</span>
                   </div>
                 )}
-              </div>
 
-              {/* Stats bar */}
-              <div className="grid grid-cols-3 border-t border-border bg-card">
-                <button className="flex flex-col items-center gap-1 border-r border-border px-4 py-3 transition-colors hover:bg-input">
-                  <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-xl text-primary">thumb_up</span>
-                    <span className="text-lg font-semibold text-content">316</span>
-                  </div>
+                {/* Favorite button - top right */}
+                <button
+                  className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-all hover:bg-black/60 hover:scale-110"
+                  aria-label="Adicionar aos favoritos"
+                >
+                  <span className="material-symbols-outlined text-2xl text-white">star</span>
                 </button>
-                <button className="flex flex-col items-center gap-1 border-r border-border px-4 py-3 transition-colors hover:bg-input">
-                  <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-xl text-primary">star</span>
-                    <span className="text-lg font-semibold text-content">2.2K</span>
+
+                {/* Stats overlay - bottom */}
+                <div className="absolute bottom-4 left-4 right-4 flex gap-3">
+                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-black/40 px-4 py-3 backdrop-blur-sm">
+                    <span className="material-symbols-outlined text-xl text-white">chat</span>
+                    <span className="text-lg font-semibold text-white">12.5K</span>
                   </div>
-                </button>
-                <button className="flex flex-col items-center gap-1 px-4 py-3 transition-colors hover:bg-input">
-                  <div className="flex items-center gap-1">
-                    <span className="material-symbols-outlined text-xl text-danger">favorite</span>
-                    <span className="text-lg font-semibold text-content">1.2K</span>
+                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-black/40 px-4 py-3 backdrop-blur-sm">
+                    <span className="material-symbols-outlined text-xl text-white">favorite</span>
+                    <span className="text-lg font-semibold text-white">8.3K</span>
                   </div>
-                </button>
+                </div>
               </div>
             </div>
-
-            {/* Supporters section (if owner) */}
-            {isOwner && (
-              <div className="rounded-2xl bg-card p-4 shadow-lg">
-                <h3 className="mb-3 text-sm font-semibold text-title">
-                  Apoiadores
-                </h3>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary">
-                    <span className="material-symbols-outlined text-2xl text-white">person_add</span>
-                  </div>
-                  <span className="text-sm text-muted">Seja o primeiro apoiador!</span>
-                </div>
-                <Button
-                  type="button"
-                  variant="primary"
-                  className="mt-4 w-full !rounded-xl"
-                  size="small"
-                >
-                  Personagem de suporte
-                </Button>
-              </div>
-            )}
           </div>
 
           {/* Right side - Character info */}
