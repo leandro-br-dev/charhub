@@ -1,8 +1,8 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Tema claro (padrão) - Inspirado em GitHub, Linear, Notion */
+/* Tema claro - Cyberpunk Neon Style */
 :root {
   color-scheme: light dark;
 
@@ -15,17 +15,18 @@
   --color-content: #1F2328;
   --color-content-dark: #FFFFFF;
 
-  --color-primary: #FFC917;
-  --color-primary-100: #FFF8E1;
-  --color-primary-500: #FFC917;
-  --color-primary-900: #967300;
-  --color-secondary: #a855f7;
+  /* Cyberpunk Neon Colors */
+  --color-primary: #ff0080;        /* Hot Pink / Neon Magenta */
+  --color-primary-100: #ffe6f2;    /* Light pink tint */
+  --color-primary-500: #ff0080;    /* Main neon pink */
+  --color-primary-900: #990050;    /* Dark pink */
+  --color-secondary: #00d9ff;      /* Neon Cyan / Electric Blue */
 
-  --color-accent: #f59e0b;
+  --color-accent: #b967ff;         /* Purple accent for tertiary elements */
   --color-muted: #656D76;
-  --color-danger: #D1242F;
-  --color-success: #1A7F37;
-  --color-info: #0969DA;
+  --color-danger: #ff1744;         /* Neon red */
+  --color-success: #00ff9f;        /* Neon green */
+  --color-info: #00d9ff;           /* Same as secondary for consistency */
 
   --color-background: #FFFFFF;
   --color-foreground: #1F2328;
@@ -33,33 +34,34 @@
   --color-border: #D1D9E0;
 }
 
-/* Tema escuro */
+/* Tema escuro - Enhanced Cyberpunk Dark */
 .dark {
-  --color-light: #2F2F2F;
-  --color-normal: #161618;
+  --color-light: #1a1a2e;
+  --color-normal: #0f0f1e;
   --color-dark: #f3f1f1;
 
   --color-title: #FFFFFF;
-  --color-description: #9C9C9C;
-  --color-content: #FFFFFF;
-  --color-content-dark: #161618;
+  --color-description: #a0a0b0;
+  --color-content: #e0e0ff;
+  --color-content-dark: #0f0f1e;
 
-  --color-primary: #FFC917;
-  --color-primary-100: #080808;
-  --color-primary-500: #FFC917;
-  --color-primary-900: #967300;
-  --color-secondary: #a855f7;
+  /* Cyberpunk Neon Colors - Enhanced for dark mode */
+  --color-primary: #ff0080;        /* Hot Pink / Neon Magenta */
+  --color-primary-100: #2d0a1f;    /* Very dark pink for backgrounds */
+  --color-primary-500: #ff0080;    /* Main neon pink */
+  --color-primary-900: #ff33a0;    /* Lighter pink for highlights */
+  --color-secondary: #00d9ff;      /* Neon Cyan / Electric Blue */
 
-  --color-accent: #f59e0b;
-  --color-muted: #6b7280;
-  --color-danger: #ef4444;
-  --color-success: #22c55e;
-  --color-info: #0ea5e9;
+  --color-accent: #b967ff;         /* Purple accent */
+  --color-muted: #8888aa;
+  --color-danger: #ff1744;         /* Neon red */
+  --color-success: #00ff9f;        /* Neon green */
+  --color-info: #00d9ff;           /* Neon cyan */
 
-  --color-background: #161618;
-  --color-foreground: #f3f1f1;
-  --color-card: #2F2F2F;
-  --color-border: #2F2F2F;
+  --color-background: #0f0f1e;     /* Deep dark blue-black */
+  --color-foreground: #e0e0ff;     /* Slight blue tint white */
+  --color-card: #1a1a2e;           /* Dark blue-grey cards */
+  --color-border: #2d2d4a;         /* Subtle purple-tinted border */
 }
 
 *,
@@ -82,4 +84,17 @@ body {
 
 button {
   @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+/* Cyberpunk glow effects */
+.glow-primary {
+  text-shadow: 0 0 10px var(--color-primary),
+               0 0 20px var(--color-primary),
+               0 0 30px var(--color-primary);
+}
+
+.glow-secondary {
+  text-shadow: 0 0 10px var(--color-secondary),
+               0 0 20px var(--color-secondary),
+               0 0 30px var(--color-secondary);
 }
