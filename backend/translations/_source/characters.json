@@ -56,6 +56,15 @@
       "addToFavorites": "Add to favorites",
       "removeFromFavorites": "Remove from favorites"
     },
+    "stats": {
+      "conversations": "Conversations",
+      "messages": "Messages",
+      "favorites": "Favorites",
+      "conversationsShort": "{{count}}K conversations",
+      "conversationsShort_plural": "{{count}}K conversations",
+      "favoritesShort": "{{count}}K favorites",
+      "favoritesShort_plural": "{{count}}K favorites"
+    },
     "hub": {
       "title": "Character Hub",
       "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",

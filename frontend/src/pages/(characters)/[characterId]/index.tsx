@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
@@ -6,6 +6,7 @@ import { CachedImage } from '../../../components/ui/CachedImage';
 import { useCharacterMutations, useCharacterQuery } from '../shared/hooks/useCharacterQueries';
 import { chatService } from '../../../services/chatService';
 import { useAuth } from '../../../hooks/useAuth';
+import { characterStatsService, type CharacterStats } from '../../../services/characterStatsService';
 
 export default function CharacterDetailPage(): JSX.Element {
   const { t } = useTranslation(['characters', 'common']);
@@ -17,6 +18,8 @@ export default function CharacterDetailPage(): JSX.Element {
   const { data, isLoading, isError } = useCharacterQuery(characterId);
   const { deleteMutation } = useCharacterMutations();
   const [isStartingChat, setIsStartingChat] = useState(false);
+  const [stats, setStats] = useState<CharacterStats | null>(null);
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
 
   const fullName = useMemo(() => {
     if (!data) return '';
@@ -28,9 +31,46 @@ export default function CharacterDetailPage(): JSX.Element {
     return user?.id === data?.userId;
   }, [user, data]);
 
-  // Mock data for stats (substituir com dados reais do backend no futuro)
-  const messageCount = 380300;
-  const favoriteCount = 12700;
+  // Load character stats
+  useEffect(() => {
+    if (characterId) {
+      setIsLoadingStats(true);
+      characterStatsService
+        .getStats(characterId)
+        .then(setStats)
+        .catch((error) => {
+          console.error('[CharacterDetail] Failed to load stats', error);
+        })
+        .finally(() => {
+          setIsLoadingStats(false);
+        });
+    }
+  }, [characterId]);
+
+  const handleToggleFavorite = async () => {
+    if (!stats) return;
+
+    const newFavoriteStatus = !stats.isFavoritedByUser;
+
+    // Optimistic update
+    setStats({
+      ...stats,
+      isFavoritedByUser: newFavoriteStatus,
+      favoriteCount: newFavoriteStatus ? stats.favoriteCount + 1 : stats.favoriteCount - 1
+    });
+
+    try {
+      await characterStatsService.toggleFavorite(characterId, newFavoriteStatus);
+    } catch (error) {
+      console.error('[CharacterDetail] Failed to toggle favorite', error);
+      // Revert on error
+      setStats({
+        ...stats,
+        isFavoritedByUser: !newFavoriteStatus,
+        favoriteCount: newFavoriteStatus ? stats.favoriteCount - 1 : stats.favoriteCount + 1
+      });
+    }
+  };
 
   const handleDelete = async () => {
     if (!data) return;
@@ -138,15 +178,15 @@ export default function CharacterDetailPage(): JSX.Element {
 
       {/* Main content */}
       <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[400px_1fr]">
+        <div className="grid gap-6 lg:grid-cols-[420px_1fr]">
           {/* Left side - Character card */}
           <div className="space-y-4">
             {/* Character image with overlay stats */}
             <div className="relative overflow-hidden rounded-2xl bg-card shadow-lg">
-              <div className="relative aspect-[3/4]">
-                {data.avatar ? (
+              <div className="relative aspect-[2/3]">
+                {(() => { const cov = (data.images || []).find((i:any)=>i.type==='COVER')?.url; return cov || data.avatar; })() ? (
                   <CachedImage
-                    src={data.avatar}
+                    src={(data.images || []).find((i:any)=>i.type==='COVER')?.url || data.avatar}
                     alt={fullName}
                     className="h-full w-full object-cover"
                   />
@@ -156,23 +196,40 @@ export default function CharacterDetailPage(): JSX.Element {
                   </div>
                 )}
 
+                {/* Gradient fade overlay - darkens bottom */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+
                 {/* Favorite button - top right */}
                 <button
-                  className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-black/40 backdrop-blur-sm transition-all hover:bg-black/60 hover:scale-110"
-                  aria-label="Adicionar aos favoritos"
+                  onClick={handleToggleFavorite}
+                  disabled={!stats}
+                  className="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm transition-all hover:bg-white hover:scale-110 disabled:opacity-50"
+                  aria-label={stats?.isFavoritedByUser ? t('characters:accessibility.removeFromFavorites') : t('characters:accessibility.addToFavorites')}
                 >
-                  <span className="material-symbols-outlined text-2xl text-white">star</span>
+                  <span
+                    className="material-symbols-outlined text-2xl transition-colors"
+                    style={{
+                      fontVariationSettings: stats?.isFavoritedByUser ? "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48" : "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48",
+                      color: stats?.isFavoritedByUser ? '#ec4899' : '#656D76'
+                    }}
+                  >
+                    star
+                  </span>
                 </button>
 
                 {/* Stats overlay - bottom */}
-                <div className="absolute bottom-4 left-4 right-4 flex gap-3">
-                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-black/40 px-4 py-3 backdrop-blur-sm">
-                    <span className="material-symbols-outlined text-xl text-white">chat</span>
-                    <span className="text-lg font-semibold text-white">12.5K</span>
+                <div className="absolute bottom-4 left-4 right-4 z-10 flex gap-3">
+                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/20 px-4 py-3 backdrop-blur-sm">
+                    <span className="material-symbols-outlined text-xl text-content">chat</span>
+                    <span className="text-lg font-semibold text-content">
+                      {isLoadingStats ? '...' : characterStatsService.formatCount(stats?.conversationCount || 0)}
+                    </span>
                   </div>
-                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-black/40 px-4 py-3 backdrop-blur-sm">
-                    <span className="material-symbols-outlined text-xl text-white">favorite</span>
-                    <span className="text-lg font-semibold text-white">8.3K</span>
+                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/20 px-4 py-3 backdrop-blur-sm">
+                    <span className="material-symbols-outlined text-xl text-content">favorite</span>
+                    <span className="text-lg font-semibold text-content">
+                      {isLoadingStats ? '...' : characterStatsService.formatCount(stats?.favoriteCount || 0)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -245,7 +302,7 @@ export default function CharacterDetailPage(): JSX.Element {
               {/* Tags */}
               <div className="mb-4 flex flex-wrap gap-2">
                 {/* Age rating badge */}
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-success/20 px-3 py-1.5 text-xs font-semibold text-success">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-success/20 px-4 py-2 text-xs font-semibold text-success ring-1 ring-success/30">
                   <span className="material-symbols-outlined text-sm">verified</span>
                   {t(`characters:ageRatings.${data.ageRating}`)}
                 </span>
@@ -254,7 +311,7 @@ export default function CharacterDetailPage(): JSX.Element {
                 {data.contentTags && data.contentTags.length > 0 && data.contentTags.map(tag => (
                   <span
                     key={tag}
-                    className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted"
+                    className="rounded-full bg-primary/10 px-4 py-2 text-xs font-semibold text-primary ring-1 ring-primary/20"
                   >
                     {t(`characters:contentTags.${tag}`)}
                   </span>
@@ -264,7 +321,7 @@ export default function CharacterDetailPage(): JSX.Element {
                 {data.tags && data.tags.length > 0 && data.tags.map(tag => (
                   <span
                     key={tag.id}
-                    className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted"
+                    className="rounded-full bg-secondary/10 px-4 py-2 text-xs font-semibold text-secondary ring-1 ring-secondary/20"
                   >
                     {tag.name}
                   </span>
@@ -272,12 +329,12 @@ export default function CharacterDetailPage(): JSX.Element {
 
                 {/* Gender and species */}
                 {data.gender && (
-                  <span className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted">
+                  <span className="rounded-full bg-accent/10 px-4 py-2 text-xs font-semibold text-accent ring-1 ring-accent/20">
                     {data.gender}
                   </span>
                 )}
                 {data.species && (
-                  <span className="rounded-full bg-muted/20 px-3 py-1.5 text-xs font-medium text-muted">
+                  <span className="rounded-full bg-accent/10 px-4 py-2 text-xs font-semibold text-accent ring-1 ring-accent/20">
                     {data.species}
                   </span>
                 )}

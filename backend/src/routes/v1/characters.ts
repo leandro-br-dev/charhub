@@ -6,6 +6,9 @@ import { logger } from '../../config/logger';
 import * as characterService from '../../services/characterService';
 import { r2Service } from '../../services/r2Service';
 import { runCharacterAutocomplete, CharacterAutocompleteMode } from '../../agents/characterAutocompleteAgent';
+import { addCharacterImage } from '../../services/imageService';
+import { characterStatsService } from '../../services/characterStatsService';
+import type { ImageType } from '../../generated/prisma';
 import {
   createCharacterSchema,
   updateCharacterSchema,
@@ -47,6 +50,12 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       userId,
     });
 
+    // Force originalLanguageCode to user's preference if available
+    const preferredLang = req.auth?.user?.preferredLanguage || undefined;
+    if (preferredLang) {
+      (validatedData as any).originalLanguageCode = preferredLang;
+    }
+
     const character = await characterService.createCharacter(validatedData);
 
     return res.status(201).json({
@@ -84,6 +93,7 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
 
     const { mode, payload } = req.body || {};
     const selectedMode: CharacterAutocompleteMode = mode === 'web' ? 'web' : 'ai';
+    const preferredLang = req.auth?.user?.preferredLanguage || undefined;
 
     // Sanitize payload: only accept known keys
     const allowedKeys = new Set([
@@ -96,11 +106,98 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
       }
     }
 
-    const suggestions = await runCharacterAutocomplete(safePayload as any, selectedMode);
+    const suggestions = await runCharacterAutocomplete(safePayload as any, selectedMode, preferredLang);
     return res.json({ success: true, data: suggestions });
   } catch (error) {
     logger.error({ error }, 'Error running character autocomplete');
     return res.status(500).json({ success: false, message: 'Failed to autocomplete character' });
+  }
+});
+
+/**
+ * POST /api/v1/characters/:id/images
+ * Upload an image file for the character (avatar/cover/samples/stickers/etc.)
+ * Form-data: image (file), type (string: AVATAR|COVER|SAMPLE|STICKER|OTHER)
+ */
+router.post('/:id/images', requireAuth, upload.single('image'), async (req: Request, res: Response) => {
+  const userId = req.auth?.user?.id;
+  const { id } = req.params;
+  const file = req.file;
+  const typeRaw = (req.body?.type || '').toString().toUpperCase();
+  const validTypes = new Set(['AVATAR','COVER','SAMPLE','STICKER','OTHER']);
+  const type: ImageType = (validTypes.has(typeRaw) ? typeRaw : 'OTHER') as ImageType;
+
+  if (!userId) return res.status(401).json({ success: false, message: 'Authentication required' });
+  if (!file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+
+  try {
+    const owns = await characterService.isCharacterOwner(id, userId);
+    if (!owns) return res.status(403).json({ success: false, message: 'You can only update your own characters' });
+
+    if (!r2Service.isConfigured()) {
+      return res.status(503).json({ success: false, message: 'Media storage is not configured', missing: r2Service.getMissingConfig() });
+    }
+
+    const ext = ALLOWED_IMAGE_TYPES[file.mimetype];
+    if (!ext) return res.status(415).json({ success: false, message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.' });
+
+    const baseName = (file.originalname ? file.originalname.replace(/[^a-z0-9._-]+/gi, '-').toLowerCase() : 'image').replace(/\.[^.]+$/, '');
+    const key = `characters/${userId}/${id}/images/${type.toLowerCase()}/${Date.now()}-${randomUUID()}-${baseName}.${ext}`;
+
+    const { publicUrl } = await r2Service.uploadObject({
+      key,
+      body: file.buffer,
+      contentType: file.mimetype,
+      cacheControl: 'public, max-age=604800',
+    });
+
+    const created = await addCharacterImage({
+      characterId: id,
+      type,
+      url: publicUrl,
+      key,
+      sizeBytes: file.size,
+      contentType: file.mimetype,
+      runClassification: true,
+    });
+
+    return res.status(201).json({ success: true, data: created });
+  } catch (error) {
+    logger.error({ error }, 'character_image_upload_failed');
+    return res.status(500).json({ success: false, message: 'Failed to upload image' });
+  }
+});
+
+/**
+ * POST /api/v1/characters/:id/images/url
+ * Register an external image URL for the character (will be classified)
+ * Body: { url: string, type: ImageType }
+ */
+router.post('/:id/images/url', requireAuth, async (req: Request, res: Response) => {
+  const userId = req.auth?.user?.id;
+  const { id } = req.params;
+  const { url, type: typeBody } = req.body || {};
+  const typeRaw = (typeBody || '').toString().toUpperCase();
+  const validTypes = new Set(['AVATAR','COVER','SAMPLE','STICKER','OTHER']);
+  const type: ImageType = (validTypes.has(typeRaw) ? typeRaw : 'OTHER') as ImageType;
+
+  if (!userId) return res.status(401).json({ success: false, message: 'Authentication required' });
+  if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return res.status(400).json({ success: false, message: 'Invalid url' });
+
+  try {
+    const owns = await characterService.isCharacterOwner(id, userId);
+    if (!owns) return res.status(403).json({ success: false, message: 'You can only update your own characters' });
+
+    const created = await addCharacterImage({
+      characterId: id,
+      type,
+      url,
+      runClassification: true,
+    });
+    return res.status(201).json({ success: true, data: created });
+  } catch (error) {
+    logger.error({ error }, 'character_image_url_failed');
+    return res.status(500).json({ success: false, message: 'Failed to save image url' });
   }
 });
 
@@ -364,8 +461,12 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
 
     // Validate input
     const validatedData = updateCharacterSchema.parse(req.body);
+    const preferredLang = req.auth?.user?.preferredLanguage || undefined;
 
-    const character = await characterService.updateCharacter(id, validatedData);
+    const character = await characterService.updateCharacter(id, {
+      ...validatedData,
+      ...(preferredLang ? { originalLanguageCode: preferredLang } : {}),
+    } as any);
 
     return res.json({
       success: true,
@@ -464,6 +565,30 @@ router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) =>
     return res.status(500).json({
       success: false,
       message: 'Failed to toggle favorite',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/characters/:id/stats
+ * Get character statistics (conversation count, message count, favorites)
+ */
+router.get('/:id/stats', async (req: Request, res: Response) => {
+  try {
+    const { id: characterId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    const stats = await characterStatsService.getCharacterStats(characterId, userId);
+
+    return res.json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting character stats');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get character stats',
     });
   }
 });
