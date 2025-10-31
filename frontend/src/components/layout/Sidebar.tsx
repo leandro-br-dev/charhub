@@ -140,8 +140,28 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
 
   const containerClassName =
     displayMode === "overlay"
-      ? "flex h-screen w-80 flex-shrink-0 border-r border-border bg-normal backdrop-blur-sm md:hidden dark:bg-normal dark:border-slate-800/80"
+      ? "flex h-[100svh] w-80 flex-shrink-0 border-r border-border bg-normal backdrop-blur-sm md:hidden dark:bg-normal dark:border-slate-800/80 overflow-hidden overscroll-none touch-none"
       : "hidden md:flex md:h-screen md:w-80 md:flex-shrink-0 md:border-r md:border-border md:bg-light/90 md:backdrop-blur md:sticky md:top-0 dark:md:bg-dark/80 dark:md:border-slate-800/80";
 
-  return <aside className={containerClassName}>{content}</aside>;
+  return (
+    <aside className={containerClassName}>
+      <div className="flex h-full w-full flex-col">
+        {displayMode === "overlay" ? (
+          <div className="flex items-center justify-end px-2 py-2">
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label={t("navigation:closeNavigation", "Close navigation")}
+              className="flex h-10 w-10 items-center justify-center rounded-lg text-content transition-colors hover:bg-input hover:text-primary"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+          </div>
+        ) : null}
+        <div className="flex-1 overflow-hidden overscroll-none">
+          {content}
+        </div>
+      </div>
+    </aside>
+  );
 }

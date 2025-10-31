@@ -36,24 +36,24 @@ const Switch = ({
 
   const variants: Record<string, Record<string, string>> = {
     primary: {
-      active: 'bg-primary-600',
-      inactive: 'bg-gray-200',
-      disabled: 'bg-gray-100'
+      active: 'bg-primary shadow-sm ring-1 ring-primary/20',
+      inactive: 'bg-input border border-border shadow-sm',
+      disabled: 'bg-muted/20 border border-border'
     },
     secondary: {
-      active: 'bg-gray-700',
-      inactive: 'bg-gray-200',
-      disabled: 'bg-gray-100'
+      active: 'bg-secondary shadow-sm ring-1 ring-secondary/20',
+      inactive: 'bg-input border border-border shadow-sm',
+      disabled: 'bg-muted/20 border border-border'
     },
     success: {
-      active: 'bg-green-600',
-      inactive: 'bg-gray-200',
-      disabled: 'bg-gray-100'
+      active: 'bg-success shadow-sm ring-1 ring-success/20',
+      inactive: 'bg-input border border-border shadow-sm',
+      disabled: 'bg-muted/20 border border-border'
     },
     danger: {
-      active: 'bg-red-600',
-      inactive: 'bg-gray-200',
-      disabled: 'bg-gray-100'
+      active: 'bg-danger shadow-sm ring-1 ring-danger/20',
+      inactive: 'bg-input border border-border shadow-sm',
+      disabled: 'bg-muted/20 border border-border'
     }
   };
 
@@ -80,10 +80,10 @@ const Switch = ({
 
   const getBaseClasses = () => {
     const baseClasses = [
-      'relative inline-flex items-center rounded-full transition-colors duration-200 ease-in-out bg-light',
+      'relative inline-flex items-center rounded-full transition-all duration-200 ease-in-out',
       sizes[size].switch,
       disabled ? variants[variant].disabled : checked ? variants[variant].active : variants[variant].inactive,
-      disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
+      disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:opacity-90'
     ];
 
     return baseClasses.join(' ');
@@ -91,7 +91,8 @@ const Switch = ({
 
   const getThumbClasses = () => {
     const thumbClasses = [
-      'inline-block transform rounded-full bg-white transition duration-200 ease-in-out',
+      'inline-block transform rounded-full transition-all duration-200 ease-in-out shadow-md',
+      'bg-white dark:bg-card',
       sizes[size].thumb,
       checked ? sizes[size].translate : sizes[size].initial
     ];

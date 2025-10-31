@@ -1,20 +1,6 @@
-
 // frontend/src/pages/(chat)/shared/components/ChatView.tsx
 import React, { useCallback, useState, useRef, useEffect, useLayoutEffect } from "react";
 import { useTranslation } from "react-i18next";
-
-// These components will be created later
-// import Button from "./Button";
-// import DisplayAvatarParticipants from "./DisplayAvatarParticipants";
-// import MessageInput from "./MessageInput";
-// import MessageList from "./MessageList";
-// import AddParticipantModal from "./AddParticipantModal";
-// import ParticipantConfigModal from "./ParticipantConfigModal";
-// import ConversationSettingsModal from "./ConversationSettingsModal";
-// import Dialog from "./Dialog";
-// import ImageGalleryModal from "./ImageGalleryModal";
-// import { useChatModalsManager } from "../hooks/useChatModalsManager";
-// import { chatService } from "../services/chatService";
 
 import { Button } from '../../../../components/ui/Button';
 import DisplayAvatarParticipants from './DisplayAvatarParticipants';
@@ -27,7 +13,7 @@ import { Dialog } from '../../../../components/ui';
 import ImageGalleryModal from './ImageGalleryModal';
 import { useChatModalsManager } from '../hooks/useChatModalsManager';
 import { chatService } from '../../../../services/chatService';
-
+import { scrollToBottom } from "../../../../utils/scroll";
 
 const ChatView: React.FC<any> = ({
   userId,
@@ -61,27 +47,12 @@ const ChatView: React.FC<any> = ({
 }) => {
   const { t } = useTranslation('chat');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const bottomSentinelRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
   const [bottomPad, setBottomPad] = useState<number>(160);
-  const prevMessageCountRef = useRef<number>(Array.isArray(messages) ? messages.length : 0);
 
-  const doScrollToBottom = (behavior: ScrollBehavior = 'auto') => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-    const target = container.scrollHeight;
-    if (behavior === 'smooth' && 'scrollTo' in container) {
-      container.scrollTo({ top: target, behavior: 'smooth' });
-    } else {
-      container.scrollTop = target;
-    }
-  };
-
-  // Compute dynamic bottom padding based on the fixed footer (input) height
   useLayoutEffect(() => {
     const updatePad = () => {
       const h = footerRef.current?.offsetHeight ?? 0;
-      // Add a small margin (8px) to ensure clear separation
       setBottomPad(h + 8);
     };
     updatePad();
@@ -89,48 +60,10 @@ const ChatView: React.FC<any> = ({
     return () => window.removeEventListener('resize', updatePad);
   }, []);
 
-  // Ensure we always land at the end when messages or typing/tasks or padding change
-  useLayoutEffect(() => {
-    // Immediate pass before paint
-    doScrollToBottom('auto');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    scrollToBottom(scrollContainerRef.current, 'auto');
   }, [messages, bottomPad]);
 
-  useEffect(() => {
-    const currentCount = Array.isArray(messages) ? messages.length : 0;
-    const wasCount = prevMessageCountRef.current;
-    const behavior: ScrollBehavior = currentCount > wasCount ? 'smooth' : 'auto';
-
-    // Scroll after paint; also schedule a second pass to catch late image loads
-    const raf1 = requestAnimationFrame(() => doScrollToBottom(behavior));
-    const timeoutId = window.setTimeout(() => doScrollToBottom('auto'), 160);
-
-    // Attach image load listeners to handle late-loading content within the container
-    const container = scrollContainerRef.current;
-    const imgs = container ? Array.from(container.querySelectorAll('img')) : [];
-    const listeners: Array<() => void> = [];
-    imgs.forEach(img => {
-      if (!img.complete) {
-        const handler = () => doScrollToBottom('auto');
-        img.addEventListener('load', handler, { once: true });
-        listeners.push(() => img.removeEventListener('load', handler));
-      }
-    });
-
-    prevMessageCountRef.current = currentCount;
-    return () => {
-      cancelAnimationFrame(raf1);
-      clearTimeout(timeoutId);
-      listeners.forEach(off => off());
-    };
-  }, [messages, typingCharacters, activeBackgroundTasks, bottomPad]);
-
-  // Initial mount scroll to bottom (when conversation is first shown)
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => doScrollToBottom('auto'));
-    return () => cancelAnimationFrame(raf);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const {
     activeModal,
     modalData,
@@ -325,7 +258,7 @@ const ChatView: React.FC<any> = ({
             onReviewFileClick={onReviewFileClick}
           />
           {/* bottom sentinel ensures last message is fully visible above input */}
-          <div ref={bottomSentinelRef} className="h-px" />
+          <div className="h-px" />
         </div>
       </div>
 

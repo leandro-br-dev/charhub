@@ -21,6 +21,7 @@ export function characterToFormValues(character: Character): CharacterFormValues
     mainAttireId: character.mainAttireId ?? null,
     tagIds: character.tags ? character.tags.map(tag => tag.id) : [],
     attireIds: character.attires ? character.attires.map(attire => attire.id) : [],
-    stickers: character.stickers ?? []
+    stickers: character.stickers ?? [],
+    cover: (character.images || []).find(img => img.type === 'COVER')?.url ?? null
   };
 }

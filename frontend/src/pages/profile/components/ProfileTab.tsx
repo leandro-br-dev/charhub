@@ -296,7 +296,7 @@ export function ProfileTab() {
         <label className="flex flex-col gap-2 text-sm">
           <span className="font-medium text-content">{t('profile:fields.email')}</span>
           <input
-            className="rounded-lg border border-border bg-muted/20 px-3 py-2 text-sm text-content shadow-sm"
+            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-content shadow-sm"
             value={user?.email ?? ''}
             readOnly
           />

@@ -12,7 +12,7 @@
     "tokenStored": "Armazenado em cookie HTTP-only",
     "navDashboard": "Painel",
     "navCharacters": "Personagens",
-    "navTagline": "Demo OAuth segura",
+    "navTagline": "Demo OAuth seguro",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -28,7 +28,7 @@
     },
     "none": "Nenhum",
     "unknown": "Desconhecido",
-    "nameNotAvailable": "Nome indisponível",
+    "nameNotAvailable": "Nome não disponível",
     "cancel": "Cancelar",
     "save": "Salvar",
     "saving": "Salvando...",
@@ -44,8 +44,22 @@
     "messages": {
       "linkCopied": "Link copiado para a área de transferência!"
     },
+    "contentFilter": {
+      "ariaLabel": "Filtro de conteúdo",
+      "title": "Filtro de Conteúdo",
+      "none": "Sem Filtro",
+      "blur": "Desfocar Sensível",
+      "hidden": "Ocultar Conteúdo Adulto",
+      "descriptions": {
+        "none": "Mostrar todo o conteúdo sem restrições",
+        "blur": "Aplicar desfoque ao conteúdo adulto",
+        "hidden": "Ocultar completamente o conteúdo adulto"
+      }
+    },
     "errors": {
       "generic": "Ocorreu um erro. Por favor, tente novamente."
-    }
+    },
+    "seeMore": "Ver mais",
+    "seeMoreArrow": "Ver mais →"
   }
 }

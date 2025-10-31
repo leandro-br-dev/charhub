@@ -83,6 +83,12 @@ const characterInclude = {
       status: 'COMPLETED',
     },
   },
+  images: {
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 20, // Limit total images returned
+  },
 } as const;
 
 /**

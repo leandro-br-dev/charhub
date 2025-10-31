@@ -4,10 +4,11 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tab
 import { ProfileTab } from './components/ProfileTab';
 import { ContentClassificationTab } from './components/ContentClassificationTab';
 import { DeleteAccountTab } from './components/DeleteAccountTab';
-import { EditableAvatar } from '../../components/ui/EditableAvatar';
+import { UrlImageUploader } from '../../components/ui/UrlImageUploader';
+import { userService } from '../../services/userService';
 
 export default function ProfilePage(): JSX.Element {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { t } = useTranslation(['profile', 'common']);
 
   return (
@@ -23,7 +24,7 @@ export default function ProfilePage(): JSX.Element {
         </p>
       </header>
 
-      <div className="grid gap-6 md:grid-cols-[320px_1fr]">
+      <div className="grid items-stretch gap-6 md:grid-cols-[320px_1fr]">
         <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-title">{t('profile:identity.header', 'Profile photo')}</h2>
           <p className="mt-2 text-sm text-description">
@@ -31,28 +32,54 @@ export default function ProfilePage(): JSX.Element {
           </p>
 
           <div className="mt-6 flex flex-col items-center gap-4">
-            <EditableAvatar />
+            <UrlImageUploader
+              value={user?.photo ?? null}
+              onChange={() => { /* no-op; afterCropSave updates auth state */ }}
+              displayInitial={(user?.displayName?.[0] || '?').toUpperCase()}
+              cropShape="round"
+              aspect={1}
+              previewClassName="h-24 w-24 rounded-full object-cover shadow-sm"
+              uploadLabel="Select image"
+              changeLabel="Change image"
+              removeLabel="Remove"
+              urlModalTitle="Use image from URL"
+              urlLabel="Image URL"
+              invalidUrlMessage="Enter a valid image URL (http/https)."
+              loadingMessage="Uploading..."
+              useActionLabel="Use"
+              cancelLabel="Cancel"
+              previewAlt="Avatar preview"
+              enableDeviceUpload
+              afterCropSave={async (blob) => {
+                const file = new File([blob], 'avatar.png', { type: 'image/png' });
+                const updated = await userService.uploadAvatar(file);
+                updateUser(updated);
+                return updated.photo || null;
+              }}
+            />
           </div>
         </div>
 
-        <Tabs defaultTab="profile">
-          <TabList>
-            <Tab label="profile">{t('profile:tabs.profile', 'Profile')}</Tab>
-            <Tab label="content-classification">{t('profile:tabs.contentClassification', 'Content Classification')}</Tab>
-            <Tab label="delete-account">{t('profile:tabs.deleteAccount', 'Delete Account')}</Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel label="profile">
-              <ProfileTab />
-            </TabPanel>
-            <TabPanel label="content-classification">
-              <ContentClassificationTab />
-            </TabPanel>
-            <TabPanel label="delete-account">
-              <DeleteAccountTab />
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <div className="flex h-full flex-col">
+          <Tabs defaultTab="profile">
+            <TabList>
+              <Tab label="profile">{t('profile:tabs.profile', 'Profile')}</Tab>
+              <Tab label="content-classification">{t('profile:tabs.contentClassification', 'Content Classification')}</Tab>
+              <Tab label="delete-account">{t('profile:tabs.deleteAccount', 'Delete Account')}</Tab>
+            </TabList>
+            <TabPanels className="mt-4 flex-1 h-full flex flex-col">
+              <TabPanel label="profile" className="h-full">
+                <ProfileTab />
+              </TabPanel>
+              <TabPanel label="content-classification" className="h-full">
+                <ContentClassificationTab />
+              </TabPanel>
+              <TabPanel label="delete-account" className="h-full flex flex-col">
+                <DeleteAccountTab />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </div>
       </div>
     </section>
   );

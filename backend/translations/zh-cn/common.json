@@ -9,8 +9,8 @@
     "logout": "退出",
     "logoutLoading": "正在退出...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在 HTTP Only Cookie 中",
-    "navDashboard": "仪表盘",
+    "tokenStored": "存储在 HTTP-only cookie 中",
+    "navDashboard": "仪表板",
     "navCharacters": "角色",
     "navTagline": "安全 OAuth 演示",
     "providerLabel": {
@@ -44,8 +44,22 @@
     "messages": {
       "linkCopied": "链接已复制到剪贴板！"
     },
+    "contentFilter": {
+      "ariaLabel": "内容过滤器",
+      "title": "内容过滤器",
+      "none": "无过滤器",
+      "blur": "模糊敏感内容",
+      "hidden": "隐藏成人内容",
+      "descriptions": {
+        "none": "显示所有内容，无限制",
+        "blur": "对成人内容应用模糊处理",
+        "hidden": "完全隐藏成人内容"
+      }
+    },
     "errors": {
       "generic": "发生错误。请重试。"
-    }
+    },
+    "seeMore": "查看更多",
+    "seeMoreArrow": "查看更多 →"
   }
 }

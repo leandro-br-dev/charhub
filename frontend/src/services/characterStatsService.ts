@@ -1,6 +1,7 @@
-import axios from 'axios';
+import api from '../lib/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
+const BASE_PATH = `${API_PREFIX}/characters`;
 
 export interface CharacterStats {
   characterId: string;
@@ -15,7 +16,7 @@ export const characterStatsService = {
    * Get character statistics
    */
   async getStats(characterId: string): Promise<CharacterStats> {
-    const response = await axios.get(`${API_BASE_URL}/characters/${characterId}/stats`);
+    const response = await api.get<{ success: boolean; data: CharacterStats }>(`${BASE_PATH}/${characterId}/stats`);
     return response.data.data;
   },
 
@@ -23,7 +24,7 @@ export const characterStatsService = {
    * Toggle favorite status
    */
   async toggleFavorite(characterId: string, isFavorite: boolean): Promise<void> {
-    await axios.post(`${API_BASE_URL}/characters/${characterId}/favorite`, {
+    await api.post(`${BASE_PATH}/${characterId}/favorite`, {
       isFavorite
     });
   },

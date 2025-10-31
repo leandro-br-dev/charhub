@@ -26,7 +26,7 @@
     },
     "contentTags": {
       "VIOLENCE": "Violência",
-      "GORE": "Gore",
+      "GORE": "Sangue e vísceras",
       "SEXUAL": "Sexual",
       "NUDITY": "Nudez",
       "LANGUAGE": "Linguagem",
@@ -36,28 +36,37 @@
       "PSYCHOLOGICAL": "Psicológico",
       "DISCRIMINATION": "Discriminação",
       "CRIME": "Crime",
-      "GAMBLING": "Jogo"
+      "GAMBLING": "Jogos de azar"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combate, lutas ou conflito agressivo.",
+      "VIOLENCE": "Combate, brigas ou conflitos agressivos.",
       "GORE": "Ferimentos gráficos e detalhes explícitos.",
       "SEXUAL": "Temas adultos ou insinuações.",
       "NUDITY": "Nudez parcial ou completa.",
-      "LANGUAGE": "Linguagem explícita ou forte.",
+      "LANGUAGE": "Linguagem explícita ou pesada.",
       "DRUGS": "Uso ou referências a drogas.",
       "ALCOHOL": "Consumo de álcool.",
       "HORROR": "Imagens perturbadoras ou de terror.",
       "PSYCHOLOGICAL": "Saúde mental ou tensão psicológica.",
       "DISCRIMINATION": "Discurso de ódio ou preconceito.",
       "CRIME": "Temas de atividade criminosa.",
-      "GAMBLING": "Referências a apostas ou jogos."
+      "GAMBLING": "Referências a apostas ou jogos de azar."
     },
     "accessibility": {
       "addToFavorites": "Adicionar aos favoritos",
       "removeFromFavorites": "Remover dos favoritos"
     },
+    "stats": {
+      "conversations": "Conversas",
+      "messages": "Mensagens",
+      "favorites": "Favoritos",
+      "conversationsShort": "{{count}} mil conversas",
+      "conversationsShort_plural": "{{count}} mil conversas",
+      "favoritesShort": "{{count}} mil favoritos",
+      "favoritesShort_plural": "{{count}} mil favoritos"
+    },
     "hub": {
-      "title": "Central de Personagens",
+      "title": "Personagens",
       "subtitle": "Crie, organize e evolua o elenco que impulsiona suas histórias, agentes de chat e experiências de IA.",
       "actions": {
         "createCharacter": "Novo personagem",
@@ -76,7 +85,7 @@
       "states": {
         "loading": "Carregando seus personagens...",
         "error": "Não foi possível carregar os personagens. Por favor, tente novamente.",
-        "empty": "Nenhum personagem disponível ainda.",
+        "empty": "Ainda não há personagens disponíveis.",
         "empty_private": "Você ainda não criou nenhum personagem.",
         "empty_public": "Nenhum personagem público corresponde aos seus filtros.",
         "emptyHint": "Comece criando um perfil ou ajuste seus filtros.",
@@ -95,7 +104,7 @@
         "identity": "Identidade",
         "identityHint": "Defina como as pessoas descobrem e identificam este personagem rapidamente.",
         "profile": "Perfil narrativo",
-        "profileHint": "Descreva a personalidade, traços e história para guiar a IA.",
+        "profileHint": "Descreva personalidade, traços e histórico para guiar a IA.",
         "configuration": "Disponibilidade e moderação",
         "configurationHint": "Controle como o personagem aparece, quem pode acessá-lo e quais salvaguardas se aplicam.",
         "contentTagsHint": "Marque temas potencialmente sensíveis. Os usuários podem filtrá-los com base em suas preferências.",
@@ -112,7 +121,7 @@
         "style": "Estilo visual ou de narrativa",
         "physicalCharacteristics": "Descrição física",
         "personality": "Personalidade",
-        "history": "História pregressa",
+        "history": "Histórico",
         "isPublic": "Visibilidade",
         "ageRating": "Classificação etária",
         "originalLanguageCode": "Idioma original",
@@ -120,10 +129,10 @@
         "visibility": "Visibilidade"
       },
       "placeholders": {
-        "gender": "Ex: IA não binária, androide, cavaleiro",
+        "gender": "Ex: IA não binária, andróide, cavaleiro",
         "species": "Ex: Humano, Elfo, Sintético",
-        "style": "Ex: Detetive noir, anime pastel, estilo pictórico",
-        "genderSelect": "Selecione o gênero"
+        "style": "Ex: Detetive noir, anime pastel, estilo pintura",
+        "genderSelect": "Selecionar gênero"
       },
       "labels": {
         "unsavedChanges": "Você tem alterações não salvas",
@@ -133,27 +142,27 @@
         "visibilityPrivate": "Privado"
       },
       "avatar": {
-        "upload": "Carregar imagem",
+        "upload": "Enviar imagem",
         "change": "Alterar imagem",
         "remove": "Remover",
-        "uploading": "Carregando...",
-        "helperCreate": "Escolha um avatar agora e o manteremos enquanto você preenche o restante do formulário.",
+        "uploading": "Enviando...",
+        "helperCreate": "Escolha um avatar agora e nós o manteremos enquanto você preenche o restante do formulário.",
         "helperEdit": "Atualize o avatar quando quiser. As alterações são aplicadas assim que você salva.",
-        "error": "Não foi possível carregar esta imagem. Tente outro arquivo.",
+        "error": "Não foi possível enviar esta imagem. Tente outro arquivo.",
         "previewAlt": "Prévia do avatar do personagem"
       },
       "images": {
         "coverHeader": "Capa do personagem",
         "coverDescription": "Imagem em orientação retrato usada como capa do personagem.",
-        "upload": "Carregar capa",
+        "upload": "Enviar capa",
         "change": "Alterar capa",
-        "uploading": "Carregando...",
-        "urlModalTitle": "Usar imagem de URL",
+        "uploading": "Enviando...",
+        "urlModalTitle": "Usar imagem da URL",
         "urlLabel": "URL da imagem",
         "previewAlt": "Prévia da capa do personagem"
       },
       "tags": {
-        "searchPlaceholder": "Pesquisar tags (ex: VTuber, Maid)",
+        "searchPlaceholder": "Pesquisar tags (ex: VTuber, Empregada)",
         "selected": "Tags selecionadas",
         "none": "Nenhuma tag selecionada",
         "suggestions": "Sugestões",
@@ -193,7 +202,7 @@
         "notFound": "Não foi possível encontrar este personagem."
       },
       "actions": {
-        "backToHub": "Voltar para a central",
+        "backToHub": "Voltar para o hub",
         "edit": "Editar",
         "delete": "Excluir",
         "deleting": "Excluindo...",
@@ -214,19 +223,22 @@
         "favoriteCount_plural": "{{count}} favoritos",
         "stats": "Estatísticas"
       },
+      "sampleImages": "Imagens de exemplo",
       "sections": {
         "physicalCharacteristics": "Aparência",
         "personality": "Personalidade",
-        "history": "História pregressa",
+        "history": "Histórico",
         "contentTags": "Avisos de conteúdo",
-        "metadata": "Tags"
+        "metadata": "Tags",
+        "introduction": "Introdução",
+        "updateNotes": "Notas de atualização"
       }
     },
     "errors": {
       "createFailed": "Não foi possível criar o personagem. Por favor, tente novamente.",
       "updateFailed": "Não foi possível atualizar o personagem.",
       "deleteFailed": "Não foi possível excluir o personagem.",
-      "detailUnavailable": "Não foi possível carregar os detalhes do personagem no momento."
+      "detailUnavailable": "Detalhes do personagem indisponíveis no momento."
     }
   }
 }

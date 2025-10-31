@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ComboboxSelect } from '../../../../components/ui';
+import { ComboboxSelect, Tag as UITag } from '../../../../components/ui';
 import type { UseCharacterFormReturn } from '../hooks/useCharacterForm';
 import { tagService } from '../../../../services/tagService';
 import type { Tag, AgeRating } from '../../../../types/characters';
@@ -96,20 +96,22 @@ export function TagsTab({ form }: TagsTabProps): JSX.Element {
           <p className="text-xs text-muted">{t('characters:form.tags.none', 'No tags selected')}</p>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {(form.values.tagIds ?? []).map(id => {
+            {(form.values.tagIds ?? []).map((id) => {
               const tag = tagsAll.find((t) => t.id === id);
               const label = tag ? t('tags-character:' + tag.name + '.name', tag.name) : id;
-              const isIncompatible = tag ? ((AGE_RANK[tag.ageRating as AgeRating] ?? 0) > (AGE_RANK[selectedAge] ?? 0)) : false;
-              const cls = isIncompatible
-                ? 'bg-danger/10 text-danger border border-danger/30'
-                : 'bg-input text-content';
+              const isIncompatible = tag
+                ? (AGE_RANK[tag.ageRating as AgeRating] ?? 0) > (AGE_RANK[selectedAge] ?? 0)
+                : false;
+              const description = tag ? t('tags-character:' + tag.name + '.description', '') : undefined;
               return (
-                <span key={id} className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs ${cls}`} title={isIncompatible ? t('characters:form.tags.incompatibleChip', 'Incompatible with current age rating') : undefined}>
-                  {label}
-                  <button type="button" className="ml-1 text-muted hover:text-content" onClick={() => removeTag(id)}>
-                    <span className="material-symbols-outlined text-sm">close</span>
-                  </button>
-                </span>
+                <UITag
+                  key={id}
+                  label={label}
+                  selected
+                  tone={isIncompatible ? 'danger' : 'default'}
+                  title={description}
+                  onRemove={() => removeTag(id)}
+                />
               );
             })}
           </div>
@@ -139,17 +141,16 @@ export function TagsTab({ form }: TagsTabProps): JSX.Element {
                 const lb = t('tags-character:' + b.name + '.name', b.name);
                 return la.localeCompare(lb);
               });
-            })().map(tag => (
+            })().map((tag) => (
               <li key={tag.id}>
-                <button
-                  type="button"
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs ${selectedIds.has(tag.id) ? 'bg-primary text-black' : 'bg-light text-content hover:bg-input'}`}
+                <UITag
+                  label={t('tags-character:' + tag.name + '.name', tag.name)}
+                  selected={selectedIds.has(tag.id)}
                   onClick={() => (selectedIds.has(tag.id) ? removeTag(tag.id) : addTag(tag))}
-                  title={`${t('tags-character:' + tag.name + '.description', '')} · ${tag.type}`}
-                >
-                  <span className="material-symbols-outlined text-sm">sell</span>
-                  {t('tags-character:' + tag.name + '.name', tag.name)}
-                </button>
+                  title={t('tags-character:' + tag.name + '.description', '')}
+                  icon={<span className="material-symbols-outlined text-sm">sell</span>}
+                  tone={tag.ageRating === 'EIGHTEEN' ? 'nsfw' : 'default'}
+                />
               </li>
             ))}
           </ul>

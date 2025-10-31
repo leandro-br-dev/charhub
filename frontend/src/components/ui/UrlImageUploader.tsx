@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import api from '../../lib/api';
 import { Button } from './Button';
 import { Modal } from './Modal';
 import { ImageCropperModal } from './ImageCropperModal';
+import { SmartDropdown } from './SmartDropdown';
 
 type CropShape = 'round' | 'rect';
 
@@ -22,6 +23,9 @@ export interface UrlImageUploaderProps {
 
   // Optional post processing after crop (e.g., convert to WebP, resize)
   postProcess?: (blob: Blob) => Promise<Blob | string>;
+  // Optional: if provided, will be called with the cropped blob to persist (e.g., upload)
+  // Should return the final URL to use. If it throws or returns empty, falls back to local dataUrl.
+  afterCropSave?: (blob: Blob) => Promise<string | null>;
 
   // Labels (with sensible defaults)
   uploadLabel?: string;
@@ -34,6 +38,8 @@ export interface UrlImageUploaderProps {
   useActionLabel?: string;
   cancelLabel?: string;
   previewAlt?: string;
+  disabled?: boolean;
+  enableDeviceUpload?: boolean; // When true, shows dropdown with local device option
 }
 
 export function UrlImageUploader({
@@ -46,6 +52,7 @@ export function UrlImageUploader({
   aspect = 1,
   useProxy = true,
   postProcess,
+  afterCropSave,
   uploadLabel = 'Select image',
   changeLabel = 'Change image',
   removeLabel = 'Remove',
@@ -56,6 +63,8 @@ export function UrlImageUploader({
   useActionLabel = 'Use',
   cancelLabel = 'Cancel',
   previewAlt = 'Image preview',
+  disabled = false,
+  enableDeviceUpload = false,
 }: UrlImageUploaderProps): JSX.Element {
   const [previewUrl, setPreviewUrl] = useState<string | null>(value);
   const [isUrlModalOpen, setIsUrlModalOpen] = useState(false);
@@ -65,6 +74,7 @@ export function UrlImageUploader({
 
   const [isCropperOpen, setIsCropperOpen] = useState(false);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setPreviewUrl(value ?? null);
@@ -76,6 +86,22 @@ export function UrlImageUploader({
     setUrlError(null);
     setUrlInput('');
     setIsUrlModalOpen(true);
+  };
+
+  const openFilePicker = () => {
+    if (disabled) return;
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImageToCrop(reader.result as string);
+      setIsCropperOpen(true);
+    };
+    reader.readAsDataURL(file);
   };
 
   const confirmUrlSelection = async () => {
@@ -114,6 +140,14 @@ export function UrlImageUploader({
   const handleCropSave = async (blob: Blob) => {
     try {
       setIsBusy(true);
+      let resultUrl: string | null = null;
+      if (afterCropSave) {
+        try {
+          resultUrl = await afterCropSave(blob);
+        } catch (e) {
+          // ignore and fallback to local rendering
+        }
+      }
       let result: string;
       if (postProcess) {
         const out = await postProcess(blob);
@@ -126,8 +160,9 @@ export function UrlImageUploader({
         // Default: return the cropped image as JPEG data URL
         result = await blobToDataUrl(blob, 'image/jpeg');
       }
-      setPreviewUrl(result);
-      onChange(result);
+      const finalUrl = resultUrl || result;
+      setPreviewUrl(finalUrl);
+      onChange(finalUrl);
       setIsCropperOpen(false);
       setImageToCrop(null);
     } catch (e) {
@@ -146,6 +181,7 @@ export function UrlImageUploader({
 
   return (
     <div className="mt-4 flex flex-col items-center gap-4">
+      <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
       {previewUrl ? (
         <img src={previewUrl} alt={previewAlt} className={previewClassName} />
       ) : (
@@ -161,16 +197,44 @@ export function UrlImageUploader({
       )}
 
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <Button
-          type="button"
-          variant="light"
-          size="small"
-          icon="link"
-          disabled={isBusy}
-          onClick={openUrlFlow}
-        >
-          {previewUrl ? changeLabel : uploadLabel}
-        </Button>
+        {enableDeviceUpload ? (
+          <SmartDropdown
+            buttonContent={
+              <Button
+                type="button"
+                variant="light"
+                size="small"
+                icon="upload"
+                disabled={isBusy || disabled}
+              >
+                {previewUrl ? changeLabel : uploadLabel}
+              </Button>
+            }
+            menuWidth="w-60"
+          >
+            <div className="py-1 text-sm">
+              <button type="button" className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10" onClick={openFilePicker}>
+                <span className="material-symbols-outlined text-base">folder_open</span>
+                Upload from device
+              </button>
+              <button type="button" className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10" onClick={openUrlFlow}>
+                <span className="material-symbols-outlined text-base">link</span>
+                Use image URL
+              </button>
+            </div>
+          </SmartDropdown>
+        ) : (
+          <Button
+            type="button"
+            variant="light"
+            size="small"
+            icon="link"
+            disabled={isBusy || disabled}
+            onClick={openUrlFlow}
+          >
+            {previewUrl ? changeLabel : uploadLabel}
+          </Button>
+        )}
         {previewUrl && (
           <Button type="button" variant="light" size="small" onClick={handleRemove} disabled={isBusy}>
             {removeLabel}
@@ -241,4 +305,3 @@ async function blobToDataUrl(blob: Blob, typeOverride?: string): Promise<string>
     reader.readAsDataURL(b);
   });
 }
-

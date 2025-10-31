@@ -122,6 +122,15 @@ enum StickerStatus {
   FAILED
 }
 
+// Types of images associated with a character
+enum ImageType {
+  AVATAR
+  COVER
+  SAMPLE
+  STICKER
+  OTHER
+}
+
 // Tag type classification
 enum TagType {
   CHARACTER // Character traits, roles, occupations
@@ -287,6 +296,7 @@ model Character {
   attires  Attire[]           @relation("CharacterAttires")
   tags     Tag[]
   stickers CharacterSticker[]
+  images   CharacterImage[]
 
   // Chat system relations
   assistantsUsingAsDefault   Assistant[]               @relation("AssistantDefaultCharacter")
@@ -318,6 +328,33 @@ model CharacterSticker {
 
   @@index([characterId])
   @@index([status])
+}
+
+// Character images with per-image content classification
+model CharacterImage {
+  id          String      @id @default(uuid())
+  characterId String
+  character   Character   @relation(fields: [characterId], references: [id], onDelete: Cascade)
+
+  type        ImageType
+  url         String
+  key         String?
+  width       Int?
+  height      Int?
+  sizeBytes   Int?
+  contentType String?
+
+  // Per-image classification
+  ageRating   AgeRating    @default(L)
+  contentTags ContentTag[] @default([])
+  description String?      @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([characterId])
+  @@index([type])
+  @@index([ageRating])
 }
 
 model Story {

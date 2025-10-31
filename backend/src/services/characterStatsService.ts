@@ -1,5 +1,5 @@
-import { prisma } from '../config/database.js';
-import { favoriteService } from './favoriteService.js';
+import { prisma } from '../config/database';
+import { favoriteService } from './favoriteService';
 
 export interface CharacterStats {
   characterId: string;
@@ -14,17 +14,20 @@ export const characterStatsService = {
    * Get conversation count for a character
    */
   async getConversationCount(characterId: string): Promise<number> {
-    const count = await prisma.conversationParticipant.count({
+    const participations = await prisma.conversationParticipant.findMany({
       where: {
         OR: [
           { actingCharacterId: characterId },
           { representingCharacterId: characterId }
         ]
       },
+      select: {
+        conversationId: true
+      },
       distinct: ['conversationId']
     });
 
-    return count;
+    return participations.length;
   },
 
   /**

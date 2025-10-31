@@ -101,9 +101,11 @@ function buildUserPrompt(input: CharacterAutocompleteInput) {
 
 export async function runCharacterAutocomplete(
   input: CharacterAutocompleteInput,
-  mode: CharacterAutocompleteMode = 'ai'
+  mode: CharacterAutocompleteMode = 'ai',
+  preferredLanguage?: string
 ): Promise<CharacterAutocompleteResult> {
-  const systemPrompt = buildSystemPrompt(mode);
+  const langHint = preferredLanguage ? `\nCRITICAL: Respond in ${preferredLanguage}.` : '';
+  const systemPrompt = buildSystemPrompt(mode) + langHint;
   const userPrompt = buildUserPrompt(input);
 
   const llmResponse = await callLLM({

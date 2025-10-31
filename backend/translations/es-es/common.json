@@ -12,7 +12,7 @@
     "tokenStored": "Almacenado en cookie HTTP-only",
     "navDashboard": "Panel",
     "navCharacters": "Personajes",
-    "navTagline": "Demostración segura de OAuth",
+    "navTagline": "Demo segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -34,8 +34,8 @@
     "saving": "Guardando...",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
-    "enabled": "Habilitado",
-    "disabled": "Deshabilitado",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
     "selectOption": "Selecciona una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
@@ -44,8 +44,22 @@
     "messages": {
       "linkCopied": "¡Enlace copiado al portapapeles!"
     },
+    "contentFilter": {
+      "ariaLabel": "Filtro de contenido",
+      "title": "Filtro de Contenido",
+      "none": "Sin Filtro",
+      "blur": "Difuminar Contenido Sensible",
+      "hidden": "Ocultar Contenido Maduro",
+      "descriptions": {
+        "none": "Mostrar todo el contenido sin restricciones",
+        "blur": "Aplicar difuminado al contenido maduro",
+        "hidden": "Ocultar completamente el contenido maduro"
+      }
+    },
     "errors": {
-      "generic": "Algo salió mal. Por favor, inténtalo de nuevo."
-    }
+      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo."
+    },
+    "seeMore": "Ver más",
+    "seeMoreArrow": "Ver más →"
   }
 }

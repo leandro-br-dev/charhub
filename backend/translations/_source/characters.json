@@ -66,7 +66,7 @@
       "favoritesShort_plural": "{{count}}K favorites"
     },
     "hub": {
-      "title": "Character Hub",
+      "title": "Characters",
       "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
       "actions": {
         "createCharacter": "New character",
@@ -215,6 +215,7 @@
         "public": "Public",
         "private": "Private",
         "createdAt": "Created",
+        "createdBy": "Created by",
         "updatedAt": "Last updated",
         "identifier": "Character ID: {{id}}",
         "messageCount": "{{count}} message",
@@ -223,12 +224,15 @@
         "favoriteCount_plural": "{{count}} favorites",
         "stats": "Statistics"
       },
+      "sampleImages": "Sample Images",
       "sections": {
         "physicalCharacteristics": "Appearance",
         "personality": "Personality",
         "history": "Backstory",
         "contentTags": "Content warnings",
-        "metadata": "Tags"
+        "metadata": "Tags",
+        "introduction": "Introduction",
+        "updateNotes": "Update Notes"
       }
     },
     "errors": {

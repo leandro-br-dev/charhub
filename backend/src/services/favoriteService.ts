@@ -1,5 +1,5 @@
-import { prisma } from '../config/database.js';
-import type { FavoriteCharacter } from '../generated/prisma/index.js';
+import { prisma } from '../config/database';
+import type { FavoriteCharacter } from '../generated/prisma/index';
 
 export interface FavoriteStats {
   characterId: string;

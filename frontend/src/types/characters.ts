@@ -117,12 +117,33 @@ export interface Character extends CharacterCore {
   attires?: Attire[];
   tags?: Tag[];
   stickers?: CharacterSticker[];
+  images?: CharacterImage[];
+  creator?: {
+    id: string;
+    displayName: string | null;
+    avatarUrl: string | null;
+  } | null;
 }
 
 export interface CharacterSummary extends CharacterCore {
   tagCount?: number;
   attireCount?: number;
   stickerCount?: number;
+}
+
+export interface CharacterImage {
+  id: string;
+  characterId?: string;
+  type: 'AVATAR' | 'COVER' | 'SAMPLE' | 'STICKER' | 'OTHER';
+  url: string;
+  key?: string | null;
+  width?: number | null;
+  height?: number | null;
+  sizeBytes?: number | null;
+  contentType?: string | null;
+  ageRating: AgeRating;
+  contentTags: ContentTag[];
+  description?: string | null;
 }
 
 export interface CharacterListParams {

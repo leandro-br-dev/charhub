@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { type CharacterSummary, type Character } from '../../../../types/characters';
 import { CachedImage } from '../../../../components/ui/CachedImage';
+import { useContentFilter } from '../../../../contexts/ContentFilterContext';
+import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
 
 export interface CharacterCardProps {
   character: CharacterSummary | Character;
@@ -37,6 +39,7 @@ export function CharacterCard({
   const navigate = useNavigate();
   const destination = to ?? `/characters/${character.id}`;
   const [isCreatingChat, setIsCreatingChat] = useState(false);
+  const { shouldBlurContent, shouldHideContent } = useContentFilter();
 
   const title = useMemo(() => {
     const name = [character.firstName, character.lastName].filter(Boolean).join(' ');
@@ -44,12 +47,13 @@ export function CharacterCard({
   }, [character.firstName, character.lastName, t]);
 
   const isSensitive = character.ageRating === 'EIGHTEEN' || character.contentTags.length > 0;
-  const shouldBlur = (blurSensitive || blurNsfw) && isSensitive;
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onFavoriteToggle) onFavoriteToggle(character.id, !isFavorite);
-  };
+
+  const shouldBlur = shouldBlurContent(character.ageRating, character.contentTags) || blurSensitive || blurNsfw;
+  const shouldHide = shouldHideContent(character.ageRating, character.contentTags);
+
+  if (shouldHide) {
+    return <></>;
+  }
 
   const handleCardClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -64,7 +68,6 @@ export function CharacterCard({
       navigate(`/characters/${character.id}`);
     } else if (clickAction === 'startChat' || clickAction === 'chat') {
       setIsCreatingChat(true);
-      // Route to chat creation page with character pre-selected; adjust when API is hooked
       navigate(`/chat/new?characterId=${character.id}`);
     }
   };
@@ -108,15 +111,13 @@ export function CharacterCard({
           </span>
         </div>
         {onFavoriteToggle && (
-          <button
-            onClick={handleFavorite}
-            className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70"
-            title={isFavorite ? t('characters:accessibility.removeFromFavorites') : t('characters:accessibility.addToFavorites')}
-          >
-            <span className={`material-symbols-outlined text-xl ${isFavorite ? 'text-yellow-400' : 'text-white/80'}`}>
-              {isFavorite ? 'star' : 'star_outline'}
-            </span>
-          </button>
+          <FavoriteButton
+            characterId={character.id}
+            initialIsFavorited={isFavorite}
+            onToggle={nextValue => onFavoriteToggle(character.id, nextValue)}
+            size="small"
+            className="absolute top-2 right-2"
+          />
         )}
       </div>
       <div className="flex flex-1 flex-col p-4">

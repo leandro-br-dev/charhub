@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { characterService } from '../../../../services/characterService';
 import type { CharacterSummary } from '../../../../types/characters';
+import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
 
 type CharacterListSidebarProps = {
   onLinkClick?: () => void;
@@ -22,8 +23,8 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
       try {
         setIsLoading(true);
         const [favoriteResponse, allResponse] = await Promise.all([
-          characterService.getFavorites(100), // Assuming a limit for favorites
-          characterService.list({ limit: 10 }), // Fetching all/recent
+          characterService.getFavorites(100), 
+          characterService.list({ limit: 10 }),
         ]);
         const favoriteIds = new Set(favoriteResponse.map(c => c.id));
         const combined = allResponse.items.map(char => ({
@@ -76,7 +77,14 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
                     <img src="/logo.png" alt={fullName} className="h-8 w-8 rounded-full object-cover" />
                   )}
                   <span className="text-sm font-medium text-content flex-grow">{fullName}</span>
-                  {character.isFavorite && <span className="material-symbols-outlined text-yellow-500">star</span>}
+                  {character.isFavorite && (
+                    <FavoriteButton
+                      characterId={character.id}
+                      initialIsFavorited={true}
+                      size="small"
+                      readOnly={true}
+                    />
+                  )}
                 </Link>
               </li>
             );

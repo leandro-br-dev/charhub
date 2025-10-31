@@ -5,8 +5,8 @@
       "untitledCharacter": "未命名的角色",
       "updatedAt": "{{date}} 更新",
       "public": "公开",
-      "private": "私密",
-      "identifier": "角色 ID：{{id}}",
+      "private": "私有",
+      "identifier": "角色 ID: {{id}}",
       "unsavedChanges": "未保存的更改",
       "allSaved": "所有更改已保存",
       "submitting": "正在保存..."
@@ -27,7 +27,7 @@
     "contentTags": {
       "VIOLENCE": "暴力",
       "GORE": "血腥",
-      "SEXUAL": "性内容",
+      "SEXUAL": "色情",
       "NUDITY": "裸露",
       "LANGUAGE": "粗俗语言",
       "DRUGS": "毒品",
@@ -40,25 +40,34 @@
     },
     "contentTagHints": {
       "VIOLENCE": "战斗、打斗或攻击性冲突。",
-      "GORE": "触目惊心的伤情和露骨细节。",
+      "GORE": "血腥的伤害和露骨的细节。",
       "SEXUAL": "成人主题或暗示。",
       "NUDITY": "部分或全部裸露。",
       "LANGUAGE": "露骨或强烈的语言。",
-      "DRUGS": "毒品使用或提及。",
+      "DRUGS": "吸毒或相关提及。",
       "ALCOHOL": "饮酒。",
       "HORROR": "令人不安或恐怖的画面。",
-      "PSYCHOLOGICAL": "心理健康或心理张力。",
+      "PSYCHOLOGICAL": "心理健康或心理紧张。",
       "DISCRIMINATION": "仇恨言论或偏见。",
       "CRIME": "犯罪活动主题。",
-      "GAMBLING": "打赌或赌博提及。"
+      "GAMBLING": "投注或赌博提及。"
     },
     "accessibility": {
       "addToFavorites": "添加到收藏夹",
-      "removeFromFavorites": "从收藏夹移除"
+      "removeFromFavorites": "从收藏夹中移除"
+    },
+    "stats": {
+      "conversations": "对话",
+      "messages": "消息",
+      "favorites": "收藏夹",
+      "conversationsShort": "{{count}}K 对话",
+      "conversationsShort_plural": "{{count}}K 对话",
+      "favoritesShort": "{{count}}K 收藏",
+      "favoritesShort_plural": "{{count}}K 收藏"
     },
     "hub": {
-      "title": "角色中心",
-      "subtitle": "创建、组织和发展驱动您故事、聊天代理和 AI 体验的角色。",
+      "title": "角色",
+      "subtitle": "创建、组织和发展故事、聊天机器人和 AI 体验的演员阵容。",
       "actions": {
         "createCharacter": "新角色",
         "retry": "重试",
@@ -67,7 +76,7 @@
       },
       "tabs": {
         "myCharacters": "我的角色",
-        "publicGallery": "公开图库"
+        "publicGallery": "公开画廊"
       },
       "filters": {
         "searchPlaceholder": "按名称或风格搜索",
@@ -76,15 +85,15 @@
       "states": {
         "loading": "正在加载您的角色...",
         "error": "无法加载角色。请重试。",
-        "empty": "尚无可用角色。",
+        "empty": "暂无角色。",
         "empty_private": "您尚未创建任何角色。",
         "empty_public": "没有符合您筛选条件的公开角色。",
-        "emptyHint": "开始创建个人资料或调整您的筛选条件。",
-        "emptySearchHint": "调整您的筛选条件或清除搜索以查看更多结果。"
+        "emptyHint": "开始创建一个档案，或调整您的筛选条件。",
+        "emptySearchHint": "调整筛选条件或清除搜索以查看更多结果。"
       },
       "labels": {
-        "total": "可用角色 {{count}} 个",
-        "total_plural": "可用角色 {{count}} 个",
+        "total": "可用 {{count}} 个角色",
+        "total_plural": "可用 {{count}} 个角色",
         "quickCreateLink": "直接开始创建"
       }
     },
@@ -93,14 +102,14 @@
       "cancel": "取消",
       "sections": {
         "identity": "身份",
-        "identityHint": "定义人们如何发现和一眼识别该角色。",
-        "profile": "叙事简介",
-        "profileHint": "描述性格、特质和背景故事以指导 AI。",
-        "configuration": "可用性与审核",
-        "configurationHint": "控制角色的显示方式、谁可以访问它以及应用哪些安全措施。",
-        "contentTagsHint": "标记可能敏感的主题。用户可以根据自己的偏好过滤掉它们。",
-        "contentTagsCharacterHint": "这些主题定义了角色在选定的年龄分级下愿意讨论的内容。",
-        "contentTagsUserHint": "选择您想包含的主题。未勾选的任何内容在此分级下都将保持屏蔽。",
+        "identityHint": "定义人们如何一目了然地发现和识别此角色。",
+        "profile": "叙事档案",
+        "profileHint": "描述个性、特质和背景故事以指导 AI。",
+        "configuration": "可用性和审核",
+        "configurationHint": "控制角色的显示方式、访问权限以及适用的保护措施。",
+        "contentTagsHint": "标记潜在的敏感主题。用户可以根据自己的偏好进行过滤。",
+        "contentTagsCharacterHint": "这些主题定义了角色在选定的年龄分级下可以舒适讨论的内容。",
+        "contentTagsUserHint": "选择您想包含的主题。未勾选的任何内容将在此评级下被屏蔽。",
         "contentTagLocked": "在更高的年龄分级下解锁。"
       },
       "fields": {
@@ -111,7 +120,7 @@
         "species": "物种/来源",
         "style": "视觉或叙事风格",
         "physicalCharacteristics": "外貌描述",
-        "personality": "性格",
+        "personality": "个性",
         "history": "背景故事",
         "isPublic": "可见性",
         "ageRating": "年龄分级",
@@ -122,7 +131,7 @@
       "placeholders": {
         "gender": "例如：非二元 AI、机器人、骑士",
         "species": "例如：人类、精灵、合成人",
-        "style": "例如：黑色侦探、粉彩动漫、绘画风格",
+        "style": "例如：黑色电影侦探、柔和动漫、绘画风格",
         "genderSelect": "选择性别"
       },
       "labels": {
@@ -130,21 +139,21 @@
         "allSaved": "更改已保存",
         "submitting": "正在保存...",
         "visibilityPublic": "公开",
-        "visibilityPrivate": "私密"
+        "visibilityPrivate": "私有"
       },
       "avatar": {
         "upload": "上传图片",
         "change": "更改图片",
         "remove": "移除",
         "uploading": "正在上传...",
-        "helperCreate": "立即选择一个头像，我们会在您填写完其余表格时保留它。",
-        "helperEdit": "随时更新头像。更改将在您保存后立即生效。",
+        "helperCreate": "立即选择一个头像，我们将在您填写其余表单时为您保留。",
+        "helperEdit": "您可以随时更新头像。更改在您保存后立即生效。",
         "error": "无法上传此图片。请尝试其他文件。",
         "previewAlt": "角色头像预览"
       },
       "images": {
         "coverHeader": "角色封面",
-        "coverDescription": "用作角色封面的肖像式图片。",
+        "coverDescription": "用作角色封面的竖版图片。",
         "upload": "上传封面",
         "change": "更改封面",
         "uploading": "正在上传...",
@@ -154,27 +163,27 @@
       },
       "tags": {
         "searchPlaceholder": "搜索标签（例如：VTuber、女仆）",
-        "selected": "选定的标签",
-        "none": "未选定标签",
+        "selected": "已选标签",
+        "none": "未选择标签",
         "suggestions": "建议",
         "loading": "正在加载...",
         "noResults": "无结果",
-        "incompatibleToast": "一些选定的标签与当前年龄分级不兼容。请仔细检查。",
-        "incompatibleHint": "突出显示的标签与当前年龄分级不兼容。移除它们才能继续。",
+        "incompatibleToast": "某些选定的标签与当前年龄分级不兼容。请检查。",
+        "incompatibleHint": "突出显示的标签与当前年龄分级不兼容。删除它们才能继续。",
         "incompatibleChip": "与当前年龄分级不兼容"
       },
       "tabs": {
         "identity": "身份",
-        "profile": "简介",
+        "profile": "档案",
         "configuration": "配置",
         "tags": "标签",
         "images": "图片",
-        "lockedHint": "填写基本身份信息以解锁其他部分。"
+        "lockedHint": "填写基本身份详细信息以解锁其他部分。"
       }
     },
     "create": {
-      "title": "创建新角色",
-      "subtitle": "结合叙事背景、视觉风格和审核设置。之后您可以完善所有内容。",
+      "title": "创建一个新角色",
+      "subtitle": "结合叙事背景、视觉风格和审核设置。之后您可以随时进行修改。",
       "saveButton": "保存角色",
       "cancelButton": "取消并返回"
     },
@@ -193,7 +202,7 @@
         "notFound": "未找到此角色。"
       },
       "actions": {
-        "backToHub": "返回中心",
+        "backToHub": "返回主页",
         "edit": "编辑",
         "delete": "删除",
         "deleting": "正在删除...",
@@ -204,29 +213,32 @@
       "confirmDelete": "您确定要删除此角色吗？此操作无法撤销。",
       "labels": {
         "public": "公开",
-        "private": "私密",
+        "private": "私有",
         "createdAt": "创建于",
-        "updatedAt": "最后更新",
-        "identifier": "角色 ID：{{id}}",
+        "updatedAt": "最后更新于",
+        "identifier": "角色 ID: {{id}}",
         "messageCount": "{{count}} 条消息",
         "messageCount_plural": "{{count}} 条消息",
         "favoriteCount": "{{count}} 个收藏",
         "favoriteCount_plural": "{{count}} 个收藏",
         "stats": "统计数据"
       },
+      "sampleImages": "示例图片",
       "sections": {
         "physicalCharacteristics": "外貌",
-        "personality": "性格",
+        "personality": "个性",
         "history": "背景故事",
         "contentTags": "内容警告",
-        "metadata": "标签"
+        "metadata": "标签",
+        "introduction": "简介",
+        "updateNotes": "更新说明"
       }
     },
     "errors": {
       "createFailed": "无法创建角色。请重试。",
       "updateFailed": "无法更新角色。",
       "deleteFailed": "无法删除角色。",
-      "detailUnavailable": "目前无法加载角色详情。"
+      "detailUnavailable": "暂时无法加载角色详情。"
     }
   }
 }

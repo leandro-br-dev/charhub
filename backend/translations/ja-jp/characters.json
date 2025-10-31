@@ -7,7 +7,7 @@
       "public": "公開",
       "private": "非公開",
       "identifier": "キャラクターID: {{id}}",
-      "unsavedChanges": "変更が保存されていません",
+      "unsavedChanges": "未保存の変更があります",
       "allSaved": "すべての変更が保存されました",
       "submitting": "保存中..."
     },
@@ -39,26 +39,35 @@
       "GAMBLING": "ギャンブル"
     },
     "contentTagHints": {
-      "VIOLENCE": "戦闘、喧嘩、激しい対立。",
+      "VIOLENCE": "戦闘、喧嘩、攻撃的な対立。",
       "GORE": "生々しい怪我や露骨な描写。",
-      "SEXUAL": "成人向けテーマまたはそれを示唆するもの。",
+      "SEXUAL": "成人向けテーマやそれを示唆するもの。",
       "NUDITY": "部分的または完全なヌード。",
       "LANGUAGE": "露骨または強い言葉遣い。",
       "DRUGS": "薬物の使用または言及。",
       "ALCOHOL": "アルコールの摂取。",
       "HORROR": "不穏またはホラーなイメージ。",
-      "PSYCHOLOGICAL": "メンタルヘルスまたは心理的緊張。",
+      "PSYCHOLOGICAL": "メンタルヘルスまたは心理的な緊張。",
       "DISCRIMINATION": "ヘイトスピーチまたは偏見。",
-      "CRIME": "犯罪行為のテーマ。",
-      "GAMBLING": "賭けまたはギャンブルの言及。"
+      "CRIME": "犯罪活動をテーマにしたもの。",
+      "GAMBLING": "賭けまたはギャンブルへの言及。"
     },
     "accessibility": {
-      "addToFavorites": "お気に入りに追加",
+      "addToFavorites": "お気に入りに登録",
       "removeFromFavorites": "お気に入りから削除"
     },
+    "stats": {
+      "conversations": "会話",
+      "messages": "メッセージ",
+      "favorites": "お気に入り",
+      "conversationsShort": "{{count}}K 件の会話",
+      "conversationsShort_plural": "{{count}}K 件の会話",
+      "favoritesShort": "{{count}}K 件のお気に入り",
+      "favoritesShort_plural": "{{count}}K 件のお気に入り"
+    },
     "hub": {
-      "title": "キャラクターハブ",
-      "subtitle": "ストーリー、チャットボット、AI体験を支えるキャラクターを作成、整理、進化させましょう。",
+      "title": "キャラクター",
+      "subtitle": "ストーリー、チャットエージェント、AI体験を支えるキャストを作成、整理、進化させましょう。",
       "actions": {
         "createCharacter": "新規キャラクター",
         "retry": "再試行",
@@ -74,13 +83,13 @@
         "allAgeRatings": "すべての年齢制限"
       },
       "states": {
-        "loading": "キャラクターを読み込み中...",
+        "loading": "キャラクターを読み込んでいます...",
         "error": "キャラクターを読み込めませんでした。もう一度お試しください。",
         "empty": "まだキャラクターがありません。",
-        "empty_private": "キャラクターを作成していません。",
+        "empty_private": "キャラクターはまだ作成されていません。",
         "empty_public": "フィルターに一致する公開キャラクターがありません。",
-        "emptyHint": "プロフィールを作成するか、フィルターを調整してください。",
-        "emptySearchHint": "結果をもっと見るには、フィルターを調整するか、検索をクリアしてください。"
+        "emptyHint": "プロフィールの作成を開始するか、フィルターを調整してください。",
+        "emptySearchHint": "フィルターを調整するか、検索をクリアして、より多くの結果を表示してください。"
       },
       "labels": {
         "total": "{{count}} 件のキャラクターが利用可能",
@@ -93,14 +102,14 @@
       "cancel": "キャンセル",
       "sections": {
         "identity": "アイデンティティ",
-        "identityHint": "人々がこのキャラクターをどのように発見し、一目で識別できるかを定義します。",
+        "identityHint": "人々がこのキャラクターをどのように見つけ、認識するかをすぐにわかるように定義します。",
         "profile": "ナラティブプロフィール",
-        "profileHint": "AIのガイドとなるような性格、特徴、背景を記述します。",
+        "profileHint": "AIをガイドするために、性格、特徴、背景を記述します。",
         "configuration": "利用可能性とモデレーション",
-        "configurationHint": "キャラクターの表示方法、アクセスできるユーザー、適用される保護策を制御します。",
-        "contentTagsHint": "潜在的にセンシティブなテーマにマークを付けます。ユーザーはそれらの設定に基づいてフィルタリングできます。",
-        "contentTagsCharacterHint": "これらのトピックは、選択した年齢制限でキャラクターがどの程度話すことができるかを定義します。",
-        "contentTagsUserHint": "含めたいテーマを選択します。チェックされていないものはすべて、この年齢制限でブロックされたままになります。",
+        "configurationHint": "キャラクターの表示方法、アクセスできるユーザー、適用される安全対策を制御します。",
+        "contentTagsHint": "潜在的にセンシティブなテーマにマークを付けます。ユーザーは自分の好みに基づいてそれらをフィルタリングできます。",
+        "contentTagsCharacterHint": "これらのトピックは、選択した年齢制限でキャラクターがどの程度快適に会話できるかを定義します。",
+        "contentTagsUserHint": "含めたいテーマを選択します。チェックされていないものはすべて、この年齢制限ではブロックされたままになります。",
         "contentTagLocked": "より高い年齢制限でロック解除されます。"
       },
       "fields": {
@@ -109,7 +118,7 @@
         "age": "年齢",
         "gender": "性別",
         "species": "種族 / 出身",
-        "style": "ビジュアルまたはストーリーテリングスタイル",
+        "style": "ビジュアルまたはストーリーテリングのスタイル",
         "physicalCharacteristics": "身体的特徴",
         "personality": "性格",
         "history": "背景",
@@ -122,11 +131,11 @@
       "placeholders": {
         "gender": "例: ノンバイナリーAI、アンドロイド、騎士",
         "species": "例: 人間、エルフ、合成生命体",
-        "style": "例: ノワール探偵、パステルアニメ、絵画的",
+        "style": "例: ノワール探偵、パステルアニメ、絵画風",
         "genderSelect": "性別を選択"
       },
       "labels": {
-        "unsavedChanges": "変更が保存されていません",
+        "unsavedChanges": "未保存の変更があります",
         "allSaved": "変更が保存されました",
         "submitting": "保存中...",
         "visibilityPublic": "公開",
@@ -137,7 +146,7 @@
         "change": "画像を変更",
         "remove": "削除",
         "uploading": "アップロード中...",
-        "helperCreate": "今すぐアバターを選んでください。残りのフォームに記入している間、それを保持します。",
+        "helperCreate": "今すぐアバターを選択してください。残りのフォームを記入している間、それを保持します。",
         "helperEdit": "いつでもアバターを更新できます。変更は保存するとすぐに適用されます。",
         "error": "この画像をアップロードできませんでした。別のファイルをお試しください。",
         "previewAlt": "キャラクターアバタープレビュー"
@@ -153,13 +162,13 @@
         "previewAlt": "キャラクターカバープレビュー"
       },
       "tags": {
-        "searchPlaceholder": "タグを検索 (例: VTuber, Maid)",
-        "selected": "選択したタグ",
+        "searchPlaceholder": "タグを検索（例：VTuber、メイド）",
+        "selected": "選択されたタグ",
         "none": "タグが選択されていません",
-        "suggestions": "候補",
+        "suggestions": "提案",
         "loading": "読み込み中...",
         "noResults": "結果なし",
-        "incompatibleToast": "選択したタグの一部は現在の年齢制限と互換性がありません。ご確認ください。",
+        "incompatibleToast": "選択されたタグの一部は現在の年齢制限と互換性がありません。ご確認ください。",
         "incompatibleHint": "ハイライトされたタグは現在の年齢制限と互換性がありません。続行するには削除してください。",
         "incompatibleChip": "現在の年齢制限と互換性がありません"
       },
@@ -169,12 +178,12 @@
         "configuration": "設定",
         "tags": "タグ",
         "images": "画像",
-        "lockedHint": "基本的なアイデンティティの詳細を入力すると、他のセクションがロック解除されます。"
+        "lockedHint": "基本のアイデンティティ詳細を入力すると、他のセクションがロック解除されます。"
       }
     },
     "create": {
       "title": "新しいキャラクターを作成",
-      "subtitle": "ナラティブコンテキスト、ビジュアルスタイル、モデレーション設定を組み合わせます。後ですべてを微調整できます。",
+      "subtitle": "ナラティブコンテキスト、ビジュアルスタイル、モデレーション設定を組み合わせます。後ですべてを洗練できます。",
       "saveButton": "キャラクターを保存",
       "cancelButton": "キャンセルして戻る"
     },
@@ -184,13 +193,13 @@
       "saveButton": "キャラクターを更新",
       "cancelButton": "変更を破棄",
       "states": {
-        "loading": "キャラクターを読み込み中..."
+        "loading": "キャラクターを読み込んでいます..."
       }
     },
     "detail": {
       "states": {
-        "loading": "キャラクターの詳細を読み込み中...",
-        "notFound": "このキャラクターを見つけることができませんでした。"
+        "loading": "キャラクターの詳細を読み込んでいます...",
+        "notFound": "このキャラクターを見つけられませんでした。"
       },
       "actions": {
         "backToHub": "ハブに戻る",
@@ -214,12 +223,15 @@
         "favoriteCount_plural": "{{count}} 件のお気に入り",
         "stats": "統計"
       },
+      "sampleImages": "サンプル画像",
       "sections": {
         "physicalCharacteristics": "外見",
         "personality": "性格",
         "history": "背景",
         "contentTags": "コンテンツ警告",
-        "metadata": "タグ"
+        "metadata": "タグ",
+        "introduction": "自己紹介",
+        "updateNotes": "更新履歴"
       }
     },
     "errors": {

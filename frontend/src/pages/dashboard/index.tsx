@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ContentFilter, HorizontalScroller } from '../../components/ui';
+import { ContentFilter, HorizontalScroller, Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui';
 import { CharacterCard } from '../(characters)/shared/components';
 import { DashboardCarousel, RecentConversations, StoryCard } from './components';
 import { useContentFilter } from './hooks';
@@ -11,8 +11,6 @@ import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
 
 type AgeRating = 'L' | 'TEN' | 'TWELVE' | 'FOURTEEN' | 'SIXTEEN' | 'EIGHTEEN';
-
-type TabValue = 'discover' | 'chat' | 'story';
 
 const AGE_RATING_OPTIONS = [
   { value: 'L', label: 'L - Livre' },
@@ -28,7 +26,6 @@ export default function Dashboard(): JSX.Element {
   const navigate = useNavigate();
 
   // State
-  const [activeTab, setActiveTab] = useState<TabValue>('discover');
   const [carouselHighlights, setCarouselHighlights] = useState<CarouselHighlight[]>([]);
   const [popularCharacters, setPopularCharacters] = useState<Character[]>([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState<Character[]>([]);
@@ -198,179 +195,153 @@ export default function Dashboard(): JSX.Element {
         />
       </div>
 
-      {/* Tabs Navigation */}
+      {/* Tabs Navigation and Content */}
       <div className="mx-auto max-w-7xl px-6 mb-6">
-        <div className="flex gap-4 border-b border-border">
-          <button
-            onClick={() => setActiveTab('discover')}
-            className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === 'discover'
-                ? 'text-primary border-b-2 border-primary'
-                : 'text-muted hover:text-content'
-            }`}
-          >
-            {t('dashboard:tabs.discover', 'Discover')}
-          </button>
-          <button
-            onClick={() => setActiveTab('chat')}
-            className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === 'chat'
-                ? 'text-primary border-b-2 border-primary'
-                : 'text-muted hover:text-content'
-            }`}
-          >
-            {t('dashboard:tabs.chat', 'Chat')}
-          </button>
-          <button
-            onClick={() => setActiveTab('story')}
-            className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === 'story'
-                ? 'text-primary border-b-2 border-primary'
-                : 'text-muted hover:text-content'
-            }`}
-          >
-            {t('dashboard:tabs.story', 'Story')}
-          </button>
-        </div>
-      </div>
+        <Tabs defaultTab="discover">
+          <TabList>
+            <Tab label="discover">{t('dashboard:tabs.discover', 'Discover')}</Tab>
+            <Tab label="chat">{t('dashboard:tabs.chat', 'Chat')}</Tab>
+            <Tab label="story">{t('dashboard:tabs.story', 'Story')}</Tab>
+          </TabList>
 
-      {/* Tab Content */}
-      <div className="mx-auto max-w-7xl px-6 pb-12">
-        {/* Discover Tab */}
-        {activeTab === 'discover' && (
-          <div className="space-y-8">
-            {/* Popular Characters */}
-            {isLoadingCharacters ? (
-              <div className="h-64 bg-light animate-pulse rounded-lg" />
-            ) : (
-              popularCharacters.length > 0 && (
-                <HorizontalScroller
-                  title={t('dashboard:sections.popularCharacters', 'Popular Characters')}
-                  cardType="vertical"
-                >
-                  {popularCharacters.map((character) => (
-                    <CharacterCard
-                      key={character.id}
-                      character={character}
-                      isFavorite={favoriteCharacterIds.has(character.id)}
-                      clickAction="view"
-                      blurNsfw={blurNsfw}
-                      onFavoriteToggle={handleFavoriteToggle}
-                    />
-                  ))}
-                </HorizontalScroller>
-              )
-            )}
+          <TabPanels>
+            {/* Discover Tab */}
+            <TabPanel label="discover">
+              <div className="space-y-8">
+                {/* Popular Characters */}
+                {isLoadingCharacters ? (
+                  <div className="h-64 bg-light animate-pulse rounded-lg" />
+                ) : (
+                  popularCharacters.length > 0 && (
+                    <HorizontalScroller
+                      title={t('dashboard:sections.popularCharacters', 'Popular Characters')}
+                      cardType="vertical"
+                    >
+                      {popularCharacters.map((character) => (
+                        <CharacterCard
+                          key={character.id}
+                          character={character}
+                          isFavorite={favoriteCharacterIds.has(character.id)}
+                          clickAction="view"
+                          blurNsfw={blurNsfw}
+                          onFavoriteToggle={handleFavoriteToggle}
+                        />
+                      ))}
+                    </HorizontalScroller>
+                  )
+                )}
 
-            {/* Favorite Characters */}
-            {!isLoadingCharacters && favoriteCharacters.length > 0 && (
-              <HorizontalScroller
-                title={t('dashboard:sections.favoriteCharacters', 'Your Favorites')}
-                cardType="vertical"
-              >
-                {favoriteCharacters.map((character) => (
-                  <CharacterCard
-                    key={character.id}
-                    character={character}
-                    isFavorite={true}
-                    clickAction="chat"
-                    blurNsfw={blurNsfw}
-                    onFavoriteToggle={handleFavoriteToggle}
-                  />
-                ))}
-              </HorizontalScroller>
-            )}
-          </div>
-        )}
-
-        {/* Chat Tab */}
-        {activeTab === 'chat' && (
-          <div className="space-y-8">
-            {/* Recent Conversations */}
-            <RecentConversations limit={8} />
-
-            {/* Suggested Characters to Chat */}
-            {isLoadingCharacters ? (
-              <div className="h-64 bg-light animate-pulse rounded-lg" />
-            ) : (
-              popularCharacters.length > 0 && (
-                <HorizontalScroller
-                  title={t('dashboard:sections.suggestedChats', 'Start a Conversation')}
-                  cardType="vertical"
-                >
-                  {popularCharacters.map((character) => (
-                    <CharacterCard
-                      key={character.id}
-                      character={character}
-                      isFavorite={favoriteCharacterIds.has(character.id)}
-                      clickAction="chat"
-                      blurNsfw={blurNsfw}
-                      onFavoriteToggle={handleFavoriteToggle}
-                    />
-                  ))}
-                </HorizontalScroller>
-              )
-            )}
-          </div>
-        )}
-
-        {/* Story Tab */}
-        {activeTab === 'story' && (
-          <div className="space-y-8">
-            {/* My Stories */}
-            {!isLoadingStories && myStories.length > 0 && (
-              <HorizontalScroller
-                title={t('dashboard:sections.myStories', 'My Stories')}
-                cardType="vertical"
-              >
-                {myStories.map((story) => (
-                  <StoryCard
-                    key={story.id}
-                    story={story}
-                    onPlay={handleStoryPlay}
-                    blurNsfw={blurNsfw}
-                  />
-                ))}
-              </HorizontalScroller>
-            )}
-
-            {/* Popular Stories */}
-            {isLoadingStories ? (
-              <div className="h-64 bg-light animate-pulse rounded-lg" />
-            ) : (
-              popularStories.length > 0 && (
-                <HorizontalScroller
-                  title={t('dashboard:sections.popularStories', 'Popular Stories')}
-                  cardType="vertical"
-                >
-                  {popularStories.map((story) => (
-                    <StoryCard
-                      key={story.id}
-                      story={story}
-                      onPlay={handleStoryPlay}
-                      blurNsfw={blurNsfw}
-                    />
-                  ))}
-                </HorizontalScroller>
-              )
-            )}
-
-            {/* Story Module Notice */}
-            {!isLoadingStories && popularStories.length === 0 && myStories.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-muted mb-4">
-                  {t('dashboard:noStories', 'No stories yet. Create your first story!')}
-                </p>
-                <button
-                  onClick={() => navigate('/stories/create')}
-                  className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
-                >
-                  {t('dashboard:createStory', 'Create Story')}
-                </button>
+                {/* Favorite Characters */}
+                {!isLoadingCharacters && favoriteCharacters.length > 0 && (
+                  <HorizontalScroller
+                    title={t('dashboard:sections.favoriteCharacters', 'Your Favorites')}
+                    cardType="vertical"
+                  >
+                    {favoriteCharacters.map((character) => (
+                      <CharacterCard
+                        key={character.id}
+                        character={character}
+                        isFavorite={true}
+                        clickAction="chat"
+                        blurNsfw={blurNsfw}
+                        onFavoriteToggle={handleFavoriteToggle}
+                      />
+                    ))}
+                  </HorizontalScroller>
+                )}
               </div>
-            )}
-          </div>
-        )}
+            </TabPanel>
+
+            {/* Chat Tab */}
+            <TabPanel label="chat">
+              <div className="space-y-8">
+                {/* Recent Conversations */}
+                <RecentConversations limit={8} />
+
+                {/* Suggested Characters to Chat */}
+                {isLoadingCharacters ? (
+                  <div className="h-64 bg-light animate-pulse rounded-lg" />
+                ) : (
+                  popularCharacters.length > 0 && (
+                    <HorizontalScroller
+                      title={t('dashboard:sections.suggestedChats', 'Start a Conversation')}
+                      cardType="vertical"
+                    >
+                      {popularCharacters.map((character) => (
+                        <CharacterCard
+                          key={character.id}
+                          character={character}
+                          isFavorite={favoriteCharacterIds.has(character.id)}
+                          clickAction="chat"
+                          blurNsfw={blurNsfw}
+                          onFavoriteToggle={handleFavoriteToggle}
+                        />
+                      ))}
+                    </HorizontalScroller>
+                  )
+                )}
+              </div>
+            </TabPanel>
+
+            {/* Story Tab */}
+            <TabPanel label="story">
+              <div className="space-y-8">
+                {/* My Stories */}
+                {!isLoadingStories && myStories.length > 0 && (
+                  <HorizontalScroller
+                    title={t('dashboard:sections.myStories', 'My Stories')}
+                    cardType="vertical"
+                  >
+                    {myStories.map((story) => (
+                      <StoryCard
+                        key={story.id}
+                        story={story}
+                        onPlay={handleStoryPlay}
+                        blurNsfw={blurNsfw}
+                      />
+                    ))}
+                  </HorizontalScroller>
+                )}
+
+                {/* Popular Stories */}
+                {isLoadingStories ? (
+                  <div className="h-64 bg-light animate-pulse rounded-lg" />
+                ) : (
+                  popularStories.length > 0 && (
+                    <HorizontalScroller
+                      title={t('dashboard:sections.popularStories', 'Popular Stories')}
+                      cardType="vertical"
+                    >
+                      {popularStories.map((story) => (
+                        <StoryCard
+                          key={story.id}
+                          story={story}
+                          onPlay={handleStoryPlay}
+                          blurNsfw={blurNsfw}
+                        />
+                      ))}
+                    </HorizontalScroller>
+                  )
+                )}
+
+                {/* Story Module Notice */}
+                {!isLoadingStories && popularStories.length === 0 && myStories.length === 0 && (
+                  <div className="text-center py-12">
+                    <p className="text-muted mb-4">
+                      {t('dashboard:noStories', 'No stories yet. Create your first story!')}
+                    </p>
+                    <button
+                      onClick={() => navigate('/stories/create')}
+                      className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
+                    >
+                      {t('dashboard:createStory', 'Create Story')}
+                    </button>
+                  </div>
+                )}
+              </div>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </div>
     </div>
   );

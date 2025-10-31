@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { NavigationRail, Sidebar } from "../components/layout";
-import { Button } from "../components/ui/Button";
+import { PageHeader } from "../components/ui";
+import { PageHeaderProvider, usePageHeader } from "../hooks/usePageHeader";
 
 type NavigationSelection = {
   to: string;
@@ -13,17 +14,40 @@ type AuthenticatedLayoutProps = {
   children?: ReactNode;
 };
 
-export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX.Element {
+function AuthenticatedLayoutInner({ children }: AuthenticatedLayoutProps): JSX.Element {
   const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = useState(false);
   const [activeSidebar, setActiveSidebar] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const railRef = useRef<HTMLDivElement | null>(null);
+  const { title } = usePageHeader();
 
   useEffect(() => {
     setIsDrawerOpen(false);
   }, [location.pathname]);
+
+  // Prevent background scroll on mobile while the drawer is open
+  useEffect(() => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    if (!isMobile) return;
+
+    if (isDrawerOpen) {
+      const prevOverflow = document.body.style.overflow;
+      const prevOverscroll = (document.body.style as any).overscrollBehavior;
+      const prevTouchAction = (document.body.style as any).touchAction;
+
+      document.body.style.overflow = 'hidden';
+      (document.body.style as any).overscrollBehavior = 'none';
+      (document.body.style as any).touchAction = 'none';
+
+      return () => {
+        document.body.style.overflow = prevOverflow;
+        (document.body.style as any).overscrollBehavior = prevOverscroll;
+        (document.body.style as any).touchAction = prevTouchAction;
+      };
+    }
+  }, [isDrawerOpen]);
 
   useEffect(() => {
     if (!isDesktopSidebarOpen) {
@@ -67,9 +91,8 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
       }
 
       setActiveSidebar(selection.to);
-      if (typeof window !== "undefined" && window.innerWidth < 768) {
-        setIsDrawerOpen(false);
-      } else {
+      // On desktop, open the contextual sidebar. On mobile, keep the drawer open.
+      if (typeof window !== "undefined" && window.innerWidth >= 768) {
         setIsDesktopSidebarOpen(true);
       }
     } else if (typeof window !== "undefined" && window.innerWidth >= 768) {
@@ -101,7 +124,7 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
       </div>
 
       <div
-        className={`fixed inset-y-0 left-0 z-40 flex transform transition-transform duration-300 md:hidden ${
+        className={`fixed inset-y-0 left-0 z-40 flex transform transition-transform duration-300 md:hidden h-[100svh] overflow-hidden overscroll-none touch-none ${
           isDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -113,24 +136,32 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX
         <div className="fixed inset-0 z-30 bg-black/40 md:hidden" onClick={closeDrawer} role="presentation" />
       ) : null}
 
-      <div className="fixed left-4 top-4 z-50 md:hidden">
-        <Button
-          variant="light"
-          size="small"
-          icon={isDrawerOpen ? "close" : "menu"}
-          onClick={toggleDrawer}
-          aria-label={isDrawerOpen ? "Close navigation" : "Open navigation"}
-          className="rounded-full"
-        />
-      </div>
-
       <div className="flex flex-1 flex-col">
+        {/* Global Page Header */}
+        <PageHeader
+          title={title}
+          showBackButton
+          showHomeButton
+          showContentFilter
+          showMobileMenu
+          isMobileMenuOpen={isDrawerOpen}
+          onMobileMenuToggle={toggleDrawer}
+        />
+
         <main className="flex-1 overflow-y-auto">
           <div className="mx-auto w-full max-w-6xl px-4 py-8 pb-20 md:px-8 md:py-12 md:pb-12">{mainContent}</div>
         </main>
       </div>
 
-      
+
     </div>
+  );
+}
+
+export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps): JSX.Element {
+  return (
+    <PageHeaderProvider>
+      <AuthenticatedLayoutInner>{children}</AuthenticatedLayoutInner>
+    </PageHeaderProvider>
   );
 }

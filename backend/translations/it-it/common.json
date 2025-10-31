@@ -5,7 +5,7 @@
     "language": "Lingua",
     "continueGoogle": "Continua con Google",
     "continueFacebook": "Continua con Facebook",
-    "privacy": "Continuando accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di base del profilo.",
+    "privacy": "Continuando accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di profilo di base.",
     "logout": "Esci",
     "logoutLoading": "Uscita in corso...",
     "authenticatedUser": "Utente autenticato",
@@ -44,8 +44,22 @@
     "messages": {
       "linkCopied": "Link copiato negli appunti!"
     },
+    "contentFilter": {
+      "ariaLabel": "Filtro contenuti",
+      "title": "Filtro Contenuti",
+      "none": "Nessun Filtro",
+      "blur": "Sfoca Contenuti Sensibili",
+      "hidden": "Nascondi Contenuti per Adulti",
+      "descriptions": {
+        "none": "Mostra tutti i contenuti senza restrizioni",
+        "blur": "Applica sfocatura ai contenuti per adulti",
+        "hidden": "Nascondi completamente i contenuti per adulti"
+      }
+    },
     "errors": {
       "generic": "Si è verificato un errore. Riprova."
-    }
+    },
+    "seeMore": "Vedi altro",
+    "seeMoreArrow": "Vedi altro →"
   }
 }

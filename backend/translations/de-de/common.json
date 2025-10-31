@@ -3,9 +3,9 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Sprache",
-    "continueGoogle": "Fortfahren mit Google",
-    "continueFacebook": "Fortfahren mit Facebook",
-    "privacy": "Durch Fortfahren stimmen Sie unserer Datenschutzrichtlinie zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "continueGoogle": "Weiter mit Google",
+    "continueFacebook": "Weiter mit Facebook",
+    "privacy": "Durch Fortfahren stimmen Sie unserer Datenschutzrichtlinie zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
     "logoutLoading": "Abmelden...",
     "authenticatedUser": "Authentifizierter Benutzer",
@@ -42,10 +42,24 @@
       "with": "Chat mit"
     },
     "messages": {
-      "linkCopied": "Link in die Zwischenablage kopiert!"
+      "linkCopied": "Link wurde in die Zwischenablage kopiert!"
+    },
+    "contentFilter": {
+      "ariaLabel": "Inhaltsfilter",
+      "title": "Inhaltsfilter",
+      "none": "Kein Filter",
+      "blur": "Sensibles unscharf machen",
+      "hidden": "Erwachseneninhalte ausblenden",
+      "descriptions": {
+        "none": "Alle Inhalte ohne Einschränkungen anzeigen",
+        "blur": "Erwachseneninhalte unscharf machen",
+        "hidden": "Erwachseneninhalte vollständig ausblenden"
+      }
     },
     "errors": {
-      "generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
-    }
+      "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "seeMore": "Mehr anzeigen",
+    "seeMoreArrow": "Mehr anzeigen →"
   }
 }

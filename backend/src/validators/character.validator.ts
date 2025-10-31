@@ -46,6 +46,7 @@ export const updateCharacterSchema = z.object({
   personality: z.string().max(5000).optional().nullable(),
   history: z.string().max(5000).optional().nullable(),
   isPublic: z.boolean().optional(),
+  originalLanguageCode: z.string().max(10).optional().nullable(),
   loraId: z.string().uuid().optional().nullable(),
   mainAttireId: z.string().uuid().optional().nullable(),
   attireIds: z.array(z.string().uuid()).optional(),

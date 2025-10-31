@@ -68,6 +68,26 @@ export function CharacterFormLayout({
   const displayInitial = characterName?.[0]?.toUpperCase() || form.values.firstName?.[0]?.toUpperCase() || '?';
   const canAccessAdditionalTabs = mode === 'edit' || (form.values.firstName?.trim().length ?? 0) > 0;
 
+  // Persist/restore cover locally keyed by characterId
+  useEffect(() => {
+    if (characterId && !form.values.cover) {
+      try {
+        const stored = window.localStorage.getItem(`charhub.cover.${characterId}`);
+        if (stored) {
+          form.updateField('cover', stored);
+        }
+      } catch {}
+    }
+  }, [characterId]);
+
+  useEffect(() => {
+    if (characterId && form.values.cover) {
+      try {
+        window.localStorage.setItem(`charhub.cover.${characterId}`, form.values.cover);
+      } catch {}
+    }
+  }, [characterId, form.values.cover]);
+
   return (
     <section className="flex flex-col gap-8">
       <header className="space-y-2">
@@ -120,7 +140,7 @@ export function CharacterFormLayout({
                 setIncompatibleTagIds(incompatible);
                 addToast(
                   t('characters:form.tags.incompatibleToast', 'Some selected tags are incompatible with the current age rating. Please review.'),
-                  'danger',
+                  'error',
                   6000
                 );
                 tabsApi?.setActiveTab('tags');
@@ -135,8 +155,8 @@ export function CharacterFormLayout({
           }
         }}
       >
-        <div className="grid gap-6 md:grid-cols-[320px_1fr]">
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <div className="grid gap-4 md:gap-6 md:grid-cols-[320px_1fr]">
+          <div className="rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
             <h2 className="text-lg font-semibold text-title">
               {avatarHeader}
             </h2>
@@ -195,13 +215,13 @@ export function CharacterFormLayout({
                 )}
               </TabPanel>
               <TabPanel label="images">
-                <ImagesTab form={form} />
+                <ImagesTab form={form} characterId={characterId} />
               </TabPanel>
             </TabPanels>
           </Tabs>
         </div>
 
-        <div className="mt-6 flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm">
+        <div className="mt-6 flex flex-col gap-3 rounded-xl border border-border bg-card p-3 sm:p-4 shadow-sm">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className="text-xs text-muted">
               {form.isDirty ? t('characters:form.labels.unsavedChanges') : t('characters:form.labels.allSaved')}
@@ -239,17 +259,15 @@ export function CharacterFormLayout({
                                 // Convert objects to a readable string
                                 const text = Object.entries(value as Record<string, unknown>)
                                   .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
-                                // @ts-expect-error dynamic index
                                 form.updateField(key, text as any);
                               } else if (key in form.values) {
-                                // @ts-expect-error dynamic index
                                 form.updateField(key, value as any);
                               }
                             }
                             addToast(t('characters:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
                           }
                         } catch (e) {
-                          addToast(t('characters:form.autocomplete.failed', 'Failed to autocomplete.'), 'danger');
+                          addToast(t('characters:form.autocomplete.failed', 'Failed to autocomplete.'), 'error');
                         } finally {
                           setIsAutoCompleting(false);
                         }
@@ -274,17 +292,15 @@ export function CharacterFormLayout({
                               if (typeof value === 'object' && value !== null) {
                                 const text = Object.entries(value as Record<string, unknown>)
                                   .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
-                                // @ts-expect-error dynamic index
                                 form.updateField(key, text as any);
                               } else if (key in form.values) {
-                                // @ts-expect-error dynamic index
                                 form.updateField(key, value as any);
                               }
                             }
                             addToast(t('characters:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
                           }
                         } catch (e) {
-                          addToast(t('characters:form.autocomplete.failed', 'Failed to autocomplete.'), 'danger');
+                          addToast(t('characters:form.autocomplete.failed', 'Failed to autocomplete.'), 'error');
                         } finally {
                           setIsAutoCompleting(false);
                         }

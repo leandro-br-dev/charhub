@@ -6,20 +6,24 @@
     "development": "Desarrollo",
     "characters": "Personajes",
     "assets": "Recursos",
+    "openNavigation": "Abrir navegación",
+    "closeNavigation": "Cerrar navegación",
+    "goBack": "Volver",
+    "goHome": "Ir a inicio",
     "profileLink": "Mi perfil",
     "reportBug": "Informar de un problema",
     "storyPlaceholder": "Las herramientas de historia estarán aquí pronto.",
     "chatHistory": "Historial de conversaciones",
-    "chatHistoryPlaceholder": "Los mensajes e hilos aparecerán aquí cuando la migración del chat se complete.",
+    "chatHistoryPlaceholder": "Los mensajes e hilos aparecerán aquí cuando la migración del chat esté completa.",
     "developmentTools": "Herramientas de desarrollador",
     "developmentPlaceholder": "Los pipelines de compilación, registros y controles de automatización estarán aquí pronto.",
     "characterSidebar": "Resumen de personajes",
-    "characterSidebarPlaceholder": "Explora y fija tus personajes favoritos aquí tan pronto como se reconstruya la barra lateral del hub.",
+    "characterSidebarPlaceholder": "Explora y fija tus personajes favoritos aquí tan pronto como se reconstruya la barra lateral del centro.",
     "storySidebar": "Historias",
-    "storySidebarPlaceholder": "Guarda borradores y esquemas de capítulos aquí una vez que se migre el paquete de narración.",
+    "storySidebarPlaceholder": "Guarda borradores y esquemas de capítulos aquí una vez que se migre el conjunto de herramientas de narración.",
     "viewAllCharacters": "Ver todos los personajes",
     "viewAllStories": "Ver todas las historias",
     "sidebarDefaultTitle": "Explorar CharHub",
-    "sidebarDefaultDescription": "Utiliza los iconos en la barra de navegación para cambiar entre experiencias."
+    "sidebarDefaultDescription": "Usa los iconos en la barra de navegación para cambiar entre experiencias."
   }
 }

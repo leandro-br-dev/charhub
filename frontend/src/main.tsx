@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import { AuthProvider } from './hooks/useAuth';
 import { ToastProvider } from './contexts/ToastContext';
+import { ContentFilterProvider } from './contexts/ContentFilterContext';
 import { ToastContainer } from './components/ui/ToastContainer';
 import './index.css';
 
@@ -16,10 +17,12 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AuthProvider>
-          <ToastProvider>
-            <App />
-            <ToastContainer />
-          </ToastProvider>
+          <ContentFilterProvider>
+            <ToastProvider>
+              <App />
+              <ToastContainer />
+            </ToastProvider>
+          </ContentFilterProvider>
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>

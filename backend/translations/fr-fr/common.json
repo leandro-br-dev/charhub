@@ -1,11 +1,11 @@
 {
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
-    "brand": "CharHub Auth",
+    "brand": "Authentification CharHub",
     "language": "Langue",
     "continueGoogle": "Continuer avec Google",
     "continueFacebook": "Continuer avec Facebook",
-    "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder aux informations de votre profil de base.",
+    "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder aux informations de base de votre profil.",
     "logout": "Se déconnecter",
     "logoutLoading": "Déconnexion en cours...",
     "authenticatedUser": "Utilisateur authentifié",
@@ -28,7 +28,7 @@
     },
     "none": "Aucun",
     "unknown": "Inconnu",
-    "nameNotAvailable": "Nom non disponible",
+    "nameNotAvailable": "Nom indisponible",
     "cancel": "Annuler",
     "save": "Enregistrer",
     "saving": "Enregistrement en cours...",
@@ -44,8 +44,22 @@
     "messages": {
       "linkCopied": "Lien copié dans le presse-papiers !"
     },
+    "contentFilter": {
+      "ariaLabel": "Filtre de contenu",
+      "title": "Filtre de contenu",
+      "none": "Aucun filtre",
+      "blur": "Flouter le contenu sensible",
+      "hidden": "Cacher le contenu mature",
+      "descriptions": {
+        "none": "Afficher tout le contenu sans restrictions",
+        "blur": "Appliquer un flou au contenu mature",
+        "hidden": "Cacher complètement le contenu mature"
+      }
+    },
     "errors": {
-      "generic": "Une erreur est survenue. Veuillez réessayer."
-    }
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    },
+    "seeMore": "Voir plus",
+    "seeMoreArrow": "Voir plus →"
   }
 }

@@ -44,8 +44,22 @@
                       "messages": {
                         "linkCopied": "Link copied to clipboard!"
                       },
-                      "errors": {
-                        "generic": "Something went wrong. Please try again."
-                      }
-                  }
+                      "contentFilter": {
+                        "ariaLabel": "Content filter",
+                        "title": "Content Filter",
+                        "none": "No Filter",
+                        "blur": "Blur Sensitive",
+                        "hidden": "Hide Mature",
+                        "descriptions": {
+                          "none": "Show all content without restrictions",
+                          "blur": "Apply blur to mature content",
+                          "hidden": "Completely hide mature content"
+                        }
+                      },
+    "errors": {
+      "generic": "An error occurred. Please try again."
+    },
+    "seeMore": "See more",
+    "seeMoreArrow": "See more →"
+  }
 }

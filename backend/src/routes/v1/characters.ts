@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import { randomUUID } from 'node:crypto';
-import { requireAuth } from '../../middleware/auth';
+import { requireAuth, optionalAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
 import * as characterService from '../../services/characterService';
 import { r2Service } from '../../services/r2Service';
@@ -323,7 +323,7 @@ router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
  * GET /api/v1/characters/:id
  * Get character by ID
  */
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', optionalAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -362,7 +362,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  * GET /api/v1/characters
  * List characters (public or user's own)
  */
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', optionalAuth, async (req: Request, res: Response) => {
   try {
     const userId = req.auth?.user?.id;
     const {
@@ -573,7 +573,7 @@ router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) =>
  * GET /api/v1/characters/:id/stats
  * Get character statistics (conversation count, message count, favorites)
  */
-router.get('/:id/stats', async (req: Request, res: Response) => {
+router.get('/:id/stats', optionalAuth, async (req: Request, res: Response) => {
   try {
     const { id: characterId } = req.params;
     const userId = req.auth?.user?.id;

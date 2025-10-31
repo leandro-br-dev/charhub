@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { CharacterCard } from '../shared/components/CharacterCard';
 import { useCharacterListQuery } from '../shared/hooks/useCharacterQueries';
+import { usePageHeader } from '../../../hooks/usePageHeader';
 import { AGE_RATING_OPTIONS } from '../shared/utils/constants';
 import { type AgeRating } from '../../../types/characters';
 
@@ -12,11 +13,16 @@ type ViewMode = 'private' | 'public';
 export default function CharacterHubPage(): JSX.Element {
   const { t } = useTranslation(['characters', 'common']);
   const navigate = useNavigate();
+  const { setTitle } = usePageHeader();
 
   const [search, setSearch] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('private');
   const [ageRatingFilter, setAgeRatingFilter] = useState<'all' | AgeRating>('all');
-  const [blurSensitive, setBlurSensitive] = useState(true);
+
+  // Set page title
+  useEffect(() => {
+    setTitle(t('characters:hub.title', 'Characters'));
+  }, [setTitle, t]);
 
   const filters = useMemo(() => {
     const params: { search?: string; ageRatings?: AgeRating[]; isPublic?: boolean } = {};
@@ -48,9 +54,6 @@ export default function CharacterHubPage(): JSX.Element {
           </p>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row">
-          <Button type="button" variant="secondary" icon="upload" onClick={() => setBlurSensitive(prev => !prev)}>
-            {blurSensitive ? t('characters:hub.actions.blurSensitive') : t('characters:hub.actions.showSensitive')}
-          </Button>
           <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
             {t('characters:hub.actions.createCharacter')}
           </Button>
@@ -136,7 +139,7 @@ export default function CharacterHubPage(): JSX.Element {
         {!isLoading && !isError && items.length > 0 && (
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {items.map(character => (
-              <CharacterCard key={character.id} character={character} blurSensitive={blurSensitive} />
+              <CharacterCard key={character.id} character={character} />
             ))}
           </div>
         )}

@@ -31,11 +31,12 @@ type NavItemProps = {
   label: string;
   disabled?: boolean;
   onSelect?: () => void;
+  compact?: boolean;
 };
 
-function NavItem({ to, icon, label, disabled = false, onSelect }: NavItemProps): JSX.Element {
-  const baseClasses =
-    'relative group flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-200 ease-in-out';
+function NavItem({ to, icon, label, disabled = false, onSelect, compact = false }: NavItemProps): JSX.Element {
+  const sizeClasses = compact ? 'h-10 w-10 rounded-xl' : 'h-12 w-12 rounded-2xl';
+  const baseClasses = `relative group flex ${sizeClasses} items-center justify-center transition-all duration-200 ease-in-out`;
   const location = useLocation();
   const isActive = location.pathname.startsWith(to);
 
@@ -141,15 +142,16 @@ export function NavigationRail({
   const displayName = user?.displayName ?? user?.email ?? t('common:authenticatedUser', 'User');
   const fallbackInitial = displayName.charAt(0).toUpperCase();
 
+  const isOverlay = displayMode === 'overlay';
   const containerClassName =
-    displayMode === 'overlay'
-      ? 'flex h-screen w-20 flex-col justify-between bg-normal/95 px-3 py-4 backdrop-blur md:hidden'
-      : 'hidden h-screen w-20 flex-col justify-between bg-normal/95 px-3 py-4 backdrop-blur md:flex';
+    isOverlay
+      ? 'flex h-[100svh] w-20 flex-col justify-between bg-normal px-2 py-2 md:hidden overflow-hidden overscroll-none'
+      : 'hidden h-screen w-20 flex-col justify-between bg-normal px-3 py-4 md:flex';
 
   return (
     <aside className={containerClassName}>
-      <div className="flex flex-col items-center gap-3">
-        <Link to="/dashboard" className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-light">
+      <div className={isOverlay ? 'flex flex-col items-center gap-2' : 'flex flex-col items-center gap-3'}>
+        <Link to="/dashboard" className={isOverlay ? 'mb-2 flex h-10 w-10 items-center justify-center rounded-xl bg-light' : 'mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-light'}>
           <img src="/logo.png" alt={t('common:brand', 'CharHub')} className="h-8 w-8" />
         </Link>
 
@@ -166,6 +168,7 @@ export function NavigationRail({
               icon={item.icon}
               label={label}
               disabled={!item.available}
+              compact={isOverlay}
               onSelect={() =>
                 onNavItemSelect?.({
                   to: item.to,
@@ -177,22 +180,34 @@ export function NavigationRail({
           );
         })}
 
-        <div className="my-5 h-px w-12 bg-dark/60" />
+        <div className={isOverlay ? 'my-3 h-px w-10 bg-dark/60' : 'my-5 h-px w-12 bg-dark/60'} />
 
       </div>
 
-      <div className="flex flex-col items-center gap-4">
-        <LanguageSwitcher />
-        <ThemeToggle />
+      <div className={isOverlay ? 'flex flex-col items-center gap-2' : 'flex flex-col items-center gap-4'}>
+        {isOverlay ? (
+          <div className="scale-90">
+            <LanguageSwitcher />
+          </div>
+        ) : (
+          <LanguageSwitcher />
+        )}
+        {isOverlay ? (
+          <div className="scale-90">
+            <ThemeToggle />
+          </div>
+        ) : (
+          <ThemeToggle />
+        )}
         <SmartDropdown
           menuWidth="w-60"
           buttonContent={
             <button
               type="button"
-              className="relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-dark bg-light shadow"
+              className={isOverlay ? 'relative flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-dark bg-light shadow' : 'relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-dark bg-light shadow'}
             >
               {user?.photo ? (
-                <CachedImage src={user.photo} alt={displayName} className="h-12 w-12 rounded-full object-cover" />
+                <CachedImage src={user.photo} alt={displayName} className={isOverlay ? 'h-10 w-10 rounded-full object-cover' : 'h-12 w-12 rounded-full object-cover'} />
               ) : (
                 <span className="text-lg font-semibold text-content">{fallbackInitial}</span>
               )}

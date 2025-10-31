@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, ReactNode } from 'react';
+import React, { useState, createContext, useContext, type ReactNode } from 'react';
 
 interface TabsContextProps {
   activeTab: string;
@@ -7,6 +7,14 @@ interface TabsContextProps {
 
 const TabsContext = createContext<TabsContextProps | undefined>(undefined);
 
+export function useTabs(): TabsContextProps {
+  const ctx = useContext(TabsContext);
+  if (!ctx) {
+    throw new Error('useTabs must be used within <Tabs>');
+  }
+  return ctx;
+}
+
 interface TabsProps {
   children: ReactNode;
   defaultTab: string;
@@ -14,20 +22,11 @@ interface TabsProps {
 
 export function Tabs({ children, defaultTab }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
-
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>
       <div className="flex w-full flex-col">{children}</div>
     </TabsContext.Provider>
   );
-}
-
-export function useTabs() {
-  const context = useContext(TabsContext);
-  if (!context) {
-    throw new Error('useTabs must be used within a TabsProvider');
-  }
-  return context;
 }
 
 interface TabListProps {
@@ -36,58 +35,54 @@ interface TabListProps {
 
 export function TabList({ children }: TabListProps) {
   return (
-    <div className="flex border-b border-border">{children}</div>
+    <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-border">
+      {children}
+    </div>
   );
 }
 
 interface TabProps {
   label: string;
-  children: ReactNode;
   disabled?: boolean;
+  children?: ReactNode;
 }
 
-export function Tab({ label, children, disabled = false }: TabProps) {
+export function Tab({ label, disabled = false, children }: TabProps) {
   const { activeTab, setActiveTab } = useTabs();
   const isActive = activeTab === label;
-
-  const handleSelect = () => {
-    if (disabled) {
-      return;
-    }
-    setActiveTab(label);
-  };
 
   return (
     <button
       type="button"
-      className={`-mb-px border-b-2 px-4 py-3 text-sm font-medium transition-colors duration-200 focus:outline-none ${
+      className={`whitespace-nowrap px-3 sm:px-4 py-2 text-sm sm:text-base font-medium transition-colors ${
         isActive
-          ? 'border-primary text-primary'
-          : 'border-transparent text-muted hover:border-gray-400 hover:text-content'
-      } ${disabled ? 'cursor-not-allowed opacity-60 hover:border-transparent hover:text-muted' : ''}`.trim()}
-      onClick={handleSelect}
+          ? 'text-primary border-b-2 border-primary'
+          : 'text-muted hover:text-content'
+      } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       disabled={disabled}
-      aria-disabled={disabled || undefined}
+      onClick={() => !disabled && setActiveTab(label)}
     >
-      {children}
+      {children ?? label}
     </button>
   );
 }
 
 interface TabPanelsProps {
   children: ReactNode;
+  className?: string;
 }
 
-export function TabPanels({ children }: TabPanelsProps) {
-  return <div className="mt-4">{children}</div>;
+export function TabPanels({ children, className }: TabPanelsProps) {
+  return <div className={className ?? 'mt-4'}>{children}</div>;
 }
 
 interface TabPanelProps {
   label: string;
   children: ReactNode;
+  className?: string;
 }
 
-export function TabPanel({ label, children }: TabPanelProps) {
+export function TabPanel({ label, children, className }: TabPanelProps) {
   const { activeTab } = useTabs();
-  return activeTab === label ? <div>{children}</div> : null;
+  return activeTab === label ? <div className={className}>{children}</div> : null;
 }

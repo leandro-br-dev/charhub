@@ -26,8 +26,8 @@ export function DeleteAccountTab() {
   };
 
   return (
-    <div className="rounded-xl border border-danger/50 bg-card p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-danger">{t('profile:deleteAccount.title', 'Delete Account')}</h2>
+    <div className="w-full h-full flex-grow rounded-xl border border-border bg-card p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-title">{t('profile:deleteAccount.title', 'Delete Account')}</h2>
       <p className="mt-2 text-sm text-description">
         {t('profile:deleteAccount.description', 'Permanently delete your account and all of your content.')}
       </p>

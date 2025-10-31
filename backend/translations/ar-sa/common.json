@@ -5,21 +5,21 @@
     "language": "اللغة",
     "continueGoogle": "متابعة باستخدام Google",
     "continueFacebook": "متابعة باستخدام Facebook",
-    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "privacy": "بالمتابعة، أنت توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
     "logoutLoading": "جاري تسجيل الخروج...",
-    "authenticatedUser": "المستخدم المصادق عليه",
+    "authenticatedUser": "مستخدم مصادق عليه",
     "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض توضيحي لـ OAuth آمن",
+    "navTagline": "عرض تجريبي لـ OAuth آمن",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
     "provider": "مزود الخدمة",
     "theme": {
-      "label": "السمة",
+      "label": "المظهر",
       "option": {
         "light": "فاتح",
         "dark": "داكن",
@@ -28,24 +28,38 @@
     },
     "none": "لا شيء",
     "unknown": "غير معروف",
-    "nameNotAvailable": "الاسم غير متوفر",
+    "nameNotAvailable": "الاسم غير متاح",
     "cancel": "إلغاء",
     "save": "حفظ",
     "saving": "جاري الحفظ...",
     "delete": "حذف",
     "deleting": "جاري الحذف...",
-    "enabled": "ممكّن",
-    "disabled": "معطّل",
+    "enabled": "مُمكّن",
+    "disabled": "مُعطّل",
     "selectOption": "اختر خيارًا",
     "noResults": "لم يتم العثور على خيارات.",
     "chat": {
-      "with": "الدردشة مع"
+      "with": "دردش مع"
     },
     "messages": {
       "linkCopied": "تم نسخ الرابط إلى الحافظة!"
     },
+    "contentFilter": {
+      "ariaLabel": "مرشح المحتوى",
+      "title": "مرشح المحتوى",
+      "none": "لا يوجد مرشح",
+      "blur": "تمويه الحساس",
+      "hidden": "إخفاء المحتوى الناضج",
+      "descriptions": {
+        "none": "عرض كل المحتوى بدون قيود",
+        "blur": "تطبيق التمويه على المحتوى الناضج",
+        "hidden": "إخفاء المحتوى الناضج بالكامل"
+      }
+    },
     "errors": {
-      "generic": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
-    }
+      "generic": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    },
+    "seeMore": "عرض المزيد",
+    "seeMoreArrow": "عرض المزيد →"
   }
 }

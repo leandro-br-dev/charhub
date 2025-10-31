@@ -26,7 +26,7 @@
     },
     "contentTags": {
       "VIOLENCE": "Gewalt",
-      "GORE": "Blut und Gewalt",
+      "GORE": "Blut/Gewalt",
       "SEXUAL": "Sexuell",
       "NUDITY": "Nacktheit",
       "LANGUAGE": "Sprache",
@@ -39,26 +39,35 @@
       "GAMBLING": "Glücksspiel"
     },
     "contentTagHints": {
-      "VIOLENCE": "Kampf, Schlägereien oder aggressive Auseinandersetzungen.",
+      "VIOLENCE": "Kampf, Schlägereien oder aggressive Konflikte.",
       "GORE": "Grafische Verletzungen und explizite Details.",
       "SEXUAL": "Erwachsenenthemen oder Anspielungen.",
       "NUDITY": "Teilweise oder vollständige Nacktheit.",
       "LANGUAGE": "Explizite oder starke Sprache.",
-      "DRUGS": "Drogenkonsum oder Anspielungen.",
+      "DRUGS": "Drogenkonsum oder -referenzen.",
       "ALCOHOL": "Alkoholkonsum.",
       "HORROR": "Beunruhigende oder Horror-Bilder.",
-      "PSYCHOLOGICAL": "Mentale Gesundheit oder psychologische Spannung.",
-      "DISCRIMINATION": "Hassrede oder Vorurteile.",
+      "PSYCHOLOGICAL": "Psychische Gesundheit oder psychologische Spannung.",
+      "DISCRIMINATION": "Hassreden oder Vorurteile.",
       "CRIME": "Themen rund um kriminelle Aktivitäten.",
-      "GAMBLING": "Wetten oder Glücksspiel-Anspielungen."
+      "GAMBLING": "Wetten oder Glücksspiel-Referenzen."
     },
     "accessibility": {
       "addToFavorites": "Zu Favoriten hinzufügen",
       "removeFromFavorites": "Aus Favoriten entfernen"
     },
+    "stats": {
+      "conversations": "Konversationen",
+      "messages": "Nachrichten",
+      "favorites": "Favoriten",
+      "conversationsShort": "{{count}} Tsd. Konversationen",
+      "conversationsShort_plural": "{{count}} Tsd. Konversationen",
+      "favoritesShort": "{{count}} Tsd. Favoriten",
+      "favoritesShort_plural": "{{count}} Tsd. Favoriten"
+    },
     "hub": {
-      "title": "Charakter-Hub",
-      "subtitle": "Erstelle, organisiere und entwickle die Charaktere, die deine Geschichten, Chat-Agenten und KI-Erlebnisse beleben.",
+      "title": "Charaktere",
+      "subtitle": "Erstelle, organisiere und entwickle die Besetzung, die deine Geschichten, Chatbots und KI-Erlebnisse antreibt.",
       "actions": {
         "createCharacter": "Neuer Charakter",
         "retry": "Erneut versuchen",
@@ -93,15 +102,15 @@
       "cancel": "Abbrechen",
       "sections": {
         "identity": "Identität",
-        "identityHint": "Definiere, wie Leute diesen Charakter auf einen Blick entdecken und identifizieren.",
+        "identityHint": "Definiere, wie Personen diesen Charakter auf einen Blick entdecken und identifizieren.",
         "profile": "Erzählerisches Profil",
-        "profileHint": "Beschreibe Persönlichkeit, Eigenschaften und Hintergrundgeschichte, um die KI anzuleiten.",
+        "profileHint": "Beschreibe Persönlichkeit, Eigenschaften und Hintergrundgeschichte, um die KI zu leiten.",
         "configuration": "Verfügbarkeit & Moderation",
         "configurationHint": "Steuere, wie der Charakter erscheint, wer darauf zugreifen kann und welche Schutzmaßnahmen gelten.",
         "contentTagsHint": "Markiere potenziell sensible Themen. Benutzer können diese basierend auf ihren Vorlieben herausfiltern.",
-        "contentTagsCharacterHint": "Diese Themen definieren, worüber der Charakter bei der ausgewählten Altersfreigabe sprechen kann.",
-        "contentTagsUserHint": "Wähle die Themen aus, die du einschließen möchtest. Alles, was nicht angekreuzt ist, bleibt für diese Altersfreigabe blockiert.",
-        "contentTagLocked": "Bei höheren Altersfreigaben entsperrt."
+        "contentTagsCharacterHint": "Diese Themen definieren, worüber der Charakter bei der ausgewählten Altersfreigabe spricht.",
+        "contentTagsUserHint": "Wähle die Themen aus, die du einbeziehen möchtest. Alles, was nicht angekreuzt ist, bleibt für diese Altersfreigabe blockiert.",
+        "contentTagLocked": "Freigeschaltet bei höheren Altersfreigaben."
       },
       "fields": {
         "firstName": "Vorname",
@@ -120,9 +129,9 @@
         "visibility": "Sichtbarkeit"
       },
       "placeholders": {
-        "gender": "Z. B. nicht-binäre KI, Android, Ritter",
-        "species": "Z. B. Mensch, Elf, Synthetik",
-        "style": "Z. B. Noir-Detektiv, Pastell-Anime, malerisch",
+        "gender": "z.B. nicht-binäre KI, Android, Ritter",
+        "species": "z.B. Mensch, Elf, Synthetik",
+        "style": "z.B. Noir-Detektiv, Pastell-Anime, gemalt",
         "genderSelect": "Geschlecht auswählen"
       },
       "labels": {
@@ -137,14 +146,14 @@
         "change": "Bild ändern",
         "remove": "Entfernen",
         "uploading": "Hochladen...",
-        "helperCreate": "Wähle jetzt einen Avatar aus, und wir behalten ihn, während du den Rest des Formulars ausfüllst.",
+        "helperCreate": "Wähle jetzt einen Avatar aus und wir behalten ihn, während du den Rest des Formulars ausfüllst.",
         "helperEdit": "Aktualisiere den Avatar jederzeit. Änderungen werden sofort nach dem Speichern übernommen.",
         "error": "Wir konnten dieses Bild nicht hochladen. Versuche eine andere Datei.",
         "previewAlt": "Vorschau des Charakter-Avatars"
       },
       "images": {
         "coverHeader": "Charakter-Cover",
-        "coverDescription": "Hochformatiges Bild, das als Charakter-Cover verwendet wird.",
+        "coverDescription": "Porträtbild, das als Charakter-Cover verwendet wird.",
         "upload": "Cover hochladen",
         "change": "Cover ändern",
         "uploading": "Hochladen...",
@@ -153,13 +162,13 @@
         "previewAlt": "Vorschau des Charakter-Covers"
       },
       "tags": {
-        "searchPlaceholder": "Tags suchen (z. B. VTuber, Maid)",
+        "searchPlaceholder": "Tags suchen (z.B. VTuber, Maid)",
         "selected": "Ausgewählte Tags",
         "none": "Keine Tags ausgewählt",
         "suggestions": "Vorschläge",
-        "loading": "Lädt...",
+        "loading": "Laden...",
         "noResults": "Keine Ergebnisse",
-        "incompatibleToast": "Einige ausgewählte Tags sind mit der aktuellen Altersfreigabe nicht kompatibel. Bitte überprüfe.",
+        "incompatibleToast": "Einige ausgewählte Tags sind mit der aktuellen Altersfreigabe nicht kompatibel. Bitte überprüfe sie.",
         "incompatibleHint": "Hervorgehobene Tags sind mit der ausgewählten Altersfreigabe nicht kompatibel. Entferne sie, um fortzufahren.",
         "incompatibleChip": "Nicht kompatibel mit aktueller Altersfreigabe"
       },
@@ -174,7 +183,7 @@
     },
     "create": {
       "title": "Neuen Charakter erstellen",
-      "subtitle": "Kombiniere erzählerischen Kontext, visuellen Stil und Moderationseinstellungen. Du kannst alles später verfeinern.",
+      "subtitle": "Kombiniere narrativen Kontext, visuellen Stil und Moderationseinstellungen. Du kannst alles später verfeinern.",
       "saveButton": "Charakter speichern",
       "cancelButton": "Abbrechen und zurückkehren"
     },
@@ -193,19 +202,19 @@
         "notFound": "Wir konnten diesen Charakter nicht finden."
       },
       "actions": {
-        "backToHub": "Zurück zum Hub",
+        "backToHub": "Zurück zur Übersicht",
         "edit": "Bearbeiten",
         "delete": "Löschen",
         "deleting": "Lösche...",
         "share": "Teilen",
-        "startChat": "Gespräch beginnen",
-        "startingChat": "Beginne..."
+        "startChat": "Konversation starten",
+        "startingChat": "Starte..."
       },
       "confirmDelete": "Möchtest du diesen Charakter wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
       "labels": {
         "public": "Öffentlich",
         "private": "Privat",
-        "createdAt": "Erstellt",
+        "createdAt": "Erstellt am",
         "updatedAt": "Zuletzt aktualisiert",
         "identifier": "Charakter-ID: {{id}}",
         "messageCount": "{{count}} Nachricht",
@@ -214,12 +223,15 @@
         "favoriteCount_plural": "{{count}} Favoriten",
         "stats": "Statistiken"
       },
+      "sampleImages": "Beispielbilder",
       "sections": {
         "physicalCharacteristics": "Aussehen",
         "personality": "Persönlichkeit",
         "history": "Hintergrundgeschichte",
         "contentTags": "Inhaltswarnungen",
-        "metadata": "Tags"
+        "metadata": "Tags",
+        "introduction": "Einführung",
+        "updateNotes": "Änderungsprotokoll"
       }
     },
     "errors": {

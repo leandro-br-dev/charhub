@@ -10,7 +10,7 @@ export function ProfileTab({ form }: ProfileTabProps): JSX.Element {
   const { values, handleTextChange } = form;
 
   return (
-    <div className="space-y-6 rounded-xl border border-border bg-card p-6 shadow-sm">
+    <div className="space-y-6 rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
       <div>
         <h2 className="text-lg font-semibold text-title">
           {t('characters:form.sections.profile')}

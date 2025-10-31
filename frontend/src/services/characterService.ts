@@ -169,6 +169,25 @@ export const characterService = {
       return {};
     }
   }
+  ,
+
+  async uploadCharacterImage(params: { characterId: string; file: Blob; type: 'AVATAR' | 'COVER' | 'SAMPLE' | 'STICKER' | 'OTHER' }) {
+    const formData = new FormData();
+    formData.append('image', params.file);
+    formData.append('type', params.type);
+    const response = await api.post<{ success: boolean; data: any }>(`${BASE_PATH}/${params.characterId}/images`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data.data;
+  },
+
+  async addCharacterImageByUrl(params: { characterId: string; url: string; type: 'AVATAR' | 'COVER' | 'SAMPLE' | 'STICKER' | 'OTHER' }) {
+    const response = await api.post<{ success: boolean; data: any }>(`${BASE_PATH}/${params.characterId}/images/url`, {
+      url: params.url,
+      type: params.type
+    });
+    return response.data.data;
+  }
 };
 
 export type CharacterService = typeof characterService;

@@ -42,23 +42,32 @@
       "VIOLENCE": "Combats, affrontements ou conflits agressifs.",
       "GORE": "Blessures graphiques et détails explicites.",
       "SEXUAL": "Thèmes adultes ou sous-entendus.",
-      "NUDITY": "Nudité partielle ou totale.",
+      "NUDITY": "Nudité partielle ou complète.",
       "LANGUAGE": "Langage explicite ou grossier.",
       "DRUGS": "Usage ou références à des drogues.",
       "ALCOHOL": "Consommation d'alcool.",
       "HORROR": "Images dérangeantes ou d'horreur.",
       "PSYCHOLOGICAL": "Santé mentale ou tension psychologique.",
-      "DISCRIMINATION": "Discours de haine ou préjugés.",
+      "DISCRIMINATION": "Discours haineux ou préjugés.",
       "CRIME": "Thèmes d'activités criminelles.",
       "GAMBLING": "Références aux paris ou aux jeux d'argent."
     },
     "accessibility": {
       "addToFavorites": "Ajouter aux favoris",
-      "removeFromFavorites": "Supprimer des favoris"
+      "removeFromFavorites": "Retirer des favoris"
+    },
+    "stats": {
+      "conversations": "Conversations",
+      "messages": "Messages",
+      "favorites": "Favoris",
+      "conversationsShort": "{{count}}K conversations",
+      "conversationsShort_plural": "{{count}}K conversations",
+      "favoritesShort": "{{count}}K favoris",
+      "favoritesShort_plural": "{{count}}K favoris"
     },
     "hub": {
-      "title": "Hub de personnages",
-      "subtitle": "Créez, organisez et faites évoluer le casting qui anime vos histoires, agents de chat et expériences IA.",
+      "title": "Personnages",
+      "subtitle": "Créez, organisez et faites évoluer les personnages qui animent vos histoires, agents de discussion et expériences IA.",
       "actions": {
         "createCharacter": "Nouveau personnage",
         "retry": "Réessayer",
@@ -93,36 +102,36 @@
       "cancel": "Annuler",
       "sections": {
         "identity": "Identité",
-        "identityHint": "Définissez comment les gens découvrent et identifient ce personnage en un coup d'œil.",
+        "identityHint": "Définissez comment les utilisateurs découvrent et identifient ce personnage en un coup d'œil.",
         "profile": "Profil narratif",
-        "profileHint": "Décrivez la personnalité, les traits et l'histoire pour guider l'IA.",
+        "profileHint": "Décrivez la personnalité, les traits et l'historique pour guider l'IA.",
         "configuration": "Disponibilité et modération",
-        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles protections s'appliquent.",
-        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer en fonction de leurs préférences.",
-        "contentTagsCharacterHint": "Ces sujets définissent ce avec quoi le personnage est à l'aise de discuter à la classification d'âge sélectionnée.",
-        "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui reste non coché reste bloqué pour cette classification.",
-        "contentTagLocked": "Débloqué pour les classifications d'âge supérieures."
+        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles mesures de sécurité s'appliquent.",
+        "contentTagsHint": "Indiquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer selon leurs préférences.",
+        "contentTagsCharacterHint": "Ces sujets définissent ce que le personnage est à l'aise de discuter à la classification d'âge sélectionnée.",
+        "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui n'est pas coché reste bloqué pour cette classification.",
+        "contentTagLocked": "Débloqué aux classifications d'âge supérieures."
       },
       "fields": {
         "firstName": "Prénom",
-        "lastName": "Nom",
+        "lastName": "Nom de famille",
         "age": "Âge",
         "gender": "Genre",
         "species": "Espèce / origine",
         "style": "Style visuel ou narratif",
         "physicalCharacteristics": "Description physique",
         "personality": "Personnalité",
-        "history": "Histoire",
+        "history": "Historique",
         "isPublic": "Visibilité",
         "ageRating": "Classification d'âge",
-        "originalLanguageCode": "Langue d'origine",
+        "originalLanguageCode": "Langue originale",
         "contentTags": "Avertissements de contenu",
         "visibility": "Visibilité"
       },
       "placeholders": {
         "gender": "Ex : IA non-binaire, androïde, chevalier",
         "species": "Ex : Humain, Elfe, Synthétique",
-        "style": "Ex : Détective noir, anime pastel, style pictural",
+        "style": "Ex : Détective noir, anime pastel, pictural",
         "genderSelect": "Sélectionner le genre"
       },
       "labels": {
@@ -133,34 +142,34 @@
         "visibilityPrivate": "Privé"
       },
       "avatar": {
-        "upload": "Télécharger l'image",
+        "upload": "Télécharger une image",
         "change": "Changer l'image",
         "remove": "Supprimer",
-        "uploading": "Téléchargement...",
-        "helperCreate": "Choisissez une image de profil maintenant et nous la conserverons pendant que vous remplissez le reste du formulaire.",
-        "helperEdit": "Mettez à jour l'image de profil quand vous le souhaitez. Les modifications s'appliquent dès que vous enregistrez.",
+        "uploading": "Téléchargement en cours...",
+        "helperCreate": "Choisissez un avatar maintenant et nous le conserverons pendant que vous remplissez le reste du formulaire.",
+        "helperEdit": "Mettez à jour l'avatar quand vous le souhaitez. Les changements s'appliquent dès que vous enregistrez.",
         "error": "Nous n'avons pas pu télécharger cette image. Essayez un autre fichier.",
-        "previewAlt": "Aperçu de l'image de profil du personnage"
+        "previewAlt": "Aperçu de l'avatar du personnage"
       },
       "images": {
-        "coverHeader": "Bannière du personnage",
-        "coverDescription": "Image orientée portrait utilisée comme bannière du personnage.",
-        "upload": "Télécharger la bannière",
-        "change": "Changer la bannière",
-        "uploading": "Téléchargement...",
+        "coverHeader": "Couverture du personnage",
+        "coverDescription": "Image orientée portrait utilisée comme couverture du personnage.",
+        "upload": "Télécharger la couverture",
+        "change": "Changer la couverture",
+        "uploading": "Téléchargement en cours...",
         "urlModalTitle": "Utiliser une image depuis une URL",
         "urlLabel": "URL de l'image",
-        "previewAlt": "Aperçu de la bannière du personnage"
+        "previewAlt": "Aperçu de la couverture du personnage"
       },
       "tags": {
-        "searchPlaceholder": "Rechercher des tags (ex : VTuber, Maid)",
+        "searchPlaceholder": "Rechercher des tags (ex: VTuber, Maid)",
         "selected": "Tags sélectionnés",
         "none": "Aucun tag sélectionné",
         "suggestions": "Suggestions",
         "loading": "Chargement...",
         "noResults": "Aucun résultat",
         "incompatibleToast": "Certains tags sélectionnés sont incompatibles avec la classification d'âge actuelle. Veuillez vérifier.",
-        "incompatibleHint": "Les tags mis en évidence sont incompatibles avec la classification d'âge sélectionnée. Supprimez-les pour continuer.",
+        "incompatibleHint": "Les tags mis en surbrillance sont incompatibles avec la classification d'âge sélectionnée. Supprimez-les pour continuer.",
         "incompatibleChip": "Incompatible avec la classification d'âge actuelle"
       },
       "tabs": {
@@ -174,9 +183,9 @@
     },
     "create": {
       "title": "Créer un nouveau personnage",
-      "subtitle": "Combinez le contexte narratif, le style visuel et les paramètres de modération. Vous pourrez affiner le tout plus tard.",
+      "subtitle": "Combinez contexte narratif, style visuel et paramètres de modération. Vous pourrez tout affiner plus tard.",
       "saveButton": "Enregistrer le personnage",
-      "cancelButton": "Annuler et revenir"
+      "cancelButton": "Annuler et revenir en arrière"
     },
     "edit": {
       "title": "Modifier le personnage",
@@ -206,7 +215,7 @@
         "public": "Public",
         "private": "Privé",
         "createdAt": "Créé le",
-        "updatedAt": "Dernière mise à jour",
+        "updatedAt": "Dernière mise à jour le",
         "identifier": "ID du personnage : {{id}}",
         "messageCount": "{{count}} message",
         "messageCount_plural": "{{count}} messages",
@@ -214,12 +223,15 @@
         "favoriteCount_plural": "{{count}} favoris",
         "stats": "Statistiques"
       },
+      "sampleImages": "Images d'exemple",
       "sections": {
         "physicalCharacteristics": "Apparence",
         "personality": "Personnalité",
-        "history": "Histoire",
+        "history": "Historique",
         "contentTags": "Avertissements de contenu",
-        "metadata": "Tags"
+        "metadata": "Tags",
+        "introduction": "Introduction",
+        "updateNotes": "Notes de mise à jour"
       }
     },
     "errors": {

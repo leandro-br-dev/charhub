@@ -1,12 +1,15 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { CachedImage } from '../../../components/ui/CachedImage';
+import { Tag as UITag } from '../../../components/ui';
 import { useCharacterMutations, useCharacterQuery } from '../shared/hooks/useCharacterQueries';
 import { chatService } from '../../../services/chatService';
 import { useAuth } from '../../../hooks/useAuth';
+import { usePageHeader } from '../../../hooks/usePageHeader';
 import { characterStatsService, type CharacterStats } from '../../../services/characterStatsService';
+import { FavoriteButton } from '../../../components/ui/FavoriteButton';
 
 export default function CharacterDetailPage(): JSX.Element {
   const { t } = useTranslation(['characters', 'common']);
@@ -14,12 +17,18 @@ export default function CharacterDetailPage(): JSX.Element {
   const params = useParams<{ characterId: string }>();
   const characterId = params.characterId ?? '';
   const { user } = useAuth();
+  const { setTitle } = usePageHeader();
 
   const { data, isLoading, isError } = useCharacterQuery(characterId);
   const { deleteMutation } = useCharacterMutations();
   const [isStartingChat, setIsStartingChat] = useState(false);
   const [stats, setStats] = useState<CharacterStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(false);
+
+  // Collapsible description state - MUST be before any conditional returns
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
+  const [isDescOverflowing, setIsDescOverflowing] = useState(false);
+  const descRef = useRef<HTMLDivElement | null>(null);
 
   const fullName = useMemo(() => {
     if (!data) return '';
@@ -30,6 +39,14 @@ export default function CharacterDetailPage(): JSX.Element {
   const isOwner = useMemo(() => {
     return user?.id === data?.userId;
   }, [user, data]);
+
+  // Get sample images (max 4)
+  const sampleImages = useMemo(() => {
+    if (!data?.images) return [];
+    return data.images
+      .filter(img => img.type === 'SAMPLE')
+      .slice(0, 4);
+  }, [data]);
 
   // Load character stats
   useEffect(() => {
@@ -47,30 +64,25 @@ export default function CharacterDetailPage(): JSX.Element {
     }
   }, [characterId]);
 
-  const handleToggleFavorite = async () => {
-    if (!stats) return;
+  // Set page title
+  useEffect(() => {
+    setTitle(t('characters:hub.title', 'Characters'));
+  }, [setTitle, t]);
 
-    const newFavoriteStatus = !stats.isFavoritedByUser;
-
-    // Optimistic update
-    setStats({
-      ...stats,
-      isFavoritedByUser: newFavoriteStatus,
-      favoriteCount: newFavoriteStatus ? stats.favoriteCount + 1 : stats.favoriteCount - 1
-    });
-
-    try {
-      await characterStatsService.toggleFavorite(characterId, newFavoriteStatus);
-    } catch (error) {
-      console.error('[CharacterDetail] Failed to toggle favorite', error);
-      // Revert on error
-      setStats({
-        ...stats,
-        isFavoritedByUser: !newFavoriteStatus,
-        favoriteCount: newFavoriteStatus ? stats.favoriteCount - 1 : stats.favoriteCount + 1
-      });
-    }
-  };
+  // Measure description overflow
+  useEffect(() => {
+    const measure = () => {
+      const el = descRef.current;
+      if (!el) return;
+      // Measure after layout
+      const overflowing = el.scrollHeight > el.clientHeight + 1;
+      setIsDescOverflowing(overflowing);
+    };
+    measure();
+    const onResize = () => setTimeout(measure, 0);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [data?.personality, data?.history, data?.physicalCharacteristics, isDescExpanded]);
 
   const handleDelete = async () => {
     if (!data) return;
@@ -118,6 +130,26 @@ export default function CharacterDetailPage(): JSX.Element {
     }
   };
 
+  const resolveGenderIcon = (raw?: string | null): string => {
+    const g = (raw || '').trim().toLowerCase();
+    if (!g) return 'person';
+    if (['female', 'feminino', 'mulher', 'fêmea', 'femea', 'woman'].includes(g)) return 'female';
+    if (['male', 'masculino', 'homem', 'macho', 'man'].includes(g)) return 'male';
+    if (['non-binary', 'nonbinary', 'não-binário', 'nao-binario', 'genderqueer', 'outro', 'other'].includes(g)) return 'transgender';
+    return 'person';
+  };
+
+  const resolveSpeciesIcon = (raw?: string | null): string => {
+    const s = (raw || '').trim().toLowerCase();
+    if (!s) return 'person';
+    if (s.includes('human') || s.includes('humano') || s.includes('humana')) return 'person';
+    const animalRegex = /(animal|beast|cat|dog|wolf|fox|lion|tiger|bear|bird|dragon|horse|rodent|bunny|rabbit|fox)/;
+    if (animalRegex.test(s)) return 'pets';
+    const hybridRegex = /(half|meio|demi|hybrid|meio\s+animal)/;
+    if (hybridRegex.test(s) && animalRegex.test(s)) return 'pets';
+    return 'person';
+  };
+
   if (isLoading) {
     return (
       <section className="flex h-[60vh] flex-col items-center justify-center gap-3 text-muted">
@@ -140,53 +172,18 @@ export default function CharacterDetailPage(): JSX.Element {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header bar */}
-      <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/95 px-4 py-3 backdrop-blur-sm">
-        <button
-          onClick={() => navigate('/characters')}
-          className="flex items-center gap-2 text-content transition-colors hover:text-primary"
-        >
-          <span className="material-symbols-outlined">arrow_back</span>
-        </button>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-2 rounded-lg px-3 py-2 text-content transition-colors hover:bg-input"
-          >
-            <span className="material-symbols-outlined text-xl">share</span>
-          </button>
-          {isOwner && (
-            <>
-              <button
-                onClick={() => navigate(`/characters/${data.id}/edit`)}
-                className="flex items-center gap-2 rounded-lg px-3 py-2 text-content transition-colors hover:bg-input"
-              >
-                <span className="material-symbols-outlined text-xl">edit</span>
-              </button>
-              <button
-                onClick={handleDelete}
-                disabled={deleteMutation.isPending}
-                className="flex items-center gap-2 rounded-lg px-3 py-2 text-danger transition-colors hover:bg-danger/10"
-              >
-                <span className="material-symbols-outlined text-xl">delete</span>
-              </button>
-            </>
-          )}
-        </div>
-      </div>
-
+    <>
       {/* Main content */}
-      <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[420px_1fr]">
+      <div className="-mx-4 -mt-8 md:mx-auto md:mt-0 md:max-w-7xl">
+        <div className="grid gap-0 md:gap-6 lg:grid-cols-[420px_1fr]">
           {/* Left side - Character card */}
-          <div className="space-y-4">
+          <div className="w-full space-y-4 md:w-full">
             {/* Character image with overlay stats */}
-            <div className="relative overflow-hidden rounded-2xl bg-card shadow-lg">
-              <div className="relative aspect-[2/3]">
+            <div className="relative overflow-hidden rounded-none bg-card shadow-lg md:rounded-2xl">
+              <div className="relative h-[50vh] md:aspect-[2/3] md:h-auto">
                 {(() => { const cov = (data.images || []).find((i:any)=>i.type==='COVER')?.url; return cov || data.avatar; })() ? (
                   <CachedImage
-                    src={(data.images || []).find((i:any)=>i.type==='COVER')?.url || data.avatar}
+                    src={(data.images || []).find((i:any)=>i.type==='COVER')?.url || data.avatar || ''}
                     alt={fullName}
                     className="h-full w-full object-cover"
                   />
@@ -200,25 +197,22 @@ export default function CharacterDetailPage(): JSX.Element {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
 
                 {/* Favorite button - top right */}
-                <button
-                  onClick={handleToggleFavorite}
-                  disabled={!stats}
-                  className="absolute right-4 top-4 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm transition-all hover:bg-white hover:scale-110 disabled:opacity-50"
-                  aria-label={stats?.isFavoritedByUser ? t('characters:accessibility.removeFromFavorites') : t('characters:accessibility.addToFavorites')}
-                >
-                  <span
-                    className="material-symbols-outlined text-2xl transition-colors"
-                    style={{
-                      fontVariationSettings: stats?.isFavoritedByUser ? "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48" : "'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48",
-                      color: stats?.isFavoritedByUser ? '#ec4899' : '#656D76'
-                    }}
-                  >
-                    star
-                  </span>
-                </button>
+                <FavoriteButton
+                  characterId={characterId}
+                  initialIsFavorited={Boolean(stats?.isFavoritedByUser)}
+                  onToggle={(fav) => {
+                    // Keep local stats in sync if we have them
+                    setStats((prev) => prev ? {
+                      ...prev,
+                      isFavoritedByUser: fav,
+                      favoriteCount: prev.favoriteCount + (fav ? 1 : -1)
+                    } : prev);
+                  }}
+                  className="absolute top-4 right-4"
+                />
 
-                {/* Stats overlay - bottom */}
-                <div className="absolute bottom-4 left-4 right-4 z-10 flex gap-3">
+                {/* Stats overlay - bottom - Hidden on mobile */}
+                <div className="absolute bottom-4 left-4 right-4 z-10 hidden gap-3 md:flex">
                   <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/20 px-4 py-3 backdrop-blur-sm">
                     <span className="material-symbols-outlined text-xl text-content">chat</span>
                     <span className="text-lg font-semibold text-content">
@@ -237,26 +231,56 @@ export default function CharacterDetailPage(): JSX.Element {
           </div>
 
           {/* Right side - Character info */}
-          <div className="space-y-4">
+          <div className="relative z-10 -mt-12 space-y-4 md:mt-0">
             {/* Title and stats */}
-            <div className="rounded-2xl bg-card p-6 shadow-lg">
-              <h1 className="mb-4 text-3xl font-bold text-title lg:text-4xl">
-                {fullName}
-              </h1>
+            <div className="mx-0 rounded-2xl bg-card p-6 shadow-lg">
+              <div className="mb-4 flex items-start justify-between gap-4">
+                <h1 className="text-3xl font-bold text-title lg:text-4xl">
+                  {fullName}
+                </h1>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleShare}
+                    className="flex h-10 w-10 items-center justify-center rounded-lg text-content transition-colors hover:bg-input hover:text-primary"
+                    aria-label="Share character"
+                  >
+                    <span className="material-symbols-outlined text-xl">share</span>
+                  </button>
+                  {isOwner && (
+                    <>
+                      <button
+                        onClick={() => navigate(`/characters/${data.id}/edit`)}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg text-content transition-colors hover:bg-input hover:text-primary"
+                        aria-label="Edit character"
+                      >
+                        <span className="material-symbols-outlined text-xl">edit</span>
+                      </button>
+                      <button
+                        onClick={handleDelete}
+                        disabled={deleteMutation.isPending}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg text-danger transition-colors hover:bg-danger/10 disabled:opacity-50"
+                        aria-label="Delete character"
+                      >
+                        <span className="material-symbols-outlined text-xl">delete</span>
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
 
               {/* Stats row */}
-              <div className="mb-6 grid grid-cols-3 gap-4">
+              <div className="mb-6 grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-2xl font-bold text-content">{messageCount.toLocaleString()}</div>
-                  <div className="text-sm text-muted">Mensagens</div>
+                  <div className="text-2xl font-bold text-content">
+                    {isLoadingStats ? '...' : (stats?.conversationCount || 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-muted">{t('characters:stats.conversations')}</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-content">{favoriteCount.toLocaleString()}</div>
-                  <div className="text-sm text-muted">Total de caracteres</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-content">{new Date(data.createdAt).toLocaleDateString()}</div>
-                  <div className="text-sm text-muted">Criar tempo</div>
+                  <div className="text-2xl font-bold text-content">
+                    {isLoadingStats ? '...' : (stats?.favoriteCount || 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-muted">{t('characters:stats.favorites')}</div>
                 </div>
               </div>
 
@@ -271,23 +295,26 @@ export default function CharacterDetailPage(): JSX.Element {
               >
                 {isStartingChat
                   ? t('characters:detail.actions.startingChat')
-                  : 'Início o bate-papo'}
+                  : t('characters:detail.actions.startChat')}
               </Button>
-            </div>
+            </div>            
 
-            {/* Gallery thumbnails */}
-            {data.avatar && (
-              <div className="rounded-2xl bg-card p-4 shadow-lg">
+            {/* Gallery thumbnails - Only show if sample images exist */}
+            {sampleImages.length > 0 && (
+              <div className="mx-0 rounded-2xl bg-card p-4 shadow-lg">
+                <h3 className="mb-3 text-sm font-semibold text-title">
+                  {t('characters:detail.sampleImages', 'Sample Images')}
+                </h3>
                 <div className="grid grid-cols-4 gap-2">
-                  {[1, 2, 3, 4].map((i) => (
+                  {sampleImages.map((img, i) => (
                     <div
-                      key={i}
-                      className="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20"
+                      key={img.id}
+                      className="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 transition-transform hover:scale-105"
                     >
                       <CachedImage
-                        src={data.avatar}
-                        alt={`${fullName} ${i}`}
-                        className="h-full w-full object-cover opacity-80"
+                        src={img.url}
+                        alt={img.description || `${fullName} sample ${i + 1}`}
+                        className="h-full w-full object-cover"
                       />
                     </div>
                   ))}
@@ -295,62 +322,84 @@ export default function CharacterDetailPage(): JSX.Element {
               </div>
             )}
 
-            {/* Introduction */}
-            <div className="rounded-2xl bg-card p-6 shadow-lg">
-              <h2 className="mb-4 text-xl font-semibold text-title">Introdução</h2>
+              {/* Introduction */}
+              <div className="mx-0 rounded-2xl bg-card p-6 shadow-lg">
+                <h2 className="mb-4 text-xl font-semibold text-title">{t('characters:detail.sections.introduction')}</h2>
 
               {/* Tags */}
               <div className="mb-4 flex flex-wrap gap-2">
                 {/* Age rating badge */}
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-success/20 px-4 py-2 text-xs font-semibold text-success ring-1 ring-success/30">
-                  <span className="material-symbols-outlined text-sm">verified</span>
-                  {t(`characters:ageRatings.${data.ageRating}`)}
-                </span>
+                <UITag
+                  label={t(`characters:ageRatings.${data.ageRating}`)}
+                  icon={<span className="material-symbols-outlined text-sm">verified</span>}
+                  tone="success"
+                  selected
+                  disabled
+                />
 
                 {/* Content tags */}
-                {data.contentTags && data.contentTags.length > 0 && data.contentTags.map(tag => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-primary/10 px-4 py-2 text-xs font-semibold text-primary ring-1 ring-primary/20"
-                  >
-                    {t(`characters:contentTags.${tag}`)}
-                  </span>
-                ))}
-
-                {/* Regular tags */}
-                {data.tags && data.tags.length > 0 && data.tags.map(tag => (
-                  <span
-                    key={tag.id}
-                    className="rounded-full bg-secondary/10 px-4 py-2 text-xs font-semibold text-secondary ring-1 ring-secondary/20"
-                  >
-                    {tag.name}
-                  </span>
-                ))}
-
+                {data.contentTags && data.contentTags.length > 0 && data.contentTags.map((ct) => {
+                  const isNsfw = ct === 'SEXUAL' || ct === 'NUDITY';
+                  return (
+                    <UITag
+                      key={ct}
+                      label={t(`characters:contentTags.${ct}`)}
+                      tone={isNsfw ? 'nsfw' : 'info'}
+                      disabled
+                    />
+                  );
+                })}
+               
                 {/* Gender and species */}
                 {data.gender && (
-                  <span className="rounded-full bg-accent/10 px-4 py-2 text-xs font-semibold text-accent ring-1 ring-accent/20">
-                    {data.gender}
-                  </span>
+                  <UITag
+                    label={data.gender}
+                    tone="warning"
+                    icon={<span className="material-symbols-outlined text-sm">{resolveGenderIcon(data.gender)}</span>}
+                    disabled
+                  />
                 )}
                 {data.species && (
-                  <span className="rounded-full bg-accent/10 px-4 py-2 text-xs font-semibold text-accent ring-1 ring-accent/20">
-                    {data.species}
-                  </span>
+                  <UITag
+                    label={data.species}
+                    tone="warning"
+                    icon={<span className="material-symbols-outlined text-sm">{resolveSpeciesIcon(data.species)}</span>}
+                    disabled
+                  />
                 )}
+
+                {/* Regular tags */}
+                {data.tags && data.tags.length > 0 && data.tags.map((tag) => (
+                  <UITag
+                    key={tag.id}
+                    label={t('tags-character:' + tag.name + '.name', tag.name)}
+                    title={t('tags-character:' + tag.name + '.description', '')}
+                    tone={tag.ageRating === 'EIGHTEEN' ? 'nsfw' : 'default'}
+                    icon={<span className="material-symbols-outlined text-sm">sell</span>}
+                    disabled
+                  />
+                ))}
+
               </div>
 
-              {/* Description box with gradient background */}
-              <div className="rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 p-6 dark:from-purple-900/30 dark:to-pink-900/30">
-                <div className="space-y-4 text-sm leading-relaxed">
+              {/* Description box with collapsible behavior */}
+              <div className="relative rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 p-6 dark:from-purple-900/30 dark:to-pink-900/30">
+                <div
+                  ref={descRef}
+                  className={
+                    isDescExpanded
+                      ? 'space-y-4 text-sm leading-relaxed pr-0'
+                      : 'space-y-4 text-sm leading-relaxed max-h-56 overflow-hidden pr-0'
+                  }
+                >
                   {data.personality && (
                     <div>
-                      <p className="italic text-content/90">"{data.personality.substring(0, 100)}..."</p>
+                      <p className="italic text-content/90">"{data.personality}"</p>
                     </div>
                   )}
 
                   {data.history && (
-                    <div className="max-h-[300px] overflow-y-auto pr-2">
+                    <div>
                       <p className="whitespace-pre-line text-content/80">{data.history}</p>
                     </div>
                   )}
@@ -362,32 +411,79 @@ export default function CharacterDetailPage(): JSX.Element {
                   )}
                 </div>
 
-                {/* Expand button */}
-                <button className="mt-4 flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80">
-                  <span>Veja mais</span>
-                  <span className="material-symbols-outlined text-base">expand_more</span>
-                </button>
+                {/* Fade gradient overlay when collapsed and overflowing */}
+                {!isDescExpanded && isDescOverflowing && (
+                  <div className="pointer-events-none absolute inset-x-0 bottom-12 h-16 bg-gradient-to-b from-transparent to-card/80 dark:to-card/70" />
+                )}
+
+                {/* Toggle button */}
+                {isDescOverflowing || isDescExpanded ? (
+                  <button
+                    type="button"
+                    onClick={() => setIsDescExpanded((v) => !v)}
+                    className="mt-4 flex items-center gap-1 text-sm font-medium text-primary hover:text-primary/80"
+                  >
+                    <span>
+                      {isDescExpanded
+                        ? t('common:seeLess', 'Ocultar texto')
+                        : t('common:seeMore', 'Veja mais')}
+                    </span>
+                    <span className="material-symbols-outlined text-base">
+                      {isDescExpanded ? 'expand_less' : 'expand_more'}
+                    </span>
+                  </button>
+                ) : null}
+              </div>
+            </div>
+
+            {/* Creator info */}
+            <div className="mx-0 rounded-2xl bg-card/50 p-4">
+              <div className="flex items-center gap-3">
+                {data.creator?.avatarUrl ? (
+                  <CachedImage
+                    src={data.creator.avatarUrl}
+                    alt={data.creator.displayName || 'Creator'}
+                    className="h-10 w-10 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+                    <span className="text-sm font-semibold text-primary">
+                      {(data.creator?.displayName || 'U').charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                <div className="flex-1">
+                  <p className="text-sm text-muted">{t('characters:detail.labels.createdBy', 'Created by')}</p>
+                  <p className="font-medium text-content">{data.creator?.displayName || t('common:anonymousUser', 'Anonymous')}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-muted">{new Date(data.createdAt).toLocaleDateString()}</p>
+                </div>
               </div>
             </div>
 
             {/* Update notes */}
-            <div className="rounded-2xl bg-card p-6 shadow-lg">
+            <div className="mx-0 rounded-2xl bg-card p-6 shadow-lg">
               <div className="mb-2 flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-title">Nota de atualização</h2>
-                <button className="text-sm font-medium text-primary hover:text-primary/80">
-                  Veja mais →
+                <h2 className="text-xl font-semibold text-title">{t('characters:detail.sections.updateNotes')}</h2>
+                <button
+                  type="button"
+                  onClick={() => navigate(`/characters/${data.id}/edit`)}
+                  className="text-sm font-medium text-primary hover:text-primary/80"
+                >
+                  {t('common:seeMoreArrow', 'Veja mais →')}
                 </button>
               </div>
               <div className="space-y-2 text-sm text-content">
                 <div className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>Última atualização: {new Date(data.updatedAt).toLocaleDateString()}</span>
-                </div>
+                  <span>{t('characters:detail.labels.updatedAt')} {new Date(data.updatedAt).toLocaleDateString()}</span>
+              </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
