@@ -15,13 +15,14 @@ import ProfilePage from './pages/profile';
 import ChatIndexPage from './pages/(chat)';
 import ConversationDetailPage from './pages/(chat)/[conversationId]';
 import NewConversationPage from './pages/(chat)/new';
-import { CreateStoryPage } from './pages/story/create/CreateStoryPage';
-import { StoryListPage } from './pages/story/list';
+import StoryCreatePage from './pages/story/create';
+import StoryEditPage from './pages/story/[storyId]/edit';
+import StoryHubPage from './pages/story/hub';
 import { StoryDetailPage } from './pages/story/[storyId]';
 
 function PublicShell(): JSX.Element {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-[100svh] bg-background text-foreground">
       <main>
         <Outlet />
       </main>
@@ -56,9 +57,10 @@ export default function App(): JSX.Element {
         <Route path="/chat/new" element={<NewConversationPage />} />
         <Route path="/chat/:conversationId" element={<ConversationDetailPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/stories" element={<StoryListPage />} />
-        <Route path="/stories/create" element={<CreateStoryPage />} />
+        <Route path="/stories" element={<StoryHubPage />} />
+        <Route path="/stories/create" element={<StoryCreatePage />} />
         <Route path="/stories/:storyId" element={<StoryDetailPage />} />
+        <Route path="/stories/:storyId/edit" element={<StoryEditPage />} />
       </Route>
     </Routes>
   );

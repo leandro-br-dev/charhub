@@ -10,17 +10,17 @@
       "titlePlaceholder": "Введите название истории",
       "synopsis": "Синопсис",
       "synopsisPlaceholder": "Кратко опишите свою историю",
-      "coverImage": "Изображение обложки",
+      "coverImage": "Обложка",
       "coverImagePlaceholder": "https://example.com/image.jpg",
-      "coverImagePreview": "Предварительный просмотр обложки",
+      "coverImagePreview": "Предпросмотр обложки",
       "coverImageError": "Не удалось загрузить изображение",
       "coverImageHint": "Вставьте URL изображения для обложки истории",
       "initialText": "Начальный текст",
       "initialTextPlaceholder": "Напишите вступление к своей истории...",
-      "initialTextHint": "Этот текст будет показан при начале истории",
+      "initialTextHint": "Этот текст будет отображаться при начале истории",
       "objectives": "Цели",
-      "objectivePlaceholder": "Добавить цель истории",
-      "noObjectives": "Целей пока нет. Добавьте их, чтобы направить повествование.",
+      "objectivePlaceholder": "Добавьте цель истории",
+      "noObjectives": "Пока нет целей. Добавьте их, чтобы направить сюжет.",
       "characters": "Персонажи",
       "selectedCharacters": "Выбранные персонажи",
       "searchCharacters": "Поиск персонажей",
@@ -30,16 +30,16 @@
       "selectedTags": "Выбранные теги",
       "searchTags": "Поиск тегов",
       "noTagsFound": "Теги не найдены",
-      "noTagsAvailable": "Теги недоступны",
-      "ageRating": "Возрастной рейтинг",
+      "noTagsAvailable": "Нет доступных тегов",
+      "ageRating": "Возрастное ограничение",
       "contentTags": "Теги контента",
       "makePublic": "Сделать эту историю публичной"
     },
     "validation": {
-      "titleRequired": "Название обязательно",
-      "titleTooLong": "Название должно быть не более 100 символов",
-      "synopsisTooLong": "Синопсис должен быть не более 2000 символов",
-      "initialTextTooLong": "Начальный текст должен быть не более 5000 символов"
+      "titleRequired": "Название обязательно для заполнения",
+      "titleTooLong": "Название должно содержать не более 100 символов",
+      "synopsisTooLong": "Синопсис должен содержать не более 2000 символов",
+      "initialTextTooLong": "Начальный текст должен содержать не более 5000 символов"
     },
     "errors": {
       "createFailed": "Не удалось создать историю",
@@ -52,24 +52,29 @@
     },
     "sidebar": {
       "myStories": "Мои истории",
-      "noStories": "Историй пока нет"
+      "noStories": "Пока нет историй"
     },
     "list": {
       "title": "Мои истории",
-      "subtitle": "Управление вашими интерактивными историями",
+      "subtitle": "Управляйте своими интерактивными историями",
       "public": "Публичная",
       "private": "Приватная",
       "empty": {
-        "title": "Историй пока нет",
+        "title": "Пока нет историй",
         "description": "Создайте свою первую интерактивную историю",
         "action": "Создать историю"
       }
     },
     "detail": {
+      "title": "История",
       "synopsis": "Синопсис",
-      "initialScene": "Вступительная сцена",
+      "initialScene": "Начальная сцена",
       "objectives": "Цели истории",
-      "characters": "Персонажи"
+      "characters": "Персонажи",
+      "confirmDelete": "Вы уверены, что хотите удалить эту историю? Это действие нельзя отменить.",
+      "labels": {
+        "createdBy": "Создано"
+      }
     },
     "start": "Начать историю",
     "starting": "Запуск..."

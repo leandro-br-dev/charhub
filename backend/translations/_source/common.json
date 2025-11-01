@@ -47,6 +47,8 @@
                       "contentFilter": {
                         "ariaLabel": "Content filter",
                         "title": "Content Filter",
+                        "ageRating": "Age Rating",
+                        "blurNsfw": "Blur Explicit Content",
                         "none": "No Filter",
                         "blur": "Blur Sensitive",
                         "hidden": "Hide Mature",
@@ -54,11 +56,20 @@
                           "none": "Show all content without restrictions",
                           "blur": "Apply blur to mature content",
                           "hidden": "Completely hide mature content"
+                        },
+                        "ageRatings": {
+                          "L": "Free",
+                          "TEN": "10+",
+                          "TWELVE": "12+",
+                          "FOURTEEN": "14+",
+                          "SIXTEEN": "16+",
+                          "EIGHTEEN": "18+"
                         }
                       },
     "errors": {
       "generic": "An error occurred. Please try again."
     },
+    "character": "Character",
     "seeMore": "See more",
     "seeMoreArrow": "See more →"
   }

@@ -48,7 +48,7 @@ export function HorizontalScroller({
   );
 
   return (
-    <div>
+    <div className="overflow-hidden">
       {title && (
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-xl font-semibold text-content">{title}</h3>
@@ -73,13 +73,15 @@ export function HorizontalScroller({
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="flex gap-4 overflow-x-auto pb-4 no-scrollbar"
+        className="flex gap-4 overflow-x-auto pb-4 no-scrollbar w-full"
       >
-        {React.Children.map(children, (child, index) => (
-          <div key={index} className={`flex-shrink-0 ${wrapperClass}`}>
-            {child}
-          </div>
-        ))}
+        {React.Children.toArray(children)
+          .filter(Boolean)
+          .map((child, index) => (
+            <div key={index} className={`flex-shrink-0 ${wrapperClass}`}>
+              {child}
+            </div>
+          ))}
         {isLoadingMore && (
           <div className={`flex-shrink-0 ${wrapperClass} flex items-center justify-center`}>
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>

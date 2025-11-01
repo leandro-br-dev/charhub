@@ -1,5 +1,6 @@
 ﻿import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
+import lineClamp from '@tailwindcss/line-clamp';
 
 const config: Config = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -44,7 +45,7 @@ const config: Config = {
       }
     }
   },
-  plugins: [forms]
+  plugins: [forms, lineClamp]
 };
 
 export default config;

@@ -132,7 +132,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   if (displayMode === "permanent" && !isOpen) {
     return (
       <aside
-        className="hidden h-screen w-0 md:flex md:pointer-events-none"
+        className="hidden h-[100svh] w-0 md:flex md:pointer-events-none"
         aria-hidden="true"
       />
     );
@@ -141,7 +141,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   const containerClassName =
     displayMode === "overlay"
       ? "flex h-[100svh] w-80 flex-shrink-0 border-r border-border bg-normal backdrop-blur-sm md:hidden dark:bg-normal dark:border-slate-800/80 overflow-hidden overscroll-none touch-none"
-      : "hidden md:flex md:h-screen md:w-80 md:flex-shrink-0 md:border-r md:border-border md:bg-light/90 md:backdrop-blur md:sticky md:top-0 dark:md:bg-dark/80 dark:md:border-slate-800/80";
+      : "hidden md:flex md:h-[100svh] md:w-80 md:flex-shrink-0 md:border-r md:border-border md:bg-light/90 md:backdrop-blur md:sticky md:top-0 dark:md:bg-dark/80 dark:md:border-slate-800/80";
 
   return (
     <aside className={containerClassName}>

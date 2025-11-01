@@ -12,7 +12,7 @@
       "submitting": "Salvando..."
     },
     "ageRatings": {
-      "L": "Livre para todos os públicos",
+      "L": "Livre",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -42,7 +42,7 @@
       "VIOLENCE": "Combate, brigas ou conflitos agressivos.",
       "GORE": "Ferimentos gráficos e detalhes explícitos.",
       "SEXUAL": "Temas adultos ou insinuações.",
-      "NUDITY": "Nudez parcial ou completa.",
+      "NUDITY": "Nudez parcial ou total.",
       "LANGUAGE": "Linguagem explícita ou pesada.",
       "DRUGS": "Uso ou referências a drogas.",
       "ALCOHOL": "Consumo de álcool.",
@@ -71,7 +71,7 @@
       "actions": {
         "createCharacter": "Novo personagem",
         "retry": "Tentar novamente",
-        "blurSensitive": "Ocultar conteúdo sensível",
+        "blurSensitive": "Desfocar conteúdo sensível",
         "showSensitive": "Mostrar conteúdo sensível"
       },
       "tabs": {
@@ -80,12 +80,13 @@
       },
       "filters": {
         "searchPlaceholder": "Pesquisar por nome ou estilo",
-        "allAgeRatings": "Todas as classificações etárias"
+        "allAgeRatings": "Todas as classificações etárias",
+        "noFilter": "Qualquer"
       },
       "states": {
         "loading": "Carregando seus personagens...",
         "error": "Não foi possível carregar os personagens. Por favor, tente novamente.",
-        "empty": "Ainda não há personagens disponíveis.",
+        "empty": "Nenhum personagem disponível ainda.",
         "empty_private": "Você ainda não criou nenhum personagem.",
         "empty_public": "Nenhum personagem público corresponde aos seus filtros.",
         "emptyHint": "Comece criando um perfil ou ajuste seus filtros.",
@@ -104,11 +105,11 @@
         "identity": "Identidade",
         "identityHint": "Defina como as pessoas descobrem e identificam este personagem rapidamente.",
         "profile": "Perfil narrativo",
-        "profileHint": "Descreva personalidade, traços e histórico para guiar a IA.",
+        "profileHint": "Descreva a personalidade, traços e história para guiar a IA.",
         "configuration": "Disponibilidade e moderação",
         "configurationHint": "Controle como o personagem aparece, quem pode acessá-lo e quais salvaguardas se aplicam.",
         "contentTagsHint": "Marque temas potencialmente sensíveis. Os usuários podem filtrá-los com base em suas preferências.",
-        "contentTagsCharacterHint": "Esses tópicos definem sobre o que o personagem se sente confortável em discutir na classificação etária selecionada.",
+        "contentTagsCharacterHint": "Esses tópicos definem o que o personagem está confortável em discutir na classificação etária selecionada.",
         "contentTagsUserHint": "Selecione os temas que você deseja incluir. Tudo o que não for marcado permanecerá bloqueado para esta classificação.",
         "contentTagLocked": "Desbloqueado em classificações etárias mais altas."
       },
@@ -121,7 +122,7 @@
         "style": "Estilo visual ou de narrativa",
         "physicalCharacteristics": "Descrição física",
         "personality": "Personalidade",
-        "history": "Histórico",
+        "history": "História de fundo",
         "isPublic": "Visibilidade",
         "ageRating": "Classificação etária",
         "originalLanguageCode": "Idioma original",
@@ -131,8 +132,8 @@
       "placeholders": {
         "gender": "Ex: IA não binária, andróide, cavaleiro",
         "species": "Ex: Humano, Elfo, Sintético",
-        "style": "Ex: Detetive noir, anime pastel, estilo pintura",
-        "genderSelect": "Selecionar gênero"
+        "style": "Ex: Detetive noir, anime pastel, pintura",
+        "genderSelect": "Selecione o gênero"
       },
       "labels": {
         "unsavedChanges": "Você tem alterações não salvas",
@@ -162,7 +163,7 @@
         "previewAlt": "Prévia da capa do personagem"
       },
       "tags": {
-        "searchPlaceholder": "Pesquisar tags (ex: VTuber, Empregada)",
+        "searchPlaceholder": "Pesquisar tags (ex: VTuber, Maid)",
         "selected": "Tags selecionadas",
         "none": "Nenhuma tag selecionada",
         "suggestions": "Sugestões",
@@ -215,6 +216,7 @@
         "public": "Público",
         "private": "Privado",
         "createdAt": "Criado em",
+        "createdBy": "Criado por",
         "updatedAt": "Última atualização",
         "identifier": "ID do Personagem: {{id}}",
         "messageCount": "{{count}} mensagem",
@@ -227,7 +229,7 @@
       "sections": {
         "physicalCharacteristics": "Aparência",
         "personality": "Personalidade",
-        "history": "Histórico",
+        "history": "História de fundo",
         "contentTags": "Avisos de conteúdo",
         "metadata": "Tags",
         "introduction": "Introdução",
@@ -238,7 +240,7 @@
       "createFailed": "Não foi possível criar o personagem. Por favor, tente novamente.",
       "updateFailed": "Não foi possível atualizar o personagem.",
       "deleteFailed": "Não foi possível excluir o personagem.",
-      "detailUnavailable": "Detalhes do personagem indisponíveis no momento."
+      "detailUnavailable": "Impossível carregar os detalhes do personagem no momento."
     }
   }
 }

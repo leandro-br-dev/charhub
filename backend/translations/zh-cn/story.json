@@ -3,20 +3,20 @@
   "resources": {
     "create": {
       "title": "创建新故事",
-      "subtitle": "构建一个包含角色和目标的故事"
+      "subtitle": "用角色和目标构建一个互动故事"
     },
     "form": {
       "title": "标题",
-      "titlePlaceholder": "请输入故事标题",
-      "synopsis": "概要",
+      "titlePlaceholder": "输入故事标题",
+      "synopsis": "剧情梗概",
       "synopsisPlaceholder": "简要描述你的故事",
       "coverImage": "封面图",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "封面预览",
-      "coverImageError": "加载图片失败",
-      "coverImageHint": "粘贴故事封面的图片URL",
+      "coverImageError": "图片加载失败",
+      "coverImageHint": "粘贴故事封面的图片 URL",
       "initialText": "初始文本",
-      "initialTextPlaceholder": "写下你故事的开篇...",
+      "initialTextPlaceholder": "写下你故事的开头...",
       "initialTextHint": "故事开始时将显示此文本",
       "objectives": "目标",
       "objectivePlaceholder": "添加一个故事目标",
@@ -30,16 +30,16 @@
       "selectedTags": "已选标签",
       "searchTags": "搜索标签",
       "noTagsFound": "未找到标签",
-      "noTagsAvailable": "没有可用的标签",
+      "noTagsAvailable": "没有可用标签",
       "ageRating": "年龄分级",
       "contentTags": "内容标签",
-      "makePublic": "公开此故事"
+      "makePublic": "将此故事设为公开"
     },
     "validation": {
       "titleRequired": "标题是必填项",
-      "titleTooLong": "标题必须在100个字符以内",
-      "synopsisTooLong": "概要必须在2000个字符以内",
-      "initialTextTooLong": "初始文本必须在5000个字符以内"
+      "titleTooLong": "标题不得超过 100 个字符",
+      "synopsisTooLong": "剧情梗概不得超过 2000 个字符",
+      "initialTextTooLong": "初始文本不得超过 5000 个字符"
     },
     "errors": {
       "createFailed": "创建故事失败",
@@ -47,7 +47,7 @@
       "deleteFailed": "删除故事失败",
       "failedToLoad": "加载故事失败",
       "noCharacters": "此故事没有角色",
-      "failedToStart": "开始故事失败",
+      "failedToStart": "启动故事失败",
       "notFound": "未找到故事"
     },
     "sidebar": {
@@ -58,7 +58,7 @@
       "title": "我的故事",
       "subtitle": "管理你的互动故事",
       "public": "公开",
-      "private": "私密",
+      "private": "私有",
       "empty": {
         "title": "还没有故事",
         "description": "创建你的第一个互动故事",
@@ -66,12 +66,17 @@
       }
     },
     "detail": {
-      "synopsis": "概要",
+      "title": "故事",
+      "synopsis": "剧情梗概",
       "initialScene": "开场场景",
       "objectives": "故事目标",
-      "characters": "角色"
+      "characters": "角色",
+      "confirmDelete": "你确定要删除这个故事吗？此操作无法撤销。",
+      "labels": {
+        "createdBy": "创建者"
+      }
     },
     "start": "开始故事",
-    "starting": "正在开始..."
+    "starting": "正在启动..."
   }
 }

@@ -10,7 +10,7 @@ interface ExternalAuthLayoutProps {
 
 export function ExternalAuthLayout({ children, showBackButton = false }: ExternalAuthLayoutProps): JSX.Element {
   return (
-    <div className="w-full h-screen flex flex-col bg-normal">
+    <div className="w-full h-[100svh] flex flex-col bg-normal">
       <div className="flex flex-1 h-full">
         <div className="mx-auto flex h-full w-full max-w-[1200px] flex-col md:flex-row">
           {/* Image Column */}

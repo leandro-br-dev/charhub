@@ -8,22 +8,22 @@
     "form": {
       "title": "शीर्षक",
       "titlePlaceholder": "कहानी का शीर्षक दर्ज करें",
-      "synopsis": "सारांश",
-      "synopsisPlaceholder": "अपनी कहानी का संक्षिप्त विवरण दें",
+      "synopsis": "सार",
+      "synopsisPlaceholder": "अपनी कहानी का संक्षेप में वर्णन करें",
       "coverImage": "कवर इमेज",
       "coverImagePlaceholder": "https://example.com/image.jpg",
-      "coverImagePreview": "कवर पूर्वावलोकन",
+      "coverImagePreview": "कवर प्रीव्यू",
       "coverImageError": "छवि लोड करने में विफल",
-      "coverImageHint": "कहानी कवर के लिए एक छवि URL पेस्ट करें",
+      "coverImageHint": "कहानी के कवर के लिए एक छवि URL पेस्ट करें",
       "initialText": "प्रारंभिक पाठ",
       "initialTextPlaceholder": "अपनी कहानी की शुरुआत लिखें...",
-      "initialTextHint": "कहानी शुरू होने पर यह पाठ दिखाया जाएगा",
+      "initialTextHint": "यह पाठ कहानी शुरू होने पर दिखाया जाएगा",
       "objectives": "उद्देश्य",
-      "objectivePlaceholder": "एक कहानी उद्देश्य जोड़ें",
+      "objectivePlaceholder": "एक कहानी का उद्देश्य जोड़ें",
       "noObjectives": "अभी तक कोई उद्देश्य नहीं है। कथा का मार्गदर्शन करने के लिए कुछ जोड़ें।",
       "characters": "पात्र",
       "selectedCharacters": "चयनित पात्र",
-      "searchCharacters": "पात्र खोजें",
+      "searchCharacters": "पात्रों को खोजें",
       "noCharactersFound": "कोई पात्र नहीं मिला",
       "noCharactersAvailable": "पहले पात्र बनाएँ",
       "tags": "टैग",
@@ -37,15 +37,15 @@
     },
     "validation": {
       "titleRequired": "शीर्षक आवश्यक है",
-      "titleTooLong": "शीर्षक 100 अक्षरों से अधिक नहीं होना चाहिए",
-      "synopsisTooLong": "सारांश 2000 अक्षरों से अधिक नहीं होना चाहिए",
-      "initialTextTooLong": "प्रारंभिक पाठ 5000 अक्षरों से अधिक नहीं होना चाहिए"
+      "titleTooLong": "शीर्षक 100 वर्णों से अधिक नहीं हो सकता",
+      "synopsisTooLong": "सार 2000 वर्णों से अधिक नहीं हो सकता",
+      "initialTextTooLong": "प्रारंभिक पाठ 5000 वर्णों से अधिक नहीं हो सकता"
     },
     "errors": {
       "createFailed": "कहानी बनाने में विफल",
-      "updateFailed": "कहानी अपडेट करने में विफल",
+      "updateFailed": "कहानी को अपडेट करने में विफल",
       "deleteFailed": "कहानी हटाने में विफल",
-      "failedToLoad": "कहानियां लोड करने में विफल",
+      "failedToLoad": "कहानियाँ लोड करने में विफल",
       "noCharacters": "इस कहानी में कोई पात्र नहीं है",
       "failedToStart": "कहानी शुरू करने में विफल",
       "notFound": "कहानी नहीं मिली"
@@ -66,10 +66,15 @@
       }
     },
     "detail": {
-      "synopsis": "सारांश",
+      "title": "कहानी",
+      "synopsis": "सार",
       "initialScene": "शुरुआती दृश्य",
       "objectives": "कहानी के उद्देश्य",
-      "characters": "पात्र"
+      "characters": "पात्र",
+      "confirmDelete": "क्या आप निश्चित हैं कि आप इस कहानी को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती।",
+      "labels": {
+        "createdBy": "द्वारा बनाया गया"
+      }
     },
     "start": "कहानी शुरू करें",
     "starting": "शुरू हो रहा है..."

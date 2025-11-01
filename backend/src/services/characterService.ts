@@ -50,6 +50,7 @@ const characterInclude = {
   creator: {
     select: {
       id: true,
+      username: true,
       displayName: true,
       avatarUrl: true,
     },
@@ -177,12 +178,13 @@ export async function getCharactersByUserId(
     search?: string;
     tags?: string[];
     gender?: string;
+    ageRatings?: string[];
     skip?: number;
     limit?: number;
   }
 ) {
   try {
-    const { search, tags, gender, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, ageRatings, skip = 0, limit = 20 } = options || {};
 
     // Build where clause
     const where: Prisma.CharacterWhereInput = {
@@ -219,6 +221,13 @@ export async function getCharactersByUserId(
       };
     }
 
+    // Add age ratings filter
+    if (ageRatings && ageRatings.length > 0) {
+      where.ageRating = {
+        in: ageRatings as any[],
+      } as any;
+    }
+
     const characters = await prisma.character.findMany({
       where,
       include: characterInclude,
@@ -246,11 +255,12 @@ export async function getPublicCharacters(options?: {
   search?: string;
   tags?: string[];
   gender?: string;
+  ageRatings?: string[];
   skip?: number;
   limit?: number;
 }) {
   try {
-    const { search, tags, gender, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, ageRatings, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.CharacterWhereInput = {
       isPublic: true,
@@ -285,6 +295,13 @@ export async function getPublicCharacters(options?: {
           },
         },
       };
+    }
+
+    // Add age ratings filter
+    if (ageRatings && ageRatings.length > 0) {
+      where.ageRating = {
+        in: ageRatings as any[],
+      } as any;
     }
 
     const characters = await prisma.character.findMany({

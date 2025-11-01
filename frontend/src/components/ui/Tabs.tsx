@@ -24,7 +24,7 @@ export function Tabs({ children, defaultTab }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
   return (
     <TabsContext.Provider value={{ activeTab, setActiveTab }}>
-      <div className="flex w-full flex-col">{children}</div>
+      <div className="flex w-full flex-col h-full">{children}</div>
     </TabsContext.Provider>
   );
 }

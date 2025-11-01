@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
+import { usePageHeader } from '../../hooks/usePageHeader';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tabs';
 import { ProfileTab } from './components/ProfileTab';
 import { ContentClassificationTab } from './components/ContentClassificationTab';
@@ -10,11 +12,15 @@ import { userService } from '../../services/userService';
 export default function ProfilePage(): JSX.Element {
   const { user, updateUser } = useAuth();
   const { t } = useTranslation(['profile', 'common']);
+  const { setTitle } = usePageHeader();
+
+  useEffect(() => {
+    setTitle(t('profile:sectionTitle', 'Account'));
+  }, [setTitle, t]);
 
   return (
     <section className="flex flex-col gap-8">
       <header className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-wide text-primary">{t('profile:sectionTitle', 'Account')}</p>
         <h1 className="text-3xl font-semibold text-title">{t('profile:title', 'Manage your profile')}</h1>
         <p className="max-w-2xl text-sm text-description">
           {t(

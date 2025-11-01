@@ -16,31 +16,34 @@ export function ContentFilter({
   blurNsfw,
   onAgeRatingChange,
   onBlurNsfwChange,
-  availableAgeRatings = [
-    { value: 'L', label: 'All Ages (L)' },
-    { value: 'TEN', label: '10+' },
-    { value: 'TWELVE', label: '12+' },
-    { value: 'FOURTEEN', label: '14+' },
-    { value: 'SIXTEEN', label: '16+' },
-    { value: 'EIGHTEEN', label: '18+' },
-  ],
+  availableAgeRatings,
   isNsfwAllowed = true,
 }: ContentFilterProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common', 'characters']);
+
+  const defaultAgeRatings: Array<{ value: string; label: string }> = [
+    { value: 'L', label: t('characters:ageRatings.L', t('common:contentFilter.ageRatings.L', 'Free')) },
+    { value: 'TEN', label: t('characters:ageRatings.TEN', t('common:contentFilter.ageRatings.TEN', '10+')) },
+    { value: 'TWELVE', label: t('characters:ageRatings.TWELVE', t('common:contentFilter.ageRatings.TWELVE', '12+')) },
+    { value: 'FOURTEEN', label: t('characters:ageRatings.FOURTEEN', t('common:contentFilter.ageRatings.FOURTEEN', '14+')) },
+    { value: 'SIXTEEN', label: t('characters:ageRatings.SIXTEEN', t('common:contentFilter.ageRatings.SIXTEEN', '16+')) },
+    { value: 'EIGHTEEN', label: t('characters:ageRatings.EIGHTEEN', t('common:contentFilter.ageRatings.EIGHTEEN', '18+')) },
+  ];
+  const ageRatingOptions = availableAgeRatings ?? defaultAgeRatings;
 
   return (
     <div className="bg-light p-2 rounded-lg shadow-sm flex flex-col sm:flex-row flex-wrap items-center gap-4">
       <div className="w-full sm:w-auto sm:min-w-[180px]">
         <ComboboxSelect
-          label={t('contentFilter.ageRating', 'Age Rating')}
-          options={availableAgeRatings}
+          label={t('common:contentFilter.ageRating', 'Age Rating')}
+          options={ageRatingOptions}
           value={ageRating}
           onChange={onAgeRatingChange}
         />
       </div>
       {isNsfwAllowed && ageRating !== 'L' && (
         <Switch
-          label={t('contentFilter.blurNsfw', 'Blur Explicit Content')}
+          label={t('common:contentFilter.blurNsfw', 'Blur Explicit Content')}
           checked={blurNsfw}
           onChange={onBlurNsfwChange}
           stateLabels={{

@@ -3,7 +3,7 @@
   "resources": {
     "create": {
       "title": "Créer une nouvelle histoire",
-      "subtitle": "Créez une histoire interactive avec des personnages et des objectifs"
+      "subtitle": "Construisez une histoire interactive avec des personnages et des objectifs"
     },
     "form": {
       "title": "Titre",
@@ -19,7 +19,7 @@
       "initialTextPlaceholder": "Écrivez l'ouverture de votre histoire...",
       "initialTextHint": "Ce texte sera affiché au début de l'histoire",
       "objectives": "Objectifs",
-      "objectivePlaceholder": "Ajouter un objectif à l'histoire",
+      "objectivePlaceholder": "Ajouter un objectif d'histoire",
       "noObjectives": "Pas encore d'objectifs. Ajoutez-en pour guider le récit.",
       "characters": "Personnages",
       "selectedCharacters": "Personnages sélectionnés",
@@ -57,8 +57,8 @@
     "list": {
       "title": "Mes histoires",
       "subtitle": "Gérez vos histoires interactives",
-      "public": "Public",
-      "private": "Privé",
+      "public": "Publique",
+      "private": "Privée",
       "empty": {
         "title": "Pas encore d'histoires",
         "description": "Créez votre première histoire interactive",
@@ -66,10 +66,15 @@
       }
     },
     "detail": {
+      "title": "Histoire",
       "synopsis": "Synopsis",
       "initialScene": "Scène d'ouverture",
       "objectives": "Objectifs de l'histoire",
-      "characters": "Personnages"
+      "characters": "Personnages",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette histoire ? Cette action est irréversible.",
+      "labels": {
+        "createdBy": "Créé par"
+      }
     },
     "start": "Démarrer l'histoire",
     "starting": "Démarrage..."

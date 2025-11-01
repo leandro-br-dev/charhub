@@ -2,7 +2,7 @@
   "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
   "resources": {
     "title": "Área Restrita",
-    "subtitle": "Você se autenticou com sucesso via {{provider}}. Este painel só é acessível a usuários logados.",
+    "subtitle": "Você se autenticou com sucesso via {{provider}}. Este painel é acessível apenas para usuários logados.",
     "accountDetails": "Detalhes da conta",
     "nextSteps": "Próximos passos",
     "displayName": "Nome de exibição",
@@ -10,7 +10,7 @@
     "provider": "Provedor",
     "token": "Token",
     "insightSyncUnity": "Sincronize esta sessão com o cliente Unity via WebSockets seguros ou REST.",
-    "insightPersist": "Salve perfis OAuth em seu banco de dados de identidade de backend.",
+    "insightPersist": "Persista perfis OAuth em seu armazenamento de identidade de backend.",
     "insightTokens": "Emita tokens de acesso de curta duração e atualize quando necessário."
   }
 }

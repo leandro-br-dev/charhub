@@ -1,13 +1,16 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useConversationListQuery } from './shared/hooks/useConversations';
 import { ConversationList } from './shared/components';
 import { useAuth } from '../../hooks/useAuth';
+import { usePageHeader } from '../../hooks/usePageHeader';
 
 export default function ChatIndexPage() {
   const { t } = useTranslation('chat');
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { setTitle } = usePageHeader();
 
   const { data: conversationsData, isLoading } = useConversationListQuery();
 
@@ -20,6 +23,11 @@ export default function ChatIndexPage() {
   const handleNewConversation = () => {
     navigate('/chat/new');
   };
+
+  // Set page title
+  useEffect(() => {
+    setTitle(t('title'));
+  }, [setTitle, t]);
 
   return (
     <div className="flex flex-col h-full">

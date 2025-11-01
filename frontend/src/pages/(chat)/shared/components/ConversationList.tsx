@@ -61,7 +61,29 @@ export const ConversationList = ({
     }
 
     const lastMessage = conversation.messages[conversation.messages.length - 1];
-    const preview = lastMessage.content.substring(0, 60);
+
+    const tryBase64Decode = (raw: string): string | null => {
+      try {
+        const isB64 = /^[A-Za-z0-9+/=\r\n]+$/.test(raw) && raw.length % 4 === 0;
+        if (!isB64) return null;
+        const bin = atob(raw.replace(/\s+/g, ''));
+        const bytes = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        const decoded = new TextDecoder().decode(bytes);
+        // Heuristic: decoded should contain printable characters and spaces
+        if (/^[\s\S]*$/.test(decoded)) return decoded;
+        return null;
+      } catch {
+        return null;
+      }
+    };
+
+    const resolvedContent = (() => {
+      const maybe = tryBase64Decode(lastMessage.content);
+      return maybe ?? lastMessage.content;
+    })();
+
+    const preview = resolvedContent.substring(0, 60);
     return preview.length < lastMessage.content.length ? `${preview}...` : preview;
   };
 

@@ -5,7 +5,7 @@ export default function NotFound(): JSX.Element {
   const { t } = useTranslation('notFound');
 
   return (
-    <section className="mx-auto flex min-h-[calc(100vh-120px)] max-w-2xl flex-col items-center justify-center gap-6 px-6 text-center">
+    <section className="mx-auto flex min-h-[calc(100svh-120px)] max-w-2xl flex-col items-center justify-center gap-6 px-6 text-center">
       <h1 className="text-4xl font-bold text-white">{t('title')}</h1>
       <p className="text-slate-300">{t('message')}</p>
       <Link

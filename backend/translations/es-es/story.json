@@ -3,7 +3,7 @@
   "resources": {
     "create": {
       "title": "Crear Nueva Historia",
-      "subtitle": "Construye una historia interactiva con personajes y objetivos"
+      "subtitle": "Crea una historia interactiva con personajes y objetivos"
     },
     "form": {
       "title": "Título",
@@ -16,10 +16,10 @@
       "coverImageError": "Error al cargar la imagen",
       "coverImageHint": "Pega una URL de imagen para la portada de la historia",
       "initialText": "Texto inicial",
-      "initialTextPlaceholder": "Escribe la introducción de tu historia...",
-      "initialTextHint": "Este texto se mostrará al inicio de la historia",
+      "initialTextPlaceholder": "Escribe el comienzo de tu historia...",
+      "initialTextHint": "Este texto se mostrará cuando comience la historia",
       "objectives": "Objetivos",
-      "objectivePlaceholder": "Añadir un objetivo de historia",
+      "objectivePlaceholder": "Añadir un objetivo para la historia",
       "noObjectives": "Aún no hay objetivos. Añade algunos para guiar la narrativa.",
       "characters": "Personajes",
       "selectedCharacters": "Personajes seleccionados",
@@ -66,10 +66,15 @@
       }
     },
     "detail": {
+      "title": "Historia",
       "synopsis": "Sinopsis",
-      "initialScene": "Escena de apertura",
+      "initialScene": "Escena inicial",
       "objectives": "Objetivos de la historia",
-      "characters": "Personajes"
+      "characters": "Personajes",
+      "confirmDelete": "¿Estás seguro de que quieres eliminar esta historia? Esta acción no se puede deshacer.",
+      "labels": {
+        "createdBy": "Creado por"
+      }
     },
     "start": "Iniciar Historia",
     "starting": "Iniciando..."

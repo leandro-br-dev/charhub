@@ -5,21 +5,21 @@
     "language": "اللغة",
     "continueGoogle": "متابعة باستخدام Google",
     "continueFacebook": "متابعة باستخدام Facebook",
-    "privacy": "بالمتابعة، أنت توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتسمح لـ CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
-    "logoutLoading": "جاري تسجيل الخروج...",
-    "authenticatedUser": "مستخدم مصادق عليه",
+    "logoutLoading": "جارٍ تسجيل الخروج...",
+    "authenticatedUser": "المستخدم المصادق عليه",
     "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض تجريبي لـ OAuth آمن",
+    "navTagline": "عرض توضيحي لـ OAuth آمن",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "مزود الخدمة",
+    "provider": "الموفر",
     "theme": {
-      "label": "المظهر",
+      "label": "السمة",
       "option": {
         "light": "فاتح",
         "dark": "داكن",
@@ -28,38 +28,49 @@
     },
     "none": "لا شيء",
     "unknown": "غير معروف",
-    "nameNotAvailable": "الاسم غير متاح",
+    "nameNotAvailable": "الاسم غير متوفر",
     "cancel": "إلغاء",
     "save": "حفظ",
-    "saving": "جاري الحفظ...",
+    "saving": "جارٍ الحفظ...",
     "delete": "حذف",
-    "deleting": "جاري الحذف...",
-    "enabled": "مُمكّن",
-    "disabled": "مُعطّل",
+    "deleting": "جارٍ الحذف...",
+    "enabled": "ممكّن",
+    "disabled": "معطّل",
     "selectOption": "اختر خيارًا",
     "noResults": "لم يتم العثور على خيارات.",
     "chat": {
-      "with": "دردش مع"
+      "with": "الدردشة مع"
     },
     "messages": {
       "linkCopied": "تم نسخ الرابط إلى الحافظة!"
     },
     "contentFilter": {
-      "ariaLabel": "مرشح المحتوى",
-      "title": "مرشح المحتوى",
-      "none": "لا يوجد مرشح",
-      "blur": "تمويه الحساس",
+      "ariaLabel": "فلتر المحتوى",
+      "title": "فلتر المحتوى",
+      "ageRating": "تصنيف العمر",
+      "blurNsfw": "تمويه المحتوى الصريح",
+      "none": "لا يوجد فلتر",
+      "blur": "تمويه المحتوى الحساس",
       "hidden": "إخفاء المحتوى الناضج",
       "descriptions": {
         "none": "عرض كل المحتوى بدون قيود",
-        "blur": "تطبيق التمويه على المحتوى الناضج",
-        "hidden": "إخفاء المحتوى الناضج بالكامل"
+        "blur": "تطبيق تمويه على المحتوى الناضج",
+        "hidden": "إخفاء المحتوى الناضج تمامًا"
+      },
+      "ageRatings": {
+        "L": "مجاني",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+",
+        "SIXTEEN": "16+",
+        "EIGHTEEN": "18+"
       }
     },
     "errors": {
       "generic": "حدث خطأ. يرجى المحاولة مرة أخرى."
     },
-    "seeMore": "عرض المزيد",
-    "seeMoreArrow": "عرض المزيد →"
+    "character": "الشخصية",
+    "seeMore": "رؤية المزيد",
+    "seeMoreArrow": "رؤية المزيد ←"
   }
 }

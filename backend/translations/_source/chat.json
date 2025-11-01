@@ -1,7 +1,7 @@
 {
   "description": "Chat and conversation interface translations",
   "resources": {
-    "title": "Chat",
+    "title": "Conversations",
     "newConversation": "New Conversation",
     "conversations": "Conversations",
     "noConversations": "No conversations yet",

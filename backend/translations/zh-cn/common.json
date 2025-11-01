@@ -1,14 +1,14 @@
 {
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
-    "brand": "CharHub 认证",
+    "brand": "CharHub Auth",
     "language": "语言",
     "continueGoogle": "使用 Google 继续",
     "continueFacebook": "使用 Facebook 继续",
     "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
-    "logout": "退出",
-    "logoutLoading": "正在退出...",
-    "authenticatedUser": "已认证用户",
+    "logout": "登出",
+    "logoutLoading": "正在登出...",
+    "authenticatedUser": "已验证用户",
     "tokenStored": "存储在 HTTP-only cookie 中",
     "navDashboard": "仪表板",
     "navCharacters": "角色",
@@ -47,18 +47,29 @@
     "contentFilter": {
       "ariaLabel": "内容过滤器",
       "title": "内容过滤器",
+      "ageRating": "年龄分级",
+      "blurNsfw": "模糊露骨内容",
       "none": "无过滤器",
       "blur": "模糊敏感内容",
       "hidden": "隐藏成人内容",
       "descriptions": {
         "none": "显示所有内容，无限制",
-        "blur": "对成人内容应用模糊处理",
+        "blur": "对成人内容应用模糊效果",
         "hidden": "完全隐藏成人内容"
+      },
+      "ageRatings": {
+        "L": "免费",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+",
+        "SIXTEEN": "16+",
+        "EIGHTEEN": "18+"
       }
     },
     "errors": {
       "generic": "发生错误。请重试。"
     },
+    "character": "角色",
     "seeMore": "查看更多",
     "seeMoreArrow": "查看更多 →"
   }

@@ -19,7 +19,7 @@
       "initialTextPlaceholder": "Escreva o início da sua história...",
       "initialTextHint": "Este texto será exibido quando a história começar",
       "objectives": "Objetivos",
-      "objectivePlaceholder": "Adicionar um objetivo para a história",
+      "objectivePlaceholder": "Adicionar um objetivo à história",
       "noObjectives": "Ainda não há objetivos. Adicione alguns para guiar a narrativa.",
       "characters": "Personagens",
       "selectedCharacters": "Personagens selecionados",
@@ -42,12 +42,12 @@
       "initialTextTooLong": "O texto inicial deve ter no máximo 5000 caracteres"
     },
     "errors": {
-      "createFailed": "Falha ao criar história",
-      "updateFailed": "Falha ao atualizar história",
-      "deleteFailed": "Falha ao excluir história",
-      "failedToLoad": "Falha ao carregar histórias",
+      "createFailed": "Falha ao criar a história",
+      "updateFailed": "Falha ao atualizar a história",
+      "deleteFailed": "Falha ao excluir a história",
+      "failedToLoad": "Falha ao carregar as histórias",
       "noCharacters": "Esta história não possui personagens",
-      "failedToStart": "Falha ao iniciar história",
+      "failedToStart": "Falha ao iniciar a história",
       "notFound": "História não encontrada"
     },
     "sidebar": {
@@ -66,10 +66,15 @@
       }
     },
     "detail": {
+      "title": "História",
       "synopsis": "Sinopse",
       "initialScene": "Cena de Abertura",
       "objectives": "Objetivos da História",
-      "characters": "Personagens"
+      "characters": "Personagens",
+      "confirmDelete": "Tem certeza de que deseja excluir esta história? Esta ação não pode ser desfeita.",
+      "labels": {
+        "createdBy": "Criada por"
+      }
     },
     "start": "Iniciar História",
     "starting": "Iniciando..."

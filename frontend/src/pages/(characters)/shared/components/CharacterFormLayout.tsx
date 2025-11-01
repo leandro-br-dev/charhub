@@ -45,10 +45,6 @@ export function CharacterFormLayout({
   const [incompatibleTagIds, setIncompatibleTagIds] = useState<string[]>([]);
   const [isAutoCompleting, setIsAutoCompleting] = useState(false);
 
-  const sectionTitle = mode === 'create'
-    ? t('characters:create.sectionTitle', 'Character')
-    : t('characters:edit.sectionTitle', 'Character');
-
   const pageTitle = mode === 'create'
     ? t('characters:create.title')
     : t('characters:edit.title');
@@ -91,9 +87,6 @@ export function CharacterFormLayout({
   return (
     <section className="flex flex-col gap-8">
       <header className="space-y-2">
-        <p className="text-sm font-semibold uppercase tracking-wide text-primary">
-          {sectionTitle}
-        </p>
         <h1 className="text-3xl font-semibold text-title">
           {pageTitle}
         </h1>

@@ -7,8 +7,11 @@ import type { StoryFormData, StoryObjective } from '../../../types/story';
 import type { AgeRating, ContentTag } from '../../../types/characters';
 
 interface StoryFormProps {
+  mode?: 'create' | 'edit';
+  storyId?: string;
   initialData?: Partial<StoryFormData>;
   onSubmit: (data: StoryFormData) => Promise<void>;
+  onCancel?: () => void;
   isSubmitting?: boolean;
 }
 
@@ -29,7 +32,7 @@ const CONTENT_TAGS: ContentTag[] = [
   'GAMBLING',
 ];
 
-export function StoryForm({ initialData, onSubmit, isSubmitting = false }: StoryFormProps) {
+export function StoryForm({ mode = 'create', storyId, initialData, onSubmit, onCancel, isSubmitting = false }: StoryFormProps) {
   const { t } = useTranslation(['story', 'common']);
   const navigate = useNavigate();
 
@@ -96,7 +99,11 @@ export function StoryForm({ initialData, onSubmit, isSubmitting = false }: Story
   };
 
   const handleCancel = () => {
-    navigate('/stories');
+    if (onCancel) {
+      onCancel();
+    } else {
+      navigate('/stories');
+    }
   };
 
   return (

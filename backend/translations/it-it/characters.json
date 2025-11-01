@@ -2,7 +2,7 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Personaggio senza titolo",
+      "untitledCharacter": "Personaggio senza nome",
       "updatedAt": "Aggiornato il {{date}}",
       "public": "Pubblico",
       "private": "Privato",
@@ -12,7 +12,7 @@
       "submitting": "Salvataggio in corso..."
     },
     "ageRatings": {
-      "L": "Tutti i pubblici",
+      "L": "Libero",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -26,8 +26,8 @@
     },
     "contentTags": {
       "VIOLENCE": "Violenza",
-      "GORE": "Gore",
-      "SEXUAL": "Sessuale",
+      "GORE": "Sangue",
+      "SEXUAL": "Sesso",
       "NUDITY": "Nudità",
       "LANGUAGE": "Linguaggio",
       "DRUGS": "Droghe",
@@ -39,9 +39,9 @@
       "GAMBLING": "Gioco d'azzardo"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combattimenti, scontri o conflitti aggressivi.",
+      "VIOLENCE": "Combattimenti, risse o conflitti aggressivi.",
       "GORE": "Ferite grafiche e dettagli espliciti.",
-      "SEXUAL": "Temi o allusioni per adulti.",
+      "SEXUAL": "Temi adulti o allusioni.",
       "NUDITY": "Nudità parziale o completa.",
       "LANGUAGE": "Linguaggio esplicito o volgare.",
       "DRUGS": "Uso o riferimenti a droghe.",
@@ -49,7 +49,7 @@
       "HORROR": "Immagini disturbanti o horror.",
       "PSYCHOLOGICAL": "Salute mentale o tensione psicologica.",
       "DISCRIMINATION": "Incitamento all'odio o pregiudizio.",
-      "CRIME": "Temi legati ad attività criminali.",
+      "CRIME": "Temi di attività criminale.",
       "GAMBLING": "Riferimenti a scommesse o gioco d'azzardo."
     },
     "accessibility": {
@@ -60,14 +60,14 @@
       "conversations": "Conversazioni",
       "messages": "Messaggi",
       "favorites": "Preferiti",
-      "conversationsShort": "{{count}} mila conversazioni",
-      "conversationsShort_plural": "{{count}} mila conversazioni",
-      "favoritesShort": "{{count}} mila preferiti",
-      "favoritesShort_plural": "{{count}} mila preferiti"
+      "conversationsShort": "{{count}}mila conversazioni",
+      "conversationsShort_plural": "{{count}}mila conversazioni",
+      "favoritesShort": "{{count}}mila preferiti",
+      "favoritesShort_plural": "{{count}}mila preferiti"
     },
     "hub": {
       "title": "Personaggi",
-      "subtitle": "Crea, organizza ed evolvi il cast che anima le tue storie, gli agenti di chat e le esperienze AI.",
+      "subtitle": "Crea, organizza e fai evolvere il cast che alimenta le tue storie, gli agenti di chat e le esperienze AI.",
       "actions": {
         "createCharacter": "Nuovo personaggio",
         "retry": "Riprova",
@@ -80,10 +80,11 @@
       },
       "filters": {
         "searchPlaceholder": "Cerca per nome o stile",
-        "allAgeRatings": "Tutte le classificazioni per età"
+        "allAgeRatings": "Tutte le classificazioni per età",
+        "noFilter": "Qualsiasi"
       },
       "states": {
-        "loading": "Caricamento dei tuoi personaggi...",
+        "loading": "Caricamento dei tuoi personaggi in corso...",
         "error": "Impossibile caricare i personaggi. Riprova.",
         "empty": "Nessun personaggio disponibile al momento.",
         "empty_private": "Non hai ancora creato alcun personaggio.",
@@ -94,7 +95,7 @@
       "labels": {
         "total": "{{count}} personaggio disponibile",
         "total_plural": "{{count}} personaggi disponibili",
-        "quickCreateLink": "Passa direttamente alla creazione"
+        "quickCreateLink": "Salta direttamente alla creazione"
       }
     },
     "form": {
@@ -107,10 +108,10 @@
         "profileHint": "Descrivi personalità, tratti e retroscena per guidare l'AI.",
         "configuration": "Disponibilità e moderazione",
         "configurationHint": "Controlla come appare il personaggio, chi può accedervi e quali salvaguardie si applicano.",
-        "contentTagsHint": "Segnala i temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze.",
-        "contentTagsCharacterHint": "Questi argomenti definiscono ciò di cui il personaggio è a suo agio a discutere alla classificazione per età selezionata.",
-        "contentTagsUserHint": "Seleziona i temi che desideri includere. Tutto ciò che non viene selezionato rimane bloccato per questa classificazione.",
-        "contentTagLocked": "Bloccato alle classificazioni per età più elevate."
+        "contentTagsHint": "Segnala temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze.",
+        "contentTagsCharacterHint": "Questi argomenti definiscono ciò di cui il personaggio è a suo agio nel discutere alla classificazione per età selezionata.",
+        "contentTagsUserHint": "Seleziona i temi che desideri includere. Tutto ciò che rimane non selezionato rimane bloccato per questa valutazione.",
+        "contentTagLocked": "Sbloccato a classificazioni per età superiori."
       },
       "fields": {
         "firstName": "Nome",
@@ -153,7 +154,7 @@
       },
       "images": {
         "coverHeader": "Copertina personaggio",
-        "coverDescription": "Immagine orientata in verticale utilizzata come copertina del personaggio.",
+        "coverDescription": "Immagine in formato verticale utilizzata come copertina del personaggio.",
         "upload": "Carica copertina",
         "change": "Cambia copertina",
         "uploading": "Caricamento in corso...",
@@ -178,7 +179,7 @@
         "configuration": "Configurazione",
         "tags": "Tag",
         "images": "Immagini",
-        "lockedHint": "Compila i dettagli base dell'identità per sbloccare le altre sezioni."
+        "lockedHint": "Compila i dettagli di base dell'identità per sbloccare le altre sezioni."
       }
     },
     "create": {
@@ -193,28 +194,29 @@
       "saveButton": "Aggiorna personaggio",
       "cancelButton": "Annulla modifiche",
       "states": {
-        "loading": "Caricamento personaggio..."
+        "loading": "Caricamento personaggio in corso..."
       }
     },
     "detail": {
       "states": {
-        "loading": "Caricamento dettagli personaggio...",
+        "loading": "Caricamento dettagli personaggio in corso...",
         "notFound": "Impossibile trovare questo personaggio."
       },
       "actions": {
-        "backToHub": "Torna all'hub",
+        "backToHub": "Torna alla hub",
         "edit": "Modifica",
         "delete": "Elimina",
         "deleting": "Eliminazione in corso...",
         "share": "Condividi",
-        "startChat": "Inizia conversazione",
+        "startChat": "Avvia conversazione",
         "startingChat": "Avvio in corso..."
       },
       "confirmDelete": "Sei sicuro di voler eliminare questo personaggio? Questa azione non può essere annullata.",
       "labels": {
         "public": "Pubblico",
         "private": "Privato",
-        "createdAt": "Creato",
+        "createdAt": "Creato il",
+        "createdBy": "Creato da",
         "updatedAt": "Ultimo aggiornamento",
         "identifier": "ID personaggio: {{id}}",
         "messageCount": "{{count}} messaggio",

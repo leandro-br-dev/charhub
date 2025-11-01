@@ -7,9 +7,9 @@
     },
     "form": {
       "title": "Titel",
-      "titlePlaceholder": "Geben Sie den Geschlechtitel ein",
+      "titlePlaceholder": "Geben Sie den Titel der Geschichte ein",
       "synopsis": "Zusammenfassung",
-      "synopsisPlaceholder": "Beschreiben Sie Ihre Geschichte kurz",
+      "synopsisPlaceholder": "Beschreiben Sie kurz Ihre Geschichte",
       "coverImage": "Titelbild",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "Vorschau des Titelbilds",
@@ -20,26 +20,26 @@
       "initialTextHint": "Dieser Text wird angezeigt, wenn die Geschichte beginnt",
       "objectives": "Ziele",
       "objectivePlaceholder": "Fügen Sie ein Ziel für die Geschichte hinzu",
-      "noObjectives": "Noch keine Ziele. Fügen Sie einige hinzu, um die Erzählung zu leiten.",
+      "noObjectives": "Noch keine Ziele. Fügen Sie einige hinzu, um die Erzählung zu steuern.",
       "characters": "Charaktere",
       "selectedCharacters": "Ausgewählte Charaktere",
       "searchCharacters": "Charaktere suchen",
       "noCharactersFound": "Keine Charaktere gefunden",
       "noCharactersAvailable": "Erstellen Sie zuerst Charaktere",
-      "tags": "Tags",
-      "selectedTags": "Ausgewählte Tags",
-      "searchTags": "Tags suchen",
-      "noTagsFound": "Keine Tags gefunden",
-      "noTagsAvailable": "Keine Tags verfügbar",
+      "tags": "Schlagwörter",
+      "selectedTags": "Ausgewählte Schlagwörter",
+      "searchTags": "Schlagwörter suchen",
+      "noTagsFound": "Keine Schlagwörter gefunden",
+      "noTagsAvailable": "Keine Schlagwörter verfügbar",
       "ageRating": "Altersfreigabe",
-      "contentTags": "Inhaltliche Tags",
+      "contentTags": "Inhaltliche Schlagwörter",
       "makePublic": "Diese Geschichte öffentlich machen"
     },
     "validation": {
       "titleRequired": "Titel ist erforderlich",
-      "titleTooLong": "Der Titel darf höchstens 100 Zeichen lang sein",
-      "synopsisTooLong": "Die Zusammenfassung darf höchstens 2000 Zeichen lang sein",
-      "initialTextTooLong": "Der Anfangstext darf höchstens 5000 Zeichen lang sein"
+      "titleTooLong": "Der Titel darf maximal 100 Zeichen lang sein",
+      "synopsisTooLong": "Die Zusammenfassung darf maximal 2000 Zeichen lang sein",
+      "initialTextTooLong": "Der Anfangstext darf maximal 5000 Zeichen lang sein"
     },
     "errors": {
       "createFailed": "Geschichte konnte nicht erstellt werden",
@@ -66,10 +66,15 @@
       }
     },
     "detail": {
+      "title": "Geschichte",
       "synopsis": "Zusammenfassung",
-      "initialScene": "Erste Szene",
+      "initialScene": "Anfangsszene",
       "objectives": "Ziele der Geschichte",
-      "characters": "Charaktere"
+      "characters": "Charaktere",
+      "confirmDelete": "Sind Sie sicher, dass Sie diese Geschichte löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "labels": {
+        "createdBy": "Erstellt von"
+      }
     },
     "start": "Geschichte starten",
     "starting": "Wird gestartet..."

@@ -1,7 +1,6 @@
-// frontend/src/pages/(chat)/shared/components/ChatView.tsx
-import React, { useCallback, useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useCallback, useState, useRef, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-
+import { usePageHeader } from '../../../../hooks/usePageHeader';
 import { Button } from '../../../../components/ui/Button';
 import DisplayAvatarParticipants from './DisplayAvatarParticipants';
 import MessageInput from './MessageInput';
@@ -13,7 +12,6 @@ import { Dialog } from '../../../../components/ui';
 import ImageGalleryModal from './ImageGalleryModal';
 import { useChatModalsManager } from '../hooks/useChatModalsManager';
 import { chatService } from '../../../../services/chatService';
-import { scrollToBottom } from "../../../../utils/scroll";
 
 const ChatView: React.FC<any> = ({
   userId,
@@ -46,23 +44,7 @@ const ChatView: React.FC<any> = ({
   onSendConfirmation,
 }) => {
   const { t } = useTranslation('chat');
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
-  const [bottomPad, setBottomPad] = useState<number>(160);
-
-  useLayoutEffect(() => {
-    const updatePad = () => {
-      const h = footerRef.current?.offsetHeight ?? 0;
-      setBottomPad(h + 8);
-    };
-    updatePad();
-    window.addEventListener('resize', updatePad);
-    return () => window.removeEventListener('resize', updatePad);
-  }, []);
-
-  useEffect(() => {
-    scrollToBottom(scrollContainerRef.current, 'auto');
-  }, [messages, bottomPad]);
+  const { setActions, setTitle } = usePageHeader();
 
   const {
     activeModal,
@@ -75,15 +57,12 @@ const ChatView: React.FC<any> = ({
     closeActiveModal,
   } = useChatModalsManager();
 
-  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
-  const headerRef = useRef<HTMLDivElement>(null);
-  
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [loadingGallery, setLoadingGallery] = useState(false);
   const [galleryError, setGalleryError] = useState<string | null>(null);
 
-  const fetchAndOpenChatGallery = async () => {
+  const fetchAndOpenChatGallery = useCallback(async () => {
     if (!conversation?.id) return;
     setIsGalleryOpen(true);
     setLoadingGallery(true);
@@ -97,27 +76,60 @@ const ChatView: React.FC<any> = ({
       setGalleryImages([]);
     }
     setLoadingGallery(false);
-  };
+  }, [conversation?.id]);
+
+  const chatActions = useMemo(() => (
+    <>
+      <DisplayAvatarParticipants
+        participants={processedParticipants}
+        onAvatarClick={openConfigModal}
+        isSticky={true}
+      />
+      <Button
+        variant="light"
+        size="small"
+        icon="add"
+        onClick={openAddParticipantModal}
+        className="flex-shrink-0 rounded-full p-2"
+        title={t('displayAvatarParticipants.addParticipantButtonTitle')}
+      />
+      {conversation && (
+        <>
+          <Button
+            variant="light"
+            size="small"
+            icon="photo_library"
+            onClick={fetchAndOpenChatGallery}
+            title={t('conversationSettings.galleryButton')}
+            className="p-2 flex-shrink-0"
+            disabled={actionLoading || loadingConversationData || loadingGallery}
+          />
+          <Button
+            variant="light"
+            size="small"
+            icon="settings"
+            onClick={() => openConversationSettingsModal(conversation)}
+            title={t('chatPage.conversationSettingsTitle')}
+            className="p-2 flex-shrink-0"
+            disabled={actionLoading || loadingConversationData}
+          />
+        </>
+      )}
+    </>
+  ), [processedParticipants, openConfigModal, openAddParticipantModal, t, conversation, fetchAndOpenChatGallery, actionLoading, loadingConversationData, loadingGallery, openConversationSettingsModal]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsHeaderVisible(entry.isIntersecting);
-      },
-      { rootMargin: "0px", threshold: 0.1 }
-    );
-
-    const currentHeaderRef = headerRef.current;
-    if (currentHeaderRef) {
-      observer.observe(currentHeaderRef);
+    if (conversation?.title) {
+      setTitle(conversation.title);
     }
 
+    setActions(chatActions);
+
     return () => {
-      if (currentHeaderRef) {
-        observer.unobserve(currentHeaderRef);
-      }
+      setActions(null);
+      setTitle('CharHub');
     };
-  }, []);
+  }, [conversation?.title, chatActions, setActions, setTitle]);
 
   const confirmAndDelete = useCallback(async () => {
     if (modalData?.messageId) await onDeleteMessage(modalData.messageId);
@@ -138,106 +150,58 @@ const ChatView: React.FC<any> = ({
     );
   }
 
+  // Get background image from conversation settings
+  const backgroundImage = conversation?.settings?.view?.background_type === 'image'
+    ? conversation?.settings?.view?.background_value
+    : null;
+
   return (
     <div className="w-full h-full flex flex-col relative">
-      <div
-        className={`fixed top-0 left-0 right-0 z-20 bg-normal/80 backdrop-blur-sm px-4 pt-4 pb-2 shadow-sm transition-opacity duration-300 ease-out ${
-          isHeaderVisible ? 'opacity-0 pointer-events-none' : 'opacity-100'
-        }`}
-      >
-        <div className={`flex items-center justify-end gap-2 ${uiError ? 'mt-8' : ''}`}>
-          <div className="flex items-center gap-2">
-            <DisplayAvatarParticipants
-              participants={processedParticipants}
-              onAvatarClick={openConfigModal}
-              isSticky={true}
-            />
-            <Button
-              variant="light"
-              size="small"
-              icon="add"
-              onClick={openAddParticipantModal}
-              className="flex-shrink-0 rounded-full p-2"
-              title={t('displayAvatarParticipants.addParticipantButtonTitle')}
+      {/* Background layers - fixed position, behind all content */}
+      {backgroundImage && (
+        <>
+          {/* Blurred background - covers entire viewport */}
+          <div
+            className="fixed inset-0 md:left-20 z-0 bg-normal"
+            style={{
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              filter: 'blur(20px)',
+              transform: 'scale(1.1)', // Prevents blur edge artifacts
+            }}
+          />
+
+          {/* Sharp background - centered, 100% height */}
+          <div
+            className="fixed top-0 bottom-0 left-0 md:left-20 right-0 z-0 flex items-center justify-center pointer-events-none"
+          >
+            <img
+              src={backgroundImage}
+              alt="Chat background"
+              className="h-full w-auto object-contain"
+              style={{ maxWidth: '100%' }}
             />
           </div>
-          {conversation && (
-            <>
-              <Button
-                variant="light"
-                size="small"
-                icon="photo_library"
-                onClick={fetchAndOpenChatGallery}
-                title={t('conversationSettings.galleryButton')}
-                className="p-2 flex-shrink-0"
-                disabled={actionLoading || loadingConversationData || loadingGallery}
-              />
-              <Button
-                variant="light"
-                size="small"
-                icon="settings"
-                onClick={() => openConversationSettingsModal(conversation)}
-                title={t('chatPage.conversationSettingsTitle')}
-                className="p-2 flex-shrink-0"
-                disabled={actionLoading || loadingConversationData}
-              />
-            </>
-          )}
-        </div>
-      </div>
 
-      {uiError && !activeModal && (
-        <div className="sticky top-0 z-30 p-2 bg-danger/90 text-white text-sm text-center animate-pulse">
-          <span className="material-symbols-outlined text-base align-middle mr-2">
-            {isWebSocketConnected ? 'error' : 'wifi_off'}
-          </span>
-          {uiError}
-        </div>
+          {/* Overlay to improve text readability */}
+          <div className="fixed inset-0 md:left-20 z-0 bg-black/30" />
+        </>
       )}
 
-      <div className="px-4 flex flex-col flex-grow overflow-hidden">
-        <div ref={headerRef} className="pt-2 pb-4 flex-shrink-0">
-          <div className="flex justify-end mb-2 gap-2">
-            {conversation && (
-              <>
-                <Button
-                  variant="light"
-                  size="small"
-                  icon="photo_library"
-                  onClick={fetchAndOpenChatGallery}
-                  title={t("conversationSettings.galleryButton")}
-                  className="p-2 flex-shrink-0"
-                  disabled={actionLoading || loadingConversationData || loadingGallery}
-                />
-                <Button
-                variant="light"
-                size="small"
-                icon="settings"
-                onClick={() => openConversationSettingsModal(conversation)}
-                title={t("chatPage.conversationSettingsTitle")}
-                className="p-2 flex-shrink-0"
-                disabled={actionLoading || loadingConversationData}
-                />
-              </>
-            )}
+      {/* Content layer - sits above background */}
+      <div className="relative z-10 w-full h-full flex flex-col">
+        {uiError && !activeModal && (
+          <div className="sticky top-0 z-30 p-2 bg-danger/90 text-white text-sm text-center animate-pulse">
+            <span className="material-symbols-outlined text-base align-middle mr-2">
+              {isWebSocketConnected ? 'error' : 'wifi_off'}
+            </span>
+            {uiError}
           </div>
-          <DisplayAvatarParticipants
-            participants={processedParticipants}
-            onAddClick={openAddParticipantModal}
-            onRemoveClick={onRemoveParticipant}
-            onAvatarClick={openConfigModal}
-          />
-          {processedParticipants.filter((p: any) => p.actorType !== "USER")
-            .length === 0 &&
-            !loadingConversationData &&
-            conversation && (
-              <p className="text-center text-xs text-muted mt-1 italic">
-                {t("chatPage.addParticipantsPrompt")}
-              </p>
-            )}
-        </div>
+        )}
 
-        <div ref={scrollContainerRef} className="flex-1 overflow-y-auto" style={{ paddingBottom: bottomPad }}>
+        <div className="px-4 flex flex-col flex-grow overflow-y-auto">
           <MessageList
             messages={messages}
             loading={loadingConversationData}
@@ -257,23 +221,22 @@ const ChatView: React.FC<any> = ({
             onSendConfirmation={onSendConfirmation}
             onReviewFileClick={onReviewFileClick}
           />
-          {/* bottom sentinel ensures last message is fully visible above input */}
-          <div className="h-px" />
         </div>
-      </div>
 
-      <div ref={footerRef} className="fixed bottom-0 left-0 right-0 z-10 bg-normal/90 backdrop-blur-sm px-4 pb-4 shadow-lg">
-        <div className="max-w-5xl mx-auto">
-          <MessageInput
-            onSendMessage={onSendMessage}
-            user={currentUserRepresentation}
-            disabled={actionLoading}
-            onUserAvatarClick={() => {
-              const p = processedParticipants.find((p: any) => p.actorType === 'USER');
-              if (p) openConfigModal(p);
-            }}
-            onRequestImageGeneration={onRequestImageGeneration}
-          />
+        {/* Input fixo - considera NavigationRail (80px no desktop) */}
+        <div className="fixed bottom-0 left-0 md:left-20 right-0 z-10 bg-normal/90 backdrop-blur-sm px-4 pb-4 shadow-lg">
+          <div className="max-w-5xl mx-auto">
+            <MessageInput
+              onSendMessage={onSendMessage}
+              user={currentUserRepresentation}
+              disabled={actionLoading}
+              onUserAvatarClick={() => {
+                const p = processedParticipants.find((p: any) => p.actorType === 'USER');
+                if (p) openConfigModal(p);
+              }}
+              onRequestImageGeneration={onRequestImageGeneration}
+            />
+          </div>
         </div>
       </div>
 

@@ -1,3 +1,4 @@
+import { AgeRating } from '../types/characters';
 import api from '../lib/api';
 import {
   type Character,
@@ -14,7 +15,13 @@ const BASE_PATH = `${API_PREFIX}/characters`;
 
 export const characterService = {
   async list(params?: CharacterListParams): Promise<CharacterListResponse> {
-    const response = await api.get<{ success: boolean; data: Character[]; count: number }>(BASE_PATH, { params });
+    const query: Record<string, unknown> = { ...(params || {}) };
+    if (params && Object.prototype.hasOwnProperty.call(params, 'isPublic')) {
+      query.public = (params as any).isPublic;
+      delete (query as any).isPublic;
+    }
+
+    const response = await api.get<{ success: boolean; data: Character[]; count: number }>(BASE_PATH, { params: query });
 
     return {
       items: response.data.data || [],
@@ -22,6 +29,20 @@ export const characterService = {
       page: 1,
       pageSize: response.data.data?.length || 20
     };
+  },
+
+  /**
+   * Get total non-avatar images for a character
+   */
+  async getImageCount(characterId: string): Promise<number> {
+    try {
+      const character = await this.getById(characterId);
+      const images = (character as any).images as Array<{ type: string }> | undefined;
+      if (!images || images.length === 0) return 0;
+      return images.filter(img => img && img.type !== 'AVATAR').length;
+    } catch (_e) {
+      return 0;
+    }
   },
 
   async getById(characterId: string): Promise<Character> {
@@ -103,18 +124,11 @@ export const characterService = {
    * Get popular characters for dashboard
    * TODO: Implement backend endpoint for actual popularity metrics
    */
-  async getPopular(limit = 10): Promise<Character[]> {
+  async getPopular(params: { limit?: number; ageRatings?: AgeRating[] } = {}): Promise<Character[]> {
     try {
-      // TODO: Replace with actual popular endpoint when available
-      // const response = await api.get<{ success: boolean; data: Character[] }>(
-      //   `${BASE_PATH}/popular`,
-      //   { params: { limit } }
-      // );
-      // return response.data.data;
-
-      // For now, fetch public characters
-      const response = await this.list({ isPublic: true });
-      return response.items.slice(0, limit);
+      const { limit = 10, ageRatings } = params;
+      const response = await this.list({ isPublic: true, ageRatings, limit });
+      return response.items;
     } catch (error) {
       console.error('[characterService] getPopular failed:', error);
       return [];
@@ -187,6 +201,14 @@ export const characterService = {
       type: params.type
     });
     return response.data.data;
+  },
+
+  async getCharacterImages(characterId: string, type?: string): Promise<Array<{ id: string; url: string; type: string; description?: string }>> {
+    const response = await api.get<{ success: boolean; data: Array<{ id: string; url: string; type: string; description?: string }> }>(
+      `${BASE_PATH}/${characterId}/images`,
+      { params: type ? { type } : {} }
+    );
+    return response.data.data || [];
   }
 };
 

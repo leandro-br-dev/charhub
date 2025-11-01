@@ -1,6 +1,6 @@
 
 // frontend/src/pages/(chat)/shared/components/ConversationSettingsModal.tsx
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../../../hooks/useAuth";
 import { Modal } from "../../../../components/ui/Modal";
@@ -44,29 +44,38 @@ const ConversationSettingsModal = ({
   const [settings, setSettings] = useState(defaultSettings);
   const [error, setError] = useState<string | null>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-  const [galleryImages, setGalleryImages] = useState<string[]>([]);
-  const [loadingGallery, setLoadingGallery] = useState(false);
-  const [galleryError, setGalleryError] = useState<string | null>(null);
 
-  const fetchGalleryImages = useCallback(async () => {
-    if (!conversation?.id) return;
-    setLoadingGallery(true);
-    setGalleryError(null);
-    try {
-        const images = await chatService.getConversationGallery(conversation.id);
-        setGalleryImages(images || []);
-    } catch (err) {
-        console.error('[ConversationSettings] Error loading gallery:', err);
-        setGalleryError(t('conversationSettings.errorLoadingGallery'));
-        setGalleryImages([]);
-    } finally {
-        setLoadingGallery(false);
+  // Extract characters from conversation participants
+  const charactersInConversation = useMemo(() => {
+    if (!conversation?.participants) return [];
+
+    const characters: Array<{ id: string; name: string }> = [];
+    const seenIds = new Set<string>();
+
+    for (const participant of conversation.participants) {
+      // Check actingCharacter
+      if (participant.actingCharacter && !seenIds.has(participant.actingCharacter.id)) {
+        characters.push({
+          id: participant.actingCharacter.id,
+          name: `${participant.actingCharacter.firstName}${participant.actingCharacter.lastName ? ' ' + participant.actingCharacter.lastName : ''}`
+        });
+        seenIds.add(participant.actingCharacter.id);
+      }
+
+      // Check representingCharacter
+      if (participant.representingCharacter && !seenIds.has(participant.representingCharacter.id)) {
+        characters.push({
+          id: participant.representingCharacter.id,
+          name: `${participant.representingCharacter.firstName}${participant.representingCharacter.lastName ? ' ' + participant.representingCharacter.lastName : ''}`
+        });
+        seenIds.add(participant.representingCharacter.id);
+      }
     }
-  }, [conversation, t]);
+
+    return characters;
+  }, [conversation?.participants]);
 
   const openGalleryForSelection = () => {
-    setGalleryError(null);
-    fetchGalleryImages();
     setIsGalleryOpen(true);
   };
 
@@ -363,11 +372,7 @@ const ConversationSettingsModal = ({
         onClose={() => setIsGalleryOpen(false)}
         mode="select"
         onImageSelect={handleImageSelect}
-        conversationId={conversation.id}
-        participants={conversation.participants}
-        imageUrls={galleryImages}
-        loading={loadingGallery}
-        error={galleryError}
+        characters={charactersInConversation}
         title={t("conversationSettings.selectFromGalleryButton")}
       />
     </>

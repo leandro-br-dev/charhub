@@ -1,17 +1,20 @@
-import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 
 interface PageHeaderContextValue {
   title: string;
   setTitle: (title: string) => void;
+  actions: ReactNode;
+  setActions: (actions: ReactNode) => void;
 }
 
 const PageHeaderContext = createContext<PageHeaderContextValue | undefined>(undefined);
 
 export function PageHeaderProvider({ children }: { children: ReactNode }) {
   const [title, setTitle] = useState('CharHub');
+  const [actions, setActions] = useState<ReactNode>(null);
 
   return (
-    <PageHeaderContext.Provider value={{ title, setTitle }}>
+    <PageHeaderContext.Provider value={{ title, setTitle, actions, setActions }}>
       {children}
     </PageHeaderContext.Provider>
   );

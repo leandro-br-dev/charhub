@@ -3,7 +3,7 @@
   "resources": {
     "create": {
       "title": "新しいストーリーを作成",
-      "subtitle": "キャラクターと目標を設定して、インタラクティブなストーリーを作成しましょう"
+      "subtitle": "キャラクターと目標を設定して、インタラクティブなストーリーを構築しましょう"
     },
     "form": {
       "title": "タイトル",
@@ -14,13 +14,13 @@
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "表紙プレビュー",
       "coverImageError": "画像の読み込みに失敗しました",
-      "coverImageHint": "ストーリーの表紙として画像URLを貼り付けてください",
+      "coverImageHint": "ストーリーの表紙にする画像のURLを貼り付けてください",
       "initialText": "冒頭のテキスト",
       "initialTextPlaceholder": "ストーリーの始まりを書いてください...",
       "initialTextHint": "このテキストはストーリー開始時に表示されます",
       "objectives": "目標",
       "objectivePlaceholder": "ストーリーの目標を追加",
-      "noObjectives": "まだ目標がありません。物語の指針となる目標を追加してください。",
+      "noObjectives": "まだ目標がありません。物語を導くためにいくつか追加してください。",
       "characters": "キャラクター",
       "selectedCharacters": "選択中のキャラクター",
       "searchCharacters": "キャラクターを検索",
@@ -37,9 +37,9 @@
     },
     "validation": {
       "titleRequired": "タイトルは必須です",
-      "titleTooLong": "タイトルは100文字以内にする必要があります",
-      "synopsisTooLong": "あらすじは2000文字以内にする必要があります",
-      "initialTextTooLong": "冒頭のテキストは5000文字以内にする必要があります"
+      "titleTooLong": "タイトルは100文字以内である必要があります",
+      "synopsisTooLong": "あらすじは2000文字以内である必要があります",
+      "initialTextTooLong": "冒頭のテキストは5000文字以内である必要があります"
     },
     "errors": {
       "createFailed": "ストーリーの作成に失敗しました",
@@ -48,11 +48,11 @@
       "failedToLoad": "ストーリーの読み込みに失敗しました",
       "noCharacters": "このストーリーにはキャラクターがいません",
       "failedToStart": "ストーリーの開始に失敗しました",
-      "notFound": "ストーリーが見つかりませんでした"
+      "notFound": "ストーリーが見つかりません"
     },
     "sidebar": {
       "myStories": "マイストーリー",
-      "noStories": "まだストーリーがありません"
+      "noStories": "まだストーリーはありません"
     },
     "list": {
       "title": "マイストーリー",
@@ -66,10 +66,15 @@
       }
     },
     "detail": {
+      "title": "ストーリー",
       "synopsis": "あらすじ",
       "initialScene": "冒頭シーン",
       "objectives": "ストーリー目標",
-      "characters": "キャラクター"
+      "characters": "キャラクター",
+      "confirmDelete": "このストーリーを削除してもよろしいですか？この操作は元に戻せません。",
+      "labels": {
+        "createdBy": "作成者"
+      }
     },
     "start": "ストーリーを開始",
     "starting": "開始中..."

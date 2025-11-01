@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
@@ -6,12 +6,14 @@ import { useConversationMutations } from '../shared/hooks/useConversations';
 import { Button, Avatar } from '../../../components/ui';
 import { characterService } from '../../../services/characterService';
 import type { Character } from '../../../types/characters';
+import { usePageHeader } from '../../../hooks/usePageHeader';
 
 export default function NewConversationPage() {
   const { t } = useTranslation('chat');
   const navigate = useNavigate();
   const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
   const [conversationTitle, setConversationTitle] = useState('');
+  const { setTitle } = usePageHeader();
 
   const { createWithCharacter } = useConversationMutations();
 
@@ -22,6 +24,11 @@ export default function NewConversationPage() {
   });
 
   const characters = charactersData?.items || [];
+
+  // Set page title
+  useEffect(() => {
+    setTitle(t('newConversation'));
+  }, [setTitle, t]);
 
   const handleCreate = async () => {
     if (!selectedCharacterId) {

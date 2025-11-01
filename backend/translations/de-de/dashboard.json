@@ -1,8 +1,8 @@
 {
   "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
   "resources": {
-    "title": "Geschützter Bereich",
-    "subtitle": "Sie haben sich erfolgreich über {{provider}} authentifiziert. Dieses Dashboard ist nur für eingeloggte Benutzer zugänglich.",
+    "title": "Restricted Area",
+    "subtitle": "Sie haben sich erfolgreich über {{provider}} authentifiziert. Dieses Dashboard ist nur für angemeldete Benutzer zugänglich.",
     "accountDetails": "Kontodetails",
     "nextSteps": "Nächste Schritte",
     "displayName": "Anzeigename",
@@ -11,6 +11,6 @@
     "token": "Token",
     "insightSyncUnity": "Synchronisieren Sie diese Sitzung mit dem Unity-Client über sichere WebSockets oder REST.",
     "insightPersist": "Speichern Sie OAuth-Profile in Ihrem Backend-Identitätsspeicher.",
-    "insightTokens": "Ausstellen Sie kurzlebige Zugriffstoken und aktualisieren Sie sie bei Bedarf."
+    "insightTokens": "Erstellen Sie kurzlebige Zugriffstoken und aktualisieren Sie sie bei Bedarf."
   }
 }

@@ -16,7 +16,7 @@
       "coverImageError": "Impossibile caricare l'immagine",
       "coverImageHint": "Incolla un URL di immagine per la copertina della storia",
       "initialText": "Testo iniziale",
-      "initialTextPlaceholder": "Scrivi l'inizio della tua storia...",
+      "initialTextPlaceholder": "Scrivi l'apertura della tua storia...",
       "initialTextHint": "Questo testo verrà mostrato all'inizio della storia",
       "objectives": "Obiettivi",
       "objectivePlaceholder": "Aggiungi un obiettivo della storia",
@@ -42,20 +42,20 @@
       "initialTextTooLong": "Il testo iniziale deve essere di massimo 5000 caratteri"
     },
     "errors": {
-      "createFailed": "Creazione storia fallita",
-      "updateFailed": "Aggiornamento storia fallito",
-      "deleteFailed": "Eliminazione storia fallita",
-      "failedToLoad": "Caricamento storie fallito",
+      "createFailed": "Impossibile creare la storia",
+      "updateFailed": "Impossibile aggiornare la storia",
+      "deleteFailed": "Impossibile eliminare la storia",
+      "failedToLoad": "Impossibile caricare le storie",
       "noCharacters": "Questa storia non ha personaggi",
-      "failedToStart": "Avvio storia fallito",
+      "failedToStart": "Impossibile avviare la storia",
       "notFound": "Storia non trovata"
     },
     "sidebar": {
-      "myStories": "Le mie storie",
+      "myStories": "Le mie Storie",
       "noStories": "Nessuna storia ancora"
     },
     "list": {
-      "title": "Le mie storie",
+      "title": "Le mie Storie",
       "subtitle": "Gestisci le tue storie interattive",
       "public": "Pubblica",
       "private": "Privata",
@@ -66,12 +66,17 @@
       }
     },
     "detail": {
+      "title": "Storia",
       "synopsis": "Sinossi",
       "initialScene": "Scena iniziale",
       "objectives": "Obiettivi della storia",
-      "characters": "Personaggi"
+      "characters": "Personaggi",
+      "confirmDelete": "Sei sicuro di voler eliminare questa storia? Questa azione non può essere annullata.",
+      "labels": {
+        "createdBy": "Creata da"
+      }
     },
-    "start": "Avvia Storia",
-    "starting": "Avvio in corso..."
+    "start": "Inizia Storia",
+    "starting": "Inizio..."
   }
 }

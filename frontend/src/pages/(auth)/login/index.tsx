@@ -27,7 +27,7 @@ export default function Login(): JSX.Element {
 
   if (isAuthenticated) {
     return (
-      <div className="flex justify-center items-center h-screen bg-normal text-content">
+      <div className="flex justify-center items-center h-[100svh] bg-normal text-content">
         {t('login:checkingAuth')}
       </div>
     );

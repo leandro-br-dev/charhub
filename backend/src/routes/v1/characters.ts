@@ -3,6 +3,7 @@ import multer from 'multer';
 import { randomUUID } from 'node:crypto';
 import { requireAuth, optionalAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
+import { prisma } from '../../config/database';
 import * as characterService from '../../services/characterService';
 import { r2Service } from '../../services/r2Service';
 import { runCharacterAutocomplete, CharacterAutocompleteMode } from '../../agents/characterAutocompleteAgent';
@@ -111,6 +112,33 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
   } catch (error) {
     logger.error({ error }, 'Error running character autocomplete');
     return res.status(500).json({ success: false, message: 'Failed to autocomplete character' });
+  }
+});
+
+/**
+ * GET /api/v1/characters/:id/images
+ * Get all images for a specific character
+ * Query params: type (optional) - filter by image type
+ */
+router.get('/:id/images', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { type } = req.query;
+
+  try {
+    const images = await prisma.characterImage.findMany({
+      where: {
+        characterId: id,
+        ...(type ? { type: type as ImageType } : {}),
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return res.status(200).json({ success: true, data: images });
+  } catch (error) {
+    logger.error({ error, characterId: id }, 'get_character_images_failed');
+    return res.status(500).json({ success: false, message: 'Failed to fetch character images' });
   }
 });
 
@@ -373,6 +401,7 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
       limit,
       userId: filterUserId,
       public: isPublic,
+      ageRatings,
     } = req.query;
 
     let characters;
@@ -387,6 +416,11 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
             ? [tags]
             : undefined,
         gender: typeof gender === 'string' ? gender : undefined,
+        ageRatings: Array.isArray(ageRatings)
+          ? ageRatings.map(String)
+          : typeof ageRatings === 'string'
+            ? ageRatings.split(',')
+            : undefined,
         skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
         limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
       });
@@ -401,6 +435,11 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
             ? [tags]
             : undefined,
         gender: typeof gender === 'string' ? gender : undefined,
+        ageRatings: Array.isArray(ageRatings)
+          ? ageRatings.map(String)
+          : typeof ageRatings === 'string'
+            ? ageRatings.split(',')
+            : undefined,
         skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
         limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
       });
@@ -415,6 +454,11 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
             ? [tags]
             : undefined,
         gender: typeof gender === 'string' ? gender : undefined,
+        ageRatings: Array.isArray(ageRatings)
+          ? ageRatings.map(String)
+          : typeof ageRatings === 'string'
+            ? ageRatings.split(',')
+            : undefined,
         skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
         limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
       });

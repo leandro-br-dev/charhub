@@ -1,20 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../../../components/ui';
+import { useAuth } from '../../../hooks/useAuth';
+import { Button, Avatar } from '../../../components/ui';
+import { Tag as UITag } from '../../../components/ui/Tag';
+import { CachedImage } from '../../../components/ui/CachedImage';
 import { storyService } from '../../../services/storyService';
 import { chatService } from '../../../services/chatService';
 import type { Story } from '../../../types/story';
 import type { CreateConversationPayload } from '../../../types/chat';
+import { usePageHeader } from '../../../hooks/usePageHeader';
 
 export function StoryDetailPage() {
   const { storyId } = useParams<{ storyId: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation(['story', 'common']);
+  const { t } = useTranslation(['story', 'common', 'characters']);
+  const { user } = useAuth();
   const [story, setStory] = useState<Story | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { setTitle } = usePageHeader();
+
+  const isOwner = user?.id === story?.authorId;
 
   useEffect(() => {
     if (!storyId) return;
@@ -34,6 +42,15 @@ export function StoryDetailPage() {
 
     fetchStory();
   }, [storyId, t]);
+
+  // Set page title
+  useEffect(() => {
+    if (story) {
+      setTitle(story.title);
+    } else {
+      setTitle(t('story:detail.title', 'Story'));
+    }
+  }, [story, setTitle, t]);
 
   const handleStartStory = async () => {
     if (!story) return;
@@ -59,7 +76,7 @@ export function StoryDetailPage() {
         participantIds: characterIds,
         settings: {
           storyId: story.id,
-          storyContext, // Contexto completo da história
+          storyContext,
           isStoryMode: true,
           initialMessage: story.initialText || undefined,
           objectives: story.objectives,
@@ -75,6 +92,35 @@ export function StoryDetailPage() {
       setError(t('story:errors.failedToStart', 'Failed to start story'));
       setIsStarting(false);
     }
+  };
+
+  const handleEdit = () => {
+    if (story) {
+      navigate(`/stories/${story.id}/edit`);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!story) return;
+    if (!window.confirm(t('story:detail.confirmDelete', 'Are you sure you want to delete this story? This action cannot be undone.'))) {
+      return;
+    }
+
+    try {
+      await storyService.remove(story.id);
+      navigate('/stories');
+    } catch (err) {
+      console.error('Error deleting story:', err);
+      setError(t('story:errors.deleteFailed', 'Failed to delete story'));
+    }
+  };
+
+  const handleShare = () => {
+    if (!story) return;
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      alert(t('common:linkCopied', 'Link copied to clipboard!'));
+    });
   };
 
   const buildStoryContext = (story: Story): string => {
@@ -108,19 +154,23 @@ export function StoryDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center text-muted">{t('common:loading', 'Loading...')}</div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center text-muted">
+          <span className="material-symbols-outlined animate-spin text-4xl mb-2">progress_activity</span>
+          <p>{t('common:loading', 'Loading...')}</p>
+        </div>
       </div>
     );
   }
 
   if (error || !story) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center text-red-500">{error || t('story:errors.notFound', 'Story not found')}</div>
-        <div className="text-center mt-4">
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <span className="material-symbols-outlined text-6xl text-danger mb-4">error</span>
+          <p className="text-danger mb-4">{error || t('story:errors.notFound', 'Story not found')}</p>
           <Button onClick={() => navigate('/stories')}>
-            {t('common:back', 'Back')}
+            {t('common:back', 'Back to Stories')}
           </Button>
         </div>
       </div>
@@ -128,128 +178,258 @@ export function StoryDetailPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      {/* Header */}
-      <div className="mb-6">
-        <button
-          onClick={() => navigate('/stories')}
-          className="text-primary hover:text-primary/80 mb-4 flex items-center gap-2"
-        >
-          <span className="material-symbols-outlined">arrow_back</span>
-          {t('common:back', 'Back')}
-        </button>
-      </div>
+    <>
+      {/* Main content */}
+      <div className="-mx-4 -mt-8 md:mx-auto md:mt-0 md:max-w-7xl">
+        <div className="grid gap-0 md:gap-6 lg:grid-cols-[420px_1fr]">
+          {/* Left side - Cover image */}
+          <div className="w-full space-y-4 md:w-full">
+            {/* Cover image */}
+            <div className="relative overflow-hidden rounded-none bg-card shadow-lg md:rounded-2xl">
+              <div className="relative h-[50vh] md:aspect-[2/3] md:h-auto">
+                {story.coverImage ? (
+                  <CachedImage
+                    src={story.coverImage}
+                    alt={story.title}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+                    <span className="material-symbols-outlined text-9xl text-primary/40">book</span>
+                  </div>
+                )}
 
-      {/* Cover Image */}
-      {story.coverImage && (
-        <div className="w-full aspect-video mb-6 rounded-lg overflow-hidden">
-          <img
-            src={story.coverImage}
-            alt={story.title}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
+                {/* Age rating badge - top left */}
+                <div className="absolute left-4 top-4 z-10">
+                  <UITag
+                    label={story.ageRating}
+                    icon={<span className="material-symbols-outlined text-sm">verified</span>}
+                    tone="success"
+                    selected
+                    disabled
+                  />
+                </div>
 
-      {/* Story Info */}
-      <div className="bg-card rounded-lg shadow-lg p-6 mb-6">
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold text-title mb-2">{story.title}</h1>
-            <div className="flex items-center gap-4 text-sm text-muted">
-              <span>
-                {story.isPublic
-                  ? t('story:list.public', 'Public')
-                  : t('story:list.private', 'Private')}
-              </span>
-              {story.ageRating && (
-                <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded">
-                  {story.ageRating}
-                </span>
-              )}
+                {/* Visibility badge - top right */}
+                <div className="absolute right-4 top-4 z-10">
+                  <UITag
+                    label={story.isPublic ? t('story:list.public') : t('story:list.private')}
+                    icon={<span className="material-symbols-outlined text-sm">{story.isPublic ? 'public' : 'lock'}</span>}
+                    tone={story.isPublic ? 'info' : 'warning'}
+                    selected
+                    disabled
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <Button
-            icon="play_arrow"
-            onClick={handleStartStory}
-            disabled={isStarting}
-            size="large"
-          >
-            {isStarting ? t('story:starting', 'Starting...') : t('story:start', 'Start Story')}
-          </Button>
-        </div>
 
-        {story.synopsis && (
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-content mb-2">
-              {t('story:detail.synopsis', 'Synopsis')}
-            </h2>
-            <p className="text-muted whitespace-pre-wrap">{story.synopsis}</p>
-          </div>
-        )}
+          {/* Right side - Story info */}
+          <div className="relative z-10 -mt-12 space-y-4 md:mt-0">
+            {/* Title and action buttons */}
+            <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
+              <div className="mb-4 flex items-start justify-between gap-4">
+                <h1 className="text-3xl font-bold text-title lg:text-4xl">
+                  {story.title}
+                </h1>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleShare}
+                    className="flex h-10 w-10 items-center justify-center rounded-lg text-content transition-colors hover:bg-input hover:text-primary"
+                    aria-label="Share story"
+                  >
+                    <span className="material-symbols-outlined text-xl">share</span>
+                  </button>
+                  {isOwner && (
+                    <>
+                      <button
+                        onClick={handleEdit}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg text-content transition-colors hover:bg-input hover:text-primary"
+                        aria-label="Edit story"
+                      >
+                        <span className="material-symbols-outlined text-xl">edit</span>
+                      </button>
+                      <button
+                        onClick={handleDelete}
+                        className="flex h-10 w-10 items-center justify-center rounded-lg text-danger transition-colors hover:bg-danger/10"
+                        aria-label="Delete story"
+                      >
+                        <span className="material-symbols-outlined text-xl">delete</span>
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
 
-        {story.initialText && (
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-content mb-2">
-              {t('story:detail.initialScene', 'Opening Scene')}
-            </h2>
-            <p className="text-muted whitespace-pre-wrap">{story.initialText}</p>
-          </div>
-        )}
+              {/* Start story button */}
+              <Button
+                type="button"
+                variant="primary"
+                icon="play_arrow"
+                onClick={handleStartStory}
+                disabled={isStarting}
+                className="w-full !rounded-xl !bg-gradient-to-r !from-pink-500 !to-purple-600 !py-4 text-lg font-semibold !text-white shadow-lg transition-all hover:shadow-xl"
+              >
+                {isStarting
+                  ? t('story:starting')
+                  : t('story:start')}
+              </Button>
+            </div>
 
-        {story.objectives && story.objectives.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-content mb-2">
-              {t('story:detail.objectives', 'Story Objectives')}
-            </h2>
-            <ul className="space-y-2">
-              {story.objectives.map((obj, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="material-symbols-outlined text-primary mt-1">
-                    {obj.completed ? 'check_circle' : 'radio_button_unchecked'}
-                  </span>
-                  <span className="text-muted">{obj.description}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {story.characters && story.characters.length > 0 && (
-          <div>
-            <h2 className="text-xl font-semibold text-content mb-3">
-              {t('story:detail.characters', 'Characters')}
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {story.characters.map(character => (
-                <div
-                  key={character.id}
-                  className="flex items-center gap-3 p-3 bg-light rounded-lg"
-                >
-                  {character.avatar ? (
-                    <img
-                      src={character.avatar}
-                      alt={character.firstName}
-                      className="w-12 h-12 rounded-full object-cover"
+            {/* Author info */}
+            {story.author && (
+              <div className="mx-4 rounded-2xl bg-card/50 p-4 md:mx-0">
+                <div className="flex items-center gap-3">
+                  {story.author.avatarUrl ? (
+                    <CachedImage
+                      src={story.author.avatarUrl}
+                      alt={story.author.displayName || 'Author'}
+                      className="h-10 w-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
-                      <span className="text-lg font-semibold">
-                        {character.firstName[0]}
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+                      <span className="text-sm font-semibold text-primary">
+                        {(story.author.displayName || 'U').charAt(0).toUpperCase()}
                       </span>
                     </div>
                   )}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-content truncate">
-                      {character.firstName} {character.lastName || ''}
-                    </p>
+                  <div className="flex-1">
+                    <p className="text-sm text-muted">{t('story:detail.labels.createdBy', 'Created by')}</p>
+                    <p className="font-medium text-content">{story.author.displayName || t('common:anonymousUser', 'Anonymous')}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-muted">{new Date(story.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
+
+            {/* Synopsis */}
+            {story.synopsis && (
+              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
+                <h2 className="mb-4 text-xl font-semibold text-title">
+                  {t('story:detail.synopsis')}
+                </h2>
+                <p className="whitespace-pre-wrap text-content">{story.synopsis}</p>
+              </div>
+            )}
+
+            {/* Initial Scene */}
+            {story.initialText && (
+              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
+                <h2 className="mb-4 text-xl font-semibold text-title">
+                  {t('story:detail.initialScene')}
+                </h2>
+                <p className="whitespace-pre-wrap text-content">{story.initialText}</p>
+              </div>
+            )}
+
+            {/* Objectives */}
+            {story.objectives && story.objectives.length > 0 && (
+              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
+                <h2 className="mb-4 text-xl font-semibold text-title">
+                  {t('story:detail.objectives')}
+                </h2>
+                <ul className="space-y-3">
+                  {story.objectives.map((obj, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <span className="material-symbols-outlined text-primary mt-0.5">
+                        {obj.completed ? 'check_circle' : 'radio_button_unchecked'}
+                      </span>
+                      <span className="flex-1 text-content">{obj.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Characters */}
+            {story.characters && story.characters.length > 0 && (
+              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
+                <h2 className="mb-4 text-xl font-semibold text-title">
+                  {t('story:detail.characters')}
+                </h2>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {story.characters.map(character => {
+                    const displayName = character.lastName
+                      ? `${character.firstName} ${character.lastName}`
+                      : character.firstName;
+
+                    return (
+                      <div
+                        key={character.id}
+                        onClick={() => navigate(`/characters/${character.id}`)}
+                        className="flex cursor-pointer items-center gap-3 rounded-lg bg-light p-4 transition-colors hover:bg-input"
+                      >
+                        {character.avatar ? (
+                          <CachedImage
+                            src={character.avatar}
+                            alt={displayName}
+                            className="h-12 w-12 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
+                            <span className="text-lg font-semibold text-primary">
+                              {character.firstName[0]}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-content truncate">
+                            {displayName}
+                          </p>
+                        </div>
+                        <span className="material-symbols-outlined text-muted">arrow_forward</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Content Tags */}
+            {story.contentTags && story.contentTags.length > 0 && (
+              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
+                <h2 className="mb-4 text-xl font-semibold text-title">
+                  {t('characters:detail.sections.contentTags', 'Content Warnings')}
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {story.contentTags.map((tag) => {
+                    const isNsfw = tag === 'SEXUAL' || tag === 'NUDITY';
+                    return (
+                      <UITag
+                        key={tag}
+                        label={t(`characters:contentTags.${tag}`)}
+                        tone={isNsfw ? 'danger' : 'warning'}
+                        disabled
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Tags */}
+            {story.tags && story.tags.length > 0 && (
+              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
+                <h2 className="mb-4 text-xl font-semibold text-title">
+                  {t('common:tags', 'Tags')}
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {story.tags.map((tag) => (
+                    <UITag
+                      key={tag.id}
+                      label={tag.name}
+                      tone="info"
+                      disabled
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

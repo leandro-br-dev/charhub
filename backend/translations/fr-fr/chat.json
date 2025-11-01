@@ -1,7 +1,7 @@
 {
   "description": "Chat and conversation interface translations",
   "resources": {
-    "title": "Chat",
+    "title": "Conversations",
     "newConversation": "Nouvelle conversation",
     "conversations": "Conversations",
     "noConversations": "Aucune conversation pour le moment",
@@ -13,7 +13,7 @@
       "title": "Historique des conversations",
       "newChat": "Nouveau chat",
       "searchPlaceholder": "Rechercher des conversations...",
-      "groupBy": "Grouper par :",
+      "groupBy": "Regrouper par :",
       "groupByDate": "Date",
       "groupByName": "Nom",
       "today": "Aujourd'hui",
@@ -42,8 +42,8 @@
       "settings": "Paramètres",
       "lastMessage": "Dernier message",
       "noMessages": "Aucun message pour le moment",
-      "startTyping": "Commencez à taper pour démarrer la conversation",
-      "justNow": "À l'instant",
+      "startTyping": "Commencez à taper pour lancer la conversation",
+      "justNow": "Maintenant",
       "minutesAgo": "{{count}}m",
       "hoursAgo": "{{count}}h",
       "daysAgo": "{{count}}d"
@@ -74,7 +74,7 @@
     "typing": {
       "isTyping": "{{name}} est en train d'écrire...",
       "areTyping": "{{names}} sont en train d'écrire...",
-      "generating": "Génération de la réponse en cours..."
+      "generating": "Génération de la réponse..."
     },
     "actions": {
       "create": "Créer",
@@ -99,16 +99,16 @@
       "removeParticipantFailed": "Échec de la suppression du participant.",
       "cannotRemoveLastCharacter": "Impossible de supprimer le dernier personnage de la conversation. Au moins un personnage ou un assistant doit rester.",
       "updateConversationFailed": "Échec de la mise à jour de la conversation.",
-      "reprocessNotAvailable": "La ré-exécution n'est pas disponible sans un participant assistant.",
+      "reprocessNotAvailable": "La nouvelle génération n'est pas disponible sans un participant assistant.",
       "imageGenerationUnavailable": "La génération d'images n'est pas encore disponible.",
       "cloneAssistantUnavailable": "Le clonage d'assistant n'est pas encore disponible.",
       "promoteCharacterUnavailable": "La promotion de personnage n'est pas encore disponible.",
       "audioPlaybackUnavailable": "La lecture audio n'est pas encore disponible.",
-      "reviewFileUnavailable": "La révision de fichier n'est pas encore disponible."
+      "reviewFileUnavailable": "L'examen de fichier n'est pas encore disponible."
     },
     "success": {
       "created": "Conversation créée avec succès",
-      "updated": "Mise à jour réussie",
+      "updated": "Mise à jour effectuée avec succès",
       "deleted": "Supprimé avec succès",
       "sent": "Message envoyé"
     },
@@ -117,25 +117,25 @@
       "configureBotTitle": "Configurer {{name}}",
       "configureAssistantTitle": "Configurer l'assistant {{name}}",
       "configureUserRoleplayTitle": "Configurer le jeu de rôle de {{name}}",
-      "participantNotFound": "Participant non trouvé",
+      "participantNotFound": "Participant introuvable",
       "specificInstructionsLabel": "Instructions spécifiques",
       "specificInstructionsPlaceholder": "Ajoutez des détails qui devraient influencer les réponses pendant cette conversation",
       "assumePersonaLabel": "Adopter la persona",
       "changeVisualPersonaLabel": "Persona visuelle",
-      "selectCharacterPlaceholder": "Sélectionner un personnage",
+      "selectCharacterPlaceholder": "Sélectionnez un personnage",
       "loadingPersonas": "Chargement des personas...",
-      "savingConfigurationButton": "Sauvegarde en cours...",
+      "savingConfigurationButton": "Enregistrement...",
       "saveConfigurationButton": "Enregistrer la configuration",
-      "promotingButton": "Promotion en cours...",
+      "promotingButton": "Promotion...",
       "promoteToAssistantButton": "Promouvoir en assistant",
-      "cloningButton": "Clonage en cours...",
+      "cloningButton": "Clonage...",
       "cloneButton": "Cloner l'assistant",
-      "errorSavingConfig": "Impossible de sauvegarder la configuration.",
+      "errorSavingConfig": "Impossible d'enregistrer la configuration.",
       "errorCloningAssistant": "Impossible de cloner cet assistant.",
       "errorPromotingCharacter": "Impossible de promouvoir ce personnage.",
-      "savingConfiguration": "Sauvegarde de la configuration...",
+      "savingConfiguration": "Enregistrement de la configuration...",
       "loadingConversation": "Chargement de la conversation...",
-      "addParticipantsPrompt": "Ajoutez des participants pour démarrer la conversation.",
+      "addParticipantsPrompt": "Ajoutez des participants pour commencer la conversation.",
       "confirmDeleteTitle": "Confirmer la suppression",
       "confirmDeleteMessage": "Êtes-vous sûr de vouloir supprimer ce message ?",
       "confirmReprocessTitle": "Confirmer la régénération",
@@ -180,7 +180,7 @@
       "narrationStyleLabel": "Style de narration",
       "narrationBalanced": "Équilibré",
       "narrationDescriptive": "Descriptif",
-      "narrationDialogue": "Axé sur le dialogue",
+      "narrationDialogue": "Axé sur les dialogues",
       "viewOptionsTitle": "Paramètres visuels",
       "bgTypeLabel": "Type d'arrière-plan",
       "bgTypeTheme": "Utiliser le thème",
@@ -190,7 +190,7 @@
       "noImageSelected": "Aucun arrière-plan sélectionné",
       "errorLoadingGallery": "Impossible de charger les images de la galerie.",
       "galleryButton": "Ouvrir la galerie",
-      "imageGalleryTitle": "Galerie de chat"
+      "imageGalleryTitle": "Galerie du chat"
     },
     "common": {
       "cancel": "Annuler",
@@ -203,11 +203,11 @@
       "denied": "Refusé",
       "deleting": "Suppression en cours...",
       "processing": "Traitement en cours...",
-      "saving": "Sauvegarde en cours...",
+      "saving": "Enregistrement en cours...",
       "unknown": "Inconnu"
     },
     "displayAvatarParticipants": {
-      "addParticipantPrompt": "Ajoutez des participants pour démarrer la conversation.",
+      "addParticipantPrompt": "Ajoutez des participants pour commencer la conversation.",
       "configureParticipantTitle": "Configurer {{name}}",
       "removeParticipantTitle": "Supprimer {{name}}",
       "addParticipantButtonTitle": "Ajouter un participant"
@@ -220,7 +220,7 @@
       "placeholderProcessingAudio": "Traitement audio...",
       "placeholderRecording": "Enregistrement...",
       "placeholderSending": "Envoi en cours...",
-      "placeholderWaiting": "Attente de la réponse...",
+      "placeholderWaiting": "En attente de réponse...",
       "placeholderDefault": "Tapez un message...",
       "configureUser": "Configurer {{name}}",
       "you": "Vous",
@@ -242,7 +242,7 @@
       "youSender": "Vous",
       "unknownSender": "Inconnu",
       "creditsUsedTitle": "{{count}} crédits utilisés",
-      "filesToReviewTitle": "Fichiers à réviser :"
+      "filesToReviewTitle": "Fichiers à examiner :"
     },
     "chatActions": {
       "actionConfirmedByUser": "Action confirmée par l'utilisateur.",

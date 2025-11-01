@@ -2,7 +2,7 @@
   "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
   "resources": {
     "title": "Area Riservata",
-    "subtitle": "Hai effettuato l'autenticazione con successo tramite {{provider}}. Questa dashboard è accessibile solo agli utenti che hanno effettuato l'accesso.",
+    "subtitle": "Ti sei autenticato con successo tramite {{provider}}. Questa dashboard è accessibile solo agli utenti registrati.",
     "accountDetails": "Dettagli account",
     "nextSteps": "Passi successivi",
     "displayName": "Nome visualizzato",
@@ -10,7 +10,7 @@
     "provider": "Provider",
     "token": "Token",
     "insightSyncUnity": "Sincronizza questa sessione con il client Unity tramite WebSockets sicuri o REST.",
-    "insightPersist": "Memorizza i profili OAuth nel tuo archivio identità backend.",
+    "insightPersist": "Memorizza i profili OAuth nel tuo backend di gestione delle identità.",
     "insightTokens": "Emetti token di accesso di breve durata e aggiornali quando necessario."
   }
 }

@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { AgeRatingFilter } from './AgeRatingFilter';
 import { useContentFilter, type ContentFilterMode } from '../../contexts/ContentFilterContext';
 import { SmartDropdown } from './SmartDropdown';
 import { Button } from './Button';
@@ -32,6 +33,7 @@ export function PageHeader({
   onMobileMenuToggle,
 }: PageHeaderProps): JSX.Element {
   const navigate = useNavigate();
+  const location = useLocation();
   const { filterMode, setFilterMode } = useContentFilter();
   const { t } = useTranslation(['common', 'navigation']);
 
@@ -103,7 +105,7 @@ export function PageHeader({
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
         )}
-        {showHomeButton && (
+        {showHomeButton && !location.pathname.startsWith('/dashboard') && (
           <button
             onClick={handleHome}
             className="flex h-10 w-10 items-center justify-center rounded-lg text-content transition-colors hover:bg-input hover:text-primary"
@@ -120,6 +122,8 @@ export function PageHeader({
       {/* Right: Actions and Content Filter */}
       <div className="flex items-center gap-2">
         {actions}
+        {/* Age rating filter (visible on mobile) */}
+        <AgeRatingFilter />
         {showContentFilter && (
           <SmartDropdown
             buttonContent={

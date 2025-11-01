@@ -29,6 +29,8 @@ export default function CharacterDetailPage(): JSX.Element {
   const [isDescExpanded, setIsDescExpanded] = useState(false);
   const [isDescOverflowing, setIsDescOverflowing] = useState(false);
   const descRef = useRef<HTMLDivElement | null>(null);
+  const coverRef = useRef<HTMLDivElement | null>(null);
+  const [descMaxHeight, setDescMaxHeight] = useState<number | null>(null);
 
   const fullName = useMemo(() => {
     if (!data) return '';
@@ -83,6 +85,39 @@ export default function CharacterDetailPage(): JSX.Element {
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
   }, [data?.personality, data?.history, data?.physicalCharacteristics, isDescExpanded]);
+
+  // Keep description container max-height in sync with cover height (desktop)
+  useEffect(() => {
+    const updateForViewport = () => {
+      const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
+      if (!isDesktop) {
+        setDescMaxHeight(null);
+        return false;
+      }
+      return true;
+    };
+
+    const measureHeights = () => {
+      const shouldMeasure = updateForViewport();
+      if (!shouldMeasure) return;
+      if (coverRef.current) {
+        const rect = coverRef.current.getBoundingClientRect();
+        setDescMaxHeight(Math.max(0, Math.round(rect.height)));
+      }
+    };
+
+    const ro = (typeof ResizeObserver !== 'undefined' && coverRef.current)
+      ? new ResizeObserver(() => measureHeights())
+      : null;
+    if (ro && coverRef.current) ro.observe(coverRef.current);
+
+    measureHeights();
+    window.addEventListener('resize', measureHeights);
+    return () => {
+      window.removeEventListener('resize', measureHeights);
+      if (ro && coverRef.current) ro.unobserve(coverRef.current);
+    };
+  }, []);
 
   const handleDelete = async () => {
     if (!data) return;
@@ -180,7 +215,7 @@ export default function CharacterDetailPage(): JSX.Element {
           <div className="w-full space-y-4 md:w-full">
             {/* Character image with overlay stats */}
             <div className="relative overflow-hidden rounded-none bg-card shadow-lg md:rounded-2xl">
-              <div className="relative h-[50vh] md:aspect-[2/3] md:h-auto">
+              <div ref={coverRef} className="relative h-[50vh] md:aspect-[2/3] md:h-auto">
                 {(() => { const cov = (data.images || []).find((i:any)=>i.type==='COVER')?.url; return cov || data.avatar; })() ? (
                   <CachedImage
                     src={(data.images || []).find((i:any)=>i.type==='COVER')?.url || data.avatar || ''}
@@ -338,23 +373,21 @@ export default function CharacterDetailPage(): JSX.Element {
                 />
 
                 {/* Content tags */}
-                {data.contentTags && data.contentTags.length > 0 && data.contentTags.map((ct) => {
-                  const isNsfw = ct === 'SEXUAL' || ct === 'NUDITY';
-                  return (
-                    <UITag
-                      key={ct}
-                      label={t(`characters:contentTags.${ct}`)}
-                      tone={isNsfw ? 'nsfw' : 'info'}
-                      disabled
-                    />
-                  );
-                })}
+                {data.contentTags && data.contentTags.length > 0 && data.contentTags.map((ct) => (
+                  <UITag
+                    key={ct}
+                    label={t(`characters:contentTags.${ct}`)}
+                    tone="secondary"
+                    selected
+                    disabled
+                  />
+                ))}
                
                 {/* Gender and species */}
                 {data.gender && (
                   <UITag
                     label={data.gender}
-                    tone="warning"
+                    selected
                     icon={<span className="material-symbols-outlined text-sm">{resolveGenderIcon(data.gender)}</span>}
                     disabled
                   />
@@ -362,7 +395,7 @@ export default function CharacterDetailPage(): JSX.Element {
                 {data.species && (
                   <UITag
                     label={data.species}
-                    tone="warning"
+                    selected
                     icon={<span className="material-symbols-outlined text-sm">{resolveSpeciesIcon(data.species)}</span>}
                     disabled
                   />
@@ -374,7 +407,7 @@ export default function CharacterDetailPage(): JSX.Element {
                     key={tag.id}
                     label={t('tags-character:' + tag.name + '.name', tag.name)}
                     title={t('tags-character:' + tag.name + '.description', '')}
-                    tone={tag.ageRating === 'EIGHTEEN' ? 'nsfw' : 'default'}
+                    selected
                     icon={<span className="material-symbols-outlined text-sm">sell</span>}
                     disabled
                   />
@@ -383,7 +416,10 @@ export default function CharacterDetailPage(): JSX.Element {
               </div>
 
               {/* Description box with collapsible behavior */}
-              <div className="relative rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 p-6 dark:from-purple-900/30 dark:to-pink-900/30">
+              <div
+                className={`relative rounded-2xl border border-border bg-card p-6 ${isDescExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}
+                style={{ maxHeight: descMaxHeight ?? undefined }}
+              >
                 <div
                   ref={descRef}
                   className={
@@ -436,49 +472,47 @@ export default function CharacterDetailPage(): JSX.Element {
               </div>
             </div>
 
-            {/* Creator info */}
-            <div className="mx-0 rounded-2xl bg-card/50 p-4">
-              <div className="flex items-center gap-3">
-                {data.creator?.avatarUrl ? (
-                  <CachedImage
-                    src={data.creator.avatarUrl}
-                    alt={data.creator.displayName || 'Creator'}
-                    className="h-10 w-10 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
-                    <span className="text-sm font-semibold text-primary">
-                      {(data.creator?.displayName || 'U').charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                )}
-                <div className="flex-1">
-                  <p className="text-sm text-muted">{t('characters:detail.labels.createdBy', 'Created by')}</p>
-                  <p className="font-medium text-content">{data.creator?.displayName || t('common:anonymousUser', 'Anonymous')}</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-sm text-muted">{new Date(data.createdAt).toLocaleDateString()}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Update notes */}
+            {/* Creator + Update notes (combined) */}
             <div className="mx-0 rounded-2xl bg-card p-6 shadow-lg">
-              <div className="mb-2 flex items-center justify-between">
-                <h2 className="text-xl font-semibold text-title">{t('characters:detail.sections.updateNotes')}</h2>
-                <button
-                  type="button"
-                  onClick={() => navigate(`/characters/${data.id}/edit`)}
-                  className="text-sm font-medium text-primary hover:text-primary/80"
-                >
-                  {t('common:seeMoreArrow', 'Veja mais →')}
-                </button>
-              </div>
-              <div className="space-y-2 text-sm text-content">
-                <div className="flex items-start gap-2">
-                  <span className="text-primary">•</span>
-                  <span>{t('characters:detail.labels.updatedAt')} {new Date(data.updatedAt).toLocaleDateString()}</span>
-              </div>
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-start md:gap-8 md:divide-x md:divide-border">
+                {/* Creator info */}
+                <div className="flex items-center gap-3 md:pr-6 min-w-0">
+                  {data.creator?.avatarUrl ? (
+                    <CachedImage
+                      src={data.creator.avatarUrl}
+                      alt={data.creator.username || data.creator.displayName || 'Creator'}
+                      className="h-12 w-12 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
+                      <span className="text-base font-semibold text-primary">
+                        {(data.creator?.username || data.creator?.displayName || 'U').charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-muted">{t('characters:detail.labels.createdBy', 'Created by')}</p>
+                    <p className="font-medium text-content">{data.creator?.username || t('common:anonymousUser', 'Anonymous')}</p>
+                  </div>                 
+                </div>
+
+                {/* Metadata (created/updated) */}
+                <div className="min-w-0 md:pl-6">
+                  <div className="space-y-2 text-sm text-content">
+                    <div className="flex items-start gap-2">
+                      <span className="material-symbols-outlined text-base text-primary">event</span>
+                      <span>
+                        {t('characters:detail.labels.createdAt', 'Created')}: {new Date(data.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="material-symbols-outlined text-base text-primary">update</span>
+                      <span>
+                        {t('characters:detail.labels.updatedAt', 'Updated')}: {new Date(data.updatedAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

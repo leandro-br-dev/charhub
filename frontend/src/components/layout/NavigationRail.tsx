@@ -146,7 +146,7 @@ export function NavigationRail({
   const containerClassName =
     isOverlay
       ? 'flex h-[100svh] w-20 flex-col justify-between bg-normal px-2 py-2 md:hidden overflow-hidden overscroll-none'
-      : 'hidden h-screen w-20 flex-col justify-between bg-normal px-3 py-4 md:flex';
+      : 'hidden h-[100svh] w-20 flex-col justify-between bg-normal px-3 py-4 md:flex';
 
   return (
     <aside className={containerClassName}>

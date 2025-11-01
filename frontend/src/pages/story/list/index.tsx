@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/ui';
 import { storyService } from '../../../services/storyService';
 import type { Story } from '../../../types/story';
+import { usePageHeader } from '../../../hooks/usePageHeader';
 
 export function StoryListPage() {
   const { t } = useTranslation(['story', 'common']);
@@ -11,6 +12,7 @@ export function StoryListPage() {
   const [stories, setStories] = useState<Story[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { setTitle } = usePageHeader();
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -28,6 +30,11 @@ export function StoryListPage() {
 
     fetchStories();
   }, [t]);
+
+  // Set page title
+  useEffect(() => {
+    setTitle(t('story:list.title', 'Stories'));
+  }, [setTitle, t]);
 
   const handleCreateStory = () => {
     navigate('/stories/create');

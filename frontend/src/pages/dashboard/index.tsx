@@ -1,35 +1,32 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ContentFilter, HorizontalScroller, Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui';
+import { HorizontalScroller } from '../../components/ui/horizontal-scroller';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tabs';
 import { CharacterCard } from '../(characters)/shared/components';
 import { DashboardCarousel, RecentConversations, StoryCard } from './components';
 import { useContentFilter } from './hooks';
 import { dashboardService, characterService, storyService } from '../../services';
+import { characterStatsService, type CharacterStats } from '../../services/characterStatsService';
 import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
-
-type AgeRating = 'L' | 'TEN' | 'TWELVE' | 'FOURTEEN' | 'SIXTEEN' | 'EIGHTEEN';
-
-const AGE_RATING_OPTIONS = [
-  { value: 'L', label: 'L - Livre' },
-  { value: 'TEN', label: '10+' },
-  { value: 'TWELVE', label: '12+' },
-  { value: 'FOURTEEN', label: '14+' },
-  { value: 'SIXTEEN', label: '16+' },
-  { value: 'EIGHTEEN', label: '18+' },
-];
+import { usePageHeader } from '../../hooks/usePageHeader';
 
 export default function Dashboard(): JSX.Element {
   const { t } = useTranslation(['dashboard', 'common']);
   const navigate = useNavigate();
+  const { setTitle } = usePageHeader();
+
+  // Age rating filter moved to PageHeader
 
   // State
   const [carouselHighlights, setCarouselHighlights] = useState<CarouselHighlight[]>([]);
   const [popularCharacters, setPopularCharacters] = useState<Character[]>([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState<Character[]>([]);
   const [favoriteCharacterIds, setFavoriteCharacterIds] = useState<Set<string>>(new Set());
+  const [statsById, setStatsById] = useState<Record<string, CharacterStats | undefined>>({});
+  const [imagesById, setImagesById] = useState<Record<string, number>>({});
   const [popularStories, setPopularStories] = useState<Story[]>([]);
   const [myStories, setMyStories] = useState<Story[]>([]);
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
@@ -38,19 +35,22 @@ export default function Dashboard(): JSX.Element {
 
   // Content filter hook
   const {
-    ageRating,
+    ageRatings,
     blurNsfw,
-    setAgeRating,
+    setAgeRatings,
     setBlurNsfw,
     isNsfwAllowed,
   } = useContentFilter({
-    defaultAgeRating: 'L',
+    defaultAgeRatings: ['L'],
     defaultBlurNsfw: false,
     persistToLocalStorage: true,
   });
 
   // Fetch carousel highlights
   useEffect(() => {
+    // Ensure dashboard title is always "CharHub" when this page is active
+    setTitle('CharHub');
+
     const fetchCarousel = async () => {
       setIsLoadingCarousel(true);
       try {
@@ -72,7 +72,7 @@ export default function Dashboard(): JSX.Element {
       setIsLoadingCharacters(true);
       try {
         const [popular, favorites] = await Promise.all([
-          characterService.getPopular(8),
+          characterService.getPopular({ limit: 8, ageRatings }),
           characterService.getFavorites(8),
         ]);
         setPopularCharacters(popular);
@@ -81,6 +81,45 @@ export default function Dashboard(): JSX.Element {
         // Build a set of favorited character IDs for quick lookup
         const favoriteIds = new Set(favorites.map(char => char.id));
         setFavoriteCharacterIds(favoriteIds);
+        // Fetch stats for these characters (deduped)
+        const ids = Array.from(new Set([...popular.map(c => c.id), ...favorites.map(c => c.id)]));
+        if (ids.length > 0) {
+          try {
+            const results = await Promise.all(
+              ids.map(async (id) => {
+                try {
+                  const s = await characterStatsService.getStats(id);
+                  return [id, s] as const;
+                } catch (_err) {
+                  return [id, undefined] as const;
+                }
+              })
+            );
+            setStatsById(prev => {
+              const next = { ...prev } as Record<string, CharacterStats | undefined>;
+              for (const [id, s] of results) next[id] = s;
+              return next;
+            });
+            // Fetch image counts in parallel (deduped)
+            const imgResults = await Promise.all(
+              ids.map(async (id) => {
+                try {
+                  const count = await characterService.getImageCount(id);
+                  return [id, count] as const;
+                } catch (_e) {
+                  return [id, 0] as const;
+                }
+              })
+            );
+            setImagesById(prev => {
+              const next = { ...prev } as Record<string, number>;
+              for (const [id, count] of imgResults) next[id] = count;
+              return next;
+            });
+          } catch (e) {
+            console.warn('[Dashboard] Failed to fetch some character stats', e);
+          }
+        }
       } catch (error) {
         console.error('[Dashboard] Failed to fetch characters:', error);
       } finally {
@@ -89,7 +128,7 @@ export default function Dashboard(): JSX.Element {
     };
 
     fetchCharacters();
-  }, []);
+  }, [ageRatings]);
 
   // Fetch popular stories and user's stories
   useEffect(() => {
@@ -113,9 +152,7 @@ export default function Dashboard(): JSX.Element {
   }, []);
 
   // Handlers
-  const handleAgeRatingChange = useCallback((value: string) => {
-    setAgeRating(value as AgeRating);
-  }, [setAgeRating]);
+  // Age rating selection moved to header via PageHeader
 
   const handleCharacterClick = useCallback(
     (character: Character, action: 'view' | 'chat') => {
@@ -173,9 +210,9 @@ export default function Dashboard(): JSX.Element {
   );
 
   return (
-    <div className="min-h-screen bg-normal">
+    <div className="min-h-[100svh] bg-normal overflow-x-hidden">
       {/* Carousel Section */}
-      <div className="mb-8">
+      <div className="mb-8 overflow-hidden">
         {isLoadingCarousel ? (
           <div className="h-80 sm:h-96 md:h-[420px] bg-light animate-pulse" />
         ) : (
@@ -183,20 +220,8 @@ export default function Dashboard(): JSX.Element {
         )}
       </div>
 
-      {/* Content Filter Bar */}
-      <div className="mx-auto max-w-7xl px-6 mb-6">
-        <ContentFilter
-          ageRating={ageRating}
-          blurNsfw={blurNsfw}
-          onAgeRatingChange={handleAgeRatingChange}
-          onBlurNsfwChange={setBlurNsfw}
-          availableAgeRatings={AGE_RATING_OPTIONS}
-          isNsfwAllowed={isNsfwAllowed}
-        />
-      </div>
-
       {/* Tabs Navigation and Content */}
-      <div className="mx-auto max-w-7xl px-6 mb-6">
+      <div className="w-full sm:mx-auto sm:max-w-7xl px-0 sm:px-6 mb-6 overflow-hidden">
         <Tabs defaultTab="discover">
           <TabList>
             <Tab label="discover">{t('dashboard:tabs.discover', 'Discover')}</Tab>
@@ -224,6 +249,9 @@ export default function Dashboard(): JSX.Element {
                           isFavorite={favoriteCharacterIds.has(character.id)}
                           clickAction="view"
                           blurNsfw={blurNsfw}
+                          chatCount={statsById[character.id]?.conversationCount}
+                          favoriteCount={statsById[character.id]?.favoriteCount}
+                          imageCount={imagesById[character.id]}
                           onFavoriteToggle={handleFavoriteToggle}
                         />
                       ))}
@@ -244,6 +272,9 @@ export default function Dashboard(): JSX.Element {
                         isFavorite={true}
                         clickAction="chat"
                         blurNsfw={blurNsfw}
+                        chatCount={statsById[character.id]?.conversationCount}
+                        favoriteCount={statsById[character.id]?.favoriteCount}
+                        imageCount={imagesById[character.id]}
                         onFavoriteToggle={handleFavoriteToggle}
                       />
                     ))}
@@ -274,6 +305,9 @@ export default function Dashboard(): JSX.Element {
                           isFavorite={favoriteCharacterIds.has(character.id)}
                           clickAction="chat"
                           blurNsfw={blurNsfw}
+                          chatCount={statsById[character.id]?.conversationCount}
+                          favoriteCount={statsById[character.id]?.favoriteCount}
+                          imageCount={imagesById[character.id]}
                           onFavoriteToggle={handleFavoriteToggle}
                         />
                       ))}

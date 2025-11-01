@@ -12,7 +12,7 @@
       "submitting": "Saving..."
     },
     "ageRatings": {
-      "L": "General audiences",
+      "L": "Free",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -80,7 +80,8 @@
       },
       "filters": {
         "searchPlaceholder": "Search by name or style",
-        "allAgeRatings": "All age ratings"
+        "allAgeRatings": "All age ratings",
+        "noFilter": "Any"
       },
       "states": {
         "loading": "Loading your characters...",

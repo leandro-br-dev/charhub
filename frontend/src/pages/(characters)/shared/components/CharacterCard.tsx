@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, startTransition } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { type CharacterSummary, type Character } from '../../../../types/characters';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { useContentFilter } from '../../../../contexts/ContentFilterContext';
 import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
+import { Tag as UITag } from '../../../../components/ui/Tag';
 
 export interface CharacterCardProps {
   character: CharacterSummary | Character;
@@ -18,7 +19,7 @@ export interface CharacterCardProps {
   ownerName?: string;
   chatCount?: number;
   favoriteCount?: number;
-  stickerCount?: number;
+  imageCount?: number;
 }
 
 export function CharacterCard({
@@ -33,12 +34,13 @@ export function CharacterCard({
   ownerName,
   chatCount,
   favoriteCount,
-  stickerCount,
+  imageCount,
 }: CharacterCardProps): JSX.Element {
-  const { t } = useTranslation(['characters']);
+  const { t } = useTranslation(['characters', 'tags-character']);
   const navigate = useNavigate();
   const destination = to ?? `/characters/${character.id}`;
   const [isCreatingChat, setIsCreatingChat] = useState(false);
+  const [resolvedImageCount, setResolvedImageCount] = useState<number | null>(null);
   const { shouldBlurContent, shouldHideContent } = useContentFilter();
 
   const title = useMemo(() => {
@@ -46,44 +48,105 @@ export function CharacterCard({
     return name || t('characters:labels.untitledCharacter');
   }, [character.firstName, character.lastName, t]);
 
-  const isSensitive = character.ageRating === 'EIGHTEEN' || character.contentTags.length > 0;
-
   const shouldBlur = shouldBlurContent(character.ageRating, character.contentTags) || blurSensitive || blurNsfw;
   const shouldHide = shouldHideContent(character.ageRating, character.contentTags);
 
-  if (shouldHide) {
-    return <></>;
-  }
+  const overlayAgeLabel = useMemo(() => {
+    return character?.ageRating ? t(`ageRatings.${character.ageRating}`, { ns: 'characters' }) : '';
+  }, [character?.ageRating, t]);
+
+  const rowTags = useMemo(() => {
+    const result: Array<{ label: string; tone: 'default' | 'secondary'; key: string }> = [];
+
+    // Regular tags first (descriptive): primary tone via default in Tag with selected
+    if ('tags' in character && character.tags) {
+      for (const tag of character.tags) {
+        if (tag?.name) {
+          const label = t(`tags-character:${tag.name}.name`, tag.name);
+          result.push({ label, tone: 'default', key: `tag-${tag.id}` });
+        }
+      }
+    }
+
+    // Content tags (secondary tone)
+    if (character?.contentTags) {
+      for (const ct of character.contentTags) {
+        const label = t(`contentTags.${ct}`, { ns: 'characters' });
+        result.push({ label, tone: 'secondary', key: `ct-${ct}` });
+      }
+    }
+
+    return result;
+  }, [character, t]);
 
   const handleCardClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (isCreatingChat) return;
     if (onPlay) {
-      onPlay(character.id);
+      startTransition(() => {
+        onPlay(character.id);
+      });
       return;
     }
     if (clickAction === 'edit') {
-      navigate(`/characters/${character.id}/edit`);
+      startTransition(() => {
+        navigate(`/characters/${character.id}/edit`);
+      });
     } else if (clickAction === 'view') {
-      navigate(`/characters/${character.id}`);
+      startTransition(() => {
+        navigate(`/characters/${character.id}`);
+      });
     } else if (clickAction === 'startChat' || clickAction === 'chat') {
       setIsCreatingChat(true);
-      navigate(`/chat/new?characterId=${character.id}`);
+      startTransition(() => {
+        navigate(`/chat/new?characterId=${character.id}`);
+      });
     }
   };
 
-  const chips = (character.contentTags || []).slice(0, 3);
   const owner = ownerName ?? '';
   const stats = {
     chats: chatCount ?? 0,
     favorites: favoriteCount ?? 0,
-    stickers: stickerCount ?? ('stickerCount' in character ? character.stickerCount ?? 0 : 0),
+    images: resolvedImageCount ?? (('images' in character && (character as any).images)
+      ? ((character as any).images as Array<{ type: string }>).filter(i => i && i.type !== 'AVATAR').length
+      : 0),
   };
+
+  useEffect(() => {
+    let cancelled = false;
+    // Prefer prop when provided
+    if (typeof imageCount === 'number') {
+      setResolvedImageCount(imageCount);
+      return () => { cancelled = true; };
+    }
+
+    // If not provided and not present on summary, fetch details
+    if (resolvedImageCount === null && !('images' in character)) {
+      import('../../../../services/characterService').then(({ characterService }) => {
+        characterService.getImageCount(character.id).then((count) => {
+          if (!cancelled) setResolvedImageCount(count);
+        }).catch(() => {
+          if (!cancelled) setResolvedImageCount(0);
+        });
+      });
+    } else if ('images' in character) {
+      // Ensure state matches if images are present
+      const count = ((character as any).images as Array<{ type: string }> | undefined)?.filter(i => i && i.type !== 'AVATAR').length || 0;
+      setResolvedImageCount(count);
+    }
+    return () => { cancelled = true; };
+  }, [character.id, imageCount, character]);
+
+  if (shouldHide) {
+    // Remove from layout entirely when hidden
+    return null;
+  }
 
   return (
     <article
       onClick={handleCardClick}
-      className="h-full cursor-pointer overflow-hidden rounded-lg bg-light shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+      className="flex min-h-[24rem] h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-light shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl"
     >
       <div className="relative">
         {character.avatar ? (
@@ -98,6 +161,11 @@ export function CharacterCard({
             <span className="material-symbols-outlined text-6xl">person</span>
           </div>
         )}
+        {overlayAgeLabel ? (
+          <div className="absolute left-2 top-2 rounded-full bg-success px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow">
+            {overlayAgeLabel}
+          </div>
+        ) : null}
         {isCreatingChat && (
           <div className="absolute inset-0 rounded-t-lg bg-black/70 backdrop-blur-sm">
             <div className="flex h-full items-center justify-center">
@@ -105,11 +173,6 @@ export function CharacterCard({
             </div>
           </div>
         )}
-        <div className="absolute left-2 top-2 flex gap-2">
-          <span className="rounded-full bg-slate-900/80 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
-            {t(`characters:ageRatings.${character.ageRating}`)}
-          </span>
-        </div>
         {onFavoriteToggle && (
           <FavoriteButton
             characterId={character.id}
@@ -132,16 +195,21 @@ export function CharacterCard({
         <p className={`flex-grow text-sm text-description line-clamp-2 ${shouldBlur ? 'blur-sm select-none' : ''}`}>
           {character.personality || character.style || t('characters:labels.noDescription', 'No description')}
         </p>
-        {chips.length > 0 && (
+        {rowTags.length > 0 && (
           <div className={`mt-3 flex flex-nowrap gap-1.5 overflow-hidden ${shouldBlur ? 'blur-sm select-none' : ''}`}>
-            {chips.map(tag => (
-              <span key={`${character.id}-${tag}`} className="flex-shrink-0 rounded-full bg-primary px-2 py-0.5 text-xs text-black">
-                {t(`characters:contentTags.${tag}`)}
-              </span>
+            {rowTags.map((tag) => (
+              <UITag
+                key={tag.key}
+                label={tag.label}
+                tone={tag.tone}
+                selected
+                disabled
+                className="flex-shrink-0"
+              />
             ))}
           </div>
         )}
-        <div className="mt-3 flex items-center justify-between border-t border-border pt-3 text-xs text-muted">
+        <div className="mt-auto flex items-center justify-between border-t border-border pt-3 text-xs text-muted">
           <div className="flex items-center gap-1" title={t('characters:labels.conversations', 'Conversations')}>
             <span className="material-symbols-outlined text-base">chat_bubble</span>
             <span>{stats.chats}</span>
@@ -150,9 +218,9 @@ export function CharacterCard({
             <span className="material-symbols-outlined text-base text-yellow-400">star</span>
             <span>{stats.favorites}</span>
           </div>
-          <div className="flex items-center gap-1" title={t('characters:labels.stickers', 'Stickers')}>
+          <div className="flex items-center gap-1" title={t('characters:labels.images', 'Images')}>
             <span className="material-symbols-outlined text-base">photo_library</span>
-            <span>{stats.stickers}</span>
+            <span>{stats.images}</span>
           </div>
         </div>
       </div>

@@ -36,29 +36,40 @@
     "deleting": "Lösche...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Option auswählen",
+    "selectOption": "Wählen Sie eine Option",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
-      "with": "Chat mit"
+      "with": "Chatten mit"
     },
     "messages": {
-      "linkCopied": "Link wurde in die Zwischenablage kopiert!"
+      "linkCopied": "Link in die Zwischenablage kopiert!"
     },
     "contentFilter": {
       "ariaLabel": "Inhaltsfilter",
       "title": "Inhaltsfilter",
+      "ageRating": "Altersfreigabe",
+      "blurNsfw": "Explizite Inhalte unscharf machen",
       "none": "Kein Filter",
-      "blur": "Sensibles unscharf machen",
+      "blur": "Sensible Inhalte unscharf machen",
       "hidden": "Erwachseneninhalte ausblenden",
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
         "blur": "Erwachseneninhalte unscharf machen",
         "hidden": "Erwachseneninhalte vollständig ausblenden"
+      },
+      "ageRatings": {
+        "L": "Freigegeben",
+        "TEN": "Ab 10",
+        "TWELVE": "Ab 12",
+        "FOURTEEN": "Ab 14",
+        "SIXTEEN": "Ab 16",
+        "EIGHTEEN": "Ab 18"
       }
     },
     "errors": {
       "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     },
+    "character": "Charakter",
     "seeMore": "Mehr anzeigen",
     "seeMoreArrow": "Mehr anzeigen →"
   }

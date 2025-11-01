@@ -5,14 +5,14 @@
     "language": "Idioma",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
-    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información básica de perfil.",
+    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a la información básica de tu perfil.",
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
     "tokenStored": "Almacenado en cookie HTTP-only",
     "navDashboard": "Panel",
     "navCharacters": "Personajes",
-    "navTagline": "Demo segura de OAuth",
+    "navTagline": "Demostración segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -34,8 +34,8 @@
     "saving": "Guardando...",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
-    "enabled": "Activado",
-    "disabled": "Desactivado",
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
     "selectOption": "Selecciona una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
@@ -47,18 +47,29 @@
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
       "title": "Filtro de Contenido",
-      "none": "Sin Filtro",
-      "blur": "Difuminar Contenido Sensible",
-      "hidden": "Ocultar Contenido Maduro",
+      "ageRating": "Clasificación por edad",
+      "blurNsfw": "Desenfocar contenido explícito",
+      "none": "Sin filtro",
+      "blur": "Desenfocar sensible",
+      "hidden": "Ocultar contenido para adultos",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar difuminado al contenido maduro",
-        "hidden": "Ocultar completamente el contenido maduro"
+        "blur": "Aplicar desenfoque a contenido para adultos",
+        "hidden": "Ocultar completamente el contenido para adultos"
+      },
+      "ageRatings": {
+        "L": "Libre",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+",
+        "SIXTEEN": "16+",
+        "EIGHTEEN": "18+"
       }
     },
     "errors": {
       "generic": "Ocurrió un error. Por favor, inténtalo de nuevo."
     },
+    "character": "Personaje",
     "seeMore": "Ver más",
     "seeMoreArrow": "Ver más →"
   }

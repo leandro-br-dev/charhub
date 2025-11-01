@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import React from 'react';
 
-type Tone = 'default' | 'danger' | 'success' | 'warning' | 'info' | 'nsfw';
+type Tone = 'default' | 'danger' | 'success' | 'warning' | 'info' | 'nsfw' | 'secondary';
 
 export interface TagProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
   label: ReactNode;
@@ -22,6 +22,10 @@ export interface TagProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 function toneClasses(tone: Tone | undefined, selected: boolean): string {
   const t = tone === 'nsfw' ? 'danger' : tone ?? 'default';
   switch (t) {
+    case 'secondary':
+      return selected
+        ? 'bg-secondary text-white'
+        : 'bg-light text-content hover:bg-input border border-secondary/30';
     case 'danger':
       return selected
         ? 'bg-danger text-white'

@@ -10,7 +10,7 @@ interface RecentConversationsProps {
 }
 
 export function RecentConversations({ limit = 8 }: RecentConversationsProps) {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['common']);
   const { data, isLoading } = useConversationListQuery({
     limit,
     sortBy: 'lastMessageAt',
@@ -58,7 +58,7 @@ export function RecentConversations({ limit = 8 }: RecentConversationsProps) {
             <div className="relative h-40">
               <img
                 src={mainParticipant?.avatar || '/placeholder-character.png'}
-                alt={mainParticipant?.firstName || mainParticipant?.name || 'Character'}
+                alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character', 'Character')}
                 className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
               />
               {otherParticipants && otherParticipants.length > 0 && (

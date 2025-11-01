@@ -16,12 +16,12 @@ export function OAuthButton({ provider, onClick, disabled, children }: OAuthButt
   const variantStyles = provider === 'google'
     ? {
         variant: 'light' as const,
-        className: 'w-full border-gray-300 dark:border-gray-600 !text-gray-700 dark:!text-gray-200 hover:!bg-gray-50 dark:hover:!bg-gray-700'
+        className: 'w-full max-w-sm mx-auto border-gray-300 dark:border-gray-600 !text-gray-700 dark:!text-gray-200 hover:!bg-gray-50 dark:hover:!bg-gray-700'
       }
     : {
         variant: 'dark' as const,
         style: { backgroundColor: '#1877F2' },
-        className: 'w-full !text-white hover:!opacity-90'
+        className: 'w-full max-w-sm mx-auto !text-white hover:!opacity-90'
       };
 
   return (

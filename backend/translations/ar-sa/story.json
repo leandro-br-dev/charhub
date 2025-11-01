@@ -3,12 +3,12 @@
   "resources": {
     "create": {
       "title": "إنشاء قصة جديدة",
-      "subtitle": "قم ببناء قصة تفاعلية بالشخصيات والأهداف"
+      "subtitle": "قم ببناء قصة تفاعلية بشخصيات وأهداف"
     },
     "form": {
       "title": "العنوان",
       "titlePlaceholder": "أدخل عنوان القصة",
-      "synopsis": "ملخص",
+      "synopsis": "الملخص",
       "synopsisPlaceholder": "صف قصتك بإيجاز",
       "coverImage": "صورة الغلاف",
       "coverImagePlaceholder": "https://example.com/image.jpg",
@@ -23,15 +23,15 @@
       "noObjectives": "لا توجد أهداف بعد. أضف بعضًا لتوجيه السرد.",
       "characters": "الشخصيات",
       "selectedCharacters": "الشخصيات المختارة",
-      "searchCharacters": "البحث عن الشخصيات",
+      "searchCharacters": "البحث عن شخصيات",
       "noCharactersFound": "لم يتم العثور على شخصيات",
       "noCharactersAvailable": "قم بإنشاء شخصيات أولاً",
       "tags": "الوسوم",
       "selectedTags": "الوسوم المختارة",
-      "searchTags": "البحث عن الوسوم",
+      "searchTags": "البحث عن وسوم",
       "noTagsFound": "لم يتم العثور على وسوم",
-      "noTagsAvailable": "لا توجد وسوم متاحة",
-      "ageRating": "تقييم العمر",
+      "noTagsAvailable": "لا تتوفر وسوم",
+      "ageRating": "التصنيف العمري",
       "contentTags": "وسوم المحتوى",
       "makePublic": "اجعل هذه القصة عامة"
     },
@@ -46,7 +46,7 @@
       "updateFailed": "فشل تحديث القصة",
       "deleteFailed": "فشل حذف القصة",
       "failedToLoad": "فشل تحميل القصص",
-      "noCharacters": "هذه القصة ليس لديها شخصيات",
+      "noCharacters": "هذه القصة لا تحتوي على شخصيات",
       "failedToStart": "فشل بدء القصة",
       "notFound": "القصة غير موجودة"
     },
@@ -61,17 +61,22 @@
       "private": "خاصة",
       "empty": {
         "title": "لا توجد قصص بعد",
-        "description": "قم بإنشاء قصتك التفاعلية الأولى",
+        "description": "أنشئ قصتك التفاعلية الأولى",
         "action": "إنشاء قصة"
       }
     },
     "detail": {
-      "synopsis": "ملخص",
+      "title": "القصة",
+      "synopsis": "الملخص",
       "initialScene": "المشهد الافتتاحي",
       "objectives": "أهداف القصة",
-      "characters": "الشخصيات"
+      "characters": "الشخصيات",
+      "confirmDelete": "هل أنت متأكد أنك تريد حذف هذه القصة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "labels": {
+        "createdBy": "تم الإنشاء بواسطة"
+      }
     },
-    "start": "ابدأ القصة",
+    "start": "بدء القصة",
     "starting": "جاري البدء..."
   }
 }

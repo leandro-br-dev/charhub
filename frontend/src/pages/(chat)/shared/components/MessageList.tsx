@@ -80,6 +80,13 @@ interface MessageListProps {
   onReviewFileClick?: (file: any) => void;
 }
 
+// Componente espaçador invisível que ocupa o mesmo espaço do input fixo
+const InputSpacer: React.FC = () => {
+  return (
+    <div className="w-full pointer-events-none" style={{ height: '200px' }} aria-hidden="true" />
+  );
+};
+
 const MessageList: React.FC<MessageListProps> = ({
   messages = [],
   loading,
@@ -101,6 +108,13 @@ const MessageList: React.FC<MessageListProps> = ({
   onReviewFileClick,
 }) => {
   const { t, i18n } = useTranslation('chat');
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+  }, [messages, typingCharacters, activeBackgroundTasks]);
 
   const getDateKey = (ts: any): string => {
     const d = ts instanceof Date ? ts : new Date(ts);
@@ -278,7 +292,12 @@ const MessageList: React.FC<MessageListProps> = ({
           name={typingData.name}
         />
       ))}
-      {/* Bottom spacer: reserved for parent scroll container's padding-bottom */}
+
+      {/* Espaçador invisível que ocupa o espaço do input fixo */}
+      <InputSpacer />
+
+      {/* Marcador de scroll - rola até aqui para manter a última mensagem visível */}
+      <div ref={scrollRef} style={{ height: "1px" }} />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 {
   "description": "General UI strings shared across navigation, buttons, and reusable components.",
   "resources": {
-    "brand": "Authentification CharHub",
+    "brand": "CharHub Auth",
     "language": "Langue",
     "continueGoogle": "Continuer avec Google",
     "continueFacebook": "Continuer avec Facebook",
@@ -47,18 +47,29 @@
     "contentFilter": {
       "ariaLabel": "Filtre de contenu",
       "title": "Filtre de contenu",
+      "ageRating": "Classification d'âge",
+      "blurNsfw": "Flouter le contenu explicite",
       "none": "Aucun filtre",
       "blur": "Flouter le contenu sensible",
-      "hidden": "Cacher le contenu mature",
+      "hidden": "Masquer le contenu mature",
       "descriptions": {
         "none": "Afficher tout le contenu sans restrictions",
         "blur": "Appliquer un flou au contenu mature",
-        "hidden": "Cacher complètement le contenu mature"
+        "hidden": "Masquer complètement le contenu mature"
+      },
+      "ageRatings": {
+        "L": "Tout public",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+",
+        "SIXTEEN": "16+",
+        "EIGHTEEN": "18+"
       }
     },
     "errors": {
       "generic": "Une erreur s'est produite. Veuillez réessayer."
     },
+    "character": "Personnage",
     "seeMore": "Voir plus",
     "seeMoreArrow": "Voir plus →"
   }

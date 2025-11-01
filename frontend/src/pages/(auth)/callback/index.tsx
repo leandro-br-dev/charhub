@@ -133,7 +133,7 @@ export default function Callback(): JSX.Element {
   }, [completeLogin, isAuthenticated, navigate, searchParams, t, user]);
 
   return (
-    <section className="flex h-screen flex-col items-center justify-center bg-background">
+    <section className="flex h-[100svh] flex-col items-center justify-center bg-background">
       <div className="flex items-center gap-4 text-description">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         <p className="text-lg">{message}</p>
