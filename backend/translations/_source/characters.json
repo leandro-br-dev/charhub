@@ -22,7 +22,8 @@
     "genders": {
       "male": "Male",
       "female": "Female",
-      "non-binary": "Non-binary"
+      "non-binary": "Non-binary",
+      "unisex": "Unisex"
     },
     "contentTags": {
       "VIOLENCE": "Violence",
@@ -211,7 +212,12 @@
         "startChat": "Start conversation",
         "startingChat": "Starting..."
       },
-      "confirmDelete": "Are you sure you want to delete this character? This action cannot be undone.",
+      "confirmDelete": {
+        "title": "Delete Character?",
+        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
+        "confirm": "Delete permanently",
+        "cancel": "Cancel"
+      },
       "labels": {
         "public": "Public",
         "private": "Private",

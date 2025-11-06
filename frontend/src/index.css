@@ -98,3 +98,14 @@ button {
                0 0 20px var(--color-secondary),
                0 0 30px var(--color-secondary);
 }
+
+/* Chat input fixed positioning - adjusts when sidebar is open */
+@media (min-width: 768px) {
+  [data-sidebar-open="true"] .chat-input-fixed {
+    left: 400px; /* 80px (rail) + 320px (sidebar) */
+  }
+
+  [data-sidebar-open="false"] .chat-input-fixed {
+    left: 80px; /* Only rail */
+  }
+}

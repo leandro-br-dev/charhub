@@ -53,7 +53,8 @@ const ParticipantConfigModal = ({
   onCloneAssistant,
   onPromoteCharacter,
 }: ParticipantConfigModalProps) => {
-  const { t } = useTranslation();
+  // Use namespaces: chat, common, and characters
+  const { t } = useTranslation(["chat", "common", "characters"]);
   const { user: loggedInUser } = useAuth();
   const userId = loggedInUser?.id;
 
@@ -73,8 +74,10 @@ const ParticipantConfigModal = ({
       setSaving(false);
       setCloning(false);
       setPromoting(false);
-      setLocalConfigOverride(participant.config_override || "");
-      setSelectedPersonaId(participant.representing_character_id || "");
+      // Get data from raw ConversationParticipant
+      const rawParticipant = participant.raw || participant;
+      setLocalConfigOverride(rawParticipant.configOverride || "");
+      setSelectedPersonaId(rawParticipant.representingCharacterId || "");
       if (
         participant.actorType === "ASSISTANT" ||
         participant.actorType === "USER"
@@ -126,9 +129,10 @@ const ParticipantConfigModal = ({
     setError(null);
     const configData: any = {};
     let needsUpdate = false;
+    const rawParticipant = participant.raw || participant;
     if (
       participant.actorType !== "USER" &&
-      localConfigOverride !== (participant.config_override || "")
+      localConfigOverride !== (rawParticipant.configOverride || "")
     ) {
       configData.config_override = localConfigOverride;
       needsUpdate = true;
@@ -137,8 +141,8 @@ const ParticipantConfigModal = ({
       participant.actorType === "ASSISTANT" ||
       participant.actorType === "USER"
     ) {
-      const currentRepresentationId = 
-        participant.representing_character_id || "";
+      const currentRepresentationId =
+        rawParticipant.representingCharacterId || "";
       if (selectedPersonaId !== currentRepresentationId) {
         configData.representing_character_id = selectedPersonaId || null;
         needsUpdate = true;
@@ -294,29 +298,24 @@ const ParticipantConfigModal = ({
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
               <InfoItem
                 icon="palette"
-                label={t("characterFormPage.visualStyleLabel")}
+                label={t("characters:form.fields.style")}
                 value={rep.style || "N/A"}
               />
               <InfoItem
                 icon={
-                  rep.gender === "feminine"
-                    ? "female"
-                    : rep.gender === "masculine"
+                  rep.gender === "male"
                     ? "male"
+                    : rep.gender === "female"
+                    ? "female"
                     : "transgender"
                 }
-                label={t("characterFormPage.genderLabel")}
-                value={t(
-                  `characterFormPage.gender${ 
-                    rep.gender?.charAt(0).toUpperCase() + rep.gender?.slice(1)
-                  }`,
-                  rep.gender
-                )}
+                label={t("characters:form.fields.gender")}
+                value={t(`characters:genders.${rep.gender}`, rep.gender || "N/A")}
               />
               {rep.age && (
                 <InfoItem
                   icon="cake"
-                  label={t("characterFormPage.ageLabel")}
+                  label={t("characters:form.fields.age")}
                   value={rep.age}
                 />
               )}

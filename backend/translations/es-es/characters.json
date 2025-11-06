@@ -22,7 +22,8 @@
     "genders": {
       "male": "Masculino",
       "female": "Femenino",
-      "non-binary": "No binario"
+      "non-binary": "No binario",
+      "unisex": "Unisex"
     },
     "contentTags": {
       "VIOLENCE": "Violencia",
@@ -41,7 +42,7 @@
     "contentTagHints": {
       "VIOLENCE": "Combate, peleas o conflicto agresivo.",
       "GORE": "Heridas gráficas y detalles explícitos.",
-      "SEXUAL": "Temas adultos o insinuaciones.",
+      "SEXUAL": "Temas o insinuaciones para adultos.",
       "NUDITY": "Desnudez parcial o total.",
       "LANGUAGE": "Lenguaje explícito o fuerte.",
       "DRUGS": "Uso o referencias a drogas.",
@@ -50,7 +51,7 @@
       "PSYCHOLOGICAL": "Salud mental o tensión psicológica.",
       "DISCRIMINATION": "Discurso de odio o prejuicios.",
       "CRIME": "Temas de actividad criminal.",
-      "GAMBLING": "Referencias a apuestas o juegos de azar."
+      "GAMBLING": "Referencias a apuestas o juego."
     },
     "accessibility": {
       "addToFavorites": "Añadir a favoritos",
@@ -67,11 +68,11 @@
     },
     "hub": {
       "title": "Personajes",
-      "subtitle": "Crea, organiza y evoluciona el elenco que impulsa tus historias, agentes de chat y experiencias de IA.",
+      "subtitle": "Crea, organiza y evoluciona el elenco que da vida a tus historias, agentes de chat y experiencias de IA.",
       "actions": {
         "createCharacter": "Nuevo personaje",
         "retry": "Intentar de nuevo",
-        "blurSensitive": "Desenfocar contenido sensible",
+        "blurSensitive": "Ocultar contenido sensible",
         "showSensitive": "Mostrar contenido sensible"
       },
       "tabs": {
@@ -88,8 +89,8 @@
         "error": "No pudimos cargar los personajes. Por favor, inténtalo de nuevo.",
         "empty": "Aún no hay personajes disponibles.",
         "empty_private": "Aún no has creado ningún personaje.",
-        "empty_public": "No hay personajes públicos que coincidan con tus filtros.",
-        "emptyHint": "Comienza creando un perfil o ajusta tus filtros.",
+        "empty_public": "Ningún personaje público coincide con tus filtros.",
+        "emptyHint": "Empieza creando un perfil o ajusta tus filtros.",
         "emptySearchHint": "Ajusta tus filtros o borra la búsqueda para ver más resultados."
       },
       "labels": {
@@ -105,13 +106,13 @@
         "identity": "Identidad",
         "identityHint": "Define cómo las personas descubren e identifican a este personaje de un vistazo.",
         "profile": "Perfil narrativo",
-        "profileHint": "Describe la personalidad, los rasgos y la historia para guiar a la IA.",
+        "profileHint": "Describe la personalidad, rasgos y trasfondo para guiar a la IA.",
         "configuration": "Disponibilidad y moderación",
-        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardias se aplican.",
+        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardas se aplican.",
         "contentTagsHint": "Marca temas potencialmente sensibles. Los usuarios pueden filtrarlos según sus preferencias.",
-        "contentTagsCharacterHint": "Estos temas definen de qué está cómodo hablando el personaje en la clasificación por edad seleccionada.",
-        "contentTagsUserHint": "Selecciona los temas que deseas incluir. Todo lo que quede sin marcar se mantendrá bloqueado para esta clasificación.",
-        "contentTagLocked": "Bloqueado en clasificaciones por edad superiores."
+        "contentTagsCharacterHint": "Estos temas definen de qué se siente cómodo hablando el personaje con la clasificación por edad seleccionada.",
+        "contentTagsUserHint": "Selecciona los temas que deseas incluir. Todo lo que quede sin marcar permanecerá bloqueado para esta clasificación.",
+        "contentTagLocked": "Desbloqueado en clasificaciones por edad más altas."
       },
       "fields": {
         "firstName": "Nombre",
@@ -119,10 +120,10 @@
         "age": "Edad",
         "gender": "Género",
         "species": "Especie / origen",
-        "style": "Estilo visual o de narrativa",
+        "style": "Estilo visual o narrativo",
         "physicalCharacteristics": "Descripción física",
         "personality": "Personalidad",
-        "history": "Historia",
+        "history": "Trasfondo",
         "isPublic": "Visibilidad",
         "ageRating": "Clasificación por edad",
         "originalLanguageCode": "Idioma original",
@@ -132,7 +133,7 @@
       "placeholders": {
         "gender": "Ej: IA no binaria, androide, caballero",
         "species": "Ej: Humano, Elfo, Sintético",
-        "style": "Ej: Detective noir, anime pastel, estilo pictórico",
+        "style": "Ej: Detective noir, anime pastel, pictórico",
         "genderSelect": "Seleccionar género"
       },
       "labels": {
@@ -147,14 +148,14 @@
         "change": "Cambiar imagen",
         "remove": "Eliminar",
         "uploading": "Subiendo...",
-        "helperCreate": "Elige un avatar ahora y lo mantendremos mientras completas el resto del formulario.",
+        "helperCreate": "Elige un avatar ahora y lo conservaremos mientras completas el resto del formulario.",
         "helperEdit": "Actualiza el avatar cuando quieras. Los cambios se aplican tan pronto como guardas.",
-        "error": "No pudimos subir esta imagen. Prueba con otro archivo.",
+        "error": "No pudimos subir esta imagen. Intenta con otro archivo.",
         "previewAlt": "Vista previa del avatar del personaje"
       },
       "images": {
         "coverHeader": "Portada del personaje",
-        "coverDescription": "Imagen de orientación vertical utilizada como portada del personaje.",
+        "coverDescription": "Imagen orientada verticalmente utilizada como portada del personaje.",
         "upload": "Subir portada",
         "change": "Cambiar portada",
         "uploading": "Subiendo...",
@@ -163,7 +164,7 @@
         "previewAlt": "Vista previa de la portada del personaje"
       },
       "tags": {
-        "searchPlaceholder": "Buscar etiquetas (ej: VTuber, Maid)",
+        "searchPlaceholder": "Buscar etiquetas (ej: VTuber, Doncella)",
         "selected": "Etiquetas seleccionadas",
         "none": "Ninguna etiqueta seleccionada",
         "suggestions": "Sugerencias",
@@ -203,7 +204,7 @@
         "notFound": "No pudimos encontrar este personaje."
       },
       "actions": {
-        "backToHub": "Volver al centro",
+        "backToHub": "Volver al hub",
         "edit": "Editar",
         "delete": "Eliminar",
         "deleting": "Eliminando...",
@@ -211,7 +212,12 @@
         "startChat": "Iniciar conversación",
         "startingChat": "Iniciando..."
       },
-      "confirmDelete": "¿Estás seguro de que quieres eliminar este personaje? Esta acción no se puede deshacer.",
+      "confirmDelete": {
+        "title": "¿Eliminar personaje?",
+        "message": "Esta acción no se puede deshacer. Todos los datos asociados con este personaje se eliminarán permanentemente.",
+        "confirm": "Eliminar permanentemente",
+        "cancel": "Cancelar"
+      },
       "labels": {
         "public": "Público",
         "private": "Privado",
@@ -229,7 +235,7 @@
       "sections": {
         "physicalCharacteristics": "Apariencia",
         "personality": "Personalidad",
-        "history": "Historia",
+        "history": "Trasfondo",
         "contentTags": "Advertencias de contenido",
         "metadata": "Etiquetas",
         "introduction": "Introducción",

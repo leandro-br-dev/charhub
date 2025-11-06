@@ -5,14 +5,14 @@
     "language": "言語",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがあなたの基本プロフィール情報にアクセスすることを承認したものとみなされます。",
+    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを承認したものとみなされます。",
     "logout": "サインアウト",
     "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
     "tokenStored": "HTTP-only cookieに保存",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
-    "navTagline": "セキュア OAuth デモ",
+    "navTagline": "セキュアなOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -39,21 +39,23 @@
     "selectOption": "オプションを選択",
     "noResults": "オプションが見つかりませんでした。",
     "chat": {
-      "with": "チャット"
+      "with": "とチャット"
     },
     "messages": {
-      "linkCopied": "リンクをクリップボードにコピーしました！"
+      "linkCopied": "リンクがクリップボードにコピーされました！",
+      "chatStarted": "チャットが正常に開始されました！",
+      "characterDeleted": "キャラクターが正常に削除されました"
     },
     "contentFilter": {
       "ariaLabel": "コンテンツフィルター",
       "title": "コンテンツフィルター",
       "ageRating": "年齢制限",
-      "blurNsfw": "不適切コンテンツをぼかす",
+      "blurNsfw": "露骨なコンテンツをぼかす",
       "none": "フィルターなし",
-      "blur": "センシティブな内容をぼかす",
+      "blur": "センシティブなコンテンツをぼかす",
       "hidden": "成人向けコンテンツを非表示",
       "descriptions": {
-        "none": "制限なくすべてのコンテンツを表示",
+        "none": "制限なしですべてのコンテンツを表示",
         "blur": "成人向けコンテンツにぼかしを適用",
         "hidden": "成人向けコンテンツを完全に非表示"
       },

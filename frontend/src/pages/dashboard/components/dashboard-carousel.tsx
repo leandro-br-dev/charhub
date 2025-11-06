@@ -27,7 +27,7 @@ function CarouselCard({ title, description, buttons, image_url, isPlus = false }
   const { t } = useTranslation();
 
   return (
-    <div className="relative w-full h-80 sm:h-96 md:h-full overflow-hidden group">
+    <div className="relative w-full h-64 sm:h-80 md:h-full overflow-hidden group">
       {image_url && (
         <img
           src={image_url}
@@ -121,9 +121,9 @@ export function DashboardCarousel({
   const goToSlide = (slideIndex: number) => setCurrentIndex(slideIndex);
 
   if (loading) {
-    return (
-      <div className="relative h-80 sm:h-96 md:h-[420px] md:max-h-[420px] bg-light animate-pulse"></div>
-    );
+  return (
+    <div className="relative h-64 sm:h-80 md:h-[336px] md:max-h-[336px] bg-light animate-pulse"></div>
+  );
   }
 
   if (cards.length === 0) {
@@ -132,7 +132,7 @@ export function DashboardCarousel({
 
   return (
     <div
-      className="relative h-80 sm:h-96 md:h-[420px] md:max-h-[420px]"
+      className="relative h-64 sm:h-80 md:h-[336px] md:max-h-[336px]"
       onMouseEnter={resetTimeout}
       onMouseLeave={() => {
         timeoutRef.current = setTimeout(goToNext, autoRotateInterval);

@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
+﻿import { useMemo, useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
@@ -162,7 +162,7 @@ export default function CharacterHubPage(): JSX.Element {
         )}
 
         {!isLoading && !isError && items.length > 0 && (
-          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="flex flex-wrap items-stretch gap-4">
             {items.map(character => (
               <CharacterCard
                 key={character.id}
@@ -186,3 +186,4 @@ export default function CharacterHubPage(): JSX.Element {
     </section>
   );
 }
+

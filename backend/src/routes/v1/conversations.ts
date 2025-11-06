@@ -10,6 +10,7 @@ import {
   updateConversationSchema,
   addParticipantSchema,
   listConversationsQuerySchema,
+  updateParticipantSchema,
 } from '../../validators/conversation.validator';
 import {
   sendMessageSchema,
@@ -58,6 +59,37 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       success: false,
       message: 'Failed to create conversation',
     });
+  }
+});
+
+/**
+ * PATCH /api/v1/conversations/:id/participants/:participantId
+ * Update participant configuration (configOverride, representingCharacterId)
+ */
+router.patch('/:id/participants/:participantId', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { id, participantId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: 'Authentication required' });
+    }
+
+    // Validate body; we only allow the two fields
+    const payload = updateParticipantSchema.parse(req.body);
+
+    await conversationService.updateParticipant(id, participantId, userId, payload);
+
+    return res.json({ success: true, message: 'Participant updated successfully' });
+  } catch (error) {
+    if (error instanceof Error && (error as any).statusCode) {
+      return res.status((error as any).statusCode).json({ success: false, message: error.message });
+    }
+    if (error instanceof Error && 'issues' in error) {
+      return res.status(400).json({ success: false, message: 'Validation error', errors: error });
+    }
+    logger.error({ error }, 'Error updating participant');
+    return res.status(500).json({ success: false, message: 'Failed to update participant' });
   }
 });
 

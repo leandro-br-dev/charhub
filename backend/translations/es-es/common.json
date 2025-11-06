@@ -5,14 +5,14 @@
     "language": "Idioma",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
-    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a la información básica de tu perfil.",
+    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información básica de perfil.",
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
     "tokenStored": "Almacenado en cookie HTTP-only",
-    "navDashboard": "Panel",
+    "navDashboard": "Panel de control",
     "navCharacters": "Personajes",
-    "navTagline": "Demostración segura de OAuth",
+    "navTagline": "Demo segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -34,27 +34,29 @@
     "saving": "Guardando...",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
-    "enabled": "Habilitado",
-    "disabled": "Deshabilitado",
-    "selectOption": "Selecciona una opción",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "selectOption": "Seleccionar una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
       "with": "Chatear con"
     },
     "messages": {
-      "linkCopied": "¡Enlace copiado al portapapeles!"
+      "linkCopied": "¡Enlace copiado al portapapeles!",
+      "chatStarted": "¡Chat iniciado con éxito!",
+      "characterDeleted": "Personaje eliminado con éxito"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
       "title": "Filtro de Contenido",
       "ageRating": "Clasificación por edad",
-      "blurNsfw": "Desenfocar contenido explícito",
+      "blurNsfw": "Difuminar contenido explícito",
       "none": "Sin filtro",
-      "blur": "Desenfocar sensible",
+      "blur": "Difuminar contenido sensible",
       "hidden": "Ocultar contenido para adultos",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar desenfoque a contenido para adultos",
+        "blur": "Aplicar difuminado al contenido para adultos",
         "hidden": "Ocultar completamente el contenido para adultos"
       },
       "ageRatings": {

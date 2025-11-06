@@ -72,7 +72,13 @@ function AuthenticatedLayoutInner({ children }: AuthenticatedLayoutProps): JSX.E
   }, [isDesktopSidebarOpen]);
 
   const toggleDrawer = () => {
-    setIsDrawerOpen((prev) => !prev);
+    setIsDrawerOpen((prev) => {
+      const newIsOpen = !prev;
+      if (newIsOpen && !activeSidebar) {
+        setActiveSidebar('/chat');
+      }
+      return newIsOpen;
+    });
   };
 
   const closeDrawer = () => {
@@ -101,17 +107,24 @@ function AuthenticatedLayoutInner({ children }: AuthenticatedLayoutProps): JSX.E
   };
 
   const mainContent = children ?? <Outlet />;
-  const isChatRoute = location.pathname.startsWith('/chat');
+  const isDashboardRoute = location.pathname === '/dashboard';
+  // Hide content filter in active chat conversations (but show in chat list)
+  const isActiveChatRoute = /^\/chat\/[^/]+$/.test(location.pathname);
+  // Check if it's the new chat page
+  const isNewChatRoute = location.pathname === '/chat/new';
 
   return (
-    <div className="relative flex min-h-[100svh] bg-background text-foreground">
+    <div
+      className="relative flex min-h-[100svh] bg-background text-foreground"
+      data-sidebar-open={isDesktopSidebarOpen ? 'true' : 'false'}
+    >
       <div
         ref={railRef}
-        className={`hidden md:flex md:sticky md:top-0 md:h-[100svh] md:z-40 ${
+        className={`hidden md:flex md:sticky md:top-0 md:h-[100svh] md:z-50 ${
           !isDesktopSidebarOpen ? "border-r border-border" : ""
         }`}
       >
-        <NavigationRail displayMode="permanent" onNavItemSelect={handleNavSelection} />
+        <NavigationRail displayMode="permanent" onNavItemSelect={handleNavSelection} activeItem={activeSidebar} />
       </div>
 
       <div ref={sidebarRef} className="hidden md:flex md:sticky md:top-0 md:h-[100svh] md:z-30">
@@ -128,7 +141,7 @@ function AuthenticatedLayoutInner({ children }: AuthenticatedLayoutProps): JSX.E
           isDrawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <NavigationRail displayMode="overlay" onNavItemSelect={handleNavSelection} />
+        <NavigationRail displayMode="overlay" onNavItemSelect={handleNavSelection} activeItem={activeSidebar} />
         <Sidebar displayMode="overlay" onClose={closeDrawer} isOpen activeView={activeSidebar} />
       </div>
 
@@ -140,16 +153,21 @@ function AuthenticatedLayoutInner({ children }: AuthenticatedLayoutProps): JSX.E
         <PageHeader
           title={title}
           actions={actions}
-          showBackButton
+          showBackButton={!isDashboardRoute}
           showHomeButton
-          showContentFilter
+          showContentFilter={!isActiveChatRoute}
           showMobileMenu
           isMobileMenuOpen={isDrawerOpen}
           onMobileMenuToggle={toggleDrawer}
+          isChatRoute={isActiveChatRoute}
         />
 
-        <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto w-full max-w-6xl px-4 py-8 pb-20 md:px-8 md:py-12 md:pb-12">{mainContent}</div>
+        <main className={`flex-1 ${isActiveChatRoute || isNewChatRoute ? 'overflow-hidden' : 'overflow-y-auto'}`}>
+          {isActiveChatRoute || isNewChatRoute ? (
+            <div className="h-full">{mainContent}</div>
+          ) : (
+            <div className={`mx-auto w-full ${isDashboardRoute ? '' : 'max-w-6xl px-4 md:px-8'} ${isDashboardRoute ? 'py-0' : 'py-8 pb-20 md:py-12 md:pb-12'}`}>{mainContent}</div>
+          )}
         </main>
       </div>
 

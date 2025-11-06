@@ -185,8 +185,8 @@ const ChatView: React.FC<any> = ({
             />
           </div>
 
-          {/* Overlay to improve text readability */}
-          <div className="fixed inset-0 md:left-20 z-0 bg-black/30" />
+          {/* Overlay to improve text readability - white fade for light theme, black for dark theme */}
+          <div className="fixed inset-0 md:left-20 z-0 bg-white/30 dark:bg-black/30" />
         </>
       )}
 
@@ -201,42 +201,44 @@ const ChatView: React.FC<any> = ({
           </div>
         )}
 
-        <div className="px-4 flex flex-col flex-grow overflow-y-auto">
-          <MessageList
-            messages={messages}
-            loading={loadingConversationData}
-            error={uiError}
-            participants={processedParticipants}
-            userId={userId}
-            typingCharacters={typingCharacters}
-            activeBackgroundTasks={activeBackgroundTasks}
-            onAvatarClick={openConfigModal}
-            onDeleteClick={openDeleteDialog}
-            onSaveEdit={onEditMessage}
-            onReprocessClick={openReprocessDialog}
-            getSenderDetailsAndParticipantId={getSenderDetailsAndParticipantId}
-            playingAudioState={playingAudioState}
-            onPlayAudioRequest={onPlayAudioRequest}
-            audioCache={audioCache}
-            onSendConfirmation={onSendConfirmation}
-            onReviewFileClick={onReviewFileClick}
-          />
-        </div>
-
-        {/* Input fixo - considera NavigationRail (80px no desktop) */}
-        <div className="fixed bottom-0 left-0 md:left-20 right-0 z-10 bg-normal/90 backdrop-blur-sm px-4 pb-4 shadow-lg">
-          <div className="max-w-5xl mx-auto">
-            <MessageInput
-              onSendMessage={onSendMessage}
-              user={currentUserRepresentation}
-              disabled={actionLoading}
-              onUserAvatarClick={() => {
-                const p = processedParticipants.find((p: any) => p.actorType === 'USER');
-                if (p) openConfigModal(p);
-              }}
-              onRequestImageGeneration={onRequestImageGeneration}
+        <div className="flex flex-col flex-grow overflow-y-auto">
+          <div className="max-w-5xl mx-auto w-full px-4">
+            <MessageList
+              messages={messages}
+              loading={loadingConversationData}
+              error={uiError}
+              participants={processedParticipants}
+              userId={userId}
+              typingCharacters={typingCharacters}
+              activeBackgroundTasks={activeBackgroundTasks}
+              onAvatarClick={openConfigModal}
+              onDeleteClick={openDeleteDialog}
+              onSaveEdit={onEditMessage}
+              onReprocessClick={openReprocessDialog}
+              getSenderDetailsAndParticipantId={getSenderDetailsAndParticipantId}
+              playingAudioState={playingAudioState}
+              onPlayAudioRequest={onPlayAudioRequest}
+              audioCache={audioCache}
+              onSendConfirmation={onSendConfirmation}
+              onReviewFileClick={onReviewFileClick}
             />
           </div>
+        </div>
+      </div>
+
+      {/* Input fixed - sempre visível no bottom, fora do scroll */}
+      <div className="chat-input-fixed fixed bottom-0 left-0 right-0 z-20 bg-normal/90 backdrop-blur-sm shadow-lg transition-all duration-300">
+        <div className="max-w-5xl mx-auto w-full px-4 pb-4">
+          <MessageInput
+            onSendMessage={onSendMessage}
+            user={currentUserRepresentation}
+            disabled={actionLoading}
+            onUserAvatarClick={() => {
+              const p = processedParticipants.find((p: any) => p.actorType === 'USER');
+              if (p) openConfigModal(p);
+            }}
+            onRequestImageGeneration={onRequestImageGeneration}
+          />
         </div>
       </div>
 
@@ -270,12 +272,11 @@ const ChatView: React.FC<any> = ({
         onClose={closeActiveModal}
         title={t("chatPage.confirmDeleteTitle")}
         description={t("chatPage.confirmDeleteMessage")}
-        variant="danger"
+        severity="critical"
         actions={[
           {
             label: t("common.cancel"),
             onClick: closeActiveModal,
-            variant: "light",
           },
           {
             label: actionLoading ? t("common.deleting") : t("common.delete"),
@@ -293,12 +294,11 @@ const ChatView: React.FC<any> = ({
             ? t("chatPage.confirmReprocessUserMessage")
             : t("chatPage.confirmReprocessBotMessage")
         }
-        variant="info"
+        severity="normal"
         actions={[
           {
             label: t("common.cancel"),
             onClick: closeActiveModal,
-            variant: "light",
           },
           {
             label: actionLoading

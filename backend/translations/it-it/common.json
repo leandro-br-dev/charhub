@@ -9,10 +9,10 @@
     "logout": "Esci",
     "logoutLoading": "Uscita in corso...",
     "authenticatedUser": "Utente autenticato",
-    "tokenStored": "Archiviato in cookie HTTP-only",
+    "tokenStored": "Memorizzato in cookie HTTP-only",
     "navDashboard": "Dashboard",
     "navCharacters": "Personaggi",
-    "navTagline": "Demo OAuth sicuro",
+    "navTagline": "Demo OAuth sicura",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -42,16 +42,18 @@
       "with": "Chatta con"
     },
     "messages": {
-      "linkCopied": "Link copiato negli appunti!"
+      "linkCopied": "Link copiato negli appunti!",
+      "chatStarted": "Chat avviata con successo!",
+      "characterDeleted": "Personaggio eliminato con successo"
     },
     "contentFilter": {
       "ariaLabel": "Filtro contenuti",
       "title": "Filtro Contenuti",
-      "ageRating": "Valutazione per età",
-      "blurNsfw": "Sfoca Contenuti Espliciti",
-      "none": "Nessun Filtro",
-      "blur": "Sfoca Contenuti Sensibili",
-      "hidden": "Nascondi Contenuti Maturo",
+      "ageRating": "Classificazione per età",
+      "blurNsfw": "Sfoca contenuti espliciti",
+      "none": "Nessun filtro",
+      "blur": "Sfoca contenuti maturi",
+      "hidden": "Nascondi contenuti maturi",
       "descriptions": {
         "none": "Mostra tutti i contenuti senza restrizioni",
         "blur": "Applica sfocatura ai contenuti maturi",

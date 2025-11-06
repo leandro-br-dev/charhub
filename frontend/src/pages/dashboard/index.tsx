@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { HorizontalScroller } from '../../components/ui/horizontal-scroller';
@@ -6,6 +6,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tab
 import { CharacterCard } from '../(characters)/shared/components';
 import { DashboardCarousel, RecentConversations, StoryCard } from './components';
 import { useContentFilter } from './hooks';
+import { useContentFilter as useGlobalContentFilter } from '../../contexts/ContentFilterContext';
 import { dashboardService, characterService, storyService } from '../../services';
 import { characterStatsService, type CharacterStats } from '../../services/characterStatsService';
 import type { Character } from '../../types/characters';
@@ -17,6 +18,7 @@ export default function Dashboard(): JSX.Element {
   const { t } = useTranslation(['dashboard', 'common']);
   const navigate = useNavigate();
   const { setTitle } = usePageHeader();
+  const { shouldHideContent } = useGlobalContentFilter();
 
   // Age rating filter moved to PageHeader
 
@@ -24,11 +26,13 @@ export default function Dashboard(): JSX.Element {
   const [carouselHighlights, setCarouselHighlights] = useState<CarouselHighlight[]>([]);
   const [popularCharacters, setPopularCharacters] = useState<Character[]>([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState<Character[]>([]);
+  const [discoverView, setDiscoverView] = useState<'popular' | 'favorites'>('popular');
   const [favoriteCharacterIds, setFavoriteCharacterIds] = useState<Set<string>>(new Set());
   const [statsById, setStatsById] = useState<Record<string, CharacterStats | undefined>>({});
   const [imagesById, setImagesById] = useState<Record<string, number>>({});
   const [popularStories, setPopularStories] = useState<Story[]>([]);
   const [myStories, setMyStories] = useState<Story[]>([]);
+  const [storyView, setStoryView] = useState<'my' | 'popular'>('my');
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
   const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [isLoadingStories, setIsLoadingStories] = useState(true);
@@ -209,8 +213,14 @@ export default function Dashboard(): JSX.Element {
     [navigate]
   );
 
+  // Filter lists based on global content filter "hidden" mode so layout reflows
+  const filteredPopularCharacters = popularCharacters.filter((c) => !shouldHideContent((c as any).ageRating, (c as any).contentTags || []));
+  const filteredFavoriteCharacters = favoriteCharacters.filter((c) => !shouldHideContent((c as any).ageRating, (c as any).contentTags || []));
+  const filteredPopularStories = popularStories.filter((s) => !shouldHideContent((s as any).ageRating, (s as any).contentTags || []));
+  const filteredMyStories = myStories.filter((s) => !shouldHideContent((s as any).ageRating, (s as any).contentTags || []));
+
   return (
-    <div className="min-h-[100svh] bg-normal overflow-x-hidden">
+    <div className="min-h-[100svh] w-full bg-normal overflow-x-hidden pt-8">
       {/* Carousel Section */}
       <div className="mb-8 overflow-hidden">
         {isLoadingCarousel ? (
@@ -221,7 +231,7 @@ export default function Dashboard(): JSX.Element {
       </div>
 
       {/* Tabs Navigation and Content */}
-      <div className="w-full sm:mx-auto sm:max-w-7xl px-0 sm:px-6 mb-6 overflow-hidden">
+      <div className="w-full mb-6 overflow-hidden">
         <Tabs defaultTab="discover">
           <TabList>
             <Tab label="discover">{t('dashboard:tabs.discover', 'Discover')}</Tab>
@@ -232,45 +242,40 @@ export default function Dashboard(): JSX.Element {
           <TabPanels>
             {/* Discover Tab */}
             <TabPanel label="discover">
-              <div className="space-y-8">
-                {/* Popular Characters */}
+              <div className="space-y-6 px-4 md:px-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold text-title">
+                    {discoverView === 'popular'
+                      ? t('dashboard:sections.popularCharacters', 'Popular Characters')
+                      : t('dashboard:sections.favoriteCharacters', 'Your Favorites')}
+                  </h2>
+                  <div className="flex rounded-xl border border-border overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => setDiscoverView('popular')}
+                      className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
+                    >
+                      {t('dashboard:sections.popular', 'Popular')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDiscoverView('favorites')}
+                      className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
+                    >
+                      {t('dashboard:sections.favorites', 'Favorites')}
+                    </button>
+                  </div>
+                </div>
                 {isLoadingCharacters ? (
                   <div className="h-64 bg-light animate-pulse rounded-lg" />
                 ) : (
-                  popularCharacters.length > 0 && (
-                    <HorizontalScroller
-                      title={t('dashboard:sections.popularCharacters', 'Popular Characters')}
-                      cardType="vertical"
-                    >
-                      {popularCharacters.map((character) => (
-                        <CharacterCard
-                          key={character.id}
-                          character={character}
-                          isFavorite={favoriteCharacterIds.has(character.id)}
-                          clickAction="view"
-                          blurNsfw={blurNsfw}
-                          chatCount={statsById[character.id]?.conversationCount}
-                          favoriteCount={statsById[character.id]?.favoriteCount}
-                          imageCount={imagesById[character.id]}
-                          onFavoriteToggle={handleFavoriteToggle}
-                        />
-                      ))}
-                    </HorizontalScroller>
-                  )
-                )}
-
-                {/* Favorite Characters */}
-                {!isLoadingCharacters && favoriteCharacters.length > 0 && (
-                  <HorizontalScroller
-                    title={t('dashboard:sections.favoriteCharacters', 'Your Favorites')}
-                    cardType="vertical"
-                  >
-                    {favoriteCharacters.map((character) => (
+                  <div className="flex flex-wrap items-stretch gap-4">
+                    {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).map((character) => (
                       <CharacterCard
                         key={character.id}
                         character={character}
-                        isFavorite={true}
-                        clickAction="chat"
+                        isFavorite={favoriteCharacterIds.has(character.id)}
+                        clickAction={discoverView === 'popular' ? 'view' : 'chat'}
                         blurNsfw={blurNsfw}
                         chatCount={statsById[character.id]?.conversationCount}
                         favoriteCount={statsById[character.id]?.favoriteCount}
@@ -278,88 +283,55 @@ export default function Dashboard(): JSX.Element {
                         onFavoriteToggle={handleFavoriteToggle}
                       />
                     ))}
-                  </HorizontalScroller>
+                  </div>
                 )}
               </div>
             </TabPanel>
 
             {/* Chat Tab */}
             <TabPanel label="chat">
-              <div className="space-y-8">
+              <div className="space-y-6 px-4 md:px-6">
                 {/* Recent Conversations */}
-                <RecentConversations limit={8} />
-
-                {/* Suggested Characters to Chat */}
-                {isLoadingCharacters ? (
-                  <div className="h-64 bg-light animate-pulse rounded-lg" />
-                ) : (
-                  popularCharacters.length > 0 && (
-                    <HorizontalScroller
-                      title={t('dashboard:sections.suggestedChats', 'Start a Conversation')}
-                      cardType="vertical"
-                    >
-                      {popularCharacters.map((character) => (
-                        <CharacterCard
-                          key={character.id}
-                          character={character}
-                          isFavorite={favoriteCharacterIds.has(character.id)}
-                          clickAction="chat"
-                          blurNsfw={blurNsfw}
-                          chatCount={statsById[character.id]?.conversationCount}
-                          favoriteCount={statsById[character.id]?.favoriteCount}
-                          imageCount={imagesById[character.id]}
-                          onFavoriteToggle={handleFavoriteToggle}
-                        />
-                      ))}
-                    </HorizontalScroller>
-                  )
-                )}
+                <RecentConversations limit={12} wrap />
               </div>
             </TabPanel>
 
             {/* Story Tab */}
             <TabPanel label="story">
-              <div className="space-y-8">
-                {/* My Stories */}
-                {!isLoadingStories && myStories.length > 0 && (
-                  <HorizontalScroller
-                    title={t('dashboard:sections.myStories', 'My Stories')}
-                    cardType="vertical"
-                  >
-                    {myStories.map((story) => (
-                      <StoryCard
-                        key={story.id}
-                        story={story}
-                        onPlay={handleStoryPlay}
-                        blurNsfw={blurNsfw}
-                      />
-                    ))}
-                  </HorizontalScroller>
-                )}
-
-                {/* Popular Stories */}
+              <div className="space-y-6 px-4 md:px-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold text-title">
+                    {storyView === 'my'
+                      ? t('dashboard:sections.myStories', 'My Stories')
+                      : t('dashboard:sections.popularStories', 'Popular Stories')}
+                  </h2>
+                  <div className="flex rounded-xl border border-border overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => setStoryView('my')}
+                      className={`px-3 py-1 text-sm ${storyView === 'my' ? 'bg-primary text-black' : 'text-content'}`}
+                    >
+                      {t('dashboard:sections.mine', 'Mine')}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStoryView('popular')}
+                      className={`px-3 py-1 text-sm ${storyView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
+                    >
+                      {t('dashboard:sections.popular', 'Popular')}
+                    </button>
+                  </div>
+                </div>
                 {isLoadingStories ? (
                   <div className="h-64 bg-light animate-pulse rounded-lg" />
                 ) : (
-                  popularStories.length > 0 && (
-                    <HorizontalScroller
-                      title={t('dashboard:sections.popularStories', 'Popular Stories')}
-                      cardType="vertical"
-                    >
-                      {popularStories.map((story) => (
-                        <StoryCard
-                          key={story.id}
-                          story={story}
-                          onPlay={handleStoryPlay}
-                          blurNsfw={blurNsfw}
-                        />
-                      ))}
-                    </HorizontalScroller>
-                  )
+                  <div className="flex flex-wrap items-stretch gap-4">
+                    {(storyView === 'my' ? filteredMyStories : filteredPopularStories).map((story) => (
+                      <StoryCard key={story.id} story={story} onPlay={handleStoryPlay} blurNsfw={blurNsfw} />
+                    ))}
+                  </div>
                 )}
-
-                {/* Story Module Notice */}
-                {!isLoadingStories && popularStories.length === 0 && myStories.length === 0 && (
+                {!isLoadingStories && filteredMyStories.length === 0 && filteredPopularStories.length === 0 && (
                   <div className="text-center py-12">
                     <p className="text-muted mb-4">
                       {t('dashboard:noStories', 'No stories yet. Create your first story!')}
@@ -380,3 +352,4 @@ export default function Dashboard(): JSX.Element {
     </div>
   );
 }
+

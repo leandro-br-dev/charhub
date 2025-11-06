@@ -22,7 +22,8 @@
     "genders": {
       "male": "Homme",
       "female": "Femme",
-      "non-binary": "Non-binaire"
+      "non-binary": "Non-binaire",
+      "unisex": "Unisexe"
     },
     "contentTags": {
       "VIOLENCE": "Violence",
@@ -39,17 +40,17 @@
       "GAMBLING": "Jeux d'argent"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, batailles ou conflits agressifs.",
+      "VIOLENCE": "Combats, affrontements ou conflits agressifs.",
       "GORE": "Blessures graphiques et détails explicites.",
       "SEXUAL": "Thèmes adultes ou sous-entendus.",
-      "NUDITY": "Nudité partielle ou complète.",
+      "NUDITY": "Nudité partielle ou totale.",
       "LANGUAGE": "Langage explicite ou grossier.",
       "DRUGS": "Usage ou références à des drogues.",
       "ALCOHOL": "Consommation d'alcool.",
       "HORROR": "Images dérangeantes ou d'horreur.",
       "PSYCHOLOGICAL": "Santé mentale ou tension psychologique.",
       "DISCRIMINATION": "Discours de haine ou préjugés.",
-      "CRIME": "Thèmes d'activité criminelle.",
+      "CRIME": "Thèmes d'activités criminelles.",
       "GAMBLING": "Références aux paris ou aux jeux d'argent."
     },
     "accessibility": {
@@ -67,7 +68,7 @@
     },
     "hub": {
       "title": "Personnages",
-      "subtitle": "Créez, organisez et faites évoluer le casting qui anime vos histoires, vos agents de conversation et vos expériences IA.",
+      "subtitle": "Créez, organisez et faites évoluer les personnages qui animent vos histoires, agents de discussion et expériences IA.",
       "actions": {
         "createCharacter": "Nouveau personnage",
         "retry": "Réessayer",
@@ -87,7 +88,7 @@
         "loading": "Chargement de vos personnages...",
         "error": "Nous n'avons pas pu charger les personnages. Veuillez réessayer.",
         "empty": "Aucun personnage disponible pour le moment.",
-        "empty_private": "Vous n'avez encore créé aucun personnage.",
+        "empty_private": "Vous n'avez pas encore créé de personnages.",
         "empty_public": "Aucun personnage public ne correspond à vos filtres.",
         "emptyHint": "Commencez par créer un profil ou ajustez vos filtres.",
         "emptySearchHint": "Ajustez vos filtres ou effacez la recherche pour voir plus de résultats."
@@ -107,15 +108,15 @@
         "profile": "Profil narratif",
         "profileHint": "Décrivez la personnalité, les traits et l'histoire pour guider l'IA.",
         "configuration": "Disponibilité et modération",
-        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles protections s'appliquent.",
+        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles mesures de sécurité s'appliquent.",
         "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer en fonction de leurs préférences.",
-        "contentTagsCharacterHint": "Ces sujets définissent ce que le personnage est à l'aise de discuter à la classification d'âge sélectionnée.",
+        "contentTagsCharacterHint": "Ces thèmes définissent ce que le personnage est à l'aise de discuter à la classification d'âge sélectionnée.",
         "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui n'est pas coché reste bloqué pour cette classification.",
-        "contentTagLocked": "Déverrouillé à des classifications d'âge supérieures."
+        "contentTagLocked": "Déverrouillé pour les classifications d'âge supérieures."
       },
       "fields": {
         "firstName": "Prénom",
-        "lastName": "Nom",
+        "lastName": "Nom de famille",
         "age": "Âge",
         "gender": "Genre",
         "species": "Espèce / origine",
@@ -130,10 +131,10 @@
         "visibility": "Visibilité"
       },
       "placeholders": {
-        "gender": "Ex : IA non-binaire, androïde, chevalier",
+        "gender": "Ex : IA non binaire, androïde, chevalier",
         "species": "Ex : Humain, Elfe, Synthétique",
-        "style": "Ex : Détective noir, anime pastel, peinture",
-        "genderSelect": "Sélectionner le genre"
+        "style": "Ex : Détective noir, anime pastel, style pictural",
+        "genderSelect": "Sélectionnez le genre"
       },
       "labels": {
         "unsavedChanges": "Vous avez des modifications non enregistrées",
@@ -144,11 +145,11 @@
       },
       "avatar": {
         "upload": "Télécharger une image",
-        "change": "Changer l'image",
+        "change": "Changer d'image",
         "remove": "Supprimer",
         "uploading": "Téléchargement...",
         "helperCreate": "Choisissez un avatar maintenant et nous le conserverons pendant que vous remplissez le reste du formulaire.",
-        "helperEdit": "Mettez à jour l'avatar quand vous le souhaitez. Les changements s'appliquent dès que vous enregistrez.",
+        "helperEdit": "Mettez à jour l'avatar quand vous le souhaitez. Les modifications s'appliquent dès que vous enregistrez.",
         "error": "Nous n'avons pas pu télécharger cette image. Essayez un autre fichier.",
         "previewAlt": "Aperçu de l'avatar du personnage"
       },
@@ -163,7 +164,7 @@
         "previewAlt": "Aperçu de la couverture du personnage"
       },
       "tags": {
-        "searchPlaceholder": "Rechercher des tags (ex: VTuber, Maid)",
+        "searchPlaceholder": "Rechercher des tags (ex: VTuber, Femme de chambre)",
         "selected": "Tags sélectionnés",
         "none": "Aucun tag sélectionné",
         "suggestions": "Suggestions",
@@ -179,12 +180,12 @@
         "configuration": "Configuration",
         "tags": "Tags",
         "images": "Images",
-        "lockedHint": "Remplissez les détails d'identité de base pour déverrouiller les autres sections."
+        "lockedHint": "Remplissez les informations d'identité de base pour déverrouiller les autres sections."
       }
     },
     "create": {
       "title": "Créer un nouveau personnage",
-      "subtitle": "Combinez le contexte narratif, le style visuel et les paramètres de modération. Vous pourrez tout affiner plus tard.",
+      "subtitle": "Combinez contexte narratif, style visuel et paramètres de modération. Vous pourrez tout affiner plus tard.",
       "saveButton": "Enregistrer le personnage",
       "cancelButton": "Annuler et revenir"
     },
@@ -192,7 +193,7 @@
       "title": "Modifier le personnage",
       "subtitle": "Mise à jour de {{name}}",
       "saveButton": "Mettre à jour le personnage",
-      "cancelButton": "Ignorer les modifications",
+      "cancelButton": "Annuler les modifications",
       "states": {
         "loading": "Chargement du personnage..."
       }
@@ -203,7 +204,7 @@
         "notFound": "Nous n'avons pas pu trouver ce personnage."
       },
       "actions": {
-        "backToHub": "Retour au hub",
+        "backToHub": "Retour à la page principale",
         "edit": "Modifier",
         "delete": "Supprimer",
         "deleting": "Suppression...",
@@ -211,7 +212,12 @@
         "startChat": "Démarrer une conversation",
         "startingChat": "Démarrage..."
       },
-      "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce personnage ? Cette action est irréversible.",
+      "confirmDelete": {
+        "title": "Supprimer le personnage ?",
+        "message": "Cette action est irréversible. Toutes les données associées à ce personnage seront définitivement supprimées.",
+        "confirm": "Supprimer définitivement",
+        "cancel": "Annuler"
+      },
       "labels": {
         "public": "Public",
         "private": "Privé",
@@ -225,7 +231,7 @@
         "favoriteCount_plural": "{{count}} favoris",
         "stats": "Statistiques"
       },
-      "sampleImages": "Exemples d'images",
+      "sampleImages": "Images d'exemple",
       "sections": {
         "physicalCharacteristics": "Apparence",
         "personality": "Personnalité",

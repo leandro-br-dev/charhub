@@ -1,13 +1,15 @@
-import { Prisma } from '../generated/prisma';
+﻿import { Prisma } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import { createMessage } from './messageService';
+import { decryptMessage } from './encryption';
 import type {
   CreateConversationInput,
   UpdateConversationInput,
   AddParticipantInput,
   ListConversationsQuery,
 } from '../validators/conversation.validator';
+import { updateParticipantSchema } from '../validators/conversation.validator';
 
 /**
  * Conversation Service
@@ -244,12 +246,26 @@ export async function listConversations(
       take: limit,
     });
 
+    // Decrypt last message (if present) for each conversation
+    const decrypted = conversations.map((conv) => {
+      if (!conv.messages || conv.messages.length === 0) return conv;
+      const safeMessages = conv.messages.map((msg) => {
+        try {
+          return { ...msg, content: decryptMessage(msg.content) };
+        } catch (error) {
+          logger.error({ error, messageId: msg.id, conversationId: conv.id }, 'Failed to decrypt last message for conversation list');
+          return { ...msg, content: '[Decryption failed - content unavailable]' } as typeof msg;
+        }
+      });
+      return { ...conv, messages: safeMessages };
+    });
+
     logger.debug(
       { userId, filters, count: conversations.length },
       'Conversations fetched for user'
     );
 
-    return conversations;
+    return decrypted;
   } catch (error) {
     logger.error({ error, userId, filters }, 'Error listing conversations');
     throw error;
@@ -380,6 +396,61 @@ export async function removeParticipant(
       { error, conversationId, participantId },
       'Error removing participant'
     );
+    throw error;
+  }
+}
+
+/**
+ * Update participant configuration (configOverride, representingCharacterId)
+ */
+export async function updateParticipant(
+  conversationId: string,
+  participantId: string,
+  userId: string,
+  data: unknown
+) {
+  try {
+    // Verify ownership
+    const isOwner = await isConversationOwner(conversationId, userId);
+    if (!isOwner) {
+      throw Object.assign(new Error('You do not have permission to update this conversation'), {
+        statusCode: 403,
+      });
+    }
+
+    // Validate input
+    const payload = updateParticipantSchema.parse(data);
+
+    // Ensure participant exists in conversation
+    const participant = await prisma.conversationParticipant.findFirst({
+      where: { id: participantId, conversationId },
+      select: { id: true, actingCharacterId: true, actingAssistantId: true, userId: true },
+    });
+
+    if (!participant) {
+      throw Object.assign(new Error('Participant not found'), { statusCode: 404 });
+    }
+
+    const updateData: any = {};
+    if (typeof payload.configOverride !== 'undefined') {
+      updateData.configOverride = payload.configOverride;
+    }
+    if (typeof payload.representingCharacterId !== 'undefined') {
+      // Only allow persona changes for ASSISTANT or USER participants
+      if (participant.actingAssistantId || participant.userId) {
+        updateData.representingCharacterId = payload.representingCharacterId;
+      }
+    }
+
+    await prisma.conversationParticipant.update({
+      where: { id: participantId },
+      data: updateData,
+    });
+
+    logger.info({ conversationId, participantId }, 'Participant updated successfully');
+    return { success: true };
+  } catch (error) {
+    logger.error({ error, conversationId, participantId }, 'Error updating participant');
     throw error;
   }
 }

@@ -17,6 +17,7 @@ export interface PageHeaderProps {
   showMobileMenu?: boolean;
   isMobileMenuOpen?: boolean;
   onMobileMenuToggle?: () => void;
+  isChatRoute?: boolean;
 }
 
 export function PageHeader({
@@ -31,6 +32,7 @@ export function PageHeader({
   showMobileMenu = false,
   isMobileMenuOpen = false,
   onMobileMenuToggle,
+  isChatRoute = false,
 }: PageHeaderProps): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation();
@@ -105,7 +107,7 @@ export function PageHeader({
             <span className="material-symbols-outlined">arrow_back</span>
           </button>
         )}
-        {showHomeButton && !location.pathname.startsWith('/dashboard') && (
+        {showHomeButton && !location.pathname.startsWith('/dashboard') && !(isChatRoute && showMobileMenu) && (
           <button
             onClick={handleHome}
             className="flex h-10 w-10 items-center justify-center rounded-lg text-content transition-colors hover:bg-input hover:text-primary"
@@ -122,11 +124,12 @@ export function PageHeader({
       {/* Right: Actions and Content Filter */}
       <div className="flex items-center gap-2">
         {actions}
-        {/* Age rating filter (visible on mobile) */}
-        <AgeRatingFilter />
         {showContentFilter && (
-          <SmartDropdown
-            buttonContent={
+          <>
+            {/* Age rating filter (visible on mobile) */}
+            <AgeRatingFilter />
+            <SmartDropdown
+              buttonContent={
               <button
                 className="flex h-10 items-center gap-2 rounded-lg px-3 text-content transition-colors hover:bg-input hover:text-primary"
                 aria-label={t('common:contentFilter.ariaLabel', 'Content filter')}
@@ -135,9 +138,9 @@ export function PageHeader({
                 <span className="hidden text-sm font-medium sm:inline">{currentFilter.label}</span>
                 <span className="material-symbols-outlined text-base">expand_more</span>
               </button>
-            }
-            menuWidth="w-72"
-          >
+              }
+              menuWidth="w-72"
+            >
             <div className="py-1">
               <div className="px-3 py-2">
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted">
@@ -173,7 +176,8 @@ export function PageHeader({
                 </button>
               ))}
             </div>
-          </SmartDropdown>
+            </SmartDropdown>
+          </>
         )}
       </div>
     </header>

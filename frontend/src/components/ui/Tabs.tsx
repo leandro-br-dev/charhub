@@ -35,7 +35,7 @@ interface TabListProps {
 
 export function TabList({ children }: TabListProps) {
   return (
-    <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-border">
+    <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-border px-4 sm:px-6">
       {children}
     </div>
   );

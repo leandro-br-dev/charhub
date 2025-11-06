@@ -36,13 +36,15 @@
     "deleting": "Suppression en cours...",
     "enabled": "Activé",
     "disabled": "Désactivé",
-    "selectOption": "Sélectionnez une option",
+    "selectOption": "Sélectionner une option",
     "noResults": "Aucune option trouvée.",
     "chat": {
       "with": "Discuter avec"
     },
     "messages": {
-      "linkCopied": "Lien copié dans le presse-papiers !"
+      "linkCopied": "Lien copié dans le presse-papiers !",
+      "chatStarted": "Chat démarré avec succès !",
+      "characterDeleted": "Personnage supprimé avec succès"
     },
     "contentFilter": {
       "ariaLabel": "Filtre de contenu",
@@ -54,7 +56,7 @@
       "hidden": "Masquer le contenu mature",
       "descriptions": {
         "none": "Afficher tout le contenu sans restrictions",
-        "blur": "Appliquer un flou au contenu mature",
+        "blur": "Appliquer un floutage au contenu mature",
         "hidden": "Masquer complètement le contenu mature"
       },
       "ageRatings": {
@@ -67,7 +69,7 @@
       }
     },
     "errors": {
-      "generic": "Une erreur s'est produite. Veuillez réessayer."
+      "generic": "Une erreur est survenue. Veuillez réessayer."
     },
     "character": "Personnage",
     "seeMore": "Voir plus",

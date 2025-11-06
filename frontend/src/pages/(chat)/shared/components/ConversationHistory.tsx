@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button, Avatar, Modal } from '../../../../components/ui';
+import { Button, Avatar, Dialog } from '../../../../components/ui';
 import { useToast } from '../../../../contexts/ToastContext';
 import { useConversationListQuery, useConversationMutations } from '../hooks/useConversations';
 import type { Conversation } from '../../../../types/chat';
@@ -331,7 +331,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
                           </div>
 
                           {/* Conversation Title */}
-                          <span className="flex-grow block truncate text-content">
+                          <span className="flex-grow block break-words min-w-0 text-content">
                             {conv.title ||
                               t('history.untitled', { defaultValue: 'Untitled conversation' })}
                           </span>
@@ -382,31 +382,32 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
         </Button>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      <Modal
+      {/* Delete Confirmation Dialog */}
+      <Dialog
         isOpen={!!deletingConvId}
         onClose={() => setDeletingConvId(null)}
         title={t('history.deleteConfirmTitle', { defaultValue: 'Delete Conversation' })}
-      >
-        <div className="space-y-4">
-          <p className="text-sm text-content">
-            {t('history.deleteConfirmMessage', {
-              defaultValue: 'Are you sure you want to delete "{{title}}"? This action cannot be undone.',
-              title: deletingConversation?.title || t('history.thisConversation', { defaultValue: 'this conversation' }),
-            })}
-          </p>
-          <div className="flex justify-end gap-2">
-            <Button variant="light" onClick={() => setDeletingConvId(null)} disabled={deleteConversation.isPending}>
-              {t('common.cancel', { defaultValue: 'Cancel' })}
-            </Button>
-            <Button variant="primary" onClick={handleConfirmDelete} disabled={deleteConversation.isPending}>
-              {deleteConversation.isPending
-                ? t('common.deleting', { defaultValue: 'Deleting...' })
-                : t('common.delete', { defaultValue: 'Delete' })}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        description={t('history.deleteConfirmMessage', {
+          defaultValue: 'Are you sure you want to delete "{{title}}"? This action cannot be undone.',
+          title: deletingConversation?.title || t('history.thisConversation', { defaultValue: 'this conversation' }),
+        })}
+        severity="normal"
+        actions={[
+          {
+            label: t('common.cancel', { defaultValue: 'Cancel' }),
+            onClick: () => setDeletingConvId(null),
+            disabled: deleteConversation.isPending,
+          },
+          {
+            label: deleteConversation.isPending
+              ? t('common.deleting', { defaultValue: 'Deleting...' })
+              : t('common.delete', { defaultValue: 'Delete' }),
+            onClick: handleConfirmDelete,
+            variant: 'primary',
+            disabled: deleteConversation.isPending,
+          },
+        ]}
+      />
     </div>
   );
 };

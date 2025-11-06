@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from 'vite';
+﻿import { defineConfig, loadEnv } from 'vite';
 import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react';
 export default defineConfig(function (_a) {
@@ -16,13 +16,13 @@ export default defineConfig(function (_a) {
     if (explicitHosts && explicitHosts.length > 0) {
         allowedHosts.push.apply(allowedHosts, explicitHosts);
     }
-    // Configuração HMR corrigida
+    // ConfiguraÃ§Ã£o HMR corrigida
     var hmrConfig = {
-        // O host e o protocolo são omitidos intencionalmente.
-        // O Vite irá inferi-los a partir do window.location do navegador.
+        // O host e o protocolo sÃ£o omitidos intencionalmente.
+        // O Vite irÃ¡ inferi-los a partir do window.location do navegador.
         // Isso faz com que funcione tanto para 'localhost' (http -> ws)
         // quanto para 'dev.charhub.app' (https -> wss).
-        clientPort: 5173, // Esta é a porta do host mapeada no docker-compose.yml
+        
     };
     return {
         resolve: {
@@ -59,3 +59,4 @@ export default defineConfig(function (_a) {
         }
     };
 });
+

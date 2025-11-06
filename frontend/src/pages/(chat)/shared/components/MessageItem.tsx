@@ -9,10 +9,12 @@ import React, {
   useMemo,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useToast } from '../../../../contexts/ToastContext';
 
 import { Avatar } from '../../../../components/ui/Avatar';
 import { Button } from '../../../../components/ui/Button';
 import { Textarea } from '../../../../components/ui/Textarea';
+import { MessageBubble } from './MessageBubble';
 const formatMessage = (message: string) => [{ type: 'text', content: message }];
 
 const isLikelyJson = (content: any) =>
@@ -67,6 +69,7 @@ const MessageItem = memo(
     onReviewFileClick,
   }: MessageItemProps) => {
     const { t } = useTranslation('chat');
+    const { addToast } = useToast();
     const [showActions, setShowActions] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(message);
@@ -213,7 +216,7 @@ const MessageItem = memo(
               "Failed to process and clean development plan for sending:",
               e
             );
-            alert("Error processing the development plan. Could not proceed.");
+            addToast("Error processing the development plan. Could not proceed.", "error");
             return;
           }
         }
@@ -302,9 +305,11 @@ const MessageItem = memo(
     const displayName =
       sender?.name ||
       (isSent ? t("messageItem.youSender") : t("messageItem.unknownSender"));
+    // Light theme: darker for user, lighter for character
+    // Dark theme: lighter for user, darker for character
     const bubbleColorClasses = isSent
-      ? "bg-light text-content"
-      : "bg-light text-content";
+      ? "bg-gray-200/70 dark:bg-gray-700/70 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600"
+      : "bg-gray-100/70 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600";
     const metaColorClasses = isSent ? "text-blue-200" : "text-muted";
     const formattedOriginalMessageParts = useMemo(
       () => formatMessage(message),
@@ -409,8 +414,8 @@ const MessageItem = memo(
           >
             {isEditing ? (
               <div
-                className={`w-full rounded-lg shadow-sm ${bubbleColorClasses} ${ 
-                  isSent ? "rounded-tr-none" : "rounded-tl-none" 
+                className={`w-full rounded-lg shadow-sm ${bubbleColorClasses} ${
+                  isSent ? "rounded-tr-none" : "rounded-tl-none"
                 } px-4 py-2 flex flex-col`}
               >
                 <Textarea
@@ -460,8 +465,8 @@ const MessageItem = memo(
               </div>
             ) : confirmationRequest ? (
               <div
-                className={`px-4 py-3 rounded-lg ${bubbleColorClasses} ${ 
-                  isSent ? "rounded-tr-none" : "rounded-tl-none" 
+                className={`px-4 py-3 rounded-lg ${bubbleColorClasses} ${
+                  isSent ? "rounded-tr-none" : "rounded-tl-none"
                 } shadow-sm w-full`}
               >
                 <p className="text-sm mb-3 whitespace-pre-wrap">
@@ -518,8 +523,8 @@ const MessageItem = memo(
               </div>
             ) : (
               <div
-                className={`px-4 py-2 rounded-xl ${bubbleColorClasses} ${ 
-                  isSent ? "rounded-tr-none" : "rounded-tl-none" 
+                className={`px-4 py-2 rounded-xl ${bubbleColorClasses} ${
+                  isSent ? "rounded-tr-none" : "rounded-tl-none"
                 } shadow-sm relative break-words w-full`}
               >
                 {formattedOriginalMessageParts.map((part: any, index: number) => {

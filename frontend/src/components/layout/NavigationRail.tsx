@@ -13,6 +13,7 @@ type NavigationRailProps = {
   onBugReportClick?: () => void;
   displayMode?: 'permanent' | 'overlay';
   onNavItemSelect?: (selection: { to: string; opensSidebar: boolean; available: boolean }) => void;
+  activeItem?: string | null;
 };
 
 type NavItemConfig = {
@@ -32,13 +33,15 @@ type NavItemProps = {
   disabled?: boolean;
   onSelect?: () => void;
   compact?: boolean;
+  isActiveOverride?: boolean;
+  isOverlay?: boolean;
 };
 
-function NavItem({ to, icon, label, disabled = false, onSelect, compact = false }: NavItemProps): JSX.Element {
+function NavItem({ to, icon, label, disabled = false, onSelect, compact = false, isActiveOverride, isOverlay = false }: NavItemProps): JSX.Element {
   const sizeClasses = compact ? 'h-10 w-10 rounded-xl' : 'h-12 w-12 rounded-2xl';
   const baseClasses = `relative group flex ${sizeClasses} items-center justify-center transition-all duration-200 ease-in-out`;
   const location = useLocation();
-  const isActive = location.pathname.startsWith(to);
+  const isActive = isActiveOverride ?? location.pathname.startsWith(to);
 
   if (disabled) {
     return (
@@ -67,9 +70,11 @@ function NavItem({ to, icon, label, disabled = false, onSelect, compact = false 
     >
       <span className="material-symbols-outlined text-xl">{icon}</span>
       <span className="sr-only">{label}</span>
-      <span className="absolute left-full z-[100] ml-4 hidden min-w-max origin-left rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white shadow-lg group-hover:block">
-        {label}
-      </span>
+      {!isOverlay && (
+        <span className="absolute left-full z-[100] ml-4 hidden min-w-max origin-left rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white shadow-lg group-hover:block">
+          {label}
+        </span>
+      )}
     </button>
   );
 }
@@ -77,7 +82,8 @@ function NavItem({ to, icon, label, disabled = false, onSelect, compact = false 
 export function NavigationRail({
   onBugReportClick,
   displayMode = 'permanent',
-  onNavItemSelect
+  onNavItemSelect,
+  activeItem
 }: NavigationRailProps): JSX.Element {
   const { t } = useTranslation(['navigation', 'dashboard', 'common']);
   const { user, logout } = useAuth();
@@ -161,6 +167,7 @@ export function NavigationRail({
           }
 
           const label = t(item.labelKey as any, item.fallbackLabel);
+          const isItemActive = activeItem && item.opensSidebar ? activeItem.startsWith(item.to) : undefined;
           return (
             <NavItem
               key={item.to}
@@ -169,6 +176,7 @@ export function NavigationRail({
               label={label}
               disabled={!item.available}
               compact={isOverlay}
+              isOverlay={isOverlay}
               onSelect={() =>
                 onNavItemSelect?.({
                   to: item.to,
@@ -176,6 +184,7 @@ export function NavigationRail({
                   available: item.available
                 })
               }
+              isActiveOverride={isItemActive}
             />
           );
         })}

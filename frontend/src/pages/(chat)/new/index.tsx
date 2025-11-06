@@ -7,6 +7,7 @@ import { Button, Avatar } from '../../../components/ui';
 import { characterService } from '../../../services/characterService';
 import type { Character } from '../../../types/characters';
 import { usePageHeader } from '../../../hooks/usePageHeader';
+import { useToast } from '../../../contexts/ToastContext';
 
 export default function NewConversationPage() {
   const { t } = useTranslation('chat');
@@ -14,6 +15,7 @@ export default function NewConversationPage() {
   const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
   const [conversationTitle, setConversationTitle] = useState('');
   const { setTitle } = usePageHeader();
+  const { addToast } = useToast();
 
   const { createWithCharacter } = useConversationMutations();
 
@@ -32,7 +34,7 @@ export default function NewConversationPage() {
 
   const handleCreate = async () => {
     if (!selectedCharacterId) {
-      alert(t('participant.selectCharacter'));
+      addToast(t('participant.selectCharacter'), 'warning');
       return;
     }
 
@@ -45,7 +47,7 @@ export default function NewConversationPage() {
       navigate(`/chat/${conversation.id}`);
     } catch (error) {
       console.error('[NewConversation] Error creating conversation:', error);
-      alert(t('errors.createFailed'));
+      addToast(t('errors.createFailed'), 'error');
     }
   };
 

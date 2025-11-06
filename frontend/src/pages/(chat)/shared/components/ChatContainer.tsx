@@ -470,7 +470,27 @@ const ChatContainer = () => {
       onSendMessage={handleSendMessage}
       onAddParticipant={handleAddParticipant}
       onRemoveParticipant={handleRemoveParticipant}
-      onConfigureParticipant={async () => false}
+      onConfigureParticipant={async (participantId: string, data: any) => {
+        try {
+          if (!conversationId) return false;
+
+          const payload: { configOverride?: string | null; representingCharacterId?: string | null } = {};
+          if (typeof data.config_override !== 'undefined') {
+            payload.configOverride = data.config_override;
+          }
+          if (typeof data.representing_character_id !== 'undefined') {
+            payload.representingCharacterId = data.representing_character_id;
+          }
+
+          await chatService.updateParticipant(conversationId, participantId, payload);
+          await queryClient.invalidateQueries({ queryKey: conversationKeys.detail(conversationId) });
+          return true;
+        } catch (error) {
+          console.error('[ChatContainer] Error updating participant configuration:', error);
+          setManualError(t('errors.updateConversationFailed', { defaultValue: 'Failed to update conversation.' }));
+          return false;
+        }
+      }}
       onDeleteMessage={handleDeleteMessage}
       onEditMessage={handleEditMessage}
       onReprocessMessage={handleReprocessMessage}

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState, startTransition } from 'react';
+﻿import { useEffect, useMemo, useState, startTransition } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { type CharacterSummary, type Character } from '../../../../types/characters';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { useContentFilter } from '../../../../contexts/ContentFilterContext';
@@ -35,7 +35,7 @@ export function CharacterCard({
   chatCount,
   favoriteCount,
   imageCount,
-}: CharacterCardProps): JSX.Element {
+}: CharacterCardProps): JSX.Element | null {
   const { t } = useTranslation(['characters', 'tags-character']);
   const navigate = useNavigate();
   const destination = to ?? `/characters/${character.id}`;
@@ -104,7 +104,8 @@ export function CharacterCard({
     }
   };
 
-  const owner = ownerName ?? '';
+  // Extract owner from character.creator or use the ownerName prop
+  const owner = ownerName ?? ('creator' in character && character.creator ? character.creator.username || character.creator.displayName || '' : '');
   const stats = {
     chats: chatCount ?? 0,
     favorites: favoriteCount ?? 0,
@@ -146,7 +147,7 @@ export function CharacterCard({
   return (
     <article
       onClick={handleCardClick}
-      className="flex min-h-[24rem] h-full cursor-pointer flex-col overflow-hidden rounded-lg bg-light shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+      className="flex basis-[calc(50%-0.5rem)] sm:w-[180px] md:w-[192px] lg:w-[192px] max-w-[192px] flex-none cursor-pointer flex-col overflow-hidden rounded-lg bg-light shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl self-stretch"
     >
       <div className="relative">
         {character.avatar ? (
@@ -154,10 +155,10 @@ export function CharacterCard({
             src={character.avatar}
             alt={title}
             loading="lazy"
-            className={`h-48 w-full rounded-t-lg object-cover ${shouldBlur ? 'blur-sm brightness-75' : ''}`}
+            className={`h-40 w-full rounded-t-lg object-cover ${shouldBlur ? 'blur-sm brightness-75' : ''}`}
           />
         ) : (
-          <div className="flex h-48 w-full items-center justify-center rounded-t-lg bg-slate-100 text-6xl text-slate-400 dark:bg-slate-800 dark:text-slate-600">
+          <div className="flex h-40 w-full items-center justify-center rounded-t-lg bg-slate-100 text-6xl text-slate-400 dark:bg-slate-800 dark:text-slate-600">
             <span className="material-symbols-outlined text-6xl">person</span>
           </div>
         )}
@@ -187,28 +188,28 @@ export function CharacterCard({
         <h3 className="truncate text-lg font-bold text-content" title={title}>
           {title}
         </h3>
-        {owner && (
-          <p className="mb-2 text-xs text-muted">
-            {t('characters:labels.owner', { defaultValue: 'by' })} <span className="font-semibold">{owner}</span>
-          </p>
-        )}
-        <p className={`flex-grow text-sm text-description line-clamp-2 ${shouldBlur ? 'blur-sm select-none' : ''}`}>
+        <div className="mb-1 min-h-[16px]">
+          {owner ? (
+            <p className="text-xs text-muted truncate">
+              {t('characters:labels.owner', { defaultValue: 'by' })} <span className="font-semibold">{owner}</span>
+            </p>
+          ) : null}
+        </div>
+        <p className={`text-sm text-description line-clamp-2 mb-2 ${shouldBlur ? 'blur-sm select-none' : ''}`}>
           {character.personality || character.style || t('characters:labels.noDescription', 'No description')}
         </p>
-        {rowTags.length > 0 && (
-          <div className={`mt-3 flex flex-nowrap gap-1.5 overflow-hidden ${shouldBlur ? 'blur-sm select-none' : ''}`}>
-            {rowTags.map((tag) => (
-              <UITag
-                key={tag.key}
-                label={tag.label}
-                tone={tag.tone}
-                selected
-                disabled
-                className="flex-shrink-0"
-              />
-            ))}
-          </div>
-        )}
+        <div className={`flex flex-nowrap gap-1.5 overflow-hidden min-h-[28px] mb-2 ${shouldBlur ? 'blur-sm select-none' : ''}`}>
+          {rowTags.map((tag) => (
+            <UITag
+              key={tag.key}
+              label={tag.label}
+              tone={tag.tone}
+              selected
+              disabled
+              className="flex-shrink-0 whitespace-nowrap"
+            />
+          ))}
+        </div>
         <div className="mt-auto flex items-center justify-between border-t border-border pt-3 text-xs text-muted">
           <div className="flex items-center gap-1" title={t('characters:labels.conversations', 'Conversations')}>
             <span className="material-symbols-outlined text-base">chat_bubble</span>
@@ -227,3 +228,4 @@ export function CharacterCard({
     </article>
   );
 }
+

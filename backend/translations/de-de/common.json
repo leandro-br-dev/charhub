@@ -3,13 +3,13 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Sprache",
-    "continueGoogle": "Weiter mit Google",
-    "continueFacebook": "Weiter mit Facebook",
+    "continueGoogle": "Mit Google fortfahren",
+    "continueFacebook": "Mit Facebook fortfahren",
     "privacy": "Durch Fortfahren stimmen Sie unserer Datenschutzrichtlinie zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
     "logoutLoading": "Abmelden...",
     "authenticatedUser": "Authentifizierter Benutzer",
-    "tokenStored": "Gespeichert in HTTP-only Cookie",
+    "tokenStored": "Gespeichert in einem HTTP-Only-Cookie",
     "navDashboard": "Dashboard",
     "navCharacters": "Charaktere",
     "navTagline": "Sichere OAuth-Demo",
@@ -36,13 +36,15 @@
     "deleting": "Lösche...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Wählen Sie eine Option",
+    "selectOption": "Option auswählen",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
       "with": "Chatten mit"
     },
     "messages": {
-      "linkCopied": "Link in die Zwischenablage kopiert!"
+      "linkCopied": "Link wurde in die Zwischenablage kopiert!",
+      "chatStarted": "Chat erfolgreich gestartet!",
+      "characterDeleted": "Charakter erfolgreich gelöscht"
     },
     "contentFilter": {
       "ariaLabel": "Inhaltsfilter",

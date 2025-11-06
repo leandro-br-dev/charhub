@@ -54,6 +54,14 @@ export const addParticipantSchema = z.object({
   }
 );
 
+// Update participant configuration schema
+export const updateParticipantSchema = z.object({
+  // Optional per-participant instructions (stringified JSON or plain text)
+  configOverride: z.string().max(5000).optional().nullable(),
+  // Optional persona to represent (assistant or user can assume a character persona)
+  representingCharacterId: z.string().uuid().optional().nullable(),
+});
+
 // Query parameters for listing conversations
 export const listConversationsQuerySchema = z.object({
   search: z.string().max(200).optional(),

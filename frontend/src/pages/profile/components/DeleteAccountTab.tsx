@@ -41,7 +41,7 @@ export function DeleteAccountTab() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={t('profile:deleteAccount.confirmTitle', 'Are you absolutely sure?')}
-        variant="danger"
+        severity="critical"
       >
         <div className="space-y-4">
           <p className="text-sm text-description">

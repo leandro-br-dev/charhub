@@ -27,6 +27,11 @@ export default function StoryEditPage() {
         setIsLoading(true);
         const story = await storyService.getById(storyId);
 
+        if (!story) {
+          setError(t('story:errors.notFound', 'Story not found'));
+          return;
+        }
+
         // Convert story to form data
         const formData: StoryFormData = {
           title: story.title,

@@ -4,14 +4,19 @@ import { Avatar, Button, Textarea } from '../../../../components/ui';
 import type { Message } from '../../../../types/chat';
 
 export interface MessageBubbleProps {
-  message: Message;
+  messageId: string;
+  content: string;
+  timestamp?: string;
   isSentByUser: boolean;
   senderName: string;
   senderAvatar?: string | null;
   onAvatarClick?: () => void;
   onDelete?: (messageId: string) => void;
   onEdit?: (messageId: string, newContent: string) => Promise<boolean>;
+  onReprocess?: (messageId: string) => void;
   className?: string;
+  showActions?: boolean;
+  children?: React.ReactNode; // For special content like confirmations
 }
 
 /**
@@ -59,38 +64,50 @@ const formatMessage = (content: string): Array<{ type: 'text' | 'italic' | 'quot
 };
 
 export const MessageBubble = ({
-  message,
+  messageId,
+  content,
+  timestamp,
   isSentByUser,
   senderName,
   senderAvatar,
   onAvatarClick,
   onDelete,
   onEdit,
+  onReprocess,
   className = '',
+  showActions: externalShowActions,
+  children,
 }: MessageBubbleProps) => {
   const { t } = useTranslation('chat');
-  const [showActions, setShowActions] = useState(false);
+  const [internalShowActions, setInternalShowActions] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState(message.content);
+  const [editedContent, setEditedContent] = useState(content);
   const [isSaving, setIsSaving] = useState(false);
 
-  const formattedParts = useMemo(() => formatMessage(message.content), [message.content]);
+  const showActions = externalShowActions ?? internalShowActions;
+  const formattedParts = useMemo(() => formatMessage(content), [content]);
 
   const handleDelete = () => {
     if (onDelete) {
-      onDelete(message.id);
+      onDelete(messageId);
+    }
+  };
+
+  const handleReprocess = () => {
+    if (onReprocess) {
+      onReprocess(messageId);
     }
   };
 
   const handleEditClick = () => {
-    setEditedContent(message.content);
+    setEditedContent(content);
     setIsEditing(true);
-    setShowActions(false);
+    setInternalShowActions(false);
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setEditedContent(message.content);
+    setEditedContent(content);
   };
 
   const handleSaveEdit = async () => {
@@ -100,14 +117,14 @@ export const MessageBubble = ({
     }
 
     const trimmedContent = editedContent.trim();
-    if (trimmedContent === message.content.trim()) {
+    if (trimmedContent === content.trim()) {
       setIsEditing(false);
       return;
     }
 
     setIsSaving(true);
     try {
-      const success = await onEdit(message.id, trimmedContent);
+      const success = await onEdit(messageId, trimmedContent);
       if (success) {
         setIsEditing(false);
       }
@@ -127,17 +144,19 @@ export const MessageBubble = ({
     }
   };
 
+  // Light theme: darker for user, lighter for character
+  // Dark theme: lighter for user, darker for character
   const bubbleColorClasses = isSentByUser
-    ? 'bg-primary/10 text-content border border-primary/20'
-    : 'bg-light text-content';
+    ? 'bg-gray-200/70 dark:bg-gray-700/70 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600'
+    : 'bg-gray-100/70 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600';
 
   const metaColorClasses = 'text-muted';
 
   return (
     <div
       className={`flex ${isSentByUser ? 'justify-end' : 'justify-start'} w-full mb-4 group ${className}`}
-      onMouseEnter={() => !isEditing && setShowActions(true)}
-      onMouseLeave={() => setShowActions(false)}
+      onMouseEnter={() => !isEditing && setInternalShowActions(true)}
+      onMouseLeave={() => setInternalShowActions(false)}
     >
       <div className="max-w-[90%] w-full">
         {/* Header with avatar and name */}
@@ -187,6 +206,16 @@ export const MessageBubble = ({
                   title={t('message.edit')}
                 />
               )}
+              {onReprocess && !isSentByUser && (
+                <Button
+                  variant="light"
+                  size="small"
+                  icon="refresh"
+                  className="p-[2px] text-secondary/80 hover:bg-secondary/10 hover:text-secondary"
+                  onClick={handleReprocess}
+                  title={t('message.reprocess', { defaultValue: 'Regenerate' })}
+                />
+              )}
             </div>
           </div>
         </div>
@@ -224,36 +253,40 @@ export const MessageBubble = ({
                 isSentByUser ? 'rounded-tr-none' : 'rounded-tl-none'
               } shadow-sm relative break-words w-full`}
             >
-              {formattedParts.map((part, index) => {
-                if (part.type === 'italic') {
-                  return (
-                    <em key={index} className="text-current opacity-80 inline">
-                      {part.content}
-                    </em>
-                  );
-                }
-                if (part.type === 'quote') {
-                  return (
-                    <blockquote key={index} className="border-l-4 border-muted pl-2 italic my-1">
-                      {part.content}
-                    </blockquote>
-                  );
-                }
-                return part.content.split('\n').map((line, i) => (
-                  <span key={`${index}-${i}`}>
-                    {line}
-                    {i < part.content.split('\n').length - 1 && <br />}
-                  </span>
-                ));
-              })}
+              {children ? (
+                children
+              ) : (
+                formattedParts.map((part, index) => {
+                  if (part.type === 'italic') {
+                    return (
+                      <em key={index} className="text-current opacity-80 inline">
+                        {part.content}
+                      </em>
+                    );
+                  }
+                  if (part.type === 'quote') {
+                    return (
+                      <blockquote key={index} className="border-l-4 border-muted pl-2 italic my-1">
+                        {part.content}
+                      </blockquote>
+                    );
+                  }
+                  return part.content.split('\n').map((line, i) => (
+                    <span key={`${index}-${i}`}>
+                      {line}
+                      {i < part.content.split('\n').length - 1 && <br />}
+                    </span>
+                  ));
+                })
+              )}
             </div>
           )}
 
           {/* Timestamp */}
-          {!isEditing && message.timestamp && (
+          {!isEditing && timestamp && (
             <div className={`flex items-center text-xs mt-1 ${metaColorClasses} ${isSentByUser ? 'self-end' : 'self-start'}`}>
               <span>
-                {new Date(message.timestamp).toLocaleTimeString([], {
+                {new Date(timestamp).toLocaleTimeString([], {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}

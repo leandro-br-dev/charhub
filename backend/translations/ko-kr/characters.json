@@ -13,24 +13,25 @@
     },
     "ageRatings": {
       "L": "전체 이용가",
-      "TEN": "10세 이상",
-      "TWELVE": "12세 이상",
-      "FOURTEEN": "14세 이상",
-      "SIXTEEN": "16세 이상",
-      "EIGHTEEN": "18세 이상"
+      "TEN": "10+",
+      "TWELVE": "12+",
+      "FOURTEEN": "14+",
+      "SIXTEEN": "16+",
+      "EIGHTEEN": "18+"
     },
     "genders": {
       "male": "남성",
       "female": "여성",
-      "non-binary": "논바이너리"
+      "non-binary": "논바이너리",
+      "unisex": "중성"
     },
     "contentTags": {
       "VIOLENCE": "폭력",
-      "GORE": "잔인함",
-      "SEXUAL": "성적",
-      "NUDITY": "노출",
+      "GORE": "잔혹",
+      "SEXUAL": "성적인",
+      "NUDITY": "나체",
       "LANGUAGE": "욕설",
-      "DRUGS": "마약",
+      "DRUGS": "약물",
       "ALCOHOL": "알코올",
       "HORROR": "공포",
       "PSYCHOLOGICAL": "심리",
@@ -40,21 +41,21 @@
     },
     "contentTagHints": {
       "VIOLENCE": "전투, 싸움 또는 공격적인 갈등.",
-      "GORE": "충격적인 부상 및 명시적인 세부 묘사.",
+      "GORE": "잔인한 부상 및 노골적인 세부 묘사.",
       "SEXUAL": "성인 테마 또는 암시.",
-      "NUDITY": "부분 또는 전체 노출.",
+      "NUDITY": "부분 또는 전체 나체.",
       "LANGUAGE": "노골적이거나 강한 언어.",
-      "DRUGS": "마약 사용 또는 언급.",
+      "DRUGS": "약물 사용 또는 언급.",
       "ALCOHOL": "알코올 소비.",
-      "HORROR": "불안하거나 무서운 이미지.",
+      "HORROR": "불안하거나 공포스러운 이미지.",
       "PSYCHOLOGICAL": "정신 건강 또는 심리적 긴장감.",
       "DISCRIMINATION": "혐오 발언 또는 편견.",
       "CRIME": "범죄 활동 테마.",
-      "GAMBLING": "내기 또는 도박 관련 언급."
+      "GAMBLING": "베팅 또는 도박 관련 언급."
     },
     "accessibility": {
       "addToFavorites": "즐겨찾기에 추가",
-      "removeFromFavorites": "즐겨찾기에서 삭제"
+      "removeFromFavorites": "즐겨찾기에서 제거"
     },
     "stats": {
       "conversations": "대화",
@@ -62,17 +63,17 @@
       "favorites": "즐겨찾기",
       "conversationsShort": "{{count}}천 건의 대화",
       "conversationsShort_plural": "{{count}}천 건의 대화",
-      "favoritesShort": "{{count}}천 건의 즐겨찾기",
-      "favoritesShort_plural": "{{count}}천 건의 즐겨찾기"
+      "favoritesShort": "{{count}}천 개의 즐겨찾기",
+      "favoritesShort_plural": "{{count}}천 개의 즐겨찾기"
     },
     "hub": {
       "title": "캐릭터",
-      "subtitle": "스토리, 채팅 에이전트 및 AI 경험을 구동하는 캐릭터를 만들고, 구성하고, 발전시키세요.",
+      "subtitle": "스토리, 채팅 에이전트 및 AI 경험을 구동하는 캐릭터를 생성, 구성 및 발전시키세요.",
       "actions": {
         "createCharacter": "새 캐릭터",
         "retry": "다시 시도",
-        "blurSensitive": "민감 정보 흐리게 하기",
-        "showSensitive": "민감 정보 표시"
+        "blurSensitive": "민감한 내용 흐림 처리",
+        "showSensitive": "민감한 내용 표시"
       },
       "tabs": {
         "myCharacters": "내 캐릭터",
@@ -90,12 +91,12 @@
         "empty_private": "아직 캐릭터를 생성하지 않았습니다.",
         "empty_public": "필터와 일치하는 공개 캐릭터가 없습니다.",
         "emptyHint": "프로필을 만들거나 필터를 조정하여 시작하세요.",
-        "emptySearchHint": "결과를 더 보려면 필터를 조정하거나 검색을 지우세요."
+        "emptySearchHint": "필터를 조정하거나 검색을 지워 더 많은 결과를 확인하세요."
       },
       "labels": {
-        "total": "{{count}}개의 캐릭터 사용 가능",
-        "total_plural": "{{count}}개의 캐릭터 사용 가능",
-        "quickCreateLink": "바로 만들기로 이동"
+        "total": "사용 가능한 캐릭터 {{count}}개",
+        "total_plural": "사용 가능한 캐릭터 {{count}}개",
+        "quickCreateLink": "생성으로 바로 이동"
       }
     },
     "form": {
@@ -103,14 +104,14 @@
       "cancel": "취소",
       "sections": {
         "identity": "신원",
-        "identityHint": "사람들이 이 캐릭터를 한눈에 어떻게 발견하고 식별하는지 정의합니다.",
+        "identityHint": "사람들이 이 캐릭터를 발견하고 한눈에 식별하는 방법을 정의하세요.",
         "profile": "내러티브 프로필",
-        "profileHint": "AI를 안내하기 위해 성격, 특성 및 배경 이야기를 설명합니다.",
+        "profileHint": "AI를 안내하기 위해 성격, 특성 및 배경 이야기를 설명하세요.",
         "configuration": "이용 가능 여부 및 관리",
-        "configurationHint": "캐릭터가 어떻게 표시되고, 누가 접근할 수 있으며, 어떤 안전 장치가 적용되는지 제어합니다.",
-        "contentTagsHint": "잠재적으로 민감한 테마를 표시합니다. 사용자는 환경 설정에 따라 이를 필터링할 수 있습니다.",
-        "contentTagsCharacterHint": "이러한 주제는 선택한 연령 등급에서 캐릭터가 논의하기에 편안한 내용을 정의합니다.",
-        "contentTagsUserHint": "포함하려는 테마를 선택합니다. 선택되지 않은 항목은 이 등급에 대해 차단된 상태로 유지됩니다.",
+        "configurationHint": "캐릭터가 표시되는 방식, 누가 접근할 수 있는지, 어떤 보호 장치가 적용되는지 제어하세요.",
+        "contentTagsHint": "잠재적으로 민감한 테마를 표시하세요. 사용자는 기본 설정에 따라 이를 필터링할 수 있습니다.",
+        "contentTagsCharacterHint": "이러한 주제는 선택한 연령 등급에서 캐릭터가 편안하게 논의할 수 있는 내용을 정의합니다.",
+        "contentTagsUserHint": "포함하려는 테마를 선택하세요. 선택되지 않은 항목은 이 등급에 대해 차단된 상태로 유지됩니다.",
         "contentTagLocked": "더 높은 연령 등급에서 잠금 해제됩니다."
       },
       "fields": {
@@ -132,7 +133,7 @@
       "placeholders": {
         "gender": "예: 논바이너리 AI, 안드로이드, 기사",
         "species": "예: 인간, 엘프, 합성체",
-        "style": "예: 느와르 탐정, 파스텔 애니메이션, 페인팅 스타일",
+        "style": "예: 누아르 탐정, 파스텔 애니메이션, 페인터리",
         "genderSelect": "성별 선택"
       },
       "labels": {
@@ -145,16 +146,16 @@
       "avatar": {
         "upload": "이미지 업로드",
         "change": "이미지 변경",
-        "remove": "삭제",
+        "remove": "제거",
         "uploading": "업로드 중...",
-        "helperCreate": "지금 아바타를 선택하면 나머지 양식을 작성하는 동안 보관됩니다.",
+        "helperCreate": "지금 아바타를 선택하면 나머지 양식을 작성하는 동안 유지됩니다.",
         "helperEdit": "언제든지 아바타를 업데이트할 수 있습니다. 변경 사항은 저장하는 즉시 적용됩니다.",
-        "error": "이 이미지를 업로드할 수 없습니다. 다른 파일을 시도해 보세요.",
+        "error": "이 이미지를 업로드할 수 없습니다. 다른 파일을 시도하세요.",
         "previewAlt": "캐릭터 아바타 미리보기"
       },
       "images": {
         "coverHeader": "캐릭터 커버",
-        "coverDescription": "캐릭터 커버로 사용되는 세로 이미지입니다.",
+        "coverDescription": "캐릭터 커버로 사용되는 세로 이미지.",
         "upload": "커버 업로드",
         "change": "커버 변경",
         "uploading": "업로드 중...",
@@ -164,29 +165,29 @@
       },
       "tags": {
         "searchPlaceholder": "태그 검색 (예: VTuber, 메이드)",
-        "selected": "선택된 태그",
-        "none": "선택된 태그 없음",
+        "selected": "선택한 태그",
+        "none": "선택한 태그 없음",
         "suggestions": "추천",
-        "loading": "로드 중...",
+        "loading": "불러오는 중...",
         "noResults": "결과 없음",
         "incompatibleToast": "일부 선택한 태그는 현재 연령 등급과 호환되지 않습니다. 검토해 주세요.",
-        "incompatibleHint": "강조 표시된 태그는 현재 연령 등급과 호환되지 않습니다. 계속하려면 제거하세요.",
+        "incompatibleHint": "강조 표시된 태그는 현재 연령 등급과 호환되지 않습니다. 계속 진행하려면 제거하세요.",
         "incompatibleChip": "현재 연령 등급과 호환되지 않음"
       },
       "tabs": {
         "identity": "신원",
         "profile": "프로필",
-        "configuration": "구성",
+        "configuration": "설정",
         "tags": "태그",
         "images": "이미지",
-        "lockedHint": "기본 신원 세부 정보를 작성하여 다른 섹션을 잠금 해제하세요."
+        "lockedHint": "기본 신원 정보를 작성하여 다른 섹션을 잠금 해제하세요."
       }
     },
     "create": {
-      "title": "새 캐릭터 만들기",
-      "subtitle": "내러티브 컨텍스트, 시각적 스타일 및 관리 설정을 결합합니다. 나중에 모든 것을 수정할 수 있습니다.",
+      "title": "새 캐릭터 생성",
+      "subtitle": "내러티브 컨텍스트, 시각적 스타일 및 관리 설정을 결합하세요. 나중에 모든 것을 다듬을 수 있습니다.",
       "saveButton": "캐릭터 저장",
-      "cancelButton": "취소하고 뒤로 가기"
+      "cancelButton": "취소하고 돌아가기"
     },
     "edit": {
       "title": "캐릭터 편집",
@@ -194,7 +195,7 @@
       "saveButton": "캐릭터 업데이트",
       "cancelButton": "변경 사항 폐기",
       "states": {
-        "loading": "캐릭터 로딩 중..."
+        "loading": "캐릭터를 불러오는 중..."
       }
     },
     "detail": {
@@ -211,7 +212,12 @@
         "startChat": "대화 시작",
         "startingChat": "시작 중..."
       },
-      "confirmDelete": "이 캐릭터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "confirmDelete": {
+        "title": "캐릭터 삭제?",
+        "message": "이 작업은 되돌릴 수 없습니다. 이 캐릭터와 관련된 모든 데이터는 영구적으로 삭제됩니다.",
+        "confirm": "영구 삭제",
+        "cancel": "취소"
+      },
       "labels": {
         "public": "공개",
         "private": "비공개",

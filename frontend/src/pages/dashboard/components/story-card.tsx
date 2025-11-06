@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../../../components/ui';
 import type { Story } from '../../../types/story';
+import { useContentFilter } from '../../../contexts/ContentFilterContext';
 
 interface StoryCardProps {
   story: Story;
@@ -10,7 +11,9 @@ interface StoryCardProps {
 
 export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const { shouldHideContent } = useContentFilter();
 
+  const shouldHide = shouldHideContent(story.ageRating as any, (story.contentTags as any) || []);
   const shouldBlur = blurNsfw && story.contentTags?.includes('SEXUAL');
 
   const handlePlayClick = (e: React.MouseEvent) => {
@@ -21,8 +24,12 @@ export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
     }
   };
 
+  if (shouldHide) {
+    return null;
+  }
+
   return (
-    <div className="block bg-light rounded-lg shadow-md hover:shadow-xl transition-all h-full flex flex-col group">
+    <div className="block bg-light rounded-lg shadow-md hover:shadow-xl transition-all min-h-[18rem] h-full flex flex-col group basis-[calc(50%-0.5rem)] sm:w-[180px] md:w-[192px] lg:w-[192px] max-w-[192px] overflow-hidden">
       <div className="relative h-48 overflow-hidden">
         {!imageLoaded && <div className="absolute inset-0 bg-gray-700 animate-pulse" />}
         <img
@@ -58,9 +65,11 @@ export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
       <div className="p-4 flex-grow flex flex-col justify-between">
         <div>
           <h3 className="font-semibold text-content truncate text-base">{story.title}</h3>
-          {story.synopsis && (
-            <p className="text-sm text-muted mt-1 line-clamp-2">{story.synopsis}</p>
-          )}
+          <div className="mt-1 min-h-[40px]">
+            {story.synopsis ? (
+              <p className="text-sm text-muted line-clamp-2">{story.synopsis}</p>
+            ) : null}
+          </div>
         </div>
       </div>
     </div>

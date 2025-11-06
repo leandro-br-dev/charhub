@@ -9,9 +9,9 @@
     "logout": "साइन आउट",
     "logoutLoading": "साइन आउट हो रहा है...",
     "authenticatedUser": "प्रमाणित उपयोगकर्ता",
-    "tokenStored": "HTTP-ओनली कुकी में सहेजा गया",
+    "tokenStored": "HTTP-ओनली कुकी में संग्रहित",
     "navDashboard": "डैशबोर्ड",
-    "navCharacters": "कैरेक्टर",
+    "navCharacters": "कैरक्टर्स",
     "navTagline": "सुरक्षित OAuth डेमो",
     "providerLabel": {
       "google": "Google",
@@ -42,7 +42,9 @@
       "with": "से चैट करें"
     },
     "messages": {
-      "linkCopied": "लिंक क्लिपबोर्ड पर कॉपी किया गया!"
+      "linkCopied": "लिंक क्लिपबोर्ड पर कॉपी किया गया!",
+      "chatStarted": "चैट सफलतापूर्वक शुरू हुई!",
+      "characterDeleted": "कैरक्टर सफलतापूर्वक हटा दिया गया"
     },
     "contentFilter": {
       "ariaLabel": "सामग्री फ़िल्टर",
@@ -50,7 +52,7 @@
       "ageRating": "आयु रेटिंग",
       "blurNsfw": "स्पष्ट सामग्री को धुंधला करें",
       "none": "कोई फ़िल्टर नहीं",
-      "blur": "संवेदनशील को धुंधला करें",
+      "blur": "संवेदनशील सामग्री को धुंधला करें",
       "hidden": "परिपक्व सामग्री छिपाएँ",
       "descriptions": {
         "none": "बिना किसी प्रतिबंध के सभी सामग्री दिखाएँ",
@@ -69,7 +71,7 @@
     "errors": {
       "generic": "एक त्रुटि हुई। कृपया पुनः प्रयास करें।"
     },
-    "character": "कैरेक्टर",
+    "character": "कैरक्टर",
     "seeMore": "और देखें",
     "seeMoreArrow": "और देखें →"
   }

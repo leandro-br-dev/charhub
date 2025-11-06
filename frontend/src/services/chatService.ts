@@ -100,6 +100,17 @@ export const chatService = {
     );
   },
 
+  async updateParticipant(
+    conversationId: string,
+    participantId: string,
+    payload: { configOverride?: string | null; representingCharacterId?: string | null }
+  ): Promise<void> {
+    await api.patch<ApiResponse<unknown>>(
+      `${BASE_PATH}/${conversationId}/participants/${participantId}`,
+      payload
+    );
+  },
+
   async getMessages(query: ListMessagesQuery): Promise<{ items: Message[]; total: number }> {
     const { conversationId, ...params } = query;
     const { data } = await api.get<ApiResponse<Message[]>>(

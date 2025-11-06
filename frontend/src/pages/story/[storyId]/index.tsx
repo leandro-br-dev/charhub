@@ -10,12 +10,14 @@ import { chatService } from '../../../services/chatService';
 import type { Story } from '../../../types/story';
 import type { CreateConversationPayload } from '../../../types/chat';
 import { usePageHeader } from '../../../hooks/usePageHeader';
+import { useToast } from '../../../contexts/ToastContext';
 
 export function StoryDetailPage() {
   const { storyId } = useParams<{ storyId: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation(['story', 'common', 'characters']);
   const { user } = useAuth();
+  const { addToast } = useToast();
   const [story, setStory] = useState<Story | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
@@ -119,7 +121,7 @@ export function StoryDetailPage() {
     if (!story) return;
     const url = window.location.href;
     navigator.clipboard.writeText(url).then(() => {
-      alert(t('common:linkCopied', 'Link copied to clipboard!'));
+      addToast(t('common:messages.linkCopied'), 'success');
     });
   };
 

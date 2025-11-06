@@ -1,6 +1,5 @@
-
-// frontend/src/components/ui/Dialog.tsx
-import { Dialog as HUIDialog } from '@headlessui/react';
+import { type ReactNode } from 'react';
+import { Modal } from './Modal';
 import { Button } from './Button';
 
 interface DialogAction {
@@ -15,87 +14,59 @@ export interface DialogProps {
   onClose: () => void;
   title?: string;
   description?: string;
-  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'info';
+  /** Severity level: 'critical' uses danger variant for primary action, 'normal' uses primary variant */
+  severity?: 'critical' | 'normal';
   className?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   actions?: DialogAction[];
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const Dialog = ({
+export function Dialog({
   isOpen,
   onClose,
   title = '',
   description = '',
-  variant = 'primary',
+  severity = 'normal',
   className = '',
+  size = 'md',
   actions = [],
   children,
-  ...props
-}: DialogProps) => {
-  const baseClasses =
-    'fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 overflow-y-auto';
-
-  const contentBaseClasses =
-    'bg-light p-6 rounded-lg shadow-lg max-w-md w-full flex flex-col gap-4 text-center';
-
-  const variants = {
-    primary: 'border border-primary',
-    secondary: 'border border-gray-300',
-    danger: 'border border-red-500',
-    success: 'border border-green-500',
-    info: 'border border-blue-500'
-  };
-
-  // Map Dialog variants to Button variants
-  const variantToButtonVariant: Record<string, 'primary' | 'light' | 'secondary' | 'danger' | 'dark'> = {
-    primary: 'primary',
-    secondary: 'secondary',
-    danger: 'danger',
-    success: 'primary',
-    info: 'primary'
-  };
-
-  const combinedClasses = `${contentBaseClasses} ${variants[variant]} ${className}`.trim();
-
+}: DialogProps): JSX.Element | null {
   return (
-    <HUIDialog
-      open={isOpen}
+    <Modal
+      isOpen={isOpen}
       onClose={onClose}
-      className={baseClasses}
-      {...props}
+      title={title}
+      size={size}
+      className={className}
     >
-        <HUIDialog.Panel className={combinedClasses}>
-            {title && (
-            <HUIDialog.Title className="text-lg font-bold text-title">{title}</HUIDialog.Title>
-            )}
-            {description && (
-            <HUIDialog.Description className="text-sm text-description">
-                {description}
-            </HUIDialog.Description>
-            )}
-            {children}
-            <div className="flex flex-col gap-2 mt-4">
-            {actions && actions.length > 0 ? (
-                actions.map((action, index) => (
+      <div className="space-y-4">
+        {description && <p className="text-sm text-content">{description}</p>}
+        {children}
+
+        {/* Actions */}
+        {actions && actions.length > 0 && (
+          <div className="flex justify-end gap-2">
+            {actions.map((action, index) => {
+              // Auto-assign danger variant for critical severity if not specified
+              const buttonVariant = action.variant ||
+                (severity === 'critical' && index === actions.length - 1 ? 'danger' : 'light');
+
+              return (
                 <Button
-                    key={index}
-                    onClick={action.onClick}
-                    disabled={action.disabled}
-                    variant={action.variant}
+                  key={index}
+                  onClick={action.onClick}
+                  disabled={action.disabled}
+                  variant={buttonVariant}
                 >
-                    {action.label}
+                  {action.label}
                 </Button>
-                ))
-            ) : (
-                <Button
-                onClick={onClose}
-                variant={variantToButtonVariant[variant]}
-                >
-                Fechar
-                </Button>
-            )}
-            </div>
-        </HUIDialog.Panel>
-    </HUIDialog>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </Modal>
   );
-};
+}

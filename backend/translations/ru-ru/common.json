@@ -9,15 +9,15 @@
     "logout": "Выйти",
     "logoutLoading": "Выход...",
     "authenticatedUser": "Аутентифицированный пользователь",
-    "tokenStored": "Хранится в HTTP-only cookie",
+    "tokenStored": "Сохранено в HTTP-only cookie",
     "navDashboard": "Панель управления",
     "navCharacters": "Персонажи",
-    "navTagline": "Демо безопасного OAuth",
+    "navTagline": "Демонстрация безопасного OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Поставщик",
+    "provider": "Провайдер",
     "theme": {
       "label": "Тема",
       "option": {
@@ -42,7 +42,9 @@
       "with": "Чат с"
     },
     "messages": {
-      "linkCopied": "Ссылка скопирована в буфер обмена!"
+      "linkCopied": "Ссылка скопирована в буфер обмена!",
+      "chatStarted": "Чат успешно начат!",
+      "characterDeleted": "Персонаж успешно удален"
     },
     "contentFilter": {
       "ariaLabel": "Фильтр контента",
@@ -58,7 +60,7 @@
         "hidden": "Полностью скрывать материалы для взрослых"
       },
       "ageRatings": {
-        "L": "0+",
+        "L": "Для всех",
         "TEN": "10+",
         "TWELVE": "12+",
         "FOURTEEN": "14+",
@@ -70,7 +72,7 @@
       "generic": "Произошла ошибка. Пожалуйста, попробуйте еще раз."
     },
     "character": "Персонаж",
-    "seeMore": "Показать больше",
-    "seeMoreArrow": "Показать больше →"
+    "seeMore": "Посмотреть еще",
+    "seeMoreArrow": "Посмотреть еще →"
   }
 }

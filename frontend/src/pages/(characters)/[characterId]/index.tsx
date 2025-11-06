@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { CachedImage } from '../../../components/ui/CachedImage';
-import { Tag as UITag } from '../../../components/ui';
+import { Tag as UITag, Dialog } from '../../../components/ui';
 import { useCharacterMutations, useCharacterQuery } from '../shared/hooks/useCharacterQueries';
 import { chatService } from '../../../services/chatService';
 import { useAuth } from '../../../hooks/useAuth';
 import { usePageHeader } from '../../../hooks/usePageHeader';
 import { characterStatsService, type CharacterStats } from '../../../services/characterStatsService';
 import { FavoriteButton } from '../../../components/ui/FavoriteButton';
+import { useToast } from '../../../contexts/ToastContext';
 
 export default function CharacterDetailPage(): JSX.Element {
   const { t } = useTranslation(['characters', 'common']);
@@ -24,6 +25,8 @@ export default function CharacterDetailPage(): JSX.Element {
   const [isStartingChat, setIsStartingChat] = useState(false);
   const [stats, setStats] = useState<CharacterStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const { addToast } = useToast();
 
   // Collapsible description state - MUST be before any conditional returns
   const [isDescExpanded, setIsDescExpanded] = useState(false);
@@ -119,15 +122,21 @@ export default function CharacterDetailPage(): JSX.Element {
     };
   }, []);
 
-  const handleDelete = async () => {
+  const handleDeleteClick = () => {
+    setShowDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = async () => {
     if (!data) return;
-    const confirmation = window.confirm(t('characters:detail.confirmDelete'));
-    if (!confirmation) return;
     try {
       await deleteMutation.mutateAsync(data.id);
+      addToast(t('common:messages.characterDeleted'), 'success');
       navigate('/characters');
     } catch (error) {
       console.error('[CharacterDetail] remove failed', error);
+      addToast(t('characters:errors.deleteFailed'), 'error');
+    } finally {
+      setShowDeleteDialog(false);
     }
   };
 
@@ -140,11 +149,11 @@ export default function CharacterDetailPage(): JSX.Element {
         url: url,
       }).catch(() => {
         navigator.clipboard.writeText(url);
-        alert(t('common:messages.linkCopied'));
+        addToast(t('common:messages.linkCopied'), 'success');
       });
     } else {
       navigator.clipboard.writeText(url);
-      alert(t('common:messages.linkCopied'));
+      addToast(t('common:messages.linkCopied'), 'success');
     }
   };
 
@@ -159,7 +168,7 @@ export default function CharacterDetailPage(): JSX.Element {
       navigate(`/chat/${conversation.id}`);
     } catch (error) {
       console.error('[CharacterDetail] Failed to start chat', error);
-      alert(t('common:errors.generic'));
+      addToast(t('common:errors.generic'), 'error');
     } finally {
       setIsStartingChat(false);
     }
@@ -291,7 +300,7 @@ export default function CharacterDetailPage(): JSX.Element {
                         <span className="material-symbols-outlined text-xl">edit</span>
                       </button>
                       <button
-                        onClick={handleDelete}
+                        onClick={handleDeleteClick}
                         disabled={deleteMutation.isPending}
                         className="flex h-10 w-10 items-center justify-center rounded-lg text-danger transition-colors hover:bg-danger/10 disabled:opacity-50"
                         aria-label="Delete character"
@@ -518,6 +527,28 @@ export default function CharacterDetailPage(): JSX.Element {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+        title={t('characters:detail.confirmDelete.title')}
+        description={t('characters:detail.confirmDelete.message')}
+        severity="critical"
+        actions={[
+          {
+            label: t('characters:detail.confirmDelete.cancel'),
+            onClick: () => setShowDeleteDialog(false),
+          },
+          {
+            label: deleteMutation.isPending
+              ? t('characters:detail.actions.deleting')
+              : t('characters:detail.confirmDelete.confirm'),
+            onClick: handleDeleteConfirm,
+            disabled: deleteMutation.isPending,
+          },
+        ]}
+      />
     </>
   );
 }

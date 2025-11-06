@@ -6,6 +6,8 @@ interface HorizontalScrollerProps {
   cardType?: 'vertical' | 'horizontal';
   onEndReached?: () => void;
   isLoadingMore?: boolean;
+  itemClassName?: string; // Optional override for item width/wrapper classes
+  containerClassName?: string; // Optional override for outer horizontal padding
 }
 
 export function HorizontalScroller({
@@ -14,6 +16,8 @@ export function HorizontalScroller({
   cardType = 'vertical',
   onEndReached,
   isLoadingMore = false,
+  itemClassName,
+  containerClassName,
 }: HorizontalScrollerProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +36,7 @@ export function HorizontalScroller({
     horizontal: 'w-full md:w-[calc(50%-0.5rem)]',
   };
 
-  const wrapperClass = cardWidthClasses[cardType] || cardWidthClasses.vertical;
+  const wrapperClass = itemClassName || cardWidthClasses[cardType] || cardWidthClasses.vertical;
 
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
@@ -47,8 +51,10 @@ export function HorizontalScroller({
     [onEndReached]
   );
 
+  const outerPadding = typeof containerClassName === 'string' ? containerClassName : 'px-4 sm:px-6';
+
   return (
-    <div className="overflow-hidden">
+    <div className={`overflow-hidden ${outerPadding}`}>
       {title && (
         <div className="flex justify-between items-center mb-3">
           <h3 className="text-xl font-semibold text-content">{title}</h3>
