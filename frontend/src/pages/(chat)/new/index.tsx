@@ -52,17 +52,17 @@ export default function NewConversationPage() {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-6 border-b border-normal">
+    <div className="flex flex-col h-full w-full overflow-x-hidden">
+      <div className="w-full px-2 py-4 md:px-6 border-b border-normal">
         <h1 className="text-2xl font-bold text-content">{t('newConversation')}</h1>
         <p className="text-sm text-muted mt-1">
           {t('conversation.selectCharacterToStart', { defaultValue: 'Select a character to start chatting' })}
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 w-full overflow-y-auto overflow-x-hidden px-2 py-4 md:px-6">
         {/* Conversation title input */}
-        <div className="mb-6">
+        <div className="mb-6 w-full">
           <label className="block text-sm font-medium text-content mb-2">
             {t('conversation.title', { defaultValue: 'Conversation Title' })} ({t('common.optional', { defaultValue: 'optional' })})
           </label>
@@ -77,7 +77,7 @@ export default function NewConversationPage() {
         </div>
 
         {/* Character selection */}
-        <div>
+        <div className="w-full">
           <label className="block text-sm font-medium text-content mb-2">
             {t('participant.selectCharacter')}
           </label>
@@ -97,7 +97,7 @@ export default function NewConversationPage() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="w-full space-y-2 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
               {characters.map((character: Character) => {
                 const displayName = character.lastName
                   ? `${character.firstName} ${character.lastName}`
@@ -107,32 +107,35 @@ export default function NewConversationPage() {
                   <button
                     key={character.id}
                     onClick={() => setSelectedCharacterId(character.id)}
-                    className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all duration-200 ${
+                    className={`w-full flex items-center gap-2 p-2.5 md:p-4 rounded-lg border-2 transition-all duration-200 ${
                       selectedCharacterId === character.id
                         ? 'border-primary bg-primary/5'
                         : 'border-normal hover:border-primary/50 hover:bg-light'
                     }`}
                   >
-                    <Avatar
-                      src={character.avatar}
-                      alt={displayName}
-                      size="medium"
-                    />
-                    <div className="flex-1 text-left min-w-0">
-                      <h3 className="font-medium text-content truncate">
+                    <div className="flex-shrink-0">
+                      <Avatar
+                        src={character.avatar}
+                        alt={displayName}
+                        size="medium"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0 text-left pr-1">
+                      <h3 className="font-medium text-content text-sm md:text-base truncate">
                         {displayName}
                       </h3>
                       {character.personality && (
-                        <p className="text-sm text-muted truncate">
-                          {character.personality.substring(0, 50)}
-                          {character.personality.length > 50 ? '...' : ''}
+                        <p className="text-xs md:text-sm text-muted mt-0.5 line-clamp-2 break-words">
+                          {character.personality}
                         </p>
                       )}
                     </div>
                     {selectedCharacterId === character.id && (
-                      <span className="material-symbols-outlined text-primary">
-                        check_circle
-                      </span>
+                      <div className="flex-shrink-0">
+                        <span className="material-symbols-outlined text-primary text-lg md:text-xl">
+                          check_circle
+                        </span>
+                      </div>
                     )}
                   </button>
                 );

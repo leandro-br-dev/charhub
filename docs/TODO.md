@@ -8,17 +8,32 @@ Este documento contém apenas as tarefas prioritárias em que devemos focar agor
 
 - ✅ **FASE 0**: Infraestrutura (BullMQ, R2, Classificação) - **COMPLETA**
 - ✅ **FASE 1**: Sistema de Personagens - **COMPLETA**
-- 🎯 **FASE 2**: Sistema de Chat - **PRÓXIMA**
+- ✅ **FASE 2**: Sistema de Chat (WebSocket + REST API) - **COMPLETA**
+- ✅ **TRADUÇÃO**: Sistema de Tradução Automática de UGC - **COMPLETA**
+- ✅ **UX/UI**: Edição de Personagens + Upload R2 + Toasts - **COMPLETA**
+- ✅ **LLM TOOLS**: Tool-Calling + Web Search Integration - **COMPLETA**
 
-**Progresso total**: 33% (2 de 6 fases completas)
+**Progresso total**: 70% (6 de 8 features core completas)
+
+### ✨ Sistema Totalmente Funcional
+
+O CharHub possui agora um sistema completo e funcional de:
+- 🎭 Criação e edição de personagens com formulários completos
+- 💬 Chat em tempo real via WebSocket com múltiplos personagens
+- 🌍 Tradução automática de conteúdo (UGC) com cache multinível
+- 📸 Upload de imagens para R2 (avatares, covers, galerias)
+- 🔔 Sistema de notificações toast
+- 🔐 Autenticação OAuth (Google + Facebook)
+- 🎨 Interface responsiva com tema cyberpunk
+- 🤖 LLM com tool-calling e web search para informações em tempo real
 
 ---
 
-## 🎯 FASE 2: Sistema de Chat (PRÓXIMA PRIORIDADE)
+## ✅ FASE 2: Sistema de Chat - **COMPLETA**
 
 **Objetivo**: Implementar conversas em tempo real entre usuário e personagens de IA.
-**Duração estimada**: 3-4 semanas
-**Status**: 🚧 Pronto para iniciar
+**Duração**: 3-4 semanas
+**Status**: ✅ **COMPLETA**
 
 ### 📋 Tarefas Sequenciais
 
@@ -110,97 +125,84 @@ Estas tarefas podem ser executadas simultaneamente por 2 agentes diferentes:
 
 ---
 
-#### 👤 AGENTE 2: Etapa 2.3 - Frontend Chat Interface
+#### ✅ AGENTE 2: Etapa 2.3 - Frontend Chat Interface - COMPLETA
 **Tempo**: 1-2 semanas
 **Dependência**: ✅ Etapa 2.1 (schemas Prisma para tipos)
+**Status**: ✅ Concluída
 
 **Tarefas**:
-- [ ] **Tipos TypeScript** (`frontend/src/types/chat.ts`):
-  - [ ] `Conversation`, `Message`, `ConversationParticipant`
-  - [ ] `CreateConversationPayload`, `SendMessagePayload`
-- [ ] **Serviço API** (`frontend/src/services/chatService.ts`):
-  - [ ] `createConversation(data)`
-  - [ ] `getConversation(id)`
-  - [ ] `listConversations(filters?)`
-  - [ ] `sendMessage(conversationId, content)`
-  - [ ] `getMessages(conversationId, pagination?)`
-  - [ ] `addParticipant(conversationId, characterId)`
-  - [ ] `archiveConversation(id)`
-- [ ] **Hooks customizados**:
-  - [ ] `useConversationListQuery()` - React Query
-  - [ ] `useConversationQuery(id)` - buscar conversa específica
-  - [ ] `useMessagesQuery(conversationId, pagination)` - histórico
-  - [ ] `useConversationMutations()` - create, update, archive
-  - [ ] `useMessageMutations()` - send, delete
-- [ ] **Componentes UI** (padrão colocation em `pages/(chat)/shared/components/`):
-  - [ ] `ConversationList.tsx` - lista lateral de conversas
-  - [ ] `ConversationHeader.tsx` - título, participantes, ações
-  - [ ] `MessageList.tsx` - lista de mensagens com scroll infinito
-  - [ ] `MessageBubble.tsx` - balão individual (user/character)
-  - [ ] `MessageInput.tsx` - campo de texto + enviar
-  - [ ] `CharacterAvatar.tsx` - avatar do participante
-  - [ ] `TypingIndicator.tsx` - animação "digitando..."
-- [ ] **Páginas** (usando padrão colocation):
-  - [ ] `pages/(chat)/index.tsx` - lista de conversas (vazia: placeholder)
-  - [ ] `pages/(chat)/[id]/index.tsx` - interface de chat ativa
-  - [ ] `pages/(chat)/new/index.tsx` - criar nova conversa
-- [ ] **Traduções**:
-  - [ ] Criar `backend/translations/en/chat.json`
-  - [ ] Adicionar 'chat' a SUPPORTED_NAMESPACES
-  - [ ] Rodar `npm run build:translations`
-- [ ] **Integração com Sidebar**:
-  - [ ] Atualizar `Sidebar.tsx` para mostrar lista de conversas em `/chat/*`
+- [x] **Tipos TypeScript** (`frontend/src/types/chat.ts`)
+- [x] **Serviço API** (`frontend/src/services/chatService.ts`)
+- [x] **Hooks customizados**:
+  - [x] `useConversations.tsx` - React Query para conversas
+  - [x] `useMessages.tsx` - React Query para mensagens
+  - [x] `useChatModalsManager.ts` - gerenciamento de modais
+- [x] **Componentes UI**:
+  - [x] `ConversationList.tsx`
+  - [x] `ConversationHeader.tsx`
+  - [x] `MessageList.tsx`
+  - [x] `MessageBubble.tsx`
+  - [x] `MessageInput.tsx`
+  - [x] `TypingIndicator.tsx`
+  - [x] `ChatContainer.tsx`
+  - [x] `ChatView.tsx`
+  - [x] `AddParticipantModal.tsx`
+  - [x] `ConversationSettingsModal.tsx`
+  - [x] `ParticipantConfigModal.tsx`
+  - [x] `ImageGalleryModal.tsx`
+- [x] **Páginas**:
+  - [x] `pages/(chat)/index.tsx`
+  - [x] `pages/(chat)/[conversationId]/index.tsx`
+  - [x] `pages/(chat)/new/index.tsx`
+- [x] **Traduções**:
+  - [x] `backend/translations/_source/chat.json`
+  - [x] Traduzido para todos os idiomas (12 idiomas)
+  - [x] Integrado com i18next
 
-**Arquivos criados**:
+**Arquivos implementados**:
 - `frontend/src/types/chat.ts`
 - `frontend/src/services/chatService.ts`
 - `frontend/src/pages/(chat)/shared/hooks/*`
-- `frontend/src/pages/(chat)/shared/components/*`
+- `frontend/src/pages/(chat)/shared/components/*` (15 componentes)
 - `frontend/src/pages/(chat)/index.tsx`
-- `frontend/src/pages/(chat)/[id]/index.tsx`
+- `frontend/src/pages/(chat)/[conversationId]/index.tsx`
 - `frontend/src/pages/(chat)/new/index.tsx`
-- `backend/translations/en/chat.json`
-
-**Referência**: `E:\Projects\charhub_dev_old_version\frontend\src\components\chat\`
+- `backend/translations/*/chat.json` (12 idiomas)
 
 ---
 
-### 🔄 Etapa 2.4: WebSocket em Tempo Real (APÓS 2.2 e 2.3)
+### ✅ Etapa 2.4: WebSocket em Tempo Real - COMPLETA
 **Tempo**: 3-5 dias
-**Responsável**: 1 agente (preferencialmente quem fez backend)
 **Dependência**: ✅ Etapas 2.2 e 2.3 (REST API e UI funcionais)
+**Status**: ✅ Concluída
 
 **Tarefas**:
-- [ ] **Backend WebSocket**:
-  - [ ] Instalar Socket.IO: `npm install socket.io`
-  - [ ] Configurar Socket.IO no `backend/src/index.ts`
-  - [ ] Criar `backend/src/websocket/chatHandler.ts`:
-    - [ ] Autenticação via JWT no handshake
-    - [ ] Gerenciar rooms por conversationId
-    - [ ] Eventos:
-      - [ ] `join_conversation` - entrar na sala
-      - [ ] `send_message` - enviar mensagem
-      - [ ] `message_received` - broadcast para sala
-      - [ ] `typing_start` / `typing_stop` - indicadores
-      - [ ] `ai_response_start` / `ai_response_chunk` - streaming LLM
-  - [ ] Integrar com `assistantService` para respostas de IA
-- [ ] **Frontend WebSocket**:
-  - [ ] Instalar Socket.IO client: `npm install socket.io-client`
-  - [ ] Criar `frontend/src/hooks/useChatSocket.ts`:
-    - [ ] Conectar ao servidor com token JWT
-    - [ ] Gerenciar estado da conexão
-    - [ ] Emitir e escutar eventos
-    - [ ] Auto-reconnect em caso de desconexão
-  - [ ] Integrar hook na página de chat (`pages/(chat)/[id]/index.tsx`)
-  - [ ] Atualizar `MessageInput` para usar WebSocket
-  - [ ] Adicionar `TypingIndicator` com eventos real-time
-  - [ ] Implementar scroll automático ao receber mensagens
+- [x] **Backend WebSocket**:
+  - [x] Socket.IO instalado e configurado
+  - [x] `backend/src/websocket/chatHandler.ts` implementado
+  - [x] Autenticação via JWT no handshake
+  - [x] Gerenciamento de rooms por conversationId
+  - [x] Eventos implementados:
+    - [x] `join_conversation`
+    - [x] `send_message`
+    - [x] `message_received`
+    - [x] `typing_start` / `typing_stop`
+    - [x] `ai_response_start` / `ai_response_chunk` / `ai_response_end`
+  - [x] Integração com `assistantService` e BullMQ
+- [x] **Frontend WebSocket**:
+  - [x] Socket.IO client instalado
+  - [x] `frontend/src/hooks/useChatSocket.ts` implementado
+  - [x] Conexão com token JWT
+  - [x] Auto-reconnect
+  - [x] Integrado em `ChatContainer.tsx`
+  - [x] `MessageInput` usando WebSocket
+  - [x] `TypingIndicator` com eventos real-time
+  - [x] Scroll automático
 
-**Arquivos criados**:
+**Arquivos implementados**:
 - `backend/src/websocket/chatHandler.ts`
 - `frontend/src/hooks/useChatSocket.ts`
-
-**Referência**: `E:\Projects\charhub_dev_old_version\backend\app\websocket\chat_handler.py`
+- Integrado em `ChatContainer.tsx` e `MessageInput.tsx`
 
 ---
 
@@ -216,29 +218,82 @@ Um usuário deve conseguir:
 
 ---
 
-## 🔧 Tarefas de Manutenção e Melhorias (Paralelo à Fase 2)
+---
 
-Estas tarefas podem ser feitas em paralelo por um 3º agente ou nos intervalos:
+## 🎯 PRÓXIMAS TAREFAS PRIORITÁRIAS
 
-### 🎨 UX/UI - Melhorias de Interface
-- [ ] Implementar página de edição de personagens (`/characters/edit/:id`)
-- [ ] Implementar página de visualização detalhada (`/characters/view/:id`)
-- [ ] Adicionar upload de imagens de avatar via R2
-- [ ] Melhorar feedback visual de loading e erros
-- [ ] Implementar sistema de notificações toast
+### 🎨 UX/UI - Melhorias de Interface (Alta Prioridade)
+- [x] **Implementar página de edição de personagens** (`/characters/:id/edit`) - ✅ COMPLETO
+  - Implementado em `frontend/src/pages/(characters)/[characterId]/edit/index.tsx`
+  - Formulário completo com todos os campos
+  - Validação com Zod via `useCharacterForm`
+  - Upload de avatar integrado
+- [x] **Upload de imagens via Cloudflare R2** - ✅ COMPLETO
+  - R2Service implementado em `backend/src/services/r2Service.ts`
+  - Endpoints de upload:
+    - `POST /api/v1/characters/avatar` - Avatar de personagem
+    - `POST /api/v1/characters/:id/images` - Imagens do personagem (AVATAR, COVER, SAMPLE, STICKER)
+    - `POST /api/v1/users/me/avatar` - Avatar de usuário
+  - Multer configurado para upload multipart/form-data
+  - Suporte para preview via `GET /api/v1/media/proxy`
+- [x] **Sistema de notificações toast** - ✅ COMPLETO
+  - Implementado em `frontend/src/contexts/ToastContext.tsx`
+  - Hook `useToast()` disponível
+  - Integrado em mutations (create/update characters)
+  - Animações de entrada/saída
+- [ ] **Melhorar feedback visual**
+  - Loading skeletons para listas
+  - Estados de erro mais informativos
+  - Mensagens de confirmação para ações destrutivas
 
-### 🌐 Internacionalização
-- [ ] Revisar traduções existentes com falantes nativos
-- [ ] Adicionar mais idiomas (pt-PT, en-GB, etc.)
+### 🤖 LLM - Tools & Web Browsing - ✅ COMPLETO
+- [x] **Adicionar suporte a tool-calling no LLM service** - ✅ COMPLETO
+  - [x] Atualizar `backend/src/services/llm/index.ts` para aceitar `tools`, `toolChoice`, `allowBrowsing`
+  - [x] Adaptar providers (OpenAI/Gemini/Grok) para passar tool schemas
+  - [x] Implementar parser de respostas com tool calls
+  - [x] Sistema de auto-execução de tools com `autoExecuteTools`
+- [x] **Web Search Tool** - ✅ COMPLETO
+  - [x] Criar ferramenta de busca web server-side (`backend/src/services/llm/tools/webSearch.ts`)
+  - [x] Integrar com DuckDuckGo API (sem necessidade de API key)
+  - [x] Rate limiting com token bucket algorithm (10 req/s)
+  - [x] Cache in-memory com TTL de 1 hora
+  - [x] Parser de resultados com título, URL e snippet
+- [x] **Character Autocomplete com Web Search** - ✅ COMPLETO
+  - [x] Atualizar `characterAutocompleteAgent.ts` para usar web search
+  - [x] Adicionar citações/fontes nas sugestões via system prompt
+  - [x] Melhorar qualidade das sugestões com dados reais
+  - [x] Modo 'web' vs 'ai' para controlar uso de web search
+- [x] **Test Endpoints** - ✅ COMPLETO
+  - [x] `POST /api/v1/llm-test/tool-calling` - teste geral de tool calling
+  - [x] `POST /api/v1/llm-test/character-autocomplete` - teste de autocomplete com web search
 
-### 📝 Documentação
-- [ ] Gerar documentação da API com Swagger/OpenAPI
-- [ ] Atualizar `BACKEND.md` com novos endpoints
-- [ ] Criar guia de contribuição (`CONTRIBUTING.md`)
+**Arquivos implementados**:
+- `backend/src/services/llm/tools/webSearch.ts` (140 linhas)
+- `backend/src/services/llm/tools/index.ts` (90 linhas)
+- `backend/src/services/llm/index.ts` (atualizado com tool support)
+- `backend/src/services/llm/openai.ts` (atualizado com function calling)
+- `backend/src/services/llm/gemini.ts` (atualizado com functionDeclarations)
+- `backend/src/services/llm/grok.ts` (marcado como sem suporte a tools)
+- `backend/src/agents/characterAutocompleteAgent.ts` (atualizado com web mode)
+- `backend/src/routes/v1/llm-test.ts` (105 linhas)
 
-### 🧪 Testes
+### 📝 Documentação (Média Prioridade)
+- [ ] **API Documentation com Swagger/OpenAPI**
+  - Instalar `@nestjs/swagger` ou alternativa para Express
+  - Documentar todos os endpoints REST
+  - Gerar UI interativa
+- [ ] **Atualizar BACKEND.md**
+  - Documentar novos endpoints de chat
+  - Documentar sistema de tradução
+  - Adicionar exemplos de uso
+- [ ] **Criar CONTRIBUTING.md**
+  - Guia de setup local
+  - Padrões de código
+  - Processo de PR
+
+### 🧪 Testes (Baixa Prioridade - Futuro)
 - [ ] Configurar Vitest no backend
-- [ ] Escrever testes unitários para services críticos
+- [ ] Testes unitários para services críticos
 - [ ] Configurar Vitest no frontend
 - [ ] Testes E2E com Playwright
 
@@ -246,74 +301,15 @@ Estas tarefas podem ser feitas em paralelo por um 3º agente ou nos intervalos:
 
 ## 📚 Documentação de Referência
 
-- **Migração Completa**: `docs/MIGRATION/02_PLANO_DE_MIGRACAO.md`
-- **Inventário Antigo**: `docs/MIGRATION/04_OLD_PROJECT_INVENTORY.md`
+- **Sistema de Tradução**: `docs/TRANSLATION_SYSTEM.md` ⭐
+- **LLM Tool-Calling**: `docs/LLM_TOOLS.md` ⭐ Novo
 - **Arquitetura Backend**: `docs/BACKEND.md`
 - **Arquitetura Frontend**: `docs/FRONTEND.md`
 - **Operações**: `docs/DEV_OPERATIONS.md`
+- **Migração Completa**: `docs/MIGRATION/02_PLANO_DE_MIGRACAO.md`
 
 ---
 
-## 🚀 Como Começar
-
-1. **Para Fase 2.1** (Fundação - Sequencial):
-   ```bash
-   # Editar prisma/schema.prisma
-   # Adicionar models: Conversation, ConversationParticipant, Message, Assistant
-   npx prisma migrate dev --name add_chat_models
-   npx prisma studio  # Validar estrutura
-   ```
-
-2. **Para Fase 2.2** (Backend - Paralelo):
-   ```bash
-   # Após 2.1 estar completa
-   # Criar validators, services, routes conforme checklist acima
-   # Testar com Postman/Insomnia
-   ```
-
-3. **Para Fase 2.3** (Frontend - Paralelo):
-   ```bash
-   # Após 2.1 estar completa
-   # Pode começar com tipos mock enquanto 2.2 está em desenvolvimento
-   # Criar pages, components, hooks conforme checklist acima
-   ```
-
-4. **Para Fase 2.4** (WebSocket - Após 2.2 e 2.3):
-   ```bash
-   npm install socket.io socket.io-client
-   # Implementar chatHandler e useChatSocket
-   ```
-
----
-
-## ⚡ Estratégia de Desenvolvimento Paralelo
-
-### Cenário Ideal (2 Agentes):
-1. **Agente 1**: Fazer Etapa 2.1 (Fundação) sozinho
-2. **Após 2.1 concluída**:
-   - **Agente 1**: Iniciar Etapa 2.2 (Backend)
-   - **Agente 2**: Iniciar Etapa 2.3 (Frontend)
-3. **Após 2.2 e 2.3 concluídas**:
-   - **Agente 1**: Fazer Etapa 2.4 (WebSocket)
-
-### Cenário com 3 Agentes:
-1. **Agente 1**: Etapa 2.1 → Etapa 2.2 → Etapa 2.4
-2. **Agente 2**: (aguardar 2.1) → Etapa 2.3
-3. **Agente 3**: Tarefas de manutenção em paralelo
-
----
-
-**Última atualização**: 2025-10-10
-**Fase atual**: Preparação para iniciar Fase 2 (Chat)
-
-
-## LLM: Tools & Web Browsing Support (New)
-- Add structured tool-calling support to LLM service
-  - backend/src/services/llm/index.ts: wire tools, toolChoice, allowBrowsing
-  - Update provider adapters (OpenAI/Gemini/Grok) to pass tool schemas
-  - Add a simple web-search fetcher tool (server-side HTTP + parser)
-- Character Autocomplete (web mode)
-  - Switch to actual web search tool when available
-  - Ground suggestions with citations in agent output (optional)
-  - Rate-limit and cache queries
+**Última atualização**: 2025-11-07
+**Fase atual**: Sistema de Tool Calling completo - próximas melhorias de UX/UI e documentação
 

@@ -184,8 +184,11 @@ export class ResponseGenerationAgent {
     const llmRequest: LLMRequest = {
       provider: 'gemini', // Or determine dynamically
       model: 'gemini-2.5-flash-lite', // Or determine dynamically
-      systemPrompt,
+      systemPrompt: `${systemPrompt}\n\nTOOL USAGE:\nYou have access to web_search tool. Use it when you need current information, real-time data, or facts that may have changed since your training. Examples: weather, news, current events, recent facts.`,
       userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${characterName}. Remember: DO NOT include \"${characterName}:\" at the start of your response.`,
+      allowBrowsing: true,       // Enable web search
+      autoExecuteTools: true,    // Auto-execute tools
+      temperature: 0.8,          // Slightly creative for roleplay
     };
 
     try {
@@ -235,8 +238,11 @@ export class ResponseGenerationAgent {
     const llmRequest: LLMRequest = {
       provider: 'gemini',
       model: 'gemini-2.5-flash-lite',
-      systemPrompt,
+      systemPrompt: `${systemPrompt}\n\nTOOL USAGE:\nYou have access to web_search tool. Use it when you need current information, real-time data, or facts that may have changed since your training. Examples: weather, news, current events, recent facts, stock prices, etc.`,
       userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${assistantName}. Remember: DO NOT include \"${assistantName}:\" at the start of your response.`,
+      allowBrowsing: true,       // Enable web search
+      autoExecuteTools: true,    // Auto-execute tools
+      temperature: 0.7,          // Balanced for assistance
     };
 
     try {

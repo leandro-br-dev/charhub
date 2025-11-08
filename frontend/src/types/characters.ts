@@ -223,7 +223,7 @@ export const EMPTY_CHARACTER_FORM: CharacterFormValues = {
   personality: null,
   history: null,
   isPublic: true,
-  originalLanguageCode: 'en',
+  originalLanguageCode: null, // Will be set from user's preferredLanguage
   ageRating: 'L',
   contentTags: [],
   loraId: null,

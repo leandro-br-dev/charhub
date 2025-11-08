@@ -1,6 +1,8 @@
 import { callGemini } from './gemini';
 import { callOpenAI } from './openai';
 import { callGrok } from './grok';
+import { getToolDefinitions, executeTools, type ToolCall, type ToolResult } from './tools';
+import { logger } from '../../config/logger';
 import llmModels from '../../data/llm-models.json';
 
 export type LLMProvider = 'gemini' | 'openai' | 'grok';
@@ -12,25 +14,29 @@ export interface LLMRequest {
   userPrompt: string;
   temperature?: number;
   maxTokens?: number;
-  // TODO(tools): Add structured tool definitions and execution results.
-  // The providers currently ignore tool calls; extend provider adapters to support
-  // OpenAI tool_choice/functions and Gemini tool execution where available.
-  // For now, these flags are accepted but unused.
-  tools?: Array<{ name: string; description?: string; schema?: unknown }>;
-  toolChoice?: 'auto' | 'none' | string;
-  allowBrowsing?: boolean; // Hint for agents to use web search when supported
+  tools?: string[]; // Array of tool names to enable (e.g., ['web_search'])
+  toolChoice?: 'auto' | 'none' | 'required' | string; // Specific tool name
+  allowBrowsing?: boolean; // Shortcut to enable web_search tool
+  autoExecuteTools?: boolean; // If true, automatically execute tool calls and return final result
 }
 
 export interface LLMResponse {
   provider: LLMProvider;
   model: string;
   content: string;
+  toolCalls?: ToolCall[];
+  toolResults?: ToolResult[];
+  searchQueries?: string[]; // Google Search queries (Gemini only)
+  groundingMetadata?: any;   // Grounding sources (Gemini only)
   usage?: {
     promptTokens: number;
     completionTokens: number;
     totalTokens: number;
   };
 }
+
+// Re-export tool types for convenience
+export type { ToolCall, ToolResult } from './tools';
 
 /**
  * Get list of available models for a provider
@@ -68,6 +74,19 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
     throw new Error(`Invalid model ${request.model} for provider ${request.provider}`);
   }
 
+  // Prepare tools
+  let toolNames = request.tools || [];
+
+  // For Gemini: use native Google Search instead of custom web_search
+  const useGeminiGoogleSearch = request.provider === 'gemini' && request.allowBrowsing;
+
+  // For other providers: use custom web_search tool
+  if (request.provider !== 'gemini' && request.allowBrowsing && !toolNames.includes('web_search')) {
+    toolNames = [...toolNames, 'web_search'];
+  }
+
+  const toolDefinitions = toolNames.length > 0 ? getToolDefinitions(toolNames) : undefined;
+
   let response;
 
   switch (request.provider) {
@@ -78,6 +97,9 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
         userPrompt: request.userPrompt,
         temperature: request.temperature,
         maxTokens: request.maxTokens,
+        tools: toolDefinitions,
+        toolChoice: request.toolChoice as 'auto' | 'none' | 'required' | undefined,
+        useGoogleSearch: useGeminiGoogleSearch, // Use native Google Search
       });
       break;
 
@@ -88,10 +110,13 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
         userPrompt: request.userPrompt,
         temperature: request.temperature,
         maxTokens: request.maxTokens,
+        tools: toolDefinitions,
+        toolChoice: request.toolChoice as 'auto' | 'none' | 'required' | undefined,
       });
       break;
 
     case 'grok':
+      // Grok doesn't support tools yet, fallback to basic call
       response = await callGrok({
         model: request.model,
         systemPrompt: request.systemPrompt,
@@ -105,10 +130,56 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
       throw new Error(`Unsupported provider: ${request.provider}`);
   }
 
+  // Auto-execute tools if requested
+  let toolResults: ToolResult[] | undefined;
+  if (request.autoExecuteTools && response.toolCalls && response.toolCalls.length > 0) {
+    logger.info(
+      { provider: request.provider, toolCalls: response.toolCalls.length },
+      'Auto-executing tool calls'
+    );
+
+    try {
+      toolResults = await executeTools(response.toolCalls);
+
+      // Log tool execution results
+      for (const result of toolResults) {
+        if (result.error) {
+          logger.error(
+            { toolName: result.toolName, error: result.error },
+            'Tool execution failed'
+          );
+        } else {
+          logger.debug({ toolName: result.toolName }, 'Tool executed successfully');
+        }
+      }
+    } catch (error) {
+      logger.error({ error }, 'Failed to execute tools');
+    }
+  }
+
+  // Log Google Search queries if present (Gemini only)
+  const searchQueries = ('searchQueries' in response ? response.searchQueries : undefined) as string[] | undefined;
+  const groundingMetadata = ('groundingMetadata' in response ? response.groundingMetadata : undefined) as any;
+
+  if (searchQueries && Array.isArray(searchQueries) && searchQueries.length > 0) {
+    logger.info(
+      {
+        provider: request.provider,
+        searchQueries,
+        sourcesCount: groundingMetadata?.groundingChunks?.length || 0
+      },
+      'Google Search grounding used'
+    );
+  }
+
   return {
     provider: request.provider,
     model: response.model,
     content: response.content,
+    toolCalls: response.toolCalls,
+    toolResults,
+    searchQueries,
+    groundingMetadata,
     usage: response.usage,
   };
 }

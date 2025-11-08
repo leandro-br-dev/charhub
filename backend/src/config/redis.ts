@@ -35,7 +35,6 @@ export function createRedisClient(): Redis {
 }
 
 /**
- * Singleton Redis client for general use
+ * Singleton Redis client for translation cache
  */
-// Avoid auto-connecting on import; prefer explicit connections.
-// export const redisClient = createRedisClient();
+export const redis = createRedisClient();

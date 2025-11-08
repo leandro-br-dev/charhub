@@ -31,8 +31,10 @@ export function ContentTagsSelector({
   const unlockedSet = useMemo(() => new Set(unlockedTags), [unlockedTags]);
 
   useEffect(() => {
-    const normalized = allowedTags.filter(tag => unlockedSet.has(tag));
-    if (!haveSameContentTags(normalized, allowedTags)) {
+    // Ensure allowedTags is an array (autocomplete might return non-array)
+    const tagsArray = Array.isArray(allowedTags) ? allowedTags : [];
+    const normalized = tagsArray.filter(tag => unlockedSet.has(tag));
+    if (!haveSameContentTags(normalized, tagsArray)) {
       onChange(normalized);
     }
   }, [unlockedSet, allowedTags, onChange]);

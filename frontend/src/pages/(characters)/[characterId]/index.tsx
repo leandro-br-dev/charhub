@@ -395,7 +395,7 @@ export default function CharacterDetailPage(): JSX.Element {
                 {/* Gender and species */}
                 {data.gender && (
                   <UITag
-                    label={data.gender}
+                    label={t(`characters:genders.${data.gender.toLowerCase()}`, data.gender)}
                     selected
                     icon={<span className="material-symbols-outlined text-sm">{resolveGenderIcon(data.gender)}</span>}
                     disabled

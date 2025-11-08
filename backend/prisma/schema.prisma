@@ -205,6 +205,9 @@ model Attire {
   ageRating   AgeRating    @default(L)
   contentTags ContentTag[]
 
+  // Translation versioning
+  contentVersion Int @default(1) // Increments when translatable content changes
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -287,6 +290,9 @@ model Character {
 
   mainAttireId String?
   mainAttire   Attire? @relation("CharacterMainAttire", fields: [mainAttireId], references: [id], onDelete: SetNull)
+
+  // Translation versioning
+  contentVersion Int @default(1) // Increments when translatable content changes
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -371,6 +377,11 @@ model Story {
   ageRating     AgeRating    @default(L)
   contentTags   ContentTag[]
   isPublic      Boolean      @default(false)
+
+  // Translation versioning
+  contentVersion Int @default(1) // Increments when translatable content changes
+  originalLanguageCode String? // ISO 639-1 code of original language
+
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 
@@ -551,4 +562,61 @@ model FavoriteCharacter {
   @@unique([userId, characterId]) // A user can favorite a character only once
   @@index([userId])
   @@index([characterId])
+}
+
+// ============================================================================
+// TRANSLATION SYSTEM FOR USER-GENERATED CONTENT
+// ============================================================================
+
+// Translation status for content translations
+enum TranslationStatus {
+  PENDING     // Translation in progress
+  ACTIVE      // Translation active and available
+  OUTDATED    // Original content was updated
+  FAILED      // Translation failed
+  REVIEWED    // Reviewed by human moderator
+}
+
+// ContentTranslation stores translations of user-generated content
+// Uses polymorphic pattern to support multiple content types
+model ContentTranslation {
+  id String @id @default(uuid())
+
+  // Polymorphic identification (contentType + contentId pattern)
+  contentType String // "Character", "Story", "Attire", "Tag", etc.
+  contentId   String // ID of the content being translated
+  fieldName   String // Field being translated: "personality", "description", etc.
+
+  // Languages
+  originalLanguageCode String // ISO 639-1: "pt-BR", "en-US", etc.
+  targetLanguageCode   String // Target language code
+  originalText         String @db.Text // Original text (for cache/validation)
+  translatedText       String @db.Text // Translated text
+
+  // Translation metadata
+  translationProvider String? // "gemini", "openai", "grok", "human"
+  translationModel    String? // Model used: "gemini-2.5-flash-lite", etc.
+  confidence          Float?  // Confidence score (0-1)
+
+  // Quality control
+  status     TranslationStatus @default(ACTIVE)
+  reviewedBy String? // UserID of reviewer (if human reviewed)
+  reviewedAt DateTime?
+
+  // Performance metrics
+  translationTimeMs Int? // Translation time in milliseconds
+  characterCount    Int? // Number of characters translated
+
+  // Versioning (to detect when original content changes)
+  sourceVersion Int @default(1) // Version of the source content
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Optimized indexes for ultra-fast lookup
+  @@unique([contentType, contentId, fieldName, targetLanguageCode])
+  @@index([contentType, contentId])
+  @@index([targetLanguageCode])
+  @@index([status])
+  @@index([originalLanguageCode, targetLanguageCode])
 }

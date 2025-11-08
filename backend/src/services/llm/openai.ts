@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import type { ToolDefinition, ToolCall } from './tools';
 
 export interface OpenAIRequest {
   model: string;
@@ -6,11 +7,14 @@ export interface OpenAIRequest {
   userPrompt: string;
   temperature?: number;
   maxTokens?: number;
+  tools?: ToolDefinition[];
+  toolChoice?: 'auto' | 'none' | 'required';
 }
 
 export interface OpenAIResponse {
   content: string;
   model: string;
+  toolCalls?: ToolCall[];
   usage?: {
     promptTokens: number;
     completionTokens: number;
@@ -58,14 +62,55 @@ export async function callOpenAI(request: OpenAIRequest): Promise<OpenAIResponse
     }
   }
 
+  // Add tools if provided
+  if (request.tools && request.tools.length > 0) {
+    completionParams.tools = request.tools.map(tool => ({
+      type: 'function' as const,
+      function: {
+        name: tool.name,
+        description: tool.description,
+        parameters: tool.parameters,
+      },
+    }));
+
+    if (request.toolChoice) {
+      if (request.toolChoice === 'auto' || request.toolChoice === 'none' || request.toolChoice === 'required') {
+        completionParams.tool_choice = request.toolChoice;
+      } else {
+        // Specific tool name
+        completionParams.tool_choice = {
+          type: 'function',
+          function: { name: request.toolChoice },
+        };
+      }
+    }
+  }
+
   const completion = await openai.chat.completions.create(completionParams);
 
   const choice = completion.choices[0];
   const content = choice.message.content || '';
 
+  // Extract tool calls if present
+  const toolCalls: ToolCall[] | undefined = choice.message.tool_calls?.map(tc => {
+    if (tc.type === 'function') {
+      return {
+        id: tc.id,
+        name: tc.function.name,
+        arguments: JSON.parse(tc.function.arguments),
+      };
+    }
+    return {
+      id: tc.id,
+      name: 'unknown',
+      arguments: {},
+    };
+  });
+
   return {
     content,
     model: completion.model,
+    toolCalls,
     usage: {
       promptTokens: completion.usage?.prompt_tokens || 0,
       completionTokens: completion.usage?.completion_tokens || 0,

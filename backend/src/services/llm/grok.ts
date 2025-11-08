@@ -11,6 +11,7 @@ export interface GrokRequest {
 export interface GrokResponse {
   content: string;
   model: string;
+  toolCalls?: undefined; // Grok doesn't support tool calling yet
   usage?: {
     promptTokens: number;
     completionTokens: number;

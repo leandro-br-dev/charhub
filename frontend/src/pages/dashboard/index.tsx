@@ -220,9 +220,9 @@ export default function Dashboard(): JSX.Element {
   const filteredMyStories = myStories.filter((s) => !shouldHideContent((s as any).ageRating, (s as any).contentTags || []));
 
   return (
-    <div className="min-h-[100svh] w-full bg-normal overflow-x-hidden pt-8">
+    <div className="w-full bg-normal overflow-x-hidden">
       {/* Carousel Section */}
-      <div className="mb-8 overflow-hidden">
+      <div className="mb-1 overflow-hidden">
         {isLoadingCarousel ? (
           <div className="h-80 sm:h-96 md:h-[420px] bg-light animate-pulse" />
         ) : (

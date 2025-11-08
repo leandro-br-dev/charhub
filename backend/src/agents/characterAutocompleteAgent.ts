@@ -46,7 +46,11 @@ export interface CharacterAutocompleteResult extends Partial<CharacterAutocomple
 
 function buildSystemPrompt(mode: CharacterAutocompleteMode) {
   const webNote = mode === 'web'
-    ? '\n- Prefer grounded, verifiable data if relevant. Cite well-known facts; avoid fabrications. If web tools are not available, proceed with reasonable, creative completion.'
+    ? '\n- You have access to web_search tool. Use it to find accurate information about real characters, celebrities, or fictional characters from media.'
+    + '\n- When filling in details about known characters, search for factual information first.'
+    + '\n- For original characters, use web search to find inspiration from similar character archetypes or tropes.'
+    + '\n- Cite sources when using web-searched information (e.g., "Based on [source]: ...").'
+    + '\n- If no relevant web results, proceed with creative, original suggestions.'
     : '';
   return [
     'You are a character design assistant.',
@@ -55,8 +59,15 @@ function buildSystemPrompt(mode: CharacterAutocompleteMode) {
     '- Respect the target age rating and content tags; avoid explicit content outside allowed ratings.',
     '- Keep tone consistent with any provided style/species/gender.',
     '- Keep outputs concise and helpful for UI forms.',
-    '- Return STRICT JSON only, no markdown, no commentary.',
-    '- Include only keys you are filling (omit any provided ones).',
+    '',
+    'CRITICAL OUTPUT FORMAT:',
+    '- You MUST return ONLY valid JSON',
+    '- NO markdown code blocks (no ```json or ```)',
+    '- NO explanations, commentary, or additional text',
+    '- NO prefix or suffix text',
+    '- ONLY the raw JSON object',
+    '- Include only keys you are filling (omit any provided ones)',
+    '',
     webNote,
   ].join('\n');
 }
@@ -104,7 +115,18 @@ export async function runCharacterAutocomplete(
   mode: CharacterAutocompleteMode = 'ai',
   preferredLanguage?: string
 ): Promise<CharacterAutocompleteResult> {
-  const langHint = preferredLanguage ? `\nCRITICAL: Respond in ${preferredLanguage}.` : '';
+  // Build strong language instruction
+  const langHint = preferredLanguage
+    ? `\n\nLANGUAGE REQUIREMENT (CRITICAL):
+- You MUST write ALL text fields (personality, history, physicalCharacteristics, etc.) in the language: ${preferredLanguage}
+- The user's preferred language/locale is: ${preferredLanguage}
+- Respect regional variants (e.g., pt-BR is Brazilian Portuguese, pt-PT is European Portuguese, en-US vs en-GB)
+- Do NOT use English unless the specified language IS English (en, en-US, en-GB, etc.)
+- Translate character information to ${preferredLanguage} if needed
+- Keep proper names (firstName, lastName) in their original language, but ALL descriptions in ${preferredLanguage}
+- Example: If character is "Naruto" and language is "pt-BR", write personality/history in Brazilian Portuguese`
+    : '';
+
   const systemPrompt = buildSystemPrompt(mode) + langHint;
   const userPrompt = buildUserPrompt(input);
 
@@ -114,18 +136,34 @@ export async function runCharacterAutocomplete(
     systemPrompt,
     userPrompt,
     temperature: 0.7,
-    // TODO(tools): allow tools + web browsing; wire when implemented in LLM service
     allowBrowsing: mode === 'web',
-  } as any);
+    autoExecuteTools: mode === 'web', // Auto-execute web search if in web mode
+  });
 
-  // Parse JSON safely
-  const text = llmResponse.content?.trim() || '{}';
+  // Parse JSON safely - clean markdown if present
+  let text = llmResponse.content?.trim() || '{}';
+
+  // Remove markdown code blocks if present
+  if (text.startsWith('```')) {
+    // Extract content between ```json and ``` or between ``` and ```
+    const match = text.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/);
+    if (match) {
+      text = match[1].trim();
+    }
+  }
+
+  // Remove any leading/trailing text that's not JSON
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    text = jsonMatch[0];
+  }
+
   try {
     const parsed = parseJsonSafe<Record<string, unknown>>(text) || {};
     const sanitized = sanitizeAutocomplete(parsed);
     return sanitized;
   } catch (_e) {
-    logger.warn({ text }, 'Failed to parse LLM JSON for character autocomplete');
+    logger.warn({ text: text.substring(0, 200) }, 'Failed to parse LLM JSON for character autocomplete');
     return {};
   }
 }

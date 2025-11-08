@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useCharacterMutations } from '../shared/hooks/useCharacterQueries';
@@ -7,10 +7,12 @@ import { CharacterFormLayout } from '../shared/components';
 import { EMPTY_CHARACTER_FORM } from '../../../types/characters';
 import { useToast } from '../../../contexts/ToastContext';
 import { characterToFormValues } from '../shared/utils/mappers';
+import { useAuth } from '../../../hooks/useAuth';
 
 export default function CharacterCreatePage(): JSX.Element {
-  const { t } = useTranslation(['characters']);
+  const { t, i18n } = useTranslation(['characters']);
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { createMutation, updateMutation } = useCharacterMutations();
   const { addToast } = useToast();
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +23,21 @@ export default function CharacterCreatePage(): JSX.Element {
     }
     return `char-draft-${Math.random().toString(36).slice(2, 11)}`;
   });
-  const form = useCharacterForm({ initialValues: EMPTY_CHARACTER_FORM });
+
+  // Initialize form with current interface language from i18next
+  const initialValues = useMemo(() => ({
+    ...EMPTY_CHARACTER_FORM,
+    originalLanguageCode: i18n.language || 'en'
+  }), [i18n.language]);
+
+  const form = useCharacterForm({ initialValues });
+
+  // Update originalLanguageCode when interface language changes
+  useEffect(() => {
+    if (form.values.originalLanguageCode !== i18n.language) {
+      form.updateField('originalLanguageCode', i18n.language || 'en');
+    }
+  }, [i18n.language, form]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

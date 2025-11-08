@@ -15,6 +15,8 @@ import mediaRoutes from './media';
 import transcriptionRoutes from './transcription';
 import tagsRoutes from './tags';
 import storyRoutes from './story';
+import adminTranslationsRoutes from './admin/translations';
+import llmTestRoutes from './llm-test';
 
 const router = Router();
 
@@ -33,6 +35,8 @@ router.use('/media', mediaRoutes);
 router.use('/transcribe', transcriptionRoutes);
 router.use('/tags', tagsRoutes);
 router.use('/stories', storyRoutes);
+router.use('/admin/translations', adminTranslationsRoutes);
+router.use('/llm-test', llmTestRoutes);
 router.use('/', accessRoutes);
 
 export default router;

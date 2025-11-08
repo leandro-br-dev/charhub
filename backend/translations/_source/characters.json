@@ -25,6 +25,17 @@
       "non-binary": "Non-binary",
       "unisex": "Unisex"
     },
+    "species": {
+      "human": "Human",
+      "elf": "Elf",
+      "android": "Android",
+      "vampire": "Vampire",
+      "demon": "Demon",
+      "animal": "Animal",
+      "hybrid": "Hybrid",
+      "robot": "Robot",
+      "other": "Other"
+    },
     "contentTags": {
       "VIOLENCE": "Violence",
       "GORE": "Gore",

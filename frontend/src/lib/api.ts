@@ -13,10 +13,11 @@ const api = axios.create({
   }
 });
 
-// Add JWT token to all requests if available
+// Add JWT token and language preference to all requests
 api.interceptors.request.use(
   config => {
     try {
+      // Add auth token
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const user: AuthUser = JSON.parse(raw);
@@ -24,8 +25,14 @@ api.interceptors.request.use(
           config.headers.Authorization = `Bearer ${user.token}`;
         }
       }
+
+      // Add user's preferred language from i18next localStorage
+      const userLanguage = window.localStorage.getItem('i18nextLng');
+      if (userLanguage) {
+        config.headers['X-User-Language'] = userLanguage;
+      }
     } catch (error) {
-      console.warn('[api] Failed to attach auth token:', error);
+      console.warn('[api] Failed to attach auth token or language:', error);
     }
     return config;
   },

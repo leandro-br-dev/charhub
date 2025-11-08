@@ -248,7 +248,15 @@ export function CharacterFormLayout({
                           } else {
                             for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
                               if (key === 'cover' || key === 'avatar') continue; // avoid media fields from autocomplete
-                              if (typeof value === 'object' && value !== null) {
+
+                              // Handle contentTags as array
+                              if (key === 'contentTags') {
+                                const tags = Array.isArray(value) ? value : [];
+                                form.updateField(key, tags as any);
+                              } else if (Array.isArray(value)) {
+                                // Keep arrays as arrays
+                                form.updateField(key, value as any);
+                              } else if (typeof value === 'object' && value !== null) {
                                 // Convert objects to a readable string
                                 const text = Object.entries(value as Record<string, unknown>)
                                   .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
@@ -282,7 +290,15 @@ export function CharacterFormLayout({
                           } else {
                             for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
                               if (key === 'cover' || key === 'avatar') continue; // avoid media fields
-                              if (typeof value === 'object' && value !== null) {
+
+                              // Handle contentTags as array
+                              if (key === 'contentTags') {
+                                const tags = Array.isArray(value) ? value : [];
+                                form.updateField(key, tags as any);
+                              } else if (Array.isArray(value)) {
+                                // Keep arrays as arrays
+                                form.updateField(key, value as any);
+                              } else if (typeof value === 'object' && value !== null) {
                                 const text = Object.entries(value as Record<string, unknown>)
                                   .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
                                 form.updateField(key, text as any);

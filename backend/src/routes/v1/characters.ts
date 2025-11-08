@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import { randomUUID } from 'node:crypto';
 import { requireAuth, optionalAuth } from '../../middleware/auth';
+import { translationMiddleware } from '../../middleware/translationMiddleware';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 import * as characterService from '../../services/characterService';
@@ -94,7 +95,11 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
 
     const { mode, payload } = req.body || {};
     const selectedMode: CharacterAutocompleteMode = mode === 'web' ? 'web' : 'ai';
-    const preferredLang = req.auth?.user?.preferredLanguage || undefined;
+
+    // Get language from payload (which comes from i18next) or fallback to user preference
+    const preferredLang = (payload as any)?.originalLanguageCode || req.auth?.user?.preferredLanguage || 'en';
+
+    logger.info({ userId, preferredLang, mode: selectedMode }, 'Character autocomplete requested');
 
     // Sanitize payload: only accept known keys
     const allowedKeys = new Set([
@@ -351,7 +356,7 @@ router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
  * GET /api/v1/characters/:id
  * Get character by ID
  */
-router.get('/:id', optionalAuth, async (req: Request, res: Response) => {
+router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -390,7 +395,7 @@ router.get('/:id', optionalAuth, async (req: Request, res: Response) => {
  * GET /api/v1/characters
  * List characters (public or user's own)
  */
-router.get('/', optionalAuth, async (req: Request, res: Response) => {
+router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
     const userId = req.auth?.user?.id;
     const {

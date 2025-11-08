@@ -2,6 +2,7 @@ import { Prisma, AgeRating, ContentTag } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import type { CreateCharacterInput, UpdateCharacterInput } from '../validators';
+import { translationService } from './translation/translationService';
 
 /**
  * Character Service
@@ -334,10 +335,20 @@ export async function updateCharacter(
   try {
     const { attireIds, tagIds, contentTags, ...updateData } = data;
 
+    // Check if translatable fields are being updated
+    const translatableFields = ['personality', 'history', 'physicalCharacteristics'];
+    const hasTranslatableChanges = translatableFields.some((field) => field in updateData);
+
+    // Increment contentVersion if translatable content changed
+    const finalUpdateData: any = { ...updateData };
+    if (hasTranslatableChanges) {
+      finalUpdateData.contentVersion = { increment: 1 };
+    }
+
     const character = await prisma.character.update({
       where: { id: characterId },
       data: {
-        ...updateData,
+        ...finalUpdateData,
         ...(contentTags !== undefined && { contentTags }),
         // Update attires if provided
         ...(attireIds !== undefined && {
@@ -362,6 +373,15 @@ export async function updateCharacter(
       },
       include: characterInclude,
     });
+
+    // Invalidate translations if content changed
+    if (hasTranslatableChanges) {
+      await translationService.invalidateTranslations('Character', characterId);
+      logger.info(
+        { characterId, newVersion: character.contentVersion },
+        'Character content updated - translations invalidated'
+      );
+    }
 
     logger.info({ characterId }, 'Character updated successfully');
 

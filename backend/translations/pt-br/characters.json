@@ -3,7 +3,7 @@
   "resources": {
     "labels": {
       "untitledCharacter": "Personagem sem título",
-      "updatedAt": "Atualizado em {{date}}",
+      "updatedAt": "Atualizado {{date}}",
       "public": "Público",
       "private": "Privado",
       "identifier": "ID do Personagem: {{id}}",
@@ -25,6 +25,17 @@
       "non-binary": "Não binário",
       "unisex": "Unissex"
     },
+    "species": {
+      "human": "Humano",
+      "elf": "Elfo",
+      "android": "Androide",
+      "vampire": "Vampiro",
+      "demon": "Demônio",
+      "animal": "Animal",
+      "hybrid": "Híbrido",
+      "robot": "Robô",
+      "other": "Outro"
+    },
     "contentTags": {
       "VIOLENCE": "Violência",
       "GORE": "Gore",
@@ -37,10 +48,10 @@
       "PSYCHOLOGICAL": "Psicológico",
       "DISCRIMINATION": "Discriminação",
       "CRIME": "Crime",
-      "GAMBLING": "Jogo"
+      "GAMBLING": "Apostas"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combate, brigas ou conflito agressivo.",
+      "VIOLENCE": "Combate, brigas ou conflitos agressivos.",
       "GORE": "Ferimentos gráficos e detalhes explícitos.",
       "SEXUAL": "Temas adultos ou insinuações.",
       "NUDITY": "Nudez parcial ou total.",
@@ -51,7 +62,7 @@
       "PSYCHOLOGICAL": "Saúde mental ou tensão psicológica.",
       "DISCRIMINATION": "Discurso de ódio ou preconceito.",
       "CRIME": "Temas de atividade criminosa.",
-      "GAMBLING": "Referências a apostas ou jogos."
+      "GAMBLING": "Referências a apostas ou jogos de azar."
     },
     "accessibility": {
       "addToFavorites": "Adicionar aos favoritos",
@@ -91,7 +102,7 @@
         "empty_private": "Você ainda não criou nenhum personagem.",
         "empty_public": "Nenhum personagem público corresponde aos seus filtros.",
         "emptyHint": "Comece criando um perfil ou ajuste seus filtros.",
-        "emptySearchHint": "Ajuste seus filtros ou limpe a busca para ver mais resultados."
+        "emptySearchHint": "Ajuste seus filtros ou limpe a pesquisa para ver mais resultados."
       },
       "labels": {
         "total": "{{count}} personagem disponível",
@@ -106,16 +117,16 @@
         "identity": "Identidade",
         "identityHint": "Defina como as pessoas descobrem e identificam este personagem rapidamente.",
         "profile": "Perfil narrativo",
-        "profileHint": "Descreva a personalidade, traços e histórico para guiar a IA.",
+        "profileHint": "Descreva a personalidade, traços e história para guiar a IA.",
         "configuration": "Disponibilidade e moderação",
         "configurationHint": "Controle como o personagem aparece, quem pode acessá-lo e quais salvaguardas se aplicam.",
         "contentTagsHint": "Marque temas potencialmente sensíveis. Os usuários podem filtrá-los com base em suas preferências.",
-        "contentTagsCharacterHint": "Estes tópicos definem sobre o que o personagem se sente confortável em discutir na classificação etária selecionada.",
+        "contentTagsCharacterHint": "Esses tópicos definem sobre o que o personagem se sente confortável em discutir na classificação etária selecionada.",
         "contentTagsUserHint": "Selecione os temas que você deseja incluir. Tudo o que não for marcado permanecerá bloqueado para esta classificação.",
         "contentTagLocked": "Desbloqueado em classificações etárias mais altas."
       },
       "fields": {
-        "firstName": "Nome",
+        "firstName": "Primeiro nome",
         "lastName": "Sobrenome",
         "age": "Idade",
         "gender": "Gênero",
@@ -123,7 +134,7 @@
         "style": "Estilo visual ou de narrativa",
         "physicalCharacteristics": "Descrição física",
         "personality": "Personalidade",
-        "history": "Histórico",
+        "history": "História de fundo",
         "isPublic": "Visibilidade",
         "ageRating": "Classificação etária",
         "originalLanguageCode": "Idioma original",
@@ -133,8 +144,8 @@
       "placeholders": {
         "gender": "Ex: IA não binária, androide, cavaleiro",
         "species": "Ex: Humano, Elfo, Sintético",
-        "style": "Ex: Detetive noir, anime pastel, estilo pictórico",
-        "genderSelect": "Selecione o gênero"
+        "style": "Ex: Detetive noir, anime pastel, pintura",
+        "genderSelect": "Selecionar gênero"
       },
       "labels": {
         "unsavedChanges": "Você tem alterações não salvas",
@@ -159,7 +170,7 @@
         "upload": "Carregar capa",
         "change": "Alterar capa",
         "uploading": "Carregando...",
-        "urlModalTitle": "Usar imagem da URL",
+        "urlModalTitle": "Usar imagem de URL",
         "urlLabel": "URL da imagem",
         "previewAlt": "Prévia da capa do personagem"
       },
@@ -169,7 +180,7 @@
         "none": "Nenhuma tag selecionada",
         "suggestions": "Sugestões",
         "loading": "Carregando...",
-        "noResults": "Sem resultados",
+        "noResults": "Nenhum resultado",
         "incompatibleToast": "Algumas tags selecionadas são incompatíveis com a classificação etária atual. Por favor, revise.",
         "incompatibleHint": "As tags destacadas são incompatíveis com a classificação etária selecionada. Remova-as para continuar.",
         "incompatibleChip": "Incompatível com a classificação etária atual"
@@ -185,7 +196,7 @@
     },
     "create": {
       "title": "Criar um novo personagem",
-      "subtitle": "Combine contexto narrativo, estilo visual e configurações de moderação. Você pode refinar tudo depois.",
+      "subtitle": "Combine contexto narrativo, estilo visual e configurações de moderação. Você pode refinar tudo mais tarde.",
       "saveButton": "Salvar personagem",
       "cancelButton": "Cancelar e voltar"
     },
@@ -235,7 +246,7 @@
       "sections": {
         "physicalCharacteristics": "Aparência",
         "personality": "Personalidade",
-        "history": "Histórico",
+        "history": "História de fundo",
         "contentTags": "Avisos de conteúdo",
         "metadata": "Tags",
         "introduction": "Introdução",
@@ -246,7 +257,7 @@
       "createFailed": "Não foi possível criar o personagem. Por favor, tente novamente.",
       "updateFailed": "Não foi possível atualizar o personagem.",
       "deleteFailed": "Não foi possível excluir o personagem.",
-      "detailUnavailable": "Não é possível carregar os detalhes do personagem no momento."
+      "detailUnavailable": "Não foi possível carregar os detalhes do personagem no momento."
     }
   }
 }
