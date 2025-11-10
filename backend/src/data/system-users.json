@@ -1,0 +1,19 @@
+{
+  "description": "System users for CharHub - These are default/admin users created during database initialization",
+  "users": [
+    {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "provider": "GOOGLE",
+      "providerAccountId": "system-admin",
+      "username": "admin",
+      "displayName": "CharHub Admin",
+      "email": "admin@charhub.internal",
+      "role": "ADMIN",
+      "fullName": "System Administrator",
+      "preferredLanguage": "en",
+      "maxAgeRating": "EIGHTEEN",
+      "blockedTags": [],
+      "isSystemUser": true
+    }
+  ]
+}

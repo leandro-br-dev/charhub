@@ -1,4 +1,4 @@
-import { Prisma } from '../generated/prisma';
+import { Prisma, Visibility } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import type { CreateAttireInput, UpdateAttireInput } from '../validators';
@@ -152,7 +152,7 @@ export async function getPublicAttires(options?: {
     const { search, gender, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.AttireWhereInput = {
-      isPublic: true,
+      visibility: Visibility.PUBLIC,
     };
 
     // Add search filter

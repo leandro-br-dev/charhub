@@ -16,9 +16,8 @@ const BASE_PATH = `${API_PREFIX}/characters`;
 export const characterService = {
   async list(params?: CharacterListParams): Promise<CharacterListResponse> {
     const query: Record<string, unknown> = { ...(params || {}) };
-    if (params && Object.prototype.hasOwnProperty.call(params, 'isPublic')) {
-      query.public = (params as any).isPublic;
-      delete (query as any).isPublic;
+    if (params && Object.prototype.hasOwnProperty.call(params, 'visibility')) {
+      query.visibility = params.visibility;
     }
 
     const response = await api.get<{ success: boolean; data: Character[]; count: number }>(BASE_PATH, { params: query });
@@ -110,7 +109,7 @@ export const characterService = {
       const response = await api.get<{ success: boolean; data: Array<{ id: string; firstName: string; lastName: string | null; avatar: string | null; personality: string | null }> }>(BASE_PATH, {
         params: {
           ...params,
-          public: 'false'
+          public: 'false' // Explicitly request user's own characters
         }
       });
       return response.data;
@@ -127,7 +126,7 @@ export const characterService = {
   async getPopular(params: { limit?: number; ageRatings?: AgeRating[] } = {}): Promise<Character[]> {
     try {
       const { limit = 10, ageRatings } = params;
-      const response = await this.list({ isPublic: true, ageRatings, limit });
+      const response = await this.list({ ageRatings, limit });
       return response.items;
     } catch (error) {
       console.error('[characterService] getPopular failed:', error);

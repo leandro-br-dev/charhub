@@ -1,6 +1,6 @@
 import { prisma } from '../config/database';
 import { createStorySchema } from '../validators/story.validator';
-import type { Story, Prisma } from '../generated/prisma';
+import type { Story, Prisma, Visibility } from '../generated/prisma';
 
 export async function createStory(data: unknown, authorId: string): Promise<Story> {
   const validatedData = createStorySchema.parse(data);
@@ -81,7 +81,7 @@ export async function getStoryById(id: string, userId?: string): Promise<Story |
   }
 
   // Check if user has access to this story
-  if (!story.isPublic && story.authorId !== userId) {
+  if (story.visibility === 'PRIVATE' && story.authorId !== userId) {
     return null;
   }
 
@@ -94,7 +94,7 @@ export async function listStories(params: {
   ageRatings?: string[];
   contentTags?: string[];
   authorId?: string;
-  isPublic?: boolean;
+  visibility?: Visibility;
   sortBy?: 'createdAt' | 'updatedAt' | 'title';
   sortOrder?: 'asc' | 'desc';
   page?: number;
@@ -106,7 +106,7 @@ export async function listStories(params: {
     ageRatings,
     contentTags,
     authorId,
-    isPublic,
+    visibility,
     sortBy = 'createdAt',
     sortOrder = 'desc',
     page = 1,
@@ -148,8 +148,8 @@ export async function listStories(params: {
     where.authorId = authorId;
   }
 
-  if (isPublic !== undefined) {
-    where.isPublic = isPublic;
+  if (visibility !== undefined) {
+    where.visibility = visibility;
   }
 
   const [items, total] = await Promise.all([

@@ -16,6 +16,8 @@ type ContentTag =
 type AgeRating = 'L' | 'TEN' | 'TWELVE' | 'FOURTEEN' | 'SIXTEEN' | 'EIGHTEEN';
 import { logger } from '../config/logger';
 
+type Visibility = 'PRIVATE' | 'UNLISTED' | 'PUBLIC';
+
 // Local copy of the character form shape to avoid importing frontend code directly.
 // If a shared types package exists, replace this with it. For now, we define the minimal subset we need.
 export type CharacterAutocompleteInput = Partial<{
@@ -29,7 +31,7 @@ export type CharacterAutocompleteInput = Partial<{
   physicalCharacteristics: string | null;
   personality: string | null;
   history: string | null;
-  isPublic: boolean;
+  visibility: Visibility;
   originalLanguageCode: string | null;
   ageRating: AgeRating;
   contentTags: ContentTag[];

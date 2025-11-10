@@ -14,7 +14,7 @@ interface CarouselCard {
   title: string;
   description: string;
   buttons: CarouselButton[];
-  image_url?: string;
+  imageUrl?: string;
   isPlus?: boolean;
 }
 
@@ -23,14 +23,14 @@ interface DashboardCarouselProps {
   autoRotateInterval?: number;
 }
 
-function CarouselCard({ title, description, buttons, image_url, isPlus = false }: CarouselCard) {
+function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }: CarouselCard) {
   const { t } = useTranslation();
 
   return (
     <div className="relative w-full h-64 sm:h-80 md:h-full overflow-hidden group">
-      {image_url && (
+      {imageUrl && (
         <img
-          src={image_url}
+          src={imageUrl}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -48,10 +48,10 @@ function CarouselCard({ title, description, buttons, image_url, isPlus = false }
         )}
         <h3 className="text-2xl sm:text-3xl font-bold">{title}</h3>
         <p className="text-sm sm:text-base mt-1 mb-4">{description}</p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 items-stretch">
           {buttons.map((btn, index) => (
             <Link to={btn.to} key={index}>
-              <Button variant={btn.variant || 'primary'} size="extra-small" icon={btn.icon}>
+              <Button variant={btn.variant || 'primary'} size="extra-small" icon={btn.icon} className="h-full">
                 {btn.label}
               </Button>
             </Link>

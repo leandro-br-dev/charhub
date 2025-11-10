@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AgeRating, ContentTag } from '../generated/prisma';
+import { AgeRating, ContentTag, Visibility } from '../generated/prisma';
 
 /**
  * Character Validators
@@ -18,7 +18,7 @@ const characterBaseSchema = z.object({
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),
   history: z.string().max(5000).optional().nullable(),
-  isPublic: z.boolean().default(true),
+  visibility: z.nativeEnum(Visibility).default(Visibility.PUBLIC),
   originalLanguageCode: z.string().max(10).optional().nullable(),
 });
 
@@ -45,7 +45,7 @@ export const updateCharacterSchema = z.object({
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),
   history: z.string().max(5000).optional().nullable(),
-  isPublic: z.boolean().optional(),
+  visibility: z.nativeEnum(Visibility).optional(),
   originalLanguageCode: z.string().max(10).optional().nullable(),
   loraId: z.string().uuid().optional().nullable(),
   mainAttireId: z.string().uuid().optional().nullable(),
@@ -60,7 +60,7 @@ export const listCharactersQuerySchema = z.object({
   search: z.string().max(200).optional(),
   tags: z.array(z.string().uuid()).optional(),
   gender: z.string().max(50).optional(),
-  isPublic: z.boolean().optional(),
+  visibility: z.nativeEnum(Visibility).optional(),
   skip: z.number().int().min(0).default(0),
   limit: z.number().int().min(1).max(100).default(20),
 });

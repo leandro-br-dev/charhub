@@ -126,7 +126,7 @@ export function StoryListPage() {
                 )}
                 <div className="flex items-center justify-between text-xs text-muted">
                   <span>
-                    {story.isPublic
+                    {story.visibility
                       ? t('story:list.public', 'Public')
                       : t('story:list.private', 'Private')}
                   </span>

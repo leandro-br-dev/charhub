@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Visibility } from '../generated/prisma';
 
 export const createStorySchema = z.object({
   title: z.string().min(1).max(100),
@@ -10,5 +11,5 @@ export const createStorySchema = z.object({
   tagIds: z.array(z.string().uuid()).optional(),
   ageRating: z.enum(['L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'EIGHTEEN']).optional(),
   contentTags: z.array(z.enum(['VIOLENCE', 'GORE', 'SEXUAL', 'NUDITY', 'LANGUAGE', 'DRUGS', 'ALCOHOL', 'HORROR', 'PSYCHOLOGICAL', 'DISCRIMINATION', 'CRIME', 'GAMBLING'])).optional(),
-  isPublic: z.boolean().optional(),
+  visibility: z.nativeEnum(Visibility).optional(),
 });

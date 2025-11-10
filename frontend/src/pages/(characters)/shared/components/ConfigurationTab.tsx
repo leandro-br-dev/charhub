@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import Switch from '../../../../components/ui/switch';
+import { VisibilitySelector } from '../../../../components/features/VisibilitySelector';
 import { ContentTagsSelector } from '../../../../components/features/content-guidelines/ContentTagsSelector';
 import { normalizeAllowedContentTags, haveSameContentTags } from '../../../../components/features/content-guidelines/rules';
 import { AGE_RATING_OPTIONS } from '../utils/constants';
 import { type UseCharacterFormReturn } from '../hooks/useCharacterForm';
 import { type AgeRating } from '../../../../types/characters';
+import { Visibility } from '../../../../types/common';
 
 interface ConfigurationTabProps {
   form: UseCharacterFormReturn;
@@ -35,15 +36,13 @@ export function ConfigurationTab({ form }: ConfigurationTabProps): JSX.Element {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Switch
-          label={t('characters:form.fields.visibility')}
-          stateLabels={{
-            true: t('characters:form.labels.visibilityPublic'),
-            false: t('characters:form.labels.visibilityPrivate'),
-          }}
-          checked={values.isPublic ?? true}
-          onChange={(nextValue: boolean) => updateField('isPublic', nextValue)}
-        />
+        <div className="sm:col-span-2">
+          <VisibilitySelector
+            value={values.visibility ?? Visibility.PUBLIC}
+            onChange={(visibility) => updateField('visibility', visibility)}
+            label={t('characters:form.fields.visibility')}
+          />
+        </div>
 
         <label className="flex flex-col gap-2 text-sm sm:col-span-2">
           <span className="font-medium text-content">

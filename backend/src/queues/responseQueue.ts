@@ -13,6 +13,7 @@ export interface ResponseJobData {
   conversationId: string;
   participantId: string;
   lastMessageId: string;
+  preferredLanguage?: string;
 }
 
 // Queue name
@@ -94,7 +95,8 @@ function ensureInitialized() {
         conversation,
         conversation.owner,
         lastMessage,
-        participantId  // Pass the participant ID to use the correct character
+        participantId,  // Pass the participant ID to use the correct character
+        job.data.preferredLanguage  // Pass the preferred language from job data
       );
 
       // Determine sender ID based on participant type

@@ -17,6 +17,8 @@ import {
 } from 'country-flag-icons/react/3x2';
 import { Button } from '../ui/Button';
 import { SmartDropdown } from '../ui/SmartDropdown';
+import { useAuth } from '../../hooks/useAuth';
+import api from '../../lib/api';
 
 type LanguageOption = {
   code: string;
@@ -41,17 +43,30 @@ const languages: LanguageOption[] = [
 
 export function LanguageSwitcher(): JSX.Element {
   const { i18n, t } = useTranslation('common');
+  const { user } = useAuth();
   const current = i18n.resolvedLanguage || i18n.language || languages[0].code;
 
   const resolved =
     languages.find((lang) => current.toLowerCase().startsWith(lang.code.split('-')[0].toLowerCase())) ?? languages[0];
   const FlagIcon = resolved.flag;
 
-  const handleChange = (code: string) => {
+  const handleChange = async (code: string) => {
     if (code === current) {
       return;
     }
-    void i18n.changeLanguage(code);
+
+    // Change i18n language (updates localStorage)
+    await i18n.changeLanguage(code);
+
+    // Update user's preferredLanguage in database if authenticated
+    if (user) {
+      try {
+        await api.patch('/api/v1/users/me', { preferredLanguage: code });
+      } catch (error) {
+        console.error('Failed to update preferred language:', error);
+        // Continue anyway - localStorage change is sufficient for now
+      }
+    }
   };
 
   return (

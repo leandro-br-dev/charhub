@@ -1,3 +1,5 @@
+import { Visibility } from './common';
+
 export type AgeRating =
   | 'L'
   | 'TEN'
@@ -68,7 +70,7 @@ export interface Attire {
   promptFull?: string | null;
   previewImageUrl?: string | null;
   originalLanguageCode?: string | null;
-  isPublic: boolean;
+  visibility: Visibility;
   userId: string;
   ageRating: AgeRating;
   contentTags: ContentTag[];
@@ -100,7 +102,7 @@ export interface CharacterCore {
   physicalCharacteristics?: string | null;
   personality?: string | null;
   history?: string | null;
-  isPublic: boolean;
+  visibility: Visibility;
   originalLanguageCode?: string | null;
   ageRating: AgeRating;
   contentTags: ContentTag[];
@@ -152,7 +154,7 @@ export interface CharacterListParams {
   tags?: string[];
   ageRatings?: AgeRating[];
   contentTags?: ContentTag[];
-  isPublic?: boolean;
+  visibility?: Visibility;
   gender?: string;
   sortBy?: 'createdAt' | 'updatedAt' | 'name';
   limit?: number;
@@ -177,7 +179,7 @@ export interface CharacterPayload {
   physicalCharacteristics?: string | null;
   personality?: string | null;
   history?: string | null;
-  isPublic?: boolean;
+  visibility?: Visibility;
   originalLanguageCode?: string | null;
   ageRating: AgeRating;
   contentTags: ContentTag[];
@@ -222,7 +224,7 @@ export const EMPTY_CHARACTER_FORM: CharacterFormValues = {
   physicalCharacteristics: null,
   personality: null,
   history: null,
-  isPublic: true,
+  visibility: Visibility.PUBLIC,
   originalLanguageCode: null, // Will be set from user's preferredLanguage
   ageRating: 'L',
   contentTags: [],

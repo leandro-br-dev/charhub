@@ -36,7 +36,7 @@ export const storyService = {
         tagIds: payload.tagIds,
         ageRating: payload.ageRating,
         contentTags: payload.contentTags,
-        isPublic: payload.isPublic,
+        visibility: payload.visibility,
       };
 
       const response = await api.post<Story>(BASE_PATH, createPayload);
@@ -64,7 +64,7 @@ export const storyService = {
         tagIds: payload.tagIds,
         ageRating: payload.ageRating,
         contentTags: payload.contentTags,
-        isPublic: payload.isPublic,
+        visibility: payload.visibility,
       };
 
       const response = await api.put<Story>(`${BASE_PATH}/${storyId}`, updatePayload);
@@ -147,8 +147,8 @@ export const storyService = {
   async getPopular(limit = 10): Promise<Story[]> {
     try {
       // TODO: Implement backend endpoint for actual popularity metrics
-      // For now, fetch public stories
-      const response = await this.list({ isPublic: true, limit });
+      // For now, fetch stories
+      const response = await this.list({ limit });
       return response.items;
     } catch (error) {
       console.error('[storyService] getPopular failed:', error);

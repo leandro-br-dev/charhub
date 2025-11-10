@@ -57,7 +57,8 @@ export class ResponseGenerationAgent {
     conversation: Conversation & { participants: any[]; messages: Message[] },
     user: User,
     lastMessage: Message,
-    participantId?: string
+    participantId?: string,
+    preferredLanguageOverride?: string
   ): Promise<string> {
     logger.info(
       { conversationId: conversation.id, participantId },
@@ -162,7 +163,9 @@ export class ResponseGenerationAgent {
       storyContext,
     ].join('\n');
 
-    const userLanguage = getLanguageName(user.preferredLanguage);
+    // Use override language if provided (from x-user-language header), otherwise use user's database preference
+    const effectiveLanguageCode = preferredLanguageOverride || user.preferredLanguage;
+    const userLanguage = getLanguageName(effectiveLanguageCode);
     const userContext = this.formatUserContext(user);
 
     logger.debug({

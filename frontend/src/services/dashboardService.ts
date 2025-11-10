@@ -47,7 +47,7 @@ export const dashboardService = {
           id: '1',
           title: 'Welcome to CharHub',
           description: 'Create and chat with AI characters',
-          imageUrl: '/placeholder-carousel-1.jpg',
+          imageUrl: '/covers/cover_landscape_1.webp',
           buttons: [
             {
               to: '/characters/create',
@@ -59,6 +59,7 @@ export const dashboardService = {
               to: '/characters',
               label: 'Browse Characters',
               variant: 'secondary',
+              icon: 'search',
             },
           ],
           priority: 1,
@@ -67,7 +68,7 @@ export const dashboardService = {
           id: '2',
           title: 'Discover Stories',
           description: 'Explore interactive storytelling',
-          imageUrl: '/placeholder-carousel-2.jpg',
+          imageUrl: '/covers/cover_landscape_2.webp',
           buttons: [
             {
               to: '/stories',
@@ -83,7 +84,7 @@ export const dashboardService = {
           id: '3',
           title: 'Join the Community',
           description: 'Connect with other creators',
-          imageUrl: '/placeholder-carousel-3.jpg',
+          imageUrl: '/covers/cover_landscape_3.webp',
           buttons: [
             {
               to: '/community',

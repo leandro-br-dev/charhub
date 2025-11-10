@@ -13,7 +13,7 @@ export function characterToFormValues(character: Character): CharacterFormValues
     physicalCharacteristics: character.physicalCharacteristics ?? null,
     personality: character.personality ?? null,
     history: character.history ?? null,
-    isPublic: character.isPublic,
+    visibility: character.visibility,
     originalLanguageCode: character.originalLanguageCode ?? 'en',
     ageRating: character.ageRating,
     contentTags: [...character.contentTags],

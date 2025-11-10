@@ -66,7 +66,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 
     // Check if attire is public or user owns it
     const userId = req.auth?.user?.id;
-    if (!attire.isPublic && attire.userId !== userId) {
+    if (attire.visibility !== 'PUBLIC' && attire.userId !== userId) {
       return res.status(403).json({
         success: false,
         message: 'Access denied',
@@ -99,7 +99,7 @@ router.get('/', async (req: Request, res: Response) => {
       skip,
       limit,
       userId: filterUserId,
-      public: isPublic,
+      public: publicOnly,
     } = req.query;
 
     let attires;
@@ -114,7 +114,7 @@ router.get('/', async (req: Request, res: Response) => {
       });
     }
     // If user is authenticated and no specific filter
-    else if (userId && isPublic !== 'true') {
+    else if (userId && publicOnly !== 'true') {
       attires = await attireService.getAttiresByUserId(userId, {
         search: typeof search === 'string' ? search : undefined,
         gender: typeof gender === 'string' ? gender : undefined,

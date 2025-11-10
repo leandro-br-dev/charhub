@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AgeRating, ContentTag } from '../generated/prisma';
+import { AgeRating, ContentTag, Visibility } from '../generated/prisma';
 
 /**
  * Attire (Clothing/Appearance) Validators
@@ -15,7 +15,7 @@ const attireBaseSchema = z.object({
   promptFull: z.string().max(2000).optional().nullable(),
   previewImageUrl: z.string().url().optional().nullable(),
   originalLanguageCode: z.string().max(10).optional().nullable(),
-  isPublic: z.boolean().default(false),
+  visibility: z.nativeEnum(Visibility).default(Visibility.PRIVATE),
 });
 
 // Create attire schema
@@ -34,7 +34,7 @@ export const updateAttireSchema = z.object({
   promptBody: z.string().max(1000).optional().nullable(),
   promptFull: z.string().max(2000).optional().nullable(),
   previewImageUrl: z.string().url().optional().nullable(),
-  isPublic: z.boolean().optional(),
+  visibility: z.nativeEnum(Visibility).optional(),
   ageRating: z.nativeEnum(AgeRating).optional(),
   contentTags: z.array(z.nativeEnum(ContentTag)).optional(),
 });
@@ -43,7 +43,7 @@ export const updateAttireSchema = z.object({
 export const listAttiresQuerySchema = z.object({
   search: z.string().max(200).optional(),
   gender: z.string().max(50).optional(),
-  isPublic: z.boolean().optional(),
+  visibility: z.nativeEnum(Visibility).optional(),
   skip: z.number().int().min(0).default(0),
   limit: z.number().int().min(1).max(100).default(20),
 });

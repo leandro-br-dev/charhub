@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Input, Textarea, Button, Select } from '../../../components/ui';
 import { CharacterSelector, TagSelector, ObjectivesList, CoverImageUploader } from './components';
+import { VisibilitySelector } from '../../../components/features/VisibilitySelector';
 import type { StoryFormData, StoryObjective } from '../../../types/story';
 import type { AgeRating, ContentTag } from '../../../types/characters';
+import { Visibility } from '../../../types/common';
 
 interface StoryFormProps {
   mode?: 'create' | 'edit';
@@ -46,7 +48,7 @@ export function StoryForm({ mode = 'create', storyId, initialData, onSubmit, onC
     tagIds: initialData?.tagIds || [],
     ageRating: initialData?.ageRating || 'L',
     contentTags: initialData?.contentTags || [],
-    isPublic: initialData?.isPublic ?? false,
+    visibility: initialData?.visibility ?? Visibility.PRIVATE,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -225,19 +227,12 @@ export function StoryForm({ mode = 'create', storyId, initialData, onSubmit, onC
         </div>
       </div>
 
-      {/* Public/Private Toggle */}
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          id="isPublic"
-          checked={formData.isPublic}
-          onChange={e => handleChange('isPublic', e.target.checked)}
-          className="w-4 h-4 text-primary bg-light border-border rounded focus:ring-primary focus:ring-2"
-        />
-        <label htmlFor="isPublic" className="text-sm font-medium text-content">
-          {t('story:form.makePublic')}
-        </label>
-      </div>
+      {/* Visibility Selector */}
+      <VisibilitySelector
+        value={formData.visibility ?? Visibility.PRIVATE}
+        onChange={(visibility) => handleChange('visibility', visibility)}
+        label={t('story:form.visibility')}
+      />
 
       {/* Actions */}
       <div className="flex gap-4 pt-4">

@@ -2,9 +2,9 @@
 import { prisma } from '../config/database';
 import { translationService } from '../services/translation/translationService';
 import { logger } from '../config/logger';
+import { Visibility } from '../generated/prisma';
 
 const POPULAR_LANGUAGES = ['en-US', 'pt-BR', 'es-ES', 'ja-JP', 'zh-CN', 'ko-KR', 'fr-FR', 'de-DE'];
-const BATCH_SIZE = 10;
 const DELAY_MS = 100; // Delay between requests to avoid rate limiting
 
 async function preTranslatePopularCharacters() {
@@ -14,7 +14,7 @@ async function preTranslatePopularCharacters() {
     // Fetch public characters (ordered by creation date for now)
     // TODO: Order by views/favorites when those metrics are implemented
     const characters = await prisma.character.findMany({
-      where: { isPublic: true },
+      where: { visibility: Visibility.PUBLIC },
       orderBy: { createdAt: 'desc' },
       take: 100,
     });
@@ -63,21 +63,21 @@ async function preTranslatePopularCharacters() {
 
             successfulTranslations++;
 
-            logger.info('Pre-translated', {
+            logger.info({
               characterId: character.id,
               field,
               from: character.originalLanguageCode,
               to: targetLang,
-            });
+            }, 'Pre-translated');
           } catch (error) {
             failedTranslations++;
-            logger.error('Pre-translation failed', {
+            logger.error({
               characterId: character.id,
               field,
               from: character.originalLanguageCode,
               to: targetLang,
               error: error instanceof Error ? error.message : 'Unknown error',
-            });
+            }, 'Pre-translation failed');
           }
 
           // Delay to avoid rate limiting
@@ -86,14 +86,14 @@ async function preTranslatePopularCharacters() {
       }
     }
 
-    logger.info('Pre-translation completed', {
+    logger.info({
       totalTranslations,
       successfulTranslations,
       failedTranslations,
       successRate: `${((successfulTranslations / totalTranslations) * 100).toFixed(2)}%`,
-    });
+    }, 'Pre-translation completed');
   } catch (error) {
-    logger.error('Pre-translation script failed', { error });
+    logger.error({ error }, 'Pre-translation script failed');
     throw error;
   }
 }
@@ -106,7 +106,7 @@ if (require.main === module) {
       process.exit(0);
     })
     .catch((error) => {
-      logger.error('Pre-translation script failed', { error });
+      logger.error({ error }, 'Pre-translation script failed');
       process.exit(1);
     });
 }

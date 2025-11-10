@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../../../components/ui/Button';
+import { VisibilitySelector } from '../../../../components/features/VisibilitySelector';
 import {
   type CharacterFormValues,
   type ContentTag
 } from '../../../../types/characters';
+import { Visibility } from '../../../../types/common';
 import { useCharacterForm, type UseCharacterFormReturn } from '../hooks/useCharacterForm';
 import { AGE_RATING_OPTIONS, CONTENT_TAG_OPTIONS, GENDER_OPTIONS } from '../utils/constants';
 
@@ -216,22 +218,13 @@ export function CharacterForm({
         </p>
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <label className="flex flex-col gap-2 text-sm">
-            <span className="font-medium text-slate-600 dark:text-slate-300">
-              {t('characters:form.fields.isPublic')}
-            </span>
-            <div className="flex items-center gap-3 rounded-lg border border-slate-300 bg-white px-3 py-2 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-              <input
-                type="checkbox"
-                className="h-4 w-4"
-                checked={values.isPublic ?? true}
-                onChange={event => formInstance.updateField('isPublic', event.target.checked)}
-              />
-              <span className="text-sm text-slate-600 dark:text-slate-300">
-                {t('characters:form.labels.publicToggle')}
-              </span>
-            </div>
-          </label>
+          <div className="md:col-span-2">
+            <VisibilitySelector
+              value={values.visibility ?? Visibility.PUBLIC}
+              onChange={(visibility) => formInstance.updateField('visibility', visibility)}
+              label={t('characters:form.fields.visibility')}
+            />
+          </div>
 
           <label className="flex flex-col gap-2 text-sm md:col-span-2">
             <span className="font-medium text-slate-600 dark:text-slate-300">

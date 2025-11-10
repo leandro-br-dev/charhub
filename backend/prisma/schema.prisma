@@ -46,6 +46,13 @@ enum ContentTag {
   GAMBLING // Gambling themes
 }
 
+// Visibility levels for user-generated content
+enum Visibility {
+  PRIVATE // Only owner can see
+  UNLISTED // Anyone with the link can see
+  PUBLIC // Everyone can see and search
+}
+
 model User {
   id                String       @id @default(uuid())
   provider          AuthProvider
@@ -197,9 +204,9 @@ model Attire {
   originalLanguageCode String?
 
   // Ownership and visibility
-  isPublic Boolean @default(false)
-  userId   String
-  owner    User    @relation("AttireCreator", fields: [userId], references: [id], onDelete: Cascade)
+  visibility Visibility @default(PRIVATE)
+  userId     String
+  owner      User       @relation("AttireCreator", fields: [userId], references: [id], onDelete: Cascade)
 
   // Content classification
   ageRating   AgeRating    @default(L)
@@ -216,7 +223,7 @@ model Attire {
   characters            Character[] @relation("CharacterAttires")
 
   @@index([userId])
-  @@index([isPublic])
+  @@index([visibility])
   @@index([ageRating])
 }
 
@@ -272,8 +279,8 @@ model Character {
   history                 String? @db.Text // Background/backstory
 
   // Configuration
-  isPublic             Boolean @default(true)
-  isSystemCharacter    Boolean @default(false) // System characters are hidden from users (e.g., narrator)
+  visibility           Visibility @default(PUBLIC)
+  isSystemCharacter    Boolean    @default(false) // System characters are hidden from users (e.g., narrator)
   originalLanguageCode String?
 
   // Content classification
@@ -310,7 +317,7 @@ model Character {
   representingParticipations ConversationParticipant[] @relation("ParticipantRepresentingCharacter")
 
   @@index([userId])
-  @@index([isPublic])
+  @@index([visibility])
   @@index([isSystemCharacter])
   @@index([ageRating])
   @@index([loraId])
@@ -376,7 +383,7 @@ model Story {
   tags          Tag[]
   ageRating     AgeRating    @default(L)
   contentTags   ContentTag[]
-  isPublic      Boolean      @default(false)
+  visibility    Visibility   @default(PRIVATE)
 
   // Translation versioning
   contentVersion Int @default(1) // Increments when translatable content changes
@@ -389,7 +396,7 @@ model Story {
   conversations Conversation[]
 
   @@index([authorId])
-  @@index([isPublic])
+  @@index([visibility])
 }
 
 // ============================================================================
@@ -411,7 +418,7 @@ model Assistant {
   defaultCharacter   Character? @relation("AssistantDefaultCharacter", fields: [defaultCharacterId], references: [id], onDelete: SetNull)
 
   // Visibility
-  isPublic Boolean @default(false)
+  visibility Visibility @default(PRIVATE)
 
   // Ownership
   userId  String
@@ -424,7 +431,7 @@ model Assistant {
   participations ConversationParticipant[] @relation("ParticipantAssistant")
 
   @@index([userId])
-  @@index([isPublic])
+  @@index([visibility])
   @@index([defaultCharacterId])
 }
 

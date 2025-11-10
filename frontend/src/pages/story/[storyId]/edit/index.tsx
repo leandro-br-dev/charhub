@@ -43,7 +43,7 @@ export default function StoryEditPage() {
           tagIds: story.tags?.map(t => t.id) || [],
           ageRating: story.ageRating,
           contentTags: story.contentTags || [],
-          isPublic: story.isPublic,
+          visibility: story.visibility,
         };
 
         setInitialData(formData);

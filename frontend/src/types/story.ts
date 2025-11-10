@@ -1,4 +1,5 @@
 import type { AgeRating, ContentTag } from './characters';
+import { Visibility } from './common';
 
 export interface Story {
   id: string;
@@ -10,7 +11,7 @@ export interface Story {
   authorId: string;
   ageRating: AgeRating;
   contentTags: ContentTag[];
-  isPublic: boolean;
+  visibility: Visibility;
   createdAt: string;
   updatedAt: string;
 
@@ -49,7 +50,7 @@ export interface StoryFormData {
   tagIds?: string[];
   ageRating?: AgeRating;
   contentTags?: ContentTag[];
-  isPublic?: boolean;
+  visibility?: Visibility;
 }
 
 export interface CreateStoryPayload {
@@ -62,7 +63,7 @@ export interface CreateStoryPayload {
   tagIds?: string[];
   ageRating?: AgeRating;
   contentTags?: ContentTag[];
-  isPublic?: boolean;
+  visibility?: Visibility;
 }
 
 export interface StoryListParams {
@@ -71,7 +72,7 @@ export interface StoryListParams {
   ageRatings?: AgeRating[];
   contentTags?: ContentTag[];
   authorId?: string;
-  isPublic?: boolean;
+  visibility?: Visibility;
   sortBy?: 'createdAt' | 'updatedAt' | 'title';
   sortOrder?: 'asc' | 'desc';
   page?: number;

@@ -1,4 +1,4 @@
-import { Prisma, AgeRating, ContentTag } from '../generated/prisma';
+import { Prisma, AgeRating, ContentTag, Visibility } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import type { CreateCharacterInput, UpdateCharacterInput } from '../validators';
@@ -24,7 +24,7 @@ export interface CharacterWithRelations {
   physicalCharacteristics: string | null;
   personality: string | null;
   history: string | null;
-  isPublic: boolean;
+  visibility: Visibility;
   originalLanguageCode: string | null;
   ageRating: AgeRating;
   contentTags: ContentTag[];
@@ -264,7 +264,7 @@ export async function getPublicCharacters(options?: {
     const { search, tags, gender, ageRatings, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.CharacterWhereInput = {
-      isPublic: true,
+      visibility: Visibility.PUBLIC,
       isSystemCharacter: false, // Hide system characters
     };
 
@@ -321,6 +321,93 @@ export async function getPublicCharacters(options?: {
     return characters;
   } catch (error) {
     logger.error({ error, options }, 'Error getting public characters');
+    throw error;
+  }
+}
+
+/**
+ * Get public characters + user's own characters (all visibility levels)
+ * Used for dashboard when user is authenticated
+ */
+export async function getPublicAndOwnCharacters(userId: string, options?: {
+  search?: string;
+  tags?: string[];
+  gender?: string;
+  ageRatings?: string[];
+  skip?: number;
+  limit?: number;
+}) {
+  try {
+    const { search, tags, gender, ageRatings, skip = 0, limit = 20 } = options || {};
+
+    const where: Prisma.CharacterWhereInput = {
+      isSystemCharacter: false,
+      OR: [
+        { visibility: Visibility.PUBLIC }, // Public characters from anyone
+        { userId }, // User's own characters (any visibility)
+      ],
+    };
+
+    // Add search filter
+    if (search && search.trim()) {
+      const searchTerm = search.trim();
+      const searchConditions: Prisma.CharacterWhereInput[] = [
+        { firstName: { contains: searchTerm, mode: 'insensitive' } },
+        { lastName: { contains: searchTerm, mode: 'insensitive' } },
+        {
+          physicalCharacteristics: { contains: searchTerm, mode: 'insensitive' },
+        },
+        { personality: { contains: searchTerm, mode: 'insensitive' } },
+        { history: { contains: searchTerm, mode: 'insensitive' } },
+      ];
+
+      // Combine with existing OR condition
+      where.AND = [
+        { OR: where.OR },
+        { OR: searchConditions },
+      ];
+      delete where.OR;
+    }
+
+    // Add gender filter
+    if (gender && gender !== 'all') {
+      where.gender = gender;
+    }
+
+    // Add tags filter
+    if (tags && tags.length > 0) {
+      where.tags = {
+        some: {
+          id: {
+            in: tags,
+          },
+        },
+      };
+    }
+
+    // Add age ratings filter
+    if (ageRatings && ageRatings.length > 0) {
+      where.ageRating = {
+        in: ageRatings as any[],
+      } as any;
+    }
+
+    const characters = await prisma.character.findMany({
+      where,
+      include: characterInclude,
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+    });
+
+    logger.debug(
+      { userId, filters: options, count: characters.length },
+      'Public and own characters fetched'
+    );
+
+    return characters;
+  } catch (error) {
+    logger.error({ error, userId, options }, 'Error getting public and own characters');
     throw error;
   }
 }
@@ -429,6 +516,52 @@ export async function isCharacterOwner(
     return character?.userId === userId;
   } catch (error) {
     logger.error({ error, characterId, userId }, 'Error checking ownership');
+    return false;
+  }
+}
+
+/**
+ * Check if user can access character based on visibility
+ * - PRIVATE: Only owner can access
+ * - UNLISTED: Anyone with the link can access (authenticated or not)
+ * - PUBLIC: Everyone can access
+ */
+export async function canAccessCharacter(
+  characterId: string,
+  userId?: string
+): Promise<boolean> {
+  try {
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+      select: {
+        userId: true,
+        visibility: true,
+      },
+    });
+
+    if (!character) {
+      return false;
+    }
+
+    // Owner can always access
+    if (userId && character.userId === userId) {
+      return true;
+    }
+
+    // PUBLIC: everyone can access
+    if (character.visibility === Visibility.PUBLIC) {
+      return true;
+    }
+
+    // UNLISTED: anyone with the link can access
+    if (character.visibility === Visibility.UNLISTED) {
+      return true;
+    }
+
+    // PRIVATE: only owner can access
+    return false;
+  } catch (error) {
+    logger.error({ error, characterId, userId }, 'Error checking character access');
     return false;
   }
 }
@@ -591,7 +724,7 @@ export async function getFavoriteCharacters(
     const characters = await prisma.character.findMany({
       where: {
         id: { in: characterIds },
-        isPublic: true, // Only show public favorites
+        visibility: { in: [Visibility.PUBLIC, Visibility.UNLISTED] }, // Show public and unlisted favorites
         isSystemCharacter: false, // Hide system characters
       },
       include: characterInclude,

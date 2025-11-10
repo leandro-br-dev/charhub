@@ -12,6 +12,21 @@ Este documento contém apenas as tarefas prioritárias em que devemos focar agor
 - ✅ **TRADUÇÃO**: Sistema de Tradução Automática de UGC - **COMPLETA**
 - ✅ **UX/UI**: Edição de Personagens + Upload R2 + Toasts - **COMPLETA**
 - ✅ **LLM TOOLS**: Tool-Calling + Web Search Integration - **COMPLETA**
+- ✅ **DEPLOYMENT**: Documentação de Deploy em Produção - **COMPLETA**
+
+**Progresso total**: 75% (7 de 8 features core completas)
+
+### 📚 Documentação de Deploy (NOVA)
+
+- ✅ Guia completo de deploy em produção ([PRODUCTION_DEPLOYMENT.md](./PRODUCTION_DEPLOYMENT.md))
+- ✅ Quick reference guide ([QUICK_DEPLOY_GUIDE.md](./QUICK_DEPLOY_GUIDE.md))
+- ✅ Análise de custos e escolha de infraestrutura
+- ✅ Arquitetura recomendada: Google Cloud + Cloudflare
+- 📋 Próximos passos:
+  - [ ] Testar deploy completo em staging
+  - [ ] Configurar CI/CD (GitHub Actions)
+  - [ ] Configurar monitoramento (Cloud Monitoring)
+  - [ ] Configurar alertas automáticos
 
 **Progresso total**: 70% (6 de 8 features core completas)
 

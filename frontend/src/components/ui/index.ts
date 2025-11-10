@@ -13,6 +13,8 @@ export { Button } from './Button';
 export { Select } from './Select';
 export { CachedImage } from './CachedImage';
 export { Avatar } from './Avatar';
+export { DescriptiveSelector } from './DescriptiveSelector';
+export type { DescriptiveSelectorOption, DescriptiveSelectorProps } from './DescriptiveSelector';
 
 // New components (Phase 1 - Dashboard Migration)
 export { ComboboxSelect } from './combobox-select';

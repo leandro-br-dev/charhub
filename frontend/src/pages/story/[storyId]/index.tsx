@@ -215,9 +215,9 @@ export function StoryDetailPage() {
                 {/* Visibility badge - top right */}
                 <div className="absolute right-4 top-4 z-10">
                   <UITag
-                    label={story.isPublic ? t('story:list.public') : t('story:list.private')}
-                    icon={<span className="material-symbols-outlined text-sm">{story.isPublic ? 'public' : 'lock'}</span>}
-                    tone={story.isPublic ? 'info' : 'warning'}
+                    label={story.visibility ? t('story:list.public') : t('story:list.private')}
+                    icon={<span className="material-symbols-outlined text-sm">{story.visibility ? 'public' : 'lock'}</span>}
+                    tone={story.visibility ? 'info' : 'warning'}
                     selected
                     disabled
                   />

@@ -1,4 +1,4 @@
-import { Prisma } from '../generated/prisma';
+import { Prisma, Visibility } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import { SenderType } from '../generated/prisma';
@@ -38,7 +38,7 @@ export async function createAssistant(data: {
   description?: string;
   instructions: string;
   defaultCharacterId?: string;
-  isPublic?: boolean;
+  visibility?: Visibility;
   userId: string;
 }) {
   try {
@@ -48,7 +48,7 @@ export async function createAssistant(data: {
         description: data.description || null,
         instructions: data.instructions,
         defaultCharacterId: data.defaultCharacterId || null,
-        isPublic: data.isPublic ?? false,
+        visibility: data.visibility ?? Visibility.PRIVATE,
         userId: data.userId,
       },
       include: assistantInclude,
@@ -146,7 +146,7 @@ export async function getPublicAssistants(options?: {
     const { search, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.AssistantWhereInput = {
-      isPublic: true,
+      visibility: Visibility.PUBLIC,
     };
 
     if (search && search.trim()) {
@@ -252,7 +252,7 @@ export async function getPublicAssistantsForConversation(options?: {
     const { search, excludeIds = [], skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.AssistantWhereInput = {
-      isPublic: true,
+      visibility: Visibility.PUBLIC,
       id: excludeIds.length > 0 ? { notIn: excludeIds } : undefined,
     };
 
@@ -308,7 +308,7 @@ export async function updateAssistant(
     description?: string | null;
     instructions?: string;
     defaultCharacterId?: string | null;
-    isPublic?: boolean;
+    visibility?: Visibility;
   }
 ) {
   try {
@@ -370,7 +370,8 @@ export async function isAssistantOwner(
  */
 export async function sendAIMessage(
   conversationId: string,
-  participantId: string
+  participantId: string,
+  preferredLanguage?: string
 ): Promise<any> {
   try {
     const agent = agentService.getResponseGenerationAgent();
@@ -410,7 +411,8 @@ export async function sendAIMessage(
       conversation,
       conversation.owner,
       lastMessage,
-      participantId  // Pass the participant ID to use the correct character
+      participantId,  // Pass the participant ID to use the correct character
+      preferredLanguage  // Pass the preferred language from x-user-language header
     );
 
     // Find the participant and determine its type

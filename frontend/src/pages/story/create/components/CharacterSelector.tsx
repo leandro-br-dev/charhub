@@ -24,7 +24,6 @@ export function CharacterSelector({ selectedIds, onChange }: CharacterSelectorPr
     try {
       const response = await characterService.list({
         search: search || undefined,
-        isPublic: false, // Only user's characters
         limit: 20,
       });
       setCharacters(response.items);

@@ -265,7 +265,7 @@ export async function deleteUserAccount(userId: string): Promise<void> {
   });
 
   for (const character of userCharacters) {
-    if (character.isPublic) {
+    if (character.visibility === 'PUBLIC') {
       await prisma.character.update({
         where: { id: character.id },
         data: { userId: systemUser.id },

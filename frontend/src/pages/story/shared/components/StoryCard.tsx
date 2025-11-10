@@ -66,9 +66,9 @@ export function StoryCard({ story, clickAction = 'view', blurNsfw = false }: Sto
         {/* Visibility Badge - Top Right */}
         <div className="absolute right-2 top-2 z-10">
           <UITag
-            label={story.isPublic ? 'Public' : 'Private'}
-            icon={<span className="material-symbols-outlined text-xs">{story.isPublic ? 'public' : 'lock'}</span>}
-            tone={story.isPublic ? 'info' : 'warning'}
+            label={story.visibility ? 'Public' : 'Private'}
+            icon={<span className="material-symbols-outlined text-xs">{story.visibility ? 'public' : 'lock'}</span>}
+            tone={story.visibility ? 'info' : 'warning'}
             selected
             disabled
           />

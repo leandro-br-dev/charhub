@@ -19,7 +19,7 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       });
     }
 
-    const { name, description, instructions, defaultCharacterId, isPublic } = req.body;
+    const { name, description, instructions, defaultCharacterId, visibility } = req.body;
 
     if (!name || !instructions) {
       return res.status(400).json({
@@ -33,7 +33,7 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       description,
       instructions,
       defaultCharacterId,
-      isPublic,
+      visibility,
       userId,
     });
 
@@ -69,7 +69,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 
     // Check if assistant is public or user owns it
     const userId = req.auth?.user?.id;
-    if (!assistant.isPublic && assistant.userId !== userId) {
+    if (assistant.visibility !== 'PUBLIC' && assistant.userId !== userId) {
       return res.status(403).json({
         success: false,
         message: 'Access denied',
@@ -101,7 +101,7 @@ router.get('/', async (req: Request, res: Response) => {
       skip,
       limit,
       userId: filterUserId,
-      public: isPublic,
+      public: publicOnly,
       forConversation,
     } = req.query;
 
@@ -130,7 +130,7 @@ router.get('/', async (req: Request, res: Response) => {
       });
     }
     // If user is authenticated and no specific filter
-    else if (userId && isPublic !== 'true') {
+    else if (userId && publicOnly !== 'true') {
       assistants = await assistantService.getAssistantsByUserId(userId, {
         search: typeof search === 'string' ? search : undefined,
         skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
@@ -185,14 +185,14 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
       });
     }
 
-    const { name, description, instructions, defaultCharacterId, isPublic } = req.body;
+    const { name, description, instructions, defaultCharacterId, visibility } = req.body;
 
     const assistant = await assistantService.updateAssistant(id, {
       name,
       description,
       instructions,
       defaultCharacterId,
-      isPublic,
+      visibility,
     });
 
     return res.json({

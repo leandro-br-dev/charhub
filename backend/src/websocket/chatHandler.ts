@@ -133,6 +133,11 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
       }
 
       socket.data.user = user;
+
+      // Extract user's preferred language from headers (if provided by frontend)
+      const userLanguage = socket.handshake.headers['x-user-language'] as string | undefined;
+      socket.data.preferredLanguage = userLanguage;
+
       return next();
     } catch (error) {
       logger.warn({ error }, 'socket_authentication_failed');
@@ -311,11 +316,13 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         // Step 7: Queue AI response generation for each bot
         if (isQueuesEnabled()) {
           // Use queue system if enabled
+          const preferredLanguage = socket.data.preferredLanguage;
           for (const participantId of respondingParticipantIds) {
             await queueAIResponse({
               conversationId: payload.conversationId,
               participantId,
               lastMessageId: message.id,
+              preferredLanguage,
             });
           }
         } else {
@@ -329,7 +336,8 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
 
           for (const participantId of respondingParticipantIds) {
             try {
-              const aiMessage = await sendAIMessage(payload.conversationId, participantId);
+              const preferredLanguage = socket.data.preferredLanguage;
+              const aiMessage = await sendAIMessage(payload.conversationId, participantId, preferredLanguage);
 
               // Broadcast the AI response to the room
               io.to(room).emit('message_received', serializeMessage(aiMessage));

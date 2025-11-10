@@ -15,7 +15,7 @@ export const favoriteService = {
     // Check if character exists and is not a system character
     const character = await prisma.character.findUnique({
       where: { id: characterId },
-      select: { id: true, isSystemCharacter: true, isPublic: true }
+      select: { id: true, isSystemCharacter: true, visibility: true }
     });
 
     if (!character) {

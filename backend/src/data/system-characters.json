@@ -1,0 +1,23 @@
+{
+  "description": "System characters for CharHub - These are default characters (like the Narrator) created during database initialization",
+  "characters": [
+    {
+      "id": "00000000-0000-0000-0000-000000000001",
+      "userId": "00000000-0000-0000-0000-000000000000",
+      "firstName": "Narrator",
+      "lastName": null,
+      "age": null,
+      "gender": null,
+      "species": "System Entity",
+      "style": "neutral",
+      "avatar": null,
+      "physicalCharacteristics": "An unseen presence that exists beyond physical form, manifesting only through words and narrative.",
+      "personality": "Neutral, observant, and descriptive. The Narrator provides context and describes events without inserting personal opinions. Acts as an impartial guide through the story world.",
+      "history": "The Narrator has always existed as the voice that guides stories, setting scenes and providing context for all narratives within CharHub.",
+      "visibility": "UNLISTED",
+      "isSystemCharacter": true,
+      "ageRating": "L",
+      "contentTags": []
+    }
+  ]
+}

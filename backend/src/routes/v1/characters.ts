@@ -3,6 +3,7 @@ import multer from 'multer';
 import { randomUUID } from 'node:crypto';
 import { requireAuth, optionalAuth } from '../../middleware/auth';
 import { translationMiddleware } from '../../middleware/translationMiddleware';
+import { asyncMulterHandler } from '../../middleware/multerErrorHandler';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 import * as characterService from '../../services/characterService';
@@ -10,6 +11,7 @@ import { r2Service } from '../../services/r2Service';
 import { runCharacterAutocomplete, CharacterAutocompleteMode } from '../../agents/characterAutocompleteAgent';
 import { addCharacterImage } from '../../services/imageService';
 import { characterStatsService } from '../../services/characterStatsService';
+import { processImageByType } from '../../services/imageProcessingService';
 import type { ImageType } from '../../generated/prisma';
 import {
   createCharacterSchema,
@@ -20,7 +22,7 @@ const router = Router();
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
+    fileSize: 10 * 1024 * 1024, // 10MB (before compression)
   },
 });
 
@@ -103,7 +105,7 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
 
     // Sanitize payload: only accept known keys
     const allowedKeys = new Set([
-      'firstName','lastName','age','gender','species','style','avatar','physicalCharacteristics','personality','history','isPublic','originalLanguageCode','ageRating','contentTags','loraId','mainAttireId','tagIds','attireIds'
+      'firstName','lastName','age','gender','species','style','avatar','physicalCharacteristics','personality','history','visibility','originalLanguageCode','ageRating','contentTags','loraId','mainAttireId','tagIds','attireIds'
     ]);
     const safePayload: Record<string, unknown> = {};
     if (payload && typeof payload === 'object') {
@@ -151,8 +153,13 @@ router.get('/:id/images', async (req: Request, res: Response) => {
  * POST /api/v1/characters/:id/images
  * Upload an image file for the character (avatar/cover/samples/stickers/etc.)
  * Form-data: image (file), type (string: AVATAR|COVER|SAMPLE|STICKER|OTHER)
+ *
+ * Features:
+ * - Automatic image compression and WebP conversion
+ * - Resizes images to optimal dimensions based on type
+ * - Proper error handling with user-friendly messages
  */
-router.post('/:id/images', requireAuth, upload.single('image'), async (req: Request, res: Response) => {
+router.post('/:id/images', requireAuth, asyncMulterHandler(upload.single('image')), async (req: Request, res: Response) => {
   const userId = req.auth?.user?.id;
   const { id } = req.params;
   const file = req.file;
@@ -174,13 +181,17 @@ router.post('/:id/images', requireAuth, upload.single('image'), async (req: Requ
     const ext = ALLOWED_IMAGE_TYPES[file.mimetype];
     if (!ext) return res.status(415).json({ success: false, message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.' });
 
+    // Process image: compress and convert to WebP
+    logger.info({ type, originalSize: file.size, originalType: file.mimetype }, 'Processing image');
+    const processed = await processImageByType(file.buffer, type);
+
     const baseName = (file.originalname ? file.originalname.replace(/[^a-z0-9._-]+/gi, '-').toLowerCase() : 'image').replace(/\.[^.]+$/, '');
-    const key = `characters/${userId}/${id}/images/${type.toLowerCase()}/${Date.now()}-${randomUUID()}-${baseName}.${ext}`;
+    const key = `characters/${userId}/${id}/images/${type.toLowerCase()}/${Date.now()}-${randomUUID()}-${baseName}.webp`;
 
     const { publicUrl } = await r2Service.uploadObject({
       key,
-      body: file.buffer,
-      contentType: file.mimetype,
+      body: processed.buffer,
+      contentType: processed.contentType,
       cacheControl: 'public, max-age=604800',
     });
 
@@ -189,10 +200,23 @@ router.post('/:id/images', requireAuth, upload.single('image'), async (req: Requ
       type,
       url: publicUrl,
       key,
-      sizeBytes: file.size,
-      contentType: file.mimetype,
+      width: processed.width,
+      height: processed.height,
+      sizeBytes: processed.sizeBytes,
+      contentType: processed.contentType,
       runClassification: true,
     });
+
+    logger.info(
+      {
+        characterId: id,
+        type,
+        originalSize: file.size,
+        processedSize: processed.sizeBytes,
+        compressionRatio: `${((1 - processed.sizeBytes / file.size) * 100).toFixed(2)}%`,
+      },
+      'Image uploaded successfully'
+    );
 
     return res.status(201).json({ success: true, data: created });
   } catch (error) {
@@ -234,7 +258,7 @@ router.post('/:id/images/url', requireAuth, async (req: Request, res: Response) 
   }
 });
 
-router.post('/avatar', requireAuth, upload.single('avatar'), async (req: Request, res: Response) => {
+router.post('/avatar', requireAuth, asyncMulterHandler(upload.single('avatar')), async (req: Request, res: Response) => {
   const userId = req.auth?.user?.id;
 
   if (!userId) {
@@ -277,24 +301,38 @@ router.post('/avatar', requireAuth, upload.single('avatar'), async (req: Request
       return res.status(415).json({ success: false, message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.' });
     }
 
+    // Process image: compress and convert to WebP
+    logger.info({ originalSize: uploadedFile.size, originalType: uploadedFile.mimetype }, 'Processing avatar image');
+    const processed = await processImageByType(uploadedFile.buffer, 'AVATAR');
+
     const sanitizedName = uploadedFile.originalname
       ? uploadedFile.originalname.replace(/[^a-z0-9._-]+/gi, '-').toLowerCase()
       : 'avatar';
 
     const baseName = sanitizedName.replace(/\.[^.]+$/, '');
 
-    const key = `characters/${userId}/${targetEntityId}/avatar/${Date.now()}-${randomUUID()}-${baseName}.${extension}`;
+    const key = `characters/${userId}/${targetEntityId}/avatar/${Date.now()}-${randomUUID()}-${baseName}.webp`;
 
     const { publicUrl } = await r2Service.uploadObject({
       key,
-      body: uploadedFile.buffer,
-      contentType: uploadedFile.mimetype,
+      body: processed.buffer,
+      contentType: processed.contentType,
       cacheControl: 'public, max-age=604800',
     });
 
     if (trimmedCharacterId) {
       await characterService.updateCharacter(trimmedCharacterId, { avatar: publicUrl });
     }
+
+    logger.info(
+      {
+        characterId: trimmedCharacterId,
+        originalSize: uploadedFile.size,
+        processedSize: processed.sizeBytes,
+        compressionRatio: `${((1 - processed.sizeBytes / uploadedFile.size) * 100).toFixed(2)}%`,
+      },
+      'Avatar uploaded successfully'
+    );
 
     return res.json({
       success: true,
@@ -369,9 +407,11 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
       });
     }
 
-    // Check if character is public or user owns it
+    // Check visibility access control
     const userId = req.auth?.user?.id;
-    if (!character.isPublic && character.userId !== userId) {
+    const canAccess = await characterService.canAccessCharacter(id, userId);
+
+    if (!canAccess) {
       return res.status(403).json({
         success: false,
         message: 'Access denied',
@@ -405,68 +445,44 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       skip,
       limit,
       userId: filterUserId,
-      public: isPublic,
+      public: publicOnly,
       ageRatings,
     } = req.query;
 
     let characters;
 
-    // If filtering by specific user
+    const commonOptions = {
+      search: typeof search === 'string' ? search : undefined,
+      tags: Array.isArray(tags)
+        ? tags.map(String)
+        : typeof tags === 'string'
+          ? [tags]
+          : undefined,
+      gender: typeof gender === 'string' ? gender : undefined,
+      ageRatings: Array.isArray(ageRatings)
+        ? ageRatings.map(String)
+        : typeof ageRatings === 'string'
+          ? ageRatings.split(',')
+          : undefined,
+      skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
+      limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
+    };
+
+    // If filtering by specific user ID (e.g., viewing someone's profile)
     if (filterUserId && typeof filterUserId === 'string') {
-      characters = await characterService.getCharactersByUserId(filterUserId, {
-        search: typeof search === 'string' ? search : undefined,
-        tags: Array.isArray(tags)
-          ? tags.map(String)
-          : typeof tags === 'string'
-            ? [tags]
-            : undefined,
-        gender: typeof gender === 'string' ? gender : undefined,
-        ageRatings: Array.isArray(ageRatings)
-          ? ageRatings.map(String)
-          : typeof ageRatings === 'string'
-            ? ageRatings.split(',')
-            : undefined,
-        skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
-        limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
-      });
+      characters = await characterService.getCharactersByUserId(filterUserId, commonOptions);
     }
-    // If user is authenticated and no specific filter
-    else if (userId && isPublic !== 'true') {
-      characters = await characterService.getCharactersByUserId(userId, {
-        search: typeof search === 'string' ? search : undefined,
-        tags: Array.isArray(tags)
-          ? tags.map(String)
-          : typeof tags === 'string'
-            ? [tags]
-            : undefined,
-        gender: typeof gender === 'string' ? gender : undefined,
-        ageRatings: Array.isArray(ageRatings)
-          ? ageRatings.map(String)
-          : typeof ageRatings === 'string'
-            ? ageRatings.split(',')
-            : undefined,
-        skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
-        limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
-      });
+    // If explicitly requesting ONLY user's own characters
+    else if (userId && publicOnly === 'false') {
+      characters = await characterService.getCharactersByUserId(userId, commonOptions);
     }
-    // Otherwise get public characters
+    // If user is authenticated, show public characters + their own (all visibility)
+    else if (userId) {
+      characters = await characterService.getPublicAndOwnCharacters(userId, commonOptions);
+    }
+    // Not authenticated: show only public characters
     else {
-      characters = await characterService.getPublicCharacters({
-        search: typeof search === 'string' ? search : undefined,
-        tags: Array.isArray(tags)
-          ? tags.map(String)
-          : typeof tags === 'string'
-            ? [tags]
-            : undefined,
-        gender: typeof gender === 'string' ? gender : undefined,
-        ageRatings: Array.isArray(ageRatings)
-          ? ageRatings.map(String)
-          : typeof ageRatings === 'string'
-            ? ageRatings.split(',')
-            : undefined,
-        skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
-        limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
-      });
+      characters = await characterService.getPublicCharacters(commonOptions);
     }
 
     return res.json({
