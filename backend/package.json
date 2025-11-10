@@ -46,7 +46,7 @@
     "ioredis": "^5.8.1",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
-    "openai": "^6.1.0",
+    "openai": "^6.8.1",
     "passport": "^0.7.0",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0",
