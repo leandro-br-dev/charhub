@@ -29,7 +29,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@types/country-flag-icons": "^1.2.2",
     "@types/i18next": "^12.1.0",
-    "@types/i18next-browser-languagedetector": "^2.0.2",
+    "@types/i18next-browser-languagedetector": "^3.0.0",
     "@types/node": "^20.19.21",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
