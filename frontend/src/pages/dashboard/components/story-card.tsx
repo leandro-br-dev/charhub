@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/ui';
 import type { Story } from '../../../types/story';
 import { useContentFilter } from '../../../contexts/ContentFilterContext';
@@ -12,6 +13,7 @@ interface StoryCardProps {
 export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const { shouldHideContent } = useContentFilter();
+  const { t } = useTranslation(['dashboard']);
 
   const shouldHide = shouldHideContent(story.ageRating as any, (story.contentTags as any) || []);
   const shouldBlur = blurNsfw && story.contentTags?.includes('SEXUAL');
@@ -34,7 +36,7 @@ export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
         {!imageLoaded && <div className="absolute inset-0 bg-gray-700 animate-pulse" />}
         <img
           src={story.coverImage || '/placeholder-story.png'}
-          alt={story.title}
+          alt={t('dashboard:storyCard.alt', { title: story.title })}
           className={`w-full h-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-105 ${
             shouldBlur ? 'blur-md' : ''
           } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
@@ -50,7 +52,7 @@ export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
             onClick={handlePlayClick}
             className="opacity-0 group-hover:opacity-100 transition-opacity"
           >
-            Play
+            {t('dashboard:storyCard.play')}
           </Button>
         </div>
 

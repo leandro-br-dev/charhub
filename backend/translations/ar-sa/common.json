@@ -3,21 +3,21 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "اللغة",
-    "continueGoogle": "متابعة باستخدام جوجل",
-    "continueFacebook": "متابعة باستخدام فيسبوك",
-    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "continueGoogle": "متابعة باستخدام Google",
+    "continueFacebook": "متابعة باستخدام Facebook",
+    "privacy": "بمتابعتك، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
-    "logoutLoading": "جارٍ تسجيل الخروج...",
-    "authenticatedUser": "المستخدم المصادق عليه",
+    "logoutLoading": "جاري تسجيل الخروج...",
+    "authenticatedUser": "مستخدم مصادق عليه",
     "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض تجريبي آمن لـ OAuth",
+    "navTagline": "عرض توضيحي لـ OAuth آمن",
     "providerLabel": {
-      "google": "جوجل",
-      "facebook": "فيسبوك"
+      "google": "Google",
+      "facebook": "Facebook"
     },
-    "provider": "الموفر",
+    "provider": "مزود الخدمة",
     "theme": {
       "label": "السمة",
       "option": {
@@ -31,19 +31,19 @@
     "nameNotAvailable": "الاسم غير متاح",
     "cancel": "إلغاء",
     "save": "حفظ",
-    "saving": "جارٍ الحفظ...",
+    "saving": "جاري الحفظ...",
     "delete": "حذف",
-    "deleting": "جارٍ الحذف...",
+    "deleting": "جاري الحذف...",
     "enabled": "ممكّن",
     "disabled": "معطّل",
-    "selectOption": "اختر خيارًا",
+    "selectOption": "اختر خياراً",
     "noResults": "لم يتم العثور على خيارات.",
     "chat": {
-      "with": "الدردشة مع"
+      "with": "دردشة مع"
     },
     "messages": {
       "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-      "chatStarted": "بدأت الدردشة بنجاح!",
+      "chatStarted": "بدأت المحادثة بنجاح!",
       "characterDeleted": "تم حذف الشخصية بنجاح"
     },
     "contentFilter": {
@@ -55,7 +55,7 @@
       "blur": "تمويه المحتوى الحساس",
       "hidden": "إخفاء المحتوى الناضج",
       "descriptions": {
-        "none": "عرض كل المحتوى بدون قيود",
+        "none": "عرض جميع المحتويات بدون قيود",
         "blur": "تطبيق التمويه على المحتوى الناضج",
         "hidden": "إخفاء المحتوى الناضج بالكامل"
       },
@@ -69,10 +69,11 @@
       }
     },
     "errors": {
-      "generic": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "failedToFetchData": "فشل جلب البيانات"
     },
     "character": "شخصية",
-    "seeMore": "عرض المزيد",
-    "seeMoreArrow": "عرض المزيد →"
+    "seeMore": "شاهد المزيد",
+    "seeMoreArrow": "شاهد المزيد →"
   }
 }

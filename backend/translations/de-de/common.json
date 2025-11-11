@@ -5,11 +5,11 @@
     "language": "Sprache",
     "continueGoogle": "Mit Google fortfahren",
     "continueFacebook": "Mit Facebook fortfahren",
-    "privacy": "Durch Fortfahren stimmen Sie unserer Datenschutzrichtlinie zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
-    "logoutLoading": "Abmelden...",
+    "logoutLoading": "Wird abgemeldet...",
     "authenticatedUser": "Authentifizierter Benutzer",
-    "tokenStored": "Gespeichert in einem HTTP-Only-Cookie",
+    "tokenStored": "Gespeichert in HTTP-only Cookie",
     "navDashboard": "Dashboard",
     "navCharacters": "Charaktere",
     "navTagline": "Sichere OAuth-Demo",
@@ -31,18 +31,18 @@
     "nameNotAvailable": "Name nicht verfügbar",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "saving": "Speichere...",
+    "saving": "Wird gespeichert...",
     "delete": "Löschen",
-    "deleting": "Lösche...",
+    "deleting": "Wird gelöscht...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Option auswählen",
+    "selectOption": "Wählen Sie eine Option",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
       "with": "Chatten mit"
     },
     "messages": {
-      "linkCopied": "Link wurde in die Zwischenablage kopiert!",
+      "linkCopied": "Link in die Zwischenablage kopiert!",
       "chatStarted": "Chat erfolgreich gestartet!",
       "characterDeleted": "Charakter erfolgreich gelöscht"
     },
@@ -50,14 +50,14 @@
       "ariaLabel": "Inhaltsfilter",
       "title": "Inhaltsfilter",
       "ageRating": "Altersfreigabe",
-      "blurNsfw": "Explizite Inhalte unscharf machen",
+      "blurNsfw": "Explizite Inhalte ausblenden",
       "none": "Kein Filter",
-      "blur": "Sensible Inhalte unscharf machen",
-      "hidden": "Erwachseneninhalte ausblenden",
+      "blur": "Sensible Inhalte ausblenden",
+      "hidden": "Jugendfreie Inhalte verbergen",
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
-        "blur": "Erwachseneninhalte unscharf machen",
-        "hidden": "Erwachseneninhalte vollständig ausblenden"
+        "blur": "Verwischen von jugendfreien Inhalten",
+        "hidden": "Jugendfreie Inhalte vollständig ausblenden"
       },
       "ageRatings": {
         "L": "Freigegeben",
@@ -69,7 +69,8 @@
       }
     },
     "errors": {
-      "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+      "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+      "failedToFetchData": "Daten konnten nicht abgerufen werden"
     },
     "character": "Charakter",
     "seeMore": "Mehr anzeigen",

@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface PaginatedResponse<T> {
   data: T[];
@@ -45,6 +46,7 @@ export function usePaginatedFetch<T>({
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const { t } = useTranslation(['common']);
 
   const fetchPage = useCallback(
     async (page: number) => {
@@ -63,14 +65,14 @@ export function usePaginatedFetch<T>({
         setHasNextPage(response.hasNextPage);
         setHasPreviousPage(response.hasPreviousPage);
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Failed to fetch data');
+        const error = err instanceof Error ? err : new Error(t('common:errors.failedToFetchData'));
         setError(error);
         setData([]);
       } finally {
         setIsLoading(false);
       }
     },
-    [fetchFn, limit, enabled]
+    [fetchFn, limit, enabled, t]
   );
 
   const fetchNextPage = useCallback(async () => {

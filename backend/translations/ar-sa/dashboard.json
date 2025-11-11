@@ -1,16 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "منطقة مقيدة",
-    "subtitle": "لقد قمت بالمصادقة بنجاح عبر {{provider}}. هذه لوحة التحكم متاحة فقط للمستخدمين المسجلين.",
-    "accountDetails": "تفاصيل الحساب",
-    "nextSteps": "الخطوات التالية",
-    "displayName": "اسم العرض",
-    "email": "البريد الإلكتروني",
-    "provider": "المزود",
-    "token": "الرمز",
-    "insightSyncUnity": "مزامنة هذه الجلسة مع عميل Unity عبر WebSockets آمنة أو REST.",
-    "insightPersist": "احتفظ بملفات تعريف OAuth في مخزن هوية الواجهة الخلفية الخاص بك.",
-    "insightTokens": "إصدار رموز وصول قصيرة الأجل وتحديثها عند الحاجة."
+    "title": "CharHub",
+    "tabs": {
+      "discover": "اكتشف",
+      "chat": "دردشة",
+      "story": "قصة"
+    },
+    "sections": {
+      "popularCharacters": "شخصيات مشهورة",
+      "favoriteCharacters": "شخصياتك المفضلة",
+      "popular": "مشهور",
+      "favorites": "المفضلة",
+      "myStories": "قصصي",
+      "popularStories": "قصص مشهورة",
+      "mine": "خاصتي"
+    },
+    "noStories": "لا توجد قصص بعد. أنشئ قصتك الأولى!",
+    "createStory": "إنشاء قصة",
+    "plusRequired": "يتطلب خطة Plus",
+    "recentConversations": "المحادثات الأخيرة",
+    "newConversation": "محادثة جديدة",
+    "carousel": {
+      "alt": "صورة دوارة لـ {{title}}",
+      "goToSlide": "الانتقال إلى الشريحة {{slide}}",
+      "plus": "PLUS"
+    },
+    "storyCard": {
+      "alt": "صورة غلاف لـ {{title}}",
+      "play": "تشغيل"
+    }
   }
 }

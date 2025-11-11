@@ -10,7 +10,7 @@
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
     "tokenStored": "Almacenado en cookie HTTP-only",
-    "navDashboard": "Panel de control",
+    "navDashboard": "Panel",
     "navCharacters": "Personajes",
     "navTagline": "Demo segura de OAuth",
     "providerLabel": {
@@ -69,7 +69,8 @@
       }
     },
     "errors": {
-      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo."
+      "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+      "failedToFetchData": "Error al obtener los datos"
     },
     "character": "Personaje",
     "seeMore": "Ver más",

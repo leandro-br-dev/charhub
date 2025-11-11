@@ -3,16 +3,16 @@
   "resources": {
     "brand": "CharHub 认证",
     "language": "语言",
-    "continueGoogle": "使用 Google 登录",
-    "continueFacebook": "使用 Facebook 登录",
+    "continueGoogle": "使用 Google 继续",
+    "continueFacebook": "使用 Facebook 继续",
     "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
-    "logout": "退出登录",
-    "logoutLoading": "正在退出登录...",
+    "logout": "退出",
+    "logoutLoading": "正在退出...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在 HTTP-only Cookie 中",
-    "navDashboard": "仪表盘",
+    "tokenStored": "存储在 HTTP-only cookie 中",
+    "navDashboard": "仪表板",
     "navCharacters": "角色",
-    "navTagline": "安全 OAuth 演示",
+    "navTagline": "安全的 OAuth 演示",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -28,7 +28,7 @@
     },
     "none": "无",
     "unknown": "未知",
-    "nameNotAvailable": "姓名不可用",
+    "nameNotAvailable": "名称不可用",
     "cancel": "取消",
     "save": "保存",
     "saving": "正在保存...",
@@ -69,7 +69,8 @@
       }
     },
     "errors": {
-      "generic": "发生错误。请重试。"
+      "generic": "发生错误。请重试。",
+      "failedToFetchData": "获取数据失败"
     },
     "character": "角色",
     "seeMore": "查看更多",

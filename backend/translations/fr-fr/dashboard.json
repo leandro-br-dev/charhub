@@ -1,16 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "Zone réservée",
-    "subtitle": "Vous vous êtes authentifié avec succès via {{provider}}. Ce tableau de bord n'est accessible qu'aux utilisateurs connectés.",
-    "accountDetails": "Détails du compte",
-    "nextSteps": "Prochaines étapes",
-    "displayName": "Nom d'affichage",
-    "email": "E-mail",
-    "provider": "Fournisseur",
-    "token": "Jeton",
-    "insightSyncUnity": "Synchronisez cette session avec le client Unity via WebSockets sécurisés ou REST.",
-    "insightPersist": "Persistez les profils OAuth dans votre magasin d'identité backend.",
-    "insightTokens": "Émettez des jetons d'accès de courte durée et actualisez-les si nécessaire."
+    "title": "CharHub",
+    "tabs": {
+      "discover": "Découvrir",
+      "chat": "Chat",
+      "story": "Histoire"
+    },
+    "sections": {
+      "popularCharacters": "Personnages Populaires",
+      "favoriteCharacters": "Vos Favoris",
+      "popular": "Populaire",
+      "favorites": "Favoris",
+      "myStories": "Mes Histoires",
+      "popularStories": "Histoires Populaires",
+      "mine": "Moi"
+    },
+    "noStories": "Pas encore d'histoires. Créez votre première histoire !",
+    "createStory": "Créer une Histoire",
+    "plusRequired": "Nécessite le Plan Plus",
+    "recentConversations": "Conversations Récentes",
+    "newConversation": "Nouvelle Conversation",
+    "carousel": {
+      "alt": "Image du carrousel pour {{title}}",
+      "goToSlide": "Aller à la diapositive {{slide}}",
+      "plus": "PLUS"
+    },
+    "storyCard": {
+      "alt": "Image de couverture pour {{title}}",
+      "play": "Jouer"
+    }
   }
 }

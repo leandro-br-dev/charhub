@@ -11,7 +11,7 @@ interface RecentConversationsProps {
 }
 
 export function RecentConversations({ limit = 8, wrap = false }: RecentConversationsProps) {
-  const { t, i18n } = useTranslation(['common']);
+  const { t, i18n } = useTranslation(['common', 'dashboard']);
   const { data, isLoading } = useConversationListQuery({
     limit,
     sortBy: 'lastMessageAt',
@@ -41,7 +41,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
     return (
       <section>
         <h2 className="mb-3 text-lg font-semibold text-title">
-          {t('dashboard.recentConversations', 'Recent Conversations')}
+          {t('dashboard:recentConversations')}
         </h2>
         <div className="flex flex-wrap gap-4">
           {conversations.map((conv) => {
@@ -64,7 +64,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
                 <div className="relative h-40">
                   <img
                     src={mainParticipant?.avatar || '/placeholder-character.png'}
-                    alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character', 'Character')}
+                    alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character')}
                     className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
                   />
                   {otherParticipants && otherParticipants.length > 0 && (
@@ -73,7 +73,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
                         <Avatar
                           key={idx}
                           src={p.avatar}
-                          alt={p.firstName || p.name}
+                          alt={p.firstName || p.name || t('common:character')}
                           size="small"
                           className="border-2 border-light"
                         />
@@ -83,7 +83,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
                 </div>
                 <div className="p-4 flex-grow flex flex-col justify-between">
                   <h3 className="font-semibold text-content truncate text-base">
-                    {conv.title || t('dashboard.newConversation', 'New Conversation')}
+                    {conv.title || t('dashboard:newConversation')}
                   </h3>
                   <p className="text-xs text-muted text-right mt-2">
                     {formatTimestamp(conv.lastMessageAt)}
@@ -99,7 +99,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
 
   return (
     <HorizontalScroller
-      title={t('dashboard.recentConversations', 'Recent Conversations')}
+      title={t('dashboard:recentConversations')}
       cardType="vertical"
       itemClassName="w-[180px] max-w-[180px] flex-none"
     >
@@ -123,7 +123,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
             <div className="relative h-40">
               <img
                 src={mainParticipant?.avatar || '/placeholder-character.png'}
-                alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character', 'Character')}
+                alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character')}
                 className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
               />
               {otherParticipants && otherParticipants.length > 0 && (
@@ -132,7 +132,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
                     <Avatar
                       key={idx}
                       src={p.avatar}
-                      alt={p.firstName || p.name}
+                      alt={p.firstName || p.name || t('common:character')}
                       size="small"
                       className="border-2 border-light"
                     />
@@ -142,7 +142,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
             </div>
             <div className="p-4 flex-grow flex flex-col justify-between">
               <h3 className="font-semibold text-content truncate text-base">
-                {conv.title || t('dashboard.newConversation', 'New Conversation')}
+                {conv.title || t('dashboard:newConversation')}
               </h3>
               <p className="text-xs text-muted text-right mt-2">
                 {formatTimestamp(conv.lastMessageAt)}

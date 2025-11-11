@@ -6,6 +6,9 @@ node_modules/
 .env
 .env.local
 .env.*.local
+.env.development
+.env.production
+.env.production.local
 **/env
 
 # Build output
@@ -69,6 +72,11 @@ backend/src/generated/
 *.temp
 *.bak
 *.backup
+
+# Secrets
+secrets/
+*-secrets.txt
+*.env.prod
 
 # Unity
 # This .gitignore file should be placed at the root of your Unity project directory

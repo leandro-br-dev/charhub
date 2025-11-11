@@ -1,16 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "प्रतिबंधित क्षेत्र",
-    "subtitle": "आपने {{provider}} के माध्यम से सफलतापूर्वक प्रमाणीकरण किया है। यह डैशबोर्ड केवल साइन-इन किए हुए उपयोगकर्ताओं के लिए सुलभ है।",
-    "accountDetails": "खाता विवरण",
-    "nextSteps": "अगले कदम",
-    "displayName": "प्रदर्शन नाम",
-    "email": "ईमेल",
-    "provider": "प्रदाता",
-    "token": "टोकन",
-    "insightSyncUnity": "इस सत्र को सुरक्षित WebSockets या REST के माध्यम से Unity क्लाइंट के साथ सिंक करें।",
-    "insightPersist": "अपने बैकएंड पहचान स्टोर में OAuth प्रोफाइल को बनाए रखें।",
-    "insightTokens": "कम समय के लिए एक्सेस टोकन जारी करें और आवश्यकतानुसार रिफ्रेश करें।"
+    "title": "CharHub",
+    "tabs": {
+      "discover": "खोजें",
+      "chat": "चैट",
+      "story": "कहानी"
+    },
+    "sections": {
+      "popularCharacters": "लोकप्रिय कैरेक्टर",
+      "favoriteCharacters": "आपके पसंदीदा",
+      "popular": "लोकप्रिय",
+      "favorites": "पसंदीदा",
+      "myStories": "मेरी कहानियाँ",
+      "popularStories": "लोकप्रिय कहानियाँ",
+      "mine": "मेरी"
+    },
+    "noStories": "अभी तक कोई कहानी नहीं है। अपनी पहली कहानी बनाएँ!",
+    "createStory": "कहानी बनाएँ",
+    "plusRequired": "प्लस प्लान की आवश्यकता है",
+    "recentConversations": "हाल की बातचीत",
+    "newConversation": "नई बातचीत",
+    "carousel": {
+      "alt": "{{title}} के लिए कैरोसेल इमेज",
+      "goToSlide": "स्लाइड {{slide}} पर जाएँ",
+      "plus": "प्लस"
+    },
+    "storyCard": {
+      "alt": "{{title}} के लिए कवर इमेज",
+      "play": "चलाएँ"
+    }
   }
 }

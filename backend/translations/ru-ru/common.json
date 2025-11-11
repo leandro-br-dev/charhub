@@ -9,7 +9,7 @@
     "logout": "Выйти",
     "logoutLoading": "Выход...",
     "authenticatedUser": "Аутентифицированный пользователь",
-    "tokenStored": "Сохранено в HTTP-only cookie",
+    "tokenStored": "Хранится в HTTP-only cookie",
     "navDashboard": "Панель управления",
     "navCharacters": "Персонажи",
     "navTagline": "Демонстрация безопасного OAuth",
@@ -17,7 +17,7 @@
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Провайдер",
+    "provider": "Поставщик",
     "theme": {
       "label": "Тема",
       "option": {
@@ -37,7 +37,7 @@
     "enabled": "Включено",
     "disabled": "Отключено",
     "selectOption": "Выберите вариант",
-    "noResults": "Опции не найдены.",
+    "noResults": "Нет доступных вариантов.",
     "chat": {
       "with": "Чат с"
     },
@@ -60,7 +60,7 @@
         "hidden": "Полностью скрывать материалы для взрослых"
       },
       "ageRatings": {
-        "L": "Для всех",
+        "L": "Всем",
         "TEN": "10+",
         "TWELVE": "12+",
         "FOURTEEN": "14+",
@@ -69,10 +69,11 @@
       }
     },
     "errors": {
-      "generic": "Произошла ошибка. Пожалуйста, попробуйте еще раз."
+      "generic": "Произошла ошибка. Пожалуйста, попробуйте еще раз.",
+      "failedToFetchData": "Не удалось загрузить данные"
     },
     "character": "Персонаж",
-    "seeMore": "Посмотреть еще",
-    "seeMoreArrow": "Посмотреть еще →"
+    "seeMore": "Смотреть больше",
+    "seeMoreArrow": "Смотреть больше →"
   }
 }

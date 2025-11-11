@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface InfiniteScrollResponse<T> {
   data: T[];
@@ -36,6 +37,7 @@ export function useInfiniteScroll<T>({
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [cursor, setCursor] = useState<string | number | undefined>(undefined);
+  const { t } = useTranslation(['common']);
 
   const observerTarget = useRef<HTMLDivElement>(null);
   const isInitialMount = useRef(true);
@@ -64,7 +66,7 @@ export function useInfiniteScroll<T>({
         setHasMore(response.hasMore);
         setCursor(response.nextCursor);
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Failed to fetch data');
+        const error = err instanceof Error ? err : new Error(t('common:errors.failedToFetchData'));
         setError(error);
 
         if (!isLoadMore) {
@@ -78,7 +80,7 @@ export function useInfiniteScroll<T>({
         }
       }
     },
-    [fetchFn, cursor, enabled]
+    [fetchFn, cursor, enabled, t]
   );
 
   const loadMore = useCallback(async () => {

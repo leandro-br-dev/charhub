@@ -53,7 +53,7 @@ export default function Dashboard(): JSX.Element {
   // Fetch carousel highlights
   useEffect(() => {
     // Ensure dashboard title is always "CharHub" when this page is active
-    setTitle('CharHub');
+    setTitle(t('dashboard:title'));
 
     const fetchCarousel = async () => {
       setIsLoadingCarousel(true);
@@ -234,9 +234,9 @@ export default function Dashboard(): JSX.Element {
       <div className="w-full mb-6 overflow-hidden">
         <Tabs defaultTab="discover">
           <TabList>
-            <Tab label="discover">{t('dashboard:tabs.discover', 'Discover')}</Tab>
-            <Tab label="chat">{t('dashboard:tabs.chat', 'Chat')}</Tab>
-            <Tab label="story">{t('dashboard:tabs.story', 'Story')}</Tab>
+            <Tab label="discover">{t('dashboard:tabs.discover')}</Tab>
+            <Tab label="chat">{t('dashboard:tabs.chat')}</Tab>
+            <Tab label="story">{t('dashboard:tabs.story')}</Tab>
           </TabList>
 
           <TabPanels>
@@ -246,8 +246,8 @@ export default function Dashboard(): JSX.Element {
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-title">
                     {discoverView === 'popular'
-                      ? t('dashboard:sections.popularCharacters', 'Popular Characters')
-                      : t('dashboard:sections.favoriteCharacters', 'Your Favorites')}
+                      ? t('dashboard:sections.popularCharacters')
+                      : t('dashboard:sections.favoriteCharacters')}
                   </h2>
                   <div className="flex rounded-xl border border-border overflow-hidden">
                     <button
@@ -255,14 +255,14 @@ export default function Dashboard(): JSX.Element {
                       onClick={() => setDiscoverView('popular')}
                       className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
                     >
-                      {t('dashboard:sections.popular', 'Popular')}
+                      {t('dashboard:sections.popular')}
                     </button>
                     <button
                       type="button"
                       onClick={() => setDiscoverView('favorites')}
                       className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
                     >
-                      {t('dashboard:sections.favorites', 'Favorites')}
+                      {t('dashboard:sections.favorites')}
                     </button>
                   </div>
                 </div>
@@ -302,8 +302,8 @@ export default function Dashboard(): JSX.Element {
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold text-title">
                     {storyView === 'my'
-                      ? t('dashboard:sections.myStories', 'My Stories')
-                      : t('dashboard:sections.popularStories', 'Popular Stories')}
+                      ? t('dashboard:sections.myStories')
+                      : t('dashboard:sections.popularStories')}
                   </h2>
                   <div className="flex rounded-xl border border-border overflow-hidden">
                     <button
@@ -311,14 +311,14 @@ export default function Dashboard(): JSX.Element {
                       onClick={() => setStoryView('my')}
                       className={`px-3 py-1 text-sm ${storyView === 'my' ? 'bg-primary text-black' : 'text-content'}`}
                     >
-                      {t('dashboard:sections.mine', 'Mine')}
+                      {t('dashboard:sections.mine')}
                     </button>
                     <button
                       type="button"
                       onClick={() => setStoryView('popular')}
                       className={`px-3 py-1 text-sm ${storyView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
                     >
-                      {t('dashboard:sections.popular', 'Popular')}
+                      {t('dashboard:sections.popular')}
                     </button>
                   </div>
                 </div>
@@ -334,13 +334,13 @@ export default function Dashboard(): JSX.Element {
                 {!isLoadingStories && filteredMyStories.length === 0 && filteredPopularStories.length === 0 && (
                   <div className="text-center py-12">
                     <p className="text-muted mb-4">
-                      {t('dashboard:noStories', 'No stories yet. Create your first story!')}
+                      {t('dashboard:noStories')}
                     </p>
                     <button
                       onClick={() => navigate('/stories/create')}
                       className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
                     >
-                      {t('dashboard:createStory', 'Create Story')}
+                      {t('dashboard:createStory')}
                     </button>
                   </div>
                 )}

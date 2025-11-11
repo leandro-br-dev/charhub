@@ -1,16 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "Закрытая зона",
-    "subtitle": "Вы успешно прошли аутентификацию через {{provider}}. Этот дашборд доступен только авторизованным пользователям.",
-    "accountDetails": "Детали аккаунта",
-    "nextSteps": "Следующие шаги",
-    "displayName": "Отображаемое имя",
-    "email": "Электронная почта",
-    "provider": "Провайдер",
-    "token": "Токен",
-    "insightSyncUnity": "Синхронизируйте эту сессию с клиентом Unity через защищенные WebSockets или REST.",
-    "insightPersist": "Сохраняйте OAuth-профили в вашем серверном хранилище идентификаторов.",
-    "insightTokens": "Выпускайте краткосрочные токены доступа и обновляйте их по мере необходимости."
+    "title": "CharHub",
+    "tabs": {
+      "discover": "Обзор",
+      "chat": "Чат",
+      "story": "История"
+    },
+    "sections": {
+      "popularCharacters": "Популярные персонажи",
+      "favoriteCharacters": "Ваши избранные",
+      "popular": "Популярное",
+      "favorites": "Избранное",
+      "myStories": "Мои истории",
+      "popularStories": "Популярные истории",
+      "mine": "Мои"
+    },
+    "noStories": "Историй пока нет. Создайте свою первую историю!",
+    "createStory": "Создать историю",
+    "plusRequired": "Требуется Плюс-подписка",
+    "recentConversations": "Последние беседы",
+    "newConversation": "Новая беседа",
+    "carousel": {
+      "alt": "Изображение карусели для {{title}}",
+      "goToSlide": "Перейти к слайду {{slide}}",
+      "plus": "PLUS"
+    },
+    "storyCard": {
+      "alt": "Обложка для {{title}}",
+      "play": "Играть"
+    }
   }
 }

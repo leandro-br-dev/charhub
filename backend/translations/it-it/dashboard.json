@@ -1,16 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "Area Riservata",
-    "subtitle": "Ti sei autenticato con successo tramite {{provider}}. Questa dashboard è accessibile solo agli utenti registrati.",
-    "accountDetails": "Dettagli account",
-    "nextSteps": "Passi successivi",
-    "displayName": "Nome visualizzato",
-    "email": "Email",
-    "provider": "Provider",
-    "token": "Token",
-    "insightSyncUnity": "Sincronizza questa sessione con il client Unity tramite WebSockets sicuri o REST.",
-    "insightPersist": "Memorizza i profili OAuth nel tuo backend di gestione delle identità.",
-    "insightTokens": "Emetti token di accesso di breve durata e aggiornali quando necessario."
+    "title": "CharHub",
+    "tabs": {
+      "discover": "Scopri",
+      "chat": "Chat",
+      "story": "Storia"
+    },
+    "sections": {
+      "popularCharacters": "Personaggi Popolari",
+      "favoriteCharacters": "I Tuoi Preferiti",
+      "popular": "Popolari",
+      "favorites": "Preferiti",
+      "myStories": "Le Mie Storie",
+      "popularStories": "Storie Popolari",
+      "mine": "Mie"
+    },
+    "noStories": "Nessuna storia ancora. Crea la tua prima storia!",
+    "createStory": "Crea Storia",
+    "plusRequired": "Richiede Piano Plus",
+    "recentConversations": "Conversazioni Recenti",
+    "newConversation": "Nuova Conversazione",
+    "carousel": {
+      "alt": "Immagine carosello per {{title}}",
+      "goToSlide": "Vai allo slide {{slide}}",
+      "plus": "PLUS"
+    },
+    "storyCard": {
+      "alt": "Immagine di copertina per {{title}}",
+      "play": "Riproduci"
+    }
   }
 }

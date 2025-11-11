@@ -1,16 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "制限エリア",
-    "subtitle": "{{provider}} による認証が正常に完了しました。このダッシュボードはサインイン済みユーザーのみアクセス可能です。",
-    "accountDetails": "アカウント詳細",
-    "nextSteps": "次のステップ",
-    "displayName": "表示名",
-    "email": "メールアドレス",
-    "provider": "プロバイダー",
-    "token": "トークン",
-    "insightSyncUnity": "このセッションをセキュアなWebSocketまたはREST経由でUnityクライアントと同期します。",
-    "insightPersist": "OAuthプロフィールをバックエンドIDストアに永続化します。",
-    "insightTokens": "短命のアクセストークンを発行し、必要に応じて更新します。"
+    "title": "CharHub",
+    "tabs": {
+      "discover": "発見",
+      "chat": "チャット",
+      "story": "ストーリー"
+    },
+    "sections": {
+      "popularCharacters": "人気キャラクター",
+      "favoriteCharacters": "お気に入りキャラクター",
+      "popular": "人気",
+      "favorites": "お気に入り",
+      "myStories": "マイストーリー",
+      "popularStories": "人気ストーリー",
+      "mine": "マイ"
+    },
+    "noStories": "まだストーリーがありません。最初のストーリーを作成しましょう！",
+    "createStory": "ストーリーを作成",
+    "plusRequired": "Plusプランが必要です",
+    "recentConversations": "最近の会話",
+    "newConversation": "新しい会話",
+    "carousel": {
+      "alt": "{{title}} のカルーセル画像",
+      "goToSlide": "{{slide}} スライドに移動",
+      "plus": "PLUS"
+    },
+    "storyCard": {
+      "alt": "{{title}} の表紙画像",
+      "play": "再生"
+    }
   }
 }

@@ -5,9 +5,9 @@
     "language": "Lingua",
     "continueGoogle": "Continua con Google",
     "continueFacebook": "Continua con Facebook",
-    "privacy": "Continuando accetti la nostra informativa sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di base del profilo.",
-    "logout": "Esci",
-    "logoutLoading": "Uscita in corso...",
+    "privacy": "Continuando accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di base del profilo.",
+    "logout": "Disconnetti",
+    "logoutLoading": "Disconnessione in corso...",
     "authenticatedUser": "Utente autenticato",
     "tokenStored": "Memorizzato in cookie HTTP-only",
     "navDashboard": "Dashboard",
@@ -60,7 +60,7 @@
         "hidden": "Nascondi completamente i contenuti maturi"
       },
       "ageRatings": {
-        "L": "Tutti",
+        "L": "Libero",
         "TEN": "10+",
         "TWELVE": "12+",
         "FOURTEEN": "14+",
@@ -69,7 +69,8 @@
       }
     },
     "errors": {
-      "generic": "Si è verificato un errore. Riprova."
+      "generic": "Si è verificato un errore. Riprova.",
+      "failedToFetchData": "Impossibile recuperare i dati"
     },
     "character": "Personaggio",
     "seeMore": "Vedi altro",

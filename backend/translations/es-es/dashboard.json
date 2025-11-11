@@ -1,16 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "Área restringida",
-    "subtitle": "Te has autenticado correctamente a través de {{provider}}. Este panel solo es accesible para usuarios registrados.",
-    "accountDetails": "Detalles de la cuenta",
-    "nextSteps": "Próximos pasos",
-    "displayName": "Nombre para mostrar",
-    "email": "Correo electrónico",
-    "provider": "Proveedor",
-    "token": "Token",
-    "insightSyncUnity": "Sincroniza esta sesión con el cliente Unity a través de WebSockets seguros o REST.",
-    "insightPersist": "Almacena perfiles OAuth en tu almacén de identidades backend.",
-    "insightTokens": "Emite tokens de acceso de corta duración y actualízalos cuando sea necesario."
+    "title": "CharHub",
+    "tabs": {
+      "discover": "Explorar",
+      "chat": "Chat",
+      "story": "Historia"
+    },
+    "sections": {
+      "popularCharacters": "Personajes Populares",
+      "favoriteCharacters": "Tus Favoritos",
+      "popular": "Populares",
+      "favorites": "Favoritos",
+      "myStories": "Mis Historias",
+      "popularStories": "Historias Populares",
+      "mine": "Mías"
+    },
+    "noStories": "Aún no hay historias. ¡Crea tu primera historia!",
+    "createStory": "Crear Historia",
+    "plusRequired": "Requiere Plan Plus",
+    "recentConversations": "Conversaciones Recientes",
+    "newConversation": "Nueva Conversación",
+    "carousel": {
+      "alt": "Imagen del carrusel para {{title}}",
+      "goToSlide": "Ir a la diapositiva {{slide}}",
+      "plus": "PLUS"
+    },
+    "storyCard": {
+      "alt": "Imagen de portada de {{title}}",
+      "play": "Reproducir"
+    }
   }
 }

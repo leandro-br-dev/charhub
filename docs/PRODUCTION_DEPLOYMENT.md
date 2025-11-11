@@ -209,16 +209,17 @@ gcloud services enable cloudresourcemanager.googleapis.com
 
 ```bash
 # Criar instância Cloud SQL PostgreSQL
-gcloud sql instances create charhub-postgres \
-  --database-version=POSTGRES_16 \
-  --tier=db-f1-micro \
-  --region=us-central1 \
-  --storage-type=SSD \
-  --storage-size=10GB \
-  --storage-auto-increase \
-  --backup-start-time=03:00 \
-  --maintenance-window-day=SUN \
-  --maintenance-window-hour=04
+ gcloud sql instances create charhub-postgres \
+    --database-version=POSTGRES_16 \
+    --tier=db-g1-small \
+    --region=us-central1 \
+    --storage-type=SSD \
+    --storage-size=10GB \
+    --storage-auto-increase \
+    --backup-start-time=03:00 \
+    --maintenance-window-day=SUN \
+    --maintenance-window-hour=04 \
+    --edition=ENTERPRISE
 
 # Criar banco de dados
 gcloud sql databases create charhub_db \

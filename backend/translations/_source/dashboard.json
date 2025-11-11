@@ -1,49 +1,34 @@
 {
-  "description": "Strings used inside the authenticated dashboard, presenting account information and recommended next steps.",
+  "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
-    "title": "Restricted Area",
-    "subtitle": "You have successfully authenticated via {{provider}}. This dashboard is only accessible to signed-in users.",
-    "accountDetails": "Account details",
-    "nextSteps": "Next steps",
-    "displayName": "Display name",
-    "email": "Email",
-    "provider": "Provider",
-    "token": "Token",
-    "insightSyncUnity": "Sync this session with the Unity client via secure WebSockets or REST.",
-    "insightPersist": "Persist OAuth profiles in your backend identity store.",
-    "insightTokens": "Issue short-lived access tokens and refresh when needed."
-  },
-  "tabs": {
-    "discover": "Discover",
-    "chat": "Chat",
-    "story": "Story"
-  },
-  "sections": {
-    "popularCharacters": "Popular Characters",
-    "favoriteCharacters": "Your Favorites",
-    "suggestedChats": "Start a Conversation",
-    "popularStories": "Popular Stories",
-    "myStories": "My Stories"
-  },
-  "ageRatings": {
-    "L": "L - Livre",
-    "TEN": "10+",
-    "TWELVE": "12+",
-    "FOURTEEN": "14+",
-    "SIXTEEN": "16+",
-    "EIGHTEEN": "18+",
-    "placeholder": "Select age rating"
-  },
-  "recentConversations": "Recent Conversations",
-  "createCharacter": "Create Character",
-  "createStory": "Create Story",
-  "noStories": "No stories yet. Create your first story!",
-  "storyModuleComingSoon": "Story module coming soon!",
-  "states": {
-    "loading": "Loading...",
-    "error": "Something went wrong. Please try again."
-  },
-  "actions": {
-    "retry": "Retry"
+    "title": "CharHub",
+    "tabs": {
+      "discover": "Discover",
+      "chat": "Chat",
+      "story": "Story"
+    },
+    "sections": {
+      "popularCharacters": "Popular Characters",
+      "favoriteCharacters": "Your Favorites",
+      "popular": "Popular",
+      "favorites": "Favorites",
+      "myStories": "My Stories",
+      "popularStories": "Popular Stories",
+      "mine": "Mine"
+    },
+    "noStories": "No stories yet. Create your first story!",
+    "createStory": "Create Story",
+    "plusRequired": "Requires Plus Plan",
+    "recentConversations": "Recent Conversations",
+    "newConversation": "New Conversation",
+    "carousel": {
+      "alt": "Carousel image for {{title}}",
+      "goToSlide": "Go to slide {{slide}}",
+      "plus": "PLUS"
+    },
+    "storyCard": {
+      "alt": "Cover image for {{title}}",
+      "play": "Play"
+    }
   }
 }

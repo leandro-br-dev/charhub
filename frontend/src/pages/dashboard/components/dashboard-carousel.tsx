@@ -31,7 +31,7 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
       {imageUrl && (
         <img
           src={imageUrl}
-          alt={title}
+          alt={t('dashboard:carousel.alt', { title })}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
       )}
@@ -40,10 +40,10 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
         {isPlus && (
           <span
             className="absolute top-4 right-4 text-xs font-bold bg-yellow-500 text-black px-2 py-1 rounded-full flex items-center gap-1"
-            title={t('dashboard.plusRequired', 'Requires Plus Plan')}
+            title={t('dashboard:plusRequired')}
           >
             <span className="material-symbols-outlined text-sm">diamond</span>
-            PLUS
+            {t('dashboard:carousel.plus')}
           </span>
         )}
         <h3 className="text-2xl sm:text-3xl font-bold">{title}</h3>
@@ -71,6 +71,7 @@ export function DashboardCarousel({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const touchStartXRef = useRef(0);
   const touchEndXRef = useRef(0);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Simulate loading - in real app this would fetch from API
@@ -161,7 +162,7 @@ export function DashboardCarousel({
             className={`h-2 rounded-full transition-all duration-300 ${
               currentIndex === index ? 'w-6 bg-primary' : 'w-2 bg-white/50 hover:bg-white'
             }`}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={t('dashboard:carousel.goToSlide', { slide: index + 1 })}
           />
         ))}
       </div>
