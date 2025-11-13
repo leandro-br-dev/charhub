@@ -13,10 +13,12 @@ COPY package*.json ./
 
 # Install all dependencies (including devDependencies for build)
 # Add retry logic for network resilience
+# IMPORTANT: Do NOT use --omit dev here, we need tsx and other build tools
 RUN npm config set fetch-retry-mintimeout 20000 && \
     npm config set fetch-retry-maxtimeout 120000 && \
     npm config set fetch-retries 5 && \
-    npm ci
+    echo "[DEBUG] Builder stage - installing ALL dependencies including devDependencies" && \
+    npm ci --include=dev
 
 # Copy source code
 COPY . .
@@ -70,6 +72,15 @@ COPY --from=builder /app/scripts ./scripts
 # Development: dist/ and translations/ are empty (will be generated at runtime)
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/translations ./translations
+
+# Copy generated Prisma Client (needed at runtime)
+# Copy to multiple locations:
+# - src/generated: for development with ts-node
+# - dist/generated: for compiled JS (from dist/services imports ../generated)
+# - generated: fallback location
+COPY --from=builder /app/src/generated ./src/generated
+COPY --from=builder /app/src/generated ./dist/generated
+COPY --from=builder /app/src/generated ./generated
 
 # Note: In development, src/ will be mounted via Docker volume
 # No need to create it here - Docker will mount it automatically

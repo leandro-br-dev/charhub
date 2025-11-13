@@ -1,7 +1,7 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag } from '../generated/prisma';
+import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag, UserRole } from '../generated/prisma';
 import { seedAllTags } from './seedTags';
 
 const prisma = new PrismaClient();
@@ -94,7 +94,7 @@ async function seedUsers(options: SeedOptions): Promise<{ created: number; skipp
           data: {
             displayName: userData.displayName,
             email: userData.email,
-            role: userData.role,
+            role: userData.role as UserRole,
             fullName: userData.fullName,
             preferredLanguage: userData.preferredLanguage,
             maxAgeRating: userData.maxAgeRating as AgeRating,
@@ -113,7 +113,7 @@ async function seedUsers(options: SeedOptions): Promise<{ created: number; skipp
             username: userData.username,
             displayName: userData.displayName,
             email: userData.email,
-            role: userData.role,
+            role: userData.role as UserRole,
             fullName: userData.fullName,
             preferredLanguage: userData.preferredLanguage,
             maxAgeRating: userData.maxAgeRating as AgeRating,
