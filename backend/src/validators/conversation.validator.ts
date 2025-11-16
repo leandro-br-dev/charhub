@@ -18,6 +18,7 @@ export const updateConversationSchema = z.object({
   title: z.string().min(1, 'Title must include at least 1 character').max(200, 'Title cannot exceed 200 characters').optional(),
   settings: z.record(z.string(), z.unknown()).optional().nullable(),
   isTitleUserEdited: z.boolean().optional(),
+  visibility: z.enum(['PRIVATE', 'UNLISTED', 'PUBLIC']).optional(),
 });
 
 // Add participant schema

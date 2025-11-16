@@ -3,12 +3,12 @@
   "resources": {
     "processingTitle": "Finalizando login...",
     "processingMessage": "Finalizando autenticação...",
-    "successTitle": "Bem-vindo de volta!",
+    "successTitle": "Bem-vindo(a) de volta!",
     "redirectingMessage": "Autenticação concluída. Redirecionando...",
-    "errorTitle": "Erro de autenticação",
-    "cancelledMessage": "Autenticação foi cancelada pelo provedor.",
+    "errorTitle": "Erro na autenticação",
+    "cancelledMessage": "A autenticação foi cancelada pelo provedor.",
     "missingParamsMessage": "Parâmetros de autorização ausentes. Por favor, reinicie o processo de login.",
-    "exchangeFailedMessage": "Não conseguimos finalizar a troca OAuth. Por favor, tente novamente.",
+    "exchangeFailedMessage": "Não foi possível finalizar a troca OAuth. Por favor, tente novamente.",
     "returnButton": "Voltar ao login"
   }
 }

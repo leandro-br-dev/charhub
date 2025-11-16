@@ -4,6 +4,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { usePageHeader } from '../../hooks/usePageHeader';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tabs';
 import { ProfileTab } from './components/ProfileTab';
+import { SubscriptionTab } from './components/SubscriptionTab';
 import { ContentClassificationTab } from './components/ContentClassificationTab';
 import { DeleteAccountTab } from './components/DeleteAccountTab';
 import { UrlImageUploader } from '../../components/ui/UrlImageUploader';
@@ -70,12 +71,16 @@ export default function ProfilePage(): JSX.Element {
           <Tabs defaultTab="profile">
             <TabList>
               <Tab label="profile">{t('profile:tabs.profile', 'Profile')}</Tab>
+              <Tab label="subscription">{t('profile:subscription.header', 'Subscription & Credits')}</Tab>
               <Tab label="content-classification">{t('profile:tabs.contentClassification', 'Content Classification')}</Tab>
               <Tab label="delete-account">{t('profile:tabs.deleteAccount', 'Delete Account')}</Tab>
             </TabList>
             <TabPanels className="mt-4 flex-1 h-full flex flex-col">
               <TabPanel label="profile" className="h-full">
                 <ProfileTab />
+              </TabPanel>
+              <TabPanel label="subscription" className="h-full">
+                <SubscriptionTab />
               </TabPanel>
               <TabPanel label="content-classification" className="h-full">
                 <ContentClassificationTab />

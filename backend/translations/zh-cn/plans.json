@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "套餐与订阅",
+    "subtitle": "选择最适合您的套餐",
+    "active_plan": "当前套餐",
+    "will_cancel_on": "将于...取消",
+    "soon": "即将",
+    "reactivate": "重新激活",
+    "cancel_subscription": "取消订阅",
+    "detailed_comparison": "详细功能对比",
+    "coming_soon": "详细对比表格即将上线...",
+    "subscription_activated": "订阅已激活！您的订阅已成功激活。",
+    "subscription_cancelled": "订阅已取消。您已取消订阅流程。",
+    "error_loading_plans": "加载套餐时出错",
+    "error_starting_subscription": "开始订阅时出错",
+    "plan_changed_to_free": "套餐已更改。您现在使用的是免费套餐。",
+    "error_changing_plan": "更改套餐时出错",
+    "confirm_cancel_subscription": "您确定要取消订阅吗？",
+    "subscription_will_cancel": "订阅已取消。您的订阅将在当前周期结束时取消。",
+    "error_cancelling_subscription": "取消订阅时出错",
+    "subscription_reactivated": "订阅已重新激活。您的订阅已成功重新激活。",
+    "error_reactivating_subscription": "重新激活订阅时出错"
+  }
+}

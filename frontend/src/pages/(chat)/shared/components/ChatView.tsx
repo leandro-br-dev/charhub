@@ -11,6 +11,7 @@ import ConversationSettingsModal from './ConversationSettingsModal';
 import { Dialog } from '../../../../components/ui';
 import ImageGalleryModal from './ImageGalleryModal';
 import { useChatModalsManager } from '../hooks/useChatModalsManager';
+import { useConversationBackground } from '../hooks/useConversationBackground';
 import { chatService } from '../../../../services/chatService';
 
 const ChatView: React.FC<any> = ({
@@ -39,6 +40,7 @@ const ChatView: React.FC<any> = ({
   onPromoteCharacter,
   onPlayAudioRequest,
   onSaveConversationSettings,
+  onRequestSuggestion,
   getSenderDetailsAndParticipantId,
   onReviewFileClick,
   onSendConfirmation,
@@ -61,6 +63,16 @@ const ChatView: React.FC<any> = ({
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [loadingGallery, setLoadingGallery] = useState(false);
   const [galleryError, setGalleryError] = useState<string | null>(null);
+
+  // Fetch conversation background (auto or manual)
+  const { data: backgroundData } = useConversationBackground(conversation?.id);
+
+  // Debug background data
+  useEffect(() => {
+    if (backgroundData) {
+      console.log('[ChatView] Background data:', backgroundData);
+    }
+  }, [backgroundData]);
 
   const fetchAndOpenChatGallery = useCallback(async () => {
     if (!conversation?.id) return;
@@ -142,6 +154,22 @@ const ChatView: React.FC<any> = ({
     closeActiveModal();
   }, [modalData, onReprocessMessage, closeActiveModal]);
 
+  // Get background image from resolved background data (auto or manual)
+  // MUST be before early return to comply with Rules of Hooks
+  const backgroundImage = useMemo(() => {
+    if (!backgroundData) {
+      console.log('[ChatView] No background data yet');
+      return null;
+    }
+    console.log('[ChatView] Resolving background:', backgroundData);
+    if (backgroundData.type === 'image') {
+      console.log('[ChatView] Using background image:', backgroundData.value);
+      return backgroundData.value;
+    }
+    console.log('[ChatView] Background type is not image:', backgroundData.type);
+    return null;
+  }, [backgroundData]);
+
   if (loadingConversationData && conversation?.id) {
     return (
       <div className="flex justify-center items-center h-full bg-normal text-content">
@@ -149,11 +177,6 @@ const ChatView: React.FC<any> = ({
       </div>
     );
   }
-
-  // Get background image from conversation settings
-  const backgroundImage = conversation?.settings?.view?.background_type === 'image'
-    ? conversation?.settings?.view?.background_value
-    : null;
 
   return (
     <div className="w-full h-full flex flex-col relative">
@@ -203,6 +226,21 @@ const ChatView: React.FC<any> = ({
 
         <div className="flex flex-col flex-grow overflow-y-auto">
           <div className="max-w-5xl mx-auto w-full px-4">
+            {/* Participant avatars header - always visible at top */}
+            <div className="sticky top-0 z-10 bg-normal/90 backdrop-blur-sm py-4 mb-4 rounded-lg">
+              <DisplayAvatarParticipants
+                participants={processedParticipants}
+                onAddClick={openAddParticipantModal}
+                onRemoveClick={onRemoveParticipant}
+                onAvatarClick={openConfigModal}
+              />
+              {processedParticipants.filter((p: any) => p.actorType !== 'USER').length === 0 && (
+                <p className="text-center text-xs text-muted mt-2 italic">
+                  {t('chatPage.addParticipantsPrompt')}
+                </p>
+              )}
+            </div>
+
             <MessageList
               messages={messages}
               loading={loadingConversationData}
@@ -238,6 +276,7 @@ const ChatView: React.FC<any> = ({
               if (p) openConfigModal(p);
             }}
             onRequestImageGeneration={onRequestImageGeneration}
+            onRequestSuggestion={onRequestSuggestion}
           />
         </div>
       </div>

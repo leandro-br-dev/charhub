@@ -2,6 +2,7 @@ import { Prisma, $Enums, type User } from '../generated/prisma';
 import { prisma } from '../config/database';
 import type { AuthenticatedUser, OAuthProvider, UserRole } from '../types';
 import { generateUniqueUsername } from '../utils/username';
+import { grantInitialCredits } from './creditService';
 
 interface SyncOAuthUserInput {
   provider: OAuthProvider;
@@ -100,6 +101,18 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
       }
     }
 
+    // Check if user exists before upsert to know if it's a new user
+    const existingUserCheck = await prisma.user.findUnique({
+      where: {
+        provider_providerAccountId: {
+          provider: prismaProvider,
+          providerAccountId: input.providerAccountId,
+        },
+      },
+    });
+
+    const isNewUser = !existingUserCheck;
+
     const user = await prisma.user.upsert({
       where: {
         provider_providerAccountId: {
@@ -117,6 +130,16 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
         ...(input.photo && { avatarUrl: input.photo }),
       },
     });
+
+    // Grant initial credits for new users
+    if (isNewUser) {
+      try {
+        await grantInitialCredits(user.id);
+      } catch (error) {
+        // Log error but don't fail signup
+        console.error('Failed to grant initial credits:', error);
+      }
+    }
 
     return mapUser(user);
   } catch (error) {

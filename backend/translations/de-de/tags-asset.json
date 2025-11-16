@@ -6,16 +6,16 @@
       "description": "Alltägliche Freizeitkleidung"
     },
     "Formal Wear": {
-      "name": "Abendgarderobe",
+      "name": "Formelle Kleidung",
       "description": "Formelle Anzüge und Kleider"
     },
     "School Uniform": {
       "name": "Schuluniform",
-      "description": "Kleidung für die Schuluniform"
+      "description": "Schuluniformkleidung"
     },
     "Maid Outfit": {
-      "name": "Maid-Outfit",
-      "description": "Maid-Uniform"
+      "name": "Hausmädchen-Outfit",
+      "description": "Hausmädchen-Uniform"
     },
     "Butler Outfit": {
       "name": "Butler-Outfit",
@@ -31,7 +31,7 @@
     },
     "Armor": {
       "name": "Rüstung",
-      "description": "Schützende Rüstung"
+      "description": "Schutzkleidung"
     },
     "Knight Armor": {
       "name": "Ritterrüstung",
@@ -50,19 +50,19 @@
       "description": "Rüstung im Fantasy-Stil"
     },
     "Robe": {
-      "name": "Robe",
-      "description": "Magische oder zeremonielle Robe"
+      "name": "Gewand",
+      "description": "Magisches oder zeremonielles Gewand"
     },
     "Cloak": {
       "name": "Umhang",
-      "description": "Umhang oder Kapuze"
+      "description": "Umhang oder Mantel"
     },
     "Dress": {
       "name": "Kleid",
-      "description": "Kleidungsstück"
+      "description": "Kleiderkleidung"
     },
     "Wedding Dress": {
-      "name": "Brautkleid",
+      "name": "Hochzeitskleid",
       "description": "Brautkleid"
     },
     "Ball Gown": {
@@ -71,7 +71,7 @@
     },
     "Swimsuit": {
       "name": "Badeanzug",
-      "description": "Badebekleidung"
+      "description": "Badekleidung"
     },
     "Bikini": {
       "name": "Bikini",
@@ -79,7 +79,7 @@
     },
     "Lingerie": {
       "name": "Dessous",
-      "description": "Intime Bekleidung"
+      "description": "Intime Kleidung"
     },
     "Latex": {
       "name": "Latex",
@@ -99,7 +99,7 @@
     },
     "Pirate Outfit": {
       "name": "Pirat-Outfit",
-      "description": "Piratenkleidung"
+      "description": "Pirat-Kleidung"
     },
     "Cowboy Outfit": {
       "name": "Cowboy-Outfit",
@@ -119,7 +119,7 @@
     },
     "Police Uniform": {
       "name": "Polizeiuniform",
-      "description": "Polizeiuniform"
+      "description": "Polizeibeamtenuniform"
     },
     "Nurse Uniform": {
       "name": "Krankenschwester-Uniform",
@@ -135,10 +135,10 @@
     },
     "Chef Uniform": {
       "name": "Kochuniform",
-      "description": "Kleidung für kulinarische Fachkräfte"
+      "description": "Berufskleidung für Köche"
     },
     "Bunny Suit": {
-      "name": "Bunny-Anzug",
+      "name": "Bunny Suit",
       "description": "Playboy-Bunny-Kostüm"
     },
     "Cat Costume": {
@@ -146,7 +146,7 @@
       "description": "Katzen-Themenkostüm"
     },
     "Fox Costume": {
-      "name": "Fuchskostüm",
+      "name": "Fuchs-Kostüm",
       "description": "Fuchs-Themenkostüm"
     },
     "Fursuit": {
@@ -166,7 +166,7 @@
       "description": "Punkrock-Kleidung"
     },
     "Goth Fashion": {
-      "name": "Gothic-Mode",
+      "name": "Goth-Mode",
       "description": "Gothic-Modestil"
     },
     "Gyaru Fashion": {
@@ -179,11 +179,11 @@
     },
     "Sportswear": {
       "name": "Sportkleidung",
-      "description": "Athletische Kleidung"
+      "description": "Sportbekleidung"
     },
     "Gym Clothes": {
-      "name": "Fitnesskleidung",
-      "description": "Trainingskleidung"
+      "name": "Trainingskleidung",
+      "description": "Trainingsbekleidung"
     },
     "Pajamas": {
       "name": "Pyjama",
@@ -199,7 +199,7 @@
     },
     "Towel": {
       "name": "Handtuch",
-      "description": "In Handtuch gewickelt"
+      "description": "In ein Handtuch gewickelt"
     },
     "Naked": {
       "name": "Nackt",
@@ -207,7 +207,7 @@
     },
     "Topless": {
       "name": "Oberkörperfrei",
-      "description": "Keine obere Kleidung"
+      "description": "Keine Oberbekleidung"
     },
     "Covered Nude": {
       "name": "Bedeckte Nacktheit",
@@ -215,7 +215,7 @@
     },
     "Business Suit": {
       "name": "Business-Anzug",
-      "description": "Professionelle Geschäftskleidung"
+      "description": "Professionelle Business-Kleidung"
     },
     "Tuxedo": {
       "name": "Smoking",
@@ -223,7 +223,7 @@
     },
     "Crown": {
       "name": "Krone",
-      "description": "Königliche Kronen-Accessoire"
+      "description": "Königliches Kronen-Accessoire"
     },
     "Tiara": {
       "name": "Diadem",
@@ -247,7 +247,7 @@
     },
     "Cat Ears": {
       "name": "Katzenohren",
-      "description": "Katzenohren-Haarreif"
+      "description": "Katzenohr-Haarreif"
     },
     "Fox Ears": {
       "name": "Fuchs-Ohren",
@@ -255,7 +255,7 @@
     },
     "Horns": {
       "name": "Hörner",
-      "description": "Dämonen-/Drachenhörner"
+      "description": "Dämonen-/Drachen-Hörner"
     },
     "Halo": {
       "name": "Heiligenschein",
@@ -291,7 +291,7 @@
     },
     "Gun": {
       "name": "Pistole",
-      "description": "Feuerwaffen-Waffe"
+      "description": "Schusswaffen-Waffe"
     },
     "Bow": {
       "name": "Bogen",
@@ -307,7 +307,7 @@
     },
     "Shield": {
       "name": "Schild",
-      "description": "Schützender Schild"
+      "description": "Schutzschild"
     },
     "Scythe": {
       "name": "Sense",

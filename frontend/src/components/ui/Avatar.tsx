@@ -4,7 +4,7 @@ import { CachedImage } from './CachedImage';
 export interface AvatarProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 'size' | 'alt' | 'src'> {
   src?: string | null;
   alt?: string;
-  size?: 'mini' | 'small' | 'medium' | 'large';
+  size?: 'mini' | 'small' | 'medium' | 'large' | 'xlarge';
 }
 
 export const Avatar = ({ src, alt = 'Avatar', size = 'medium', className = '', ...props }: AvatarProps) => {
@@ -13,6 +13,7 @@ export const Avatar = ({ src, alt = 'Avatar', size = 'medium', className = '', .
     small: 'w-10 h-10',
     medium: 'w-12 h-12',
     large: 'w-16 h-16',
+    xlarge: 'w-24 h-24',
   };
 
   const baseClasses = 'rounded-full object-cover bg-secondary flex-shrink-0';

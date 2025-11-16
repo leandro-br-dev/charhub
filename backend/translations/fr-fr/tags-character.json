@@ -3,7 +3,7 @@
   "resources": {
     "VTuber": {
       "name": "VTuber",
-      "description": "Virtual YouTuber ou créateur de contenu"
+      "description": "YouTubeur virtuel ou créateur de contenu"
     },
     "Anime": {
       "name": "Anime",
@@ -27,15 +27,15 @@
     },
     "Vampire": {
       "name": "Vampire",
-      "description": "Personnage vampire"
+      "description": "Personnage de vampire"
     },
     "Werewolf": {
       "name": "Loup-garou",
-      "description": "Personnage loup-garou ou lycanthrope"
+      "description": "Personnage de loup-garou ou de lycanthrope"
     },
     "Robot": {
       "name": "Robot",
-      "description": "Personnage robot ou androïde"
+      "description": "Personnage de robot ou d'androïde"
     },
     "Cyborg": {
       "name": "Cyborg",
@@ -50,24 +50,24 @@
       "description": "Personnage avec des oreilles/une queue d'animal"
     },
     "Catgirl": {
-      "name": "Fille-chat",
+      "name": "Catgirl",
       "description": "Personnage avec des traits de chat"
     },
     "Kitsune": {
       "name": "Kitsune",
-      "description": "Esprit renard"
+      "description": "Personnage d'esprit renard"
     },
     "Maid": {
-      "name": "Servante",
-      "description": "Occupation ou tenue de soubrette"
+      "name": "Domestique",
+      "description": "Profession ou tenue de domestique"
     },
     "Butler": {
       "name": "Majordome",
-      "description": "Occupation ou tenue de majordome"
+      "description": "Profession ou tenue de majordome"
     },
     "Student": {
-      "name": "Étudiant",
-      "description": "Personnage étudiant"
+      "name": "Élève",
+      "description": "Personnage d'élève"
     },
     "Teacher": {
       "name": "Enseignant",
@@ -75,11 +75,11 @@
     },
     "Warrior": {
       "name": "Guerrier",
-      "description": "Personnage orienté combat"
+      "description": "Personnage axé sur le combat"
     },
     "Knight": {
       "name": "Chevalier",
-      "description": "Personnage de chevalier ou paladin"
+      "description": "Personnage de chevalier ou de paladin"
     },
     "Samurai": {
       "name": "Samouraï",
@@ -102,8 +102,8 @@
       "description": "Magicien"
     },
     "Healer": {
-      "name": "Guérisseur",
-      "description": "Rôle de soutien/guérison"
+      "name": "Soigneur",
+      "description": "Rôle de soutien/soin"
     },
     "Assassin": {
       "name": "Assassin",
@@ -111,11 +111,11 @@
     },
     "Thief": {
       "name": "Voleur",
-      "description": "Personnage de roublard ou voleur"
+      "description": "Personnage de roublard ou de voleur"
     },
     "Pirate": {
       "name": "Pirate",
-      "description": "Personnage pirate"
+      "description": "Personnage de pirate"
     },
     "Detective": {
       "name": "Détective",
@@ -130,12 +130,12 @@
       "description": "Professionnel de la santé"
     },
     "Nurse": {
-      "name": "Infirmier",
-      "description": "Professionnel infirmier"
+      "name": "Infirmier/Infirmière",
+      "description": "Professionnel des soins infirmiers"
     },
     "Idol": {
       "name": "Idol",
-      "description": "Idole de la pop ou artiste"
+      "description": "Idole pop ou artiste"
     },
     "Musician": {
       "name": "Musicien",
@@ -150,7 +150,7 @@
       "description": "Professionnel du sport"
     },
     "Chef": {
-      "name": "Chef",
+      "name": "Chef cuisinier",
       "description": "Professionnel culinaire"
     },
     "Royalty": {
@@ -167,11 +167,11 @@
     },
     "Tsundere": {
       "name": "Tsundere",
-      "description": "Personnalité d'abord froide, puis chaleureuse"
+      "description": "Personnalité initialement froide, progressivement chaleureuse"
     },
     "Yandere": {
       "name": "Yandere",
-      "description": "Intérêt amoureux obsessionnel, potentiellement violent"
+      "description": "Partenaire amoureux obsessionnel, potentiellement violent"
     },
     "Kuudere": {
       "name": "Kuudere",
@@ -198,11 +198,11 @@
       "description": "Thèmes de bondage, discipline, domination/soumission"
     },
     "Dominatrix": {
-      "name": "Domina",
+      "name": "Dominatrice",
       "description": "Rôle sexuel dominant"
     },
     "Submissive": {
-      "name": "Soumis",
+      "name": "Soumis(e)",
       "description": "Rôle sexuel soumis"
     },
     "Succubus": {
@@ -210,12 +210,12 @@
       "description": "Démon séducteur"
     },
     "Monster Girl": {
-      "name": "Monstre féminin",
-      "description": "Personnage monstre féminin"
+      "name": "Fille monstre",
+      "description": "Personnage féminin monstrueux"
     },
     "Monster Boy": {
-      "name": "Monstre masculin",
-      "description": "Personnage monstre masculin"
+      "name": "Garçon monstre",
+      "description": "Personnage masculin monstrueux"
     },
     "Giantess": {
       "name": "Géante",
@@ -239,23 +239,23 @@
     },
     "Schoolgirl": {
       "name": "Écolière",
-      "description": "Personnage étudiant féminin"
+      "description": "Personnage d'élève féminine"
     },
     "Schoolboy": {
       "name": "Écolier",
-      "description": "Personnage étudiant masculin"
+      "description": "Personnage d'élève masculin"
     },
     "Office Lady": {
       "name": "Employée de bureau",
-      "description": "Employée de bureau féminin"
+      "description": "Employée de bureau"
     },
     "Salaryman": {
       "name": "Salaryman",
-      "description": "Employé de bureau masculin"
+      "description": "Employé de bureau"
     },
     "Gyaru": {
       "name": "Gyaru",
-      "description": "Style de sous-culture de mode japonaise"
+      "description": "Style de sous-culture de la mode japonaise"
     },
     "Goth": {
       "name": "Gothique",
@@ -267,19 +267,19 @@
     },
     "Zombie": {
       "name": "Zombie",
-      "description": "Personnage zombie mort-vivant"
+      "description": "Personnage de zombie mort-vivant"
     },
     "Ghost": {
       "name": "Fantôme",
-      "description": "Personnage esprit ou fantôme"
+      "description": "Personnage d'esprit ou de fantôme"
     },
     "Alien": {
-      "name": "Extraterrestre",
+      "name": "Aliène",
       "description": "Personnage extraterrestre"
     },
     "Mercenary": {
       "name": "Mercenaire",
-      "description": "Soldat ou combattant engagé"
+      "description": "Soldat ou combattant à gages"
     },
     "Gladiator": {
       "name": "Gladiateur",
@@ -287,7 +287,7 @@
     },
     "Barbarian": {
       "name": "Barbare",
-      "description": "Personnage guerrier tribal"
+      "description": "Personnage de guerrier tribal"
     },
     "Necromancer": {
       "name": "Nécromancien",
@@ -307,7 +307,7 @@
     },
     "Ranger": {
       "name": "Rôdeur",
-      "description": "Guerrier de la nature"
+      "description": "Guerrier des terres sauvages"
     },
     "Paladin": {
       "name": "Paladin",
@@ -339,7 +339,7 @@
     },
     "Adventurer": {
       "name": "Aventurier",
-      "description": "Personnage aventurier général"
+      "description": "Personnage d'aventurier général"
     }
   }
 }

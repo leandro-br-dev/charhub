@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "المهام اليومية",
+    "subtitle": "أكمل المهام اليومية لكسب الرصيد",
+    "dailyReward": {
+      "title": "مكافأة تسجيل الدخول اليومي",
+      "description": "احصل على مكافأة تسجيل الدخول اليومي واكسب الرصيد",
+      "credits": "رصيد",
+      "claimed": "تم الاستلام اليوم",
+      "claimButton": "الحصول على المكافأة",
+      "claiming": "جاري الحصول على المكافأة...",
+      "nextReward": "المكافأة التالية متاحة خلال",
+      "hours": "ساعات",
+      "minutes": "دقائق"
+    },
+    "yourCredits": "رصيدك",
+    "availableCredits": "الرصيد المتاح",
+    "comingSoon": "المزيد من المهام قريباً",
+    "comingSoonDescription": "نحن نعمل على إضافة المزيد من الطرق لكسب الرصيد من خلال المهام اليومية والإنجازات.",
+    "messages": {
+      "rewardClaimed": "تم الحصول على المكافأة اليومية بنجاح!",
+      "alreadyClaimed": "لقد حصلت بالفعل على مكافأتك اليومية اليوم. عُد غداً!",
+      "error": "فشل الحصول على المكافأة. يرجى المحاولة مرة أخرى."
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "每日任务",
+    "subtitle": "完成每日任务赚取积分",
+    "dailyReward": {
+      "title": "每日登录奖励",
+      "description": "领取您的每日登录奖励并赚取积分",
+      "credits": "积分",
+      "claimed": "今日已领取",
+      "claimButton": "领取奖励",
+      "claiming": "正在领取...",
+      "nextReward": "下次奖励可在",
+      "hours": "小时",
+      "minutes": "分钟"
+    },
+    "yourCredits": "您的积分",
+    "availableCredits": "可用积分",
+    "comingSoon": "更多任务即将推出",
+    "comingSoonDescription": "我们正在努力通过日常任务和成就增加更多赚取积分的方式。",
+    "messages": {
+      "rewardClaimed": "每日奖励领取成功！",
+      "alreadyClaimed": "您今天已经领取了每日奖励。明天再来！",
+      "error": "领取奖励失败。请重试。"
+    }
+  }
+}

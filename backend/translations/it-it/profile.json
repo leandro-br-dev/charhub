@@ -9,63 +9,72 @@
     },
     "sectionTitle": "Account",
     "title": "Gestisci il tuo profilo",
-    "subtitle": "Aggiorna come gli altri ti vedono su CharHub. Le preferenze ancora in fase di migrazione appariranno presto qui.",
+    "subtitle": "Aggiorna come ti vedono gli altri su CharHub. Le preferenze ancora in fase di migrazione appariranno presto qui.",
     "identity": {
-      "header": "Foto del profilo",
-      "description": "Scegli un avatar che ti rappresenti nelle chat e con i personaggi.",
+      "header": "Foto profilo",
+      "description": "Scegli un avatar che ti rappresenti nelle chat e nei personaggi.",
       "upload": "Carica immagine",
-      "placeholderNote": "Il caricamento di avatar sarà disponibile dopo la riconnessione del servizio multimediale."
+      "placeholderNote": "Il caricamento di avatar sarà disponibile dopo il riconnetto del servizio multimediale."
     },
     "details": {
       "header": "Dettagli pubblici",
-      "description": "Questi valori vengono condivisi con i collaboratori e utilizzati come predefiniti nelle conversazioni."
+      "description": "Questi valori vengono condivisi con i collaboratori e utilizzati come impostazioni predefinite nelle conversazioni."
     },
     "contentClassification": {
       "header": "Classificazione Contenuti",
-      "description": "Configura i filtri dei contenuti per controllare quali tipi di personaggi e storie desideri visualizzare. Solo i contenuti che corrispondono alle tue preferenze selezionate ti verranno consigliati.",
+      "description": "Configura i filtri dei contenuti per controllare quali tipi di personaggi e storie desideri vedere. Solo i contenuti che corrispondono alle tue preferenze selezionate ti verranno consigliati.",
       "blockedTags": "Filtri Contenuti",
-      "filterNote": "Seleziona i tipi di contenuti che desideri CONSENTIRE. Gli elementi deselezionati verranno filtrati dalle raccomandazioni.",
-      "allAgesNote": "Tutti i tipi di contenuto sono bloccati quando viene selezionata la valutazione \"Tutti i livelli\".",
+      "filterNote": "Seleziona i tipi di contenuto che desideri CONSENTIRE. Gli elementi deselezionati verranno filtrati dalle raccomandazioni.",
+      "allAgesNote": "Tutti i tipi di contenuto sono bloccati quando è selezionata la valutazione \"Tutte le età\".",
       "allowAll": "Consenti tutto",
       "birthDateRequired": "Data di nascita richiesta",
-      "birthDateRequiredMessage": "Compila la tua data di nascita nella scheda Profilo per sbloccare le impostazioni di classificazione dei contenuti. Ciò garantisce raccomandazioni di contenuti appropriati all'età.",
-      "maxAgeRatingLabel": "Valutazione Massima per Età",
-      "maxAgeRatingHint": "Seleziona la valutazione massima per età che desideri visualizzare",
-      "ageRestricted": "Limitato per età"
+      "birthDateRequiredMessage": "Compila la tua data di nascita nella scheda Profilo per sbloccare le impostazioni di classificazione dei contenuti. Questo garantisce raccomandazioni di contenuti adatte all'età.",
+      "maxAgeRatingLabel": "Valutazione massima per età",
+      "maxAgeRatingHint": "Seleziona la valutazione massima per età che desideri vedere",
+      "ageRestricted": "Restretto per età"
     },
     "fields": {
       "displayName": "Nome visualizzato",
-      "displayNamePlaceholder": "Come gli altri utenti si rivolgono a te",
+      "displayNamePlaceholder": "Come gli altri utenti ti chiamano",
       "fullName": "Nome completo",
-      "fullNamePlaceholder": "Opzionale per fatturazione e copie email",
+      "fullNamePlaceholder": "Opzionale per fatturazione e copie e-mail",
       "username": "Nome utente",
-      "usernamePlaceholder": "nomeutente",
-      "usernameHint": "Il tuo identificatore unico su CharHub.",
+      "usernamePlaceholder": "nome utente",
+      "usernameHint": "Il tuo identificatore univoco su CharHub.",
       "usernameChecking": "Verifica disponibilità...",
       "usernameAvailable": "Nome utente disponibile",
-      "usernameUnavailable": "Nome utente già preso",
+      "usernameUnavailable": "Nome utente già in uso",
       "email": "E-mail",
       "emailHint": "Gestito dal tuo provider di autenticazione.",
       "birthDate": "Data di nascita",
       "gender": "Genere"
     },
     "genders": {
-      "feminine": "Femmina",
-      "masculine": "Maschio",
+      "feminine": "Femminile",
+      "masculine": "Maschile",
       "nonBinary": "Non binario",
-      "unspecified": "Preferisco non rispondere"
+      "unspecified": "Preferisco non dirlo"
     },
     "preferences": {
-      "placeholder": "Preferenze sui contenuti, impostazioni di sfocatura e temi sensibili torneranno disponibili una volta integrato il servizio di moderazione."
+      "placeholder": "Le preferenze sui contenuti, le impostazioni di sfocatura e i temi sensibili torneranno una volta integrato il servizio di moderazione."
     },
     "actions": {
       "save": "Salva modifiche",
       "saving": "Salvataggio in corso..."
     },
+    "subscription": {
+      "header": "Abbonamento e Crediti",
+      "description": "Gestisci il tuo piano di abbonamento e visualizza il tuo saldo crediti.",
+      "currentPlan": "Piano attuale",
+      "credits": "Crediti disponibili",
+      "viewPlans": "Visualizza piani",
+      "loadingPlan": "Caricamento piano...",
+      "loadingCredits": "Caricamento crediti..."
+    },
     "security": {
       "header": "Sicurezza",
       "description": "Le tue sessioni CharHub ereditano la sicurezza OAuth da Google o Facebook. Il supporto multi-fattore verrà aggiunto presto.",
-      "placeholder": "La gestione delle sessioni e i controlli di accesso senza password sono in fase di pianificazione."
+      "placeholder": "La gestione delle sessioni e i controlli di accesso senza password sono nella roadmap."
     },
     "deleteAccount": {
       "title": "Elimina Account",
@@ -78,16 +87,16 @@
     },
     "feedback": {
       "success": "Profilo aggiornato con successo.",
-      "error": "Non è stato possibile salvare le modifiche."
+      "error": "Non siamo riusciti a salvare le tue modifiche."
     },
     "errors": {
-      "updateFailed": "Non è stato possibile salvare le modifiche. Riprova tra un momento.",
+      "updateFailed": "Non siamo riusciti a salvare le tue modifiche. Riprova tra un momento.",
       "displayNameRequired": "Il nome visualizzato è obbligatorio.",
       "usernameTooShort": "Il nome utente deve contenere almeno 3 caratteri dopo la @.",
       "usernameInvalid": "Il nome utente deve iniziare con @ e contenere solo lettere, numeri e underscore.",
       "usernameTaken": "Questo nome utente è già in uso. Scegline un altro.",
       "validationFailed": "Controlla i campi del modulo e riprova.",
-      "authenticationRequired": "La tua sessione è scaduta. Effettua nuovamente l'accesso per continuare."
+      "authenticationRequired": "La tua sessione è scaduta. Accedi di nuovo per continuare."
     }
   }
 }

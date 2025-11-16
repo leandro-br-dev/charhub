@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "Tâches quotidiennes",
+    "subtitle": "Accomplissez les tâches quotidiennes pour gagner des crédits",
+    "dailyReward": {
+      "title": "Récompense de connexion quotidienne",
+      "description": "Réclamez votre récompense de connexion quotidienne et gagnez des crédits",
+      "credits": "crédits",
+      "claimed": "Déjà réclamé aujourd'hui",
+      "claimButton": "Réclamer la récompense",
+      "claiming": "Réclamation en cours...",
+      "nextReward": "Prochaine récompense disponible dans",
+      "hours": "heures",
+      "minutes": "minutes"
+    },
+    "yourCredits": "Vos crédits",
+    "availableCredits": "Crédits disponibles",
+    "comingSoon": "Plus de tâches bientôt disponibles",
+    "comingSoonDescription": "Nous travaillons à l'ajout de nouvelles façons de gagner des crédits grâce à des tâches et des succès quotidiens.",
+    "messages": {
+      "rewardClaimed": "Récompense quotidienne réclamée avec succès !",
+      "alreadyClaimed": "Vous avez déjà réclamé votre récompense quotidienne aujourd'hui. Revenez demain !",
+      "error": "Échec de la réclamation de la récompense. Veuillez réessayer."
+    }
+  }
+}

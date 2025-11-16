@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "Daily Tasks",
+    "subtitle": "Complete daily tasks to earn credits",
+    "dailyReward": {
+      "title": "Daily Login Reward",
+      "description": "Claim your daily login reward and earn credits",
+      "credits": "credits",
+      "claimed": "Already claimed today",
+      "claimButton": "Claim Reward",
+      "claiming": "Claiming...",
+      "nextReward": "Next reward available in",
+      "hours": "hours",
+      "minutes": "minutes"
+    },
+    "yourCredits": "Your Credits",
+    "availableCredits": "Available Credits",
+    "comingSoon": "More tasks coming soon",
+    "comingSoonDescription": "We're working on adding more ways to earn credits through daily tasks and achievements.",
+    "messages": {
+      "rewardClaimed": "Daily reward claimed successfully!",
+      "alreadyClaimed": "You've already claimed your daily reward today. Come back tomorrow!",
+      "error": "Failed to claim reward. Please try again."
+    }
+  }
+}

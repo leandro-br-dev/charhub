@@ -2,7 +2,7 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Personnage sans nom",
+      "untitledCharacter": "Personnage sans titre",
       "updatedAt": "Mis à jour le {{date}}",
       "public": "Public",
       "private": "Privé",
@@ -48,21 +48,21 @@
       "PSYCHOLOGICAL": "Psychologique",
       "DISCRIMINATION": "Discrimination",
       "CRIME": "Crime",
-      "GAMBLING": "Jeux d'argent"
+      "GAMBLING": "Jeu"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, affrontements ou conflits agressifs.",
+      "VIOLENCE": "Combat, affrontements ou conflit agressif.",
       "GORE": "Blessures graphiques et détails explicites.",
       "SEXUAL": "Thèmes adultes ou sous-entendus.",
-      "NUDITY": "Nudité partielle ou complète.",
+      "NUDITY": "Nudité partielle ou totale.",
       "LANGUAGE": "Langage explicite ou grossier.",
-      "DRUGS": "Usage ou références à des drogues.",
+      "DRUGS": "Usage ou références à la drogue.",
       "ALCOHOL": "Consommation d'alcool.",
-      "HORROR": "Images perturbantes ou d'horreur.",
+      "HORROR": "Imagerie dérangeante ou d'horreur.",
       "PSYCHOLOGICAL": "Santé mentale ou tension psychologique.",
       "DISCRIMINATION": "Discours haineux ou préjugés.",
-      "CRIME": "Thèmes d'activités criminelles.",
-      "GAMBLING": "Références aux paris ou aux jeux d'argent."
+      "CRIME": "Thèmes d'activité criminelle.",
+      "GAMBLING": "Références aux paris ou au jeu."
     },
     "accessibility": {
       "addToFavorites": "Ajouter aux favoris",
@@ -83,7 +83,7 @@
       "actions": {
         "createCharacter": "Nouveau personnage",
         "retry": "Réessayer",
-        "blurSensitive": "Flouter le contenu sensible",
+        "blurSensitive": "Masquer le contenu sensible",
         "showSensitive": "Afficher le contenu sensible"
       },
       "tabs": {
@@ -115,26 +115,26 @@
       "cancel": "Annuler",
       "sections": {
         "identity": "Identité",
-        "identityHint": "Définissez comment les gens découvrent et identifient ce personnage en un coup d'œil.",
+        "identityHint": "Définissez comment les gens découvrent et identifient ce personnage d'un coup d'œil.",
         "profile": "Profil narratif",
-        "profileHint": "Décrivez la personnalité, les traits et l'historique pour guider l'IA.",
+        "profileHint": "Décrivez la personnalité, les traits et l'histoire pour guider l'IA.",
         "configuration": "Disponibilité et modération",
-        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles mesures de sécurité s'appliquent.",
-        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer en fonction de leurs préférences.",
-        "contentTagsCharacterHint": "Ces sujets définissent ce que le personnage est à l'aise de discuter à la classification d'âge sélectionnée.",
-        "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui reste décoché reste bloqué pour cette classification.",
-        "contentTagLocked": "Débloqué aux classifications d'âge supérieures."
+        "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles protections s'appliquent.",
+        "contentTagsHint": "Indiquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer selon leurs préférences.",
+        "contentTagsCharacterHint": "Ces sujets définissent ce que le personnage est à l'aise de discuter selon la classification d'âge sélectionnée.",
+        "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui n'est pas coché reste bloqué pour cette classification.",
+        "contentTagLocked": "Débloqué pour les classifications d'âge supérieures."
       },
       "fields": {
         "firstName": "Prénom",
-        "lastName": "Nom de famille",
+        "lastName": "Nom",
         "age": "Âge",
         "gender": "Genre",
         "species": "Espèce / origine",
         "style": "Style visuel ou narratif",
         "physicalCharacteristics": "Description physique",
         "personality": "Personnalité",
-        "history": "Historique",
+        "history": "Histoire",
         "isPublic": "Visibilité",
         "ageRating": "Classification d'âge",
         "originalLanguageCode": "Langue d'origine",
@@ -144,8 +144,8 @@
       "placeholders": {
         "gender": "Ex : IA non-binaire, androïde, chevalier",
         "species": "Ex : Humain, Elfe, Synthétique",
-        "style": "Ex : Détective noir, anime pastel, style pictural",
-        "genderSelect": "Sélectionner un genre"
+        "style": "Ex : Détective noir, anime pastel, style painterly",
+        "genderSelect": "Sélectionner le genre"
       },
       "labels": {
         "unsavedChanges": "Vous avez des modifications non enregistrées",
@@ -155,8 +155,8 @@
         "visibilityPrivate": "Privé"
       },
       "avatar": {
-        "upload": "Télécharger une image",
-        "change": "Changer d'image",
+        "upload": "Télécharger l'image",
+        "change": "Changer l'image",
         "remove": "Supprimer",
         "uploading": "Téléchargement...",
         "helperCreate": "Choisissez un avatar maintenant et nous le conserverons pendant que vous remplissez le reste du formulaire.",
@@ -182,7 +182,7 @@
         "loading": "Chargement...",
         "noResults": "Aucun résultat",
         "incompatibleToast": "Certains tags sélectionnés sont incompatibles avec la classification d'âge actuelle. Veuillez vérifier.",
-        "incompatibleHint": "Les tags mis en surbrillance sont incompatibles avec la classification d'âge sélectionnée. Supprimez-les pour continuer.",
+        "incompatibleHint": "Les tags mis en surbrillance sont incompatibles avec la classification d'âge actuelle. Supprimez-les pour continuer.",
         "incompatibleChip": "Incompatible avec la classification d'âge actuelle"
       },
       "tabs": {
@@ -196,7 +196,7 @@
     },
     "create": {
       "title": "Créer un nouveau personnage",
-      "subtitle": "Combinez contexte narratif, style visuel et paramètres de modération. Vous pourrez tout affiner plus tard.",
+      "subtitle": "Combinez le contexte narratif, le style visuel et les paramètres de modération. Vous pourrez tout affiner plus tard.",
       "saveButton": "Enregistrer le personnage",
       "cancelButton": "Annuler et revenir"
     },
@@ -215,7 +215,7 @@
         "notFound": "Nous n'avons pas pu trouver ce personnage."
       },
       "actions": {
-        "backToHub": "Retour à la page d'accueil",
+        "backToHub": "Retour au hub",
         "edit": "Modifier",
         "delete": "Supprimer",
         "deleting": "Suppression...",
@@ -234,7 +234,7 @@
         "private": "Privé",
         "createdAt": "Créé le",
         "createdBy": "Créé par",
-        "updatedAt": "Dernière mise à jour le",
+        "updatedAt": "Dernière mise à jour",
         "identifier": "ID du personnage : {{id}}",
         "messageCount": "{{count}} message",
         "messageCount_plural": "{{count}} messages",
@@ -246,7 +246,7 @@
       "sections": {
         "physicalCharacteristics": "Apparence",
         "personality": "Personnalité",
-        "history": "Historique",
+        "history": "Histoire",
         "contentTags": "Avertissements de contenu",
         "metadata": "Tags",
         "introduction": "Introduction",

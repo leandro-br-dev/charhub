@@ -6,13 +6,13 @@
     "continueGoogle": "使用 Google 继续",
     "continueFacebook": "使用 Facebook 继续",
     "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
-    "logout": "退出",
-    "logoutLoading": "正在退出...",
+    "logout": "登出",
+    "logoutLoading": "正在登出...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在 HTTP-only cookie 中",
-    "navDashboard": "仪表板",
+    "tokenStored": "存储在 HTTP Only Cookie 中",
+    "navDashboard": "仪表盘",
     "navCharacters": "角色",
-    "navTagline": "安全的 OAuth 演示",
+    "navTagline": "安全 OAuth 演示",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -34,9 +34,9 @@
     "saving": "正在保存...",
     "delete": "删除",
     "deleting": "正在删除...",
-    "enabled": "启用",
-    "disabled": "禁用",
-    "selectOption": "选择一个选项",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "selectOption": "请选择一个选项",
     "noResults": "未找到选项。",
     "chat": {
       "with": "与...聊天"
@@ -50,13 +50,13 @@
       "ariaLabel": "内容过滤器",
       "title": "内容过滤器",
       "ageRating": "年龄分级",
-      "blurNsfw": "模糊露骨内容",
+      "blurNsfw": "模糊不适宜内容",
       "none": "无过滤器",
       "blur": "模糊敏感内容",
       "hidden": "隐藏成人内容",
       "descriptions": {
         "none": "显示所有内容，无限制",
-        "blur": "对成人内容应用模糊效果",
+        "blur": "对成人内容应用模糊处理",
         "hidden": "完全隐藏成人内容"
       },
       "ageRatings": {

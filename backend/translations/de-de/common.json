@@ -5,9 +5,9 @@
     "language": "Sprache",
     "continueGoogle": "Mit Google fortfahren",
     "continueFacebook": "Mit Facebook fortfahren",
-    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzrichtlinie zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
-    "logoutLoading": "Wird abgemeldet...",
+    "logoutLoading": "Abmelden...",
     "authenticatedUser": "Authentifizierter Benutzer",
     "tokenStored": "Gespeichert in HTTP-only Cookie",
     "navDashboard": "Dashboard",
@@ -31,15 +31,15 @@
     "nameNotAvailable": "Name nicht verfügbar",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "saving": "Wird gespeichert...",
+    "saving": "Speichere...",
     "delete": "Löschen",
-    "deleting": "Wird gelöscht...",
+    "deleting": "Lösche...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
     "selectOption": "Wählen Sie eine Option",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
-      "with": "Chatten mit"
+      "with": "Chat mit"
     },
     "messages": {
       "linkCopied": "Link in die Zwischenablage kopiert!",
@@ -50,14 +50,14 @@
       "ariaLabel": "Inhaltsfilter",
       "title": "Inhaltsfilter",
       "ageRating": "Altersfreigabe",
-      "blurNsfw": "Explizite Inhalte ausblenden",
+      "blurNsfw": "Explizite Inhalte unscharf machen",
       "none": "Kein Filter",
-      "blur": "Sensible Inhalte ausblenden",
-      "hidden": "Jugendfreie Inhalte verbergen",
+      "blur": "Sensible Inhalte unscharf machen",
+      "hidden": "Reife Inhalte ausblenden",
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
-        "blur": "Verwischen von jugendfreien Inhalten",
-        "hidden": "Jugendfreie Inhalte vollständig ausblenden"
+        "blur": "Schützen Sie reife Inhalte mit einem Weichzeichner",
+        "hidden": "Reife Inhalte vollständig ausblenden"
       },
       "ageRatings": {
         "L": "Freigegeben",
@@ -73,7 +73,7 @@
       "failedToFetchData": "Daten konnten nicht abgerufen werden"
     },
     "character": "Charakter",
-    "seeMore": "Mehr anzeigen",
-    "seeMoreArrow": "Mehr anzeigen →"
+    "seeMore": "Mehr sehen",
+    "seeMoreArrow": "Mehr sehen →"
   }
 }

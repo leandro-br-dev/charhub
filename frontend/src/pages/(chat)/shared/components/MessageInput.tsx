@@ -16,6 +16,7 @@ interface MessageInputProps {
   className?: string;
   onUserAvatarClick?: () => void;
   onRequestImageGeneration?: () => void;
+  onRequestSuggestion?: () => Promise<string | null>;
 }
 
 const MessageInput = React.memo(
@@ -26,6 +27,7 @@ const MessageInput = React.memo(
     className = "",
     onUserAvatarClick,
     onRequestImageGeneration,
+    onRequestSuggestion,
   }: MessageInputProps) => {
     const { t } = useTranslation(['chat', 'common']);
     const [message, setMessage] = useState("");
@@ -34,6 +36,7 @@ const MessageInput = React.memo(
 
     const [isRecording, setIsRecording] = useState(false);
     const [isTranscribing, setIsTranscribing] = useState(false);
+    const [isLoadingSuggestion, setIsLoadingSuggestion] = useState(false);
     const [transcriptionError, setTranscriptionError] = useState<string | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
@@ -81,6 +84,23 @@ const MessageInput = React.memo(
       },
       [disabled, isSending, isRecording, handleSendMessageInternal]
     );
+
+    const handleRequestSuggestion = useCallback(async () => {
+      if (!onRequestSuggestion || isLoadingSuggestion || disabled) return;
+
+      setIsLoadingSuggestion(true);
+      try {
+        const suggestion = await onRequestSuggestion();
+        if (suggestion) {
+          setMessage(suggestion);
+          textareaRef.current?.focus();
+        }
+      } catch (error) {
+        console.error('[MessageInput] Error requesting suggestion:', error);
+      } finally {
+        setIsLoadingSuggestion(false);
+      }
+    }, [onRequestSuggestion, isLoadingSuggestion, disabled]);
 
     const startRecording = useCallback(async () => {
       if (isRecording) return;
@@ -246,6 +266,17 @@ const MessageInput = React.memo(
             </div>
             
             <div className="flex items-center gap-2">
+              {onRequestSuggestion && (
+                <Button
+                  variant="light"
+                  size="small"
+                  icon={isLoadingSuggestion ? "progress_activity" : "auto_awesome"}
+                  className={`${isLoadingSuggestion ? 'animate-spin' : ''} text-muted hover:text-primary`}
+                  onClick={handleRequestSuggestion}
+                  disabled={isEffectivelyDisabled || isRecording || isLoadingSuggestion}
+                  title={isLoadingSuggestion ? t("messageInput.generatingSuggestion") : t("messageInput.suggestReplyAction")}
+                />
+              )}
               <Button
                 variant={micButtonVariant}
                 size="small"

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
+import { prisma } from '../../config/database';
 import * as conversationService from '../../services/conversationService';
 import * as messageService from '../../services/messageService';
 import * as assistantService from '../../services/assistantService';
@@ -564,5 +565,188 @@ router.delete(
     }
   }
 );
+
+/**
+ * GET /api/v1/conversations/:id/background
+ * Get resolved background for a conversation (auto or manual)
+ */
+router.get('/:id/background', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    // Verify user has access to this conversation
+    const hasAccess = await conversationService.isConversationOwner(id, userId);
+    if (!hasAccess) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied',
+      });
+    }
+
+    const background = await conversationService.resolveConversationBackground(id);
+
+    return res.json({
+      success: true,
+      data: background,
+    });
+  } catch (error: any) {
+    logger.error({ error }, 'Error resolving conversation background');
+
+    if (error.statusCode === 404) {
+      return res.status(404).json({
+        success: false,
+        message: 'Conversation not found',
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to resolve background',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/conversations/public
+ * List public conversations (discovery feature)
+ */
+router.get('/public', async (req: Request, res: Response) => {
+  try {
+    const sortBy = (req.query.sortBy as 'recent' | 'popular') || 'recent';
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const conversations = await conversationService.listPublicConversations({
+      sortBy,
+      limit,
+      offset,
+    });
+
+    return res.json({
+      success: true,
+      data: conversations,
+    });
+  } catch (error: any) {
+    logger.error({ error }, 'Error listing public conversations');
+
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to list public conversations',
+    });
+  }
+});
+
+/**
+ * POST /api/v1/conversations/:id/suggest-reply
+ * Generate AI suggestion for user's next reply
+ */
+router.post('/:id/suggest-reply', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    // Get user's preferred language
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { preferredLanguage: true },
+    });
+
+    const userLanguage = user?.preferredLanguage || 'en-US';
+
+    // Verify user owns or has access to the conversation
+    const conversation = await conversationService.getConversationById(id, userId);
+    if (!conversation) {
+      return res.status(404).json({
+        success: false,
+        message: 'Conversation not found',
+      });
+    }
+
+    // Get last 10 messages for context
+    const recentMessages = await messageService.listMessages(id, userId!, { conversationId: id, limit: 10, skip: 0 });
+
+    // Build context from messages (or empty if no messages)
+    const hasMessages = recentMessages && recentMessages.length > 0;
+    const context = hasMessages
+      ? recentMessages
+          .reverse() // Show in chronological order
+          .map((msg) => {
+            const senderName = msg.senderType === 'USER' ? 'You' : 'Character';
+            return `${senderName}: ${msg.content}`;
+          })
+          .join('\n')
+      : '';
+
+    // Import LLM service dynamically to avoid circular dependencies
+    const { callLLM } = await import('../../services/llm');
+
+    // Determine the appropriate prompt based on whether there are messages
+    const systemPrompt = hasMessages
+      ? `You are helping a user write their next message in a roleplay conversation. Suggest a natural, engaging reply that continues the story. Keep it concise (1-3 sentences). Match the tone and style of the conversation. Respond in ${userLanguage}.`
+      : `You are helping a user start a new conversation. Suggest a friendly, engaging opening message. Keep it concise (1-2 sentences). Respond in ${userLanguage}.`;
+
+    const userPrompt = hasMessages
+      ? `Recent conversation:\n${context}\n\nSuggest the user's next reply:`
+      : `Suggest a friendly opening message to start a conversation:`;
+
+    // Generate suggestion using a fast, cheap model
+    const suggestion = await callLLM({
+      provider: 'gemini',
+      model: 'gemini-2.5-flash-lite',
+      systemPrompt,
+      userPrompt,
+      temperature: 0.9,
+      maxTokens: 100,
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        suggestion: suggestion.content,
+        contextMessages: recentMessages?.length || 0,
+      },
+    });
+  } catch (error: any) {
+    logger.error({
+      error: error?.message || error,
+      stack: error?.stack,
+      conversationId: req.params.id
+    }, 'Error generating reply suggestion');
+
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: error?.message || 'Failed to generate suggestion',
+    });
+  }
+});
 
 export default router;

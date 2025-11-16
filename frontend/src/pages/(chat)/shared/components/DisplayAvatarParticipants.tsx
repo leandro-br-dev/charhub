@@ -39,10 +39,18 @@ const DisplayAvatarParticipants = React.memo(
         : [];
     }, [participants]);
 
-    const avatarSize = isSticky ? "mini" : "large";
+    // Scalable avatar size based on participant count
+    const avatarSize = useMemo(() => {
+      if (isSticky) return "mini";
+      // Single participant: larger avatar
+      if (displayableParticipants.length === 1) return "xlarge";
+      // Multiple participants: standard size
+      return "large";
+    }, [isSticky, displayableParticipants.length]);
+
     const layoutClasses = isSticky
       ? `flex items-center flex-wrap gap-1`
-      : `flex justify-center items-center flex-wrap gap-2`;
+      : `flex justify-center items-center flex-wrap gap-3`;
 
     const avatarContent = useMemo(() => {
       if (!isSticky && displayableParticipants.length === 0) {

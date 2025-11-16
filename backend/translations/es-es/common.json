@@ -10,7 +10,7 @@
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
     "tokenStored": "Almacenado en cookie HTTP-only",
-    "navDashboard": "Panel",
+    "navDashboard": "Panel de control",
     "navCharacters": "Personajes",
     "navTagline": "Demo segura de OAuth",
     "providerLabel": {
@@ -34,9 +34,9 @@
     "saving": "Guardando...",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
-    "enabled": "Activado",
-    "disabled": "Desactivado",
-    "selectOption": "Seleccionar una opción",
+    "enabled": "Habilitado",
+    "disabled": "Deshabilitado",
+    "selectOption": "Selecciona una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
       "with": "Chatear con"
@@ -50,14 +50,14 @@
       "ariaLabel": "Filtro de contenido",
       "title": "Filtro de Contenido",
       "ageRating": "Clasificación por edad",
-      "blurNsfw": "Difuminar contenido explícito",
+      "blurNsfw": "Desenfocar contenido explícito",
       "none": "Sin filtro",
-      "blur": "Difuminar contenido sensible",
-      "hidden": "Ocultar contenido para adultos",
+      "blur": "Desenfocar contenido sensible",
+      "hidden": "Ocultar contenido maduro",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar difuminado al contenido para adultos",
-        "hidden": "Ocultar completamente el contenido para adultos"
+        "blur": "Aplicar desenfoque al contenido maduro",
+        "hidden": "Ocultar completamente el contenido maduro"
       },
       "ageRatings": {
         "L": "Libre",
@@ -69,7 +69,7 @@
       }
     },
     "errors": {
-      "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo.",
       "failedToFetchData": "Error al obtener los datos"
     },
     "character": "Personaje",

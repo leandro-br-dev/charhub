@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "الخطط والاشتراكات",
+    "subtitle": "اختر الخطة المثالية لاحتياجاتك",
+    "active_plan": "الخطة النشطة",
+    "will_cancel_on": "سيتم الإلغاء في",
+    "soon": "قريباً",
+    "reactivate": "إعادة التفعيل",
+    "cancel_subscription": "إلغاء الاشتراك",
+    "detailed_comparison": "مقارنة تفصيلية للميزات",
+    "coming_soon": "جدول مقارنة تفصيلي قريباً...",
+    "subscription_activated": "تم تفعيل الاشتراك! تم تفعيل اشتراكك بنجاح.",
+    "subscription_cancelled": "تم إلغاء الاشتراك. لقد ألغيت عملية الاشتراك.",
+    "error_loading_plans": "خطأ في تحميل الخطط",
+    "error_starting_subscription": "خطأ في بدء الاشتراك",
+    "plan_changed_to_free": "تم تغيير الخطة. أنت الآن على الخطة المجانية.",
+    "error_changing_plan": "خطأ في تغيير الخطة",
+    "confirm_cancel_subscription": "هل أنت متأكد أنك تريد إلغاء اشتراكك؟",
+    "subscription_will_cancel": "تم إلغاء الاشتراك. سيتم إلغاء اشتراكك في نهاية الفترة الحالية.",
+    "error_cancelling_subscription": "خطأ في إلغاء الاشتراك",
+    "subscription_reactivated": "تم إعادة تفعيل الاشتراك. تم إعادة تفعيل اشتراكك بنجاح.",
+    "error_reactivating_subscription": "خطأ في إعادة تفعيل الاشتراك"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "プランとサブスクリプション",
+    "subtitle": "お客様のニーズに最適なプランをお選びください",
+    "active_plan": "現在のプラン",
+    "will_cancel_on": "～に解約されます",
+    "soon": "間もなく",
+    "reactivate": "再開する",
+    "cancel_subscription": "サブスクリプションを解約する",
+    "detailed_comparison": "詳細な機能比較",
+    "coming_soon": "詳細な比較表は近日公開...",
+    "subscription_activated": "サブスクリプションが有効になりました！サブスクリプションは正常に有効化されました。",
+    "subscription_cancelled": "サブスクリプションが解約されました。サブスクリプションの解約手続きが完了しました。",
+    "error_loading_plans": "プランの読み込みエラー",
+    "error_starting_subscription": "サブスクリプションの開始エラー",
+    "plan_changed_to_free": "プランが変更されました。無料プランになりました。",
+    "error_changing_plan": "プラン変更エラー",
+    "confirm_cancel_subscription": "本当にサブスクリプションを解約しますか？",
+    "subscription_will_cancel": "サブスクリプションが解約されます。現在の期間終了時にサブスクリプションが解約されます。",
+    "error_cancelling_subscription": "サブスクリプション解約エラー",
+    "subscription_reactivated": "サブスクリプションが再開されました！サブスクリプションは正常に再開されました。",
+    "error_reactivating_subscription": "サブスクリプション再開エラー"
+  }
+}

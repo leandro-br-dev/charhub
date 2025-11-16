@@ -42,6 +42,7 @@ const ConversationSettingsModal = ({
   };
 
   const [settings, setSettings] = useState(defaultSettings);
+  const [visibility, setVisibility] = useState<'PRIVATE' | 'UNLISTED' | 'PUBLIC'>('PRIVATE');
   const [error, setError] = useState<string | null>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
@@ -103,6 +104,7 @@ const ConversationSettingsModal = ({
           background_value: vs.background_value || null,
         },
       });
+      setVisibility(conversation.visibility || 'PRIVATE');
       setError(null);
     }
   }, [isOpen, conversation]);
@@ -140,10 +142,10 @@ const ConversationSettingsModal = ({
         finalSettings.view.background_value = null;
       }
 
-      await onSave(conversation.id, finalSettings);
+      await onSave(conversation.id, finalSettings, visibility);
       // TODO: Implement setBackground when view context is available
       // setBackground(finalSettings.view.background_value);
-      onClose(); 
+      onClose();
     } catch (err: any) {
       setError(err.message || t("chatPage.errorSavingConfig"));
     }
@@ -184,6 +186,12 @@ const ConversationSettingsModal = ({
   const backgroundTypeOptions = [
     { value: "theme", label: t("conversationSettings.bgTypeTheme") },
     { value: "image", label: t("conversationSettings.bgTypeImage") },
+  ];
+
+  const visibilityOptions = [
+    { value: "PRIVATE", label: t("conversationSettings.visibility.private") },
+    { value: "UNLISTED", label: t("conversationSettings.visibility.unlisted") },
+    { value: "PUBLIC", label: t("conversationSettings.visibility.public") },
   ];
 
   if (!conversation) return null;
@@ -229,7 +237,32 @@ const ConversationSettingsModal = ({
             disabled={isLoading}
           />
 
-          <div className="p-4 border-t border-gray-600 mt-4 space-y-4">
+          <div className="p-4 border-t border-secondary mt-4 space-y-4">
+            <h3 className="text-md font-semibold text-content">
+              {t("conversationSettings.visibility.sectionTitle")}
+            </h3>
+            <Select
+              label={t("conversationSettings.visibility.label")}
+              options={visibilityOptions}
+              value={visibility}
+              onChange={(v: string) => setVisibility(v as 'PRIVATE' | 'UNLISTED' | 'PUBLIC')}
+              disabled={isLoading}
+            />
+            {visibility !== 'PRIVATE' && (
+              <div className="p-3 bg-warning/10 dark:bg-warning/20 border border-warning/30 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <span className="material-symbols-outlined text-warning text-sm mt-0.5">warning</span>
+                  <p className="text-sm text-warning-content dark:text-warning">
+                    {visibility === 'PUBLIC'
+                      ? t("conversationSettings.visibility.publicWarning")
+                      : t("conversationSettings.visibility.unlistedWarning")}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="p-4 border-t border-secondary mt-4 space-y-4">
             <h3 className="text-md font-semibold text-content">
               {t("conversationSettings.viewOptionsTitle")}
             </h3>

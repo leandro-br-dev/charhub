@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "Piani e Abbonamenti",
+    "subtitle": "Scegli il piano perfetto per le tue esigenze",
+    "active_plan": "Piano Attivo",
+    "will_cancel_on": "Verrà annullato il",
+    "soon": "presto",
+    "reactivate": "Riattiva",
+    "cancel_subscription": "Annulla Abbonamento",
+    "detailed_comparison": "Confronto Dettagliato Funzionalità",
+    "coming_soon": "Tabella di confronto dettagliata in arrivo...",
+    "subscription_activated": "Abbonamento Attivato! Il tuo abbonamento è stato attivato con successo.",
+    "subscription_cancelled": "Abbonamento Annullato. Hai annullato il processo di abbonamento.",
+    "error_loading_plans": "Errore nel caricamento dei piani",
+    "error_starting_subscription": "Errore nell'avvio dell'abbonamento",
+    "plan_changed_to_free": "Piano Modificato. Ora sei sul piano gratuito.",
+    "error_changing_plan": "Errore nella modifica del piano",
+    "confirm_cancel_subscription": "Sei sicuro di voler annullare il tuo abbonamento?",
+    "subscription_will_cancel": "Abbonamento Annullato. Il tuo abbonamento verrà annullato alla fine del periodo corrente.",
+    "error_cancelling_subscription": "Errore nell'annullamento dell'abbonamento",
+    "subscription_reactivated": "Abbonamento Riattivato. Il tuo abbonamento è stato riattivato con successo.",
+    "error_reactivating_subscription": "Errore nella riattivazione dell'abbonamento"
+  }
+}

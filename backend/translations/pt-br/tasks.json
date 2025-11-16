@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "Tarefas Diárias",
+    "subtitle": "Complete tarefas diárias para ganhar créditos",
+    "dailyReward": {
+      "title": "Recompensa de Login Diário",
+      "description": "Resgate sua recompensa de login diário e ganhe créditos",
+      "credits": "créditos",
+      "claimed": "Já resgatado hoje",
+      "claimButton": "Resgatar Recompensa",
+      "claiming": "Resgatando...",
+      "nextReward": "Próxima recompensa disponível em",
+      "hours": "horas",
+      "minutes": "minutos"
+    },
+    "yourCredits": "Seus Créditos",
+    "availableCredits": "Créditos Disponíveis",
+    "comingSoon": "Mais tarefas em breve",
+    "comingSoonDescription": "Estamos trabalhando para adicionar mais formas de ganhar créditos através de tarefas diárias e conquistas.",
+    "messages": {
+      "rewardClaimed": "Recompensa diária resgatada com sucesso!",
+      "alreadyClaimed": "Você já resgatou sua recompensa diária hoje. Volte amanhã!",
+      "error": "Falha ao resgatar recompensa. Por favor, tente novamente."
+    }
+  }
+}

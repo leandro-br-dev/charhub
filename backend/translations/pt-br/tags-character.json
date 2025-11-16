@@ -15,7 +15,7 @@
     },
     "Elf": {
       "name": "Elfo",
-      "description": "Personagem de fantasia élfico"
+      "description": "Personagem de elfo de fantasia"
     },
     "Demon": {
       "name": "Demônio",
@@ -47,7 +47,7 @@
     },
     "Kemonomimi": {
       "name": "Kemonomimi",
-      "description": "Personagem com orelhas/rabo de animal"
+      "description": "Personagem com orelhas/cauda de animal"
     },
     "Catgirl": {
       "name": "Garota Gato",
@@ -55,7 +55,7 @@
     },
     "Kitsune": {
       "name": "Kitsune",
-      "description": "Espírito de raposa"
+      "description": "Personagem espírito de raposa"
     },
     "Maid": {
       "name": "Empregada Doméstica",
@@ -71,7 +71,7 @@
     },
     "Teacher": {
       "name": "Professor(a)",
-      "description": "Professor(a) ou educador(a)"
+      "description": "Professor ou educador(a)"
     },
     "Warrior": {
       "name": "Guerreiro(a)",
@@ -79,7 +79,7 @@
     },
     "Knight": {
       "name": "Cavaleiro(a)",
-      "description": "Personagem cavaleiro(a) ou paladino(a)"
+      "description": "Personagem cavaleiro ou paladino(a)"
     },
     "Samurai": {
       "name": "Samurai",
@@ -98,8 +98,8 @@
       "description": "Bruxa ou feiticeira"
     },
     "Wizard": {
-      "name": "Feiticeiro",
-      "description": "Usuário de magia do sexo masculino"
+      "name": "Mago",
+      "description": "Usuário de magia masculino"
     },
     "Healer": {
       "name": "Curandeiro(a)",
@@ -111,7 +111,7 @@
     },
     "Thief": {
       "name": "Ladrão(a)",
-      "description": "Personagem ladino(a) ou ladrão(a)"
+      "description": "Personagem trapaceiro(a) ou ladrão(a)"
     },
     "Pirate": {
       "name": "Pirata",
@@ -134,8 +134,8 @@
       "description": "Profissional de enfermagem"
     },
     "Idol": {
-      "name": "Ídolo(a)",
-      "description": "Ídolo(a) pop ou artista"
+      "name": "Idol",
+      "description": "Ídolo pop ou artista performático(a)"
     },
     "Musician": {
       "name": "Músico(a)",
@@ -150,7 +150,7 @@
       "description": "Profissional de esportes"
     },
     "Chef": {
-      "name": "Chef de Cozinha",
+      "name": "Chef",
       "description": "Profissional culinário(a)"
     },
     "Royalty": {
@@ -167,7 +167,7 @@
     },
     "Tsundere": {
       "name": "Tsundere",
-      "description": "Personalidade inicialmente fria, gradualmente calorosa"
+      "description": "Personalidade inicialmente fria, gradualmente quente"
     },
     "Yandere": {
       "name": "Yandere",
@@ -187,11 +187,11 @@
     },
     "Tomboy": {
       "name": "Tomboy",
-      "description": "Personagem feminina com comportamento masculino"
+      "description": "Personagem feminina com apresentação masculina"
     },
     "Femboy": {
       "name": "Femboy",
-      "description": "Personagem masculino com comportamento feminino"
+      "description": "Personagem masculino com apresentação feminina"
     },
     "BDSM": {
       "name": "BDSM",
@@ -207,11 +207,11 @@
     },
     "Succubus": {
       "name": "Súcubo",
-      "description": "Demônio sedutor(a)"
+      "description": "Sedutora demoníaca"
     },
     "Monster Girl": {
       "name": "Garota Monstro",
-      "description": "Personagem monstro feminina"
+      "description": "Personagem monstro feminino"
     },
     "Monster Boy": {
       "name": "Garoto Monstro",
@@ -238,20 +238,20 @@
       "description": "Homem maduro atraente"
     },
     "Schoolgirl": {
-      "name": "Estudante (garota)",
-      "description": "Personagem estudante do sexo feminino"
+      "name": "Estudante (Garota)",
+      "description": "Personagem estudante feminina"
     },
     "Schoolboy": {
-      "name": "Estudante (garoto)",
-      "description": "Personagem estudante do sexo masculino"
+      "name": "Estudante (Garoto)",
+      "description": "Personagem estudante masculino"
     },
     "Office Lady": {
-      "name": "Profissional de Escritório (mulher)",
-      "description": "Trabalhadora de escritório do sexo feminino"
+      "name": "Funcionária de Escritório",
+      "description": "Trabalhadora de escritório feminina"
     },
     "Salaryman": {
-      "name": "Assalariado",
-      "description": "Trabalhador de escritório do sexo masculino"
+      "name": "Salaried Man",
+      "description": "Trabalhador de escritório masculino"
     },
     "Gyaru": {
       "name": "Gyaru",
@@ -279,7 +279,7 @@
     },
     "Mercenary": {
       "name": "Mercenário(a)",
-      "description": "Soldado ou lutador(a) contratado(a)"
+      "description": "Soldado(a) ou lutador(a) contratado(a)"
     },
     "Gladiator": {
       "name": "Gladiador(a)",
@@ -307,7 +307,7 @@
     },
     "Ranger": {
       "name": "Patrulheiro(a)",
-      "description": "Guerreiro(a) da natureza selvagem"
+      "description": "Guerreiro(a) da natureza"
     },
     "Paladin": {
       "name": "Paladino(a)",
@@ -331,11 +331,11 @@
     },
     "Blacksmith": {
       "name": "Ferreiro(a)",
-      "description": "Criador(a) de armas e armaduras"
+      "description": "Artesão(ã) de armas e armaduras"
     },
     "Merchant": {
-      "name": "Comerciante",
-      "description": "Vendedor(a) ou dono(a) de loja"
+      "name": "Mercador(a)",
+      "description": "Comerciante ou dono(a) de loja"
     },
     "Adventurer": {
       "name": "Aventureiro(a)",

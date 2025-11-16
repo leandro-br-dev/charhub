@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "Pläne & Abonnements",
+    "subtitle": "Wählen Sie den perfekten Plan für Ihre Bedürfnisse",
+    "active_plan": "Aktiver Plan",
+    "will_cancel_on": "Wird gekündigt am",
+    "soon": "bald",
+    "reactivate": "Wieder aktivieren",
+    "cancel_subscription": "Abonnement kündigen",
+    "detailed_comparison": "Detaillierter Funktionsvergleich",
+    "coming_soon": "Detaillierte Vergleichstabelle folgt in Kürze...",
+    "subscription_activated": "Abonnement aktiviert! Ihr Abonnement wurde erfolgreich aktiviert.",
+    "subscription_cancelled": "Abonnement gekündigt. Sie haben den Kündigungsvorgang abgeschlossen.",
+    "error_loading_plans": "Fehler beim Laden der Pläne",
+    "error_starting_subscription": "Fehler beim Starten des Abonnements",
+    "plan_changed_to_free": "Plan geändert. Sie nutzen nun den kostenlosen Plan.",
+    "error_changing_plan": "Fehler beim Ändern des Plans",
+    "confirm_cancel_subscription": "Möchten Sie Ihr Abonnement wirklich kündigen?",
+    "subscription_will_cancel": "Abonnement gekündigt. Ihr Abonnement wird zum Ende der aktuellen Laufzeit gekündigt.",
+    "error_cancelling_subscription": "Fehler beim Kündigen des Abonnements",
+    "subscription_reactivated": "Abonnement wieder aktiviert. Ihr Abonnement wurde erfolgreich wieder aktiviert.",
+    "error_reactivating_subscription": "Fehler beim Wiederaktivieren des Abonnements"
+  }
+}

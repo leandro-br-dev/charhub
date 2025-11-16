@@ -385,9 +385,9 @@ const ChatContainer = () => {
   );
 
   const handleSaveConversationSettings = useCallback(
-    async (convId: string, settingsData: Record<string, unknown>) => {
+    async (convId: string, settingsData: Record<string, unknown>, visibility?: 'PRIVATE' | 'UNLISTED' | 'PUBLIC') => {
       try {
-        const updated = await chatService.updateConversationSettings(convId, settingsData);
+        const updated = await chatService.updateConversationSettings(convId, settingsData, visibility);
         queryClient.setQueryData(conversationKeys.detail(convId), updated);
         return true;
       } catch (error) {
@@ -398,6 +398,19 @@ const ChatContainer = () => {
     },
     [queryClient, t]
   );
+
+  const handleRequestSuggestion = useCallback(async (): Promise<string | null> => {
+    if (!conversationId) return null;
+
+    try {
+      const result = await chatService.suggestReply(conversationId);
+      return result.suggestion;
+    } catch (error) {
+      console.error('[ChatContainer] Error getting suggestion:', error);
+      setManualError(t('errors.suggestionFailed', { defaultValue: 'Failed to generate reply suggestion.' }));
+      return null;
+    }
+  }, [conversationId, t]);
 
   const handleEditMessage = useCallback(async () => {
     console.warn('[ChatContainer] Edit message is not implemented yet.');
@@ -523,6 +536,7 @@ const ChatContainer = () => {
         );
       }}
       onSaveConversationSettings={handleSaveConversationSettings}
+      onRequestSuggestion={handleRequestSuggestion}
       getSenderDetailsAndParticipantId={getSenderDetailsAndParticipantId}
       onSendConfirmation={handleSendConfirmation}
       onReviewFileClick={() => {

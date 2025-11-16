@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "플랜 및 구독",
+    "subtitle": "필요에 맞는 완벽한 플랜을 선택하세요",
+    "active_plan": "활성 플랜",
+    "will_cancel_on": "취소 예정일",
+    "soon": "곧",
+    "reactivate": "재활성화",
+    "cancel_subscription": "구독 취소",
+    "detailed_comparison": "상세 기능 비교",
+    "coming_soon": "상세 비교표는 곧 제공될 예정입니다...",
+    "subscription_activated": "구독이 활성화되었습니다! 구독이 성공적으로 활성화되었습니다.",
+    "subscription_cancelled": "구독이 취소되었습니다. 구독 절차를 취소하셨습니다.",
+    "error_loading_plans": "플랜을 불러오는 중 오류가 발생했습니다",
+    "error_starting_subscription": "구독 시작 중 오류가 발생했습니다",
+    "plan_changed_to_free": "플랜 변경. 이제 무료 플랜을 사용하고 있습니다.",
+    "error_changing_plan": "플랜 변경 중 오류가 발생했습니다",
+    "confirm_cancel_subscription": "구독을 취소하시겠습니까?",
+    "subscription_will_cancel": "구독이 취소됩니다. 현재 기간이 끝나면 구독이 취소됩니다.",
+    "error_cancelling_subscription": "구독 취소 중 오류가 발생했습니다",
+    "subscription_reactivated": "구독이 재활성화되었습니다! 구독이 성공적으로 재활성화되었습니다.",
+    "error_reactivating_subscription": "구독 재활성화 중 오류가 발생했습니다"
+  }
+}

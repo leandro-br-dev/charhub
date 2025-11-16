@@ -62,6 +62,15 @@
       "save": "Save changes",
       "saving": "Saving..."
     },
+    "subscription": {
+      "header": "Subscription & Credits",
+      "description": "Manage your subscription plan and view your credit balance.",
+      "currentPlan": "Current Plan",
+      "credits": "Available Credits",
+      "viewPlans": "View Plans",
+      "loadingPlan": "Loading plan...",
+      "loadingCredits": "Loading credits..."
+    },
     "security": {
       "header": "Security",
       "description": "Your CharHub sessions inherit OAuth security from Google or Facebook. Multi-factor support will be added soon.",

@@ -3,7 +3,7 @@
   "resources": {
     "Fantasy": {
       "name": "Fantasy",
-      "description": "Genre de fantasy"
+      "description": "Genre fantastique"
     },
     "Sci-Fi": {
       "name": "Sci-Fi",
@@ -14,11 +14,11 @@
       "description": "Genre de romance"
     },
     "Horror": {
-      "name": "Horror",
+      "name": "Horreur",
       "description": "Genre d'horreur"
     },
     "Mystery": {
-      "name": "Mystery",
+      "name": "Mystère",
       "description": "Genre de mystère"
     },
     "Thriller": {
@@ -26,7 +26,7 @@
       "description": "Genre de thriller"
     },
     "Adventure": {
-      "name": "Adventure",
+      "name": "Aventure",
       "description": "Genre d'aventure"
     },
     "Action": {
@@ -34,16 +34,16 @@
       "description": "Histoires axées sur l'action"
     },
     "Comedy": {
-      "name": "Comedy",
+      "name": "Comédie",
       "description": "Genre de comédie"
     },
     "Drama": {
-      "name": "Drama",
+      "name": "Drame",
       "description": "Genre dramatique"
     },
     "Slice of Life": {
-      "name": "Slice of Life",
-      "description": "Histoires sur la vie quotidienne"
+      "name": "Tranche de vie",
+      "description": "Histoires de la vie quotidienne"
     },
     "Isekai": {
       "name": "Isekai",
@@ -51,10 +51,10 @@
     },
     "Harem": {
       "name": "Harem",
-      "description": "Multiples intérêts romantiques"
+      "description": "Plusieurs intérêts romantiques"
     },
     "Reverse Harem": {
-      "name": "Reverse Harem",
+      "name": "Harem inversé",
       "description": "Protagoniste féminine avec plusieurs intérêts masculins"
     },
     "Yaoi": {
@@ -78,16 +78,16 @@
       "description": "Violence graphique et sang"
     },
     "Psychological": {
-      "name": "Psychological",
+      "name": "Psychologique",
       "description": "Thèmes psychologiques"
     },
     "Dark Fantasy": {
-      "name": "Dark Fantasy",
-      "description": "Thèmes de fantasy sombres et matures"
+      "name": "Fantasy sombre",
+      "description": "Thèmes fantastiques sombres et matures"
     },
     "Urban Fantasy": {
-      "name": "Urban Fantasy",
-      "description": "Fantasy dans un cadre moderne"
+      "name": "Fantasy urbaine",
+      "description": "Fantasy dans un décor moderne"
     },
     "High Fantasy": {
       "name": "High Fantasy",
@@ -102,23 +102,23 @@
       "description": "Technologie à vapeur de l'époque victorienne"
     },
     "Post-Apocalyptic": {
-      "name": "Post-Apocalyptic",
+      "name": "Post-apocalyptique",
       "description": "Monde après une catastrophe"
     },
     "Dystopian": {
-      "name": "Dystopian",
+      "name": "Dystopique",
       "description": "Cadre de société oppressive"
     },
     "Historical": {
-      "name": "Historical",
-      "description": "Cadre d'époque historique"
+      "name": "Historique",
+      "description": "Cadre de période historique"
     },
     "Supernatural": {
-      "name": "Supernatural",
+      "name": "Surnaturel",
       "description": "Éléments surnaturels"
     },
     "Martial Arts": {
-      "name": "Martial Arts",
+      "name": "Arts martiaux",
       "description": "Axé sur les arts martiaux"
     },
     "Mecha": {
@@ -126,7 +126,7 @@
       "description": "Robots géants/mechs"
     },
     "School Life": {
-      "name": "School Life",
+      "name": "Vie scolaire",
       "description": "Histoires se déroulant à l'école"
     },
     "Sports": {
@@ -134,16 +134,16 @@
       "description": "Histoires sur le thème du sport"
     },
     "Music": {
-      "name": "Music",
+      "name": "Musique",
       "description": "Histoires sur le thème de la musique"
     },
     "Military": {
-      "name": "Military",
+      "name": "Militaire",
       "description": "Thèmes militaires"
     },
     "Crime": {
       "name": "Crime",
-      "description": "Crime et activités criminelles"
+      "description": "Crimes et activités criminelles"
     },
     "Noir": {
       "name": "Noir",
@@ -158,11 +158,11 @@
       "description": "Aventures spatiales épiques"
     },
     "Time Travel": {
-      "name": "Time Travel",
+      "name": "Voyage dans le temps",
       "description": "Thèmes de voyage dans le temps"
     },
     "Survival": {
-      "name": "Survival",
+      "name": "Survie",
       "description": "Situations de survie"
     },
     "Mafia": {
@@ -174,11 +174,11 @@
       "description": "Histoires sur le thème des vampires"
     },
     "Werewolf": {
-      "name": "Werewolf",
+      "name": "Loup-garou",
       "description": "Histoires sur le thème des loups-garous"
     },
     "Mythology": {
-      "name": "Mythology",
+      "name": "Mythologie",
       "description": "Thèmes mythologiques"
     },
     "Religion": {
@@ -186,15 +186,15 @@
       "description": "Thèmes religieux"
     },
     "Political": {
-      "name": "Political",
+      "name": "Politique",
       "description": "Intrigue politique"
     },
     "Parody": {
-      "name": "Parody",
+      "name": "Parodie",
       "description": "Parodie ou satire"
     },
     "Wholesome": {
-      "name": "Wholesome",
+      "name": "Positif",
       "description": "Contenu réconfortant"
     },
     "Grimdark": {
@@ -202,7 +202,7 @@
       "description": "Extrêmement sombre et brutal"
     },
     "Erotic": {
-      "name": "Erotic",
+      "name": "Érotique",
       "description": "Contenu sexuellement explicite"
     },
     "NTR": {
@@ -210,11 +210,11 @@
       "description": "Thèmes de Netorare (infidélité)"
     },
     "Incest": {
-      "name": "Incest",
+      "name": "Inceste",
       "description": "Relations incestueuses"
     },
     "Tentacle": {
-      "name": "Tentacle",
+      "name": "Tentacule",
       "description": "Érotisme de tentacules"
     },
     "Furry": {
@@ -234,7 +234,7 @@
       "description": "Changement ou échange de genre"
     },
     "Cooking": {
-      "name": "Cooking",
+      "name": "Cuisine",
       "description": "Thèmes culinaires"
     },
     "Villainess": {
@@ -242,20 +242,20 @@
       "description": "Protagoniste féminine méchante"
     },
     "Regression": {
-      "name": "Regression",
+      "name": "Régression",
       "description": "Retour au passé/régression"
     },
     "Dungeon": {
-      "name": "Dungeon",
+      "name": "Donjon",
       "description": "Exploration de donjons"
     },
     "Game World": {
-      "name": "Game World",
+      "name": "Monde de jeu",
       "description": "Se déroule dans un monde de jeu"
     },
     "LitRPG": {
       "name": "LitRPG",
-      "description": "Mécaniques de jeu dans le récit"
+      "description": "Mécaniques de jeu dans la narration"
     }
   }
 }

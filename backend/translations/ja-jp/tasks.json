@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "デイリータスク",
+    "subtitle": "デイリータスクを完了してクレジットを獲得しましょう",
+    "dailyReward": {
+      "title": "毎日のログイン報酬",
+      "description": "毎日のログイン報酬を受け取ってクレジットを獲得しましょう",
+      "credits": "クレジット",
+      "claimed": "本日既に獲得済み",
+      "claimButton": "報酬を受け取る",
+      "claiming": "獲得中...",
+      "nextReward": "次の報酬は",
+      "hours": "時間",
+      "minutes": "分"
+    },
+    "yourCredits": "あなたのクレジット",
+    "availableCredits": "利用可能なクレジット",
+    "comingSoon": "近日公開",
+    "comingSoonDescription": "デイリータスクと実績を通じて、さらにクレジットを獲得できる方法を追加中です。",
+    "messages": {
+      "rewardClaimed": "毎日の報酬を正常に獲得しました！",
+      "alreadyClaimed": "本日の毎日の報酬は既に獲得済みです。明日またお越しください！",
+      "error": "報酬の獲得に失敗しました。もう一度お試しください。"
+    }
+  }
+}

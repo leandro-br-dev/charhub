@@ -3,7 +3,7 @@
   "resources": {
     "labels": {
       "untitledCharacter": "Unbenannter Charakter",
-      "updatedAt": "Aktualisiert {{date}}",
+      "updatedAt": "Aktualisiert am {{date}}",
       "public": "Öffentlich",
       "private": "Privat",
       "identifier": "Charakter-ID: {{id}}",
@@ -12,12 +12,12 @@
       "submitting": "Speichere..."
     },
     "ageRatings": {
-      "L": "Kostenlos",
-      "TEN": "10+",
-      "TWELVE": "12+",
-      "FOURTEEN": "14+",
-      "SIXTEEN": "16+",
-      "EIGHTEEN": "18+"
+      "L": "Ohne Altersbeschränkung",
+      "TEN": "Ab 10",
+      "TWELVE": "Ab 12",
+      "FOURTEEN": "Ab 14",
+      "SIXTEEN": "Ab 16",
+      "EIGHTEEN": "Ab 18"
     },
     "genders": {
       "male": "Männlich",
@@ -38,8 +38,8 @@
     },
     "contentTags": {
       "VIOLENCE": "Gewalt",
-      "GORE": "Blut",
-      "SEXUAL": "Sexuell",
+      "GORE": "Blut und Gewalt",
+      "SEXUAL": "Sexueller Inhalt",
       "NUDITY": "Nacktheit",
       "LANGUAGE": "Sprache",
       "DRUGS": "Drogen",
@@ -53,20 +53,20 @@
     "contentTagHints": {
       "VIOLENCE": "Kampf, Schlägereien oder aggressive Konflikte.",
       "GORE": "Grafische Verletzungen und explizite Details.",
-      "SEXUAL": "Erwachsenenthemen oder Anspielungen.",
-      "NUDITY": "Teilweise oder vollständige Nacktheit.",
+      "SEXUAL": "Erwachsene Themen oder Anspielungen.",
+      "NUDITY": "Partielle oder vollständige Nacktheit.",
       "LANGUAGE": "Explizite oder starke Sprache.",
-      "DRUGS": "Drogenkonsum oder -bezug.",
+      "DRUGS": "Drogenkonsum oder -referenzen.",
       "ALCOHOL": "Alkoholkonsum.",
       "HORROR": "Beunruhigende oder Horror-Bilder.",
       "PSYCHOLOGICAL": "Psychische Gesundheit oder psychologische Spannung.",
       "DISCRIMINATION": "Hassreden oder Vorurteile.",
-      "CRIME": "Themen der kriminellen Aktivität.",
+      "CRIME": "Themen krimineller Aktivitäten.",
       "GAMBLING": "Wetten oder Glücksspiel-Referenzen."
     },
     "accessibility": {
       "addToFavorites": "Zu Favoriten hinzufügen",
-      "removeFromFavorites": "Aus Favoriten entfernen"
+      "removeFromFavorites": "Von Favoriten entfernen"
     },
     "stats": {
       "conversations": "Konversationen",
@@ -79,12 +79,12 @@
     },
     "hub": {
       "title": "Charaktere",
-      "subtitle": "Erstelle, organisiere und entwickle die Besetzung, die deine Geschichten, Chatbots und KI-Erlebnisse antreibt.",
+      "subtitle": "Erstelle, organisiere und entwickle die Besetzung, die deine Geschichten, Chat-Agenten und KI-Erlebnisse prägt.",
       "actions": {
         "createCharacter": "Neuer Charakter",
         "retry": "Erneut versuchen",
-        "blurSensitive": "Sensibles ausblenden",
-        "showSensitive": "Sensibles anzeigen"
+        "blurSensitive": "Sensible Inhalte unscharf anzeigen",
+        "showSensitive": "Sensible Inhalte anzeigen"
       },
       "tabs": {
         "myCharacters": "Meine Charaktere",
@@ -107,7 +107,7 @@
       "labels": {
         "total": "{{count}} Charakter verfügbar",
         "total_plural": "{{count}} Charaktere verfügbar",
-        "quickCreateLink": "Direkt zur Erstellung springen"
+        "quickCreateLink": "Direkt zur Erstellung"
       }
     },
     "form": {
@@ -116,14 +116,14 @@
       "sections": {
         "identity": "Identität",
         "identityHint": "Definiere, wie Personen diesen Charakter auf einen Blick entdecken und identifizieren.",
-        "profile": "Erzählerisches Profil",
+        "profile": "Erzählprofil",
         "profileHint": "Beschreibe Persönlichkeit, Eigenschaften und Hintergrundgeschichte, um die KI zu leiten.",
         "configuration": "Verfügbarkeit & Moderation",
-        "configurationHint": "Kontrolliere, wie der Charakter erscheint, wer Zugriff darauf hat und welche Schutzmaßnahmen gelten.",
-        "contentTagsHint": "Markiere potenziell sensible Themen. Benutzer können sie basierend auf ihren Präferenzen herausfiltern.",
+        "configurationHint": "Steuere, wie der Charakter erscheint, wer darauf zugreifen kann und welche Schutzmaßnahmen gelten.",
+        "contentTagsHint": "Markiere potenziell sensible Themen. Benutzer können sie basierend auf ihren Vorlieben herausfiltern.",
         "contentTagsCharacterHint": "Diese Themen definieren, worüber der Charakter bei der ausgewählten Altersfreigabe sprechen kann.",
-        "contentTagsUserHint": "Wähle die Themen aus, die du einbeziehen möchtest. Alles, was nicht angekreuzt ist, bleibt für diese Altersfreigabe blockiert.",
-        "contentTagLocked": "Freigeschaltet bei höheren Altersfreigaben."
+        "contentTagsUserHint": "Wähle die Themen aus, die du einschließen möchtest. Alles, was nicht angekreuzt ist, bleibt für diese Altersfreigabe blockiert.",
+        "contentTagLocked": "Bei höheren Altersfreigaben entsperrt."
       },
       "fields": {
         "firstName": "Vorname",
@@ -131,19 +131,19 @@
         "age": "Alter",
         "gender": "Geschlecht",
         "species": "Spezies / Herkunft",
-        "style": "Visueller oder erzählerischer Stil",
-        "physicalCharacteristics": "Physische Beschreibung",
+        "style": "Visueller Stil oder Erzählstil",
+        "physicalCharacteristics": "Körperliche Beschreibung",
         "personality": "Persönlichkeit",
         "history": "Hintergrundgeschichte",
         "isPublic": "Sichtbarkeit",
         "ageRating": "Altersfreigabe",
         "originalLanguageCode": "Originalsprache",
-        "contentTags": "Inhaltswarnungen",
+        "contentTags": "Inhaltliche Warnungen",
         "visibility": "Sichtbarkeit"
       },
       "placeholders": {
         "gender": "z. B. nicht-binäre KI, Android, Ritter",
-        "species": "z. B. Mensch, Elf, Synthetik",
+        "species": "z. B. Mensch, Elf, Synthetisch",
         "style": "z. B. Noir-Detektiv, Pastell-Anime, malerisch",
         "genderSelect": "Geschlecht auswählen"
       },
@@ -158,18 +158,18 @@
         "upload": "Bild hochladen",
         "change": "Bild ändern",
         "remove": "Entfernen",
-        "uploading": "Hochladen...",
+        "uploading": "Lade hoch...",
         "helperCreate": "Wähle jetzt einen Avatar, und wir behalten ihn, während du den Rest des Formulars ausfüllst.",
-        "helperEdit": "Aktualisiere den Avatar jederzeit. Änderungen werden sofort nach dem Speichern übernommen.",
+        "helperEdit": "Aktualisiere den Avatar jederzeit. Änderungen werden nach dem Speichern übernommen.",
         "error": "Wir konnten dieses Bild nicht hochladen. Versuche eine andere Datei.",
         "previewAlt": "Vorschau des Charakter-Avatars"
       },
       "images": {
         "coverHeader": "Charakter-Cover",
-        "coverDescription": "Porträt-orientiertes Bild, das als Charakter-Cover verwendet wird.",
+        "coverDescription": "Hochformatiges Bild, das als Charakter-Cover verwendet wird.",
         "upload": "Cover hochladen",
         "change": "Cover ändern",
-        "uploading": "Hochladen...",
+        "uploading": "Lade hoch...",
         "urlModalTitle": "Bild von URL verwenden",
         "urlLabel": "Bild-URL",
         "previewAlt": "Vorschau des Charakter-Covers"
@@ -179,11 +179,11 @@
         "selected": "Ausgewählte Tags",
         "none": "Keine Tags ausgewählt",
         "suggestions": "Vorschläge",
-        "loading": "Laden...",
+        "loading": "Lade...",
         "noResults": "Keine Ergebnisse",
-        "incompatibleToast": "Einige ausgewählte Tags sind mit der aktuellen Altersfreigabe nicht kompatibel. Bitte überprüfen.",
+        "incompatibleToast": "Einige ausgewählte Tags sind mit der aktuellen Altersfreigabe nicht kompatibel. Bitte überprüfe.",
         "incompatibleHint": "Hervorgehobene Tags sind mit der ausgewählten Altersfreigabe nicht kompatibel. Entferne sie, um fortzufahren.",
-        "incompatibleChip": "Inkompatibel mit aktueller Altersfreigabe"
+        "incompatibleChip": "Inkompatibel mit der aktuellen Altersfreigabe"
       },
       "tabs": {
         "identity": "Identität",
@@ -195,8 +195,8 @@
       }
     },
     "create": {
-      "title": "Einen neuen Charakter erstellen",
-      "subtitle": "Kombiniere erzählerischen Kontext, visuellen Stil und Moderationseinstellungen. Alles kann später verfeinert werden.",
+      "title": "Neuen Charakter erstellen",
+      "subtitle": "Kombiniere Erzählkontext, visuellen Stil und Moderationseinstellungen. Du kannst alles später verfeinern.",
       "saveButton": "Charakter speichern",
       "cancelButton": "Abbrechen und zurückkehren"
     },
@@ -225,7 +225,7 @@
       },
       "confirmDelete": {
         "title": "Charakter löschen?",
-        "message": "Diese Aktion kann nicht rückgängig gemacht werden. Alle mit diesem Charakter verbundenen Daten werden dauerhaft gelöscht.",
+        "message": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Daten, die mit diesem Charakter verbunden sind, werden dauerhaft gelöscht.",
         "confirm": "Dauerhaft löschen",
         "cancel": "Abbrechen"
       },
@@ -247,17 +247,17 @@
         "physicalCharacteristics": "Aussehen",
         "personality": "Persönlichkeit",
         "history": "Hintergrundgeschichte",
-        "contentTags": "Inhaltswarnungen",
+        "contentTags": "Inhaltliche Warnungen",
         "metadata": "Tags",
         "introduction": "Einführung",
-        "updateNotes": "Update-Notizen"
+        "updateNotes": "Aktualisierungsnotizen"
       }
     },
     "errors": {
       "createFailed": "Wir konnten den Charakter nicht erstellen. Bitte versuche es erneut.",
       "updateFailed": "Wir konnten den Charakter nicht aktualisieren.",
       "deleteFailed": "Wir konnten den Charakter nicht löschen.",
-      "detailUnavailable": "Charakterdetails können derzeit nicht geladen werden."
+      "detailUnavailable": "Details zum Charakter können derzeit nicht geladen werden."
     }
   }
 }

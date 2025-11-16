@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "Forfaits et abonnements",
+    "subtitle": "Choisissez le forfait idéal pour vos besoins",
+    "active_plan": "Forfait actuel",
+    "will_cancel_on": "Sera annulé le",
+    "soon": "bientôt",
+    "reactivate": "Réactiver",
+    "cancel_subscription": "Annuler l'abonnement",
+    "detailed_comparison": "Comparaison détaillée des fonctionnalités",
+    "coming_soon": "Tableau comparatif détaillé à venir...",
+    "subscription_activated": "Abonnement activé ! Votre abonnement a été activé avec succès.",
+    "subscription_cancelled": "Abonnement annulé. Vous avez annulé le processus d'abonnement.",
+    "error_loading_plans": "Erreur lors du chargement des forfaits",
+    "error_starting_subscription": "Erreur lors du démarrage de l'abonnement",
+    "plan_changed_to_free": "Forfait modifié. Vous êtes maintenant sur le forfait gratuit.",
+    "error_changing_plan": "Erreur lors de la modification du forfait",
+    "confirm_cancel_subscription": "Êtes-vous sûr de vouloir annuler votre abonnement ?",
+    "subscription_will_cancel": "Abonnement annulé. Votre abonnement sera annulé à la fin de la période en cours.",
+    "error_cancelling_subscription": "Erreur lors de l'annulation de l'abonnement",
+    "subscription_reactivated": "Abonnement réactivé. Votre abonnement a été réactivé avec succès.",
+    "error_reactivating_subscription": "Erreur lors de la réactivation de l'abonnement"
+  }
+}

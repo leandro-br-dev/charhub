@@ -27,9 +27,9 @@
       "editTitle": "タイトルを編集",
       "deleteConversation": "会話を削除",
       "deleteConfirmTitle": "会話を削除",
-      "deleteConfirmMessage": "\"{{title}}\" を削除してもよろしいですか？この操作は元に戻せません。",
+      "deleteConfirmMessage": "\"{{title}}\"を削除しますか？この操作は元に戻せません。",
       "thisConversation": "この会話",
-      "deleteSuccess": "会話を正常に削除しました"
+      "deleteSuccess": "会話が正常に削除されました"
     },
     "conversation": {
       "title": "会話",
@@ -42,7 +42,7 @@
       "settings": "設定",
       "lastMessage": "最後のメッセージ",
       "noMessages": "まだメッセージがありません",
-      "startTyping": "入力を開始して会話を始めましょう",
+      "startTyping": "入力して会話を開始してください",
       "justNow": "たった今",
       "minutesAgo": "{{count}}分前",
       "hoursAgo": "{{count}}時間前",
@@ -68,12 +68,12 @@
       "addCharacter": "キャラクターを追加",
       "selectCharacter": "追加するキャラクターを選択",
       "noCharacters": "利用可能なキャラクターがありません",
-      "removed": "参加者を削除しました",
-      "added": "参加者を追加しました"
+      "removed": "参加者が削除されました",
+      "added": "参加者が追加されました"
     },
     "typing": {
-      "isTyping": "{{name}} が入力中です...",
-      "areTyping": "{{names}} が入力中です...",
+      "isTyping": "{{name}}が入力中です...",
+      "areTyping": "{{names}}が入力中です...",
       "generating": "応答を生成中..."
     },
     "actions": {
@@ -91,9 +91,9 @@
       "sendFailed": "メッセージの送信に失敗しました",
       "deleteFailed": "削除に失敗しました",
       "updateFailed": "更新に失敗しました",
-      "networkError": "ネットワークエラー。接続を確認してください。",
+      "networkError": "ネットワークエラーです。接続を確認してください。",
       "unauthorized": "この操作を行う権限がありません",
-      "notFound": "会話が見つかりませんでした",
+      "notFound": "会話が見つかりません",
       "generateAiFailed": "応答の生成に失敗しました。",
       "addParticipantFailed": "参加者の追加に失敗しました。",
       "removeParticipantFailed": "参加者の削除に失敗しました。",
@@ -104,22 +104,25 @@
       "cloneAssistantUnavailable": "アシスタントのクローンはまだ利用できません。",
       "promoteCharacterUnavailable": "キャラクターの昇格はまだ利用できません。",
       "audioPlaybackUnavailable": "オーディオ再生はまだ利用できません。",
-      "reviewFileUnavailable": "ファイルのレビューはまだ利用できません。"
+      "reviewFileUnavailable": "ファイルレビューはまだ利用できません。",
+      "suggestionFailed": "返信候補の生成に失敗しました。"
     },
     "success": {
-      "created": "会話を正常に作成しました",
-      "updated": "正常に更新しました",
-      "deleted": "正常に削除しました",
-      "sent": "メッセージを送信しました"
+      "created": "会話が正常に作成されました",
+      "updated": "正常に更新されました",
+      "deleted": "正常に削除されました",
+      "sent": "メッセージが送信されました"
     },
     "chatPage": {
-      "configureParticipantTitle": "参加者の設定",
+      "participantCount": "{{count}}人",
+      "participantCount_plural": "{{count}}人",
+      "configureParticipantTitle": "{{name}} の設定",
       "configureBotTitle": "{{name}} の設定",
       "configureAssistantTitle": "アシスタント {{name}} の設定",
       "configureUserRoleplayTitle": "{{name}} のロールプレイ設定",
       "participantNotFound": "参加者が見つかりません",
-      "specificInstructionsLabel": "具体的な指示",
-      "specificInstructionsPlaceholder": "この会話中の応答に影響を与える詳細を追加してください",
+      "specificInstructionsLabel": "特定の指示",
+      "specificInstructionsPlaceholder": "この会話での応答に影響を与える詳細を追加してください",
       "assumePersonaLabel": "ペルソナを想定",
       "changeVisualPersonaLabel": "ビジュアルペルソナ",
       "selectCharacterPlaceholder": "キャラクターを選択",
@@ -145,8 +148,8 @@
       "conversationSettingsTitle": "会話設定"
     },
     "participantConfigModal": {
-      "errorFetchingPersonas": "ペルソナの取得に失敗しました。",
-      "errorLoadingPersonas": "ペルソナの読み込みに失敗しました。",
+      "errorFetchingPersonas": "ペルソナを取得できませんでした。",
+      "errorLoadingPersonas": "ペルソナを読み込めませんでした。",
       "viewGalleryButton": "ギャラリーを開く",
       "assistantDetails": "元の Сアシスタント: {{name}}",
       "galleryTitle": "{{name}} のギャラリー"
@@ -155,7 +158,7 @@
       "modalTitle": "会話設定",
       "interactionModeLabel": "インタラクションモード",
       "modeNormal": "バランスの取れたロールプレイ",
-      "modeRoleplay": "完全なロールプレイ",
+      "modeRoleplay": "フルロールプレイ",
       "responseLengthLabel": "応答の長さ",
       "lengthShort": "短い",
       "lengthMedium": "中程度",
@@ -164,7 +167,7 @@
       "useSlangLabel": "スラングを使用",
       "slangNone": "なし",
       "slangLow": "時々",
-      "slangMedium": "よく",
+      "slangMedium": "しばしば",
       "roleplaySpecificTitle": "ロールプレイの詳細",
       "scenarioGenreLabel": "シナリオジャンル",
       "genreNone": "なし",
@@ -179,18 +182,29 @@
       "showThoughtsLabel": "アシスタントの思考を表示",
       "narrationStyleLabel": "ナレーションスタイル",
       "narrationBalanced": "バランス",
-      "narrationDescriptive": "描写重視",
-      "narrationDialogue": "対話重視",
+      "narrationDescriptive": "描写風",
+      "narrationDialogue": "対話中心",
       "viewOptionsTitle": "ビジュアル設定",
       "bgTypeLabel": "背景タイプ",
+      "bgTypeAuto": "自動 (キャラクターカバー)",
       "bgTypeTheme": "テーマを使用",
       "bgTypeImage": "画像を使用",
       "selectFromGalleryButton": "ギャラリーから選択",
       "removeBgImageButton": "画像を削除",
       "noImageSelected": "背景が選択されていません",
-      "errorLoadingGallery": "ギャラリー画像の読み込みに失敗しました。",
+      "autoBackgroundInfo": "有効にすると、1対1の会話でキャラクターのカバー画像が背景として使用されます。",
+      "errorLoadingGallery": "ギャラリー画像を読み込めませんでした。",
       "galleryButton": "ギャラリーを開く",
-      "imageGalleryTitle": "チャットギャラリー"
+      "imageGalleryTitle": "チャットギャラリー",
+      "visibility": {
+        "sectionTitle": "プライバシー設定",
+        "label": "会話の可視性",
+        "private": "プライベート",
+        "unlisted": "限定公開",
+        "public": "公開",
+        "publicWarning": "この会話はすべての人に表示され、公開リストで発見される可能性があります。",
+        "unlistedWarning": "この会話はリンクを持つ人なら誰でもアクセスできますが、公開リストには表示されません。"
+      }
     },
     "common": {
       "cancel": "キャンセル",
@@ -222,10 +236,12 @@
       "placeholderSending": "送信中...",
       "placeholderWaiting": "応答を待機中...",
       "placeholderDefault": "メッセージを入力...",
-      "configureUser": "{{name}} を設定",
+      "configureUser": "{{name}} の設定",
       "you": "あなた",
       "actionsMenuTitle": "その他のアクション",
       "generateImageAction": "画像を生成",
+      "suggestReplyAction": "返信を提案",
+      "generatingSuggestion": "提案を生成中...",
       "micButtonStopRecordingTitle": "録音を停止",
       "micButtonProcessingTitle": "処理中...",
       "micButtonRecordTitle": "音声を録音"
@@ -252,17 +268,17 @@
       "title": "参加者を追加",
       "charactersTab": "キャラクター",
       "myAssistantsTab": "マイアシスタント",
-      "publicAssistantsTab": "パブリックアシスタント",
+      "publicAssistantsTab": "公開アシスタント",
       "assistantsTab": "アシスタント",
       "searchCharactersPlaceholder": "キャラクターを検索...",
       "searchAssistantsPlaceholder": "アシスタントを検索...",
-      "noItemsForSearch": "\"{{searchTerm}}\" の結果が見つかりませんでした",
+      "noItemsForSearch": "\"{{searchTerm}}\" の結果は見つかりませんでした",
       "noItemsAvailable": "利用可能なアイテムがありません",
       "alreadyAddedMaybe": "(利用可能なすべてのアイテムはすでに会話に追加されています)",
       "noDescription": "説明がありません",
       "addToConversationButtonTitle": "会話に追加",
-      "maxParticipantsError": "最大 {{max}} 人の参加者が許可されます",
-      "connectionError": "接続エラー。もう一度お試しください。"
+      "maxParticipantsError": "最大 {{max}} 人まで参加できます",
+      "connectionError": "接続エラーです。もう一度お試しください。"
     }
   }
 }

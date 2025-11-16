@@ -1,0 +1,40 @@
+{
+  "description": "Service credit costs configuration for CharHub",
+  "services": [
+    {
+      "serviceIdentifier": "LLM_CHAT_SAFE",
+      "creditsPerUnit": 2.0,
+      "unitDescription": "per 1k tokens"
+    },
+    {
+      "serviceIdentifier": "LLM_CHAT_NSFW",
+      "creditsPerUnit": 3.0,
+      "unitDescription": "per 1k tokens"
+    },
+    {
+      "serviceIdentifier": "LLM_STORY_GENERATION_SFW",
+      "creditsPerUnit": 15.0,
+      "unitDescription": "per story"
+    },
+    {
+      "serviceIdentifier": "LLM_STORY_GENERATION_NSFW",
+      "creditsPerUnit": 20.0,
+      "unitDescription": "per story"
+    },
+    {
+      "serviceIdentifier": "IMAGE_GENERATION",
+      "creditsPerUnit": 10.0,
+      "unitDescription": "per image"
+    },
+    {
+      "serviceIdentifier": "TTS_DEFAULT",
+      "creditsPerUnit": 1.0,
+      "unitDescription": "per 1k characters"
+    },
+    {
+      "serviceIdentifier": "STT_DEFAULT",
+      "creditsPerUnit": 2.0,
+      "unitDescription": "per minute"
+    }
+  ]
+}

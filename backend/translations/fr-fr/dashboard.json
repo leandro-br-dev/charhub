@@ -14,13 +14,13 @@
       "favorites": "Favoris",
       "myStories": "Mes Histoires",
       "popularStories": "Histoires Populaires",
-      "mine": "Moi"
+      "mine": "Mon"
     },
     "noStories": "Pas encore d'histoires. Créez votre première histoire !",
-    "createStory": "Créer une Histoire",
-    "plusRequired": "Nécessite le Plan Plus",
-    "recentConversations": "Conversations Récentes",
-    "newConversation": "Nouvelle Conversation",
+    "createStory": "Créer une histoire",
+    "plusRequired": "Nécessite le plan Plus",
+    "recentConversations": "Conversations récentes",
+    "newConversation": "Nouvelle conversation",
     "carousel": {
       "alt": "Image du carrousel pour {{title}}",
       "goToSlide": "Aller à la diapositive {{slide}}",

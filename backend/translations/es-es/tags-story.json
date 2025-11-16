@@ -11,7 +11,7 @@
     },
     "Romance": {
       "name": "Romance",
-      "description": "Género romántico"
+      "description": "Género de romance"
     },
     "Horror": {
       "name": "Terror",
@@ -22,8 +22,8 @@
       "description": "Género de misterio"
     },
     "Thriller": {
-      "name": "Suspense",
-      "description": "Género de suspense"
+      "name": "Thriller",
+      "description": "Género de thriller"
     },
     "Adventure": {
       "name": "Aventura",
@@ -39,7 +39,7 @@
     },
     "Drama": {
       "name": "Drama",
-      "description": "Género dramático"
+      "description": "Género de drama"
     },
     "Slice of Life": {
       "name": "Slice of Life",
@@ -102,12 +102,12 @@
       "description": "Tecnología de vapor de la era victoriana"
     },
     "Post-Apocalyptic": {
-      "name": "Post-Apocalíptico",
+      "name": "Post-apocalíptico",
       "description": "Mundo después de un desastre"
     },
     "Dystopian": {
-      "name": "Distopía",
-      "description": "Ambientación de sociedad opresiva"
+      "name": "Distópico",
+      "description": "Entorno de sociedad opresiva"
     },
     "Historical": {
       "name": "Histórico",
@@ -158,8 +158,8 @@
       "description": "Aventuras espaciales épicas"
     },
     "Time Travel": {
-      "name": "Viajes en el Tiempo",
-      "description": "Temas de viajes en el tiempo"
+      "name": "Viaje en el Tiempo",
+      "description": "Temas de viaje en el tiempo"
     },
     "Survival": {
       "name": "Supervivencia",
@@ -194,7 +194,7 @@
       "description": "Parodia o sátira"
     },
     "Wholesome": {
-      "name": "Sentimental",
+      "name": "Edificante",
       "description": "Contenido reconfortante"
     },
     "Grimdark": {

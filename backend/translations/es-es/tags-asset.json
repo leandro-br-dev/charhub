@@ -2,7 +2,7 @@
   "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
   "resources": {
     "Casual Wear": {
-      "name": "Ropa Casual",
+      "name": "Ropa Informal",
       "description": "Ropa informal de uso diario"
     },
     "Formal Wear": {
@@ -47,7 +47,7 @@
     },
     "Fantasy Armor": {
       "name": "Armadura de Fantasía",
-      "description": "Armadura de estilo de fantasía"
+      "description": "Armadura de estilo fantástico"
     },
     "Robe": {
       "name": "Túnica",
@@ -55,11 +55,11 @@
     },
     "Cloak": {
       "name": "Capa",
-      "description": "Capa o manto"
+      "description": "Capa o mantón"
     },
     "Dress": {
       "name": "Vestido",
-      "description": "Vestimenta de vestido"
+      "description": "Prenda de vestir tipo vestido"
     },
     "Wedding Dress": {
       "name": "Vestido de Novia",
@@ -67,11 +67,11 @@
     },
     "Ball Gown": {
       "name": "Vestido de Gala",
-      "description": "Vestido formal de gala"
+      "description": "Vestido de gala formal"
     },
     "Swimsuit": {
       "name": "Traje de Baño",
-      "description": "Atuendo para nadar"
+      "description": "Vestimenta para nadar"
     },
     "Bikini": {
       "name": "Bikini",
@@ -79,7 +79,7 @@
     },
     "Lingerie": {
       "name": "Lencería",
-      "description": "Ropa íntima"
+      "description": "Ropa interior"
     },
     "Latex": {
       "name": "Látex",
@@ -115,7 +115,7 @@
     },
     "Military Uniform": {
       "name": "Uniforme Militar",
-      "description": "Uniforme militar de gala"
+      "description": "Uniforme de gala militar"
     },
     "Police Uniform": {
       "name": "Uniforme de Policía",
@@ -154,8 +154,8 @@
       "description": "Disfraz de animal antropomórfico"
     },
     "Idol Outfit": {
-      "name": "Atuendo de Ídolo",
-      "description": "Disfraz de escenario de ídolo pop"
+      "name": "Atuendo de Idol",
+      "description": "Atuendo de escenario de ídolo pop"
     },
     "Gothic Lolita": {
       "name": "Gothic Lolita",
@@ -163,7 +163,7 @@
     },
     "Punk Fashion": {
       "name": "Moda Punk",
-      "description": "Ropa de rock punk"
+      "description": "Ropa punk rock"
     },
     "Goth Fashion": {
       "name": "Moda Gótica",
@@ -175,7 +175,7 @@
     },
     "Cosplay": {
       "name": "Cosplay",
-      "description": "Disfraz de cosplay de personaje"
+      "description": "Disfraz de personaje de cosplay"
     },
     "Sportswear": {
       "name": "Ropa Deportiva",
@@ -183,11 +183,11 @@
     },
     "Gym Clothes": {
       "name": "Ropa de Gimnasio",
-      "description": "Atuendo de ejercicio"
+      "description": "Atuendo para hacer ejercicio"
     },
     "Pajamas": {
       "name": "Pijama",
-      "description": "Ropa de dormir"
+      "description": "Ropa para dormir"
     },
     "Nightgown": {
       "name": "Camisón",
@@ -207,11 +207,11 @@
     },
     "Topless": {
       "name": "Sin Camiseta",
-      "description": "Sin ropa superior"
+      "description": "Sin ropa en la parte superior"
     },
     "Covered Nude": {
       "name": "Desnudo Cubierto",
-      "description": "Nudidad estratégicamente cubierta"
+      "description": "Nudez estratégicamente cubierta"
     },
     "Business Suit": {
       "name": "Traje de Negocios",
@@ -231,7 +231,7 @@
     },
     "Glasses": {
       "name": "Gafas",
-      "description": "Accesorio de anteojos"
+      "description": "Accesorio de gafas"
     },
     "Sunglasses": {
       "name": "Gafas de Sol",
@@ -275,10 +275,10 @@
     },
     "Choker": {
       "name": "Gargantilla",
-      "description": "Gargantilla"
+      "description": "Collar gargantilla"
     },
     "Jewelry": {
-      "name": "Joyas",
+      "name": "Joyería",
       "description": "Accesorios de joyería"
     },
     "Weapon": {

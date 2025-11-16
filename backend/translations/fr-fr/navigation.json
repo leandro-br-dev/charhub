@@ -5,6 +5,7 @@
     "story": "Histoire",
     "development": "Développement",
     "characters": "Personnages",
+    "tasks": "Tâches",
     "assets": "Ressources",
     "openNavigation": "Ouvrir la navigation",
     "closeNavigation": "Fermer la navigation",
@@ -16,7 +17,7 @@
     "chatHistory": "Historique des conversations",
     "chatHistoryPlaceholder": "Les messages et les fils de discussion apparaîtront ici une fois la migration du chat terminée.",
     "developmentTools": "Outils de développement",
-    "developmentPlaceholder": "Les pipelines de construction, les journaux et les contrôles d'automatisation seront bientôt disponibles ici.",
+    "developmentPlaceholder": "Les pipelines de build, les journaux et les contrôles d'automatisation seront bientôt disponibles ici.",
     "characterSidebar": "Aperçu des personnages",
     "characterSidebarPlaceholder": "Parcourez et épinglez vos personnages préférés ici dès que la barre latérale du hub sera reconstruite.",
     "storySidebar": "Histoires",
@@ -24,6 +25,6 @@
     "viewAllCharacters": "Voir tous les personnages",
     "viewAllStories": "Voir toutes les histoires",
     "sidebarDefaultTitle": "Explorer CharHub",
-    "sidebarDefaultDescription": "Utilisez les icônes sur le rail de navigation pour basculer entre les expériences."
+    "sidebarDefaultDescription": "Utilisez les icônes de la barre de navigation pour passer d'une expérience à l'autre."
   }
 }

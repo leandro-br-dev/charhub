@@ -6,11 +6,11 @@
     "googleButton": "Regístrate con Google",
     "facebookButton": "Regístrate con Facebook",
     "termsAgreementPt1": "Al registrarte, aceptas los",
-    "termsAgreementAnd": "y",
+    "termsAgreementAnd": "y la",
     "termsAndConditions": "Términos y Condiciones",
     "privacyPolicy": "Política de Privacidad",
     "alreadyRegistered": "¿Ya tienes una cuenta?",
-    "loginLink": "Iniciar sesión",
+    "loginLink": "Inicia sesión",
     "checkingAuth": "Comprobando autenticación..."
   }
 }

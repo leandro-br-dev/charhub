@@ -28,14 +28,14 @@
     },
     "none": "Nenhum",
     "unknown": "Desconhecido",
-    "nameNotAvailable": "Nome não disponível",
+    "nameNotAvailable": "Nome indisponível",
     "cancel": "Cancelar",
     "save": "Salvar",
     "saving": "Salvando...",
     "delete": "Excluir",
     "deleting": "Excluindo...",
-    "enabled": "Ativado",
-    "disabled": "Desativado",
+    "enabled": "Habilitado",
+    "disabled": "Desabilitado",
     "selectOption": "Selecione uma opção",
     "noResults": "Nenhuma opção encontrada.",
     "chat": {
@@ -43,21 +43,21 @@
     },
     "messages": {
       "linkCopied": "Link copiado para a área de transferência!",
-      "chatStarted": "Bate-papo iniciado com sucesso!",
+      "chatStarted": "Conversa iniciada com sucesso!",
       "characterDeleted": "Personagem excluído com sucesso"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de conteúdo",
       "title": "Filtro de Conteúdo",
-      "ageRating": "Classificação Indicativa",
-      "blurNsfw": "Desfocar Conteúdo Explícito",
+      "ageRating": "Classificação Etária",
+      "blurNsfw": "Ocultar Conteúdo Explícito",
       "none": "Sem Filtro",
-      "blur": "Desfocar Conteúdo Maduro",
+      "blur": "Embaçar Conteúdo Adulto",
       "hidden": "Ocultar Conteúdo Adulto",
       "descriptions": {
         "none": "Mostrar todo o conteúdo sem restrições",
-        "blur": "Aplicar desfoque a conteúdo maduro",
-        "hidden": "Ocultar completamente conteúdo maduro"
+        "blur": "Aplicar desfoque ao conteúdo adulto",
+        "hidden": "Ocultar completamente o conteúdo adulto"
       },
       "ageRatings": {
         "L": "Livre",

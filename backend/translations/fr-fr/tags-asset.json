@@ -2,12 +2,12 @@
   "description": "Asset and visual content classification tags with age ratings and content warnings. Used for filtering and categorizing visual assets, clothing, and accessories.",
   "resources": {
     "Casual Wear": {
-      "name": "Vêtements décontractés",
+      "name": "Tenue décontractée",
       "description": "Vêtements décontractés de tous les jours"
     },
     "Formal Wear": {
-      "name": "Tenue de soirée",
-      "description": "Costumes et robes de soirée"
+      "name": "Tenue formelle",
+      "description": "Costumes et robes de cérémonie"
     },
     "School Uniform": {
       "name": "Uniforme scolaire",
@@ -54,7 +54,7 @@
       "description": "Robe magique ou cérémonielle"
     },
     "Cloak": {
-      "name": "Cape",
+      "name": "Manteau",
       "description": "Cape ou manteau"
     },
     "Dress": {
@@ -79,7 +79,7 @@
     },
     "Lingerie": {
       "name": "Lingerie",
-      "description": "Sous-vêtements"
+      "description": "Vêtements intimes"
     },
     "Latex": {
       "name": "Latex",
@@ -90,7 +90,7 @@
       "description": "Vêtements en cuir"
     },
     "Bondage Gear": {
-      "name": "Équipement de bondage",
+      "name": "Matériel de bondage",
       "description": "Équipement BDSM"
     },
     "Ninja Outfit": {
@@ -107,7 +107,7 @@
     },
     "Steampunk Outfit": {
       "name": "Tenue Steampunk",
-      "description": "Vêtements steampunk victorien"
+      "description": "Vêtements Steampunk victorien"
     },
     "Cyberpunk Outfit": {
       "name": "Tenue Cyberpunk",
@@ -138,16 +138,16 @@
       "description": "Tenue de professionnel culinaire"
     },
     "Bunny Suit": {
-      "name": "Costume de bunny",
-      "description": "Déguisement de playboy bunny"
+      "name": "Tenue de bunny",
+      "description": "Costume de playboy bunny"
     },
     "Cat Costume": {
       "name": "Costume de chat",
-      "description": "Déguisement sur le thème du chat"
+      "description": "Costume sur le thème du chat"
     },
     "Fox Costume": {
       "name": "Costume de renard",
-      "description": "Déguisement sur le thème du renard"
+      "description": "Costume sur le thème du renard"
     },
     "Fursuit": {
       "name": "Fursuit",
@@ -179,7 +179,7 @@
     },
     "Sportswear": {
       "name": "Vêtements de sport",
-      "description": "Vêtements athlétiques"
+      "description": "Vêtements de sport"
     },
     "Gym Clothes": {
       "name": "Vêtements de gym",
@@ -190,12 +190,12 @@
       "description": "Vêtements de nuit"
     },
     "Nightgown": {
-      "name": "Déshabillé",
+      "name": "Robe de nuit",
       "description": "Robe de nuit"
     },
     "Bathrobe": {
       "name": "Peignoir",
-      "description": "Peignoir de bain ou de maison"
+      "description": "Peignoir de bain ou d'intérieur"
     },
     "Towel": {
       "name": "Serviette",
@@ -215,11 +215,11 @@
     },
     "Business Suit": {
       "name": "Costume d'affaires",
-      "description": "Tenue professionnelle"
+      "description": "Tenue professionnelle d'affaires"
     },
     "Tuxedo": {
-      "name": "Smoking",
-      "description": "Smoking formel"
+      "name": "Tuxedo",
+      "description": "Tuxedo formel"
     },
     "Crown": {
       "name": "Couronne",
@@ -243,11 +243,11 @@
     },
     "Witch Hat": {
       "name": "Chapeau de sorcière",
-      "description": "Chapeau de sorcière pointu"
+      "description": "Chapeau pointu de sorcière"
     },
     "Cat Ears": {
       "name": "Oreilles de chat",
-      "description": "Bandeau d'oreilles de chat"
+      "description": "Bandeau avec oreilles de chat"
     },
     "Fox Ears": {
       "name": "Oreilles de renard",
@@ -271,11 +271,11 @@
     },
     "Collar": {
       "name": "Collier",
-      "description": "Accessoire de collier de cou"
+      "description": "Accessoire de collier pour le cou"
     },
     "Choker": {
-      "name": "Choker",
-      "description": "Collier ras du cou"
+      "name": "Collier ras-du-cou",
+      "description": "Collier ras-du-cou"
     },
     "Jewelry": {
       "name": "Bijoux",

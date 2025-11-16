@@ -43,9 +43,10 @@ export const defaultWorkerOptions: WorkerOptions = {
  */
 export enum QueueName {
   TEST = 'test',
+  USAGE_PROCESSING = 'usage-processing',
+  CREDITS_MONTHLY = 'credits-monthly',
   // Future queues will be added here:
   // CHARACTER_GENERATION = 'character-generation',
   // IMAGE_GENERATION = 'image-generation',
   // STORY_GENERATION = 'story-generation',
-  // USAGE_LOG_PROCESSING = 'usage-log-processing',
 }

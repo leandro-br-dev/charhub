@@ -9,26 +9,26 @@
     },
     "sectionTitle": "Konto",
     "title": "Verwalten Sie Ihr Profil",
-    "subtitle": "Aktualisieren Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, erscheinen bald hier.",
+    "subtitle": "Aktualisieren Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, werden bald hier angezeigt.",
     "identity": {
       "header": "Profilfoto",
-      "description": "Wählen Sie einen Avatar, der Sie in Chats und bei Charakteren repräsentiert.",
+      "description": "Wählen Sie einen Avatar, der Sie in Chats und Charakteren repräsentiert.",
       "upload": "Bild hochladen",
-      "placeholderNote": "Avatar-Uploads sind verfügbar, sobald wir den Mediendienst wieder verbunden haben."
+      "placeholderNote": "Avatar-Uploads sind verfügbar, nachdem wir den Mediendienst wieder verbunden haben."
     },
     "details": {
       "header": "Öffentliche Details",
-      "description": "Diese Werte werden mit Kollaborateuren geteilt und als Standard in Gesprächen verwendet."
+      "description": "Diese Werte werden mit Kollaborateuren geteilt und als Standardwerte in Konversationen verwendet."
     },
     "contentClassification": {
       "header": "Inhaltsklassifizierung",
       "description": "Konfigurieren Sie Inhaltsfilter, um zu steuern, welche Arten von Charakteren und Geschichten Sie sehen möchten. Nur Inhalte, die Ihren ausgewählten Präferenzen entsprechen, werden Ihnen empfohlen.",
       "blockedTags": "Inhaltsfilter",
-      "filterNote": "Wählen Sie Inhaltstypen aus, die Sie ERLAUBEN möchten. Nicht angekreuzte Elemente werden aus den Empfehlungen herausgefiltert.",
-      "allAgesNote": "Alle Inhaltstypen sind blockiert, wenn die Bewertung \"Alle Altersgruppen\" ausgewählt ist.",
+      "filterNote": "Wählen Sie die Inhaltstypen aus, die Sie ZULASSEN möchten. Nicht angekreuzte Elemente werden aus den Empfehlungen herausgefiltert.",
+      "allAgesNote": "Alle Inhaltstypen sind blockiert, wenn die Altersfreigabe \"Alle Altersgruppen\" ausgewählt ist.",
       "allowAll": "Alle zulassen",
       "birthDateRequired": "Geburtsdatum erforderlich",
-      "birthDateRequiredMessage": "Bitte geben Sie Ihr Geburtsdatum im Profil-Tab ein, um die Einstellungen für die Inhaltsklassifizierung freizuschalten. Dies gewährleistet altersgerechte Inhaltsempfehlungen.",
+      "birthDateRequiredMessage": "Bitte geben Sie Ihr Geburtsdatum im Profil-Tab ein, um die Einstellungen zur Inhaltsklassifizierung zu entsperren. Dies gewährleistet altersgerechte Inhaltsempfehlungen.",
       "maxAgeRatingLabel": "Maximale Altersfreigabe",
       "maxAgeRatingHint": "Wählen Sie die maximale Altersfreigabe, die Sie sehen möchten",
       "ageRestricted": "Altersbeschränkt"
@@ -40,7 +40,7 @@
       "fullNamePlaceholder": "Optional für Rechnungsstellung und E-Mail-Kopien",
       "username": "Benutzername",
       "usernamePlaceholder": "Benutzername",
-      "usernameHint": "Ihre eindeutige Kennung auf CharHub.",
+      "usernameHint": "Ihr eindeutiger Identifikator auf CharHub.",
       "usernameChecking": "Verfügbarkeit wird geprüft...",
       "usernameAvailable": "Benutzername ist verfügbar",
       "usernameUnavailable": "Benutzername ist bereits vergeben",
@@ -62,10 +62,19 @@
       "save": "Änderungen speichern",
       "saving": "Speichere..."
     },
+    "subscription": {
+      "header": "Abonnement & Credits",
+      "description": "Verwalten Sie Ihren Abonnementplan und sehen Sie Ihr Guthaben an.",
+      "currentPlan": "Aktueller Plan",
+      "credits": "Verfügbare Credits",
+      "viewPlans": "Pläne anzeigen",
+      "loadingPlan": "Lade Plan...",
+      "loadingCredits": "Lade Credits..."
+    },
     "security": {
       "header": "Sicherheit",
       "description": "Ihre CharHub-Sitzungen erben die OAuth-Sicherheit von Google oder Facebook. Multi-Faktor-Unterstützung wird bald hinzugefügt.",
-      "placeholder": "Sitzungsverwaltung und passwortlose Anmeldeoptionen sind in der Roadmap enthalten."
+      "placeholder": "Sitzungsverwaltung und passwortlose Anmeldekontrollen sind auf der Roadmap."
     },
     "deleteAccount": {
       "title": "Konto löschen",
@@ -73,7 +82,7 @@
       "submit": "Mein Konto löschen",
       "confirmTitle": "Sind Sie absolut sicher?",
       "confirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden. Dies wird Ihr Konto dauerhaft löschen und Ihre Daten von unseren Servern entfernen.",
-      "confirmInstruction": "Bitte tippen Sie \"LÖSCHEN\", um zu bestätigen.",
+      "confirmInstruction": "Bitte geben Sie \"DELETE\" ein, um zu bestätigen.",
       "confirmSubmit": "Dieses Konto löschen"
     },
     "feedback": {
@@ -81,9 +90,9 @@
       "error": "Wir konnten Ihre Änderungen nicht speichern."
     },
     "errors": {
-      "updateFailed": "Wir konnten Ihre Änderungen nicht speichern. Versuchen Sie es in einem Moment erneut.",
+      "updateFailed": "Wir konnten Ihre Änderungen nicht speichern. Versuchen Sie es gleich noch einmal.",
       "displayNameRequired": "Anzeigename ist erforderlich.",
-      "usernameTooShort": "Der Benutzername muss nach dem @ mindestens 3 Zeichen enthalten.",
+      "usernameTooShort": "Der Benutzername muss mindestens 3 Zeichen nach dem @ enthalten.",
       "usernameInvalid": "Der Benutzername muss mit @ beginnen und darf nur Buchstaben, Zahlen und Unterstriche enthalten.",
       "usernameTaken": "Dieser Benutzername ist bereits vergeben. Bitte wählen Sie einen anderen.",
       "validationFailed": "Bitte überprüfen Sie die Formularfelder und versuchen Sie es erneut.",

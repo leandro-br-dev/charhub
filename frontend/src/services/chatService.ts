@@ -148,15 +148,34 @@ export const chatService = {
 
   async updateConversationSettings(
     conversationId: string,
-    settingsData: Record<string, unknown>
+    settingsData: Record<string, unknown>,
+    visibility?: 'PRIVATE' | 'UNLISTED' | 'PUBLIC'
   ): Promise<Conversation> {
-    return this.updateConversation(conversationId, { settings: settingsData });
+    const updatePayload: any = { settings: settingsData };
+    if (visibility) {
+      updatePayload.visibility = visibility;
+    }
+    return this.updateConversation(conversationId, updatePayload);
   },
 
   async getConversationGallery(conversationId: string): Promise<string[]> {
     // Gallery endpoints are not implemented yet; return empty list to avoid UI errors.
     console.warn('[chatService] Conversation gallery is not yet supported.');
     return [];
+  },
+
+  async getConversationBackground(conversationId: string): Promise<{ type: string; value: string | null }> {
+    const { data } = await api.get<ApiResponse<{ type: string; value: string | null }>>(
+      `${BASE_PATH}/${conversationId}/background`
+    );
+    return unwrapResponse(data);
+  },
+
+  async suggestReply(conversationId: string): Promise<{ suggestion: string; contextMessages: number }> {
+    const { data } = await api.post<ApiResponse<{ suggestion: string; contextMessages: number }>>(
+      `${BASE_PATH}/${conversationId}/suggest-reply`
+    );
+    return unwrapResponse(data);
   },
 };
 

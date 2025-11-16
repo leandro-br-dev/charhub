@@ -31,7 +31,7 @@
     },
     "Action": {
       "name": "Action",
-      "description": "Actionorientierte Geschichten"
+      "description": "Actionreiche Geschichten"
     },
     "Comedy": {
       "name": "Comedy",
@@ -47,7 +47,7 @@
     },
     "Isekai": {
       "name": "Isekai",
-      "description": "Geschichten aus einer anderen Welt/Wiedergeburt"
+      "description": "Geschichten aus einer anderen Welt/Reinkarnationsgeschichten"
     },
     "Harem": {
       "name": "Harem",
@@ -59,19 +59,19 @@
     },
     "Yaoi": {
       "name": "Yaoi",
-      "description": "Männlich/männliche Romanze"
+      "description": "Männerliebe-Romantik"
     },
     "Yuri": {
       "name": "Yuri",
-      "description": "Weiblich/weibliche Romanze"
+      "description": "Frauenliebe-Romantik"
     },
     "Ecchi": {
       "name": "Ecchi",
-      "description": "Anzügliche sexuelle Inhalte"
+      "description": "Andeutungsreicher sexueller Inhalt"
     },
     "Hentai": {
       "name": "Hentai",
-      "description": "Explizite sexuelle Inhalte"
+      "description": "Expliziter sexueller Inhalt"
     },
     "Gore": {
       "name": "Gore",
@@ -83,11 +83,11 @@
     },
     "Dark Fantasy": {
       "name": "Dark Fantasy",
-      "description": "Dunkle, reife Fantasy-Themen"
+      "description": "Dunkle, erwachsene Fantasy-Themen"
     },
     "Urban Fantasy": {
       "name": "Urban Fantasy",
-      "description": "Fantasy in modernem Setting"
+      "description": "Fantasy in modernem Umfeld"
     },
     "High Fantasy": {
       "name": "High Fantasy",
@@ -107,11 +107,11 @@
     },
     "Dystopian": {
       "name": "Dystopian",
-      "description": "Setting einer unterdrückerischen Gesellschaft"
+      "description": "Umfeld einer repressiven Gesellschaft"
     },
     "Historical": {
       "name": "Historical",
-      "description": "Historisches Setting"
+      "description": "Historisches Zeitumfeld"
     },
     "Supernatural": {
       "name": "Supernatural",
@@ -119,7 +119,7 @@
     },
     "Martial Arts": {
       "name": "Martial Arts",
-      "description": "Kampfkunst-Fokus"
+      "description": "Fokus auf Kampfkünste"
     },
     "Mecha": {
       "name": "Mecha",
@@ -127,7 +127,7 @@
     },
     "School Life": {
       "name": "School Life",
-      "description": "Geschichten im Schulsetting"
+      "description": "Geschichten mit Schulsetting"
     },
     "Sports": {
       "name": "Sports",
@@ -167,7 +167,7 @@
     },
     "Mafia": {
       "name": "Mafia",
-      "description": "Organisierte Kriminalität"
+      "description": "Organisierte Kriminalitätsthemen"
     },
     "Vampire": {
       "name": "Vampire",
@@ -203,7 +203,7 @@
     },
     "Erotic": {
       "name": "Erotic",
-      "description": "Sexuell explizite Inhalte"
+      "description": "Sexuell expliziter Inhalt"
     },
     "NTR": {
       "name": "NTR",
@@ -231,7 +231,7 @@
     },
     "Gender Bender": {
       "name": "Gender Bender",
-      "description": "Geschlechtsänderung oder -tausch"
+      "description": "Geschlechtswechsel oder -tausch"
     },
     "Cooking": {
       "name": "Cooking",
@@ -239,7 +239,7 @@
     },
     "Villainess": {
       "name": "Villainess",
-      "description": "Weibliche Schurken als Protagonistin"
+      "description": "Weibliche Schurken-Protagonistin"
     },
     "Regression": {
       "name": "Regression",

@@ -13,6 +13,7 @@ import { isQueuesEnabled } from './config/features';
 import { queueManager } from './queues';
 import v1Routes from './routes/v1';
 import { setupChatSocket } from './websocket/chatHandler';
+import webhookRoutes from './routes/webhooks';
 
 const app = express();
 const server = createServer(app);
@@ -45,6 +46,9 @@ app.use(
     credentials: true,
   })
 );
+
+// Webhook routes MUST come before body parsers (need raw body)
+app.use('/api/v1/webhooks', express.raw({ type: 'application/json' }), webhookRoutes);
 
 // Body parsers
 app.use(express.json());

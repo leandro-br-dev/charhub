@@ -1,7 +1,7 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag, UserRole } from '../generated/prisma';
+import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier } from '../generated/prisma';
 import { seedAllTags } from './seedTags';
 
 const prisma = new PrismaClient();
@@ -18,6 +18,8 @@ interface SeedStats {
   users: { created: number; skipped: number };
   characters: { created: number; skipped: number };
   tags: { created: number; updated: number; unchanged: number };
+  plans: { created: number; skipped: number };
+  serviceCosts: { created: number; skipped: number };
   errors: string[];
 }
 
@@ -254,6 +256,163 @@ async function seedCharacters(options: SeedOptions): Promise<{ created: number; 
 }
 
 /**
+ * Seed subscription plans
+ */
+async function seedPlans(options: SeedOptions): Promise<{ created: number; skipped: number }> {
+  const stats = { created: 0, skipped: 0 };
+
+  interface PlanData {
+    tier: string;
+    name: string;
+    priceMonthly: number;
+    creditsPerMonth: number;
+    description: string;
+    features: string[];
+  }
+
+  const data = await readDataFile<{ description: string; plans: PlanData[] }>('plans.json');
+
+  if (!data || !data.plans) {
+    console.log('⚠️  No plans data found');
+    return stats;
+  }
+
+  console.log(`\n💳 Seeding ${data.plans.length} subscription plan(s)...`);
+
+  for (const planData of data.plans) {
+    try {
+      const existing = await prisma.plan.findUnique({
+        where: { tier: planData.tier as PlanTier },
+      });
+
+      if (existing && !options.force) {
+        stats.skipped++;
+        if (options.verbose) {
+          console.log(`  ⏭️  Skipped (already exists): ${planData.name}`);
+        }
+        continue;
+      }
+
+      if (options.dryRun) {
+        stats.created++;
+        if (options.verbose) {
+          console.log(`  [DRY RUN] Would create: ${planData.name}`);
+        }
+        continue;
+      }
+
+      if (existing && options.force) {
+        // Update existing
+        await prisma.plan.update({
+          where: { tier: planData.tier as PlanTier },
+          data: {
+            name: planData.name,
+            priceMonthly: planData.priceMonthly,
+            creditsPerMonth: planData.creditsPerMonth,
+            description: planData.description,
+            features: planData.features,
+          },
+        });
+        console.log(`  ✏️  Updated: ${planData.name}`);
+      } else {
+        // Create new
+        await prisma.plan.create({
+          data: {
+            tier: planData.tier as PlanTier,
+            name: planData.name,
+            priceMonthly: planData.priceMonthly,
+            creditsPerMonth: planData.creditsPerMonth,
+            description: planData.description,
+            features: planData.features,
+          },
+        });
+        stats.created++;
+        console.log(`  ✅ Created: ${planData.name}`);
+      }
+    } catch (error) {
+      console.error(`  ❌ Error processing plan "${planData.name}":`, error);
+      throw error;
+    }
+  }
+
+  return stats;
+}
+
+/**
+ * Seed service credit costs
+ */
+async function seedServiceCosts(options: SeedOptions): Promise<{ created: number; skipped: number }> {
+  const stats = { created: 0, skipped: 0 };
+
+  interface ServiceCostData {
+    serviceIdentifier: string;
+    creditsPerUnit: number;
+    unitDescription: string;
+  }
+
+  const data = await readDataFile<{ description: string; services: ServiceCostData[] }>('service-costs.json');
+
+  if (!data || !data.services) {
+    console.log('⚠️  No service costs data found');
+    return stats;
+  }
+
+  console.log(`\n💰 Seeding ${data.services.length} service cost(s)...`);
+
+  for (const serviceData of data.services) {
+    try {
+      const existing = await prisma.serviceCreditCost.findUnique({
+        where: { serviceIdentifier: serviceData.serviceIdentifier },
+      });
+
+      if (existing && !options.force) {
+        stats.skipped++;
+        if (options.verbose) {
+          console.log(`  ⏭️  Skipped (already exists): ${serviceData.serviceIdentifier}`);
+        }
+        continue;
+      }
+
+      if (options.dryRun) {
+        stats.created++;
+        if (options.verbose) {
+          console.log(`  [DRY RUN] Would create: ${serviceData.serviceIdentifier}`);
+        }
+        continue;
+      }
+
+      if (existing && options.force) {
+        // Update existing
+        await prisma.serviceCreditCost.update({
+          where: { serviceIdentifier: serviceData.serviceIdentifier },
+          data: {
+            creditsPerUnit: serviceData.creditsPerUnit,
+            unitDescription: serviceData.unitDescription,
+          },
+        });
+        console.log(`  ✏️  Updated: ${serviceData.serviceIdentifier}`);
+      } else {
+        // Create new
+        await prisma.serviceCreditCost.create({
+          data: {
+            serviceIdentifier: serviceData.serviceIdentifier,
+            creditsPerUnit: serviceData.creditsPerUnit,
+            unitDescription: serviceData.unitDescription,
+          },
+        });
+        stats.created++;
+        console.log(`  ✅ Created: ${serviceData.serviceIdentifier}`);
+      }
+    } catch (error) {
+      console.error(`  ❌ Error processing service cost "${serviceData.serviceIdentifier}":`, error);
+      throw error;
+    }
+  }
+
+  return stats;
+}
+
+/**
  * Main seed function
  */
 async function seed(options: SeedOptions = {}): Promise<void> {
@@ -272,6 +431,8 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     users: { created: 0, skipped: 0 },
     characters: { created: 0, skipped: 0 },
     tags: { created: 0, updated: 0, unchanged: 0 },
+    plans: { created: 0, skipped: 0 },
+    serviceCosts: { created: 0, skipped: 0 },
     errors: [],
   };
 
@@ -298,6 +459,12 @@ async function seed(options: SeedOptions = {}): Promise<void> {
 
     // Note: seedAllTags prints its own stats, so we don't duplicate them here
 
+    // 4. Seed subscription plans
+    stats.plans = await seedPlans(options);
+
+    // 5. Seed service credit costs
+    stats.serviceCosts = await seedServiceCosts(options);
+
   } catch (error) {
     stats.errors.push(String(error));
     console.error('\n❌ Seed failed:', error);
@@ -309,9 +476,11 @@ async function seed(options: SeedOptions = {}): Promise<void> {
   console.log('\n' + '='.repeat(60));
   console.log('📊 SEED SUMMARY');
   console.log('='.repeat(60));
-  console.log(`Users:      ${stats.users.created} created, ${stats.users.skipped} skipped`);
-  console.log(`Characters: ${stats.characters.created} created, ${stats.characters.skipped} skipped`);
-  console.log(`Duration:   ${duration}s`);
+  console.log(`Users:         ${stats.users.created} created, ${stats.users.skipped} skipped`);
+  console.log(`Characters:    ${stats.characters.created} created, ${stats.characters.skipped} skipped`);
+  console.log(`Plans:         ${stats.plans.created} created, ${stats.plans.skipped} skipped`);
+  console.log(`Service Costs: ${stats.serviceCosts.created} created, ${stats.serviceCosts.skipped} skipped`);
+  console.log(`Duration:      ${duration}s`);
 
   if (stats.errors.length > 0) {
     console.log(`\n⚠️  ${stats.errors.length} error(s) occurred`);

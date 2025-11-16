@@ -9,7 +9,7 @@
       "title": "Título",
       "titlePlaceholder": "Digite o título da história",
       "synopsis": "Sinopse",
-      "synopsisPlaceholder": "Descreva sua história brevemente",
+      "synopsisPlaceholder": "Descreva brevemente sua história",
       "coverImage": "Imagem de Capa",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "Prévia da capa",
@@ -42,12 +42,12 @@
       "initialTextTooLong": "O texto inicial deve ter no máximo 5000 caracteres"
     },
     "errors": {
-      "createFailed": "Falha ao criar a história",
-      "updateFailed": "Falha ao atualizar a história",
-      "deleteFailed": "Falha ao excluir a história",
-      "failedToLoad": "Falha ao carregar as histórias",
+      "createFailed": "Falha ao criar história",
+      "updateFailed": "Falha ao atualizar história",
+      "deleteFailed": "Falha ao excluir história",
+      "failedToLoad": "Falha ao carregar histórias",
       "noCharacters": "Esta história não possui personagens",
-      "failedToStart": "Falha ao iniciar a história",
+      "failedToStart": "Falha ao iniciar história",
       "notFound": "História não encontrada"
     },
     "sidebar": {
@@ -73,7 +73,7 @@
       "characters": "Personagens",
       "confirmDelete": "Tem certeza de que deseja excluir esta história? Esta ação não pode ser desfeita.",
       "labels": {
-        "createdBy": "Criada por"
+        "createdBy": "Criado por"
       }
     },
     "start": "Iniciar História",

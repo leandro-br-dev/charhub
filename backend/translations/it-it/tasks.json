@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "Attività Giornaliere",
+    "subtitle": "Completa le attività giornaliere per guadagnare crediti",
+    "dailyReward": {
+      "title": "Ricompensa Login Giornaliero",
+      "description": "Richiedi la tua ricompensa giornaliera per il login e guadagna crediti",
+      "credits": "crediti",
+      "claimed": "Già richiesto oggi",
+      "claimButton": "Richiedi Ricompensa",
+      "claiming": "Richiesta in corso...",
+      "nextReward": "Prossima ricompensa disponibile tra",
+      "hours": "ore",
+      "minutes": "minuti"
+    },
+    "yourCredits": "I Tuoi Crediti",
+    "availableCredits": "Crediti Disponibili",
+    "comingSoon": "Altre attività in arrivo",
+    "comingSoonDescription": "Stiamo lavorando per aggiungere altri modi per guadagnare crediti attraverso attività giornaliere e obiettivi.",
+    "messages": {
+      "rewardClaimed": "Ricompensa giornaliera richiesta con successo!",
+      "alreadyClaimed": "Hai già richiesto la tua ricompensa giornaliera oggi. Torna domani!",
+      "error": "Impossibile richiedere la ricompensa. Riprova."
+    }
+  }
+}

@@ -31,7 +31,7 @@
     },
     "Action": {
       "name": "Ação",
-      "description": "Histórias com foco em ação"
+      "description": "Histórias focadas em ação"
     },
     "Comedy": {
       "name": "Comédia",
@@ -42,28 +42,28 @@
       "description": "Gênero de drama"
     },
     "Slice of Life": {
-      "name": "Cotidiano",
-      "description": "Histórias da vida cotidiana"
+      "name": "Slice of Life",
+      "description": "Histórias do cotidiano"
     },
     "Isekai": {
       "name": "Isekai",
       "description": "Histórias de outro mundo/reencarnação"
     },
     "Harem": {
-      "name": "Harém",
+      "name": "Harem",
       "description": "Múltiplos interesses românticos"
     },
     "Reverse Harem": {
-      "name": "Harém Reverso",
+      "name": "Harem Reverso",
       "description": "Protagonista feminina com múltiplos interesses masculinos"
     },
     "Yaoi": {
       "name": "Yaoi",
-      "description": "Romance entre homens"
+      "description": "Romance masculino/masculino"
     },
     "Yuri": {
       "name": "Yuri",
-      "description": "Romance entre mulheres"
+      "description": "Romance feminino/feminino"
     },
     "Ecchi": {
       "name": "Ecchi",
@@ -103,7 +103,7 @@
     },
     "Post-Apocalyptic": {
       "name": "Pós-Apocalíptico",
-      "description": "Mundo após desastre"
+      "description": "Mundo após um desastre"
     },
     "Dystopian": {
       "name": "Distópico",
@@ -123,7 +123,7 @@
     },
     "Mecha": {
       "name": "Mecha",
-      "description": "Robôs gigantes/mechas"
+      "description": "Robôs gigantes/mechs"
     },
     "School Life": {
       "name": "Vida Escolar",
@@ -131,11 +131,11 @@
     },
     "Sports": {
       "name": "Esportes",
-      "description": "Histórias com tema esportivo"
+      "description": "Histórias com tema de esportes"
     },
     "Music": {
       "name": "Música",
-      "description": "Histórias com tema musical"
+      "description": "Histórias com tema de música"
     },
     "Military": {
       "name": "Militar",
@@ -143,14 +143,14 @@
     },
     "Crime": {
       "name": "Crime",
-      "description": "Crime e atividades criminosas"
+      "description": "Crimes e atividades criminosas"
     },
     "Noir": {
       "name": "Noir",
       "description": "Histórias de crime sombrias"
     },
     "Western": {
-      "name": "Oeste Selvagem",
+      "name": "Western",
       "description": "Cenário do Velho Oeste"
     },
     "Space Opera": {
@@ -194,8 +194,8 @@
       "description": "Paródia ou sátira"
     },
     "Wholesome": {
-      "name": "Edificante",
-      "description": "Conteúdo reconfortante"
+      "name": "Aconchegante",
+      "description": "Conteúdo que faz sentir bem"
     },
     "Grimdark": {
       "name": "Grimdark",
@@ -207,7 +207,7 @@
     },
     "NTR": {
       "name": "NTR",
-      "description": "Temas de Netorare (infidelidade)"
+      "description": "Temas de infidelidade (Netorare)"
     },
     "Incest": {
       "name": "Incesto",
@@ -223,14 +223,14 @@
     },
     "Monster Girl": {
       "name": "Garota Monstro",
-      "description": "Personagens femininas monstras"
+      "description": "Personagens femininas monstro"
     },
     "Transformation": {
       "name": "Transformação",
       "description": "Temas de transformação física"
     },
     "Gender Bender": {
-      "name": "Troca de Gênero",
+      "name": "Gender Bender",
       "description": "Mudança ou troca de gênero"
     },
     "Cooking": {
@@ -247,7 +247,7 @@
     },
     "Dungeon": {
       "name": "Dungeon",
-      "description": "Exploração de masmorras"
+      "description": "Exploração de dungeon"
     },
     "Game World": {
       "name": "Mundo de Jogo",

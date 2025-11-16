@@ -2,9 +2,9 @@
   "resources": {
     "title": "Bildergalerie",
     "loading": "Bilder werden geladen...",
-    "error": "Bilder konnten nicht geladen werden.",
+    "error": "Fehler beim Laden der Bilder.",
     "tabs": {
-      "gallery": "Konversationsgalerie",
+      "gallery": "Gesprächsgalerie",
       "avatar": "Avatare",
       "samples": "Beispiele",
       "stickers": "Sticker"

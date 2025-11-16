@@ -19,6 +19,8 @@ import StoryCreatePage from './pages/story/create';
 import StoryEditPage from './pages/story/[storyId]/edit';
 import StoryHubPage from './pages/story/hub';
 import { StoryDetailPage } from './pages/story/[storyId]';
+import PlansPage from './pages/plans';
+import TasksPage from './pages/tasks';
 
 function PublicShell(): JSX.Element {
   return (
@@ -60,6 +62,8 @@ export default function App(): JSX.Element {
         <Route path="/stories" element={<StoryHubPage />} />
         <Route path="/stories/create" element={<StoryCreatePage />} />
         <Route path="/stories/:storyId" element={<StoryDetailPage />} />
+        <Route path="/plans" element={<PlansPage />} />
+        <Route path="/tasks" element={<TasksPage />} />
         <Route path="/stories/:storyId/edit" element={<StoryEditPage />} />
       </Route>
     </Routes>

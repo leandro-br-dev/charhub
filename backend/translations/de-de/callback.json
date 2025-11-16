@@ -7,7 +7,7 @@
     "redirectingMessage": "Authentifizierung abgeschlossen. Weiterleitung...",
     "errorTitle": "Authentifizierungsfehler",
     "cancelledMessage": "Die Authentifizierung wurde vom Anbieter abgebrochen.",
-    "missingParamsMessage": "Fehlende Autorisierungsparameter. Bitte starten Sie den Anmeldevorgang erneut.",
+    "missingParamsMessage": "Autorisierungsparameter fehlen. Bitte starten Sie den Anmeldevorgang erneut.",
     "exchangeFailedMessage": "Wir konnten den OAuth-Austausch nicht abschließen. Bitte versuchen Sie es erneut.",
     "returnButton": "Zurück zur Anmeldung"
   }

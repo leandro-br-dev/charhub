@@ -1,5 +1,7 @@
 import { logger } from '../../config/logger';
 import { registerTestWorker } from './testWorker';
+import { registerUsageProcessingWorker } from './usageProcessingWorker';
+import { registerCreditsMonthlyWorker } from './creditsMonthlyWorker';
 
 /**
  * Initialize all queue workers
@@ -11,6 +13,10 @@ export function initializeWorkers(): void {
   try {
     // Register test worker
     registerTestWorker();
+
+    // Register credits system workers
+    registerUsageProcessingWorker();
+    registerCreditsMonthlyWorker();
   } catch (error) {
     logger.error({ error }, 'Failed to register workers (queues disabled or Redis unavailable)');
     return;
@@ -20,7 +26,6 @@ export function initializeWorkers(): void {
   // registerCharacterWorker();
   // registerImageGenerationWorker();
   // registerStoryWorker();
-  // registerUsageLogWorker();
 
   logger.info('All queue workers initialized');
 }

@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "Planos e Assinaturas",
+    "subtitle": "Escolha o plano perfeito para suas necessidades",
+    "active_plan": "Plano Ativo",
+    "will_cancel_on": "Será cancelado em",
+    "soon": "em breve",
+    "reactivate": "Reativar",
+    "cancel_subscription": "Cancelar Assinatura",
+    "detailed_comparison": "Comparação Detalhada de Recursos",
+    "coming_soon": "Tabela detalhada de comparação em breve...",
+    "subscription_activated": "Assinatura Ativada! Sua assinatura foi ativada com sucesso.",
+    "subscription_cancelled": "Assinatura Cancelada. Você cancelou o processo de assinatura.",
+    "error_loading_plans": "Erro ao carregar planos",
+    "error_starting_subscription": "Erro ao iniciar assinatura",
+    "plan_changed_to_free": "Plano Alterado. Você agora está no plano gratuito.",
+    "error_changing_plan": "Erro ao alterar plano",
+    "confirm_cancel_subscription": "Tem certeza que deseja cancelar sua assinatura?",
+    "subscription_will_cancel": "Assinatura Cancelada. Sua assinatura será cancelada ao final do período atual.",
+    "error_cancelling_subscription": "Erro ao cancelar assinatura",
+    "subscription_reactivated": "Assinatura Reativada. Sua assinatura foi reativada com sucesso.",
+    "error_reactivating_subscription": "Erro ao reativar assinatura"
+  }
+}

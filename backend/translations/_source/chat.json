@@ -104,7 +104,8 @@
       "cloneAssistantUnavailable": "Assistant cloning is not available yet.",
       "promoteCharacterUnavailable": "Character promotion is not available yet.",
       "audioPlaybackUnavailable": "Audio playback is not available yet.",
-      "reviewFileUnavailable": "File review is not available yet."
+      "reviewFileUnavailable": "File review is not available yet.",
+      "suggestionFailed": "Failed to generate reply suggestion."
     },
     "success": {
       "created": "Conversation created successfully",
@@ -113,6 +114,8 @@
       "sent": "Message sent"
     },
     "chatPage": {
+      "participantCount": "{{count}} participant",
+      "participantCount_plural": "{{count}} participants",
       "configureParticipantTitle": "Configure participant",
       "configureBotTitle": "Configure {{name}}",
       "configureAssistantTitle": "Configure assistant {{name}}",
@@ -183,14 +186,25 @@
       "narrationDialogue": "Dialogue-focused",
       "viewOptionsTitle": "Visual settings",
       "bgTypeLabel": "Background type",
+      "bgTypeAuto": "Automatic (character cover)",
       "bgTypeTheme": "Use theme",
       "bgTypeImage": "Use image",
       "selectFromGalleryButton": "Select from gallery",
       "removeBgImageButton": "Remove image",
       "noImageSelected": "No background selected",
+      "autoBackgroundInfo": "When enabled, the character's cover image will be used as background for 1-on-1 conversations.",
       "errorLoadingGallery": "Could not load gallery images.",
       "galleryButton": "Open gallery",
-      "imageGalleryTitle": "Chat Gallery"
+      "imageGalleryTitle": "Chat Gallery",
+      "visibility": {
+        "sectionTitle": "Privacy Settings",
+        "label": "Conversation visibility",
+        "private": "Private",
+        "unlisted": "Unlisted",
+        "public": "Public",
+        "publicWarning": "This conversation will be visible to everyone and discoverable in public listings.",
+        "unlistedWarning": "This conversation can be accessed by anyone with the link, but won't appear in public listings."
+      }
     },
     "common": {
       "cancel": "Cancel",
@@ -226,6 +240,8 @@
       "you": "You",
       "actionsMenuTitle": "More actions",
       "generateImageAction": "Generate Image",
+      "suggestReplyAction": "Suggest reply",
+      "generatingSuggestion": "Generating suggestion...",
       "micButtonStopRecordingTitle": "Stop recording",
       "micButtonProcessingTitle": "Processing...",
       "micButtonRecordTitle": "Record audio"

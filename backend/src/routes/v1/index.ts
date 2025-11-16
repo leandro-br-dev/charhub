@@ -17,6 +17,9 @@ import tagsRoutes from './tags';
 import storyRoutes from './story';
 import adminTranslationsRoutes from './admin/translations';
 import llmTestRoutes from './llm-test';
+import creditsRoutes from './credits';
+import plansRoutes from './plans';
+import subscriptionsRoutes from './subscriptions';
 
 const router = Router();
 
@@ -37,6 +40,9 @@ router.use('/tags', tagsRoutes);
 router.use('/stories', storyRoutes);
 router.use('/admin/translations', adminTranslationsRoutes);
 router.use('/llm-test', llmTestRoutes);
+router.use('/credits', creditsRoutes);
+router.use('/plans', plansRoutes);
+router.use('/subscriptions', subscriptionsRoutes);
 router.use('/', accessRoutes);
 
 export default router;

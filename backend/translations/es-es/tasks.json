@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "Tareas Diarias",
+    "subtitle": "Completa tareas diarias para ganar créditos",
+    "dailyReward": {
+      "title": "Recompensa de Inicio de Sesión Diario",
+      "description": "Reclama tu recompensa de inicio de sesión diario y gana créditos",
+      "credits": "créditos",
+      "claimed": "Ya reclamado hoy",
+      "claimButton": "Reclamar Recompensa",
+      "claiming": "Reclamando...",
+      "nextReward": "Próxima recompensa disponible en",
+      "hours": "horas",
+      "minutes": "minutos"
+    },
+    "yourCredits": "Tus Créditos",
+    "availableCredits": "Créditos Disponibles",
+    "comingSoon": "Más tareas próximamente",
+    "comingSoonDescription": "Estamos trabajando para añadir más formas de ganar créditos a través de tareas diarias y logros.",
+    "messages": {
+      "rewardClaimed": "¡Recompensa diaria reclamada con éxito!",
+      "alreadyClaimed": "Ya has reclamado tu recompensa diaria hoy. ¡Vuelve mañana!",
+      "error": "No se pudo reclamar la recompensa. Por favor, inténtalo de nuevo."
+    }
+  }
+}

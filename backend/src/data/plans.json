@@ -1,0 +1,55 @@
+{
+  "description": "Subscription plans for CharHub credits system",
+  "plans": [
+    {
+      "tier": "FREE",
+      "name": "Free",
+      "priceMonthly": 0.00,
+      "creditsPerMonth": 200,
+      "description": "Perfect for casual users who want to explore CharHub",
+      "features": [
+        "200 credits per month",
+        "50 daily login bonus",
+        "Access to all safe content",
+        "Basic chat functionality",
+        "Character creation",
+        "Image generation (limited)"
+      ]
+    },
+    {
+      "tier": "PLUS",
+      "name": "Plus",
+      "priceMonthly": 5.00,
+      "creditsPerMonth": 2000,
+      "description": "Best value for regular users",
+      "features": [
+        "2,000 credits per month",
+        "50 daily login bonus",
+        "Priority queue for generation",
+        "Access to NSFW content (18+)",
+        "Advanced character customization",
+        "Unlimited character creation",
+        "Higher quality image generation",
+        "Voice synthesis (TTS)"
+      ]
+    },
+    {
+      "tier": "PREMIUM",
+      "name": "Premium",
+      "priceMonthly": 15.00,
+      "creditsPerMonth": 5000,
+      "description": "For power users and creators",
+      "features": [
+        "5,000 credits per month",
+        "100 daily login bonus",
+        "Highest priority queue",
+        "Access to all content",
+        "Premium AI models",
+        "Unlimited everything",
+        "Early access to new features",
+        "Advanced analytics",
+        "API access (future)"
+      ]
+    }
+  ]
+}

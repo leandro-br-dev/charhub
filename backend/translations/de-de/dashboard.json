@@ -5,29 +5,29 @@
     "tabs": {
       "discover": "Entdecken",
       "chat": "Chat",
-      "story": "Geschichte"
+      "story": "Story"
     },
     "sections": {
       "popularCharacters": "Beliebte Charaktere",
       "favoriteCharacters": "Deine Favoriten",
       "popular": "Beliebt",
       "favorites": "Favoriten",
-      "myStories": "Meine Geschichten",
-      "popularStories": "Beliebte Geschichten",
+      "myStories": "Meine Stories",
+      "popularStories": "Beliebte Stories",
       "mine": "Meine"
     },
-    "noStories": "Noch keine Geschichten. Erstelle deine erste Geschichte!",
-    "createStory": "Geschichte erstellen",
-    "plusRequired": "Benötigt Plus-Abonnement",
-    "recentConversations": "Kürzliche Unterhaltungen",
-    "newConversation": "Neue Unterhaltung",
+    "noStories": "Noch keine Stories. Erstelle deine erste Story!",
+    "createStory": "Story erstellen",
+    "plusRequired": "Benötigt Plus-Abo",
+    "recentConversations": "Kürzliche Konversationen",
+    "newConversation": "Neue Konversation",
     "carousel": {
       "alt": "Karussellbild für {{title}}",
-      "goToSlide": "Zur Folie {{slide}} gehen",
+      "goToSlide": "Zur Folie {{slide}} wechseln",
       "plus": "PLUS"
     },
     "storyCard": {
-      "alt": "Titelbild für {{title}}",
+      "alt": "Coverbild für {{title}}",
       "play": "Abspielen"
     }
   }

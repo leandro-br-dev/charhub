@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "일일 과제",
+    "subtitle": "일일 과제를 완료하고 크레딧을 획득하세요",
+    "dailyReward": {
+      "title": "일일 로그인 보상",
+      "description": "일일 로그인 보상을 받고 크레딧을 획득하세요",
+      "credits": "크레딧",
+      "claimed": "오늘 이미 받았습니다",
+      "claimButton": "보상 받기",
+      "claiming": "받는 중...",
+      "nextReward": "다음 보상은",
+      "hours": "시간",
+      "minutes": "분"
+    },
+    "yourCredits": "나의 크레딧",
+    "availableCredits": "사용 가능한 크레딧",
+    "comingSoon": "더 많은 과제가 곧 추가될 예정입니다",
+    "comingSoonDescription": "일일 과제 및 업적을 통해 크레딧을 획득할 수 있는 더 많은 방법을 추가하기 위해 노력하고 있습니다.",
+    "messages": {
+      "rewardClaimed": "일일 보상을 성공적으로 받았습니다!",
+      "alreadyClaimed": "오늘 일일 보상을 이미 받았습니다. 내일 다시 방문해주세요!",
+      "error": "보상 받기에 실패했습니다. 다시 시도해주세요."
+    }
+  }
+}

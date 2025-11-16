@@ -9,21 +9,21 @@
     },
     "sections": {
       "popularCharacters": "热门角色",
-      "favoriteCharacters": "你喜欢",
+      "favoriteCharacters": "你的收藏",
       "popular": "热门",
-      "favorites": "你喜欢",
+      "favorites": "收藏",
       "myStories": "我的故事",
       "popularStories": "热门故事",
       "mine": "我的"
     },
     "noStories": "还没有故事。创建你的第一个故事！",
     "createStory": "创建故事",
-    "plusRequired": "需要 Plus 计划",
+    "plusRequired": "需要 Plus 套餐",
     "recentConversations": "最近的对话",
     "newConversation": "新对话",
     "carousel": {
       "alt": "{{title}} 的轮播图",
-      "goToSlide": "转到幻灯片 {{slide}}",
+      "goToSlide": "前往第 {{slide}} 张幻灯片",
       "plus": "PLUS"
     },
     "storyCard": {

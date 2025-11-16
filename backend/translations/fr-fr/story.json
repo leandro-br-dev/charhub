@@ -16,7 +16,7 @@
       "coverImageError": "Échec du chargement de l'image",
       "coverImageHint": "Collez une URL d'image pour la couverture de l'histoire",
       "initialText": "Texte initial",
-      "initialTextPlaceholder": "Écrivez l'ouverture de votre histoire...",
+      "initialTextPlaceholder": "Écrivez le début de votre histoire...",
       "initialTextHint": "Ce texte sera affiché au début de l'histoire",
       "objectives": "Objectifs",
       "objectivePlaceholder": "Ajouter un objectif d'histoire",
@@ -37,9 +37,9 @@
     },
     "validation": {
       "titleRequired": "Le titre est requis",
-      "titleTooLong": "Le titre doit faire 100 caractères maximum",
-      "synopsisTooLong": "Le synopsis doit faire 2000 caractères maximum",
-      "initialTextTooLong": "Le texte initial doit faire 5000 caractères maximum"
+      "titleTooLong": "Le titre doit contenir 100 caractères maximum",
+      "synopsisTooLong": "Le synopsis doit contenir 2000 caractères maximum",
+      "initialTextTooLong": "Le texte initial doit contenir 5000 caractères maximum"
     },
     "errors": {
       "createFailed": "Échec de la création de l'histoire",
@@ -57,8 +57,8 @@
     "list": {
       "title": "Mes histoires",
       "subtitle": "Gérez vos histoires interactives",
-      "public": "Publique",
-      "private": "Privée",
+      "public": "Public",
+      "private": "Privé",
       "empty": {
         "title": "Pas encore d'histoires",
         "description": "Créez votre première histoire interactive",

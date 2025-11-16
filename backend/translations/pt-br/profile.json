@@ -12,25 +12,25 @@
     "subtitle": "Atualize como outras pessoas veem você no CharHub. Preferências que ainda estão sendo migradas aparecerão aqui em breve.",
     "identity": {
       "header": "Foto de perfil",
-      "description": "Escolha um avatar para representá-lo em chats e personagens.",
-      "upload": "Carregar imagem",
-      "placeholderNote": "O upload de avatares estará disponível após reconectarmos o serviço de mídia."
+      "description": "Escolha um avatar para representar você em chats e personagens.",
+      "upload": "Enviar imagem",
+      "placeholderNote": "Uploads de avatar estarão disponíveis após reconectarmos o serviço de mídia."
     },
     "details": {
       "header": "Detalhes públicos",
-      "description": "Esses valores são compartilhados com colaboradores e usados como padrão em conversas."
+      "description": "Estes valores são compartilhados com colaboradores e usados como padrão em conversas."
     },
     "contentClassification": {
       "header": "Classificação de Conteúdo",
-      "description": "Configure filtros de conteúdo para controlar quais tipos de personagens e histórias você deseja ver. Apenas o conteúdo que corresponder às suas preferências selecionadas será recomendado a você.",
+      "description": "Configure filtros de conteúdo para controlar quais tipos de personagens e histórias você deseja ver. Apenas conteúdo que corresponda às suas preferências selecionadas será recomendado para você.",
       "blockedTags": "Filtros de Conteúdo",
       "filterNote": "Selecione os tipos de conteúdo que você deseja PERMITIR. Itens desmarcados serão filtrados das recomendações.",
-      "allAgesNote": "Todos os tipos de conteúdo são bloqueados quando a classificação \"Todas as Idades\" é selecionada.",
-      "allowAll": "Permitir Tudo",
+      "allAgesNote": "Todos os tipos de conteúdo são bloqueados quando a classificação \"Para Todas as Idades\" é selecionada.",
+      "allowAll": "Permitir Todos",
       "birthDateRequired": "Data de Nascimento Necessária",
       "birthDateRequiredMessage": "Por favor, preencha sua data de nascimento na aba Perfil para desbloquear as configurações de classificação de conteúdo. Isso garante recomendações de conteúdo apropriadas para a idade.",
-      "maxAgeRatingLabel": "Classificação Etária Máxima",
-      "maxAgeRatingHint": "Selecione a classificação etária máxima que você deseja ver",
+      "maxAgeRatingLabel": "Classificação Máxima de Idade",
+      "maxAgeRatingHint": "Selecione a classificação máxima de idade que você deseja ver",
       "ageRestricted": "Restrito por idade"
     },
     "fields": {
@@ -40,7 +40,7 @@
       "fullNamePlaceholder": "Opcional para faturamento e cópias de e-mail",
       "username": "Nome de usuário",
       "usernamePlaceholder": "nome de usuário",
-      "usernameHint": "Seu identificador exclusivo no CharHub.",
+      "usernameHint": "Seu identificador único no CharHub.",
       "usernameChecking": "Verificando disponibilidade...",
       "usernameAvailable": "Nome de usuário disponível",
       "usernameUnavailable": "Nome de usuário já em uso",
@@ -62,9 +62,18 @@
       "save": "Salvar alterações",
       "saving": "Salvando..."
     },
+    "subscription": {
+      "header": "Assinatura e Créditos",
+      "description": "Gerencie seu plano de assinatura e visualize seu saldo de créditos.",
+      "currentPlan": "Plano Atual",
+      "credits": "Créditos Disponíveis",
+      "viewPlans": "Ver Planos",
+      "loadingPlan": "Carregando plano...",
+      "loadingCredits": "Carregando créditos..."
+    },
     "security": {
       "header": "Segurança",
-      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte a autenticação de múltiplos fatores será adicionado em breve.",
+      "description": "Suas sessões do CharHub herdam a segurança OAuth do Google ou Facebook. Suporte para autenticação multifator será adicionado em breve.",
       "placeholder": "Gerenciamento de sessão e controles de login sem senha estão no roteiro."
     },
     "deleteAccount": {

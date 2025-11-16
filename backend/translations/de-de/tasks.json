@@ -1,0 +1,27 @@
+{
+  "description": "Daily tasks and rewards page for earning credits through daily activities.",
+  "resources": {
+    "title": "Tägliche Aufgaben",
+    "subtitle": "Erledige tägliche Aufgaben, um Credits zu verdienen",
+    "dailyReward": {
+      "title": "Tägliche Belohnung für den Login",
+      "description": "Hol dir deine tägliche Login-Belohnung und verdiene Credits",
+      "credits": "Credits",
+      "claimed": "Heute bereits beansprucht",
+      "claimButton": "Belohnung abholen",
+      "claiming": "Wird abgeholt...",
+      "nextReward": "Nächste Belohnung verfügbar in",
+      "hours": "Stunden",
+      "minutes": "Minuten"
+    },
+    "yourCredits": "Deine Credits",
+    "availableCredits": "Verfügbare Credits",
+    "comingSoon": "Weitere Aufgaben bald verfügbar",
+    "comingSoonDescription": "Wir arbeiten daran, weitere Möglichkeiten zum Verdienen von Credits durch tägliche Aufgaben und Erfolge hinzuzufügen.",
+    "messages": {
+      "rewardClaimed": "Tägliche Belohnung erfolgreich abgeholt!",
+      "alreadyClaimed": "Du hast deine tägliche Belohnung heute bereits abgeholt. Komm morgen wieder!",
+      "error": "Belohnung konnte nicht abgeholt werden. Bitte versuche es erneut."
+    }
+  }
+}

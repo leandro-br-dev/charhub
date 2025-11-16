@@ -14,9 +14,9 @@
       "favorites": "Favoritos",
       "myStories": "Minhas Histórias",
       "popularStories": "Histórias Populares",
-      "mine": "Meus"
+      "mine": "Meu"
     },
-    "noStories": "Ainda não há histórias. Crie sua primeira história!",
+    "noStories": "Nenhuma história ainda. Crie sua primeira história!",
     "createStory": "Criar História",
     "plusRequired": "Requer Plano Plus",
     "recentConversations": "Conversas Recentes",

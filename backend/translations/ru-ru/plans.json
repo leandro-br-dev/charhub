@@ -1,0 +1,25 @@
+{
+  "description": "Plans and subscription management page UI strings for plan selection, cancellation, and reactivation.",
+  "resources": {
+    "title": "Тарифы и подписки",
+    "subtitle": "Выберите тариф, который идеально подходит вам",
+    "active_plan": "Активный тариф",
+    "will_cancel_on": "Будет отменено",
+    "soon": "скоро",
+    "reactivate": "Активировать повторно",
+    "cancel_subscription": "Отменить подписку",
+    "detailed_comparison": "Подробное сравнение функций",
+    "coming_soon": "Подробная таблица сравнения скоро появится...",
+    "subscription_activated": "Подписка активирована! Ваша подписка успешно активирована.",
+    "subscription_cancelled": "Подписка отменена. Вы отменили процесс оформления подписки.",
+    "error_loading_plans": "Ошибка загрузки тарифов",
+    "error_starting_subscription": "Ошибка начала подписки",
+    "plan_changed_to_free": "Тариф изменен. Теперь вы используете бесплатный тариф.",
+    "error_changing_plan": "Ошибка смены тарифа",
+    "confirm_cancel_subscription": "Вы уверены, что хотите отменить подписку?",
+    "subscription_will_cancel": "Подписка отменена. Ваша подписка будет отменена в конце текущего периода.",
+    "error_cancelling_subscription": "Ошибка отмены подписки",
+    "subscription_reactivated": "Подписка восстановлена. Ваша подписка успешно восстановлена.",
+    "error_reactivating_subscription": "Ошибка восстановления подписки"
+  }
+}

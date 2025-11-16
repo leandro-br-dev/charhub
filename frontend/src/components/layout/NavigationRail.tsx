@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu } from '@headlessui/react';
@@ -8,6 +8,7 @@ import { SmartDropdown } from '../ui/SmartDropdown';
 import { CachedImage } from '../ui/CachedImage';
 import { LanguageSwitcher } from '../features/LanguageSwitcher';
 import { ThemeToggle } from '../features/ThemeToggle';
+import { creditService, subscriptionService } from '../../services';
 
 type NavigationRailProps = {
   onBugReportClick?: () => void;
@@ -35,13 +36,33 @@ type NavItemProps = {
   compact?: boolean;
   isActiveOverride?: boolean;
   isOverlay?: boolean;
+  useDirectLink?: boolean;
 };
 
-function NavItem({ to, icon, label, disabled = false, onSelect, compact = false, isActiveOverride, isOverlay = false }: NavItemProps): JSX.Element {
+function NavItem({ to, icon, label, disabled = false, onSelect, compact = false, isActiveOverride, isOverlay = false, useDirectLink = false }: NavItemProps): JSX.Element {
   const sizeClasses = compact ? 'h-10 w-10 rounded-xl' : 'h-12 w-12 rounded-2xl';
   const baseClasses = `relative group flex ${sizeClasses} items-center justify-center transition-all duration-200 ease-in-out`;
   const location = useLocation();
   const isActive = isActiveOverride ?? location.pathname.startsWith(to);
+
+  const content = (
+    <>
+      <span className="material-symbols-outlined text-xl">{icon}</span>
+      <span className="sr-only">{label}</span>
+      {!isOverlay && (
+        <span className="absolute left-full z-[100] ml-4 hidden min-w-max origin-left rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white shadow-lg group-hover:block">
+          {label}
+        </span>
+      )}
+    </>
+  );
+
+  const className = [
+    baseClasses,
+    isActive
+      ? 'bg-primary text-black shadow-lg'
+      : 'bg-light text-muted hover:bg-primary hover:text-black'
+  ].join(' ');
 
   if (disabled) {
     return (
@@ -56,25 +77,22 @@ function NavItem({ to, icon, label, disabled = false, onSelect, compact = false,
     );
   }
 
+  if (useDirectLink) {
+    return (
+      <Link to={to} className={className} title={label}>
+        {content}
+      </Link>
+    );
+  }
+
   return (
     <button
       type="button"
-      className={[
-        baseClasses,
-        isActive
-          ? 'bg-primary text-black shadow-lg'
-          : 'bg-light text-muted hover:bg-primary hover:text-black'
-      ].join(' ')}
+      className={className}
       onClick={onSelect}
       title={label}
     >
-      <span className="material-symbols-outlined text-xl">{icon}</span>
-      <span className="sr-only">{label}</span>
-      {!isOverlay && (
-        <span className="absolute left-full z-[100] ml-4 hidden min-w-max origin-left rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white shadow-lg group-hover:block">
-          {label}
-        </span>
-      )}
+      {content}
     </button>
   );
 }
@@ -87,6 +105,8 @@ export function NavigationRail({
 }: NavigationRailProps): JSX.Element {
   const { t } = useTranslation(['navigation', 'dashboard', 'common']);
   const { user, logout } = useAuth();
+  const [credits, setCredits] = useState<number | null>(null);
+  const [planName, setPlanName] = useState<string | null>(null);
 
   const isAdmin = user?.role === 'ADMIN';
 
@@ -126,6 +146,14 @@ export function NavigationRail({
         opensSidebar: true
       },
       {
+        to: '/tasks',
+        icon: 'task_alt',
+        labelKey: 'navigation:tasks',
+        fallbackLabel: 'Tasks',
+        available: true,
+        opensSidebar: false
+      },
+      {
         to: '/assets',
         icon: 'inventory_2',
         labelKey: 'navigation:assets',
@@ -136,6 +164,25 @@ export function NavigationRail({
     ],
     []
   );
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const [creditsData, subscriptionData] = await Promise.all([
+          creditService.getBalance(),
+          subscriptionService.getStatus(),
+        ]);
+        setCredits(creditsData);
+        setPlanName(subscriptionData.plan.name);
+      } catch (error) {
+        console.error('[NavigationRail] Failed to load user data:', error);
+      }
+    };
+
+    if (user?.id) {
+      loadUserData();
+    }
+  }, [user?.id]);
 
   const handleLogout = async () => {
     await logout();
@@ -177,6 +224,7 @@ export function NavigationRail({
               disabled={!item.available}
               compact={isOverlay}
               isOverlay={isOverlay}
+              useDirectLink={!item.opensSidebar}
               onSelect={() =>
                 onNavItemSelect?.({
                   to: item.to,
@@ -234,6 +282,22 @@ export function NavigationRail({
             ) : null}
           </div>
 
+          {/* Plan and Credits Info */}
+          <div className="px-4 py-2 border-t border-dark/20">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-muted">Plan:</span>
+              <span className="text-xs font-medium text-content">{planName ?? '...'}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-muted">Credits:</span>
+              <span className="text-xs font-medium text-primary">
+                {credits !== null ? credits.toLocaleString() : '...'}
+              </span>
+            </div>
+          </div>
+
+          <div className="my-1 h-px bg-dark/40" />
+
           <Menu.Item>
             {({ active }) => (
               <Link
@@ -248,10 +312,6 @@ export function NavigationRail({
               </Link>
             )}
           </Menu.Item>
-
-          {/* TODO(profile-billing): Add billing and credits shortcuts when available. */}
-
-          <div className="my-1 h-px bg-dark/40" />
 
           <Menu.Item>
             {({ active }) => (

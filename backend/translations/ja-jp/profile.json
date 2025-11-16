@@ -9,7 +9,7 @@
     },
     "sectionTitle": "アカウント",
     "title": "プロフィールを管理する",
-    "subtitle": "CharHubで他の人があなたを見る方法を更新します。現在移行中の設定もまもなく表示されます。",
+    "subtitle": "CharHubで他の人に表示される方法を更新します。現在移行中の設定は近日中にここに表示されます。",
     "identity": {
       "header": "プロフィール写真",
       "description": "チャットやキャラクター全体であなたを表すアバターを選択してください。",
@@ -18,17 +18,17 @@
     },
     "details": {
       "header": "公開情報",
-      "description": "これらの値は共同編集者と共有され、会話のデフォルトとして使用されます。"
+      "description": "これらの値は共同作業者と共有され、会話のデフォルトとして使用されます。"
     },
     "contentClassification": {
       "header": "コンテンツ分類",
-      "description": "コンテンツフィルターを設定して、表示したいキャラクターやストーリーの種類を制御します。選択した設定に一致するコンテンツのみがあなたに推奨されます。",
+      "description": "コンテンツフィルターを設定して、表示したいキャラクターやストーリーの種類を制御します。選択した設定に一致するコンテンツのみが推奨されます。",
       "blockedTags": "コンテンツフィルター",
-      "filterNote": "許可したいコンテンツの種類を選択してください。チェックされていない項目は、おすすめから除外されます。",
+      "filterNote": "許可したいコンテンツのタイプを選択してください。チェックされていない項目は、おすすめから除外されます。",
       "allAgesNote": "「全年齢」レーティングが選択されている場合、すべてのコンテンツタイプがブロックされます。",
       "allowAll": "すべて許可",
-      "birthDateRequired": "生年月日の入力が必要です",
-      "birthDateRequiredMessage": "コンテンツ分類設定を解除するには、プロフィールタブに生年月日を入力してください。これにより、年齢に適したコンテンツのおすすめが保証されます。",
+      "birthDateRequired": "生年月日が必要です",
+      "birthDateRequiredMessage": "コンテンツ分類設定を解除するには、プロフィールタブに生年月日を入力してください。これにより、年齢に適したコンテンツの推奨が保証されます。",
       "maxAgeRatingLabel": "最大年齢レーティング",
       "maxAgeRatingHint": "表示したい最大年齢レーティングを選択してください",
       "ageRestricted": "年齢制限あり"
@@ -37,10 +37,10 @@
       "displayName": "表示名",
       "displayNamePlaceholder": "他のユーザーがあなたを呼ぶ方法",
       "fullName": "氏名",
-      "fullNamePlaceholder": "請求書およびメールコピー用（任意）",
+      "fullNamePlaceholder": "請求書およびEメールコピー用（任意）",
       "username": "ユーザー名",
       "usernamePlaceholder": "ユーザー名",
-      "usernameHint": "CharHubでのあなた固有の識別子です。",
+      "usernameHint": "CharHubでのユニークな識別子です。",
       "usernameChecking": "利用可能性を確認中...",
       "usernameAvailable": "ユーザー名は利用可能です",
       "usernameUnavailable": "ユーザー名は既に使用されています",
@@ -53,40 +53,49 @@
       "feminine": "女性",
       "masculine": "男性",
       "nonBinary": "ノンバイナリー",
-      "unspecified": "答えたくない"
+      "unspecified": "回答しない"
     },
     "preferences": {
-      "placeholder": "コンテンツ設定、ぼかし設定、およびセンシティブなテーマは、モデレーションサービスが統合され次第、再表示されます。"
+      "placeholder": "コンテンツ設定、ぼかし設定、およびセンシティブなテーマは、モデレーションサービスが統合された後に再表示されます。"
     },
     "actions": {
       "save": "変更を保存",
       "saving": "保存中..."
     },
+    "subscription": {
+      "header": "サブスクリプションとクレジット",
+      "description": "サブスクリプションプランを管理し、クレジット残高を表示します。",
+      "currentPlan": "現在のプラン",
+      "credits": "利用可能なクレジット",
+      "viewPlans": "プランを見る",
+      "loadingPlan": "プランを読み込み中...",
+      "loadingCredits": "クレジットを読み込み中..."
+    },
     "security": {
       "header": "セキュリティ",
-      "description": "あなたのCharHubセッションは、GoogleまたはFacebookからのOAuthセキュリティを継承します。多要素認証サポートはまもなく追加されます。",
-      "placeholder": "セッション管理とパスワードレスログインコントロールはロードマップ上にあります。"
+      "description": "CharHubセッションは、GoogleまたはFacebookからのOAuthセキュリティを継承します。多要素認証サポートは近日追加予定です。",
+      "placeholder": "セッション管理とパスワードレスログイン制御はロードマップに含まれています。"
     },
     "deleteAccount": {
       "title": "アカウント削除",
-      "description": "あなたのアカウントとすべてのコンテンツを永久に削除します。",
+      "description": "アカウントとすべてのコンテンツを永久に削除します。",
       "submit": "アカウントを削除",
-      "confirmTitle": "本当に実行しますか？",
+      "confirmTitle": "本当に実行してもよろしいですか？",
       "confirmDescription": "この操作は元に戻せません。アカウントは永久に削除され、データはサーバーから削除されます。",
-      "confirmInstruction": "確認するには、「DELETE」と入力してください。",
+      "confirmInstruction": "確認するには「DELETE」と入力してください。",
       "confirmSubmit": "このアカウントを削除"
     },
     "feedback": {
-      "success": "プロフィールが正常に更新されました。",
+      "success": "プロフィールを正常に更新しました。",
       "error": "変更を保存できませんでした。"
     },
     "errors": {
       "updateFailed": "変更を保存できませんでした。しばらくしてからもう一度お試しください。",
       "displayNameRequired": "表示名は必須です。",
-      "usernameTooShort": "ユーザー名は「@」の後に少なくとも3文字必要です。",
+      "usernameTooShort": "ユーザー名は「@」の後に最低3文字必要です。",
       "usernameInvalid": "ユーザー名は「@」で始まり、文字、数字、アンダースコアのみを使用できます。",
       "usernameTaken": "このユーザー名は既に使用されています。別のユーザー名を選択してください。",
-      "validationFailed": "フォームフィールドを確認してから、もう一度お試しください。",
+      "validationFailed": "フォームフィールドを確認して、もう一度お試しください。",
       "authenticationRequired": "セッションが期限切れました。続行するには、再度ログインしてください。"
     }
   }
