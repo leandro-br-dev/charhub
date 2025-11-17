@@ -476,53 +476,95 @@ router.post(
   requireAuth,
   async (req: Request, res: Response) => {
     try {
-      const { id } = req.params;
+      const { id: conversationId } = req.params;
       const userId = req.auth?.user?.id;
       const { participantId } = req.body;
+      const preferredLanguage = req.headers['x-user-language'] as string | undefined;
 
-      logger.info({ conversationId: id, userId, participantId }, 'Generating AI response');
+      logger.info({ conversationId, userId, participantId }, 'Generating AI response for regeneration');
 
       if (!userId) {
-        logger.warn({ conversationId: id }, 'Generate AI: No userId');
-        return res.status(401).json({
-          success: false,
-          message: 'Authentication required',
-        });
+        logger.warn({ conversationId }, 'Generate AI: No userId');
+        return res.status(401).json({ success: false, message: 'Authentication required' });
       }
 
       if (!participantId) {
-        logger.warn({ conversationId: id, userId }, 'Generate AI: Missing participantId');
-        return res.status(400).json({
+        logger.warn({ conversationId, userId }, 'Generate AI: Missing participantId');
+        return res.status(400).json({ success: false, message: 'participantId is required' });
+      }
+
+      // Step 1: Verify user has access to the conversation
+      const conversation = await conversationService.getConversationById(conversationId, userId);
+      if (!conversation) {
+        logger.warn({ conversationId, userId }, 'Generate AI: Conversation not found or access denied');
+        return res.status(404).json({ success: false, message: 'Conversation not found or access denied' });
+      }
+
+      // Step 2: Use ConversationManagerAgent to determine context (SFW/NSFW)
+      const { agentService } = await import('../../services/agentService');
+      const conversationManager = agentService.getConversationManagerAgent();
+      const lastMessage = conversation.messages[conversation.messages.length - 1];
+      const managerResult = await conversationManager.execute(conversation, lastMessage);
+      const { isNSFW } = managerResult;
+
+      // Step 3: Estimate credit cost
+      const { getCurrentBalance, hasEnoughCredits, createTransaction } = await import('../../services/creditService');
+      const serviceType = isNSFW ? 'LLM_CHAT_NSFW' : 'LLM_CHAT_SAFE';
+      const estimatedTokens = 1000; // Same estimation as websocket flow
+
+      const serviceCost = await prisma.serviceCreditCost.findUnique({
+        where: { serviceIdentifier: serviceType },
+      });
+      const creditsPerThousandTokens = serviceCost?.creditsPerUnit || (isNSFW ? 3 : 2);
+      const estimatedCreditCost = Math.ceil((estimatedTokens / 1000) * creditsPerThousandTokens);
+
+      // Step 4: Verify user has enough credits
+      const hasCredits = await hasEnoughCredits(userId, estimatedCreditCost);
+      if (!hasCredits) {
+        const balance = await getCurrentBalance(userId);
+        logger.warn({ userId, conversationId, required: estimatedCreditCost, current: balance }, 'Insufficient credits for regeneration');
+        return res.status(402).json({ // 402 Payment Required
           success: false,
-          message: 'participantId is required',
+          error: 'insufficient_credits',
+          message: `Insufficient credits. Required: ${estimatedCreditCost}, Available: ${Math.floor(balance)}`,
+          required: estimatedCreditCost,
+          current: Math.floor(balance),
         });
       }
 
-      // Verify user owns the conversation
-      const isOwner = await conversationService.isConversationOwner(id, userId);
-      if (!isOwner) {
-        logger.warn({ conversationId: id, userId }, 'Generate AI: User is not owner');
-        return res.status(403).json({
-          success: false,
-          message: 'You can only generate responses in your own conversations',
-        });
+      logger.info({ userId, estimatedCost: estimatedCreditCost, isNSFW }, 'Credit check passed for regeneration');
+
+      // Step 5: Generate AI response, passing cost info
+      const message = await assistantService.sendAIMessage(
+        conversationId,
+        participantId,
+        preferredLanguage,
+        estimatedCreditCost,
+        isNSFW
+      );
+
+      // Step 6: Deduct credits by creating a transaction
+      if (estimatedCreditCost > 0) {
+        await createTransaction(
+          userId,
+          'CONSUMPTION',
+          -estimatedCreditCost,
+          `Chat regeneration (${isNSFW ? 'NSFW' : 'SFW'})`,
+          undefined,
+          undefined
+        );
+        logger.info({ userId, creditCost: estimatedCreditCost, messageId: message.id }, 'Credits charged for regeneration');
       }
 
-      // Generate and send AI response
-      logger.info({ conversationId: id, participantId }, 'Calling assistantService.sendAIMessage');
-      const message = await assistantService.sendAIMessage(id, participantId);
-      logger.info({ conversationId: id, messageId: message.id }, 'AI response generated successfully');
-
+      // Step 7: Return the new message
       return res.status(201).json({
         success: true,
         data: message,
       });
+
     } catch (error) {
       logger.error({ error, conversationId: req.params.id, participantId: req.body.participantId }, 'Error generating AI response');
-
-      // Send more specific error message to client
       const errorMessage = error instanceof Error ? error.message : 'Failed to generate AI response';
-
       return res.status(500).json({
         success: false,
         message: errorMessage,
