@@ -45,6 +45,7 @@ export enum QueueName {
   TEST = 'test',
   USAGE_PROCESSING = 'usage-processing',
   CREDITS_MONTHLY = 'credits-monthly',
+  MEMORY_COMPRESSION = 'memory-compression',
   // Future queues will be added here:
   // CHARACTER_GENERATION = 'character-generation',
   // IMAGE_GENERATION = 'image-generation',

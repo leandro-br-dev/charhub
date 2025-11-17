@@ -285,7 +285,6 @@ export async function updateConversation(
     const updateData: Prisma.ConversationUpdateInput = {
       title: data.title,
       isTitleUserEdited: data.isTitleUserEdited,
-      visibility: data.visibility,
       settings: data.settings === null ? Prisma.JsonNull : (data.settings as Prisma.InputJsonValue | undefined),
     };
 
@@ -298,7 +297,7 @@ export async function updateConversation(
       include: conversationInclude,
     });
 
-    logger.info({ conversationId, visibility: data.visibility }, 'Conversation updated successfully');
+    logger.info({ conversationId }, 'Conversation updated successfully');
 
     return conversation;
   } catch (error) {
@@ -573,38 +572,7 @@ export async function getConversationCountByUser(
 }
 
 /**
- * Check if user can read a conversation based on visibility
- */
-export async function canReadConversation(
-  conversationId: string,
-  userId: string | null
-): Promise<boolean> {
-  try {
-    const conversation = await prisma.conversation.findUnique({
-      where: { id: conversationId },
-      select: { visibility: true, userId: true },
-    });
-
-    if (!conversation) return false;
-
-    // Owner always can read
-    if (conversation.userId === userId) return true;
-
-    // Public and unlisted can be read by anyone
-    if (conversation.visibility === 'PUBLIC' || conversation.visibility === 'UNLISTED') {
-      return true;
-    }
-
-    // Private only by owner
-    return false;
-  } catch (error) {
-    logger.error({ error, conversationId, userId }, 'Error checking conversation read access');
-    return false;
-  }
-}
-
-/**
- * List public conversations with filtering and sorting
+ * List public conversations (visible to everyone)
  */
 export async function listPublicConversations(filters: {
   limit?: number;
@@ -615,7 +583,7 @@ export async function listPublicConversations(filters: {
     const { limit = 20, offset = 0, sortBy = 'recent' } = filters;
 
     const conversations = await prisma.conversation.findMany({
-      where: { visibility: 'PUBLIC' },
+      where: {},
       include: {
         owner: {
           select: {
@@ -667,8 +635,6 @@ export async function listPublicConversations(filters: {
 
 /**
  * Resolve conversation background automatically
- * If conversation has exactly 1 character participant, use its cover image
- * Otherwise, use manual settings or none
  */
 export async function resolveConversationBackground(
   conversationId: string
@@ -678,31 +644,9 @@ export async function resolveConversationBackground(
 
     const conversation = await prisma.conversation.findUnique({
       where: { id: conversationId },
-      include: {
-        participants: {
-          include: {
-            actingCharacter: {
-              include: {
-                images: {
-                  where: {
-                    type: 'COVER',
-                  },
-                  take: 1,
-                },
-              },
-            },
-            representingCharacter: {
-              include: {
-                images: {
-                  where: {
-                    type: 'COVER',
-                  },
-                  take: 1,
-                },
-              },
-            },
-          },
-        },
+      select: {
+        id: true,
+        settings: true,
       },
     });
 
@@ -712,23 +656,7 @@ export async function resolveConversationBackground(
       });
     }
 
-    logger.info(
-      {
-        totalParticipants: conversation.participants?.length || 0,
-        participants: conversation.participants?.map((p: any) => ({
-          id: p.id,
-          userId: p.userId,
-          actingCharacterId: p.actingCharacterId,
-          actingAssistantId: p.actingAssistantId,
-          representingCharacterId: p.representingCharacterId,
-          hasRepresentingCharacter: !!p.representingCharacter,
-        }))
-      },
-      'Raw participants from DB'
-    );
-
     const settings = conversation.settings as any;
-    logger.info({ settings }, 'Conversation settings');
 
     // Manual override - user explicitly chose a background type
     if (settings?.view?.background_type && settings.view.background_type !== 'auto') {
@@ -739,49 +667,13 @@ export async function resolveConversationBackground(
       };
     }
 
-    // Auto mode (default) - check if exactly 1 character participant
-    // Character can be either acting directly (actingCharacterId) or represented (representingCharacterId)
-    const characterParticipants = conversation.participants.filter(
-      (p: any) => (p.actingCharacterId || p.representingCharacterId) && !p.userId
-    );
-
-    logger.info(
-      {
-        participantCount: characterParticipants.length,
-        participants: characterParticipants.map((p: any) => ({
-          actingCharacterId: p.actingCharacterId,
-          representingCharacterId: p.representingCharacterId,
-          hasActingCharacter: !!p.actingCharacter,
-          hasRepresentingCharacter: !!p.representingCharacter,
-          actingCharacterImages: p.actingCharacter?.images?.length || 0,
-          representingCharacterImages: p.representingCharacter?.images?.length || 0
-        }))
-      },
-      'Character participants analysis'
-    );
-
-    if (characterParticipants.length === 1) {
-      // Get the character (either acting or representing)
-      const participant = characterParticipants[0];
-      const character = participant.actingCharacter || participant.representingCharacter;
-      const characterImages = character?.images;
-      const coverImage = characterImages && characterImages.length > 0 ? characterImages[0].url : null;
-
-      logger.info({ coverImage, source: participant.actingCharacter ? 'actingCharacter' : 'representingCharacter' }, 'Resolved cover image');
-
-      if (coverImage) {
-        return { type: 'image', value: coverImage };
-      }
-    }
-
     // Default: no background
-    logger.info('No background resolved, using default');
-    return { type: 'none', value: null };
+    return {
+      type: 'none',
+      value: null,
+    };
   } catch (error) {
-    logger.error(
-      { error, conversationId },
-      'Error resolving conversation background'
-    );
+    logger.error({ error, conversationId }, 'Error resolving conversation background');
     throw error;
   }
 }

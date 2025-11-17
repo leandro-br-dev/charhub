@@ -10,6 +10,7 @@ Welcome to CharHub. This guide is shared by every automation agent (GitHub Copil
 - Configure your editor (`files.encoding`: `"utf8"`, disable "BOM") and confirm before committing.
 - If in doubt, run `find . -type f -name '*.md' -print0 | xargs -0 file` (or a tiny Python script) to confirm no file starts with `0xEFBBBF`.
 - **Never delete API keys or overwrite `.env` files** with their example counterparts unless the user explicitly instructs you. If a change is required, edit only the specific lines to avoid losing existing secrets or local configuration.
+- **Never execute database deletion commands (e.g., `DROP DATABASE`, `DELETE FROM` without a `WHERE` clause, or `prisma migrate reset`) or any command that could lead to data loss, even on development servers, without explicit user instruction and confirmation.
 
 ## Before You Start
 
@@ -42,6 +43,8 @@ docs/                           # Project-level documentation
 ├── DEV_OPERATIONS.md           # Infrastructure and deployment
 ├── ROADMAP.md                  # Strategic plan
 ├── TODO.md                     # Current priorities
+├── deploy/                     # Deployment definitions
+├── features/                   # New implementations
 └── MIGRATION/                  # Migration-specific docs
 
 backend/                        # Backend-specific documentation
@@ -127,6 +130,23 @@ For a deeper tree, see `docs/PROJECT_OVERVIEW.md`.
 - Tailwind utilities ordered: layout > spacing > color/typography.
 - Never import one OAuth provider's service into another; keep shared types in `backend/src/types`.
 - When cloning React elements, preserve refs correctly (see `SmartDropdown` pattern).
+
+## Naming Conventions
+Follow consistent conventions for readability (based on JavaScript/TypeScript standards). Use ESLint for enforcement.
+
+| Type | Convention | Example |
+|------|------------|---------|
+| **Local/Global Variables** | camelCase | `let userName = 'João';` |
+| **Functions** | camelCase | `function calculateTotal() { ... }` |
+| **Objects and Instances** | camelCase | `const userData = { name: 'Ana' };` |
+| **Classes and Constructors** | PascalCase | `class UserProfile { ... }` |
+| **React Components** | PascalCase | `const MyComponent = () => { ... };` |
+| **Constants** | UPPER_SNAKE_CASE (or camelCase if simple) | `const MAX_USERS = 100;` |
+| **Modules/Imports** | camelCase (file name) | `import myUtil from './myUtil.js';` |
+
+- **Consistency**: Choose one style per project and apply it throughout the code.
+- **Exceptions**: Follow external API styles; avoid in your own code.
+
 
 ### Frontend Page Structure Pattern (Colocation)
 

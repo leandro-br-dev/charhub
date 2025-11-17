@@ -4,7 +4,7 @@
     "title": "Conversations",
     "newConversation": "Nouvelle conversation",
     "conversations": "Conversations",
-    "noConversations": "Aucune conversation pour le moment",
+    "noConversations": "Aucune conversation pour l'instant",
     "createFirst": "Créez votre première conversation",
     "loading": "Chargement...",
     "error": "Erreur lors du chargement du chat",
@@ -13,7 +13,7 @@
       "title": "Historique des conversations",
       "newChat": "Nouveau chat",
       "searchPlaceholder": "Rechercher des conversations...",
-      "groupBy": "Grouper par :",
+      "groupBy": "Regrouper par :",
       "groupByDate": "Date",
       "groupByName": "Nom",
       "today": "Aujourd'hui",
@@ -22,7 +22,7 @@
       "last30Days": "30 derniers jours",
       "invalidDate": "Date invalide",
       "noResults": "Aucune conversation trouvée",
-      "empty": "Aucune conversation pour le moment",
+      "empty": "Aucune conversation pour l'instant",
       "untitled": "Conversation sans titre",
       "editTitle": "Modifier le titre",
       "deleteConversation": "Supprimer la conversation",
@@ -41,12 +41,12 @@
       "archive": "Archiver",
       "settings": "Paramètres",
       "lastMessage": "Dernier message",
-      "noMessages": "Aucun message pour le moment",
-      "startTyping": "Commencez à taper pour démarrer la conversation",
+      "noMessages": "Aucun message pour l'instant",
+      "startTyping": "Commencez à taper pour lancer la conversation",
       "justNow": "À l'instant",
-      "minutesAgo": "{{count}} min",
-      "hoursAgo": "{{count}} h",
-      "daysAgo": "{{count}} j"
+      "minutesAgo": "{{count}}m",
+      "hoursAgo": "{{count}}h",
+      "daysAgo": "{{count}}d"
     },
     "message": {
       "send": "Envoyer",
@@ -72,8 +72,8 @@
       "added": "Participant ajouté"
     },
     "typing": {
-      "isTyping": "{{name}} est en train de taper...",
-      "areTyping": "{{names}} sont en train de taper...",
+      "isTyping": "{{name}} est en train d'écrire...",
+      "areTyping": "{{names}} sont en train d'écrire...",
       "generating": "Génération de la réponse..."
     },
     "actions": {
@@ -92,19 +92,19 @@
       "deleteFailed": "Échec de la suppression",
       "updateFailed": "Échec de la mise à jour",
       "networkError": "Erreur réseau. Veuillez vérifier votre connexion.",
-      "unauthorized": "Vous n'avez pas les autorisations nécessaires pour effectuer cette action",
+      "unauthorized": "Vous n'avez pas la permission d'effectuer cette action",
       "notFound": "Conversation introuvable",
       "generateAiFailed": "Échec de la génération de la réponse.",
       "addParticipantFailed": "Échec de l'ajout du participant.",
       "removeParticipantFailed": "Échec de la suppression du participant.",
-      "cannotRemoveLastCharacter": "Impossible de supprimer le dernier personnage de la conversation. Au moins un personnage ou un assistant doit rester.",
+      "cannotRemoveLastCharacter": "Impossible de supprimer le dernier personnage de la conversation. Au moins un personnage ou assistant doit rester.",
       "updateConversationFailed": "Échec de la mise à jour de la conversation.",
-      "reprocessNotAvailable": "Le retraitement n'est pas disponible sans un participant assistant.",
+      "reprocessNotAvailable": "La régénération n'est pas disponible sans un participant assistant.",
       "imageGenerationUnavailable": "La génération d'images n'est pas encore disponible.",
       "cloneAssistantUnavailable": "Le clonage d'assistant n'est pas encore disponible.",
       "promoteCharacterUnavailable": "La promotion de personnage n'est pas encore disponible.",
       "audioPlaybackUnavailable": "La lecture audio n'est pas encore disponible.",
-      "reviewFileUnavailable": "La revue de fichier n'est pas encore disponible.",
+      "reviewFileUnavailable": "L'examen des fichiers n'est pas encore disponible.",
       "suggestionFailed": "Échec de la génération de suggestion de réponse."
     },
     "success": {
@@ -123,20 +123,20 @@
       "participantNotFound": "Participant introuvable",
       "specificInstructionsLabel": "Instructions spécifiques",
       "specificInstructionsPlaceholder": "Ajoutez des détails qui devraient influencer les réponses pendant cette conversation",
-      "assumePersonaLabel": "Adopter la persona",
+      "assumePersonaLabel": "Assumer la persona",
       "changeVisualPersonaLabel": "Persona visuelle",
       "selectCharacterPlaceholder": "Sélectionnez un personnage",
       "loadingPersonas": "Chargement des personas...",
-      "savingConfigurationButton": "Sauvegarde en cours...",
+      "savingConfigurationButton": "Enregistrement en cours...",
       "saveConfigurationButton": "Enregistrer la configuration",
       "promotingButton": "Promotion en cours...",
-      "promoteToAssistantButton": "Promouvoir en assistant",
+      "promoteToAssistantButton": "Promouvoir en tant qu'assistant",
       "cloningButton": "Clonage en cours...",
       "cloneButton": "Cloner l'assistant",
       "errorSavingConfig": "Impossible d'enregistrer la configuration.",
       "errorCloningAssistant": "Impossible de cloner cet assistant.",
       "errorPromotingCharacter": "Impossible de promouvoir ce personnage.",
-      "savingConfiguration": "Sauvegarde de la configuration...",
+      "savingConfiguration": "Enregistrement de la configuration...",
       "loadingConversation": "Chargement de la conversation...",
       "addParticipantsPrompt": "Ajoutez des participants pour commencer la conversation.",
       "confirmDeleteTitle": "Confirmer la suppression",
@@ -192,7 +192,7 @@
       "selectFromGalleryButton": "Sélectionner dans la galerie",
       "removeBgImageButton": "Supprimer l'image",
       "noImageSelected": "Aucun arrière-plan sélectionné",
-      "autoBackgroundInfo": "Lorsque cette option est activée, l'image de couverture du personnage sera utilisée comme arrière-plan pour les conversations en tête-à-tête.",
+      "autoBackgroundInfo": "Lorsqu'il est activé, l'image de couverture du personnage sera utilisée comme arrière-plan pour les conversations individuelles.",
       "errorLoadingGallery": "Impossible de charger les images de la galerie.",
       "galleryButton": "Ouvrir la galerie",
       "imageGalleryTitle": "Galerie de chat",
@@ -203,7 +203,7 @@
         "unlisted": "Non répertoriée",
         "public": "Publique",
         "publicWarning": "Cette conversation sera visible par tous et découvrable dans les listes publiques.",
-        "unlistedWarning": "Cette conversation peut être consultée par toute personne possédant le lien, mais n'apparaîtra pas dans les listes publiques."
+        "unlistedWarning": "Cette conversation sera accessible par toute personne disposant du lien, mais n'apparaîtra pas dans les listes publiques."
       }
     },
     "common": {
@@ -217,7 +217,7 @@
       "denied": "Refusé",
       "deleting": "Suppression en cours...",
       "processing": "Traitement en cours...",
-      "saving": "Sauvegarde en cours...",
+      "saving": "Enregistrement en cours...",
       "unknown": "Inconnu"
     },
     "displayAvatarParticipants": {
@@ -231,24 +231,24 @@
       "transcriptionFailedError": "Échec de la transcription.",
       "transcriptionServiceError": "Erreur du service de transcription.",
       "micAccessError": "Accès au microphone refusé.",
-      "placeholderProcessingAudio": "Traitement audio...",
+      "placeholderProcessingAudio": "Traitement de l'audio...",
       "placeholderRecording": "Enregistrement...",
-      "placeholderSending": "Envoi...",
+      "placeholderSending": "Envoi en cours...",
       "placeholderWaiting": "Attente de la réponse...",
       "placeholderDefault": "Tapez un message...",
       "configureUser": "Configurer {{name}}",
       "you": "Vous",
-      "actionsMenuTitle": "Autres actions",
+      "actionsMenuTitle": "Plus d'actions",
       "generateImageAction": "Générer une image",
       "suggestReplyAction": "Suggérer une réponse",
-      "generatingSuggestion": "Génération de suggestion...",
+      "generatingSuggestion": "Génération de la suggestion...",
       "micButtonStopRecordingTitle": "Arrêter l'enregistrement",
       "micButtonProcessingTitle": "Traitement...",
       "micButtonRecordTitle": "Enregistrer l'audio"
     },
     "messageItem": {
-      "generatingAudio": "Génération audio en cours...",
-      "playingAudio": "Lecture audio en cours...",
+      "generatingAudio": "Génération de l'audio...",
+      "playingAudio": "Lecture de l'audio...",
       "audioErrorPrefix": "Erreur audio",
       "playAudioCachedActionTitle": "Lire l'audio",
       "playAudioActionTitle": "Générer et lire l'audio",
@@ -261,8 +261,14 @@
       "filesToReviewTitle": "Fichiers à examiner :"
     },
     "chatActions": {
-      "actionConfirmedByUser": "L'utilisateur a confirmé l'action.",
-      "actionCancelledByUser": "L'utilisateur a annulé l'action."
+      "actionConfirmedByUser": "Action confirmée par l'utilisateur.",
+      "actionCancelledByUser": "Action annulée par l'utilisateur."
+    },
+    "memory": {
+      "active": "Mémoire active (mise à jour il y a {{timeAgo}})",
+      "activeTooltip": "L'historique de la conversation est automatiquement compressé pour sauvegarder le contexte. Les messages récents sont conservés en entier, les messages plus anciens sont résumés.",
+      "compressing": "Compactage de l'historique de la conversation...",
+      "compressionComplete": "Historique compacté avec succès"
     },
     "addParticipantModal": {
       "title": "Ajouter un participant",
@@ -277,7 +283,7 @@
       "alreadyAddedMaybe": "(Tous les éléments disponibles sont déjà dans la conversation)",
       "noDescription": "Aucune description disponible",
       "addToConversationButtonTitle": "Ajouter à la conversation",
-      "maxParticipantsError": "{{max}} participants maximum autorisés",
+      "maxParticipantsError": "Maximum de {{max}} participants autorisés",
       "connectionError": "Erreur de connexion. Veuillez réessayer."
     }
   }

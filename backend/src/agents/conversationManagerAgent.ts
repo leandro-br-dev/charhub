@@ -3,13 +3,14 @@ import { callLLM, LLMRequest } from '../services/llm';
 import { Conversation, Message, ConversationParticipant } from '../generated/prisma';
 
 // System prompt for the conversation manager
-const CONVERSATION_MANAGER_PROMPT = `You are a conversation manager AI that determines which bots should respond to a user's message.
+const CONVERSATION_MANAGER_PROMPT = `You are a conversation manager AI that determines which bots should respond to a user's message and classifies content.
 
 Your task:
 1. Analyze the user's latest message
 2. Review recent conversation history (last few messages)
 3. Consider each bot's role, personality, and expertise
 4. Decide which bot(s) should respond
+5. Classify if the conversation content is NSFW (Not Safe For Work)
 
 Rules:
 - A character bot (actingCharacterId) is designed to entertain and can talk about anything
@@ -19,11 +20,27 @@ Rules:
 - If multiple bots have relevant expertise, they can both respond
 - At least 1 bot must always respond
 
-Output ONLY a JSON array of participant IDs that should respond, like:
-["participant-id-1", "participant-id-2"]
+NSFW Classification:
+- NSFW includes: sexual content, explicit romantic content, adult themes, violence, gore, drug use
+- SFW (Safe For Work) includes: general conversation, casual topics, normal roleplay without adult themes
 
-If only one bot should respond:
-["participant-id-1"]`;
+Output ONLY a JSON object with this exact structure:
+{
+  "participantIds": ["participant-id-1", "participant-id-2"],
+  "isNSFW": false
+}
+
+Example for single bot responding with safe content:
+{
+  "participantIds": ["participant-id-1"],
+  "isNSFW": false
+}
+
+Example for NSFW content:
+{
+  "participantIds": ["participant-id-1"],
+  "isNSFW": true
+}`;
 
 interface ParticipantInfo {
   id: string;
@@ -34,10 +51,15 @@ interface ParticipantInfo {
   contentScope?: string;
 }
 
+export interface ConversationManagerResult {
+  participantIds: string[];
+  isNSFW: boolean;
+}
+
 export class ConversationManagerAgent {
   /**
-   * Analyzes a message and determines which bots should respond
-   * @returns Array of participant IDs that should respond
+   * Analyzes a message and determines which bots should respond and if content is NSFW
+   * @returns Object with participant IDs and NSFW flag
    */
   async execute(
     conversation: Conversation & {
@@ -49,7 +71,7 @@ export class ConversationManagerAgent {
       messages: Message[];
     },
     latestMessage: Message
-  ): Promise<string[]> {
+  ): Promise<ConversationManagerResult> {
     logger.info(
       { conversationId: conversation.id, messageId: latestMessage.id },
       'Executing ConversationManagerAgent'
@@ -62,13 +84,20 @@ export class ConversationManagerAgent {
 
     if (botParticipants.length === 0) {
       logger.warn({ conversationId: conversation.id }, 'No bot participants found');
-      return [];
+      return { participantIds: [], isNSFW: false };
     }
 
-    // If only one bot, it always responds
+    // If only one bot, it always responds (analyze content for NSFW anyway)
     if (botParticipants.length === 1) {
-      logger.debug('Only one bot participant, auto-selecting');
-      return [botParticipants[0].id];
+      logger.debug('Only one bot participant, checking NSFW status');
+
+      // Quick NSFW check for single bot case
+      const isNSFW = await this.checkContentNSFW(conversation, latestMessage);
+
+      return {
+        participantIds: [botParticipants[0].id],
+        isNSFW
+      };
     }
 
     // Build participant context
@@ -170,15 +199,15 @@ Which bot(s) should respond? Output only the JSON array of participant IDs.`;
         'Cleaned LLM response'
       );
 
-      const selectedParticipants = JSON.parse(cleanedResponse) as string[];
+      const result = JSON.parse(cleanedResponse) as ConversationManagerResult;
 
       logger.debug(
-        { conversationId: conversation.id, selectedParticipants },
-        'Parsed participant IDs'
+        { conversationId: conversation.id, result },
+        'Parsed conversation manager result'
       );
 
       // Validate that returned IDs are valid
-      const validIds = selectedParticipants.filter(id =>
+      const validIds = result.participantIds.filter(id =>
         botParticipants.some(p => p.id === id)
       );
 
@@ -187,22 +216,75 @@ Which bot(s) should respond? Output only the JSON array of participant IDs.`;
           { conversationId: conversation.id, response: cleanedResponse, availableIds: botParticipants.map(p => p.id) },
           'LLM returned no valid participants, defaulting to first bot'
         );
-        return [botParticipants[0].id];
+        return {
+          participantIds: [botParticipants[0].id],
+          isNSFW: result.isNSFW || false
+        };
       }
 
       logger.info(
-        { conversationId: conversation.id, selectedCount: validIds.length, validIds },
-        'ConversationManagerAgent selected participants'
+        { conversationId: conversation.id, selectedCount: validIds.length, validIds, isNSFW: result.isNSFW },
+        'ConversationManagerAgent selected participants and classified content'
       );
 
-      return validIds;
+      return {
+        participantIds: validIds,
+        isNSFW: result.isNSFW || false
+      };
     } catch (error) {
       logger.error(
         { error, conversationId: conversation.id, errorMessage: error instanceof Error ? error.message : String(error), errorStack: error instanceof Error ? error.stack : undefined },
         'Error in ConversationManagerAgent, defaulting to first bot'
       );
-      // Fallback: return first bot
-      return [botParticipants[0].id];
+      // Fallback: return first bot with safe assumption
+      return {
+        participantIds: [botParticipants[0].id],
+        isNSFW: false
+      };
+    }
+  }
+
+  /**
+   * Quick NSFW check for content
+   */
+  private async checkContentNSFW(
+    conversation: Conversation & { messages: Message[] },
+    latestMessage: Message
+  ): Promise<boolean> {
+    try {
+      // Get recent messages for context
+      const recentMessages = conversation.messages.slice(-5);
+      const conversationContext = recentMessages
+        .map(msg => msg.content)
+        .join('\n');
+
+      const nsfwCheckPrompt = `Analyze this conversation and determine if it contains NSFW content.
+
+NSFW includes: sexual content, explicit romantic content, adult themes, violence, gore, drug use.
+SFW includes: general conversation, casual topics, normal roleplay without adult themes.
+
+Recent conversation:
+${conversationContext}
+
+Latest message:
+${latestMessage.content}
+
+Respond with ONLY "true" if NSFW or "false" if SFW.`;
+
+      const llmRequest: LLMRequest = {
+        provider: 'gemini',
+        model: 'gemini-2.5-flash-lite',
+        systemPrompt: 'You are a content classifier. Respond only with "true" or "false".',
+        userPrompt: nsfwCheckPrompt,
+      };
+
+      const response = await callLLM(llmRequest);
+      const cleanedResponse = response.content.trim().toLowerCase();
+
+      return cleanedResponse.includes('true');
+    } catch (error) {
+      logger.error({ error }, 'Error checking NSFW status, defaulting to false');
+      return false;
     }
   }
 

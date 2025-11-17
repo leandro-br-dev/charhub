@@ -71,6 +71,12 @@ export class ResponseGenerationAgent {
       conversation.participants
     );
 
+    // Build context from full message history
+    // TODO: Re-enable memory compression after fixing context issues
+    const historyContext = formattedHistory
+      .map((entry) => `${entry.sender_name}: ${entry.content}`)
+      .join('\n');
+
     // Find the specific participant that should respond
     // If participantId is provided, use it; otherwise fall back to first bot
     const respondingParticipant = participantId
@@ -141,9 +147,7 @@ export class ResponseGenerationAgent {
       })
       .join('\n');
 
-    const historyContext = formattedHistory
-      .map((entry) => `${entry.sender_name}: ${entry.content}`)
-      .join('\n');
+    // historyContext is already built above using memory system
 
     // Extract story context from conversation settings if available
     let storyContext = '';

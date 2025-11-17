@@ -288,25 +288,87 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
 
         // Step 4: Use ConversationManagerAgent to determine which bots should respond
         const conversationManager = agentService.getConversationManagerAgent();
-        const respondingParticipantIds = await conversationManager.execute(
+        const managerResult = await conversationManager.execute(
           conversation,
           message
         );
+
+        const respondingParticipantIds = managerResult.participantIds;
+        const isNSFW = managerResult.isNSFW;
 
         logger.info(
           {
             conversationId: payload.conversationId,
             respondingBots: respondingParticipantIds.length,
+            isNSFW,
           },
-          'Bots selected to respond'
+          'Bots selected to respond and content classified'
         );
 
-        // Step 5: Immediately respond with list of bots that will respond
+        // Step 5: Estimate credit cost and verify user has enough balance
+        const { getCurrentBalance, hasEnoughCredits } = await import('../services/creditService');
+        const { prisma } = await import('../config/database');
+
+        const serviceType = isNSFW ? 'LLM_CHAT_NSFW' : 'LLM_CHAT_SAFE';
+
+        // Estimate ~1000 tokens per AI response (500 input + 500 output)
+        const estimatedTokensPerBot = 1000;
+        const totalEstimatedTokens = estimatedTokensPerBot * respondingParticipantIds.length;
+
+        // Get service cost configuration
+        const serviceCost = await prisma.serviceCreditCost.findUnique({
+          where: { serviceIdentifier: serviceType },
+        });
+
+        const creditsPerThousandTokens = serviceCost?.creditsPerUnit || (isNSFW ? 3 : 2);
+        const estimatedCreditCost = Math.ceil((totalEstimatedTokens / 1000) * creditsPerThousandTokens);
+
+        // Check if user has enough credits
+        const balance = await getCurrentBalance(user.id);
+        const hasCredits = await hasEnoughCredits(user.id, estimatedCreditCost);
+
+        if (!hasCredits) {
+          // Insufficient credits - return error to user
+          if (typeof callback === 'function') {
+            callback({
+              success: false,
+              error: 'insufficient_credits',
+              message: `Créditos insuficientes. Necessário: ${estimatedCreditCost}, Atual: ${Math.floor(balance)}`,
+              required: estimatedCreditCost,
+              current: Math.floor(balance),
+            });
+          }
+
+          logger.warn(
+            {
+              userId: user.id,
+              conversationId: payload.conversationId,
+              required: estimatedCreditCost,
+              current: balance,
+            },
+            'Insufficient credits for chat message'
+          );
+          return; // Stop processing
+        }
+
+        logger.info(
+          {
+            userId: user.id,
+            balance,
+            estimatedCost: estimatedCreditCost,
+            isNSFW,
+            respondingBots: respondingParticipantIds.length,
+          },
+          'Credit check passed for chat message'
+        );
+
+        // Step 6: Immediately respond with list of bots that will respond
         if (typeof callback === 'function') {
           callback({
             success: true,
             data: serialized,
             respondingBots: respondingParticipantIds,
+            estimatedCreditCost, // Send cost estimate to frontend
           });
         }
 
@@ -317,12 +379,15 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         if (isQueuesEnabled()) {
           // Use queue system if enabled
           const preferredLanguage = socket.data.preferredLanguage;
+          const costPerBot = estimatedCreditCost / respondingParticipantIds.length;
           for (const participantId of respondingParticipantIds) {
             await queueAIResponse({
               conversationId: payload.conversationId,
               participantId,
               lastMessageId: message.id,
               preferredLanguage,
+              estimatedCreditCost: costPerBot,
+              isNSFW,
             });
           }
         } else {
@@ -333,11 +398,48 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
           );
 
           const { sendAIMessage } = await import('../services/assistantService');
+          const costPerBot = estimatedCreditCost / respondingParticipantIds.length;
 
           for (const participantId of respondingParticipantIds) {
             try {
               const preferredLanguage = socket.data.preferredLanguage;
-              const aiMessage = await sendAIMessage(payload.conversationId, participantId, preferredLanguage);
+              const aiMessage = await sendAIMessage(
+                payload.conversationId,
+                participantId,
+                preferredLanguage,
+                costPerBot,
+                isNSFW
+              );
+
+              // Charge credits for this bot's response
+              if (costPerBot > 0) {
+                try {
+                  const { createTransaction } = await import('../services/creditService');
+                  await createTransaction(
+                    user.id,
+                    'CONSUMPTION',
+                    -costPerBot,
+                    `Chat message (${isNSFW ? 'NSFW' : 'SFW'})`,
+                    undefined,
+                    undefined
+                  );
+
+                  logger.info(
+                    {
+                      userId: user.id,
+                      creditCost: costPerBot,
+                      isNSFW,
+                      messageId: aiMessage.id,
+                    },
+                    'Credits charged for AI response'
+                  );
+                } catch (creditError) {
+                  logger.error(
+                    { error: creditError, userId: user.id },
+                    'Failed to charge credits (continuing anyway)'
+                  );
+                }
+              }
 
               // Broadcast the AI response to the room
               io.to(room).emit('message_received', serializeMessage(aiMessage));

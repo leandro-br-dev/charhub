@@ -173,7 +173,7 @@ export function NavigationRail({
           subscriptionService.getStatus(),
         ]);
         setCredits(creditsData);
-        setPlanName(subscriptionData.plan.name);
+        setPlanName(subscriptionData.plan?.name || 'Free');
       } catch (error) {
         console.error('[NavigationRail] Failed to load user data:', error);
       }

@@ -125,7 +125,7 @@
       "specificInstructionsPlaceholder": "Adicione detalhes que devem influenciar as respostas durante esta conversa",
       "assumePersonaLabel": "Assumir persona",
       "changeVisualPersonaLabel": "Persona visual",
-      "selectCharacterPlaceholder": "Selecionar personagem",
+      "selectCharacterPlaceholder": "Selecione um personagem",
       "loadingPersonas": "Carregando personas...",
       "savingConfigurationButton": "Salvando...",
       "saveConfigurationButton": "Salvar configuração",
@@ -140,10 +140,10 @@
       "loadingConversation": "Carregando conversa...",
       "addParticipantsPrompt": "Adicione participantes para iniciar a conversa.",
       "confirmDeleteTitle": "Confirmar Exclusão",
-      "confirmDeleteMessage": "Você tem certeza que deseja excluir esta mensagem?",
-      "confirmReprocessTitle": "Confirmar Regeneração",
-      "confirmReprocessUserMessage": "Você tem certeza que deseja regenerar a resposta a esta mensagem?",
-      "confirmReprocessBotMessage": "Você tem certeza que deseja regenerar esta mensagem?",
+      "confirmDeleteMessage": "Tem certeza que deseja excluir esta mensagem?",
+      "confirmReprocessTitle": "Confirmar Reprocessamento",
+      "confirmReprocessUserMessage": "Tem certeza que deseja regenerar a resposta para esta mensagem?",
+      "confirmReprocessBotMessage": "Tem certeza que deseja regenerar esta mensagem?",
       "regenerateButton": "Regenerar",
       "conversationSettingsTitle": "Configurações da Conversa"
     },
@@ -172,7 +172,7 @@
       "scenarioGenreLabel": "Gênero do cenário",
       "genreNone": "Nenhum",
       "genreFantasy": "Fantasia",
-      "genreSciFi": "Ficção científica",
+      "genreSciFi": "Ficção Científica",
       "genreModern": "Moderno",
       "genreCustom": "Personalizado",
       "customGenreDetailsLabel": "Detalhes do cenário personalizado",
@@ -185,24 +185,24 @@
       "narrationDescriptive": "Descritivo",
       "narrationDialogue": "Focado em diálogo",
       "viewOptionsTitle": "Configurações visuais",
-      "bgTypeLabel": "Tipo de plano de fundo",
+      "bgTypeLabel": "Tipo de fundo",
       "bgTypeAuto": "Automático (capa do personagem)",
       "bgTypeTheme": "Usar tema",
       "bgTypeImage": "Usar imagem",
       "selectFromGalleryButton": "Selecionar da galeria",
       "removeBgImageButton": "Remover imagem",
-      "noImageSelected": "Nenhum plano de fundo selecionado",
-      "autoBackgroundInfo": "Quando ativado, a imagem de capa do personagem será usada como plano de fundo para conversas 1 a 1.",
+      "noImageSelected": "Nenhum fundo selecionado",
+      "autoBackgroundInfo": "Quando habilitado, a imagem de capa do personagem será usada como fundo para conversas 1 a 1.",
       "errorLoadingGallery": "Não foi possível carregar as imagens da galeria.",
       "galleryButton": "Abrir galeria",
-      "imageGalleryTitle": "Galeria de Chat",
+      "imageGalleryTitle": "Galeria do Chat",
       "visibility": {
         "sectionTitle": "Configurações de Privacidade",
         "label": "Visibilidade da conversa",
-        "private": "Privado",
-        "unlisted": "Não listado",
-        "public": "Público",
-        "publicWarning": "Esta conversa será visível para todos e descoberto em listas públicas.",
+        "private": "Privada",
+        "unlisted": "Não listada",
+        "public": "Pública",
+        "publicWarning": "Esta conversa será visível para todos e descoberta em listas públicas.",
         "unlistedWarning": "Esta conversa pode ser acessada por qualquer pessoa com o link, mas não aparecerá em listas públicas."
       }
     },
@@ -264,6 +264,12 @@
       "actionConfirmedByUser": "Ação confirmada pelo usuário.",
       "actionCancelledByUser": "Ação cancelada pelo usuário."
     },
+    "memory": {
+      "active": "Memória ativa (atualizada há {{timeAgo}})",
+      "activeTooltip": "O histórico da conversa está sendo compactado automaticamente para salvar contexto. Mensagens recentes são mantidas na íntegra, mensagens mais antigas são resumidas.",
+      "compressing": "Compactando histórico de conversa...",
+      "compressionComplete": "Histórico compactado com sucesso"
+    },
     "addParticipantModal": {
       "title": "Adicionar Participante",
       "charactersTab": "Personagens",
@@ -277,7 +283,7 @@
       "alreadyAddedMaybe": "(Todos os itens disponíveis já estão na conversa)",
       "noDescription": "Nenhuma descrição disponível",
       "addToConversationButtonTitle": "Adicionar à conversa",
-      "maxParticipantsError": "Máximo de {{max}} participantes permitido",
+      "maxParticipantsError": "Máximo de {{max}} participantes permitidos",
       "connectionError": "Erro de conexão. Por favor, tente novamente."
     }
   }

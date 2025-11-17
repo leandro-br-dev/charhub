@@ -264,6 +264,12 @@
       "actionConfirmedByUser": "User confirmed action.",
       "actionCancelledByUser": "User cancelled action."
     },
+    "memory": {
+      "active": "Memory active (updated {{timeAgo}})",
+      "activeTooltip": "Conversation history is being automatically compressed to save context. Recent messages are kept in full, older messages are summarized.",
+      "compressing": "Compacting conversation history...",
+      "compressionComplete": "History compacted successfully"
+    },
     "addParticipantModal": {
       "title": "Add Participant",
       "charactersTab": "Characters",

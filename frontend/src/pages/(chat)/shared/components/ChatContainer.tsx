@@ -210,7 +210,10 @@ const ChatContainer = () => {
   }, [processedParticipants]);
 
   const assistantParticipantId = useMemo(() => {
-    return conversation?.participants.find((participant) => participant.actingAssistantId)?.id;
+    // Find first bot participant (assistant or character)
+    return conversation?.participants.find(
+      (participant) => participant.actingAssistantId || participant.actingCharacterId
+    )?.id;
   }, [conversation]);
 
   const socketState = useChatSocket({
@@ -428,9 +431,42 @@ const ChatContainer = () => {
         return;
       }
 
-      await handleGenerateAI(assistantParticipantId);
+      if (!conversationId) {
+        console.error('[ChatContainer] No conversationId available');
+        return;
+      }
+
+      try {
+        // Find the message to get its content (if it's a user message)
+        const messages = messagesQuery.data?.items || [];
+        const targetMessage = messages.find(m => m.id === messageId);
+
+        if (!targetMessage) {
+          console.error('[ChatContainer] Message not found for reprocessing:', messageId);
+          setManualError('Message not found');
+          return;
+        }
+
+        // Delete the message (this will trigger deletion of subsequent messages in the backend)
+        await handleDeleteMessage(messageId);
+
+        // If it was a user message, resend it to trigger a new AI response
+        if (isUserMessage) {
+          await handleSendMessage(targetMessage.content);
+        } else {
+          // If it was a bot message, just generate a new AI response
+          await handleGenerateAI(assistantParticipantId);
+        }
+      } catch (error) {
+        console.error('[ChatContainer] Error reprocessing message:', error);
+        setManualError(
+          t('errors.updateFailed', {
+            defaultValue: 'Failed to regenerate message.',
+          })
+        );
+      }
     },
-    [assistantParticipantId, handleGenerateAI, t]
+    [assistantParticipantId, conversationId, messagesQuery.data, handleDeleteMessage, handleSendMessage, handleGenerateAI, t]
   );
 
   const handleSendConfirmation = useCallback(

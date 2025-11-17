@@ -576,6 +576,7 @@ const MessageItem = memo(
                   {!confirmationRequest && <ActionButtons />}
                 </div>
                 {!isSent &&
+                  showActions &&
                   typeof creditsConsumed === "number" &&
                   creditsConsumed > 0 && (
                     <span

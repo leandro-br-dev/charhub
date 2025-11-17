@@ -2,6 +2,7 @@ import { logger } from '../../config/logger';
 import { registerTestWorker } from './testWorker';
 import { registerUsageProcessingWorker } from './usageProcessingWorker';
 import { registerCreditsMonthlyWorker } from './creditsMonthlyWorker';
+import { registerMemoryCompressionWorker } from './memoryCompressionWorker';
 
 /**
  * Initialize all queue workers
@@ -17,6 +18,9 @@ export function initializeWorkers(): void {
     // Register credits system workers
     registerUsageProcessingWorker();
     registerCreditsMonthlyWorker();
+
+    // Register memory compression worker
+    registerMemoryCompressionWorker();
   } catch (error) {
     logger.error({ error }, 'Failed to register workers (queues disabled or Redis unavailable)');
     return;

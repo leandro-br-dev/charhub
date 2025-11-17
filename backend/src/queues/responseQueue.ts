@@ -14,6 +14,8 @@ export interface ResponseJobData {
   participantId: string;
   lastMessageId: string;
   preferredLanguage?: string;
+  estimatedCreditCost?: number;
+  isNSFW?: boolean;
 }
 
 // Queue name
@@ -113,13 +115,50 @@ function ensureInitialized() {
         throw new Error(`Participant ${participantId} has no acting bot`);
       }
 
+      // Add credit cost to metadata if provided
+      const metadata = job.data.estimatedCreditCost
+        ? { creditCost: job.data.estimatedCreditCost, isNSFW: job.data.isNSFW || false }
+        : undefined;
+
       // Save the AI message
       const message = await messageService.createMessage({
         conversationId,
         senderId,
         senderType,
         content,
+        metadata,
       });
+
+      // Charge credits if cost was estimated
+      if (job.data.estimatedCreditCost && job.data.estimatedCreditCost > 0) {
+        try {
+          const { createTransaction } = await import('../services/creditService');
+          await createTransaction(
+            conversation.userId,
+            'CONSUMPTION',
+            -job.data.estimatedCreditCost,
+            `Chat message (${job.data.isNSFW ? 'NSFW' : 'SFW'})`,
+            undefined, // relatedUsageLogId
+            undefined  // relatedPlanId
+          );
+
+          logger.info(
+            {
+              jobId: job.id,
+              userId: conversation.userId,
+              creditCost: job.data.estimatedCreditCost,
+              isNSFW: job.data.isNSFW,
+            },
+            'Credits charged for AI response'
+          );
+        } catch (creditError) {
+          logger.error(
+            { error: creditError, jobId: job.id, userId: conversation.userId },
+            'Failed to charge credits (continuing anyway)'
+          );
+          // Don't fail the job if credit charging fails
+        }
+      }
 
       logger.info(
         { jobId: job.id, conversationId, messageId: message.id },

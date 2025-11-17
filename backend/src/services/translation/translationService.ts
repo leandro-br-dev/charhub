@@ -271,7 +271,6 @@ export class TranslationService {
           characterCount: request.originalText.length,
           sourceVersion: request.sourceVersion || 1,
           status: TranslationStatus.ACTIVE,
-          updatedAt: new Date(),
         },
       });
 

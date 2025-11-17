@@ -205,14 +205,33 @@ export async function deleteMessage(
       throw Object.assign(new Error('Message not found or you do not have permission to delete it'), { statusCode: 404 });
     }
 
-    // Delete message
-    await prisma.message.delete({
-      where: { id: messageId },
+    // Delete the message and all subsequent messages (for regeneration)
+    // First, get all messages after this one (by timestamp)
+    const subsequentMessages = await prisma.message.findMany({
+      where: {
+        conversationId,
+        timestamp: {
+          gte: message.timestamp,
+        },
+      },
+      select: { id: true },
     });
 
-    logger.info({ messageId, conversationId }, 'Message deleted successfully');
+    // Delete all messages (target + subsequent)
+    const deletedCount = await prisma.message.deleteMany({
+      where: {
+        id: {
+          in: subsequentMessages.map(m => m.id),
+        },
+      },
+    });
 
-    return { success: true };
+    logger.info(
+      { messageId, conversationId, deletedCount: deletedCount.count },
+      'Message and subsequent messages deleted successfully'
+    );
+
+    return { success: true, deletedCount: deletedCount.count };
   } catch (error) {
     logger.error({ error, messageId }, 'Error deleting message');
     throw error;

@@ -231,7 +231,7 @@ const MessageList: React.FC<MessageListProps> = ({
           if (msg.senderType !== SenderType.USER) {
             imageContentData = checkAndParseImageContent(msg.content);
           }
-          const creditsConsumedForThisMessage = (msg as any).credits_consumed_for_message;
+          const creditsConsumedForThisMessage = (msg as any).metadata?.creditCost || (msg as any).credits_consumed_for_message;
           const isLastMessage = index === messages.length - 1;
           const isThisMessagePlaying = playingAudioState?.messageId === msg.id && !!playingAudioState?.audioDataUrl;
           const isThisMessageLoadingAudio = playingAudioState?.messageId === msg.id && playingAudioState?.isLoading;

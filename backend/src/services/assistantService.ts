@@ -371,7 +371,9 @@ export async function isAssistantOwner(
 export async function sendAIMessage(
   conversationId: string,
   participantId: string,
-  preferredLanguage?: string
+  preferredLanguage?: string,
+  estimatedCreditCost?: number,
+  isNSFW?: boolean
 ): Promise<any> {
   try {
     const agent = agentService.getResponseGenerationAgent();
@@ -446,11 +448,17 @@ export async function sendAIMessage(
       });
     }
 
+    // Add credit cost to metadata if provided
+    const metadata = estimatedCreditCost
+      ? { creditCost: estimatedCreditCost, isNSFW: isNSFW || false }
+      : undefined;
+
     const message = await messageService.createMessage({
       conversationId,
       senderId,
       senderType,
       content,
+      metadata,
     });
 
     logger.info(
