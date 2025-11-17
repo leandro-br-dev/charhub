@@ -437,24 +437,40 @@ const ChatContainer = () => {
       }
 
       try {
-        // Find the message to get its content (if it's a user message)
         const messages = messagesQuery.data?.items || [];
-        const targetMessage = messages.find(m => m.id === messageId);
-
-        if (!targetMessage) {
-          console.error('[ChatContainer] Message not found for reprocessing:', messageId);
-          setManualError('Message not found');
-          return;
-        }
-
-        // Delete the message (this will trigger deletion of subsequent messages in the backend)
-        await handleDeleteMessage(messageId);
-
-        // If it was a user message, resend it to trigger a new AI response
+        
         if (isUserMessage) {
-          await handleSendMessage(targetMessage.content);
+          // For user messages: delete subsequent messages and regenerate AI response
+          const messageIndex = messages.findIndex(m => m.id === messageId);
+          if (messageIndex === -1) {
+            console.error('[ChatContainer] User message not found for reprocessing:', messageId);
+            setManualError('Message not found');
+            return;
+          }
+
+          // Find the first message after the user's message to delete
+          const subsequentMessage = messages[messageIndex + 1];
+          if (subsequentMessage) {
+            // This will cascade-delete all messages after this point
+            await handleDeleteMessage(subsequentMessage.id);
+          }
+          
+          // Now, trigger a new AI response based on the original context
+          await handleGenerateAI(assistantParticipantId);
+
         } else {
-          // If it was a bot message, just generate a new AI response
+          // For bot messages: delete the message itself and all subsequent, then regenerate
+          const targetMessage = messages.find(m => m.id === messageId);
+          if (!targetMessage) {
+            console.error('[ChatContainer] Bot message not found for reprocessing:', messageId);
+            setManualError('Message not found');
+            return;
+          }
+          
+          // This will cascade-delete the bot message and everything after it
+          await handleDeleteMessage(messageId);
+          
+          // Trigger a new AI response
           await handleGenerateAI(assistantParticipantId);
         }
       } catch (error) {
@@ -466,7 +482,7 @@ const ChatContainer = () => {
         );
       }
     },
-    [assistantParticipantId, conversationId, messagesQuery.data, handleDeleteMessage, handleSendMessage, handleGenerateAI, t]
+    [assistantParticipantId, conversationId, messagesQuery.data, handleDeleteMessage, handleGenerateAI, t]
   );
 
   const handleSendConfirmation = useCallback(
