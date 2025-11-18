@@ -38,7 +38,7 @@ Write-Host ""
 Write-Host "[*] Alternando para modo PRODUCTION..." -ForegroundColor Yellow
 try {
     & "$PSScriptRoot\switch-env.ps1" -Environment production
-    if ($LASTEXITCODE -ne 0) {
+    if (-not $?) {
         throw "Falha ao alternar para producao"
     }
     Write-Host "  [OK] Modo PRODUCTION ativado" -ForegroundColor Green
