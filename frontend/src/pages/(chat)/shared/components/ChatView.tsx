@@ -162,11 +162,11 @@ const ChatView: React.FC<any> = ({
       return null;
     }
     console.log('[ChatView] Resolving background:', backgroundData);
-    if (backgroundData.type === 'image') {
+    if (backgroundData.type === 'image' || backgroundData.type === 'auto_character_cover') {
       console.log('[ChatView] Using background image:', backgroundData.value);
       return backgroundData.value;
     }
-    console.log('[ChatView] Background type is not image:', backgroundData.type);
+    console.log('[ChatView] Background type is not image or auto_character_cover:', backgroundData.type);
     return null;
   }, [backgroundData]);
 

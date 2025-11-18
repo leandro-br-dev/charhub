@@ -735,7 +735,8 @@ router.post('/:id/suggest-reply', requireAuth, async (req: Request, res: Respons
       ? recentMessages
           .reverse() // Show in chronological order
           .map((msg) => {
-            const senderName = msg.senderType === 'USER' ? 'You' : 'Character';
+            // Use "User" and "Character" to be clear for the LLM
+            const senderName = msg.senderType === 'USER' ? 'User' : 'Character';
             return `${senderName}: ${msg.content}`;
           })
           .join('\n')
@@ -746,12 +747,19 @@ router.post('/:id/suggest-reply', requireAuth, async (req: Request, res: Respons
 
     // Determine the appropriate prompt based on whether there are messages
     const systemPrompt = hasMessages
-      ? `You are helping a user write their next message in a roleplay conversation. Suggest a natural, engaging reply that continues the story. Keep it concise (1-3 sentences). Match the tone and style of the conversation. Respond in ${userLanguage}.`
-      : `You are helping a user start a new conversation. Suggest a friendly, engaging opening message. Keep it concise (1-2 sentences). Respond in ${userLanguage}.`;
+      ? `You are the User. Your task is to generate the User's next reply in a roleplay conversation.
+- Analyze the provided conversation context.
+- Generate a natural, engaging, and concise reply (1-3 sentences) from the User's perspective.
+- IMPORTANT: Speak ONLY as the User. Do NOT generate a response for the Character.
+- Respond in ${userLanguage}.`
+      : `You are a user starting a new conversation. Your task is to generate a friendly, engaging opening message.
+- Keep it concise (1-2 sentences).
+- IMPORTANT: Speak ONLY as the user.
+- Respond in ${userLanguage}.`;
 
     const userPrompt = hasMessages
-      ? `Recent conversation:\n${context}\n\nSuggest the user's next reply:`
-      : `Suggest a friendly opening message to start a conversation:`;
+      ? `This is the conversation so far:\n${context}\n\nNow, generate the User's next reply:`
+      : `Generate a friendly opening message to start a conversation:`;
 
     // Generate suggestion using a fast, cheap model
     const suggestion = await callLLM({
@@ -759,7 +767,7 @@ router.post('/:id/suggest-reply', requireAuth, async (req: Request, res: Respons
       model: 'gemini-2.5-flash-lite',
       systemPrompt,
       userPrompt,
-      temperature: 0.9,
+      temperature: 0.8, // Slightly lower temperature for more focused responses
       maxTokens: 100,
     });
 

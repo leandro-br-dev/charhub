@@ -1,8 +1,29 @@
 # Production Docker Compose configuration
-# NO local PostgreSQL (uses Cloud SQL), minimal volumes, production-optimized
+# Uses local PostgreSQL, minimal volumes, production-optimized
 
 services:
-  # NO postgres service in production - uses Cloud SQL
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: charhub
+      POSTGRES_PASSWORD: charhub_prod_password # ATENÇÃO: Trocar por uma senha segura
+      POSTGRES_DB: charhub_prod
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-prod-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    ports:
+      # Exposto temporariamente para a migração de dados. Pode ser removido depois.
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U charhub -d charhub_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-net
 
   redis:
     image: redis:7-alpine
@@ -29,7 +50,7 @@ services:
     environment:
       - NODE_ENV=production
     env_file:
-      - ./backend/.env
+      - ./backend/.env.production
     volumes:
       # Only mount translations in production (pre-generated)
       - type: bind
@@ -40,6 +61,8 @@ services:
       - "3000"
     restart: unless-stopped
     depends_on:
+      postgres:
+        condition: service_healthy
       redis:
         condition: service_healthy
     healthcheck:
@@ -99,5 +122,7 @@ networks:
     driver: bridge
 
 volumes:
+  postgres-prod-data:
+    driver: local
   redis_data:
     driver: local

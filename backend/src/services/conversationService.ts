@@ -638,7 +638,7 @@ export async function listPublicConversations(filters: {
  */
 export async function resolveConversationBackground(
   conversationId: string
-): Promise<{ type: string; value: string | null }> {
+): Promise<{ type: string; value:string | null }> {
   try {
     logger.info({ conversationId }, 'Resolving conversation background');
 
@@ -647,6 +647,15 @@ export async function resolveConversationBackground(
       select: {
         id: true,
         settings: true,
+        participants: {
+          where: {
+            // Filter out user participants to count only bots/characters
+            userId: null,
+          },
+          select: {
+            actingCharacterId: true,
+          },
+        },
       },
     });
 
@@ -658,7 +667,7 @@ export async function resolveConversationBackground(
 
     const settings = conversation.settings as any;
 
-    // Manual override - user explicitly chose a background type
+    // 1. Check for manual override
     if (settings?.view?.background_type && settings.view.background_type !== 'auto') {
       logger.info({ type: settings.view.background_type }, 'Using manual background override');
       return {
@@ -667,7 +676,34 @@ export async function resolveConversationBackground(
       };
     }
 
-    // Default: no background
+    // 2. Automatic logic for 1-on-1 character chats
+    const characterParticipants = conversation.participants.filter(p => p.actingCharacterId);
+    if (characterParticipants.length === 1) {
+      const characterId = characterParticipants[0].actingCharacterId;
+      if (characterId) {
+        const character = await prisma.character.findUnique({
+          where: { id: characterId },
+          include: {
+            images: {
+              where: { type: 'COVER' },
+              take: 1,
+            },
+          },
+        });
+
+        const coverImageUrl = character?.images?.[0]?.url;
+        if (coverImageUrl) {
+          logger.info({ conversationId, characterId }, 'Applying automatic character cover background');
+          return {
+            type: 'auto_character_cover',
+            value: coverImageUrl,
+          };
+        }
+      }
+    }
+
+    // 3. Default: no background
+    logger.info({ conversationId }, 'Defaulting to no background');
     return {
       type: 'none',
       value: null,
