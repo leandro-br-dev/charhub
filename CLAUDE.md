@@ -213,6 +213,30 @@ import { useAuthRedirect } from '../shared/hooks';
 import { OAuthButton } from '../shared/components/OAuthButton';
 ```
 
+## Database Operations (Prisma)
+
+**CRITICAL: Manual Migration Management**
+
+- **NEVER use `prisma migrate dev` or automatic migration generation**
+- **ALL schema changes must be done manually:**
+  1. Edit `backend/prisma/schema.prisma` directly
+  2. Create migration SQL file manually in `backend/prisma/migrations/YYYYMMDDHHMMSS_description/migration.sql`
+  3. Write the exact SQL DDL commands (CREATE TABLE, ALTER TABLE, etc.)
+  4. Test migration inside Docker container: `docker compose exec backend npx prisma migrate deploy`
+  5. Verify with `docker compose exec backend npx prisma studio`
+
+- **Why manual migrations?**
+  - Automatic migrations can break existing data
+  - We need full control over production schema changes
+  - Manual SQL ensures we know exactly what changes to the database
+  - Prevents Prisma from making destructive changes
+
+- **Data Migration Scripts:**
+  - Create separate TypeScript scripts in `backend/src/scripts/` for data transformations
+  - Use Prisma Client to safely migrate existing data
+  - Add npm script to `backend/package.json` for easy execution
+  - Example: `backend/src/scripts/migrate-conversations-to-multiuser.ts`
+
 ## Operational Notes
 
 - Tunnels: each environment needs its own credential JSON in `cloudflared/config/<env>/`. Update `ENV_SUFFIX` accordingly.

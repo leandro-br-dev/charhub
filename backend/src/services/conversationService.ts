@@ -20,13 +20,40 @@ import { updateParticipantSchema } from '../validators/conversation.validator';
  */
 
 // Include options for conversation queries
-const conversationInclude = {
+const conversationInclude: any = {
   owner: {
     select: {
       id: true,
       displayName: true,
       avatarUrl: true,
     },
+  },
+  conversationOwner: {
+    select: {
+      id: true,
+      displayName: true,
+      avatarUrl: true,
+    },
+  },
+  members: {
+    where: {
+      isActive: true,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          username: true,
+          displayName: true,
+          avatarUrl: true,
+          preferredLanguage: true,
+        },
+      },
+    },
+    orderBy: [
+      { role: 'asc' },
+      { joinedAt: 'asc' },
+    ],
   },
   participants: {
     include: {
@@ -70,11 +97,11 @@ const conversationInclude = {
   },
   messages: {
     orderBy: {
-      timestamp: 'asc' as const,
+      timestamp: 'asc',
     },
     take: 50, // Last 50 messages by default
   },
-} as const;
+};
 
 /**
  * Create a new conversation with participants
@@ -465,7 +492,24 @@ export async function updateParticipant(
 }
 
 export async function userHasAccessToConversation(conversationId: string, userId: string): Promise<boolean> {
-  const conversation = await prisma.conversation.findFirst({
+  const conversation = await prisma.conversation.findUnique({
+    where: { id: conversationId },
+    select: { id: true, isMultiUser: true, userId: true, ownerUserId: true },
+  });
+
+  if (!conversation) return false;
+
+  // Check multi-user membership
+  if (conversation.isMultiUser) {
+    const membership = await prisma.userConversationMembership.findUnique({
+      where: { conversationId_userId: { conversationId, userId } },
+      select: { isActive: true }
+    });
+    return membership?.isActive || false;
+  }
+
+  // Legacy single-user: check ownership or participant
+  const hasAccess = await prisma.conversation.findFirst({
     where: {
       id: conversationId,
       OR: [
@@ -476,7 +520,75 @@ export async function userHasAccessToConversation(conversationId: string, userId
     select: { id: true },
   });
 
-  return Boolean(conversation);
+  return Boolean(hasAccess);
+}
+
+/**
+ * Get conversation members (multi-user aware)
+ */
+export async function getConversationMembers(conversationId: string) {
+  const conversation = await prisma.conversation.findUnique({
+    where: { id: conversationId },
+    select: { isMultiUser: true, userId: true, createdAt: true }
+  });
+
+  if (!conversation) {
+    throw new Error('Conversation not found');
+  }
+
+  if (conversation.isMultiUser) {
+    return await prisma.userConversationMembership.findMany({
+      where: {
+        conversationId,
+        isActive: true
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+            avatarUrl: true,
+            preferredLanguage: true
+          }
+        }
+      },
+      orderBy: [
+        { role: 'asc' },
+        { joinedAt: 'asc' }
+      ]
+    });
+  }
+
+  // Legacy: return single owner as "member"
+  const conv = await prisma.conversation.findUnique({
+    where: { id: conversationId },
+    include: {
+      owner: {
+        select: {
+          id: true,
+          username: true,
+          displayName: true,
+          avatarUrl: true,
+          preferredLanguage: true
+        }
+      }
+    }
+  });
+
+  return conv ? [{
+    id: 'legacy',
+    userId: conv.userId,
+    conversationId: conv.id,
+    role: 'OWNER' as const,
+    canWrite: true,
+    canInvite: true,
+    canModerate: true,
+    isActive: true,
+    joinedAt: conversation.createdAt,
+    invitedBy: null,
+    user: conv.owner
+  }] : [];
 }
 
 /**

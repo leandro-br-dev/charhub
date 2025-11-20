@@ -503,8 +503,8 @@ router.post(
       // Step 2: Use ConversationManagerAgent to determine context (SFW/NSFW)
       const { agentService } = await import('../../services/agentService');
       const conversationManager = agentService.getConversationManagerAgent();
-      const lastMessage = conversation.messages[conversation.messages.length - 1];
-      const managerResult = await conversationManager.execute(conversation, lastMessage);
+      const lastMessage = (conversation as any).messages[(conversation as any).messages.length - 1];
+      const managerResult = await conversationManager.execute(conversation as any, lastMessage);
       const { isNSFW } = managerResult;
 
       // Step 3: Estimate credit cost

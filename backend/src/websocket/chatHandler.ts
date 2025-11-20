@@ -7,6 +7,7 @@ import { findUserById } from '../services/userService';
 import * as conversationService from '../services/conversationService';
 import * as messageService from '../services/messageService';
 import { agentService } from '../services/agentService';
+import { presenceService } from '../services/presenceService';
 import { queueAIResponse, setupWebSocketBroadcast } from '../queues/responseQueue';
 import { isQueuesEnabled } from '../config/features';
 import type { AuthenticatedUser } from '../types';
@@ -174,17 +175,39 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         const room = getRoomName(payload.conversationId);
         await socket.join(room);
 
+        // Register user presence
+        const onlineUsers = presenceService.userJoined(
+          payload.conversationId,
+          user.id,
+          socket.id
+        );
+
         logger.debug(
-          { userId: user.id, conversationId: payload.conversationId },
+          { userId: user.id, conversationId: payload.conversationId, onlineUsers },
           'socket_joined_conversation'
         );
 
         socket.emit('conversation_joined', {
           conversationId: payload.conversationId,
+          onlineUsers,
         });
 
+        // Broadcast to other users that this user joined
+        socket.to(room).emit('user_joined', {
+          conversationId: payload.conversationId,
+          userId: user.id,
+          user: {
+            id: user.id,
+            displayName: user.displayName,
+            photo: user.photo,
+          },
+        });
+
+        // Broadcast updated presence to all members
+        presenceService.broadcastPresence(io, payload.conversationId);
+
         if (typeof callback === 'function') {
-          callback({ success: true });
+          callback({ success: true, onlineUsers });
         }
       } catch (error) {
         logger.warn(
@@ -205,7 +228,30 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
       try {
         const payload = joinConversationSchema.parse(rawPayload);
         const room = getRoomName(payload.conversationId);
+
+        // Remove user presence
+        const onlineUsers = presenceService.userLeft(
+          payload.conversationId,
+          user.id,
+          socket.id
+        );
+
+        // Leave the socket.io room
         await socket.leave(room);
+
+        // Broadcast to other users that this user left
+        socket.to(room).emit('user_left', {
+          conversationId: payload.conversationId,
+          userId: user.id,
+        });
+
+        // Broadcast updated presence to remaining members
+        presenceService.broadcastPresence(io, payload.conversationId);
+
+        logger.debug(
+          { userId: user.id, conversationId: payload.conversationId, onlineUsers },
+          'socket_left_conversation'
+        );
 
         if (typeof callback === 'function') {
           callback({ success: true });
@@ -225,13 +271,18 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         const payload = typingEventSchema.parse(rawPayload);
         await ensureConversationAccess(payload.conversationId, user.id);
 
-        const room = getRoomName(payload.conversationId);
-        socket.to(room).emit('typing_start', {
+        // Use presenceService to emit typing
+        presenceService.emitTyping(
+          io,
+          payload.conversationId,
+          user.id,
+          true
+        );
+
+        logger.debug({
           conversationId: payload.conversationId,
-          userId: user.id,
-          participantId: payload.participantId,
-          source: 'user',
-        });
+          userId: user.id
+        }, 'user_typing_start');
       } catch (error) {
         logger.debug({ error }, 'typing_start_ignored');
       }
@@ -242,13 +293,18 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         const payload = typingEventSchema.parse(rawPayload);
         await ensureConversationAccess(payload.conversationId, user.id);
 
-        const room = getRoomName(payload.conversationId);
-        socket.to(room).emit('typing_stop', {
+        // Use presenceService to emit typing stop
+        presenceService.emitTyping(
+          io,
+          payload.conversationId,
+          user.id,
+          false
+        );
+
+        logger.debug({
           conversationId: payload.conversationId,
-          userId: user.id,
-          participantId: payload.participantId,
-          source: 'user',
-        });
+          userId: user.id
+        }, 'user_typing_stop');
       } catch (error) {
         logger.debug({ error }, 'typing_stop_ignored');
       }
@@ -289,7 +345,7 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         // Step 4: Use ConversationManagerAgent to determine which bots should respond
         const conversationManager = agentService.getConversationManagerAgent();
         const managerResult = await conversationManager.execute(
-          conversation,
+          conversation as any,
           message
         );
 
@@ -512,6 +568,9 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         { userId: user.id, socketId: socket.id, reason },
         'socket_disconnected'
       );
+
+      // Clean up presence
+      presenceService.cleanupSocket(socket.id);
     });
   });
 

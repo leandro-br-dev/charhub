@@ -86,6 +86,11 @@ model User {
   conversations         Conversation[]            @relation("UserConversations")
   conversationParticipations ConversationParticipant[] @relation("UserParticipations")
 
+  // Multi-user chat relations
+  ownedConversations  Conversation[] @relation("ConversationOwner")
+  memberships         UserConversationMembership[] @relation("ConversationMemberships")
+  sentInvites         UserConversationMembership[] @relation("SentInvites")
+
   // Favorites
   favoriteCharacters FavoriteCharacter[] @relation("UserFavoriteCharacters")
 
@@ -473,12 +478,23 @@ model Conversation {
   userId String
   owner  User   @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
 
+  // Multi-user support
+  isMultiUser      Boolean @default(false)
+  maxUsers         Int     @default(1) // Limite de usuários humanos (1-4)
+  ownerUserId      String?
+  conversationOwner User?  @relation("ConversationOwner", fields: [ownerUserId], references: [id])
+  allowUserInvites Boolean @default(false) // Membros podem convidar?
+  requireApproval  Boolean @default(false) // Owner precisa aprovar joins?
+
   // Relations
   participants ConversationParticipant[]
   messages     Message[]
   memories     ConversationMemory[]
+  members      UserConversationMembership[]
 
   @@index([userId])
+  @@index([ownerUserId])
+  @@index([isMultiUser])
   @@index([lastMessageAt])
   @@index([projectId])
   @@index([storyId])
@@ -490,6 +506,41 @@ enum SenderType {
   CHARACTER
   ASSISTANT
   SYSTEM
+}
+
+// Membership roles for multi-user conversations
+enum MembershipRole {
+  OWNER      // Criador, controle total
+  MODERATOR  // Pode kick, mute, invite
+  MEMBER     // Pode enviar mensagens
+  VIEWER     // Read-only
+}
+
+// User membership in multi-user conversations
+model UserConversationMembership {
+  id             String         @id @default(uuid())
+  conversationId String
+  conversation   Conversation   @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User           @relation("ConversationMemberships", fields: [userId], references: [id], onDelete: Cascade)
+
+  // Role and permissions
+  role           MembershipRole @default(MEMBER)
+  canWrite       Boolean        @default(true)  // Pode enviar mensagens?
+  canInvite      Boolean        @default(false) // Pode convidar outros?
+  canModerate    Boolean        @default(false) // Pode kick/mute?
+
+  // Membership metadata
+  joinedAt       DateTime       @default(now())
+  invitedBy      String?
+  inviter        User?          @relation("SentInvites", fields: [invitedBy], references: [id])
+  isActive       Boolean        @default(true)  // false = kicked/left
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+  @@index([conversationId])
+  @@index([role])
+  @@index([isActive])
 }
 
 // ConversationParticipant represents an entity participating in a conversation
