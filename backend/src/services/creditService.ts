@@ -6,6 +6,7 @@ const prisma = new PrismaClient();
 // Credits configuration
 const DAILY_REWARD_CREDITS = 50;
 const DAILY_REWARD_PREMIUM_CREDITS = 100;
+const DAILY_FIRST_CHAT_REWARD_CREDITS = 25;
 
 /**
  * Get user's current credit balance
@@ -126,6 +127,89 @@ export async function claimDailyReward(userId: string): Promise<{ credits: numbe
   return {
     credits: rewardAmount,
     newBalance,
+  };
+}
+
+/**
+ * Check if daily reward has been claimed today.
+ * Returns the status and the time when the next claim is available.
+ */
+export async function getDailyRewardStatus(userId: string): Promise<{ claimed: boolean; canClaimAt: Date }> {
+  const today = startOfDay(new Date());
+  const tomorrow = startOfDay(new Date(today.getTime() + 24 * 60 * 60 * 1000));
+
+  const todayReward = await prisma.creditTransaction.findFirst({
+    where: {
+      userId,
+      transactionType: 'SYSTEM_REWARD',
+      notes: 'daily_login_reward',
+      timestamp: {
+        gte: today,
+      },
+    },
+  });
+
+  return {
+    claimed: !!todayReward,
+    canClaimAt: tomorrow,
+  };
+}
+
+/**
+ * Claim reward for the first new chat of the day.
+ */
+export async function claimFirstChatReward(userId: string): Promise<{ credits: number; newBalance: number } | null> {
+  const today = startOfDay(new Date());
+
+  const hasAlreadyClaimed = await prisma.creditTransaction.findFirst({
+    where: {
+      userId,
+      transactionType: 'SYSTEM_REWARD',
+      notes: 'daily_first_chat_reward',
+      timestamp: {
+        gte: today,
+      },
+    },
+  });
+
+  if (hasAlreadyClaimed) {
+    return null;
+  }
+
+  const { newBalance } = await createTransaction(
+    userId,
+    'SYSTEM_REWARD',
+    DAILY_FIRST_CHAT_REWARD_CREDITS,
+    'daily_first_chat_reward'
+  );
+
+  return {
+    credits: DAILY_FIRST_CHAT_REWARD_CREDITS,
+    newBalance,
+  };
+}
+
+/**
+ * Check if the first chat reward has been claimed today.
+ */
+export async function getFirstChatRewardStatus(userId: string): Promise<{ claimed: boolean; canClaimAt: Date }> {
+  const today = startOfDay(new Date());
+  const tomorrow = startOfDay(new Date(today.getTime() + 24 * 60 * 60 * 1000));
+
+  const todayReward = await prisma.creditTransaction.findFirst({
+    where: {
+      userId,
+      transactionType: 'SYSTEM_REWARD',
+      notes: 'daily_first_chat_reward',
+      timestamp: {
+        gte: today,
+      },
+    },
+  });
+
+  return {
+    claimed: !!todayReward,
+    canClaimAt: tomorrow,
   };
 }
 

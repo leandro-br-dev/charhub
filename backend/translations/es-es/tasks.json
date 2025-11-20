@@ -14,6 +14,13 @@
       "hours": "horas",
       "minutes": "minutos"
     },
+    "firstChatReward": {
+      "title": "Primera Conversación del Día",
+      "description": "Inicia una nueva conversación y gana una recompensa",
+      "claimed": "Reclamado",
+      "available": "Disponible",
+      "rewardGranted": "¡Recompensa por la primera conversación del día! Has ganado 25 créditos."
+    },
     "yourCredits": "Tus Créditos",
     "availableCredits": "Créditos Disponibles",
     "comingSoon": "Más tareas próximamente",

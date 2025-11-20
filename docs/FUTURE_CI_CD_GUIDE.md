@@ -1,15 +1,19 @@
-# Guia de Setup CI/CD - CharHub
+# Guia de Setup CI/CD - CharHub (FUTURO)
 
-Guia prático para configurar e usar CI/CD com GitHub Actions no CharHub.
+⚠️ **ATENÇÃO**: Este documento descreve uma implementação **FUTURA** de CI/CD com GitHub Actions que ainda **NÃO ESTÁ IMPLEMENTADA**.
+
+Para o processo de deploy atual em produção, consulte [`docs/deploy/CURRENT_DEPLOYMENT.md`](./deploy/CURRENT_DEPLOYMENT.md).
+
+Guia prático para configurar e usar CI/CD com GitHub Actions no CharHub (quando implementado).
 
 ## Status Atual
 
-✅ **Workflows Criados:**
+❌ **NÃO IMPLEMENTADO** - Este é um guia para implementação futura
+
+**Quando implementado, teremos:**
 - `.github/workflows/backend-ci.yml` - CI do backend
 - `.github/workflows/frontend-ci.yml` - CI do frontend
 - `.github/dependabot.yml` - Atualizações automáticas de dependências
-
-🚧 **Próximos Passos:**
 - Deploy automático para staging
 - Deploy manual para produção
 

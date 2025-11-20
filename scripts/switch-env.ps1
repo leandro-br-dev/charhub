@@ -32,14 +32,12 @@ function Copy-EnvFile {
 # Alternar arquivos .env e docker-compose
 if ($Environment -eq "production") {
     Write-Host "[*] Copiando arquivos de producao..." -ForegroundColor Yellow
-    Copy-EnvFile "$projectRoot\.env.production" "$projectRoot\.env" "Root .env"
-    Copy-EnvFile "$projectRoot\backend\.env.production" "$projectRoot\backend\.env" "Backend .env"
+    Copy-EnvFile "$projectRoot\.env.production" "$projectRoot\.env" "Root .env"    
     Copy-EnvFile "$projectRoot\frontend\.env.production" "$projectRoot\frontend\.env" "Frontend .env"
     Copy-EnvFile "$projectRoot\docker-compose.production.yml" "$projectRoot\docker-compose.yml" "Docker Compose"
 } else {
     Write-Host "[*] Copiando arquivos de desenvolvimento..." -ForegroundColor Yellow
-    Copy-EnvFile "$projectRoot\.env.development" "$projectRoot\.env" "Root .env"
-    Copy-EnvFile "$projectRoot\backend\.env.development" "$projectRoot\backend\.env" "Backend .env"
+    Copy-EnvFile "$projectRoot\.env.development" "$projectRoot\.env" "Root .env"    
     Copy-EnvFile "$projectRoot\frontend\.env.development" "$projectRoot\frontend\.env" "Frontend .env"
     Copy-EnvFile "$projectRoot\docker-compose.development.yml" "$projectRoot\docker-compose.yml" "Docker Compose"
 }

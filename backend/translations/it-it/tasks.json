@@ -1,27 +1,34 @@
 {
   "description": "Daily tasks and rewards page for earning credits through daily activities.",
   "resources": {
-    "title": "Attività Giornaliere",
+    "title": "Attività giornaliere",
     "subtitle": "Completa le attività giornaliere per guadagnare crediti",
     "dailyReward": {
-      "title": "Ricompensa Login Giornaliero",
-      "description": "Richiedi la tua ricompensa giornaliera per il login e guadagna crediti",
+      "title": "Ricompensa accesso giornaliero",
+      "description": "Riscuoti la tua ricompensa per l'accesso giornaliero e guadagna crediti",
       "credits": "crediti",
-      "claimed": "Già richiesto oggi",
-      "claimButton": "Richiedi Ricompensa",
-      "claiming": "Richiesta in corso...",
+      "claimed": "Già riscattato oggi",
+      "claimButton": "Riscatta ricompensa",
+      "claiming": "Riscatto in corso...",
       "nextReward": "Prossima ricompensa disponibile tra",
       "hours": "ore",
       "minutes": "minuti"
     },
-    "yourCredits": "I Tuoi Crediti",
-    "availableCredits": "Crediti Disponibili",
+    "firstChatReward": {
+      "title": "Prima chat del giorno",
+      "description": "Inizia una nuova conversazione e guadagna una ricompensa",
+      "claimed": "Riscattato",
+      "available": "Disponibile",
+      "rewardGranted": "Ricompensa per la prima chat del giorno! Hai guadagnato 25 crediti."
+    },
+    "yourCredits": "I tuoi crediti",
+    "availableCredits": "Crediti disponibili",
     "comingSoon": "Altre attività in arrivo",
-    "comingSoonDescription": "Stiamo lavorando per aggiungere altri modi per guadagnare crediti attraverso attività giornaliere e obiettivi.",
+    "comingSoonDescription": "Stiamo lavorando per aggiungere più modi per guadagnare crediti attraverso attività giornaliere e obiettivi.",
     "messages": {
-      "rewardClaimed": "Ricompensa giornaliera richiesta con successo!",
-      "alreadyClaimed": "Hai già richiesto la tua ricompensa giornaliera oggi. Torna domani!",
-      "error": "Impossibile richiedere la ricompensa. Riprova."
+      "rewardClaimed": "Ricompensa giornaliera riscattata con successo!",
+      "alreadyClaimed": "Hai già riscattato la tua ricompensa giornaliera oggi. Torna domani!",
+      "error": "Impossibile riscattare la ricompensa. Riprova."
     }
   }
 }

@@ -4,6 +4,8 @@ import { logger } from '../../config/logger';
 import {
   getCurrentBalance,
   claimDailyReward,
+  getDailyRewardStatus,
+  getFirstChatRewardStatus,
   getTransactionHistory,
   getUserCurrentPlan,
   hasEnoughCredits,
@@ -130,6 +132,46 @@ router.post('/daily-reward', requireAuth, async (req: Request, res: Response): P
       success: false,
       message: 'Failed to claim daily reward',
     });
+  }
+});
+
+/**
+ * GET /api/v1/credits/daily-reward/status
+ * Check if the daily reward has been claimed and when it can be claimed next
+ */
+router.get('/daily-reward/status', requireAuth, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.auth?.user?.id;
+    if (!userId) {
+      res.status(401).json({ success: false, message: 'Authentication required' });
+      return;
+    }
+
+    const status = await getDailyRewardStatus(userId);
+    res.json({ success: true, data: status });
+  } catch (error) {
+    logger.error({ error, userId: req.auth?.user?.id }, 'Error getting daily reward status');
+    res.status(500).json({ success: false, message: 'Failed to get daily reward status' });
+  }
+});
+
+/**
+ * GET /api/v1/credits/first-chat-reward/status
+ * Check if the first chat reward has been claimed and when it can be claimed next
+ */
+router.get('/first-chat-reward/status', requireAuth, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.auth?.user?.id;
+    if (!userId) {
+      res.status(401).json({ success: false, message: 'Authentication required' });
+      return;
+    }
+
+    const status = await getFirstChatRewardStatus(userId);
+    res.json({ success: true, data: status });
+  } catch (error) {
+    logger.error({ error, userId: req.auth?.user?.id }, 'Error getting first chat reward status');
+    res.status(500).json({ success: false, message: 'Failed to get first chat reward status' });
   }
 });
 

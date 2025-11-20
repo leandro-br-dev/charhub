@@ -12,6 +12,22 @@ echo "[entrypoint] Hot reload: $ENABLE_HOT_RELOAD"
 if [ "$RUN_MIGRATIONS" != "false" ]; then
   echo "[entrypoint] Running database migrations"
   npx prisma migrate deploy
+
+  # Run database seeding after migrations
+  echo "[entrypoint] Running database seed"
+  npm run db:seed || {
+    echo "[entrypoint] WARNING: Database seed failed (exit code $?)"
+    echo "[entrypoint] This may be expected if data already exists"
+  }
+
+  # Rebuild translations after seeding (tags may have changed)
+  if [ "$NODE_ENV" = "production" ]; then
+    echo "[entrypoint] Rebuilding translations after seed"
+    npm run build:translations || {
+      echo "[entrypoint] WARNING: Translation build failed (exit code $?)"
+      echo "[entrypoint] Continuing with existing translations"
+    }
+  fi
 else
   echo "[entrypoint] Skipping database migrations (RUN_MIGRATIONS=false)"
 fi

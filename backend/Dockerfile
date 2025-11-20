@@ -23,10 +23,13 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
 # Copy source code
 COPY . .
 
-# Generate translations and build TypeScript output (production only)
+# Build TypeScript output (production only)
 # Always create dist/ and translations/ directories (even if empty in dev)
+# Note: Translations are pre-generated and mounted as volume in production
+# to avoid needing API keys during build time
 RUN if [ "$NODE_ENV" = "production" ]; then \
-      npm run build:translations && npm run build; \
+      echo "Building TypeScript (translations will be mounted as volume)..."; \
+      npm run build; \
     else \
       echo "Skipping build in development mode"; \
       mkdir -p dist translations; \
@@ -50,22 +53,22 @@ COPY package*.json ./
 
 # Install dependencies based on environment
 # Configure npm for network resilience before installation
+# NOTE: Installing ALL dependencies (including dev) in both environments
+# because we need tsx for seed and translation scripts that run at startup
 RUN npm config set fetch-retry-mintimeout 20000 && \
     npm config set fetch-retry-maxtimeout 120000 && \
     npm config set fetch-retries 5 && \
     echo "[DEBUG] NODE_ENV is set to: $NODE_ENV" && \
-    if [ "$NODE_ENV" = "development" ]; then \
-      echo "Installing all dependencies (dev mode)"; \
-      npm ci; \
-    else \
-      echo "Installing production dependencies only"; \
-      npm ci --omit dev; \
-    fi && \
+    echo "Installing all dependencies (including dev tools needed for seed/translations)"; \
+    npm ci --include=dev && \
     npm cache clean --force
 
 # Copy files from builder stage
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
+
+# Copy source code (needed for seed and translation scripts that run at startup)
+COPY --from=builder /app/src ./src
 
 # Copy built artifacts from builder
 # Production: dist/ has compiled code, translations/ has all languages
@@ -74,16 +77,15 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/translations ./translations
 
 # Copy generated Prisma Client (needed at runtime)
-# Copy to multiple locations:
-# - src/generated: for development with ts-node
+# Already copied as part of src/ above, but ensure it's in all expected locations:
+# - src/generated: for seed/translation scripts with tsx
 # - dist/generated: for compiled JS (from dist/services imports ../generated)
 # - generated: fallback location
 COPY --from=builder /app/src/generated ./src/generated
 COPY --from=builder /app/src/generated ./dist/generated
 COPY --from=builder /app/src/generated ./generated
 
-# Note: In development, src/ will be mounted via Docker volume
-# No need to create it here - Docker will mount it automatically
+# Note: In development, src/ will be mounted via Docker volume which overrides the copied src/
 
 # Create non-root user for security (used in production)
 RUN addgroup -g 1001 -S nodejs && \

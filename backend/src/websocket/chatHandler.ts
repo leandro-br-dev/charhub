@@ -375,7 +375,33 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         // Step 6: Emit typing indicators for all responding bots
         emitTypingForBots(io, payload.conversationId, respondingParticipantIds, true);
 
-        // Step 7: Queue AI response generation for each bot
+        // Step 7: Check if memory compression is needed (async, non-blocking)
+        if (isQueuesEnabled()) {
+          const { memoryService } = await import('../services/memoryService');
+          const { queueManager, QueueName } = await import('../queues');
+
+          // Check if compression is needed (don't await, let it run in background)
+          memoryService.shouldCompressMemory(payload.conversationId).then(async (shouldCompress) => {
+            if (shouldCompress) {
+              logger.info({ conversationId: payload.conversationId }, 'Context limit reached, queuing memory compression');
+
+              await queueManager.addJob(
+                QueueName.MEMORY_COMPRESSION,
+                'compress-memory',
+                { conversationId: payload.conversationId }
+              );
+
+              // Notify user that compression is happening
+              io.to(room).emit('memory_compression_started', {
+                conversationId: payload.conversationId
+              });
+            }
+          }).catch((error) => {
+            logger.error({ error, conversationId: payload.conversationId }, 'Failed to check/queue memory compression');
+          });
+        }
+
+        // Step 8: Queue AI response generation for each bot
         if (isQueuesEnabled()) {
           // Use queue system if enabled
           const preferredLanguage = socket.data.preferredLanguage;

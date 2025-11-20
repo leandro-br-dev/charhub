@@ -14,10 +14,17 @@
       "hours": "horas",
       "minutes": "minutos"
     },
+    "firstChatReward": {
+      "title": "Primeira Conversa do Dia",
+      "description": "Inicie uma nova conversa e ganhe uma recompensa",
+      "claimed": "Resgatado",
+      "available": "Disponível",
+      "rewardGranted": "Recompensa da primeira conversa do dia! Você ganhou 25 créditos."
+    },
     "yourCredits": "Seus Créditos",
     "availableCredits": "Créditos Disponíveis",
     "comingSoon": "Mais tarefas em breve",
-    "comingSoonDescription": "Estamos trabalhando para adicionar mais formas de ganhar créditos através de tarefas diárias e conquistas.",
+    "comingSoonDescription": "Estamos trabalhando para adicionar mais maneiras de ganhar créditos através de tarefas diárias e conquistas.",
     "messages": {
       "rewardClaimed": "Recompensa diária resgatada com sucesso!",
       "alreadyClaimed": "Você já resgatou sua recompensa diária hoje. Volte amanhã!",

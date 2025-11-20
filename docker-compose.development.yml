@@ -4,10 +4,11 @@
 services:
   postgres:
     image: postgres:16-alpine
+    # Remove as variáveis fixas e usa a sintaxe de substituição
     environment:
-      POSTGRES_USER: charhub
-      POSTGRES_PASSWORD: charhub_dev_password
-      POSTGRES_DB: charhub_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -17,7 +18,8 @@ services:
       - "5432:5432"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U charhub -d charhub_db"]
+      # Opcional: também podemos tornar o healthcheck dinâmico
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -54,7 +56,7 @@ services:
       - CHOKIDAR_USEPOLLING=${BACKEND_ENABLE_HOT_RELOAD:-false}
       - CHOKIDAR_INTERVAL=${BACKEND_HOT_RELOAD_POLL_INTERVAL:-700}
     env_file:
-      - ./backend/.env
+      - ./.env
     volumes:
       - type: bind
         source: ./backend/translations

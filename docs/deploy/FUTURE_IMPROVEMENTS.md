@@ -1,6 +1,8 @@
 # CharHub - Melhorias Futuras de Deploy
 
-**Última atualização**: 2025-11-13
+⚠️ **ATENÇÃO**: Este documento descreve funcionalidades **NÃO IMPLEMENTADAS**. Para o estado atual do deploy, consulte [`CURRENT_DEPLOYMENT.md`](./CURRENT_DEPLOYMENT.md).
+
+**Última atualização**: 2025-11-20
 **Status**: 📋 Planejamento
 
 Este documento descreve melhorias planejadas para o processo de deploy do CharHub, organizadas por fases e prioridades.

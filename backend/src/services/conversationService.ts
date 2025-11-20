@@ -3,6 +3,7 @@ import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import { createMessage } from './messageService';
 import { decryptMessage } from './encryption';
+import { claimFirstChatReward } from '../services/creditService';
 import type {
   CreateConversationInput,
   UpdateConversationInput,
@@ -107,6 +108,14 @@ export async function createConversation(
       { conversationId: conversation.id, userId },
       'Conversation created successfully'
     );
+
+    // Award daily first chat reward
+    try {
+      await claimFirstChatReward(userId);
+      logger.info({ userId, conversationId: conversation.id }, 'Checked for and awarded first chat of the day reward.');
+    } catch (rewardError) {
+      logger.error({ error: rewardError, userId }, 'Failed to process first chat reward.');
+    }
 
     // If settings contains initialMessage, create it as the first message using the system narrator
     if (settings && typeof settings === 'object' && 'initialMessage' in settings && settings.initialMessage) {

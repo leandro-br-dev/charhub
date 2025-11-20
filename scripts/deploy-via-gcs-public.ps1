@@ -1,10 +1,5 @@
-# Script de deploy usando bucket publico temporario (mais simples e rapido)
+# Script de deploy usando bucket publico temporario (Otimizado e Corrigido)
 # Uso: .\scripts\deploy-via-gcs-public.ps1
-#
-# Este script automaticamente:
-# 1. Alterna para modo producao
-# 2. Faz o deploy
-# 3. Retorna para modo desenvolvimento (mesmo se houver erro)
 
 param(
     [string]$Zone = "us-central1-a",
@@ -67,16 +62,31 @@ $excludeDirs = @(
     ".idea",
     "*.log",
     ".env.development",
-    "secrets"
+    "secrets",
+    "old_project_reference",
+    "project_analyzer.py",
+    "project_context.log"
 )
 
 $excludeArgs = $excludeDirs | ForEach-Object { "--exclude=$_" }
-& tar -czf $tempFile $excludeArgs $projectName
+
+# Incluir arquivos ocultos (dot files) no tar
+# O tar do Windows precisa especificar explicitamente para incluir dot files
+& tar -czf $tempFile $excludeArgs --exclude=".git" $projectName
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "[!] Erro ao comprimir" -ForegroundColor Red
     Pop-Location
     exit 1
+}
+
+# Verificar se .env foi incluido
+Write-Host "  [i] Verificando se .env foi incluido..." -ForegroundColor Gray
+$tarContents = & tar -tzf $tempFile | Select-String "\.env$"
+if ($tarContents) {
+    Write-Host "  [OK] Arquivo .env incluido no pacote" -ForegroundColor Green
+} else {
+    Write-Host "  [!] AVISO: Arquivo .env nao foi encontrado no pacote!" -ForegroundColor Yellow
 }
 
 Pop-Location
@@ -94,7 +104,7 @@ if ($LASTEXITCODE -ne 0) {
     gsutil mb -p charhub-prod -l us-central1 gs://$Bucket 2>&1 | Out-Null
 }
 
-# Limpar arquivos antigos do bucket (evitar acumulo de arquivos de deploy antigos)
+# Limpar arquivos antigos do bucket
 Write-Host "  [i] Limpando arquivos antigos do bucket..." -ForegroundColor Gray
 $ErrorActionPreference = "Continue"
 gsutil -m rm gs://$Bucket/charhub-deploy-*.tar.gz 2>&1 | Out-Null
@@ -118,7 +128,7 @@ Remove-Item $tempFile -Force
 Write-Host ""
 Write-Host "[3/6] Tornando arquivo publico temporariamente..." -ForegroundColor Yellow
 
-# Tornar objeto publico usando iam (mais confiavel que acl)
+# Tornar objeto publico usando iam
 $ErrorActionPreference = "Continue"
 gsutil iam ch allUsers:objectViewer gs://$Bucket 2>&1 | Out-Null
 $ErrorActionPreference = "Stop"
@@ -150,22 +160,22 @@ Write-Host "[4/6] Baixando na VM e fazendo deploy..." -ForegroundColor Yellow
 
 # Criar script temporario local
 $deployScriptPath = Join-Path $env:TEMP "charhub-deploy-script.sh"
+
+# NOTA: Usamos crases (backticks) antes do $ em variaveis que sao do BASH (`$APP_DIR)
+# Variaveis do PowerShell ($publicUrl, $timestamp) ficam normais para serem substituidas.
 $deployScriptContent = @"
 #!/bin/bash
 set -e
 
-echo '[*] Verificando espaco em disco...'
-df -h /tmp
-df -h /home
+# Definicao de caminhos
+APP_DIR="/mnt/stateful_partition/charhub"
+BACKUP_ROOT="/mnt/stateful_partition/backups"
 
-echo '[*] Limpando /tmp (esta 100% cheio)...'
+echo '[*] LIMPEZA PREVIA: Garantindo espaco antes do download...'
 sudo rm -rf /tmp/* 2>/dev/null || true
-df -h /tmp
-echo '  [OK] /tmp limpo'
-
-echo '[*] Limpando arquivos antigos no home...'
 rm -rf ~/charhub-deploy.tar.gz 2>/dev/null || true
 rm -rf ~/charhub 2>/dev/null || true
+echo '  [OK] Espaco limpo'
 
 echo '[*] Baixando arquivo para home...'
 cd ~
@@ -179,189 +189,168 @@ fi
 echo '  [OK] Download concluido'
 ls -lh charhub-deploy.tar.gz
 
-echo '[*] Parando containers (se existirem)...'
-if [ -d /mnt/stateful_partition/charhub ]; then
-  cd /mnt/stateful_partition/charhub
-  sudo docker compose down 2>/dev/null || true
+echo '[*] Parando containers...'
+if [ -d "`$APP_DIR" ]; then
+  cd "`$APP_DIR"
+  if [ -f ".env" ]; then
+    sudo docker compose --env-file .env down 2>/dev/null || true
+  else
+    sudo docker compose down 2>/dev/null || true
+  fi
   cd ~
 fi
 
-echo '[*] Fazendo backup e removendo codigo anterior...'
-if [ -d /mnt/stateful_partition/charhub ]; then
-  # Backup
-  sudo cp -r /mnt/stateful_partition/charhub /home/charhub.backup.$timestamp
-  echo '  [OK] Backup criado em /home/charhub.backup.$timestamp'
+echo '[*] Gerenciamento de Backup Inteligente...'
+if [ -d "`$APP_DIR" ]; then
+  sudo mkdir -p "`$BACKUP_ROOT"
+  
+  # Variavel 'timestamp' vem do PowerShell, entao nao usamos crase nela
+  BACKUP_DEST="`$BACKUP_ROOT/charhub.backup.$timestamp"
+  echo "  [i] Criando backup em: \$BACKUP_DEST"
+  
+  sudo cp -r "`$APP_DIR" "\$BACKUP_DEST"
+  
+  echo "  [i] Rotacionando backups (mantendo os 3 ultimos)..."
+  cd "`$BACKUP_ROOT"
+  ls -dt charhub.backup.* 2>/dev/null | tail -n +4 | xargs -r sudo rm -rf
+  echo '  [OK] Backups antigos removidos'
 
-  # Remover completamente o diretorio antigo
-  sudo rm -rf /mnt/stateful_partition/charhub
-  echo '  [OK] Diretorio antigo removido'
+  sudo rm -rf "`$APP_DIR"
+  echo '  [OK] Diretorio da aplicacao antiga limpo'
 fi
 
-echo '[*] Extraindo arquivo...'
+echo '[*] Extraindo novo codigo...'
+cd ~
 tar -xzf charhub-deploy.tar.gz 2>/dev/null
 echo '  [OK] Arquivo extraido'
 
-echo '[*] Criando diretorio e copiando arquivos...'
-# Usar /mnt/stateful_partition (local correto para dados no COS)
-sudo mkdir -p /mnt/stateful_partition/charhub
-sudo cp -r charhub/* /mnt/stateful_partition/charhub/
+echo '[*] Instalando arquivos...'
+# O erro de mkdir acontecia aqui porque `$APP_DIR estava sendo resolvido pelo PowerShell como vazio
+sudo mkdir -p "`$APP_DIR"
 
-# Limpar arquivos temporarios
+# Copiar todos os arquivos incluindo dot files (arquivos ocultos como .env)
+# Usando shopt para habilitar dotglob temporariamente
+shopt -s dotglob
+sudo cp -r charhub/* "`$APP_DIR/"
+shopt -u dotglob
+
 rm -rf charhub charhub-deploy.tar.gz
-echo '  [OK] Codigo copiado para /mnt/stateful_partition/charhub'
+echo '  [OK] Arquivos temporarios removidos'
 
-echo '[*] Ajustando proprietario dos arquivos...'
-sudo chown -R chronos:chronos /mnt/stateful_partition/charhub
-echo '  [OK] Proprietario ajustado'
+# Verificar se .env foi copiado corretamente
+if [ ! -f "`$APP_DIR/.env" ]; then
+  echo '[!] ERRO CRITICO: Arquivo .env nao foi copiado para o diretorio da aplicacao!'
+  echo '[i] Listando arquivos dot no diretorio:'
+  ls -la "`$APP_DIR" | grep '^\.'
+  exit 1
+fi
+echo '  [OK] Arquivo .env confirmado no diretorio da aplicacao'
 
-echo '[*] Instalando docker-compose (se necessario)...'
-# Container-Optimized OS: quase tudo tem noexec, mas /var/lib/toolbox nao tem!
+echo '[*] Ajustando proprietario...'
+sudo chown -R chronos:chronos "`$APP_DIR"
+
+echo '[*] Configurando Docker Compose...'
 DOCKER_COMPOSE="/var/lib/toolbox/bin/docker-compose"
-
 if [ ! -f "`$DOCKER_COMPOSE" ]; then
-  echo '  [i] docker-compose nao encontrado, instalando em /var/lib/toolbox/bin...'
   sudo mkdir -p /var/lib/toolbox/bin
   sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64" -o "`$DOCKER_COMPOSE"
   sudo chmod +x "`$DOCKER_COMPOSE"
-  echo '  [OK] docker-compose instalado'
-else
-  echo '  [OK] docker-compose ja instalado'
 fi
 
-# Verificar se funciona
-if ! "`$DOCKER_COMPOSE" version &> /dev/null; then
-  echo '  [!] ERRO: docker-compose nao funciona'
-  exit 1
-fi
-
-echo '[*] Configurando ambiente Docker...'
-# Container-Optimized OS: /root e read-only, precisamos apontar DOCKER_CONFIG para local gravavel
 export DOCKER_CONFIG=/var/lib/docker/.docker
 sudo mkdir -p "`$DOCKER_CONFIG"
 
-echo '[*] Construindo imagens (isso pode demorar 5-10 minutos)...'
-cd /mnt/stateful_partition/charhub
-sudo DOCKER_CONFIG="`$DOCKER_CONFIG" "`$DOCKER_COMPOSE" build
+echo '[*] Limpeza do Docker...'
+sudo docker system prune -f > /dev/null 2>&1 || true
 
-echo '[*] Iniciando containers...'
-sudo DOCKER_CONFIG="`$DOCKER_CONFIG" "`$DOCKER_COMPOSE" up -d
+echo '[*] Construindo e Iniciando...'
+cd "`$APP_DIR"
 
-echo '[*] Aguardando containers iniciarem...'
+# Verificar se arquivo .env existe
+if [ ! -f ".env" ]; then
+  echo '[!] ERRO: Arquivo .env nao encontrado!'
+  ls -la
+  exit 1
+fi
+
+echo '  [i] Arquivo .env encontrado'
+
+# Build com variáveis de ambiente
+sudo DOCKER_CONFIG="`$DOCKER_CONFIG" "`$DOCKER_COMPOSE" --env-file .env build
+
+# Start com variáveis de ambiente
+sudo DOCKER_CONFIG="`$DOCKER_CONFIG" "`$DOCKER_COMPOSE" --env-file .env up -d
+
+echo '[*] Aguardando containers...'
 sleep 15
+sudo "`$DOCKER_COMPOSE" --env-file .env ps
 
-echo '[*] Verificando status...'
-sudo "`$DOCKER_COMPOSE" ps
+echo '[*] Migrations...'
+sudo "`$DOCKER_COMPOSE" --env-file .env exec -T backend npx prisma migrate deploy
 
-echo '[*] Aplicando migrations...'
-sudo "`$DOCKER_COMPOSE" exec -T backend npx prisma migrate deploy
-
-echo '[*] Verificando logs do backend...'
-sudo "`$DOCKER_COMPOSE" logs --tail=30 backend
-
-echo ''
-echo '[OK] Deploy concluido!'
+echo '[OK] Deploy finalizado!'
 "@
 
-# Salvar script localmente com encoding UTF-8 SEM BOM (essencial para bash)
+# Salvar script localmente
 $utf8NoBom = New-Object System.Text.UTF8Encoding $false
 [System.IO.File]::WriteAllText($deployScriptPath, $deployScriptContent, $utf8NoBom)
 
 $deploySuccess = $false
 
 try {
-    # Copiar script para VM (sem caminho vai para home do usuario automaticamente)
     Write-Host "  [i] Enviando script de deploy..." -ForegroundColor Gray
     gcloud compute scp $deployScriptPath ${VMName}:deploy.sh --zone=$Zone *> $null
 
-    if ($LASTEXITCODE -ne 0) {
-        throw "Erro ao copiar script para VM"
-    }
+    if ($LASTEXITCODE -ne 0) { throw "Erro ao copiar script para VM" }
 
-    # Executar script na VM (usando bash diretamente, nao depende de chmod +x)
-    Write-Host "  [i] Executando deploy na VM (isso pode levar varios minutos)..." -ForegroundColor Gray
+    Write-Host "  [i] Executando deploy na VM..." -ForegroundColor Gray
     gcloud compute ssh $VMName --zone=$Zone --command="bash deploy.sh"
 
-    if ($LASTEXITCODE -ne 0) {
-        throw "Deploy falhou"
-    }
+    if ($LASTEXITCODE -ne 0) { throw "Deploy falhou" }
 
     Write-Host "  [OK] Deploy concluido" -ForegroundColor Green
     $deploySuccess = $true
 }
 catch {
     Write-Host "  [!] Erro ao fazer deploy: $_" -ForegroundColor Red
-
-    # Retornar ao desenvolvimento imediatamente em caso de erro
+    
     if ($wasInDevelopment) {
         Write-Host ""
-        Write-Host "[!] Retornando ao modo desenvolvimento devido ao erro..." -ForegroundColor Yellow
-        try {
-            & "$PSScriptRoot\switch-env.ps1" -Environment development *> $null
-            Write-Host "  [OK] Modo DEVELOPMENT restaurado" -ForegroundColor Green
-        } catch {
-            Write-Host "  [!] Execute manualmente: .\scripts\switch-env.ps1 -Environment development" -ForegroundColor Red
-        }
+        Write-Host "[!] Retornando ao modo desenvolvimento..." -ForegroundColor Yellow
+        try { & "$PSScriptRoot\switch-env.ps1" -Environment development *> $null } catch {}
     }
-
-    # Remover arquivo publico mesmo com erro (garantir limpeza)
-    $ErrorActionPreference = "Continue"
+    
+    # Limpeza em caso de erro
     gsutil rm gs://$Bucket/charhub-deploy-$timestamp.tar.gz 2>&1 | Out-Null
-    $ErrorActionPreference = "Stop"
-
-    Write-Host ""
     exit 1
 }
 finally {
-    # Limpar script temporario local
-    if (Test-Path $deployScriptPath) {
-        Remove-Item $deployScriptPath -Force
-    }
+    if (Test-Path $deployScriptPath) { Remove-Item $deployScriptPath -Force }
 }
 
 Write-Host ""
 Write-Host "[5/6] Limpando Cloud Storage..." -ForegroundColor Yellow
-
-# Limpar sempre, mesmo se houve erro antes
+Write-Host "  [i] Removendo arquivo de deploy temporario..." -ForegroundColor Gray
 $ErrorActionPreference = "Continue"
 gsutil rm gs://$Bucket/charhub-deploy-$timestamp.tar.gz 2>&1 | Out-Null
 $ErrorActionPreference = "Stop"
-
-if ($LASTEXITCODE -eq 0) {
-    Write-Host "  [OK] Arquivo removido do Cloud Storage" -ForegroundColor Green
-} else {
-    Write-Host "  [i] Nenhum arquivo para limpar ou ja foi removido" -ForegroundColor Gray
-}
+Write-Host "  [OK] Arquivo de deploy removido (backups SQL preservados)" -ForegroundColor Green
 
 Write-Host ""
 Write-Host "[6/6] Retornando ao modo desenvolvimento..." -ForegroundColor Yellow
 
-# Sempre retornar ao desenvolvimento se estava nesse modo antes
 if ($wasInDevelopment) {
     try {
         & "$PSScriptRoot\switch-env.ps1" -Environment development
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "  [OK] Modo DEVELOPMENT restaurado" -ForegroundColor Green
-        } else {
-            Write-Host "  [!] AVISO: Falha ao voltar para desenvolvimento" -ForegroundColor Yellow
-            Write-Host "      Execute manualmente: .\scripts\switch-env.ps1 -Environment development" -ForegroundColor Yellow
-        }
+        Write-Host "  [OK] Modo DEVELOPMENT restaurado" -ForegroundColor Green
     } catch {
-        Write-Host "  [!] AVISO: Erro ao voltar para desenvolvimento: $_" -ForegroundColor Yellow
-        Write-Host "      Execute manualmente: .\scripts\switch-env.ps1 -Environment development" -ForegroundColor Yellow
+        Write-Host "  [!] Falha ao voltar para desenvolvimento manual necessario" -ForegroundColor Yellow
     }
 } else {
-    Write-Host "  [i] Mantendo modo PRODUCTION (ja estava neste modo antes)" -ForegroundColor Gray
+    Write-Host "  [i] Mantendo modo PRODUCTION" -ForegroundColor Gray
 }
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
 Write-Host "[OK] DEPLOY CONCLUIDO COM SUCESSO!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
-Write-Host ""
-Write-Host "[i] Proximos passos:" -ForegroundColor Cyan
-Write-Host "    1. Acesse: https://charhub.app" -ForegroundColor White
-Write-Host "    2. Teste login OAuth e funcionalidades" -ForegroundColor White
-Write-Host ""
-Write-Host "[i] Para ver logs em tempo real:" -ForegroundColor Cyan
-Write-Host "    gcloud compute ssh $VMName --zone=$Zone --command='cd /mnt/stateful_partition/charhub && sudo docker compose logs -f'" -ForegroundColor White
-Write-Host ""

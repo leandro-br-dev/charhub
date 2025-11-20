@@ -4,24 +4,31 @@
     "title": "Tägliche Aufgaben",
     "subtitle": "Erledige tägliche Aufgaben, um Credits zu verdienen",
     "dailyReward": {
-      "title": "Tägliche Belohnung für den Login",
-      "description": "Hol dir deine tägliche Login-Belohnung und verdiene Credits",
+      "title": "Tägliche Anmeldebelohnung",
+      "description": "Hole dir deine tägliche Anmeldebelohnung und verdiene Credits",
       "credits": "Credits",
       "claimed": "Heute bereits beansprucht",
-      "claimButton": "Belohnung abholen",
-      "claiming": "Wird abgeholt...",
+      "claimButton": "Belohnung erhalten",
+      "claiming": "Wird beansprucht...",
       "nextReward": "Nächste Belohnung verfügbar in",
       "hours": "Stunden",
       "minutes": "Minuten"
     },
+    "firstChatReward": {
+      "title": "Erste Unterhaltung des Tages",
+      "description": "Starte eine neue Unterhaltung und erhalte eine Belohnung",
+      "claimed": "Beansprucht",
+      "available": "Verfügbar",
+      "rewardGranted": "Belohnung für die erste Unterhaltung des Tages! Du hast 25 Credits erhalten."
+    },
     "yourCredits": "Deine Credits",
     "availableCredits": "Verfügbare Credits",
-    "comingSoon": "Weitere Aufgaben bald verfügbar",
+    "comingSoon": "Weitere Aufgaben folgen bald",
     "comingSoonDescription": "Wir arbeiten daran, weitere Möglichkeiten zum Verdienen von Credits durch tägliche Aufgaben und Erfolge hinzuzufügen.",
     "messages": {
-      "rewardClaimed": "Tägliche Belohnung erfolgreich abgeholt!",
-      "alreadyClaimed": "Du hast deine tägliche Belohnung heute bereits abgeholt. Komm morgen wieder!",
-      "error": "Belohnung konnte nicht abgeholt werden. Bitte versuche es erneut."
+      "rewardClaimed": "Tägliche Belohnung erfolgreich erhalten!",
+      "alreadyClaimed": "Du hast deine tägliche Belohnung heute bereits erhalten. Komm morgen wieder!",
+      "error": "Belohnung konnte nicht erhalten werden. Bitte versuche es erneut."
     }
   }
 }

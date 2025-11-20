@@ -2,7 +2,6 @@ import { logger } from '../config/logger';
 import { callLLM, LLMRequest } from '../services/llm';
 import {
   formatParticipantsForLLM,
-  formatConversationHistoryForLLM,
 } from '../utils/conversationFormatter';
 import { Conversation, Message, User } from '../generated/prisma';
 import { StyleGuideService } from './style-guides';
@@ -66,16 +65,11 @@ export class ResponseGenerationAgent {
     );
 
     const formattedParticipants = formatParticipantsForLLM(conversation.participants);
-    const formattedHistory = formatConversationHistoryForLLM(
-      conversation.messages,
-      conversation.participants
-    );
 
-    // Build context from full message history
-    // TODO: Re-enable memory compression after fixing context issues
-    const historyContext = formattedHistory
-      .map((entry) => `${entry.sender_name}: ${entry.content}`)
-      .join('\n');
+    // Build context using memory compression system
+    // This returns: Compressed history (30% of tokens) + Last 10 messages
+    const { memoryService } = await import('../services/memoryService');
+    const historyContext = await memoryService.buildContextWithMemory(conversation.id);
 
     // Find the specific participant that should respond
     // If participantId is provided, use it; otherwise fall back to first bot
@@ -119,7 +113,7 @@ export class ResponseGenerationAgent {
 
         return this.generateResponseWithoutCharacter(
           formattedParticipants,
-          formattedHistory,
+          historyContext,
           lastMessage,
           user,
           characterName,
@@ -215,7 +209,7 @@ export class ResponseGenerationAgent {
    */
   private async generateResponseWithoutCharacter(
     formattedParticipants: any[],
-    formattedHistory: any[],
+    historyContext: string,
     lastMessage: Message,
     user: User,
     assistantName: string,
@@ -224,10 +218,6 @@ export class ResponseGenerationAgent {
   ): Promise<string> {
     const participantsContext = formattedParticipants
       .map((p) => `- ${p.type}: ${p.name}`)
-      .join('\n');
-
-    const historyContext = formattedHistory
-      .map((entry) => `${entry.sender_name}: ${entry.content}`)
       .join('\n');
 
     const conversationContext = [

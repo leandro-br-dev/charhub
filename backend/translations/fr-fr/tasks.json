@@ -2,7 +2,7 @@
   "description": "Daily tasks and rewards page for earning credits through daily activities.",
   "resources": {
     "title": "Tâches quotidiennes",
-    "subtitle": "Accomplissez les tâches quotidiennes pour gagner des crédits",
+    "subtitle": "Accomplissez des tâches quotidiennes pour gagner des crédits",
     "dailyReward": {
       "title": "Récompense de connexion quotidienne",
       "description": "Réclamez votre récompense de connexion quotidienne et gagnez des crédits",
@@ -14,10 +14,17 @@
       "hours": "heures",
       "minutes": "minutes"
     },
+    "firstChatReward": {
+      "title": "Premier chat de la journée",
+      "description": "Démarrez une nouvelle conversation et gagnez une récompense",
+      "claimed": "Réclamé",
+      "available": "Disponible",
+      "rewardGranted": "Récompense du premier chat de la journée ! Vous avez gagné 25 crédits."
+    },
     "yourCredits": "Vos crédits",
     "availableCredits": "Crédits disponibles",
     "comingSoon": "Plus de tâches bientôt disponibles",
-    "comingSoonDescription": "Nous travaillons à l'ajout de nouvelles façons de gagner des crédits grâce à des tâches et des succès quotidiens.",
+    "comingSoonDescription": "Nous travaillons à l'ajout de nouvelles façons de gagner des crédits grâce à des tâches et des réalisations quotidiennes.",
     "messages": {
       "rewardClaimed": "Récompense quotidienne réclamée avec succès !",
       "alreadyClaimed": "Vous avez déjà réclamé votre récompense quotidienne aujourd'hui. Revenez demain !",

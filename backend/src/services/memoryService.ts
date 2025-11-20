@@ -2,10 +2,10 @@
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 
-// Constants
-const CONTEXT_LIMIT = 50; // Limite de mensagens antes de compactar
-const MESSAGES_TO_COMPRESS = 30; // Quantas mensagens compactar quando limite é atingido
-const RECENT_MESSAGES_TO_KEEP = 20; // Quantas mensagens recentes manter sem resumir
+// Constants - Token-based limits
+const MAX_CONTEXT_TOKENS = parseInt(process.env.MAX_CONTEXT_TOKENS || '8000', 10); // Total context window
+const MAX_COMPRESSED_TOKENS = Math.floor(MAX_CONTEXT_TOKENS * 0.30); // 30% for compressed history
+const RECENT_MESSAGES_COUNT = 10; // Keep last 10 messages uncompressed
 
 interface KeyEvent {
   timestamp: string;
@@ -22,36 +22,74 @@ interface GeneratedMemory {
 
 class MemoryService {
   /**
+   * Estima tokens em uma string (aproximação simples)
+   */
+  private estimateTokens(text: string): number {
+    // Estimativa: 1 token ≈ 4 caracteres (para inglês/português)
+    return Math.ceil(text.length / 4);
+  }
+
+  /**
+   * Calcula tokens totais das mensagens e do histórico compactado
+   */
+  async calculateContextTokens(conversationId: string): Promise<{
+    compressedTokens: number;
+    recentMessagesTokens: number;
+    totalTokens: number;
+    recentMessageCount: number;
+  }> {
+    // Buscar última memória (histórico compactado)
+    const lastMemory = await this.getLatestMemory(conversationId);
+
+    let compressedTokens = 0;
+    if (lastMemory) {
+      // Soma de todos os resumos
+      const allMemories = await this.getConversationMemories(conversationId);
+      compressedTokens = allMemories.reduce((sum, mem) => {
+        return sum + this.estimateTokens(mem.summary);
+      }, 0);
+    }
+
+    // Buscar mensagens recentes (não compactadas)
+    const recentMessages = await prisma.message.findMany({
+      where: {
+        conversationId,
+        ...(lastMemory ? { timestamp: { gt: lastMemory.createdAt } } : {})
+      },
+      orderBy: { timestamp: 'desc' },
+      select: { content: true }
+    });
+
+    const recentMessagesTokens = recentMessages.reduce((sum, msg) => {
+      return sum + this.estimateTokens(msg.content);
+    }, 0);
+
+    return {
+      compressedTokens,
+      recentMessagesTokens,
+      totalTokens: compressedTokens + recentMessagesTokens,
+      recentMessageCount: recentMessages.length
+    };
+  }
+
+  /**
    * Verifica se a conversa atingiu o limite de contexto e precisa de compactação
    */
   async shouldCompressMemory(conversationId: string): Promise<boolean> {
     try {
-      // Contar total de mensagens na conversa
-      const totalMessages = await prisma.message.count({
-        where: { conversationId }
-      });
+      const tokenStats = await this.calculateContextTokens(conversationId);
 
-      // Buscar última memória criada
-      const lastMemory = await prisma.conversationMemory.findFirst({
-        where: { conversationId },
-        orderBy: { createdAt: 'desc' }
-      });
+      logger.debug({
+        conversationId,
+        ...tokenStats,
+        maxTokens: MAX_CONTEXT_TOKENS
+      }, 'Context token stats');
 
-      // Se não tem memória, verifica se ultrapassou o limite
-      if (!lastMemory) {
-        return totalMessages >= CONTEXT_LIMIT;
-      }
-
-      // Contar mensagens criadas após a última compactação
-      const messagesAfterMemory = await prisma.message.count({
-        where: {
-          conversationId,
-          timestamp: { gt: lastMemory.createdAt }
-        }
-      });
-
-      // Precisa compactar se tem mais de CONTEXT_LIMIT mensagens novas
-      return messagesAfterMemory >= CONTEXT_LIMIT;
+      // Precisa compactar se:
+      // 1. Total de tokens ultrapassou o limite E
+      // 2. Tem mais de RECENT_MESSAGES_COUNT mensagens (para evitar compactar conversas muito pequenas)
+      return tokenStats.totalTokens >= MAX_CONTEXT_TOKENS &&
+             tokenStats.recentMessageCount > RECENT_MESSAGES_COUNT;
     } catch (error) {
       logger.error({ error, conversationId }, 'Error checking if should compress memory');
       return false;
@@ -60,6 +98,7 @@ class MemoryService {
 
   /**
    * Gera resumo compactado das mensagens
+   * Compacta TODAS as mensagens não compactadas, exceto as últimas RECENT_MESSAGES_COUNT
    */
   async generateMemory(conversationId: string): Promise<GeneratedMemory | null> {
     try {
@@ -69,20 +108,30 @@ class MemoryService {
         orderBy: { createdAt: 'desc' }
       });
 
-      // Buscar mensagens a serem resumidas (primeiras N mensagens não resumidas)
-      const messages = await prisma.message.findMany({
+      // Buscar TODAS as mensagens não compactadas
+      const allUncompressedMessages = await prisma.message.findMany({
         where: {
           conversationId,
           ...(lastMemory ? { timestamp: { gt: lastMemory.createdAt } } : {})
         },
-        orderBy: { timestamp: 'asc' },
-        take: MESSAGES_TO_COMPRESS
+        orderBy: { timestamp: 'asc' }
       });
 
-      if (messages.length === 0) {
-        logger.warn({ conversationId }, 'No messages to compress');
+      // Se tiver menos mensagens que o mínimo para manter, não compacta
+      if (allUncompressedMessages.length <= RECENT_MESSAGES_COUNT) {
+        logger.warn({ conversationId, messageCount: allUncompressedMessages.length }, 'Not enough messages to compress');
         return null;
       }
+
+      // Compacta todas as mensagens EXCETO as últimas RECENT_MESSAGES_COUNT
+      const messagesToCompress = allUncompressedMessages.slice(0, -RECENT_MESSAGES_COUNT);
+
+      if (messagesToCompress.length === 0) {
+        logger.warn({ conversationId }, 'No messages to compress after excluding recent ones');
+        return null;
+      }
+
+      const messages = messagesToCompress;
 
       // Buscar participantes e usuários para nomes
       const conversation = await prisma.conversation.findUnique({
@@ -128,19 +177,28 @@ class MemoryService {
       // Importação dinâmica para evitar circular dependency
       const { callLLM } = await import('./llm');
 
-      const systemPrompt = `You are a narrative memory assistant. Generate a structured summary of a roleplay conversation.
+      // Incluir resumo anterior se existir (para contexto)
+      let previousContext = '';
+      if (lastMemory) {
+        const allMemories = await this.getConversationMemories(conversationId);
+        previousContext = '\n\n[Previous Summary]:\n' + allMemories.map(m => m.summary).join('\n\n');
+      }
+
+      const systemPrompt = `You are a narrative memory assistant. Generate a VERY concise structured summary of a roleplay conversation.
+
+IMPORTANT: The summary must be compressed to use at most ${MAX_COMPRESSED_TOKENS} tokens (approximately ${MAX_COMPRESSED_TOKENS * 4} characters).
 
 Output a JSON object with:
-- summary: concise prose summary (3-5 sentences) of what happened
-- keyEvents: array of important events with:
+- summary: extremely concise prose summary (2-3 sentences MAX) of what happened
+- keyEvents: array of ONLY the most important events (max 5) with:
   - timestamp: ISO datetime
-  - description: what happened (1-2 sentences)
+  - description: what happened (1 sentence)
   - participants: array of participant names involved
   - importance: "high", "medium", or "low"
 
-Focus on story-critical information. Discard filler/small talk. Be concise.`;
+Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY concise.`;
 
-      const userPrompt = `Conversation to summarize:\n\n${conversationText}\n\nGenerate structured memory (respond with valid JSON only):`;
+      const userPrompt = `${previousContext}\n\nNew conversation to summarize:\n\n${conversationText}\n\nGenerate extremely concise structured memory (respond with valid JSON only):`;
 
       // Gerar resumo via LLM
       const result = await callLLM({
@@ -233,18 +291,27 @@ Focus on story-critical information. Discard filler/small talk. Be concise.`;
   /**
    * Constrói contexto completo: resumos + mensagens recentes
    * Este método é usado pelo sistema de geração de respostas
+   * Retorna: Histórico compactado (30% dos tokens) + Últimas 10 mensagens
    */
   async buildContextWithMemory(
     conversationId: string,
-    recentMessageLimit: number = RECENT_MESSAGES_TO_KEEP
+    recentMessageLimit: number = RECENT_MESSAGES_COUNT
   ): Promise<string> {
     try {
       // Buscar todas as memórias (resumos compactados)
       const memories = await this.getConversationMemories(conversationId);
 
-      // Buscar mensagens recentes (não resumidas)
+      // Buscar última memória para saber onde param as mensagens compactadas
+      const lastMemory = await this.getLatestMemory(conversationId);
+
+      // Buscar mensagens recentes (não compactadas)
+      // Se existe memória, busca apenas mensagens após a última compactação
+      // Caso contrário, busca as últimas N mensagens
       const recentMessages = await prisma.message.findMany({
-        where: { conversationId },
+        where: {
+          conversationId,
+          ...(lastMemory ? { timestamp: { gt: lastMemory.createdAt } } : {})
+        },
         orderBy: { timestamp: 'desc' },
         take: recentMessageLimit
       });
@@ -353,33 +420,41 @@ Focus on story-critical information. Discard filler/small talk. Be concise.`;
         return false;
       }
 
-      // Buscar IDs das mensagens resumidas
+      // Buscar IDs das mensagens resumidas (todas as que foram compactadas, exceto últimas RECENT_MESSAGES_COUNT)
       const lastMemory = await this.getLatestMemory(conversationId);
 
-      const messages = await prisma.message.findMany({
+      // Buscar todas as mensagens não compactadas
+      const allUncompressedMessages = await prisma.message.findMany({
         where: {
           conversationId,
           ...(lastMemory ? { timestamp: { gt: lastMemory.createdAt } } : {})
         },
         orderBy: { timestamp: 'asc' },
-        take: MESSAGES_TO_COMPRESS,
         select: { id: true }
       });
 
-      if (messages.length === 0) {
-        logger.warn({ conversationId }, 'No messages found for compression');
+      if (allUncompressedMessages.length <= RECENT_MESSAGES_COUNT) {
+        logger.warn({ conversationId, messageCount: allUncompressedMessages.length }, 'Not enough messages to compress');
         return false;
       }
 
-      const startMessageId = messages[0].id;
-      const endMessageId = messages[messages.length - 1].id;
+      // Pegar apenas as que foram compactadas (excluindo últimas RECENT_MESSAGES_COUNT)
+      const compressedMessages = allUncompressedMessages.slice(0, -RECENT_MESSAGES_COUNT);
+
+      if (compressedMessages.length === 0) {
+        logger.warn({ conversationId }, 'No messages to compress after excluding recent');
+        return false;
+      }
+
+      const startMessageId = compressedMessages[0].id;
+      const endMessageId = compressedMessages[compressedMessages.length - 1].id;
 
       // Salvar memória
       await this.saveMemory(conversationId, memory, startMessageId, endMessageId);
 
       logger.info({
         conversationId,
-        messagesCompressed: messages.length,
+        messagesCompressed: compressedMessages.length,
         summaryLength: memory.summary.length,
         keyEventsCount: memory.keyEvents.length
       }, 'Memory compression completed successfully');
@@ -393,4 +468,8 @@ Focus on story-critical information. Discard filler/small talk. Be concise.`;
 }
 
 export const memoryService = new MemoryService();
-export { CONTEXT_LIMIT, MESSAGES_TO_COMPRESS, RECENT_MESSAGES_TO_KEEP };
+export {
+  MAX_CONTEXT_TOKENS,
+  MAX_COMPRESSED_TOKENS,
+  RECENT_MESSAGES_COUNT
+};

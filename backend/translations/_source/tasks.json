@@ -14,6 +14,13 @@
       "hours": "hours",
       "minutes": "minutes"
     },
+    "firstChatReward": {
+      "title": "First Chat of the Day",
+      "description": "Start a new conversation and earn a reward",
+      "claimed": "Claimed",
+      "available": "Available",
+      "rewardGranted": "First chat of the day reward! You've earned 25 credits."
+    },
     "yourCredits": "Your Credits",
     "availableCredits": "Available Credits",
     "comingSoon": "More tasks coming soon",

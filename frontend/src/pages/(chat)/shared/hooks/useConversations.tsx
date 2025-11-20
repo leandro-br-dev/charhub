@@ -1,5 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { chatService } from '../../../../services/chatService';
+import { creditService } from '../../../../services';
+import { useToast } from '../../../../contexts/ToastContext';
+import { useTranslation } from 'react-i18next';
 import type {
   Conversation,
   CreateConversationPayload,
@@ -46,6 +49,25 @@ export function useConversationQuery(conversationId: string | null) {
  */
 export function useConversationMutations() {
   const queryClient = useQueryClient();
+  const { addToast } = useToast();
+  const { t } = useTranslation(['tasks']);
+
+  const handleFirstChatReward = async () => {
+    const notified = sessionStorage.getItem('firstChatRewardNotified');
+    if (notified === 'true') {
+      return;
+    }
+
+    try {
+      const rewardStatus = await creditService.getFirstChatRewardStatus();
+      if (rewardStatus.claimed) {
+        addToast(t('tasks:firstChatReward.rewardGranted'), 'success');
+        sessionStorage.setItem('firstChatRewardNotified', 'true');
+      }
+    } catch (error) {
+      console.error('Failed to check first chat reward status:', error);
+    }
+  };
 
   const createMutation = useMutation({
     mutationFn: (payload: CreateConversationPayload) =>
@@ -53,6 +75,7 @@ export function useConversationMutations() {
     onSuccess: () => {
       // Invalidate conversations list
       queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
+      handleFirstChatReward();
     },
   });
 
@@ -61,6 +84,7 @@ export function useConversationMutations() {
       chatService.createConversationWithCharacter(characterId, title),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
+      handleFirstChatReward();
     },
   });
 
