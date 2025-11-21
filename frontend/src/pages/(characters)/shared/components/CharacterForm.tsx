@@ -20,6 +20,7 @@ export interface CharacterFormProps {
   form?: UseCharacterFormReturn;
 }
 
+// Force reload: Visual Style is now SELECT, Reference field added
 function renderContentTagLabel(tag: ContentTag, t: ReturnType<typeof useTranslation>['t']) {
   return t(`characters:contentTags.${tag}`);
 }

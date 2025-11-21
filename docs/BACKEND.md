@@ -90,6 +90,11 @@ See `backend/translations/README.md` for comprehensive translation workflow docu
 **Quick Commands:**
 
 ```bash
+# IMPORTANT: Run from backend/ directory
+# The script loads .env from root (../.env) which contains GEMINI_API_KEY
+
+cd backend
+
 # Build all translations (incremental - only updates changed files)
 npm run build:translations
 
@@ -105,10 +110,12 @@ npm run build:translations -- --offline
 
 **Translation Workflow:**
 
-1. Edit source files in `backend/translations/_source/*.json`
-2. Run `npm run build:translations`
-3. Translations are auto-generated for 11 languages (pt-BR, es-ES, fr-FR, de-DE, zh-CN, hi-IN, ar-SA, ru-RU, ja-JP, ko-KR, it-IT)
-4. Files are mounted to Docker container via volume
+1. Ensure `GEMINI_API_KEY` is configured in root `.env` file
+2. Edit source files in `backend/translations/_source/*.json`
+3. Run `npm run build:translations` (from backend/ directory)
+4. Translations are auto-generated for 11 languages using Gemini API (pt-BR, es-ES, fr-FR, de-DE, zh-CN, hi-IN, ar-SA, ru-RU, ja-JP, ko-KR, it-IT)
+5. Files are mounted to Docker container via volume
+6. Restart backend if needed: `docker compose restart backend`
 
 **Performance:** Incremental builds detect file changes via timestamps - only modified namespaces are retranslated (~0.5s vs ~90s full rebuild).
 ## API Overview
