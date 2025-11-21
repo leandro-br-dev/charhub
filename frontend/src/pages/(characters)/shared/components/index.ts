@@ -1,5 +1,4 @@
 export { CharacterCard } from './CharacterCard';
-export { CharacterForm } from './CharacterForm';
 export { CharacterFormLayout } from './CharacterFormLayout';
 export { CharacterAvatarUploader } from './CharacterAvatarUploader';
 export { TagsTab } from './TagsTab';
