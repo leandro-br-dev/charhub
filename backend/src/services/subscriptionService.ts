@@ -138,7 +138,7 @@ export async function cancelSubscription(
   await prisma.userPlan.update({
     where: { id: userPlan.id },
     data: {
-      status: 'CANCELED',
+      status: 'CANCELLED',
       cancelAtPeriodEnd: true,
       canceledAt: new Date(),
     },
@@ -159,7 +159,7 @@ export async function reactivateSubscription(userId: string): Promise<void> {
   const userPlan = await prisma.userPlan.findFirst({
     where: {
       userId,
-      status: 'CANCELED',
+      status: 'CANCELLED',
       cancelAtPeriodEnd: true,
       currentPeriodEnd: {
         gt: new Date(),
@@ -304,7 +304,7 @@ export async function processSubscriptionActivated(
   await prisma.$transaction(async (tx) => {
     await tx.userPlan.updateMany({
       where: { userId, status: 'ACTIVE' },
-      data: { status: 'CANCELED' },
+      data: { status: 'CANCELLED' },
     });
 
     const now = new Date();

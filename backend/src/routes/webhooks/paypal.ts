@@ -121,7 +121,7 @@ async function handleSubscriptionUpdated(subscription: any): Promise<void> {
   if (subscription.status === 'ACTIVE') {
     updates.status = 'ACTIVE';
   } else if (subscription.status === 'CANCELLED') {
-    updates.status = 'CANCELED';
+    updates.status = 'CANCELLED';
     updates.canceledAt = new Date();
   } else if (subscription.status === 'SUSPENDED') {
     updates.status = 'PAYMENT_FAILED';
@@ -154,7 +154,7 @@ async function handleSubscriptionCancelled(subscription: any): Promise<void> {
   await prisma.userPlan.update({
     where: { id: userPlan.id },
     data: {
-      status: 'CANCELED',
+      status: 'CANCELLED',
       canceledAt: new Date(),
     },
   });

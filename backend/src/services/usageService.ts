@@ -1,4 +1,4 @@
-import { PrismaClient, ServiceType } from '../generated/prisma';
+import { PrismaClient } from '../generated/prisma';
 import { createTransaction } from './creditService';
 
 const prisma = new PrismaClient();
@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 interface UsageMetrics {
   inputTokens?: number;
   outputTokens?: number;
-  characterCount?: number;
-  imageCount?: number;
-  metadata?: Record<string, any>;
+  charactersProcessed?: number;
+  imagesProcessed?: number;
+  additionalMetadata?: Record<string, any>;
 }
 
 /**
@@ -17,7 +17,7 @@ interface UsageMetrics {
  */
 export async function logServiceUsage(
   userId: string,
-  serviceType: ServiceType,
+  serviceType: string,
   metrics: UsageMetrics
 ): Promise<any> {
   const usageLog = await prisma.usageLog.create({
@@ -26,9 +26,9 @@ export async function logServiceUsage(
       serviceType,
       inputTokens: metrics.inputTokens,
       outputTokens: metrics.outputTokens,
-      characterCount: metrics.characterCount,
-      imageCount: metrics.imageCount,
-      metadata: metrics.metadata,
+      charactersProcessed: metrics.charactersProcessed,
+      imagesProcessed: metrics.imagesProcessed,
+      additionalMetadata: metrics.additionalMetadata,
       processed: false,
     },
   });
@@ -146,8 +146,8 @@ export async function processUsageLog(usageLogId: string): Promise<void> {
           processed: true,
           processedAt: new Date(),
           creditsConsumed: 0,
-          metadata: {
-            ...(usageLog.metadata as object),
+          additionalMetadata: {
+            ...(usageLog.additionalMetadata as object),
             error: 'insufficient_credits',
           },
         },
@@ -194,8 +194,8 @@ function calculateCredits(usageLog: any, serviceCost: any): number {
     }
 
     case 'STT_DEFAULT': {
-      // Credits per minute (metadata should contain duration)
-      const durationMinutes = (usageLog.metadata as any)?.durationMinutes || 1;
+      // Credits per minute (additionalMetadata should contain duration)
+      const durationMinutes = (usageLog.additionalMetadata as any)?.durationMinutes || 1;
       return Math.ceil(durationMinutes * creditsPerUnit);
     }
 
@@ -262,7 +262,7 @@ export async function getServiceCosts(): Promise<any[]> {
  * Used to show users cost preview before they commit
  */
 export async function estimateServiceCost(
-  serviceType: ServiceType,
+  serviceType: string,
   metrics: UsageMetrics
 ): Promise<number> {
   const serviceCost = await prisma.serviceCreditCost.findUnique({
@@ -278,9 +278,9 @@ export async function estimateServiceCost(
     serviceType,
     inputTokens: metrics.inputTokens,
     outputTokens: metrics.outputTokens,
-    characterCount: metrics.characterCount,
-    imageCount: metrics.imageCount,
-    metadata: metrics.metadata,
+    charactersProcessed: metrics.charactersProcessed,
+    imagesProcessed: metrics.imagesProcessed,
+    additionalMetadata: metrics.additionalMetadata,
   };
 
   return calculateCredits(tempLog, serviceCost);

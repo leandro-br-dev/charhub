@@ -15,7 +15,6 @@ import {
   getServiceCosts,
   estimateServiceCost,
 } from '../../services/usageService';
-import { ServiceType } from '../../generated/prisma';
 
 const router = Router();
 
@@ -212,12 +211,12 @@ router.post('/estimate-cost', requireAuth, async (req: Request, res: Response): 
       return;
     }
 
-    const estimatedCost = await estimateServiceCost(serviceType as ServiceType, {
+    const estimatedCost = await estimateServiceCost(serviceType, {
       inputTokens,
       outputTokens,
-      characterCount,
-      imageCount,
-      metadata,
+      charactersProcessed: characterCount,
+      imagesProcessed: imageCount,
+      additionalMetadata: metadata,
     });
 
     res.json({

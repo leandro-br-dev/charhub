@@ -771,25 +771,30 @@ model ServiceCreditCost {
 
 // Usage logs for tracking service consumption
 model UsageLog {
-  id              String      @id @default(uuid())
-  userId          String
-  user            User        @relation("UserUsageLogs", fields: [userId], references: [id], onDelete: Cascade)
-  serviceType     ServiceType
-  inputTokens     Int?
-  outputTokens    Int?
-  characterCount  Int?
-  imageCount      Int?        @default(1)
-  creditsConsumed Float?
-  processed       Boolean     @default(false)
-  processedAt     DateTime?
-  metadata        Json?
-  timestamp       DateTime    @default(now())
+  id                  String      @id @default(uuid())
+  userId              String
+  user                User        @relation("UserUsageLogs", fields: [userId], references: [id], onDelete: Cascade)
+  conversationId      String?
+  serviceType         String      // Service identifier (e.g., "llm_chat_safe", "image_generation")
+  providerName        String?     // Provider (e.g., "openai", "gemini")
+  modelName           String?     // Model name (e.g., "gpt-4", "gemini-2.0-flash-exp")
+  inputTokens         Int?
+  outputTokens        Int?
+  charactersProcessed Int?        // For TTS/STT services
+  imagesProcessed     Int?
+  costUsd             Float?      // Cost in USD from provider
+  creditsConsumed     Float?
+  additionalMetadata  Json?       // Additional metadata
+  processed           Boolean     @default(false)
+  processedAt         DateTime?
+  timestamp           DateTime    @default(now())
 
   @@index([userId])
   @@index([userId, processed])
   @@index([serviceType])
   @@index([timestamp])
   @@index([processed])
+  @@index([creditsConsumed]) // For filtering unprocessed logs (WHERE creditsConsumed IS NULL)
 }
 
 // Monthly credit balance tracking
@@ -876,17 +881,7 @@ enum PlanTier {
 
 enum SubscriptionStatus {
   ACTIVE
-  CANCELED
+  CANCELLED    // British spelling to match code
   EXPIRED
   PAYMENT_FAILED
-}
-
-enum ServiceType {
-  LLM_CHAT_SAFE
-  LLM_CHAT_NSFW
-  LLM_STORY_GENERATION_SFW
-  LLM_STORY_GENERATION_NSFW
-  IMAGE_GENERATION
-  TTS_DEFAULT
-  STT_DEFAULT
 }
