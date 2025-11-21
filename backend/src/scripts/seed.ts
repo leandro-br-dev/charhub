@@ -1,7 +1,7 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier } from '../generated/prisma';
+import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier, VisualStyle } from '../generated/prisma';
 import { seedAllTags } from './seedTags';
 
 const prisma = new PrismaClient();
@@ -207,7 +207,7 @@ async function seedCharacters(options: SeedOptions): Promise<{ created: number; 
             age: charData.age,
             gender: charData.gender,
             species: charData.species,
-            style: charData.style,
+            style: charData.style as VisualStyle | null,
             avatar: charData.avatar,
             physicalCharacteristics: charData.physicalCharacteristics,
             personality: charData.personality,
@@ -230,7 +230,7 @@ async function seedCharacters(options: SeedOptions): Promise<{ created: number; 
             age: charData.age,
             gender: charData.gender,
             species: charData.species,
-            style: charData.style,
+            style: charData.style as VisualStyle | null,
             avatar: charData.avatar,
             physicalCharacteristics: charData.physicalCharacteristics,
             personality: charData.personality,

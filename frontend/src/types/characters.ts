@@ -22,6 +22,18 @@ export type ContentTag =
   | 'CRIME'
   | 'GAMBLING';
 
+export type VisualStyle =
+  | 'ANIME'
+  | 'REALISTIC'
+  | 'SEMI_REALISTIC'
+  | 'CARTOON'
+  | 'MANGA'
+  | 'MANHWA'
+  | 'COMIC'
+  | 'CHIBI'
+  | 'PIXEL_ART'
+  | 'THREE_D';
+
 export type StickerStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'FAILED';
 
 export type TagType = 'CHARACTER' | 'STORY';
@@ -97,7 +109,8 @@ export interface CharacterCore {
   age?: number | null;
   gender?: string | null;
   species?: string | null;
-  style?: string | null;
+  style?: VisualStyle | null;
+  reference?: string | null;
   avatar?: string | null;
   physicalCharacteristics?: string | null;
   personality?: string | null;
@@ -174,7 +187,8 @@ export interface CharacterPayload {
   age?: number | null;
   gender?: string | null;
   species?: string | null;
-  style?: string | null;
+  style?: VisualStyle | null;
+  reference?: string | null;
   avatar?: string | null;
   physicalCharacteristics?: string | null;
   personality?: string | null;
@@ -219,7 +233,8 @@ export const EMPTY_CHARACTER_FORM: CharacterFormValues = {
   age: null,
   gender: null,
   species: null,
-  style: null,
+  style: 'ANIME',
+  reference: null,
   avatar: null,
   physicalCharacteristics: null,
   personality: null,

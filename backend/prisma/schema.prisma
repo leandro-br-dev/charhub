@@ -53,6 +53,20 @@ enum Visibility {
   PUBLIC // Everyone can see and search
 }
 
+// Visual style options for characters
+enum VisualStyle {
+  ANIME        // Japanese anime style (default)
+  REALISTIC    // Realistic/photorealistic style
+  SEMI_REALISTIC // Semi-realistic art style
+  CARTOON      // Western cartoon style
+  MANGA        // Japanese manga/comic style
+  MANHWA       // Korean manhwa/webtoon style
+  COMIC        // Western comic book style
+  CHIBI        // Super deformed/cute style
+  PIXEL_ART    // Pixel art/retro game style
+  THREE_D      // 3D rendered style
+}
+
 model User {
   id                String       @id @default(uuid())
   provider          AuthProvider
@@ -282,7 +296,8 @@ model Character {
   age       Int?
   gender    String? // "male", "female", "non-binary", etc.
   species   String? // "human", "elf", "robot", etc.
-  style     String? // Art style preference
+  style     VisualStyle? @default(ANIME) // Visual art style preference
+  reference String? // Source reference (e.g., "One Piece", "Marvel Comics")
 
   // Visual and descriptive
   avatar                  String? // Avatar image URL
