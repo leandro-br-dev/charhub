@@ -102,23 +102,7 @@ For a deeper tree, see `docs/PROJECT_OVERVIEW.md`.
 2. **Translations**: Run `npm run build:translations` (backend) after changing locale source files.
 3. **Docker**: `docker compose up --build` to run the full stack; services mount translations and tunnel configs automatically.
 4. **Local Dev**: Back-end `npm run dev`; front-end `npm run dev`. Keep Vite proxy aligned with backend base URL.
-5. **Database Operations**: All Prisma commands must run inside the backend container:
-   ```bash
-   # Generate Prisma Client after schema changes
-   docker compose exec backend npx prisma generate
-
-   # Create and apply migrations
-   docker compose exec backend npx prisma migrate dev --name your_migration_name
-
-   # Apply migrations in production
-   docker compose exec backend npx prisma migrate deploy
-
-   # Open Prisma Studio (database GUI)
-   docker compose exec backend npx prisma studio
-
-   # Restart backend after Prisma changes
-   docker compose restart backend
-   ```
+5. **Database Operations**: See detailed section "Database Operations (Prisma)" below for CRITICAL migration management rules.
 6. **Testing**: Formal test suites are pending; when adding them, follow the guidance in `docs/BACKEND.md` and `docs/FRONTEND.md`.
 7. **Commits/PRs**: Use Conventional Commits. Document manual tests. Rebase before opening PRs. Reference open TODO items.
 
@@ -215,27 +199,162 @@ import { OAuthButton } from '../shared/components/OAuthButton';
 
 ## Database Operations (Prisma)
 
-**CRITICAL: Manual Migration Management**
+**⚠️ CRITICAL: Manual Migration Management ⚠️**
 
-- **NEVER use `prisma migrate dev` or automatic migration generation**
-- **ALL schema changes must be done manually:**
-  1. Edit `backend/prisma/schema.prisma` directly
-  2. Create migration SQL file manually in `backend/prisma/migrations/YYYYMMDDHHMMSS_description/migration.sql`
-  3. Write the exact SQL DDL commands (CREATE TABLE, ALTER TABLE, etc.)
-  4. Test migration inside Docker container: `docker compose exec backend npx prisma migrate deploy`
-  5. Verify with `docker compose exec backend npx prisma studio`
+This project uses **CamelCase** and **PascalCase** naming conventions for all database fields and models. Prisma's automatic migration tools can generate destructive snake_case migrations that break the entire codebase.
 
-- **Why manual migrations?**
-  - Automatic migrations can break existing data
-  - We need full control over production schema changes
-  - Manual SQL ensures we know exactly what changes to the database
-  - Prevents Prisma from making destructive changes
+### ❌ FORBIDDEN COMMANDS - DO NOT USE:
 
-- **Data Migration Scripts:**
-  - Create separate TypeScript scripts in `backend/src/scripts/` for data transformations
-  - Use Prisma Client to safely migrate existing data
-  - Add npm script to `backend/package.json` for easy execution
-  - Example: `backend/src/scripts/migrate-conversations-to-multiuser.ts`
+```bash
+# ❌ NEVER USE - Generates automatic migrations with wrong naming conventions
+docker compose exec backend npx prisma migrate dev
+
+# ❌ NEVER USE - Can destructively reset database
+docker compose exec backend npx prisma migrate reset
+
+# ❌ NEVER USE - Can generate schema changes automatically
+docker compose exec backend npx prisma db push
+```
+
+**Why these are forbidden:**
+- `prisma migrate dev` auto-generates SQL migrations based on schema differences, often using **snake_case** instead of our **CamelCase** conventions
+- These commands can rename ALL existing columns (e.g., `userId` → `user_id`), breaking every query in the codebase
+- Prisma may drop and recreate tables, causing data loss
+- No control over the exact SQL being executed
+
+### ✅ REQUIRED WORKFLOW - Manual Migrations Only:
+
+**Step 1: Edit Schema**
+```bash
+# Edit the Prisma schema file directly
+# File: backend/prisma/schema.prisma
+# Use CamelCase for fields, PascalCase for models
+```
+
+**Step 2: Create Migration Folder**
+```bash
+# Create migration folder with timestamp
+mkdir -p backend/prisma/migrations/$(date +%Y%m%d%H%M%S)_your_description
+```
+
+**Step 3: Write SQL Manually**
+```sql
+-- File: backend/prisma/migrations/YYYYMMDDHHMMSS_your_description/migration.sql
+-- Example: Adding a new field with CORRECT CamelCase naming
+
+ALTER TABLE "User" ADD COLUMN "phoneNumber" TEXT;
+-- ✅ Correct: CamelCase field name
+
+-- ❌ WRONG: snake_case would break everything
+-- ALTER TABLE "User" ADD COLUMN "phone_number" TEXT;
+```
+
+**Step 4: Apply Migration**
+```bash
+# Apply your manual migration
+docker compose exec backend npx prisma migrate deploy
+
+# Verify the changes
+docker compose exec backend npx prisma studio
+```
+
+**Step 5: Generate Prisma Client**
+```bash
+# Regenerate Prisma Client to match new schema
+docker compose exec backend npx prisma generate
+
+# Restart backend to load new types
+docker compose restart backend
+```
+
+### ✅ SAFE COMMANDS - These are OK to use:
+
+```bash
+# ✅ Generate Prisma Client after schema changes (read-only)
+docker compose exec backend npx prisma generate
+
+# ✅ Apply existing migrations (uses your manual SQL)
+docker compose exec backend npx prisma migrate deploy
+
+# ✅ Check migration status (read-only)
+docker compose exec backend npx prisma migrate status
+
+# ✅ Open database GUI (read-only)
+docker compose exec backend npx prisma studio
+
+# ✅ Mark a failed migration as resolved
+docker compose exec backend npx prisma migrate resolve --rolled-back MIGRATION_NAME
+```
+
+### 📋 Naming Convention Examples:
+
+**✅ CORRECT - CamelCase/PascalCase:**
+```prisma
+model User {
+  id              String   @id @default(uuid())
+  displayName     String?
+  createdAt       DateTime @default(now())
+  favoriteCharacters FavoriteCharacter[]
+}
+
+model CreditTransaction {
+  userId          String
+  amountCredits   Float
+  balanceAfter    Float?
+}
+```
+
+**❌ WRONG - snake_case (breaks everything):**
+```prisma
+model User {
+  id              String   @id @default(uuid())
+  display_name    String?  // ❌ Wrong!
+  created_at      DateTime @default(now())  // ❌ Wrong!
+  favorite_characters FavoriteCharacter[]  // ❌ Wrong!
+}
+```
+
+### 🛠️ Data Migration Scripts:
+
+For complex data transformations, create TypeScript scripts instead of raw SQL:
+
+```bash
+# Create script
+# File: backend/src/scripts/migrate-your-feature.ts
+
+import { PrismaClient } from '../generated/prisma';
+
+const prisma = new PrismaClient();
+
+async function migrate() {
+  // Your safe data transformation logic here
+  console.log('Migration completed successfully');
+}
+
+migrate()
+  .catch(console.error)
+  .finally(() => prisma.$disconnect());
+```
+
+Add to `backend/package.json`:
+```json
+{
+  "scripts": {
+    "migrate:your-feature": "tsx src/scripts/migrate-your-feature.ts"
+  }
+}
+```
+
+### 🆘 If Something Goes Wrong:
+
+If an agent accidentally ran a destructive command:
+
+1. **Stop immediately** - Don't apply any more migrations
+2. **Check git status** - See what files changed
+3. **Review migration files** - Check `backend/prisma/migrations/` for snake_case
+4. **Restore from git** - `git checkout backend/prisma/schema.prisma`
+5. **Mark migration as rolled back**: `docker compose exec backend npx prisma migrate resolve --rolled-back BAD_MIGRATION_NAME`
+6. **Create correct migration manually** following the steps above
 
 ## Operational Notes
 
