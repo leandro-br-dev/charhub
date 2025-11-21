@@ -2,17 +2,17 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "बिना नाम का चरित्र",
-      "updatedAt": "{{date}} को अपडेट किया गया",
-      "public": "सार्वजनिक",
-      "private": "निजी",
-      "identifier": "चरित्र आईडी: {{id}}",
-      "unsavedChanges": "असुरक्षित परिवर्तन",
-      "allSaved": "सभी परिवर्तन सहेजे गए",
-      "submitting": "सहेज रहा है..."
+      "untitledCharacter": "Unnamed Character",
+      "updatedAt": "Updated {{date}}",
+      "public": "Public",
+      "private": "Private",
+      "identifier": "Character ID: {{id}}",
+      "unsavedChanges": "Unsaved changes",
+      "allSaved": "All changes saved",
+      "submitting": "Saving..."
     },
     "ageRatings": {
-      "L": "मुक्त",
+      "L": "Free",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -20,244 +20,270 @@
       "EIGHTEEN": "18+"
     },
     "genders": {
-      "male": "पुरुष",
-      "female": "महिला",
-      "non-binary": "गैर-बाइनरी",
-      "unisex": "यूनिसेक्स"
+      "male": "Male",
+      "female": "Female",
+      "non-binary": "Non-binary",
+      "unisex": "Unisex"
     },
     "species": {
-      "human": "मानव",
-      "elf": "एल्फ",
-      "android": "एंड्रॉइड",
-      "vampire": "वैम्पायर",
-      "demon": "दानव",
-      "animal": "पशु",
-      "hybrid": "हाइब्रिड",
-      "robot": "रोबोट",
-      "other": "अन्य"
+      "human": "Human",
+      "elf": "Elf",
+      "android": "Android",
+      "vampire": "Vampire",
+      "demon": "Demon",
+      "animal": "Animal",
+      "hybrid": "Hybrid",
+      "robot": "Robot",
+      "other": "Other"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realistic",
+      "SEMI_REALISTIC": "Semi-Realistic",
+      "CARTOON": "Cartoon",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Comic",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "visualStyleDescriptions": {
+      "ANIME": "Japanese anime style",
+      "REALISTIC": "Photorealistic or realistic art",
+      "SEMI_REALISTIC": "Semi-realistic art style",
+      "CARTOON": "Western cartoon style",
+      "MANGA": "Japanese manga/comic style",
+      "MANHWA": "Korean manhwa/webtoon style",
+      "COMIC": "Western comic book style",
+      "CHIBI": "Super deformed/cute style",
+      "PIXEL_ART": "Pixel art/retro game style",
+      "THREE_D": "3D rendered style"
     },
     "contentTags": {
-      "VIOLENCE": "हिंसा",
-      "GORE": "रक्तपात",
-      "SEXUAL": "यौन",
-      "NUDITY": "नग्नता",
-      "LANGUAGE": "भाषा",
-      "DRUGS": "नशीली दवाएं",
-      "ALCOHOL": "शराब",
-      "HORROR": "डरावना",
-      "PSYCHOLOGICAL": "मनोवैज्ञानिक",
-      "DISCRIMINATION": "भेदभाव",
-      "CRIME": "अपराध",
-      "GAMBLING": "जुआ"
+      "VIOLENCE": "Violence",
+      "GORE": "Gore",
+      "SEXUAL": "Sexual",
+      "NUDITY": "Nudity",
+      "LANGUAGE": "Language",
+      "DRUGS": "Drugs",
+      "ALCOHOL": "Alcohol",
+      "HORROR": "Horror",
+      "PSYCHOLOGICAL": "Psychological",
+      "DISCRIMINATION": "Discrimination",
+      "CRIME": "Crime",
+      "GAMBLING": "Gambling"
     },
     "contentTagHints": {
-      "VIOLENCE": "लड़ाई, झगड़े या आक्रामक संघर्ष।",
-      "GORE": "ग्राफिक चोटें और स्पष्ट विवरण।",
-      "SEXUAL": "वयस्क विषय या व्यंग्य।",
-      "NUDITY": "आंशिक या पूर्ण नग्नता।",
-      "LANGUAGE": "स्पष्ट या मजबूत भाषा।",
-      "DRUGS": "नशीली दवाओं का उपयोग या संदर्भ।",
-      "ALCOHOL": "शराब का सेवन।",
-      "HORROR": "विचलित करने वाली या डरावनी छवियां।",
-      "PSYCHOLOGICAL": "मानसिक स्वास्थ्य या मनोवैज्ञानिक तनाव।",
-      "DISCRIMINATION": "घृणास्पद भाषण या पूर्वाग्रह।",
-      "CRIME": "आपराधिक गतिविधि के विषय।",
-      "GAMBLING": "दांव या जुए के संदर्भ।"
+      "VIOLENCE": "Combat, fights or aggressive conflict.",
+      "GORE": "Graphic injuries and explicit detail.",
+      "SEXUAL": "Adult themes or innuendo.",
+      "NUDITY": "Partial or full nudity.",
+      "LANGUAGE": "Explicit or strong language.",
+      "DRUGS": "Drug use or references.",
+      "ALCOHOL": "Alcohol consumption.",
+      "HORROR": "Disturbing or horror imagery.",
+      "PSYCHOLOGICAL": "Mental health or psychological tension.",
+      "DISCRIMINATION": "Hate speech or prejudice.",
+      "CRIME": "Criminal activity themes.",
+      "GAMBLING": "Betting or gambling references."
     },
     "accessibility": {
-      "addToFavorites": "पसंदीदा में जोड़ें",
-      "removeFromFavorites": "पसंदीदा से हटाएँ"
+      "addToFavorites": "Add to favorites",
+      "removeFromFavorites": "Remove from favorites"
     },
     "stats": {
-      "conversations": "बातचीत",
-      "messages": "संदेश",
-      "favorites": "पसंदीदा",
-      "conversationsShort": "{{count}} हजार बातचीत",
-      "conversationsShort_plural": "{{count}} हजार बातचीत",
-      "favoritesShort": "{{count}} हजार पसंदीदा",
-      "favoritesShort_plural": "{{count}} हजार पसंदीदा"
+      "conversations": "Conversations",
+      "messages": "Messages",
+      "favorites": "Favorites",
+      "conversationsShort": "{{count}}K conversations",
+      "conversationsShort_plural": "{{count}}K conversations",
+      "favoritesShort": "{{count}}K favorites",
+      "favoritesShort_plural": "{{count}}K favorites"
     },
     "hub": {
-      "title": "चरित्र",
-      "subtitle": "उन किरदारों को बनाएं, व्यवस्थित करें और विकसित करें जो आपकी कहानियों, चैट एजेंटों और AI अनुभवों को शक्ति प्रदान करते हैं।",
+      "title": "Characters",
+      "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
       "actions": {
-        "createCharacter": "नया चरित्र",
-        "retry": "पुनः प्रयास करें",
-        "blurSensitive": "संवेदनशील को धुंधला करें",
-        "showSensitive": "संवेदनशील दिखाएं"
+        "createCharacter": "New character",
+        "retry": "Try again",
+        "blurSensitive": "Blur sensitive",
+        "showSensitive": "Show sensitive"
       },
       "tabs": {
-        "myCharacters": "मेरे चरित्र",
-        "publicGallery": "सार्वजनिक गैलरी"
+        "myCharacters": "My characters",
+        "publicGallery": "Public gallery"
       },
       "filters": {
-        "searchPlaceholder": "नाम या शैली के अनुसार खोजें",
-        "allAgeRatings": "सभी आयु रेटिंग",
-        "noFilter": "कोई भी"
+        "searchPlaceholder": "Search by name or style",
+        "allAgeRatings": "All age ratings",
+        "noFilter": "Any"
       },
       "states": {
-        "loading": "आपके चरित्र लोड हो रहे हैं...",
-        "error": "हम चरित्र लोड नहीं कर सके। कृपया पुनः प्रयास करें।",
-        "empty": "अभी तक कोई चरित्र उपलब्ध नहीं है।",
-        "empty_private": "आपने अभी तक कोई चरित्र नहीं बनाया है।",
-        "empty_public": "आपके फ़िल्टर से मेल खाने वाले कोई सार्वजनिक चरित्र नहीं हैं।",
-        "emptyHint": "एक प्रोफ़ाइल बनाकर शुरुआत करें या अपने फ़िल्टर को ट्वीक करें।",
-        "emptySearchHint": "अधिक परिणाम देखने के लिए अपने फ़िल्टर को समायोजित करें या खोज साफ़ करें।"
+        "loading": "Loading your characters...",
+        "error": "We could not load characters. Please try again.",
+        "empty": "No characters available yet.",
+        "empty_private": "You have not created any characters yet.",
+        "empty_public": "No public characters match your filters.",
+        "emptyHint": "Start by crafting a profile or tweak your filters.",
+        "emptySearchHint": "Adjust your filters or clear the search to see more results."
       },
       "labels": {
-        "total": "{{count}} चरित्र उपलब्ध",
-        "total_plural": "{{count}} चरित्र उपलब्ध",
-        "quickCreateLink": "सीधे निर्माण में कूदें"
+        "total": "{{count}} character available",
+        "total_plural": "{{count}} characters available",
+        "quickCreateLink": "Jump straight into creation"
       }
     },
     "form": {
-      "submit": "सहेजें",
-      "cancel": "रद्द करें",
+      "submit": "Save",
+      "cancel": "Cancel",
       "sections": {
-        "identity": "पहचान",
-        "identityHint": "परिभाषित करें कि लोग इस चरित्र को तुरंत कैसे खोजते हैं और पहचानते हैं।",
-        "profile": "कथात्मक प्रोफ़ाइल",
-        "profileHint": "AI का मार्गदर्शन करने के लिए व्यक्तित्व, लक्षण और पृष्ठभूमि का वर्णन करें।",
-        "configuration": "उपलब्धता और मॉडरेशन",
-        "configurationHint": "नियंत्रित करें कि चरित्र कैसे दिखाई देता है, कौन इसे एक्सेस कर सकता है और कौन से सुरक्षा उपाय लागू होते हैं।",
-        "contentTagsHint": "संभावित संवेदनशील विषयों को चिह्नित करें। उपयोगकर्ता अपनी प्राथमिकताओं के आधार पर उन्हें फ़िल्टर कर सकते हैं।",
-        "contentTagsCharacterHint": "ये विषय परिभाषित करते हैं कि चरित्र चुनी गई आयु रेटिंग पर क्या चर्चा करने में सहज है।",
-        "contentTagsUserHint": "उन विषयों का चयन करें जिन्हें आप शामिल करना चाहते हैं। अनचेक छोड़ा गया कुछ भी इस रेटिंग के लिए अवरुद्ध रहता है।",
-        "contentTagLocked": "उच्च आयु रेटिंग पर अनलॉक किया गया।"
+        "identity": "Identity",
+        "identityHint": "Define how people discover and identify this character at a glance.",
+        "profile": "Narrative profile",
+        "profileHint": "Describe personality, traits and backstory to guide the AI.",
+        "configuration": "Availability & moderation",
+        "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
+        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
+        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
+        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
+        "contentTagLocked": "Unlocked at higher age ratings."
       },
       "fields": {
-        "firstName": "पहला नाम",
-        "lastName": "अंतिम नाम",
-        "age": "आयु",
-        "gender": "लिंग",
-        "species": "प्रजाति / मूल",
-        "style": "दृश्य या कहानी कहने की शैली",
-        "physicalCharacteristics": "शारीरिक विवरण",
-        "personality": "व्यक्तित्व",
-        "history": "पृष्ठभूमि",
-        "isPublic": "दृश्यता",
-        "ageRating": "आयु रेटिंग",
-        "originalLanguageCode": "मूल भाषा",
-        "contentTags": "सामग्री चेतावनी",
-        "visibility": "दृश्यता"
+        "firstName": "First name",
+        "lastName": "Last name",
+        "age": "Age",
+        "gender": "Gender",
+        "species": "Species / origin",
+        "style": "Visual style",
+        "reference": "Reference / source",
+        "physicalCharacteristics": "Physical description",
+        "personality": "Personality",
+        "history": "Backstory",
+        "isPublic": "Visibility",
+        "ageRating": "Age rating",
+        "originalLanguageCode": "Original language",
+        "contentTags": "Content warnings",
+        "visibility": "Visibility"
       },
       "placeholders": {
-        "gender": "जैसे: गैर-बाइनरी AI, एंड्रॉइड, नाइट",
-        "species": "जैसे: मानव, एल्फ, सिंथेटिक",
-        "style": "जैसे: नोयर जासूस, पेस्टल एनीमे, पेंटरली",
-        "genderSelect": "लिंग चुनें"
+        "gender": "Ex: non-binary AI, android, knight",
+        "species": "Ex: Human, Elf, Synthetic",
+        "style": "Select visual style",
+        "reference": "Ex: One Piece, Marvel Comics, Original",
+        "genderSelect": "Select gender"
       },
       "labels": {
-        "unsavedChanges": "आपके पास असुरक्षित परिवर्तन हैं",
-        "allSaved": "परिवर्तन सहेजे गए",
-        "submitting": "सहेज रहा है...",
-        "visibilityPublic": "सार्वजनिक",
-        "visibilityPrivate": "निजी"
+        "unsavedChanges": "You have unsaved changes",
+        "allSaved": "Changes saved",
+        "submitting": "Saving...",
+        "visibilityPublic": "Public",
+        "visibilityPrivate": "Private"
       },
       "avatar": {
-        "upload": "छवि अपलोड करें",
-        "change": "छवि बदलें",
-        "remove": "हटाएँ",
-        "uploading": "अपलोड हो रहा है...",
-        "helperCreate": "अभी एक अवतार चुनें और हम इसे तब तक रखेंगे जब तक आप बाकी फॉर्म भरते हैं।",
-        "helperEdit": "जब चाहें अवतार अपडेट करें। आपके सहेजते ही परिवर्तन लागू हो जाते हैं।",
-        "error": "हम इस छवि को अपलोड नहीं कर सके। कोई दूसरी फ़ाइल आज़माएँ।",
-        "previewAlt": "चरित्र अवतार पूर्वावलोकन"
+        "upload": "Upload image",
+        "change": "Change image",
+        "remove": "Remove",
+        "uploading": "Uploading...",
+        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
+        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
+        "error": "We could not upload this image. Try another file.",
+        "previewAlt": "Character avatar preview"
       },
       "images": {
-        "coverHeader": "चरित्र कवर",
-        "coverDescription": "चरित्र कवर के रूप में उपयोग की जाने वाली पोर्ट्रेट-उन्मुख छवि।",
-        "upload": "कवर अपलोड करें",
-        "change": "कवर बदलें",
-        "uploading": "अपलोड हो रहा है...",
-        "urlModalTitle": "URL से छवि का उपयोग करें",
-        "urlLabel": "छवि URL",
-        "previewAlt": "चरित्र कवर पूर्वावलोकन"
+        "coverHeader": "Character cover",
+        "coverDescription": "Portrait-oriented image used as the character cover.",
+        "upload": "Upload cover",
+        "change": "Change cover",
+        "uploading": "Uploading...",
+        "urlModalTitle": "Use image from URL",
+        "urlLabel": "Image URL",
+        "previewAlt": "Character cover preview"
       },
       "tags": {
-        "searchPlaceholder": "टैग खोजें (जैसे, VTuber, Maid)",
-        "selected": "चयनित टैग",
-        "none": "कोई टैग चयनित नहीं",
-        "suggestions": "सुझाव",
-        "loading": "लोड हो रहा है...",
-        "noResults": "कोई परिणाम नहीं",
-        "incompatibleToast": "कुछ चयनित टैग वर्तमान आयु रेटिंग के साथ असंगत हैं। कृपया समीक्षा करें।",
-        "incompatibleHint": "हाइलाइट किए गए टैग वर्तमान आयु रेटिंग के साथ असंगत हैं। जारी रखने के लिए उन्हें हटा दें।",
-        "incompatibleChip": "वर्तमान आयु रेटिंग के साथ असंगत"
+        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
+        "selected": "Selected tags",
+        "none": "No tags selected",
+        "suggestions": "Suggestions",
+        "loading": "Loading...",
+        "noResults": "No results",
+        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
+        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
+        "incompatibleChip": "Incompatible with current age rating"
       },
       "tabs": {
-        "identity": "पहचान",
-        "profile": "प्रोफ़ाइल",
-        "configuration": "कॉन्फ़िगरेशन",
-        "tags": "टैग",
-        "images": "छवियां",
-        "lockedHint": "अन्य अनुभागों को अनलॉक करने के लिए मूल पहचान विवरण भरें।"
+        "identity": "Identity",
+        "profile": "Profile",
+        "configuration": "Configuration",
+        "tags": "Tags",
+        "images": "Images",
+        "lockedHint": "Fill in the basic identity details to unlock the other sections."
       }
     },
     "create": {
-      "title": "नया चरित्र बनाएं",
-      "subtitle": "कथात्मक संदर्भ, दृश्य शैली और मॉडरेशन सेटिंग्स को संयोजित करें। आप सब कुछ बाद में परिष्कृत कर सकते हैं।",
-      "saveButton": "चरित्र सहेजें",
-      "cancelButton": "रद्द करें और वापस जाएं"
+      "title": "Create a new character",
+      "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
+      "saveButton": "Save character",
+      "cancelButton": "Cancel and go back"
     },
     "edit": {
-      "title": "चरित्र संपादित करें",
-      "subtitle": "{{name}} को अपडेट कर रहा है",
-      "saveButton": "चरित्र अपडेट करें",
-      "cancelButton": "परिवर्तन छोड़ें",
+      "title": "Edit character",
+      "subtitle": "Updating {{name}}",
+      "saveButton": "Update character",
+      "cancelButton": "Discard changes",
       "states": {
-        "loading": "चरित्र लोड हो रहा है..."
+        "loading": "Loading character..."
       }
     },
     "detail": {
       "states": {
-        "loading": "चरित्र विवरण लोड हो रहा है...",
-        "notFound": "हमें यह चरित्र नहीं मिल सका।"
+        "loading": "Loading character details...",
+        "notFound": "We could not find this character."
       },
       "actions": {
-        "backToHub": "हब पर वापस जाएं",
-        "edit": "संपादित करें",
-        "delete": "हटाएँ",
-        "deleting": "हटा रहा है...",
-        "share": "साझा करें",
-        "startChat": "बातचीत शुरू करें",
-        "startingChat": "शुरू हो रहा है..."
+        "backToHub": "Back to hub",
+        "edit": "Edit",
+        "delete": "Delete",
+        "deleting": "Deleting...",
+        "share": "Share",
+        "startChat": "Start conversation",
+        "startingChat": "Starting..."
       },
       "confirmDelete": {
-        "title": "चरित्र हटाएं?",
-        "message": "इस क्रिया को पूर्ववत नहीं किया जा सकता है। इस चरित्र से जुड़ा सारा डेटा स्थायी रूप से हटा दिया जाएगा।",
-        "confirm": "स्थायी रूप से हटाएं",
-        "cancel": "रद्द करें"
+        "title": "Delete Character?",
+        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
+        "confirm": "Delete permanently",
+        "cancel": "Cancel"
       },
       "labels": {
-        "public": "सार्वजनिक",
-        "private": "निजी",
-        "createdAt": "बनाया गया",
-        "createdBy": "द्वारा बनाया गया",
-        "updatedAt": "अंतिम अपडेट",
-        "identifier": "चरित्र आईडी: {{id}}",
-        "messageCount": "{{count}} संदेश",
-        "messageCount_plural": "{{count}} संदेश",
-        "favoriteCount": "{{count}} पसंदीदा",
-        "favoriteCount_plural": "{{count}} पसंदीदा",
-        "stats": "आँकड़े"
+        "public": "Public",
+        "private": "Private",
+        "createdAt": "Created",
+        "createdBy": "Created by",
+        "updatedAt": "Last updated",
+        "identifier": "Character ID: {{id}}",
+        "messageCount": "{{count}} message",
+        "messageCount_plural": "{{count}} messages",
+        "favoriteCount": "{{count}} favorite",
+        "favoriteCount_plural": "{{count}} favorites",
+        "stats": "Statistics"
       },
-      "sampleImages": "नमूना छवियां",
+      "sampleImages": "Sample Images",
       "sections": {
-        "physicalCharacteristics": "दिखावट",
-        "personality": "व्यक्तित्व",
-        "history": "पृष्ठभूमि",
-        "contentTags": "सामग्री चेतावनी",
-        "metadata": "टैग",
-        "introduction": "परिचय",
-        "updateNotes": "अपडेट नोट्स"
+        "physicalCharacteristics": "Appearance",
+        "personality": "Personality",
+        "history": "Backstory",
+        "contentTags": "Content warnings",
+        "metadata": "Tags",
+        "introduction": "Introduction",
+        "updateNotes": "Update Notes"
       }
     },
     "errors": {
-      "createFailed": "हम चरित्र नहीं बना सके। कृपया पुनः प्रयास करें।",
-      "updateFailed": "हम चरित्र अपडेट नहीं कर सके।",
-      "deleteFailed": "हम चरित्र नहीं हटा सके।",
-      "detailUnavailable": "अभी चरित्र विवरण लोड करने में असमर्थ।"
+      "createFailed": "We could not create the character. Please try again.",
+      "updateFailed": "We could not update the character.",
+      "deleteFailed": "We could not delete the character.",
+      "detailUnavailable": "Unable to load character details right now."
     }
   }
 }

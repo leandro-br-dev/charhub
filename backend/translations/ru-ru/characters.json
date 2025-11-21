@@ -2,17 +2,17 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Безымянный персонаж",
-      "updatedAt": "Обновлено {{date}}",
-      "public": "Публичный",
-      "private": "Приватный",
-      "identifier": "ID персонажа: {{id}}",
-      "unsavedChanges": "Несохраненные изменения",
-      "allSaved": "Все изменения сохранены",
-      "submitting": "Сохранение..."
+      "untitledCharacter": "Unnamed Character",
+      "updatedAt": "Updated {{date}}",
+      "public": "Public",
+      "private": "Private",
+      "identifier": "Character ID: {{id}}",
+      "unsavedChanges": "Unsaved changes",
+      "allSaved": "All changes saved",
+      "submitting": "Saving..."
     },
     "ageRatings": {
-      "L": "Для всех",
+      "L": "Free",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -20,244 +20,270 @@
       "EIGHTEEN": "18+"
     },
     "genders": {
-      "male": "Мужской",
-      "female": "Женский",
-      "non-binary": "Небинарный",
-      "unisex": "Унисекс"
+      "male": "Male",
+      "female": "Female",
+      "non-binary": "Non-binary",
+      "unisex": "Unisex"
     },
     "species": {
-      "human": "Человек",
-      "elf": "Эльф",
-      "android": "Андроид",
-      "vampire": "Вампир",
-      "demon": "Демон",
-      "animal": "Животное",
-      "hybrid": "Гибрид",
-      "robot": "Робот",
-      "other": "Другое"
+      "human": "Human",
+      "elf": "Elf",
+      "android": "Android",
+      "vampire": "Vampire",
+      "demon": "Demon",
+      "animal": "Animal",
+      "hybrid": "Hybrid",
+      "robot": "Robot",
+      "other": "Other"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realistic",
+      "SEMI_REALISTIC": "Semi-Realistic",
+      "CARTOON": "Cartoon",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Comic",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "visualStyleDescriptions": {
+      "ANIME": "Japanese anime style",
+      "REALISTIC": "Photorealistic or realistic art",
+      "SEMI_REALISTIC": "Semi-realistic art style",
+      "CARTOON": "Western cartoon style",
+      "MANGA": "Japanese manga/comic style",
+      "MANHWA": "Korean manhwa/webtoon style",
+      "COMIC": "Western comic book style",
+      "CHIBI": "Super deformed/cute style",
+      "PIXEL_ART": "Pixel art/retro game style",
+      "THREE_D": "3D rendered style"
     },
     "contentTags": {
-      "VIOLENCE": "Насилие",
-      "GORE": "Кровопролитие",
-      "SEXUAL": "Сексуальный контент",
-      "NUDITY": "Обнаженность",
-      "LANGUAGE": "Нецензурная лексика",
-      "DRUGS": "Наркотики",
-      "ALCOHOL": "Алкоголь",
-      "HORROR": "Ужасы",
-      "PSYCHOLOGICAL": "Психологическое",
-      "DISCRIMINATION": "Дискриминация",
-      "CRIME": "Преступность",
-      "GAMBLING": "Азартные игры"
+      "VIOLENCE": "Violence",
+      "GORE": "Gore",
+      "SEXUAL": "Sexual",
+      "NUDITY": "Nudity",
+      "LANGUAGE": "Language",
+      "DRUGS": "Drugs",
+      "ALCOHOL": "Alcohol",
+      "HORROR": "Horror",
+      "PSYCHOLOGICAL": "Psychological",
+      "DISCRIMINATION": "Discrimination",
+      "CRIME": "Crime",
+      "GAMBLING": "Gambling"
     },
     "contentTagHints": {
-      "VIOLENCE": "Бои, драки или агрессивные конфликты.",
-      "GORE": "Графические ранения и явные детали.",
-      "SEXUAL": "Взрослые темы или намеки.",
-      "NUDITY": "Частичная или полная нагота.",
-      "LANGUAGE": "Откровенная или грубая лексика.",
-      "DRUGS": "Употребление наркотиков или упоминания о них.",
-      "ALCOHOL": "Употребление алкоголя.",
-      "HORROR": "Тревожные или пугающие образы.",
-      "PSYCHOLOGICAL": "Психическое здоровье или психологическое напряжение.",
-      "DISCRIMINATION": "Речь ненависти или предрассудки.",
-      "CRIME": "Темы преступной деятельности.",
-      "GAMBLING": "Упоминания ставок или азартных игр."
+      "VIOLENCE": "Combat, fights or aggressive conflict.",
+      "GORE": "Graphic injuries and explicit detail.",
+      "SEXUAL": "Adult themes or innuendo.",
+      "NUDITY": "Partial or full nudity.",
+      "LANGUAGE": "Explicit or strong language.",
+      "DRUGS": "Drug use or references.",
+      "ALCOHOL": "Alcohol consumption.",
+      "HORROR": "Disturbing or horror imagery.",
+      "PSYCHOLOGICAL": "Mental health or psychological tension.",
+      "DISCRIMINATION": "Hate speech or prejudice.",
+      "CRIME": "Criminal activity themes.",
+      "GAMBLING": "Betting or gambling references."
     },
     "accessibility": {
-      "addToFavorites": "Добавить в избранное",
-      "removeFromFavorites": "Удалить из избранного"
+      "addToFavorites": "Add to favorites",
+      "removeFromFavorites": "Remove from favorites"
     },
     "stats": {
-      "conversations": "Диалоги",
-      "messages": "Сообщения",
-      "favorites": "Избранное",
-      "conversationsShort": "{{count}} тыс. диалогов",
-      "conversationsShort_plural": "{{count}} тыс. диалогов",
-      "favoritesShort": "{{count}} тыс. избранного",
-      "favoritesShort_plural": "{{count}} тыс. избранного"
+      "conversations": "Conversations",
+      "messages": "Messages",
+      "favorites": "Favorites",
+      "conversationsShort": "{{count}}K conversations",
+      "conversationsShort_plural": "{{count}}K conversations",
+      "favoritesShort": "{{count}}K favorites",
+      "favoritesShort_plural": "{{count}}K favorites"
     },
     "hub": {
-      "title": "Персонажи",
-      "subtitle": "Создавайте, организуйте и развивайте персонажей, которые оживляют ваши истории, чат-ботов и AI-опыты.",
+      "title": "Characters",
+      "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
       "actions": {
-        "createCharacter": "Новый персонаж",
-        "retry": "Повторить",
-        "blurSensitive": "Размыть конфиденциальное",
-        "showSensitive": "Показать конфиденциальное"
+        "createCharacter": "New character",
+        "retry": "Try again",
+        "blurSensitive": "Blur sensitive",
+        "showSensitive": "Show sensitive"
       },
       "tabs": {
-        "myCharacters": "Мои персонажи",
-        "publicGallery": "Общедоступная галерея"
+        "myCharacters": "My characters",
+        "publicGallery": "Public gallery"
       },
       "filters": {
-        "searchPlaceholder": "Поиск по имени или стилю",
-        "allAgeRatings": "Все возрастные рейтинги",
-        "noFilter": "Любой"
+        "searchPlaceholder": "Search by name or style",
+        "allAgeRatings": "All age ratings",
+        "noFilter": "Any"
       },
       "states": {
-        "loading": "Загрузка ваших персонажей...",
-        "error": "Не удалось загрузить персонажей. Пожалуйста, попробуйте еще раз.",
-        "empty": "Персонажи пока недоступны.",
-        "empty_private": "Вы еще не создали ни одного персонажа.",
-        "empty_public": "Публичные персонажи, соответствующие вашим фильтрам, не найдены.",
-        "emptyHint": "Начните с создания профиля или измените фильтры.",
-        "emptySearchHint": "Измените фильтры или очистите поиск, чтобы увидеть больше результатов."
+        "loading": "Loading your characters...",
+        "error": "We could not load characters. Please try again.",
+        "empty": "No characters available yet.",
+        "empty_private": "You have not created any characters yet.",
+        "empty_public": "No public characters match your filters.",
+        "emptyHint": "Start by crafting a profile or tweak your filters.",
+        "emptySearchHint": "Adjust your filters or clear the search to see more results."
       },
       "labels": {
-        "total": "{{count}} персонаж доступен",
-        "total_plural": "{{count}} персонажа доступны",
-        "quickCreateLink": "Перейти к созданию"
+        "total": "{{count}} character available",
+        "total_plural": "{{count}} characters available",
+        "quickCreateLink": "Jump straight into creation"
       }
     },
     "form": {
-      "submit": "Сохранить",
-      "cancel": "Отмена",
+      "submit": "Save",
+      "cancel": "Cancel",
       "sections": {
-        "identity": "Личность",
-        "identityHint": "Определите, как пользователи будут находить и узнавать этого персонажа с первого взгляда.",
-        "profile": "Нарративный профиль",
-        "profileHint": "Опишите личность, черты и предысторию, чтобы направлять AI.",
-        "configuration": "Доступность и модерация",
-        "configurationHint": "Управляйте тем, как персонаж отображается, кто имеет к нему доступ и какие меры предосторожности применяются.",
-        "contentTagsHint": "Отметьте потенциально конфиденциальные темы. Пользователи могут отфильтровать их в соответствии со своими предпочтениями.",
-        "contentTagsCharacterHint": "Эти темы определяют, что персонаж готов обсуждать при выбранном возрастном рейтинге.",
-        "contentTagsUserHint": "Выберите темы, которые вы хотите включить. Все, что останется непроверенным, будет заблокировано для этого рейтинга.",
-        "contentTagLocked": "Разблокировано при более высоких возрастных рейтингах."
+        "identity": "Identity",
+        "identityHint": "Define how people discover and identify this character at a glance.",
+        "profile": "Narrative profile",
+        "profileHint": "Describe personality, traits and backstory to guide the AI.",
+        "configuration": "Availability & moderation",
+        "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
+        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
+        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
+        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
+        "contentTagLocked": "Unlocked at higher age ratings."
       },
       "fields": {
-        "firstName": "Имя",
-        "lastName": "Фамилия",
-        "age": "Возраст",
-        "gender": "Пол",
-        "species": "Вид / происхождение",
-        "style": "Визуальный или повествовательный стиль",
-        "physicalCharacteristics": "Физическое описание",
-        "personality": "Личность",
-        "history": "Предыстория",
-        "isPublic": "Видимость",
-        "ageRating": "Возрастной рейтинг",
-        "originalLanguageCode": "Исходный язык",
-        "contentTags": "Предупреждения о контенте",
-        "visibility": "Видимость"
+        "firstName": "First name",
+        "lastName": "Last name",
+        "age": "Age",
+        "gender": "Gender",
+        "species": "Species / origin",
+        "style": "Visual style",
+        "reference": "Reference / source",
+        "physicalCharacteristics": "Physical description",
+        "personality": "Personality",
+        "history": "Backstory",
+        "isPublic": "Visibility",
+        "ageRating": "Age rating",
+        "originalLanguageCode": "Original language",
+        "contentTags": "Content warnings",
+        "visibility": "Visibility"
       },
       "placeholders": {
-        "gender": "Напр.: небинарный ИИ, андроид, рыцарь",
-        "species": "Напр.: Человек, Эльф, Синтетик",
-        "style": "Напр.: Детектив в стиле нуар, пастельное аниме, живописный",
-        "genderSelect": "Выберите пол"
+        "gender": "Ex: non-binary AI, android, knight",
+        "species": "Ex: Human, Elf, Synthetic",
+        "style": "Select visual style",
+        "reference": "Ex: One Piece, Marvel Comics, Original",
+        "genderSelect": "Select gender"
       },
       "labels": {
-        "unsavedChanges": "У вас есть несохраненные изменения",
-        "allSaved": "Изменения сохранены",
-        "submitting": "Сохранение...",
-        "visibilityPublic": "Публичный",
-        "visibilityPrivate": "Приватный"
+        "unsavedChanges": "You have unsaved changes",
+        "allSaved": "Changes saved",
+        "submitting": "Saving...",
+        "visibilityPublic": "Public",
+        "visibilityPrivate": "Private"
       },
       "avatar": {
-        "upload": "Загрузить изображение",
-        "change": "Изменить изображение",
-        "remove": "Удалить",
-        "uploading": "Загрузка...",
-        "helperCreate": "Выберите аватар сейчас, и мы сохраним его, пока вы заполняете остальную часть формы.",
-        "helperEdit": "Обновляйте аватар когда угодно. Изменения вступят в силу сразу после сохранения.",
-        "error": "Не удалось загрузить это изображение. Попробуйте другой файл.",
-        "previewAlt": "Предварительный просмотр аватара персонажа"
+        "upload": "Upload image",
+        "change": "Change image",
+        "remove": "Remove",
+        "uploading": "Uploading...",
+        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
+        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
+        "error": "We could not upload this image. Try another file.",
+        "previewAlt": "Character avatar preview"
       },
       "images": {
-        "coverHeader": "Обложка персонажа",
-        "coverDescription": "Вертикальное изображение, используемое в качестве обложки персонажа.",
-        "upload": "Загрузить обложку",
-        "change": "Изменить обложку",
-        "uploading": "Загрузка...",
-        "urlModalTitle": "Использовать изображение по URL",
-        "urlLabel": "URL изображения",
-        "previewAlt": "Предварительный просмотр обложки персонажа"
+        "coverHeader": "Character cover",
+        "coverDescription": "Portrait-oriented image used as the character cover.",
+        "upload": "Upload cover",
+        "change": "Change cover",
+        "uploading": "Uploading...",
+        "urlModalTitle": "Use image from URL",
+        "urlLabel": "Image URL",
+        "previewAlt": "Character cover preview"
       },
       "tags": {
-        "searchPlaceholder": "Поиск тегов (например, VTuber, Горничная)",
-        "selected": "Выбранные теги",
-        "none": "Теги не выбраны",
-        "suggestions": "Предложения",
-        "loading": "Загрузка...",
-        "noResults": "Нет результатов",
-        "incompatibleToast": "Некоторые выбранные теги несовместимы с текущим возрастным рейтингом. Пожалуйста, проверьте.",
-        "incompatibleHint": "Выделенные теги несовместимы с выбранным возрастным рейтингом. Удалите их, чтобы продолжить.",
-        "incompatibleChip": "Несовместимо с текущим возрастным рейтингом"
+        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
+        "selected": "Selected tags",
+        "none": "No tags selected",
+        "suggestions": "Suggestions",
+        "loading": "Loading...",
+        "noResults": "No results",
+        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
+        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
+        "incompatibleChip": "Incompatible with current age rating"
       },
       "tabs": {
-        "identity": "Личность",
-        "profile": "Профиль",
-        "configuration": "Настройки",
-        "tags": "Теги",
-        "images": "Изображения",
-        "lockedHint": "Заполните основные сведения о личности, чтобы разблокировать остальные разделы."
+        "identity": "Identity",
+        "profile": "Profile",
+        "configuration": "Configuration",
+        "tags": "Tags",
+        "images": "Images",
+        "lockedHint": "Fill in the basic identity details to unlock the other sections."
       }
     },
     "create": {
-      "title": "Создать нового персонажа",
-      "subtitle": "Объедините нарративный контекст, визуальный стиль и настройки модерации. Вы сможете уточнить все позже.",
-      "saveButton": "Сохранить персонажа",
-      "cancelButton": "Отмена и возврат"
+      "title": "Create a new character",
+      "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
+      "saveButton": "Save character",
+      "cancelButton": "Cancel and go back"
     },
     "edit": {
-      "title": "Редактировать персонажа",
-      "subtitle": "Обновление {{name}}",
-      "saveButton": "Обновить персонажа",
-      "cancelButton": "Отменить изменения",
+      "title": "Edit character",
+      "subtitle": "Updating {{name}}",
+      "saveButton": "Update character",
+      "cancelButton": "Discard changes",
       "states": {
-        "loading": "Загрузка персонажа..."
+        "loading": "Loading character..."
       }
     },
     "detail": {
       "states": {
-        "loading": "Загрузка деталей персонажа...",
-        "notFound": "Этот персонаж не найден."
+        "loading": "Loading character details...",
+        "notFound": "We could not find this character."
       },
       "actions": {
-        "backToHub": "Вернуться в хаб",
-        "edit": "Редактировать",
-        "delete": "Удалить",
-        "deleting": "Удаление...",
-        "share": "Поделиться",
-        "startChat": "Начать диалог",
-        "startingChat": "Начало..."
+        "backToHub": "Back to hub",
+        "edit": "Edit",
+        "delete": "Delete",
+        "deleting": "Deleting...",
+        "share": "Share",
+        "startChat": "Start conversation",
+        "startingChat": "Starting..."
       },
       "confirmDelete": {
-        "title": "Удалить персонажа?",
-        "message": "Это действие необратимо. Все данные, связанные с этим персонажем, будут безвозвратно удалены.",
-        "confirm": "Удалить навсегда",
-        "cancel": "Отмена"
+        "title": "Delete Character?",
+        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
+        "confirm": "Delete permanently",
+        "cancel": "Cancel"
       },
       "labels": {
-        "public": "Публичный",
-        "private": "Приватный",
-        "createdAt": "Создан",
-        "createdBy": "Создан",
-        "updatedAt": "Последнее обновление",
-        "identifier": "ID персонажа: {{id}}",
-        "messageCount": "{{count}} сообщение",
-        "messageCount_plural": "{{count}} сообщений",
-        "favoriteCount": "{{count}} избранное",
-        "favoriteCount_plural": "{{count}} избранного",
-        "stats": "Статистика"
+        "public": "Public",
+        "private": "Private",
+        "createdAt": "Created",
+        "createdBy": "Created by",
+        "updatedAt": "Last updated",
+        "identifier": "Character ID: {{id}}",
+        "messageCount": "{{count}} message",
+        "messageCount_plural": "{{count}} messages",
+        "favoriteCount": "{{count}} favorite",
+        "favoriteCount_plural": "{{count}} favorites",
+        "stats": "Statistics"
       },
-      "sampleImages": "Примеры изображений",
+      "sampleImages": "Sample Images",
       "sections": {
-        "physicalCharacteristics": "Внешность",
-        "personality": "Личность",
-        "history": "Предыстория",
-        "contentTags": "Предупреждения о контенте",
-        "metadata": "Теги",
-        "introduction": "Введение",
-        "updateNotes": "Примечания к обновлению"
+        "physicalCharacteristics": "Appearance",
+        "personality": "Personality",
+        "history": "Backstory",
+        "contentTags": "Content warnings",
+        "metadata": "Tags",
+        "introduction": "Introduction",
+        "updateNotes": "Update Notes"
       }
     },
     "errors": {
-      "createFailed": "Не удалось создать персонажа. Пожалуйста, попробуйте еще раз.",
-      "updateFailed": "Не удалось обновить персонажа.",
-      "deleteFailed": "Не удалось удалить персонажа.",
-      "detailUnavailable": "Невозможно загрузить детали персонажа прямо сейчас."
+      "createFailed": "We could not create the character. Please try again.",
+      "updateFailed": "We could not update the character.",
+      "deleteFailed": "We could not delete the character.",
+      "detailUnavailable": "Unable to load character details right now."
     }
   }
 }

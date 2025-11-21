@@ -2,17 +2,17 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "未命名角色",
-      "updatedAt": "{{date}} 更新",
-      "public": "公开",
-      "private": "私密",
-      "identifier": "角色ID：{{id}}",
-      "unsavedChanges": "未保存的更改",
-      "allSaved": "全部保存",
-      "submitting": "正在保存..."
+      "untitledCharacter": "Unnamed Character",
+      "updatedAt": "Updated {{date}}",
+      "public": "Public",
+      "private": "Private",
+      "identifier": "Character ID: {{id}}",
+      "unsavedChanges": "Unsaved changes",
+      "allSaved": "All changes saved",
+      "submitting": "Saving..."
     },
     "ageRatings": {
-      "L": "免费",
+      "L": "Free",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -20,244 +20,270 @@
       "EIGHTEEN": "18+"
     },
     "genders": {
-      "male": "男性",
-      "female": "女性",
-      "non-binary": "非二元性别",
-      "unisex": "通用"
+      "male": "Male",
+      "female": "Female",
+      "non-binary": "Non-binary",
+      "unisex": "Unisex"
     },
     "species": {
-      "human": "人类",
-      "elf": "精灵",
-      "android": "机器人",
-      "vampire": "吸血鬼",
-      "demon": "恶魔",
-      "animal": "动物",
-      "hybrid": "混合体",
-      "robot": "机器人",
-      "other": "其他"
+      "human": "Human",
+      "elf": "Elf",
+      "android": "Android",
+      "vampire": "Vampire",
+      "demon": "Demon",
+      "animal": "Animal",
+      "hybrid": "Hybrid",
+      "robot": "Robot",
+      "other": "Other"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realistic",
+      "SEMI_REALISTIC": "Semi-Realistic",
+      "CARTOON": "Cartoon",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Comic",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "visualStyleDescriptions": {
+      "ANIME": "Japanese anime style",
+      "REALISTIC": "Photorealistic or realistic art",
+      "SEMI_REALISTIC": "Semi-realistic art style",
+      "CARTOON": "Western cartoon style",
+      "MANGA": "Japanese manga/comic style",
+      "MANHWA": "Korean manhwa/webtoon style",
+      "COMIC": "Western comic book style",
+      "CHIBI": "Super deformed/cute style",
+      "PIXEL_ART": "Pixel art/retro game style",
+      "THREE_D": "3D rendered style"
     },
     "contentTags": {
-      "VIOLENCE": "暴力",
-      "GORE": "血腥",
-      "SEXUAL": "性暗示",
-      "NUDITY": "裸露",
-      "LANGUAGE": "粗俗语言",
-      "DRUGS": "毒品",
-      "ALCOHOL": "酒精",
-      "HORROR": "恐怖",
-      "PSYCHOLOGICAL": "心理",
-      "DISCRIMINATION": "歧视",
-      "CRIME": "犯罪",
-      "GAMBLING": "赌博"
+      "VIOLENCE": "Violence",
+      "GORE": "Gore",
+      "SEXUAL": "Sexual",
+      "NUDITY": "Nudity",
+      "LANGUAGE": "Language",
+      "DRUGS": "Drugs",
+      "ALCOHOL": "Alcohol",
+      "HORROR": "Horror",
+      "PSYCHOLOGICAL": "Psychological",
+      "DISCRIMINATION": "Discrimination",
+      "CRIME": "Crime",
+      "GAMBLING": "Gambling"
     },
     "contentTagHints": {
-      "VIOLENCE": "战斗、争斗或攻击性冲突。",
-      "GORE": "血腥的伤害和露骨的细节。",
-      "SEXUAL": "成人主题或暗示。",
-      "NUDITY": "部分或全部裸露。",
-      "LANGUAGE": "露骨或强烈的语言。",
-      "DRUGS": "毒品使用或提及。",
-      "ALCOHOL": "饮酒。",
-      "HORROR": "令人不安的或恐怖的画面。",
-      "PSYCHOLOGICAL": "心理健康或心理紧张。",
-      "DISCRIMINATION": "仇恨言论或偏见。",
-      "CRIME": "犯罪活动主题。",
-      "GAMBLING": "投注或赌博提及。"
+      "VIOLENCE": "Combat, fights or aggressive conflict.",
+      "GORE": "Graphic injuries and explicit detail.",
+      "SEXUAL": "Adult themes or innuendo.",
+      "NUDITY": "Partial or full nudity.",
+      "LANGUAGE": "Explicit or strong language.",
+      "DRUGS": "Drug use or references.",
+      "ALCOHOL": "Alcohol consumption.",
+      "HORROR": "Disturbing or horror imagery.",
+      "PSYCHOLOGICAL": "Mental health or psychological tension.",
+      "DISCRIMINATION": "Hate speech or prejudice.",
+      "CRIME": "Criminal activity themes.",
+      "GAMBLING": "Betting or gambling references."
     },
     "accessibility": {
-      "addToFavorites": "添加到收藏",
-      "removeFromFavorites": "从收藏中移除"
+      "addToFavorites": "Add to favorites",
+      "removeFromFavorites": "Remove from favorites"
     },
     "stats": {
-      "conversations": "对话",
-      "messages": "消息",
-      "favorites": "收藏",
-      "conversationsShort": "{{count}}K 对话",
-      "conversationsShort_plural": "{{count}}K 对话",
-      "favoritesShort": "{{count}}K 收藏",
-      "favoritesShort_plural": "{{count}}K 收藏"
+      "conversations": "Conversations",
+      "messages": "Messages",
+      "favorites": "Favorites",
+      "conversationsShort": "{{count}}K conversations",
+      "conversationsShort_plural": "{{count}}K conversations",
+      "favoritesShort": "{{count}}K favorites",
+      "favoritesShort_plural": "{{count}}K favorites"
     },
     "hub": {
-      "title": "角色",
-      "subtitle": "创建、组织和发展故事、聊天机器人和 AI 体验的演员阵容。",
+      "title": "Characters",
+      "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
       "actions": {
-        "createCharacter": "新建角色",
-        "retry": "重试",
-        "blurSensitive": "模糊敏感内容",
-        "showSensitive": "显示敏感内容"
+        "createCharacter": "New character",
+        "retry": "Try again",
+        "blurSensitive": "Blur sensitive",
+        "showSensitive": "Show sensitive"
       },
       "tabs": {
-        "myCharacters": "我的角色",
-        "publicGallery": "公开图库"
+        "myCharacters": "My characters",
+        "publicGallery": "Public gallery"
       },
       "filters": {
-        "searchPlaceholder": "按名称或风格搜索",
-        "allAgeRatings": "所有年龄分级",
-        "noFilter": "全部"
+        "searchPlaceholder": "Search by name or style",
+        "allAgeRatings": "All age ratings",
+        "noFilter": "Any"
       },
       "states": {
-        "loading": "正在加载您的角色...",
-        "error": "未能加载角色。请重试。",
-        "empty": "尚无可用角色。",
-        "empty_private": "您尚未创建任何角色。",
-        "empty_public": "没有符合您筛选条件的公开角色。",
-        "emptyHint": "开始创建一个角色或调整您的筛选条件。",
-        "emptySearchHint": "调整筛选条件或清除搜索以查看更多结果。"
+        "loading": "Loading your characters...",
+        "error": "We could not load characters. Please try again.",
+        "empty": "No characters available yet.",
+        "empty_private": "You have not created any characters yet.",
+        "empty_public": "No public characters match your filters.",
+        "emptyHint": "Start by crafting a profile or tweak your filters.",
+        "emptySearchHint": "Adjust your filters or clear the search to see more results."
       },
       "labels": {
-        "total": "可用 {{count}} 个角色",
-        "total_plural": "可用 {{count}} 个角色",
-        "quickCreateLink": "直接开始创建"
+        "total": "{{count}} character available",
+        "total_plural": "{{count}} characters available",
+        "quickCreateLink": "Jump straight into creation"
       }
     },
     "form": {
-      "submit": "保存",
-      "cancel": "取消",
+      "submit": "Save",
+      "cancel": "Cancel",
       "sections": {
-        "identity": "身份",
-        "identityHint": "定义人们如何发现和一眼识别此角色。",
-        "profile": "叙事简介",
-        "profileHint": "描述性格、特质和背景故事以指导 AI。",
-        "configuration": "可用性与审核",
-        "configurationHint": "控制角色的显示方式、谁可以访问以及适用的保护措施。",
-        "contentTagsHint": "标记潜在的敏感主题。用户可以根据其偏好筛选掉这些主题。",
-        "contentTagsCharacterHint": "这些主题定义了角色在选定的年龄分级下可以舒适讨论的内容。",
-        "contentTagsUserHint": "选择您想要包含的主题。左侧未勾选的任何内容在该年龄分级下都将被屏蔽。",
-        "contentTagLocked": "在更高的年龄分级下解锁。"
+        "identity": "Identity",
+        "identityHint": "Define how people discover and identify this character at a glance.",
+        "profile": "Narrative profile",
+        "profileHint": "Describe personality, traits and backstory to guide the AI.",
+        "configuration": "Availability & moderation",
+        "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
+        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
+        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
+        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
+        "contentTagLocked": "Unlocked at higher age ratings."
       },
       "fields": {
-        "firstName": "名字",
-        "lastName": "姓氏",
-        "age": "年龄",
-        "gender": "性别",
-        "species": "物种/来源",
-        "style": "视觉或叙事风格",
-        "physicalCharacteristics": "外貌描述",
-        "personality": "性格",
-        "history": "背景故事",
-        "isPublic": "可见性",
-        "ageRating": "年龄分级",
-        "originalLanguageCode": "原始语言",
-        "contentTags": "内容警告",
-        "visibility": "可见性"
+        "firstName": "First name",
+        "lastName": "Last name",
+        "age": "Age",
+        "gender": "Gender",
+        "species": "Species / origin",
+        "style": "Visual style",
+        "reference": "Reference / source",
+        "physicalCharacteristics": "Physical description",
+        "personality": "Personality",
+        "history": "Backstory",
+        "isPublic": "Visibility",
+        "ageRating": "Age rating",
+        "originalLanguageCode": "Original language",
+        "contentTags": "Content warnings",
+        "visibility": "Visibility"
       },
       "placeholders": {
-        "gender": "例如：非二元 AI、机器人、骑士",
-        "species": "例如：人类、精灵、合成人",
-        "style": "例如：黑色电影侦探、柔和动漫、绘画风格",
-        "genderSelect": "选择性别"
+        "gender": "Ex: non-binary AI, android, knight",
+        "species": "Ex: Human, Elf, Synthetic",
+        "style": "Select visual style",
+        "reference": "Ex: One Piece, Marvel Comics, Original",
+        "genderSelect": "Select gender"
       },
       "labels": {
-        "unsavedChanges": "您有未保存的更改",
-        "allSaved": "更改已保存",
-        "submitting": "正在保存...",
-        "visibilityPublic": "公开",
-        "visibilityPrivate": "私密"
+        "unsavedChanges": "You have unsaved changes",
+        "allSaved": "Changes saved",
+        "submitting": "Saving...",
+        "visibilityPublic": "Public",
+        "visibilityPrivate": "Private"
       },
       "avatar": {
-        "upload": "上传图片",
-        "change": "更改图片",
-        "remove": "移除",
-        "uploading": "正在上传...",
-        "helperCreate": "立即选择一个头像，我们将为您保留，直到您填写完表单的其余部分。",
-        "helperEdit": "随时更新头像。更改将在您保存后立即生效。",
-        "error": "无法上传此图片。请尝试其他文件。",
-        "previewAlt": "角色头像预览"
+        "upload": "Upload image",
+        "change": "Change image",
+        "remove": "Remove",
+        "uploading": "Uploading...",
+        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
+        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
+        "error": "We could not upload this image. Try another file.",
+        "previewAlt": "Character avatar preview"
       },
       "images": {
-        "coverHeader": "角色封面",
-        "coverDescription": "用作角色封面的肖像式图片。",
-        "upload": "上传封面",
-        "change": "更改封面",
-        "uploading": "正在上传...",
-        "urlModalTitle": "使用 URL 中的图片",
-        "urlLabel": "图片 URL",
-        "previewAlt": "角色封面预览"
+        "coverHeader": "Character cover",
+        "coverDescription": "Portrait-oriented image used as the character cover.",
+        "upload": "Upload cover",
+        "change": "Change cover",
+        "uploading": "Uploading...",
+        "urlModalTitle": "Use image from URL",
+        "urlLabel": "Image URL",
+        "previewAlt": "Character cover preview"
       },
       "tags": {
-        "searchPlaceholder": "搜索标签（例如，VTuber，女仆）",
-        "selected": "已选标签",
-        "none": "未选择标签",
-        "suggestions": "建议",
-        "loading": "正在加载...",
-        "noResults": "无结果",
-        "incompatibleToast": "部分选定标签与当前年龄分级不兼容。请检查。",
-        "incompatibleHint": "突出显示的标签与当前年龄分级不兼容。移除它们才能继续。",
-        "incompatibleChip": "与当前年龄分级不兼容"
+        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
+        "selected": "Selected tags",
+        "none": "No tags selected",
+        "suggestions": "Suggestions",
+        "loading": "Loading...",
+        "noResults": "No results",
+        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
+        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
+        "incompatibleChip": "Incompatible with current age rating"
       },
       "tabs": {
-        "identity": "身份",
-        "profile": "简介",
-        "configuration": "配置",
-        "tags": "标签",
-        "images": "图片",
-        "lockedHint": "填写基本身份信息以解锁其他部分。"
+        "identity": "Identity",
+        "profile": "Profile",
+        "configuration": "Configuration",
+        "tags": "Tags",
+        "images": "Images",
+        "lockedHint": "Fill in the basic identity details to unlock the other sections."
       }
     },
     "create": {
-      "title": "创建新角色",
-      "subtitle": "结合叙事背景、视觉风格和审核设置。您以后可以随时进行调整。",
-      "saveButton": "保存角色",
-      "cancelButton": "取消并返回"
+      "title": "Create a new character",
+      "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
+      "saveButton": "Save character",
+      "cancelButton": "Cancel and go back"
     },
     "edit": {
-      "title": "编辑角色",
-      "subtitle": "正在更新 {{name}}",
-      "saveButton": "更新角色",
-      "cancelButton": "放弃更改",
+      "title": "Edit character",
+      "subtitle": "Updating {{name}}",
+      "saveButton": "Update character",
+      "cancelButton": "Discard changes",
       "states": {
-        "loading": "正在加载角色..."
+        "loading": "Loading character..."
       }
     },
     "detail": {
       "states": {
-        "loading": "正在加载角色详情...",
-        "notFound": "未找到此角色。"
+        "loading": "Loading character details...",
+        "notFound": "We could not find this character."
       },
       "actions": {
-        "backToHub": "返回主页",
-        "edit": "编辑",
-        "delete": "删除",
-        "deleting": "正在删除...",
-        "share": "分享",
-        "startChat": "开始对话",
-        "startingChat": "正在开始..."
+        "backToHub": "Back to hub",
+        "edit": "Edit",
+        "delete": "Delete",
+        "deleting": "Deleting...",
+        "share": "Share",
+        "startChat": "Start conversation",
+        "startingChat": "Starting..."
       },
       "confirmDelete": {
-        "title": "删除角色？",
-        "message": "此操作无法撤销。与此角色关联的所有数据将被永久删除。",
-        "confirm": "永久删除",
-        "cancel": "取消"
+        "title": "Delete Character?",
+        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
+        "confirm": "Delete permanently",
+        "cancel": "Cancel"
       },
       "labels": {
-        "public": "公开",
-        "private": "私密",
-        "createdAt": "创建于",
-        "createdBy": "创建者",
-        "updatedAt": "最后更新",
-        "identifier": "角色ID：{{id}}",
-        "messageCount": "{{count}} 条消息",
-        "messageCount_plural": "{{count}} 条消息",
-        "favoriteCount": "{{count}} 个收藏",
-        "favoriteCount_plural": "{{count}} 个收藏",
-        "stats": "统计数据"
+        "public": "Public",
+        "private": "Private",
+        "createdAt": "Created",
+        "createdBy": "Created by",
+        "updatedAt": "Last updated",
+        "identifier": "Character ID: {{id}}",
+        "messageCount": "{{count}} message",
+        "messageCount_plural": "{{count}} messages",
+        "favoriteCount": "{{count}} favorite",
+        "favoriteCount_plural": "{{count}} favorites",
+        "stats": "Statistics"
       },
-      "sampleImages": "示例图片",
+      "sampleImages": "Sample Images",
       "sections": {
-        "physicalCharacteristics": "外观",
-        "personality": "性格",
-        "history": "背景故事",
-        "contentTags": "内容警告",
-        "metadata": "标签",
-        "introduction": "介绍",
-        "updateNotes": "更新记录"
+        "physicalCharacteristics": "Appearance",
+        "personality": "Personality",
+        "history": "Backstory",
+        "contentTags": "Content warnings",
+        "metadata": "Tags",
+        "introduction": "Introduction",
+        "updateNotes": "Update Notes"
       }
     },
     "errors": {
-      "createFailed": "未能创建角色。请重试。",
-      "updateFailed": "未能更新角色。",
-      "deleteFailed": "未能删除角色。",
-      "detailUnavailable": "暂时无法加载角色详情。"
+      "createFailed": "We could not create the character. Please try again.",
+      "updateFailed": "We could not update the character.",
+      "deleteFailed": "We could not delete the character.",
+      "detailUnavailable": "Unable to load character details right now."
     }
   }
 }

@@ -8,7 +8,7 @@ import {
 } from '../../../../types/characters';
 import { Visibility } from '../../../../types/common';
 import { useCharacterForm, type UseCharacterFormReturn } from '../hooks/useCharacterForm';
-import { AGE_RATING_OPTIONS, CONTENT_TAG_OPTIONS, GENDER_OPTIONS } from '../utils/constants';
+import { AGE_RATING_OPTIONS, CONTENT_TAG_OPTIONS, GENDER_OPTIONS, VISUAL_STYLE_OPTIONS } from '../utils/constants';
 
 export interface CharacterFormProps {
   initialValues?: Partial<CharacterFormValues>;
@@ -133,15 +133,33 @@ export function CharacterForm({
             />
           </label>
 
-          <label className="flex flex-col gap-2 text-sm md:col-span-2">
+          <label className="flex flex-col gap-2 text-sm">
             <span className="font-medium text-slate-600 dark:text-slate-300">
               {t('characters:form.fields.style')}
             </span>
-            <input
+            <select
               className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               value={values.style ?? ''}
-              onChange={handleTextChange('style')}
-              placeholder={t('characters:form.placeholders.style') ?? ''}
+              onChange={handleSelectChange('style')}
+            >
+              <option value="">{t('characters:form.placeholders.style')}</option>
+              {VISUAL_STYLE_OPTIONS.map(option => (
+                <option key={option} value={option}>
+                  {t(`characters:visualStyles.${option}`)}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="flex flex-col gap-2 text-sm">
+            <span className="font-medium text-slate-600 dark:text-slate-300">
+              {t('characters:form.fields.reference')}
+            </span>
+            <input
+              className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+              value={values.reference ?? ''}
+              onChange={handleTextChange('reference')}
+              placeholder={t('characters:form.placeholders.reference') ?? ''}
             />
           </label>
 

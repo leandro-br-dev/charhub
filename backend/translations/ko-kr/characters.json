@@ -2,262 +2,288 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "이름 없는 캐릭터",
-      "updatedAt": "{{date}}에 업데이트됨",
-      "public": "공개",
-      "private": "비공개",
-      "identifier": "캐릭터 ID: {{id}}",
-      "unsavedChanges": "저장되지 않은 변경 사항",
-      "allSaved": "모든 변경 사항이 저장되었습니다",
-      "submitting": "저장 중..."
+      "untitledCharacter": "Unnamed Character",
+      "updatedAt": "Updated {{date}}",
+      "public": "Public",
+      "private": "Private",
+      "identifier": "Character ID: {{id}}",
+      "unsavedChanges": "Unsaved changes",
+      "allSaved": "All changes saved",
+      "submitting": "Saving..."
     },
     "ageRatings": {
-      "L": "전체 이용가",
-      "TEN": "10세 이상",
-      "TWELVE": "12세 이상",
-      "FOURTEEN": "14세 이상",
-      "SIXTEEN": "16세 이상",
-      "EIGHTEEN": "18세 이상"
+      "L": "Free",
+      "TEN": "10+",
+      "TWELVE": "12+",
+      "FOURTEEN": "14+",
+      "SIXTEEN": "16+",
+      "EIGHTEEN": "18+"
     },
     "genders": {
-      "male": "남성",
-      "female": "여성",
-      "non-binary": "논바이너리",
-      "unisex": "성별 무관"
+      "male": "Male",
+      "female": "Female",
+      "non-binary": "Non-binary",
+      "unisex": "Unisex"
     },
     "species": {
-      "human": "인간",
-      "elf": "엘프",
-      "android": "안드로이드",
-      "vampire": "뱀파이어",
-      "demon": "악마",
-      "animal": "동물",
-      "hybrid": "하이브리드",
-      "robot": "로봇",
-      "other": "기타"
+      "human": "Human",
+      "elf": "Elf",
+      "android": "Android",
+      "vampire": "Vampire",
+      "demon": "Demon",
+      "animal": "Animal",
+      "hybrid": "Hybrid",
+      "robot": "Robot",
+      "other": "Other"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realistic",
+      "SEMI_REALISTIC": "Semi-Realistic",
+      "CARTOON": "Cartoon",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Comic",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "visualStyleDescriptions": {
+      "ANIME": "Japanese anime style",
+      "REALISTIC": "Photorealistic or realistic art",
+      "SEMI_REALISTIC": "Semi-realistic art style",
+      "CARTOON": "Western cartoon style",
+      "MANGA": "Japanese manga/comic style",
+      "MANHWA": "Korean manhwa/webtoon style",
+      "COMIC": "Western comic book style",
+      "CHIBI": "Super deformed/cute style",
+      "PIXEL_ART": "Pixel art/retro game style",
+      "THREE_D": "3D rendered style"
     },
     "contentTags": {
-      "VIOLENCE": "폭력",
-      "GORE": "고어",
-      "SEXUAL": "성적",
-      "NUDITY": "나체",
-      "LANGUAGE": "언어",
-      "DRUGS": "약물",
-      "ALCOHOL": "알코올",
-      "HORROR": "공포",
-      "PSYCHOLOGICAL": "심리",
-      "DISCRIMINATION": "차별",
-      "CRIME": "범죄",
-      "GAMBLING": "도박"
+      "VIOLENCE": "Violence",
+      "GORE": "Gore",
+      "SEXUAL": "Sexual",
+      "NUDITY": "Nudity",
+      "LANGUAGE": "Language",
+      "DRUGS": "Drugs",
+      "ALCOHOL": "Alcohol",
+      "HORROR": "Horror",
+      "PSYCHOLOGICAL": "Psychological",
+      "DISCRIMINATION": "Discrimination",
+      "CRIME": "Crime",
+      "GAMBLING": "Gambling"
     },
     "contentTagHints": {
-      "VIOLENCE": "전투, 싸움 또는 공격적인 갈등.",
-      "GORE": "노골적인 부상 및 명시적인 세부 정보.",
-      "SEXUAL": "성인 테마 또는 암시.",
-      "NUDITY": "부분 또는 전체 나체.",
-      "LANGUAGE": "노골적이거나 강한 언어.",
-      "DRUGS": "약물 사용 또는 언급.",
-      "ALCOHOL": "알코올 소비.",
-      "HORROR": "불안감을 주거나 공포스러운 이미지.",
-      "PSYCHOLOGICAL": "정신 건강 또는 심리적 긴장감.",
-      "DISCRIMINATION": "혐오 발언 또는 편견.",
-      "CRIME": "범죄 활동 테마.",
-      "GAMBLING": "베팅 또는 도박 언급."
+      "VIOLENCE": "Combat, fights or aggressive conflict.",
+      "GORE": "Graphic injuries and explicit detail.",
+      "SEXUAL": "Adult themes or innuendo.",
+      "NUDITY": "Partial or full nudity.",
+      "LANGUAGE": "Explicit or strong language.",
+      "DRUGS": "Drug use or references.",
+      "ALCOHOL": "Alcohol consumption.",
+      "HORROR": "Disturbing or horror imagery.",
+      "PSYCHOLOGICAL": "Mental health or psychological tension.",
+      "DISCRIMINATION": "Hate speech or prejudice.",
+      "CRIME": "Criminal activity themes.",
+      "GAMBLING": "Betting or gambling references."
     },
     "accessibility": {
-      "addToFavorites": "즐겨찾기에 추가",
-      "removeFromFavorites": "즐겨찾기에서 제거"
+      "addToFavorites": "Add to favorites",
+      "removeFromFavorites": "Remove from favorites"
     },
     "stats": {
-      "conversations": "대화",
-      "messages": "메시지",
-      "favorites": "즐겨찾기",
-      "conversationsShort": "{{count}}천 건의 대화",
-      "conversationsShort_plural": "{{count}}천 건의 대화",
-      "favoritesShort": "{{count}}천 건의 즐겨찾기",
-      "favoritesShort_plural": "{{count}}천 건의 즐겨찾기"
+      "conversations": "Conversations",
+      "messages": "Messages",
+      "favorites": "Favorites",
+      "conversationsShort": "{{count}}K conversations",
+      "conversationsShort_plural": "{{count}}K conversations",
+      "favoritesShort": "{{count}}K favorites",
+      "favoritesShort_plural": "{{count}}K favorites"
     },
     "hub": {
-      "title": "캐릭터",
-      "subtitle": "스토리, 챗봇 및 AI 경험을 뒷받침하는 캐릭터를 만들고, 구성하고, 발전시키세요.",
+      "title": "Characters",
+      "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
       "actions": {
-        "createCharacter": "새 캐릭터",
-        "retry": "다시 시도",
-        "blurSensitive": "민감한 내용 흐림 처리",
-        "showSensitive": "민감한 내용 표시"
+        "createCharacter": "New character",
+        "retry": "Try again",
+        "blurSensitive": "Blur sensitive",
+        "showSensitive": "Show sensitive"
       },
       "tabs": {
-        "myCharacters": "내 캐릭터",
-        "publicGallery": "공개 갤러리"
+        "myCharacters": "My characters",
+        "publicGallery": "Public gallery"
       },
       "filters": {
-        "searchPlaceholder": "이름 또는 스타일로 검색",
-        "allAgeRatings": "모든 연령 등급",
-        "noFilter": "전체"
+        "searchPlaceholder": "Search by name or style",
+        "allAgeRatings": "All age ratings",
+        "noFilter": "Any"
       },
       "states": {
-        "loading": "캐릭터를 불러오는 중...",
-        "error": "캐릭터를 불러올 수 없습니다. 다시 시도해 주세요.",
-        "empty": "아직 사용 가능한 캐릭터가 없습니다.",
-        "empty_private": "아직 생성한 캐릭터가 없습니다.",
-        "empty_public": "필터와 일치하는 공개 캐릭터가 없습니다.",
-        "emptyHint": "프로필을 만들거나 필터를 조정하여 시작하세요.",
-        "emptySearchHint": "더 많은 결과를 보려면 필터를 조정하거나 검색을 지우세요."
+        "loading": "Loading your characters...",
+        "error": "We could not load characters. Please try again.",
+        "empty": "No characters available yet.",
+        "empty_private": "You have not created any characters yet.",
+        "empty_public": "No public characters match your filters.",
+        "emptyHint": "Start by crafting a profile or tweak your filters.",
+        "emptySearchHint": "Adjust your filters or clear the search to see more results."
       },
       "labels": {
-        "total": "{{count}}개의 캐릭터 사용 가능",
-        "total_plural": "{{count}}개의 캐릭터 사용 가능",
-        "quickCreateLink": "바로 만들기"
+        "total": "{{count}} character available",
+        "total_plural": "{{count}} characters available",
+        "quickCreateLink": "Jump straight into creation"
       }
     },
     "form": {
-      "submit": "저장",
-      "cancel": "취소",
+      "submit": "Save",
+      "cancel": "Cancel",
       "sections": {
-        "identity": "신원",
-        "identityHint": "사람들이 이 캐릭터를 한눈에 발견하고 식별하는 방법을 정의합니다.",
-        "profile": "서술 프로필",
-        "profileHint": "AI를 안내하기 위해 성격, 특징 및 배경 이야기를 설명합니다.",
-        "configuration": "이용 가능 여부 및 관리",
-        "configurationHint": "캐릭터가 표시되는 방식, 누가 액세스할 수 있는지, 어떤 보호 장치가 적용되는지 제어합니다.",
-        "contentTagsHint": "잠재적으로 민감한 테마를 표시합니다. 사용자는 기본 설정에 따라 이를 필터링할 수 있습니다.",
-        "contentTagsCharacterHint": "이러한 주제는 선택한 연령 등급에서 캐릭터가 논의하기에 편안한 내용을 정의합니다.",
-        "contentTagsUserHint": "포함하려는 테마를 선택합니다. 체크되지 않은 항목은 이 등급에 대해 차단된 상태로 유지됩니다.",
-        "contentTagLocked": "높은 연령 등급에서 잠금 해제됨."
+        "identity": "Identity",
+        "identityHint": "Define how people discover and identify this character at a glance.",
+        "profile": "Narrative profile",
+        "profileHint": "Describe personality, traits and backstory to guide the AI.",
+        "configuration": "Availability & moderation",
+        "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
+        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
+        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
+        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
+        "contentTagLocked": "Unlocked at higher age ratings."
       },
       "fields": {
-        "firstName": "이름",
-        "lastName": "성",
-        "age": "나이",
-        "gender": "성별",
-        "species": "종족 / 출신",
-        "style": "시각 또는 스토리텔링 스타일",
-        "physicalCharacteristics": "신체적 특징",
-        "personality": "성격",
-        "history": "배경 이야기",
-        "isPublic": "가시성",
-        "ageRating": "연령 등급",
-        "originalLanguageCode": "원어",
-        "contentTags": "콘텐츠 경고",
-        "visibility": "가시성"
+        "firstName": "First name",
+        "lastName": "Last name",
+        "age": "Age",
+        "gender": "Gender",
+        "species": "Species / origin",
+        "style": "Visual style",
+        "reference": "Reference / source",
+        "physicalCharacteristics": "Physical description",
+        "personality": "Personality",
+        "history": "Backstory",
+        "isPublic": "Visibility",
+        "ageRating": "Age rating",
+        "originalLanguageCode": "Original language",
+        "contentTags": "Content warnings",
+        "visibility": "Visibility"
       },
       "placeholders": {
-        "gender": "예: 논바이너리 AI, 안드로이드, 기사",
-        "species": "예: 인간, 엘프, 합성체",
-        "style": "예: 느와르 탐정, 파스텔 애니메이션, 페인팅 스타일",
-        "genderSelect": "성별 선택"
+        "gender": "Ex: non-binary AI, android, knight",
+        "species": "Ex: Human, Elf, Synthetic",
+        "style": "Select visual style",
+        "reference": "Ex: One Piece, Marvel Comics, Original",
+        "genderSelect": "Select gender"
       },
       "labels": {
-        "unsavedChanges": "저장되지 않은 변경 사항이 있습니다",
-        "allSaved": "변경 사항 저장됨",
-        "submitting": "저장 중...",
-        "visibilityPublic": "공개",
-        "visibilityPrivate": "비공개"
+        "unsavedChanges": "You have unsaved changes",
+        "allSaved": "Changes saved",
+        "submitting": "Saving...",
+        "visibilityPublic": "Public",
+        "visibilityPrivate": "Private"
       },
       "avatar": {
-        "upload": "이미지 업로드",
-        "change": "이미지 변경",
-        "remove": "삭제",
-        "uploading": "업로드 중...",
-        "helperCreate": "지금 아바타를 선택하면 나머지 양식을 작성하는 동안 유지됩니다.",
-        "helperEdit": "언제든지 아바타를 업데이트하세요. 변경 사항은 저장 즉시 적용됩니다.",
-        "error": "이 이미지를 업로드할 수 없습니다. 다른 파일을 시도하세요.",
-        "previewAlt": "캐릭터 아바타 미리보기"
+        "upload": "Upload image",
+        "change": "Change image",
+        "remove": "Remove",
+        "uploading": "Uploading...",
+        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
+        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
+        "error": "We could not upload this image. Try another file.",
+        "previewAlt": "Character avatar preview"
       },
       "images": {
-        "coverHeader": "캐릭터 커버",
-        "coverDescription": "캐릭터 커버로 사용되는 세로 이미지.",
-        "upload": "커버 업로드",
-        "change": "커버 변경",
-        "uploading": "업로드 중...",
-        "urlModalTitle": "URL에서 이미지 사용",
-        "urlLabel": "이미지 URL",
-        "previewAlt": "캐릭터 커버 미리보기"
+        "coverHeader": "Character cover",
+        "coverDescription": "Portrait-oriented image used as the character cover.",
+        "upload": "Upload cover",
+        "change": "Change cover",
+        "uploading": "Uploading...",
+        "urlModalTitle": "Use image from URL",
+        "urlLabel": "Image URL",
+        "previewAlt": "Character cover preview"
       },
       "tags": {
-        "searchPlaceholder": "태그 검색 (예: VTuber, Maid)",
-        "selected": "선택된 태그",
-        "none": "선택된 태그 없음",
-        "suggestions": "추천",
-        "loading": "불러오는 중...",
-        "noResults": "결과 없음",
-        "incompatibleToast": "선택한 일부 태그는 현재 연령 등급과 호환되지 않습니다. 검토해 주세요.",
-        "incompatibleHint": "강조 표시된 태그는 현재 연령 등급과 호환되지 않습니다. 계속하려면 제거하세요.",
-        "incompatibleChip": "현재 연령 등급과 호환되지 않음"
+        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
+        "selected": "Selected tags",
+        "none": "No tags selected",
+        "suggestions": "Suggestions",
+        "loading": "Loading...",
+        "noResults": "No results",
+        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
+        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
+        "incompatibleChip": "Incompatible with current age rating"
       },
       "tabs": {
-        "identity": "신원",
-        "profile": "프로필",
-        "configuration": "설정",
-        "tags": "태그",
-        "images": "이미지",
-        "lockedHint": "다른 섹션을 잠금 해제하려면 기본 신원 세부 정보를 입력하세요."
+        "identity": "Identity",
+        "profile": "Profile",
+        "configuration": "Configuration",
+        "tags": "Tags",
+        "images": "Images",
+        "lockedHint": "Fill in the basic identity details to unlock the other sections."
       }
     },
     "create": {
-      "title": "새 캐릭터 생성",
-      "subtitle": "서술 컨텍스트, 시각적 스타일 및 관리 설정을 결합합니다. 나중에 모든 것을 다듬을 수 있습니다.",
-      "saveButton": "캐릭터 저장",
-      "cancelButton": "취소하고 돌아가기"
+      "title": "Create a new character",
+      "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
+      "saveButton": "Save character",
+      "cancelButton": "Cancel and go back"
     },
     "edit": {
-      "title": "캐릭터 수정",
-      "subtitle": "{{name}} 업데이트 중",
-      "saveButton": "캐릭터 업데이트",
-      "cancelButton": "변경 내용 폐기",
+      "title": "Edit character",
+      "subtitle": "Updating {{name}}",
+      "saveButton": "Update character",
+      "cancelButton": "Discard changes",
       "states": {
-        "loading": "캐릭터 불러오는 중..."
+        "loading": "Loading character..."
       }
     },
     "detail": {
       "states": {
-        "loading": "캐릭터 세부 정보 불러오는 중...",
-        "notFound": "이 캐릭터를 찾을 수 없습니다."
+        "loading": "Loading character details...",
+        "notFound": "We could not find this character."
       },
       "actions": {
-        "backToHub": "허브로 돌아가기",
-        "edit": "수정",
-        "delete": "삭제",
-        "deleting": "삭제 중...",
-        "share": "공유",
-        "startChat": "대화 시작",
-        "startingChat": "시작 중..."
+        "backToHub": "Back to hub",
+        "edit": "Edit",
+        "delete": "Delete",
+        "deleting": "Deleting...",
+        "share": "Share",
+        "startChat": "Start conversation",
+        "startingChat": "Starting..."
       },
       "confirmDelete": {
-        "title": "캐릭터 삭제?",
-        "message": "이 작업은 되돌릴 수 없습니다. 이 캐릭터와 관련된 모든 데이터는 영구적으로 삭제됩니다.",
-        "confirm": "영구 삭제",
-        "cancel": "취소"
+        "title": "Delete Character?",
+        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
+        "confirm": "Delete permanently",
+        "cancel": "Cancel"
       },
       "labels": {
-        "public": "공개",
-        "private": "비공개",
-        "createdAt": "생성됨",
-        "createdBy": "생성자",
-        "updatedAt": "마지막 업데이트",
-        "identifier": "캐릭터 ID: {{id}}",
-        "messageCount": "{{count}}개의 메시지",
-        "messageCount_plural": "{{count}}개의 메시지",
-        "favoriteCount": "{{count}}개의 즐겨찾기",
-        "favoriteCount_plural": "{{count}}개의 즐겨찾기",
-        "stats": "통계"
+        "public": "Public",
+        "private": "Private",
+        "createdAt": "Created",
+        "createdBy": "Created by",
+        "updatedAt": "Last updated",
+        "identifier": "Character ID: {{id}}",
+        "messageCount": "{{count}} message",
+        "messageCount_plural": "{{count}} messages",
+        "favoriteCount": "{{count}} favorite",
+        "favoriteCount_plural": "{{count}} favorites",
+        "stats": "Statistics"
       },
-      "sampleImages": "샘플 이미지",
+      "sampleImages": "Sample Images",
       "sections": {
-        "physicalCharacteristics": "외모",
-        "personality": "성격",
-        "history": "배경 이야기",
-        "contentTags": "콘텐츠 경고",
-        "metadata": "태그",
-        "introduction": "소개",
-        "updateNotes": "업데이트 노트"
+        "physicalCharacteristics": "Appearance",
+        "personality": "Personality",
+        "history": "Backstory",
+        "contentTags": "Content warnings",
+        "metadata": "Tags",
+        "introduction": "Introduction",
+        "updateNotes": "Update Notes"
       }
     },
     "errors": {
-      "createFailed": "캐릭터를 생성할 수 없습니다. 다시 시도해 주세요.",
-      "updateFailed": "캐릭터를 업데이트할 수 없습니다.",
-      "deleteFailed": "캐릭터를 삭제할 수 없습니다.",
-      "detailUnavailable": "지금은 캐릭터 세부 정보를 로드할 수 없습니다."
+      "createFailed": "We could not create the character. Please try again.",
+      "updateFailed": "We could not update the character.",
+      "deleteFailed": "We could not delete the character.",
+      "detailUnavailable": "Unable to load character details right now."
     }
   }
 }

@@ -36,6 +36,30 @@
       "robot": "Robot",
       "other": "Other"
     },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realistic",
+      "SEMI_REALISTIC": "Semi-Realistic",
+      "CARTOON": "Cartoon",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Comic",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "visualStyleDescriptions": {
+      "ANIME": "Japanese anime style",
+      "REALISTIC": "Photorealistic or realistic art",
+      "SEMI_REALISTIC": "Semi-realistic art style",
+      "CARTOON": "Western cartoon style",
+      "MANGA": "Japanese manga/comic style",
+      "MANHWA": "Korean manhwa/webtoon style",
+      "COMIC": "Western comic book style",
+      "CHIBI": "Super deformed/cute style",
+      "PIXEL_ART": "Pixel art/retro game style",
+      "THREE_D": "3D rendered style"
+    },
     "contentTags": {
       "VIOLENCE": "Violence",
       "GORE": "Gore",
@@ -131,7 +155,8 @@
         "age": "Age",
         "gender": "Gender",
         "species": "Species / origin",
-        "style": "Visual or storytelling style",
+        "style": "Visual style",
+        "reference": "Reference / source",
         "physicalCharacteristics": "Physical description",
         "personality": "Personality",
         "history": "Backstory",
@@ -144,7 +169,8 @@
       "placeholders": {
         "gender": "Ex: non-binary AI, android, knight",
         "species": "Ex: Human, Elf, Synthetic",
-        "style": "Ex: Noir detective, pastel anime, painterly",
+        "style": "Select visual style",
+        "reference": "Ex: One Piece, Marvel Comics, Original",
         "genderSelect": "Select gender"
       },
       "labels": {
