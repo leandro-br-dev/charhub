@@ -2,17 +2,17 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Unnamed Character",
-      "updatedAt": "Updated {{date}}",
-      "public": "Public",
-      "private": "Private",
-      "identifier": "Character ID: {{id}}",
-      "unsavedChanges": "Unsaved changes",
-      "allSaved": "All changes saved",
-      "submitting": "Saving..."
+      "untitledCharacter": "Personaggio senza nome",
+      "updatedAt": "Aggiornato il {{date}}",
+      "public": "Pubblico",
+      "private": "Privato",
+      "identifier": "ID personaggio: {{id}}",
+      "unsavedChanges": "Modifiche non salvate",
+      "allSaved": "Tutte le modifiche salvate",
+      "submitting": "Salvataggio in corso..."
     },
     "ageRatings": {
-      "L": "Free",
+      "L": "Tutti",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -20,270 +20,270 @@
       "EIGHTEEN": "18+"
     },
     "genders": {
-      "male": "Male",
-      "female": "Female",
-      "non-binary": "Non-binary",
+      "male": "Maschio",
+      "female": "Femmina",
+      "non-binary": "Non-binario",
       "unisex": "Unisex"
     },
     "species": {
-      "human": "Human",
-      "elf": "Elf",
-      "android": "Android",
-      "vampire": "Vampire",
-      "demon": "Demon",
-      "animal": "Animal",
-      "hybrid": "Hybrid",
+      "human": "Umano",
+      "elf": "Elfo",
+      "android": "Androide",
+      "vampire": "Vampiro",
+      "demon": "Demone",
+      "animal": "Animale",
+      "hybrid": "Ibrido",
       "robot": "Robot",
-      "other": "Other"
+      "other": "Altro"
     },
     "visualStyles": {
       "ANIME": "Anime",
-      "REALISTIC": "Realistic",
-      "SEMI_REALISTIC": "Semi-Realistic",
-      "CARTOON": "Cartoon",
+      "REALISTIC": "Realistico",
+      "SEMI_REALISTIC": "Semi-realistico",
+      "CARTOON": "Cartone animato",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
-      "COMIC": "Comic",
+      "COMIC": "Fumetto",
       "CHIBI": "Chibi",
       "PIXEL_ART": "Pixel Art",
       "THREE_D": "3D"
     },
     "visualStyleDescriptions": {
-      "ANIME": "Japanese anime style",
-      "REALISTIC": "Photorealistic or realistic art",
-      "SEMI_REALISTIC": "Semi-realistic art style",
-      "CARTOON": "Western cartoon style",
-      "MANGA": "Japanese manga/comic style",
-      "MANHWA": "Korean manhwa/webtoon style",
-      "COMIC": "Western comic book style",
-      "CHIBI": "Super deformed/cute style",
-      "PIXEL_ART": "Pixel art/retro game style",
-      "THREE_D": "3D rendered style"
+      "ANIME": "Stile anime giapponese",
+      "REALISTIC": "Arte fotorealistica o realistica",
+      "SEMI_REALISTIC": "Stile artistico semi-realistico",
+      "CARTOON": "Stile cartone animato occidentale",
+      "MANGA": "Stile manga/fumetto giapponese",
+      "MANHWA": "Stile manhwa/webtoon coreano",
+      "COMIC": "Stile fumetto occidentale",
+      "CHIBI": "Stile super deformed/carino",
+      "PIXEL_ART": "Stile pixel art/videogiochi retro",
+      "THREE_D": "Stile rendering 3D"
     },
     "contentTags": {
-      "VIOLENCE": "Violence",
-      "GORE": "Gore",
-      "SEXUAL": "Sexual",
-      "NUDITY": "Nudity",
-      "LANGUAGE": "Language",
-      "DRUGS": "Drugs",
-      "ALCOHOL": "Alcohol",
+      "VIOLENCE": "Violenza",
+      "GORE": "Sangue",
+      "SEXUAL": "Sessuale",
+      "NUDITY": "Nudità",
+      "LANGUAGE": "Linguaggio esplicito",
+      "DRUGS": "Droghe",
+      "ALCOHOL": "Alcol",
       "HORROR": "Horror",
-      "PSYCHOLOGICAL": "Psychological",
-      "DISCRIMINATION": "Discrimination",
-      "CRIME": "Crime",
-      "GAMBLING": "Gambling"
+      "PSYCHOLOGICAL": "Psicologico",
+      "DISCRIMINATION": "Discriminazione",
+      "CRIME": "Crimine",
+      "GAMBLING": "Gioco d'azzardo"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, fights or aggressive conflict.",
-      "GORE": "Graphic injuries and explicit detail.",
-      "SEXUAL": "Adult themes or innuendo.",
-      "NUDITY": "Partial or full nudity.",
-      "LANGUAGE": "Explicit or strong language.",
-      "DRUGS": "Drug use or references.",
-      "ALCOHOL": "Alcohol consumption.",
-      "HORROR": "Disturbing or horror imagery.",
-      "PSYCHOLOGICAL": "Mental health or psychological tension.",
-      "DISCRIMINATION": "Hate speech or prejudice.",
-      "CRIME": "Criminal activity themes.",
-      "GAMBLING": "Betting or gambling references."
+      "VIOLENCE": "Combattimenti, liti o conflitti aggressivi.",
+      "GORE": "Ferite grafiche e dettagli espliciti.",
+      "SEXUAL": "Temi o allusioni per adulti.",
+      "NUDITY": "Nudità parziale o totale.",
+      "LANGUAGE": "Linguaggio volgare o esplicito.",
+      "DRUGS": "Uso o riferimenti a droghe.",
+      "ALCOHOL": "Consumo di alcol.",
+      "HORROR": "Immagini disturbanti o horror.",
+      "PSYCHOLOGICAL": "Salute mentale o tensione psicologica.",
+      "DISCRIMINATION": "Discorso d'odio o pregiudizio.",
+      "CRIME": "Temi di attività criminale.",
+      "GAMBLING": "Riferimenti a scommesse o gioco d'azzardo."
     },
     "accessibility": {
-      "addToFavorites": "Add to favorites",
-      "removeFromFavorites": "Remove from favorites"
+      "addToFavorites": "Aggiungi ai preferiti",
+      "removeFromFavorites": "Rimuovi dai preferiti"
     },
     "stats": {
-      "conversations": "Conversations",
-      "messages": "Messages",
-      "favorites": "Favorites",
-      "conversationsShort": "{{count}}K conversations",
-      "conversationsShort_plural": "{{count}}K conversations",
-      "favoritesShort": "{{count}}K favorites",
-      "favoritesShort_plural": "{{count}}K favorites"
+      "conversations": "Conversazioni",
+      "messages": "Messaggi",
+      "favorites": "Preferiti",
+      "conversationsShort": "{{count}} mila conversazioni",
+      "conversationsShort_plural": "{{count}} mila conversazioni",
+      "favoritesShort": "{{count}} mila preferiti",
+      "favoritesShort_plural": "{{count}} mila preferiti"
     },
     "hub": {
-      "title": "Characters",
-      "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
+      "title": "Personaggi",
+      "subtitle": "Crea, organizza ed evolve i personaggi che animano le tue storie, gli agenti di chat e le esperienze AI.",
       "actions": {
-        "createCharacter": "New character",
-        "retry": "Try again",
-        "blurSensitive": "Blur sensitive",
-        "showSensitive": "Show sensitive"
+        "createCharacter": "Nuovo personaggio",
+        "retry": "Riprova",
+        "blurSensitive": "Sfoca contenuti sensibili",
+        "showSensitive": "Mostra contenuti sensibili"
       },
       "tabs": {
-        "myCharacters": "My characters",
-        "publicGallery": "Public gallery"
+        "myCharacters": "I miei personaggi",
+        "publicGallery": "Galleria pubblica"
       },
       "filters": {
-        "searchPlaceholder": "Search by name or style",
-        "allAgeRatings": "All age ratings",
-        "noFilter": "Any"
+        "searchPlaceholder": "Cerca per nome o stile",
+        "allAgeRatings": "Tutte le classificazioni per età",
+        "noFilter": "Qualsiasi"
       },
       "states": {
-        "loading": "Loading your characters...",
-        "error": "We could not load characters. Please try again.",
-        "empty": "No characters available yet.",
-        "empty_private": "You have not created any characters yet.",
-        "empty_public": "No public characters match your filters.",
-        "emptyHint": "Start by crafting a profile or tweak your filters.",
-        "emptySearchHint": "Adjust your filters or clear the search to see more results."
+        "loading": "Caricamento dei tuoi personaggi in corso...",
+        "error": "Impossibile caricare i personaggi. Riprova.",
+        "empty": "Nessun personaggio disponibile al momento.",
+        "empty_private": "Non hai ancora creato alcun personaggio.",
+        "empty_public": "Nessun personaggio pubblico corrisponde ai tuoi filtri.",
+        "emptyHint": "Inizia creando un profilo o modifica i tuoi filtri.",
+        "emptySearchHint": "Modifica i tuoi filtri o cancella la ricerca per vedere più risultati."
       },
       "labels": {
-        "total": "{{count}} character available",
-        "total_plural": "{{count}} characters available",
-        "quickCreateLink": "Jump straight into creation"
+        "total": "{{count}} personaggio disponibile",
+        "total_plural": "{{count}} personaggi disponibili",
+        "quickCreateLink": "Passa subito alla creazione"
       }
     },
     "form": {
-      "submit": "Save",
-      "cancel": "Cancel",
+      "submit": "Salva",
+      "cancel": "Annulla",
       "sections": {
-        "identity": "Identity",
-        "identityHint": "Define how people discover and identify this character at a glance.",
-        "profile": "Narrative profile",
-        "profileHint": "Describe personality, traits and backstory to guide the AI.",
-        "configuration": "Availability & moderation",
-        "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
-        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
-        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
-        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
-        "contentTagLocked": "Unlocked at higher age ratings."
+        "identity": "Identità",
+        "identityHint": "Definisci come le persone scoprono e identificano questo personaggio a colpo d'occhio.",
+        "profile": "Profilo narrativo",
+        "profileHint": "Descrivi personalità, tratti e background per guidare l'IA.",
+        "configuration": "Disponibilità e moderazione",
+        "configurationHint": "Controlla come appare il personaggio, chi può accedervi e quali misure di sicurezza si applicano.",
+        "contentTagsHint": "Segnala temi potenzialmente sensibili. Gli utenti possono filtrarli in base alle loro preferenze.",
+        "contentTagsCharacterHint": "Questi argomenti definiscono di cosa il personaggio è a suo agio a discutere alla classificazione per età selezionata.",
+        "contentTagsUserHint": "Seleziona i temi che vuoi includere. Tutto ciò che rimane non selezionato rimane bloccato per questa classificazione.",
+        "contentTagLocked": "Sbloccato a classificazioni per età superiori."
       },
       "fields": {
-        "firstName": "First name",
-        "lastName": "Last name",
-        "age": "Age",
-        "gender": "Gender",
-        "species": "Species / origin",
-        "style": "Visual style",
-        "reference": "Reference / source",
-        "physicalCharacteristics": "Physical description",
-        "personality": "Personality",
-        "history": "Backstory",
-        "isPublic": "Visibility",
-        "ageRating": "Age rating",
-        "originalLanguageCode": "Original language",
-        "contentTags": "Content warnings",
-        "visibility": "Visibility"
+        "firstName": "Nome",
+        "lastName": "Cognome",
+        "age": "Età",
+        "gender": "Genere",
+        "species": "Specie / origine",
+        "style": "Stile visivo",
+        "reference": "Riferimento / fonte",
+        "physicalCharacteristics": "Descrizione fisica",
+        "personality": "Personalità",
+        "history": "Background",
+        "isPublic": "Visibilità",
+        "ageRating": "Classificazione per età",
+        "originalLanguageCode": "Lingua originale",
+        "contentTags": "Avvisi sui contenuti",
+        "visibility": "Visibilità"
       },
       "placeholders": {
-        "gender": "Ex: non-binary AI, android, knight",
-        "species": "Ex: Human, Elf, Synthetic",
-        "style": "Select visual style",
-        "reference": "Ex: One Piece, Marvel Comics, Original",
-        "genderSelect": "Select gender"
+        "gender": "Es: IA non binaria, androide, cavaliere",
+        "species": "Es: Umano, Elfo, Sintetico",
+        "style": "Seleziona lo stile visivo",
+        "reference": "Es: One Piece, Marvel Comics, Originale",
+        "genderSelect": "Seleziona genere"
       },
       "labels": {
-        "unsavedChanges": "You have unsaved changes",
-        "allSaved": "Changes saved",
-        "submitting": "Saving...",
-        "visibilityPublic": "Public",
-        "visibilityPrivate": "Private"
+        "unsavedChanges": "Hai modifiche non salvate",
+        "allSaved": "Modifiche salvate",
+        "submitting": "Salvataggio in corso...",
+        "visibilityPublic": "Pubblico",
+        "visibilityPrivate": "Privato"
       },
       "avatar": {
-        "upload": "Upload image",
-        "change": "Change image",
-        "remove": "Remove",
-        "uploading": "Uploading...",
-        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
-        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
-        "error": "We could not upload this image. Try another file.",
-        "previewAlt": "Character avatar preview"
+        "upload": "Carica immagine",
+        "change": "Cambia immagine",
+        "remove": "Rimuovi",
+        "uploading": "Caricamento in corso...",
+        "helperCreate": "Scegli subito un avatar e lo manterremo mentre compili il resto del modulo.",
+        "helperEdit": "Aggiorna l'avatar quando vuoi. Le modifiche si applicano appena salvi.",
+        "error": "Impossibile caricare questa immagine. Prova un altro file.",
+        "previewAlt": "Anteprima avatar personaggio"
       },
       "images": {
-        "coverHeader": "Character cover",
-        "coverDescription": "Portrait-oriented image used as the character cover.",
-        "upload": "Upload cover",
-        "change": "Change cover",
-        "uploading": "Uploading...",
-        "urlModalTitle": "Use image from URL",
-        "urlLabel": "Image URL",
-        "previewAlt": "Character cover preview"
+        "coverHeader": "Copertina personaggio",
+        "coverDescription": "Immagine orientata in verticale utilizzata come copertina del personaggio.",
+        "upload": "Carica copertina",
+        "change": "Cambia copertina",
+        "uploading": "Caricamento in corso...",
+        "urlModalTitle": "Usa immagine da URL",
+        "urlLabel": "URL immagine",
+        "previewAlt": "Anteprima copertina personaggio"
       },
       "tags": {
-        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
-        "selected": "Selected tags",
-        "none": "No tags selected",
-        "suggestions": "Suggestions",
-        "loading": "Loading...",
-        "noResults": "No results",
-        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
-        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
-        "incompatibleChip": "Incompatible with current age rating"
+        "searchPlaceholder": "Cerca tag (es: VTuber, Maid)",
+        "selected": "Tag selezionati",
+        "none": "Nessun tag selezionato",
+        "suggestions": "Suggerimenti",
+        "loading": "Caricamento in corso...",
+        "noResults": "Nessun risultato",
+        "incompatibleToast": "Alcuni tag selezionati sono incompatibili con la classificazione per età attuale. Rivedere.",
+        "incompatibleHint": "I tag evidenziati sono incompatibili con la classificazione per età selezionata. Rimuovili per continuare.",
+        "incompatibleChip": "Incompatibile con la classificazione per età attuale"
       },
       "tabs": {
-        "identity": "Identity",
-        "profile": "Profile",
-        "configuration": "Configuration",
-        "tags": "Tags",
-        "images": "Images",
-        "lockedHint": "Fill in the basic identity details to unlock the other sections."
+        "identity": "Identità",
+        "profile": "Profilo",
+        "configuration": "Configurazione",
+        "tags": "Tag",
+        "images": "Immagini",
+        "lockedHint": "Compila i dettagli di base dell'identità per sbloccare le altre sezioni."
       }
     },
     "create": {
-      "title": "Create a new character",
-      "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
-      "saveButton": "Save character",
-      "cancelButton": "Cancel and go back"
+      "title": "Crea un nuovo personaggio",
+      "subtitle": "Combina contesto narrativo, stile visivo e impostazioni di moderazione. Puoi perfezionare tutto in seguito.",
+      "saveButton": "Salva personaggio",
+      "cancelButton": "Annulla e torna indietro"
     },
     "edit": {
-      "title": "Edit character",
-      "subtitle": "Updating {{name}}",
-      "saveButton": "Update character",
-      "cancelButton": "Discard changes",
+      "title": "Modifica personaggio",
+      "subtitle": "Aggiornamento di {{name}}",
+      "saveButton": "Aggiorna personaggio",
+      "cancelButton": "Scarta modifiche",
       "states": {
-        "loading": "Loading character..."
+        "loading": "Caricamento del personaggio in corso..."
       }
     },
     "detail": {
       "states": {
-        "loading": "Loading character details...",
-        "notFound": "We could not find this character."
+        "loading": "Caricamento dettagli personaggio in corso...",
+        "notFound": "Non è stato possibile trovare questo personaggio."
       },
       "actions": {
-        "backToHub": "Back to hub",
-        "edit": "Edit",
-        "delete": "Delete",
-        "deleting": "Deleting...",
-        "share": "Share",
-        "startChat": "Start conversation",
-        "startingChat": "Starting..."
+        "backToHub": "Torna all'hub",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "deleting": "Eliminazione in corso...",
+        "share": "Condividi",
+        "startChat": "Inizia conversazione",
+        "startingChat": "Avvio in corso..."
       },
       "confirmDelete": {
-        "title": "Delete Character?",
-        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
-        "confirm": "Delete permanently",
-        "cancel": "Cancel"
+        "title": "Eliminare il Personaggio?",
+        "message": "Questa azione non può essere annullata. Tutti i dati associati a questo personaggio verranno eliminati definitivamente.",
+        "confirm": "Elimina definitivamente",
+        "cancel": "Annulla"
       },
       "labels": {
-        "public": "Public",
-        "private": "Private",
-        "createdAt": "Created",
-        "createdBy": "Created by",
-        "updatedAt": "Last updated",
-        "identifier": "Character ID: {{id}}",
-        "messageCount": "{{count}} message",
-        "messageCount_plural": "{{count}} messages",
-        "favoriteCount": "{{count}} favorite",
-        "favoriteCount_plural": "{{count}} favorites",
-        "stats": "Statistics"
+        "public": "Pubblico",
+        "private": "Privato",
+        "createdAt": "Creato il",
+        "createdBy": "Creato da",
+        "updatedAt": "Ultimo aggiornamento",
+        "identifier": "ID personaggio: {{id}}",
+        "messageCount": "{{count}} messaggio",
+        "messageCount_plural": "{{count}} messaggi",
+        "favoriteCount": "{{count}} preferito",
+        "favoriteCount_plural": "{{count}} preferiti",
+        "stats": "Statistiche"
       },
-      "sampleImages": "Sample Images",
+      "sampleImages": "Immagini di esempio",
       "sections": {
-        "physicalCharacteristics": "Appearance",
-        "personality": "Personality",
-        "history": "Backstory",
-        "contentTags": "Content warnings",
-        "metadata": "Tags",
-        "introduction": "Introduction",
-        "updateNotes": "Update Notes"
+        "physicalCharacteristics": "Aspetto",
+        "personality": "Personalità",
+        "history": "Background",
+        "contentTags": "Avvisi sui contenuti",
+        "metadata": "Tag",
+        "introduction": "Introduzione",
+        "updateNotes": "Note di aggiornamento"
       }
     },
     "errors": {
-      "createFailed": "We could not create the character. Please try again.",
-      "updateFailed": "We could not update the character.",
-      "deleteFailed": "We could not delete the character.",
-      "detailUnavailable": "Unable to load character details right now."
+      "createFailed": "Impossibile creare il personaggio. Riprova.",
+      "updateFailed": "Impossibile aggiornare il personaggio.",
+      "deleteFailed": "Impossibile eliminare il personaggio.",
+      "detailUnavailable": "Impossibile caricare i dettagli del personaggio al momento."
     }
   }
 }

@@ -5,8 +5,8 @@ import { config } from 'dotenv';
 import { callLLM } from '../services/llm';
 import type { LLMProvider } from '../services/llm';
 
-// Load environment variables from .env file
-config({ path: path.resolve(__dirname, '../../.env') });
+// Load environment variables from root .env file
+config({ path: path.resolve(__dirname, '../../../.env') });
 
 const TRANSLATIONS_ROOT = path.resolve(__dirname, '../../translations');
 const SOURCE_FOLDER = '_source';

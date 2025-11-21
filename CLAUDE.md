@@ -98,8 +98,8 @@ For a deeper tree, see `docs/PROJECT_OVERVIEW.md`.
 
 ## Development Workflow
 
-1. **Environment**: Copy `.env.example` to `.env` (root, backend, frontend) and fill values locally. Keep secrets out of git.
-2. **Translations**: Run `npm run build:translations` (backend) after changing locale source files.
+1. **Environment**: Copy `.env.example` to `.env` (root) and fill values locally. Keep secrets out of git. Note: The `.env` file is now unified at the project root (not in backend/ or frontend/ subdirectories).
+2. **Translations**: Run `npm run build:translations` (from backend directory) after changing locale source files. The script automatically loads environment variables from the root `.env` file (including `GEMINI_API_KEY` for AI-powered translations).
 3. **Docker**: `docker compose up --build` to run the full stack; services mount translations and tunnel configs automatically.
 4. **Local Dev**: Back-end `npm run dev`; front-end `npm run dev`. Keep Vite proxy aligned with backend base URL.
 5. **Database Operations**: See detailed section "Database Operations (Prisma)" below for CRITICAL migration management rules.

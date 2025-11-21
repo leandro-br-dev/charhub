@@ -2,288 +2,288 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Unnamed Character",
-      "updatedAt": "Updated {{date}}",
-      "public": "Public",
-      "private": "Private",
-      "identifier": "Character ID: {{id}}",
-      "unsavedChanges": "Unsaved changes",
-      "allSaved": "All changes saved",
-      "submitting": "Saving..."
+      "untitledCharacter": "無題のキャラクター",
+      "updatedAt": "{{date}} 更新",
+      "public": "公開",
+      "private": "非公開",
+      "identifier": "キャラクターID: {{id}}",
+      "unsavedChanges": "未保存の変更があります",
+      "allSaved": "すべて保存されました",
+      "submitting": "保存中..."
     },
     "ageRatings": {
-      "L": "Free",
-      "TEN": "10+",
-      "TWELVE": "12+",
-      "FOURTEEN": "14+",
-      "SIXTEEN": "16+",
-      "EIGHTEEN": "18+"
+      "L": "全年齢",
+      "TEN": "10歳以上",
+      "TWELVE": "12歳以上",
+      "FOURTEEN": "14歳以上",
+      "SIXTEEN": "16歳以上",
+      "EIGHTEEN": "18歳以上"
     },
     "genders": {
-      "male": "Male",
-      "female": "Female",
-      "non-binary": "Non-binary",
-      "unisex": "Unisex"
+      "male": "男性",
+      "female": "女性",
+      "non-binary": "ノンバイナリー",
+      "unisex": "ユニセックス"
     },
     "species": {
-      "human": "Human",
-      "elf": "Elf",
-      "android": "Android",
-      "vampire": "Vampire",
-      "demon": "Demon",
-      "animal": "Animal",
-      "hybrid": "Hybrid",
-      "robot": "Robot",
-      "other": "Other"
+      "human": "人間",
+      "elf": "エルフ",
+      "android": "アンドロイド",
+      "vampire": "吸血鬼",
+      "demon": "悪魔",
+      "animal": "動物",
+      "hybrid": "ハイブリッド",
+      "robot": "ロボット",
+      "other": "その他"
     },
     "visualStyles": {
       "ANIME": "Anime",
-      "REALISTIC": "Realistic",
-      "SEMI_REALISTIC": "Semi-Realistic",
-      "CARTOON": "Cartoon",
+      "REALISTIC": "写実的",
+      "SEMI_REALISTIC": "半写実的",
+      "CARTOON": "カートゥーン",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
-      "COMIC": "Comic",
-      "CHIBI": "Chibi",
-      "PIXEL_ART": "Pixel Art",
+      "COMIC": "コミック",
+      "CHIBI": "ちび",
+      "PIXEL_ART": "ピクセルアート",
       "THREE_D": "3D"
     },
     "visualStyleDescriptions": {
-      "ANIME": "Japanese anime style",
-      "REALISTIC": "Photorealistic or realistic art",
-      "SEMI_REALISTIC": "Semi-realistic art style",
-      "CARTOON": "Western cartoon style",
-      "MANGA": "Japanese manga/comic style",
-      "MANHWA": "Korean manhwa/webtoon style",
-      "COMIC": "Western comic book style",
-      "CHIBI": "Super deformed/cute style",
-      "PIXEL_ART": "Pixel art/retro game style",
-      "THREE_D": "3D rendered style"
+      "ANIME": "日本のアニメ風",
+      "REALISTIC": "写実的またはリアルなアート",
+      "SEMI_REALISTIC": "半写実的なアートスタイル",
+      "CARTOON": "欧米のカートゥーン風",
+      "MANGA": "日本の漫画/コミック風",
+      "MANHWA": "韓国のマンファ/ウェブトゥーン風",
+      "COMIC": "欧米のコミックブック風",
+      "CHIBI": "デフォルメされたかわいいスタイル",
+      "PIXEL_ART": "ピクセルアート/レトロゲーム風",
+      "THREE_D": "3Dレンダリングスタイル"
     },
     "contentTags": {
-      "VIOLENCE": "Violence",
-      "GORE": "Gore",
-      "SEXUAL": "Sexual",
-      "NUDITY": "Nudity",
-      "LANGUAGE": "Language",
-      "DRUGS": "Drugs",
-      "ALCOHOL": "Alcohol",
-      "HORROR": "Horror",
-      "PSYCHOLOGICAL": "Psychological",
-      "DISCRIMINATION": "Discrimination",
-      "CRIME": "Crime",
-      "GAMBLING": "Gambling"
+      "VIOLENCE": "暴力",
+      "GORE": "ゴア",
+      "SEXUAL": "性的",
+      "NUDITY": "ヌード",
+      "LANGUAGE": "言葉遣い",
+      "DRUGS": "薬物",
+      "ALCOHOL": "アルコール",
+      "HORROR": "ホラー",
+      "PSYCHOLOGICAL": "心理",
+      "DISCRIMINATION": "差別",
+      "CRIME": "犯罪",
+      "GAMBLING": "ギャンブル"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, fights or aggressive conflict.",
-      "GORE": "Graphic injuries and explicit detail.",
-      "SEXUAL": "Adult themes or innuendo.",
-      "NUDITY": "Partial or full nudity.",
-      "LANGUAGE": "Explicit or strong language.",
-      "DRUGS": "Drug use or references.",
-      "ALCOHOL": "Alcohol consumption.",
-      "HORROR": "Disturbing or horror imagery.",
-      "PSYCHOLOGICAL": "Mental health or psychological tension.",
-      "DISCRIMINATION": "Hate speech or prejudice.",
-      "CRIME": "Criminal activity themes.",
-      "GAMBLING": "Betting or gambling references."
+      "VIOLENCE": "戦闘、喧嘩、攻撃的な対立。",
+      "GORE": "露骨な怪我や詳細な描写。",
+      "SEXUAL": "成人向けテーマまたはそれを示唆するもの。",
+      "NUDITY": "一部または全面の露出。",
+      "LANGUAGE": "露骨または強い言葉遣い。",
+      "DRUGS": "薬物の使用または言及。",
+      "ALCOHOL": "アルコールの摂取。",
+      "HORROR": "不気味またはホラーなイメージ。",
+      "PSYCHOLOGICAL": "メンタルヘルスまたは心理的な緊張。",
+      "DISCRIMINATION": "ヘイトスピーチまたは偏見。",
+      "CRIME": "犯罪活動のテーマ。",
+      "GAMBLING": "賭けやギャンブルの言及。"
     },
     "accessibility": {
-      "addToFavorites": "Add to favorites",
-      "removeFromFavorites": "Remove from favorites"
+      "addToFavorites": "お気に入りに追加",
+      "removeFromFavorites": "お気に入りから削除"
     },
     "stats": {
-      "conversations": "Conversations",
-      "messages": "Messages",
-      "favorites": "Favorites",
-      "conversationsShort": "{{count}}K conversations",
-      "conversationsShort_plural": "{{count}}K conversations",
-      "favoritesShort": "{{count}}K favorites",
-      "favoritesShort_plural": "{{count}}K favorites"
+      "conversations": "会話",
+      "messages": "メッセージ",
+      "favorites": "お気に入り",
+      "conversationsShort": "{{count}}K件の会話",
+      "conversationsShort_plural": "{{count}}K件の会話",
+      "favoritesShort": "{{count}}K件のお気に入り",
+      "favoritesShort_plural": "{{count}}K件のお気に入り"
     },
     "hub": {
-      "title": "Characters",
-      "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
+      "title": "キャラクター",
+      "subtitle": "あなたのストーリー、チャットエージェント、AI体験を支えるキャラクターを作成、整理、進化させましょう。",
       "actions": {
-        "createCharacter": "New character",
-        "retry": "Try again",
-        "blurSensitive": "Blur sensitive",
-        "showSensitive": "Show sensitive"
+        "createCharacter": "新規キャラクター",
+        "retry": "再試行",
+        "blurSensitive": "センシティブな内容をぼかす",
+        "showSensitive": "センシティブな内容を表示"
       },
       "tabs": {
-        "myCharacters": "My characters",
-        "publicGallery": "Public gallery"
+        "myCharacters": "マイキャラクター",
+        "publicGallery": "公開ギャラリー"
       },
       "filters": {
-        "searchPlaceholder": "Search by name or style",
-        "allAgeRatings": "All age ratings",
-        "noFilter": "Any"
+        "searchPlaceholder": "名前またはスタイルで検索",
+        "allAgeRatings": "すべての年齢制限",
+        "noFilter": "すべて"
       },
       "states": {
-        "loading": "Loading your characters...",
-        "error": "We could not load characters. Please try again.",
-        "empty": "No characters available yet.",
-        "empty_private": "You have not created any characters yet.",
-        "empty_public": "No public characters match your filters.",
-        "emptyHint": "Start by crafting a profile or tweak your filters.",
-        "emptySearchHint": "Adjust your filters or clear the search to see more results."
+        "loading": "キャラクターを読み込んでいます...",
+        "error": "キャラクターを読み込めませんでした。もう一度お試しください。",
+        "empty": "まだキャラクターがありません。",
+        "empty_private": "キャラクターを作成していません。",
+        "empty_public": "フィルターに一致する公開キャラクターがありません。",
+        "emptyHint": "プロファイルを作成するか、フィルターを調整してください。",
+        "emptySearchHint": "フィルターを調整するか、検索をクリアしてさらに結果を表示してください。"
       },
       "labels": {
-        "total": "{{count}} character available",
-        "total_plural": "{{count}} characters available",
-        "quickCreateLink": "Jump straight into creation"
+        "total": "{{count}}件のキャラクターが利用可能",
+        "total_plural": "{{count}}件のキャラクターが利用可能",
+        "quickCreateLink": "すぐに作成を開始"
       }
     },
     "form": {
-      "submit": "Save",
-      "cancel": "Cancel",
+      "submit": "保存",
+      "cancel": "キャンセル",
       "sections": {
-        "identity": "Identity",
-        "identityHint": "Define how people discover and identify this character at a glance.",
-        "profile": "Narrative profile",
-        "profileHint": "Describe personality, traits and backstory to guide the AI.",
-        "configuration": "Availability & moderation",
-        "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
-        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
-        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
-        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
-        "contentTagLocked": "Unlocked at higher age ratings."
+        "identity": "アイデンティティ",
+        "identityHint": "人々がこのキャラクターをどのように発見し、一目で識別できるかを定義します。",
+        "profile": "ナラティブプロフィール",
+        "profileHint": "AIのガイドとなるように、性格、特性、バックストーリーを記述します。",
+        "configuration": "利用可能性とモデレーション",
+        "configurationHint": "キャラクターの表示方法、アクセスできるユーザー、適用される保護策を制御します。",
+        "contentTagsHint": "潜在的にセンシティブなテーマにマークを付けます。ユーザーは好みに基づいてそれらをフィルターできます。",
+        "contentTagsCharacterHint": "これらのトピックは、選択した年齢制限でキャラクターがどの程度快適に会話できるかを定義します。",
+        "contentTagsUserHint": "含めたいテーマを選択します。チェックされていないものはすべて、この年齢制限でブロックされたままになります。",
+        "contentTagLocked": "より高い年齢制限でロック解除されます。"
       },
       "fields": {
-        "firstName": "First name",
-        "lastName": "Last name",
-        "age": "Age",
-        "gender": "Gender",
-        "species": "Species / origin",
-        "style": "Visual style",
-        "reference": "Reference / source",
-        "physicalCharacteristics": "Physical description",
-        "personality": "Personality",
-        "history": "Backstory",
-        "isPublic": "Visibility",
-        "ageRating": "Age rating",
-        "originalLanguageCode": "Original language",
-        "contentTags": "Content warnings",
-        "visibility": "Visibility"
+        "firstName": "名",
+        "lastName": "姓",
+        "age": "年齢",
+        "gender": "性別",
+        "species": "種族/出身",
+        "style": "ビジュアルスタイル",
+        "reference": "参照/ソース",
+        "physicalCharacteristics": "身体的特徴",
+        "personality": "性格",
+        "history": "バックストーリー",
+        "isPublic": "可視性",
+        "ageRating": "年齢制限",
+        "originalLanguageCode": "元の言語",
+        "contentTags": "コンテンツ警告",
+        "visibility": "可視性"
       },
       "placeholders": {
-        "gender": "Ex: non-binary AI, android, knight",
-        "species": "Ex: Human, Elf, Synthetic",
-        "style": "Select visual style",
-        "reference": "Ex: One Piece, Marvel Comics, Original",
-        "genderSelect": "Select gender"
+        "gender": "例: ノンバイナリーAI、アンドロイド、騎士",
+        "species": "例: 人間、エルフ、合成体",
+        "style": "ビジュアルスタイルを選択",
+        "reference": "例: One Piece、Marvel Comics、オリジナル",
+        "genderSelect": "性別を選択"
       },
       "labels": {
-        "unsavedChanges": "You have unsaved changes",
-        "allSaved": "Changes saved",
-        "submitting": "Saving...",
-        "visibilityPublic": "Public",
-        "visibilityPrivate": "Private"
+        "unsavedChanges": "未保存の変更があります",
+        "allSaved": "変更が保存されました",
+        "submitting": "保存中...",
+        "visibilityPublic": "公開",
+        "visibilityPrivate": "非公開"
       },
       "avatar": {
-        "upload": "Upload image",
-        "change": "Change image",
-        "remove": "Remove",
-        "uploading": "Uploading...",
-        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
-        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
-        "error": "We could not upload this image. Try another file.",
-        "previewAlt": "Character avatar preview"
+        "upload": "画像をアップロード",
+        "change": "画像を変更",
+        "remove": "削除",
+        "uploading": "アップロード中...",
+        "helperCreate": "今すぐアバターを選択してください。残りのフォームは後で入力してください。",
+        "helperEdit": "いつでもアバターを更新できます。変更は保存するとすぐに適用されます。",
+        "error": "この画像をアップロードできませんでした。別のファイルをお試しください。",
+        "previewAlt": "キャラクターアバタープレビュー"
       },
       "images": {
-        "coverHeader": "Character cover",
-        "coverDescription": "Portrait-oriented image used as the character cover.",
-        "upload": "Upload cover",
-        "change": "Change cover",
-        "uploading": "Uploading...",
-        "urlModalTitle": "Use image from URL",
-        "urlLabel": "Image URL",
-        "previewAlt": "Character cover preview"
+        "coverHeader": "キャラクターカバー",
+        "coverDescription": "キャラクターカバーとして使用される縦長の画像。",
+        "upload": "カバーをアップロード",
+        "change": "カバーを変更",
+        "uploading": "アップロード中...",
+        "urlModalTitle": "URLから画像を使用",
+        "urlLabel": "画像URL",
+        "previewAlt": "キャラクターカバープレビュー"
       },
       "tags": {
-        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
-        "selected": "Selected tags",
-        "none": "No tags selected",
-        "suggestions": "Suggestions",
-        "loading": "Loading...",
-        "noResults": "No results",
-        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
-        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
-        "incompatibleChip": "Incompatible with current age rating"
+        "searchPlaceholder": "タグを検索 (例: VTuber, メイド)",
+        "selected": "選択されたタグ",
+        "none": "タグが選択されていません",
+        "suggestions": "提案",
+        "loading": "読み込み中...",
+        "noResults": "結果なし",
+        "incompatibleToast": "選択されたタグの一部は現在の年齢制限と互換性がありません。確認してください。",
+        "incompatibleHint": "ハイライトされているタグは現在の年齢制限と互換性がありません。続行するには削除してください。",
+        "incompatibleChip": "現在の年齢制限と互換性がありません"
       },
       "tabs": {
-        "identity": "Identity",
-        "profile": "Profile",
-        "configuration": "Configuration",
-        "tags": "Tags",
-        "images": "Images",
-        "lockedHint": "Fill in the basic identity details to unlock the other sections."
+        "identity": "アイデンティティ",
+        "profile": "プロフィール",
+        "configuration": "設定",
+        "tags": "タグ",
+        "images": "画像",
+        "lockedHint": "基本のアイデンティティ詳細を入力すると、他のセクションがアンロックされます。"
       }
     },
     "create": {
-      "title": "Create a new character",
-      "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
-      "saveButton": "Save character",
-      "cancelButton": "Cancel and go back"
+      "title": "新規キャラクターを作成",
+      "subtitle": "ナラティブコンテキスト、ビジュアルスタイル、モデレーション設定を組み合わせます。後ですべてを調整できます。",
+      "saveButton": "キャラクターを保存",
+      "cancelButton": "キャンセルして戻る"
     },
     "edit": {
-      "title": "Edit character",
-      "subtitle": "Updating {{name}}",
-      "saveButton": "Update character",
-      "cancelButton": "Discard changes",
+      "title": "キャラクターを編集",
+      "subtitle": "{{name}} を更新中",
+      "saveButton": "キャラクターを更新",
+      "cancelButton": "変更を破棄",
       "states": {
-        "loading": "Loading character..."
+        "loading": "キャラクターを読み込んでいます..."
       }
     },
     "detail": {
       "states": {
-        "loading": "Loading character details...",
-        "notFound": "We could not find this character."
+        "loading": "キャラクターの詳細を読み込んでいます...",
+        "notFound": "このキャラクターを見つけることができませんでした。"
       },
       "actions": {
-        "backToHub": "Back to hub",
-        "edit": "Edit",
-        "delete": "Delete",
-        "deleting": "Deleting...",
-        "share": "Share",
-        "startChat": "Start conversation",
-        "startingChat": "Starting..."
+        "backToHub": "ハブに戻る",
+        "edit": "編集",
+        "delete": "削除",
+        "deleting": "削除中...",
+        "share": "共有",
+        "startChat": "会話を開始",
+        "startingChat": "開始中..."
       },
       "confirmDelete": {
-        "title": "Delete Character?",
-        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
-        "confirm": "Delete permanently",
-        "cancel": "Cancel"
+        "title": "キャラクターを削除しますか？",
+        "message": "この操作は元に戻せません。このキャラクターに関連するすべてのデータは永久に削除されます。",
+        "confirm": "永久に削除",
+        "cancel": "キャンセル"
       },
       "labels": {
-        "public": "Public",
-        "private": "Private",
-        "createdAt": "Created",
-        "createdBy": "Created by",
-        "updatedAt": "Last updated",
-        "identifier": "Character ID: {{id}}",
-        "messageCount": "{{count}} message",
-        "messageCount_plural": "{{count}} messages",
-        "favoriteCount": "{{count}} favorite",
-        "favoriteCount_plural": "{{count}} favorites",
-        "stats": "Statistics"
+        "public": "公開",
+        "private": "非公開",
+        "createdAt": "作成日",
+        "createdBy": "作成者",
+        "updatedAt": "最終更新日",
+        "identifier": "キャラクターID: {{id}}",
+        "messageCount": "{{count}}件のメッセージ",
+        "messageCount_plural": "{{count}}件のメッセージ",
+        "favoriteCount": "{{count}}件のお気に入り",
+        "favoriteCount_plural": "{{count}}件のお気に入り",
+        "stats": "統計"
       },
-      "sampleImages": "Sample Images",
+      "sampleImages": "サンプル画像",
       "sections": {
-        "physicalCharacteristics": "Appearance",
-        "personality": "Personality",
-        "history": "Backstory",
-        "contentTags": "Content warnings",
-        "metadata": "Tags",
-        "introduction": "Introduction",
-        "updateNotes": "Update Notes"
+        "physicalCharacteristics": "外見",
+        "personality": "性格",
+        "history": "バックストーリー",
+        "contentTags": "コンテンツ警告",
+        "metadata": "タグ",
+        "introduction": "自己紹介",
+        "updateNotes": "更新履歴"
       }
     },
     "errors": {
-      "createFailed": "We could not create the character. Please try again.",
-      "updateFailed": "We could not update the character.",
-      "deleteFailed": "We could not delete the character.",
-      "detailUnavailable": "Unable to load character details right now."
+      "createFailed": "キャラクターを作成できませんでした。もう一度お試しください。",
+      "updateFailed": "キャラクターを更新できませんでした。",
+      "deleteFailed": "キャラクターを削除できませんでした。",
+      "detailUnavailable": "現在、キャラクターの詳細を読み込めません。"
     }
   }
 }

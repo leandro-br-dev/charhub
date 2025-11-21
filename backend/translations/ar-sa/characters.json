@@ -2,17 +2,17 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "Unnamed Character",
-      "updatedAt": "Updated {{date}}",
-      "public": "Public",
-      "private": "Private",
-      "identifier": "Character ID: {{id}}",
-      "unsavedChanges": "Unsaved changes",
-      "allSaved": "All changes saved",
-      "submitting": "Saving..."
+      "untitledCharacter": "شخصية غير مسماة",
+      "updatedAt": "تم التحديث {{date}}",
+      "public": "عام",
+      "private": "خاص",
+      "identifier": "معرف الشخصية: {{id}}",
+      "unsavedChanges": "تغييرات غير محفوظة",
+      "allSaved": "تم حفظ جميع التغييرات",
+      "submitting": "جارٍ الحفظ..."
     },
     "ageRatings": {
-      "L": "Free",
+      "L": "مجاني",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -20,270 +20,270 @@
       "EIGHTEEN": "18+"
     },
     "genders": {
-      "male": "Male",
-      "female": "Female",
-      "non-binary": "Non-binary",
-      "unisex": "Unisex"
+      "male": "ذكر",
+      "female": "أنثى",
+      "non-binary": "غير ثنائي",
+      "unisex": "للجنسين"
     },
     "species": {
-      "human": "Human",
-      "elf": "Elf",
-      "android": "Android",
-      "vampire": "Vampire",
-      "demon": "Demon",
-      "animal": "Animal",
-      "hybrid": "Hybrid",
-      "robot": "Robot",
-      "other": "Other"
+      "human": "إنسان",
+      "elf": "جني",
+      "android": "روبوت",
+      "vampire": "مصاص دماء",
+      "demon": "شيطان",
+      "animal": "حيوان",
+      "hybrid": "هجين",
+      "robot": "آلي",
+      "other": "أخرى"
     },
     "visualStyles": {
       "ANIME": "Anime",
-      "REALISTIC": "Realistic",
-      "SEMI_REALISTIC": "Semi-Realistic",
-      "CARTOON": "Cartoon",
+      "REALISTIC": "واقعي",
+      "SEMI_REALISTIC": "شبه واقعي",
+      "CARTOON": "كرتون",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
-      "COMIC": "Comic",
+      "COMIC": "قصص مصورة",
       "CHIBI": "Chibi",
       "PIXEL_ART": "Pixel Art",
       "THREE_D": "3D"
     },
     "visualStyleDescriptions": {
-      "ANIME": "Japanese anime style",
-      "REALISTIC": "Photorealistic or realistic art",
-      "SEMI_REALISTIC": "Semi-realistic art style",
-      "CARTOON": "Western cartoon style",
-      "MANGA": "Japanese manga/comic style",
-      "MANHWA": "Korean manhwa/webtoon style",
-      "COMIC": "Western comic book style",
-      "CHIBI": "Super deformed/cute style",
-      "PIXEL_ART": "Pixel art/retro game style",
-      "THREE_D": "3D rendered style"
+      "ANIME": "أسلوب الأنمي الياباني",
+      "REALISTIC": "فن فوتوغرافي أو واقعي",
+      "SEMI_REALISTIC": "أسلوب فني شبه واقعي",
+      "CARTOON": "أسلوب الكرتون الغربي",
+      "MANGA": "أسلوب المانجا/القصص المصورة اليابانية",
+      "MANHWA": "أسلوب المانهوا/الويب تون الكوري",
+      "COMIC": "أسلوب القصص المصورة الغربية",
+      "CHIBI": "أسلوب مصغر/لطيف للغاية",
+      "PIXEL_ART": "أسلوب فن البيكسل/الألعاب الكلاسيكية",
+      "THREE_D": "أسلوب ثلاثي الأبعاد"
     },
     "contentTags": {
-      "VIOLENCE": "Violence",
-      "GORE": "Gore",
-      "SEXUAL": "Sexual",
-      "NUDITY": "Nudity",
-      "LANGUAGE": "Language",
-      "DRUGS": "Drugs",
-      "ALCOHOL": "Alcohol",
-      "HORROR": "Horror",
-      "PSYCHOLOGICAL": "Psychological",
-      "DISCRIMINATION": "Discrimination",
-      "CRIME": "Crime",
-      "GAMBLING": "Gambling"
+      "VIOLENCE": "عنف",
+      "GORE": "دموية",
+      "SEXUAL": "جنسي",
+      "NUDITY": "عري",
+      "LANGUAGE": "لغة",
+      "DRUGS": "مخدرات",
+      "ALCOHOL": "كحول",
+      "HORROR": "رعب",
+      "PSYCHOLOGICAL": "نفسي",
+      "DISCRIMINATION": "تمييز",
+      "CRIME": "جريمة",
+      "GAMBLING": "قمار"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, fights or aggressive conflict.",
-      "GORE": "Graphic injuries and explicit detail.",
-      "SEXUAL": "Adult themes or innuendo.",
-      "NUDITY": "Partial or full nudity.",
-      "LANGUAGE": "Explicit or strong language.",
-      "DRUGS": "Drug use or references.",
-      "ALCOHOL": "Alcohol consumption.",
-      "HORROR": "Disturbing or horror imagery.",
-      "PSYCHOLOGICAL": "Mental health or psychological tension.",
-      "DISCRIMINATION": "Hate speech or prejudice.",
-      "CRIME": "Criminal activity themes.",
-      "GAMBLING": "Betting or gambling references."
+      "VIOLENCE": "قتال، معارك أو صراع عدواني.",
+      "GORE": "إصابات واضحة وتفاصيل صريحة.",
+      "SEXUAL": "مواضيع للبالغين أو تلميحات جنسية.",
+      "NUDITY": "عري جزئي أو كلي.",
+      "LANGUAGE": "لغة صريحة أو قوية.",
+      "DRUGS": "استخدام المخدرات أو الإشارة إليها.",
+      "ALCOHOL": "استهلاك الكحول.",
+      "HORROR": "صور مقلقة أو مرعبة.",
+      "PSYCHOLOGICAL": "الصحة النفسية أو التوتر النفسي.",
+      "DISCRIMINATION": "خطاب كراهية أو تحيز.",
+      "CRIME": "مواضيع تتعلق بالنشاط الإجرامي.",
+      "GAMBLING": "إشارات للمراهنات أو القمار."
     },
     "accessibility": {
-      "addToFavorites": "Add to favorites",
-      "removeFromFavorites": "Remove from favorites"
+      "addToFavorites": "إضافة إلى المفضلة",
+      "removeFromFavorites": "إزالة من المفضلة"
     },
     "stats": {
-      "conversations": "Conversations",
-      "messages": "Messages",
-      "favorites": "Favorites",
-      "conversationsShort": "{{count}}K conversations",
-      "conversationsShort_plural": "{{count}}K conversations",
-      "favoritesShort": "{{count}}K favorites",
-      "favoritesShort_plural": "{{count}}K favorites"
+      "conversations": "محادثات",
+      "messages": "رسائل",
+      "favorites": "مفضلة",
+      "conversationsShort": "{{count}} آلاف محادثة",
+      "conversationsShort_plural": "{{count}} آلاف محادثة",
+      "favoritesShort": "{{count}} آلاف مفضلة",
+      "favoritesShort_plural": "{{count}} آلاف مفضلة"
     },
     "hub": {
-      "title": "Characters",
-      "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
+      "title": "شخصيات",
+      "subtitle": "أنشئ، نظم وطوّر الشخصيات التي تدعم قصصك، وكلاء الدردشة وتجارب الذكاء الاصطناعي.",
       "actions": {
-        "createCharacter": "New character",
-        "retry": "Try again",
-        "blurSensitive": "Blur sensitive",
-        "showSensitive": "Show sensitive"
+        "createCharacter": "شخصية جديدة",
+        "retry": "حاول مرة أخرى",
+        "blurSensitive": "تمويه الحساس",
+        "showSensitive": "إظهار الحساس"
       },
       "tabs": {
-        "myCharacters": "My characters",
-        "publicGallery": "Public gallery"
+        "myCharacters": "شخصياتي",
+        "publicGallery": "معرض عام"
       },
       "filters": {
-        "searchPlaceholder": "Search by name or style",
-        "allAgeRatings": "All age ratings",
-        "noFilter": "Any"
+        "searchPlaceholder": "البحث بالاسم أو الأسلوب",
+        "allAgeRatings": "جميع التصنيفات العمرية",
+        "noFilter": "أي"
       },
       "states": {
-        "loading": "Loading your characters...",
-        "error": "We could not load characters. Please try again.",
-        "empty": "No characters available yet.",
-        "empty_private": "You have not created any characters yet.",
-        "empty_public": "No public characters match your filters.",
-        "emptyHint": "Start by crafting a profile or tweak your filters.",
-        "emptySearchHint": "Adjust your filters or clear the search to see more results."
+        "loading": "جارٍ تحميل شخصياتك...",
+        "error": "لم نتمكن من تحميل الشخصيات. يرجى المحاولة مرة أخرى.",
+        "empty": "لا توجد شخصيات متاحة بعد.",
+        "empty_private": "لم تنشئ أي شخصيات بعد.",
+        "empty_public": "لا تتطابق الشخصيات العامة مع عوامل التصفية الخاصة بك.",
+        "emptyHint": "ابدأ بصياغة ملف تعريف أو قم بتعديل عوامل التصفية الخاصة بك.",
+        "emptySearchHint": "اضبط عوامل التصفية الخاصة بك أو قم بمسح البحث لرؤية المزيد من النتائج."
       },
       "labels": {
-        "total": "{{count}} character available",
-        "total_plural": "{{count}} characters available",
-        "quickCreateLink": "Jump straight into creation"
+        "total": "شخصية واحدة متاحة",
+        "total_plural": "{{count}} شخصيات متاحة",
+        "quickCreateLink": "الانتقال مباشرة إلى الإنشاء"
       }
     },
     "form": {
-      "submit": "Save",
-      "cancel": "Cancel",
+      "submit": "حفظ",
+      "cancel": "إلغاء",
       "sections": {
-        "identity": "Identity",
-        "identityHint": "Define how people discover and identify this character at a glance.",
-        "profile": "Narrative profile",
-        "profileHint": "Describe personality, traits and backstory to guide the AI.",
-        "configuration": "Availability & moderation",
-        "configurationHint": "Control how the character appears, who can access it and which safeguards apply.",
-        "contentTagsHint": "Mark potentially sensitive themes. Users can filter them out based on their preferences.",
-        "contentTagsCharacterHint": "These topics define what the character is comfortable discussing at the selected age rating.",
-        "contentTagsUserHint": "Select the themes you want to include. Anything left unchecked stays blocked for this rating.",
-        "contentTagLocked": "Unlocked at higher age ratings."
+        "identity": "الهوية",
+        "identityHint": "حدد كيف يكتشف الناس هذه الشخصية ويعرفونها بسرعة.",
+        "profile": "الملف السردي",
+        "profileHint": "صف الشخصية، الصفات والخلفية لتوجيه الذكاء الاصطناعي.",
+        "configuration": "التوفر والإشراف",
+        "configurationHint": "تحكم في كيفية ظهور الشخصية، ومن يمكنه الوصول إليها وما هي الضمانات التي تنطبق.",
+        "contentTagsHint": "ضع علامة على المواضيع التي قد تكون حساسة. يمكن للمستخدمين تصفيتها بناءً على تفضيلاتهم.",
+        "contentTagsCharacterHint": "تحدد هذه المواضيع ما تشعر الشخصية بالراحة في مناقشته في التصنيف العمري المحدد.",
+        "contentTagsUserHint": "حدد المواضيع التي تريد تضمينها. أي شيء لا يتم تحديده يبقى محظورًا لهذا التصنيف.",
+        "contentTagLocked": "تم فتحها في تصنيفات عمرية أعلى."
       },
       "fields": {
-        "firstName": "First name",
-        "lastName": "Last name",
-        "age": "Age",
-        "gender": "Gender",
-        "species": "Species / origin",
-        "style": "Visual style",
-        "reference": "Reference / source",
-        "physicalCharacteristics": "Physical description",
-        "personality": "Personality",
-        "history": "Backstory",
-        "isPublic": "Visibility",
-        "ageRating": "Age rating",
-        "originalLanguageCode": "Original language",
-        "contentTags": "Content warnings",
-        "visibility": "Visibility"
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "age": "العمر",
+        "gender": "الجنس",
+        "species": "النوع / الأصل",
+        "style": "الأسلوب البصري",
+        "reference": "مرجع / مصدر",
+        "physicalCharacteristics": "الوصف المادي",
+        "personality": "الشخصية",
+        "history": "الخلفية",
+        "isPublic": "الرؤية",
+        "ageRating": "التصنيف العمري",
+        "originalLanguageCode": "اللغة الأصلية",
+        "contentTags": "تحذيرات المحتوى",
+        "visibility": "الرؤية"
       },
       "placeholders": {
-        "gender": "Ex: non-binary AI, android, knight",
-        "species": "Ex: Human, Elf, Synthetic",
-        "style": "Select visual style",
-        "reference": "Ex: One Piece, Marvel Comics, Original",
-        "genderSelect": "Select gender"
+        "gender": "مثال: ذكاء اصطناعي غير ثنائي، روبوت، فارس",
+        "species": "مثال: إنسان، جني، صناعي",
+        "style": "اختر الأسلوب البصري",
+        "reference": "مثال: ون بيس، مارفل كوميكس، أصلي",
+        "genderSelect": "اختر الجنس"
       },
       "labels": {
-        "unsavedChanges": "You have unsaved changes",
-        "allSaved": "Changes saved",
-        "submitting": "Saving...",
-        "visibilityPublic": "Public",
-        "visibilityPrivate": "Private"
+        "unsavedChanges": "لديك تغييرات غير محفوظة",
+        "allSaved": "تم حفظ التغييرات",
+        "submitting": "جارٍ الحفظ...",
+        "visibilityPublic": "عام",
+        "visibilityPrivate": "خاص"
       },
       "avatar": {
-        "upload": "Upload image",
-        "change": "Change image",
-        "remove": "Remove",
-        "uploading": "Uploading...",
-        "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
-        "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
-        "error": "We could not upload this image. Try another file.",
-        "previewAlt": "Character avatar preview"
+        "upload": "تحميل صورة",
+        "change": "تغيير الصورة",
+        "remove": "إزالة",
+        "uploading": "جارٍ التحميل...",
+        "helperCreate": "اختر صورة رمزية الآن وسنحتفظ بها أثناء ملء بقية النموذج.",
+        "helperEdit": "حدّث الصورة الرمزية وقتما تشاء. يتم تطبيق التغييرات فور حفظك.",
+        "error": "لم نتمكن من تحميل هذه الصورة. جرب ملفًا آخر.",
+        "previewAlt": "معاينة الصورة الرمزية للشخصية"
       },
       "images": {
-        "coverHeader": "Character cover",
-        "coverDescription": "Portrait-oriented image used as the character cover.",
-        "upload": "Upload cover",
-        "change": "Change cover",
-        "uploading": "Uploading...",
-        "urlModalTitle": "Use image from URL",
-        "urlLabel": "Image URL",
-        "previewAlt": "Character cover preview"
+        "coverHeader": "صورة غلاف الشخصية",
+        "coverDescription": "صورة رأسية تستخدم كغلاف للشخصية.",
+        "upload": "تحميل الغلاف",
+        "change": "تغيير الغلاف",
+        "uploading": "جارٍ التحميل...",
+        "urlModalTitle": "استخدام صورة من الرابط",
+        "urlLabel": "رابط الصورة",
+        "previewAlt": "معاينة غلاف الشخصية"
       },
       "tags": {
-        "searchPlaceholder": "Search tags (e.g., VTuber, Maid)",
-        "selected": "Selected tags",
-        "none": "No tags selected",
-        "suggestions": "Suggestions",
-        "loading": "Loading...",
-        "noResults": "No results",
-        "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
-        "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
-        "incompatibleChip": "Incompatible with current age rating"
+        "searchPlaceholder": "البحث عن علامات (مثل VTuber، خادمة)",
+        "selected": "العلامات المحددة",
+        "none": "لم يتم تحديد علامات",
+        "suggestions": "اقتراحات",
+        "loading": "جارٍ التحميل...",
+        "noResults": "لا توجد نتائج",
+        "incompatibleToast": "بعض العلامات المحددة غير متوافقة مع التصنيف العمري الحالي. يرجى المراجعة.",
+        "incompatibleHint": "العلامات المميزة غير متوافقة مع التصنيف العمري المحدد. قم بإزالتها للمتابعة.",
+        "incompatibleChip": "غير متوافق مع التصنيف العمري الحالي"
       },
       "tabs": {
-        "identity": "Identity",
-        "profile": "Profile",
-        "configuration": "Configuration",
-        "tags": "Tags",
-        "images": "Images",
-        "lockedHint": "Fill in the basic identity details to unlock the other sections."
+        "identity": "الهوية",
+        "profile": "الملف الشخصي",
+        "configuration": "الإعدادات",
+        "tags": "العلامات",
+        "images": "الصور",
+        "lockedHint": "املأ تفاصيل الهوية الأساسية لفتح الأقسام الأخرى."
       }
     },
     "create": {
-      "title": "Create a new character",
-      "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
-      "saveButton": "Save character",
-      "cancelButton": "Cancel and go back"
+      "title": "إنشاء شخصية جديدة",
+      "subtitle": "اجمع السياق السردي، الأسلوب البصري وإعدادات الإشراف. يمكنك تحسين كل شيء لاحقًا.",
+      "saveButton": "حفظ الشخصية",
+      "cancelButton": "إلغاء والعودة"
     },
     "edit": {
-      "title": "Edit character",
-      "subtitle": "Updating {{name}}",
-      "saveButton": "Update character",
-      "cancelButton": "Discard changes",
+      "title": "تعديل شخصية",
+      "subtitle": "تحديث {{name}}",
+      "saveButton": "تحديث الشخصية",
+      "cancelButton": "تجاهل التغييرات",
       "states": {
-        "loading": "Loading character..."
+        "loading": "جارٍ تحميل الشخصية..."
       }
     },
     "detail": {
       "states": {
-        "loading": "Loading character details...",
-        "notFound": "We could not find this character."
+        "loading": "جارٍ تحميل تفاصيل الشخصية...",
+        "notFound": "لم نتمكن من العثور على هذه الشخصية."
       },
       "actions": {
-        "backToHub": "Back to hub",
-        "edit": "Edit",
-        "delete": "Delete",
-        "deleting": "Deleting...",
-        "share": "Share",
-        "startChat": "Start conversation",
-        "startingChat": "Starting..."
+        "backToHub": "العودة إلى المركز",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "deleting": "جارٍ الحذف...",
+        "share": "مشاركة",
+        "startChat": "بدء محادثة",
+        "startingChat": "جارٍ البدء..."
       },
       "confirmDelete": {
-        "title": "Delete Character?",
-        "message": "This action cannot be undone. All data associated with this character will be permanently deleted.",
-        "confirm": "Delete permanently",
-        "cancel": "Cancel"
+        "title": "حذف الشخصية؟",
+        "message": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع البيانات المرتبطة بهذه الشخصية بشكل دائم.",
+        "confirm": "حذف بشكل دائم",
+        "cancel": "إلغاء"
       },
       "labels": {
-        "public": "Public",
-        "private": "Private",
-        "createdAt": "Created",
-        "createdBy": "Created by",
-        "updatedAt": "Last updated",
-        "identifier": "Character ID: {{id}}",
-        "messageCount": "{{count}} message",
-        "messageCount_plural": "{{count}} messages",
-        "favoriteCount": "{{count}} favorite",
-        "favoriteCount_plural": "{{count}} favorites",
-        "stats": "Statistics"
+        "public": "عام",
+        "private": "خاص",
+        "createdAt": "تم الإنشاء",
+        "createdBy": "تم الإنشاء بواسطة",
+        "updatedAt": "آخر تحديث",
+        "identifier": "معرف الشخصية: {{id}}",
+        "messageCount": "{{count}} رسالة",
+        "messageCount_plural": "{{count}} رسائل",
+        "favoriteCount": "{{count}} مفضلة",
+        "favoriteCount_plural": "{{count}} مفضلات",
+        "stats": "إحصائيات"
       },
-      "sampleImages": "Sample Images",
+      "sampleImages": "صور عينة",
       "sections": {
-        "physicalCharacteristics": "Appearance",
-        "personality": "Personality",
-        "history": "Backstory",
-        "contentTags": "Content warnings",
-        "metadata": "Tags",
-        "introduction": "Introduction",
-        "updateNotes": "Update Notes"
+        "physicalCharacteristics": "المظهر",
+        "personality": "الشخصية",
+        "history": "الخلفية",
+        "contentTags": "تحذيرات المحتوى",
+        "metadata": "العلامات",
+        "introduction": "مقدمة",
+        "updateNotes": "ملاحظات التحديث"
       }
     },
     "errors": {
-      "createFailed": "We could not create the character. Please try again.",
-      "updateFailed": "We could not update the character.",
-      "deleteFailed": "We could not delete the character.",
-      "detailUnavailable": "Unable to load character details right now."
+      "createFailed": "لم نتمكن من إنشاء الشخصية. يرجى المحاولة مرة أخرى.",
+      "updateFailed": "لم نتمكن من تحديث الشخصية.",
+      "deleteFailed": "لم نتمكن من حذف الشخصية.",
+      "detailUnavailable": "تعذر تحميل تفاصيل الشخصية حاليًا."
     }
   }
 }
