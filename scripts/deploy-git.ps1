@@ -83,12 +83,23 @@ else
 fi
 echo ""
 
-echo "[3/6] Verificando .env..."
+echo "[3/6] Verificando .env e Docker Compose..."
 if [ ! -f ".env" ]; then
     echo "  [X] ERRO: Arquivo .env nao encontrado!"
     exit 1
 fi
 echo "  [OK] Arquivo .env presente"
+
+# Definir caminho do docker-compose para Container-Optimized OS
+COMPOSE="/var/lib/toolbox/bin/docker-compose"
+if [ ! -f "$COMPOSE" ]; then
+    echo "  [i] Instalando Docker Compose..."
+    sudo mkdir -p /var/lib/toolbox/bin
+    sudo curl -SL https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-linux-x86_64 -o "$COMPOSE"
+    sudo chmod +x "$COMPOSE"
+fi
+export DOCKER_CONFIG=/var/lib/docker/.docker
+sudo mkdir -p "$DOCKER_CONFIG"
 echo ""
 
 '@
@@ -97,19 +108,16 @@ echo ""
 if (-not $NoBuild) {
     $deployScript += @'
 echo "[4/6] Parando containers..."
-sudo docker compose --env-file .env down || true
+sudo DOCKER_CONFIG="$DOCKER_CONFIG" $COMPOSE --env-file .env down || true
 echo ""
 
 echo "[5/6] Rebuild e inicializacao..."
-export DOCKER_CONFIG=/var/lib/docker/.docker
-sudo mkdir -p "$DOCKER_CONFIG"
-
 # Limpar imagens antigas para economizar espaco
 sudo docker system prune -f > /dev/null 2>&1 || true
 
 # Build e start
-sudo DOCKER_CONFIG="$DOCKER_CONFIG" docker compose --env-file .env build
-sudo DOCKER_CONFIG="$DOCKER_CONFIG" docker compose --env-file .env up -d
+sudo DOCKER_CONFIG="$DOCKER_CONFIG" $COMPOSE --env-file .env build
+sudo DOCKER_CONFIG="$DOCKER_CONFIG" $COMPOSE --env-file .env up -d
 
 echo "  [i] Aguardando containers iniciarem..."
 sleep 10
@@ -122,7 +130,7 @@ echo "[4/6] Pulando rebuild (--NoBuild especificado)..."
 echo ""
 
 echo "[5/6] Reiniciando containers..."
-sudo docker compose --env-file .env restart
+sudo DOCKER_CONFIG="$DOCKER_CONFIG" $COMPOSE --env-file .env restart
 sleep 5
 echo ""
 
@@ -133,7 +141,7 @@ echo ""
 if (-not $SkipMigrations) {
     $deployScript += @'
 echo "[6/6] Executando migrations..."
-sudo docker compose --env-file .env exec -T backend npx prisma migrate deploy || {
+sudo DOCKER_CONFIG="$DOCKER_CONFIG" $COMPOSE --env-file .env exec -T backend npx prisma migrate deploy || {
     echo "  [!] Migration falhou ou nao havia migrations pendentes"
 }
 echo ""
@@ -156,7 +164,7 @@ echo "Branch: $(git branch --show-current)"
 echo "Commit: $(git log -1 --oneline)"
 echo ""
 echo "Containers:"
-sudo docker compose --env-file .env ps
+sudo DOCKER_CONFIG="$DOCKER_CONFIG" $COMPOSE --env-file .env ps
 echo ""
 echo "[OK] Deploy concluido com sucesso!"
 '@
