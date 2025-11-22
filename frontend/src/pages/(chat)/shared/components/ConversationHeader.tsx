@@ -188,13 +188,13 @@ export const ConversationHeader = ({
       </div>
 
       {/* Participants bar */}
-      {conversation.participants.length > 0 && (
+      {(conversation.participants ?? []).length > 0 && (
         <div className="flex items-center gap-2 px-4 pb-3 overflow-x-auto">
           <span className="text-xs text-muted flex-shrink-0">
             {t('conversation.participants')}:
           </span>
           <div className="flex items-center gap-2">
-            {conversation.participants.map((participant) => {
+            {(conversation.participants ?? []).map((participant) => {
               const { name, avatar } = getParticipantInfo(participant);
               return (
                 <button

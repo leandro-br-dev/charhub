@@ -80,8 +80,8 @@ export interface Conversation {
 
   // Relations
   owner?: ParticipantUser;
-  participants: ConversationParticipant[];
-  messages: Message[];
+  participants?: ConversationParticipant[];
+  messages?: Message[];
 }
 
 // API Payloads
@@ -141,7 +141,7 @@ export interface ConversationListItem {
   title: string;
   lastMessage: Message | null;
   lastMessageAt: string | null;
-  participants: ConversationParticipant[];
+  participants?: ConversationParticipant[];
   unreadCount?: number;
 }
 

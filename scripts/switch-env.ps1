@@ -31,8 +31,60 @@ function Copy-EnvFile {
 
 # Alternar arquivos .env e docker-compose
 if ($Environment -eq "production") {
+    Write-Host "[*] Verificando integridade do arquivo .env.production..." -ForegroundColor Yellow
+
+    # Verificar se .env.production existe e tem tamanho minimo (3KB = ~3000 bytes)
+    $envProdFile = "$projectRoot\.env.production"
+    if (Test-Path $envProdFile) {
+        $fileSize = (Get-Item $envProdFile).Length
+        $minSize = 3000  # Arquivo production completo tem ~3.5KB
+
+        if ($fileSize -lt $minSize) {
+            Write-Host ""
+            Write-Host "  [!!!] ERRO CRITICO: .env.production parece estar corrompido ou incompleto!" -ForegroundColor Red
+            Write-Host "  [!!!] Tamanho atual: $fileSize bytes (minimo esperado: $minSize bytes)" -ForegroundColor Red
+            Write-Host ""
+            Write-Host "  [i] O arquivo .env.production NAO deve ser modificado por scripts." -ForegroundColor Yellow
+            Write-Host "  [i] Use secrets/production-secrets.txt para recuperar as credenciais." -ForegroundColor Yellow
+            Write-Host ""
+            Write-Host "  [!] Operacao ABORTADA para proteger o ambiente de producao." -ForegroundColor Red
+            exit 1
+        }
+
+        # Verificar se contem variaveis essenciais
+        $content = Get-Content $envProdFile -Raw
+        $requiredVars = @("DATABASE_URL", "JWT_SECRET", "GOOGLE_CLIENT_ID", "R2_ACCESS_KEY_ID")
+        $missingVars = @()
+
+        foreach ($var in $requiredVars) {
+            if ($content -notmatch "$var=") {
+                $missingVars += $var
+            }
+        }
+
+        if ($missingVars.Count -gt 0) {
+            Write-Host ""
+            Write-Host "  [!!!] ERRO CRITICO: .env.production esta incompleto!" -ForegroundColor Red
+            Write-Host "  [!!!] Variaveis faltando: $($missingVars -join ', ')" -ForegroundColor Red
+            Write-Host ""
+            Write-Host "  [i] Use secrets/production-secrets.txt para recuperar." -ForegroundColor Yellow
+            Write-Host ""
+            Write-Host "  [!] Operacao ABORTADA para proteger o ambiente de producao." -ForegroundColor Red
+            exit 1
+        }
+
+        Write-Host "  [OK] Arquivo .env.production validado ($fileSize bytes)" -ForegroundColor Green
+    } else {
+        Write-Host ""
+        Write-Host "  [!!!] ERRO CRITICO: .env.production NAO ENCONTRADO!" -ForegroundColor Red
+        Write-Host "  [i] Este arquivo e essencial para deploy em producao." -ForegroundColor Yellow
+        Write-Host "  [i] Use secrets/production-secrets.txt para recria-lo." -ForegroundColor Yellow
+        Write-Host ""
+        exit 1
+    }
+
     Write-Host "[*] Copiando arquivos de producao..." -ForegroundColor Yellow
-    Copy-EnvFile "$projectRoot\.env.production" "$projectRoot\.env" "Root .env"    
+    Copy-EnvFile "$projectRoot\.env.production" "$projectRoot\.env" "Root .env"
     Copy-EnvFile "$projectRoot\frontend\.env.production" "$projectRoot\frontend\.env" "Frontend .env"
     Copy-EnvFile "$projectRoot\docker-compose.production.yml" "$projectRoot\docker-compose.yml" "Docker Compose"
 } else {

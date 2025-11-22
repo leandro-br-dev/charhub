@@ -25,7 +25,7 @@ export const ConversationList = ({
    * Get display info for a conversation (first participant's avatar and name)
    */
   const getConversationDisplayInfo = (conversation: Conversation) => {
-    const firstParticipant = conversation.participants[0];
+    const firstParticipant = (conversation.participants ?? [])[0];
 
     if (!firstParticipant) {
       return {
@@ -169,10 +169,10 @@ export const ConversationList = ({
                     )}
                   </div>
                   <p className="text-sm text-muted truncate">{lastMessagePreview}</p>
-                  {conversation.participants.length > 1 && (
+                  {(conversation.participants ?? []).length > 1 && (
                     <div className="flex items-center mt-1 text-xs text-muted">
                       <span className="material-symbols-outlined text-sm mr-1">group</span>
-                      <span>{conversation.participants.length} {t('conversation.participants')}</span>
+                      <span>{(conversation.participants ?? []).length} {t('conversation.participants')}</span>
                     </div>
                   )}
                 </div>

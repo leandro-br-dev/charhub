@@ -1,0 +1,13 @@
+[Unit]
+Description=Daily CharHub Database Backup Timer
+
+[Timer]
+# Run daily at 03:00 UTC
+OnCalendar=*-*-* 03:00:00
+# Run immediately if missed (e.g., VM was off)
+Persistent=true
+# Random delay up to 5 minutes to avoid exact timing
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

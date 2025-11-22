@@ -1,0 +1,15 @@
+[Unit]
+Description=CharHub Database Backup
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/mnt/stateful_partition/charhub
+ExecStart=/bin/bash /mnt/stateful_partition/charhub/scripts/backup/backup-database.sh --local-only
+StandardOutput=append:/var/log/charhub-backup.log
+StandardError=append:/var/log/charhub-backup.log
+
+[Install]
+WantedBy=multi-user.target

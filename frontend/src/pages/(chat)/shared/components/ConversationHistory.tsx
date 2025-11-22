@@ -11,11 +11,49 @@ export interface ConversationHistoryProps {
 }
 
 type GroupBy = 'date' | 'alphabetical';
+type TimeBucket = 'today' | 'yesterday' | 'last7days' | 'last30days' | 'older';
+
+/**
+ * Get time bucket for a date (returns a stable key, not translated string)
+ * Defined outside component to avoid recreation on each render
+ */
+function getTimeBucket(dateString: string): TimeBucket | string {
+  if (!dateString) return 'older';
+
+  const now = new Date();
+  const conversationDate = new Date(dateString);
+
+  if (isNaN(conversationDate.getTime())) {
+    return 'older';
+  }
+
+  const diffTime = now.getTime() - conversationDate.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0 && now.getDate() === conversationDate.getDate()) {
+    return 'today';
+  }
+  if (diffDays === 0 || (diffDays === 1 && now.getHours() < conversationDate.getHours())) {
+    return 'yesterday';
+  }
+  if (diffDays <= 7) {
+    return 'last7days';
+  }
+  if (diffDays <= 30) {
+    return 'last30days';
+  }
+
+  // For older dates, return month/year key
+  const month = conversationDate.getMonth();
+  const year = conversationDate.getFullYear();
+  return `${year}-${month}`;
+}
 
 export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) => {
   const { t, i18n } = useTranslation('chat');
   const { conversationId: activeConversationId } = useParams<{ conversationId: string }>();
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [groupBy, setGroupBy] = useState<GroupBy>('date');
@@ -26,42 +64,32 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
   // Queries and mutations
   const { data: conversationsData, isLoading } = useConversationListQuery();
   const { updateTitle, delete: deleteConversation } = useConversationMutations();
-  const { addToast } = useToast();
 
   const conversations: Conversation[] = conversationsData?.items ?? [];
 
   /**
-   * Get time reference for grouping conversations by date
+   * Translate time bucket to display string
    */
-  const getTimeReference = (dateString: string): string => {
-    if (!dateString) return t('history.invalidDate', { defaultValue: 'Invalid Date' });
-
-    const now = new Date();
-    const conversationDate = new Date(dateString);
-
-    if (isNaN(conversationDate.getTime())) {
-      return t('history.invalidDate', { defaultValue: 'Invalid Date' });
+  const translateBucket = (bucket: string): string => {
+    switch (bucket) {
+      case 'today':
+        return t('history.today', { defaultValue: 'Today' });
+      case 'yesterday':
+        return t('history.yesterday', { defaultValue: 'Yesterday' });
+      case 'last7days':
+        return t('history.last7Days', { defaultValue: 'Last 7 days' });
+      case 'last30days':
+        return t('history.last30Days', { defaultValue: 'Last 30 days' });
+      default:
+        // Parse year-month format
+        if (bucket.includes('-')) {
+          const [year, monthStr] = bucket.split('-');
+          const monthDate = new Date(parseInt(year), parseInt(monthStr));
+          const month = monthDate.toLocaleString(i18n.language, { month: 'long' });
+          return `${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
+        }
+        return bucket;
     }
-
-    const diffTime = now.getTime() - conversationDate.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0 && now.getDate() === conversationDate.getDate()) {
-      return t('history.today', { defaultValue: 'Today' });
-    }
-    if (diffDays === 0 || (diffDays === 1 && now.getHours() < conversationDate.getHours())) {
-      return t('history.yesterday', { defaultValue: 'Yesterday' });
-    }
-    if (diffDays <= 7) {
-      return t('history.last7Days', { defaultValue: 'Last 7 days' });
-    }
-    if (diffDays <= 30) {
-      return t('history.last30Days', { defaultValue: 'Last 30 days' });
-    }
-
-    const month = conversationDate.toLocaleString(i18n.language, { month: 'long' });
-    const year = conversationDate.getFullYear();
-    return `${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
   };
 
   /**
@@ -83,9 +111,9 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
 
     if (groupBy === 'date') {
       filtered.forEach((conv: Conversation) => {
-        const timeRef = getTimeReference(conv.lastMessageAt || conv.createdAt);
-        if (!grouped[timeRef]) grouped[timeRef] = [];
-        grouped[timeRef].push(conv);
+        const bucket = getTimeBucket(conv.lastMessageAt || conv.createdAt);
+        if (!grouped[bucket]) grouped[bucket] = [];
+        grouped[bucket].push(conv);
       });
 
       // Sort within each group by date (newest first)
@@ -98,25 +126,20 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
       });
 
       // Sort groups by predefined order
-      const timeOrder = [
-        t('history.today', { defaultValue: 'Today' }),
-        t('history.yesterday', { defaultValue: 'Yesterday' }),
-        t('history.last7Days', { defaultValue: 'Last 7 days' }),
-        t('history.last30Days', { defaultValue: 'Last 30 days' }),
-      ];
+      const bucketOrder = ['today', 'yesterday', 'last7days', 'last30days'];
 
       return Object.entries(grouped).sort((a, b) => {
-        const [groupNameA] = a;
-        const [groupNameB] = b;
-        const indexA = timeOrder.indexOf(groupNameA);
-        const indexB = timeOrder.indexOf(groupNameB);
+        const [bucketA] = a;
+        const [bucketB] = b;
+        const indexA = bucketOrder.indexOf(bucketA);
+        const indexB = bucketOrder.indexOf(bucketB);
 
         if (indexA !== -1 && indexB !== -1) return indexA - indexB;
         if (indexA !== -1) return -1;
         if (indexB !== -1) return 1;
 
-        // For month/year groups, sort by date
-        return groupNameB.localeCompare(groupNameA, i18n.language);
+        // For year-month groups, sort by date descending (newest first)
+        return bucketB.localeCompare(bucketA);
       });
     } else {
       // Group by first letter
@@ -137,7 +160,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
 
       return Object.entries(grouped).sort((a, b) => a[0].localeCompare(b[0], i18n.language));
     }
-  }, [conversations, searchQuery, groupBy, getTimeReference, i18n.language, t]);
+  }, [conversations, searchQuery, groupBy, i18n.language]);
 
   /**
    * Handle edit conversation title
@@ -259,14 +282,14 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
           <div className="space-y-4">
             {groupedConversations.map(([group, items]) => (
               <div key={group}>
-                <h4 className="text-xs font-semibold text-muted uppercase mb-1">{group}</h4>
+                <h4 className="text-xs font-semibold text-muted uppercase mb-1 px-4">{translateBucket(group)}</h4>
                 <ul className="space-y-1">
                   {items.map((conv) => (
                     <li key={conv.id} className="group relative">
                       {editingConvId === conv.id ? (
                         <form
                           onSubmit={handleSaveEdit}
-                          className="p-2 bg-primary/10 rounded flex items-center gap-2"
+                          className="p-2 bg-primary/10 rounded flex items-center gap-2 mx-4"
                         >
                           <input
                             type="text"
@@ -299,7 +322,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
                           to={`/chat/${conv.id}`}
                           onClick={onLinkClick}
                           className={({ isActive }) =>
-                            `flex items-center rounded p-2 pr-16 text-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                            `flex items-center rounded p-2 pr-16 mx-2 text-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-700 ${
                               isActive ? 'bg-primary/20 font-semibold' : ''
                             }`
                           }
@@ -307,7 +330,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
                         >
                           {/* Character Avatars */}
                           <div className="flex flex-shrink-0 items-center -space-x-2 mr-2">
-                            {conv.participants
+                            {(conv.participants ?? [])
                               .filter((p) => p.actingCharacterId && p.actingCharacter)
                               .slice(0, 3)
                               .map((p) => (
@@ -323,9 +346,9 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
                                   className="border-2 border-light"
                                 />
                               ))}
-                            {conv.participants.filter((p) => p.actingCharacterId).length > 3 && (
+                            {(conv.participants ?? []).filter((p) => p.actingCharacterId).length > 3 && (
                               <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-xs font-semibold text-white border-2 border-light">
-                                +{conv.participants.filter((p) => p.actingCharacterId).length - 3}
+                                +{(conv.participants ?? []).filter((p) => p.actingCharacterId).length - 3}
                               </div>
                             )}
                           </div>
@@ -340,7 +363,7 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
 
                       {/* Action Buttons */}
                       {editingConvId !== conv.id && (
-                        <div className="absolute top-1/2 right-1 transform -translate-y-1/2 flex opacity-0 group-hover:opacity-100 transition-opacity gap-1">
+                        <div className="absolute top-1/2 right-3 transform -translate-y-1/2 flex opacity-0 group-hover:opacity-100 transition-opacity gap-1">
                           <button
                             className="px-2 py-1 text-gray-500 dark:text-gray-400 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600"
                             onClick={() => handleEditClick(conv)}

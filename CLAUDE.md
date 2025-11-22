@@ -2,6 +2,64 @@
 
 Welcome to CharHub. This guide is shared by every automation agent (GitHub Copilot, Claude, Cursor, etc.) and MUST be read before touching the codebase.
 
+## ⚠️ CRITICAL: Development vs Production Environment Rules
+
+**THIS SECTION IS THE MOST IMPORTANT AND MUST BE FOLLOWED AT ALL TIMES**
+
+### Default Environment: DEVELOPMENT
+
+- **ALL work is done in DEVELOPMENT environment by default**
+- **NEVER assume the user wants to work in production**
+- **NEVER execute production commands without EXPLICIT user request**
+
+### Branch Rules
+
+| Branch | Environment | Deploy Allowed |
+|--------|-------------|----------------|
+| `main` | Production | ✅ Only with explicit request |
+| Any other branch | Development | ❌ No production deploy |
+
+**Before ANY operation, check the current branch:**
+```bash
+git branch --show-current
+```
+
+- If branch is NOT `main` → You are in DEVELOPMENT. Do NOT touch production.
+- If branch IS `main` → Still require explicit user confirmation before production operations.
+
+### ❌ FORBIDDEN Actions (Without Explicit User Request):
+
+1. **NEVER run `scripts/switch-env.ps1`** - This switches environment variables
+2. **NEVER run `scripts/deploy-via-gcs-public.ps1`** - This deploys to production
+3. **NEVER run any production-related commands** such as:
+   - `gcloud compute ssh charhub-vm`
+   - Any SSH commands to production servers
+   - Any database commands on production
+4. **NEVER run `docker compose down && docker compose up --build`** without user request
+5. **NEVER change environment variables** from development to production
+
+### ✅ ALLOWED Actions in Development:
+
+1. Read and edit code files
+2. Run type checks: `npx tsc --noEmit`
+3. Read logs: `docker compose logs [service]`
+4. Restart individual services: `docker compose restart [service]`
+5. Check status: `docker compose ps`
+
+### How to Identify User Intent:
+
+- **"fix this error"** → Development environment (default)
+- **"deploy to production"** → Requires explicit confirmation before proceeding
+- **"the production server has an error"** → User explicitly mentioned production
+- **"test in dev"** → Development environment
+
+### Error Reports:
+
+When user reports an error:
+1. **Assume it's in development** unless they explicitly say "production"
+2. **Check the URL** - `dev.charhub.app` = development, `charhub.app` = production
+3. **Ask for clarification** if uncertain
+
 ## Encoding Requirements
 
 - Always save source and docs using UTF-8 **without** BOM to prevent garbled characters (e.g., `Ã¢â‚¬â€œ`).
@@ -9,8 +67,63 @@ Welcome to CharHub. This guide is shared by every automation agent (GitHub Copil
 - Prefer plain ASCII punctuation (regular hyphen `-`, straight quotes) unless a file already needs accented text.
 - Configure your editor (`files.encoding`: `"utf8"`, disable "BOM") and confirm before committing.
 - If in doubt, run `find . -type f -name '*.md' -print0 | xargs -0 file` (or a tiny Python script) to confirm no file starts with `0xEFBBBF`.
-- **Never delete API keys or overwrite `.env` files** with their example counterparts unless the user explicitly instructs you. If a change is required, edit only the specific lines to avoid losing existing secrets or local configuration.
 - **Never execute database deletion commands (e.g., `DROP DATABASE`, `DELETE FROM` without a `WHERE` clause, or `prisma migrate reset`) or any command that could lead to data loss, even on development servers, without explicit user instruction and confirmation.
+
+## ⚠️ CRITICAL: Environment Files (.env) Protection Rules
+
+**THIS SECTION IS MANDATORY FOR ALL AGENTS AND SCRIPTS**
+
+### File Hierarchy and Purpose
+
+| File | Purpose | Modification Rules |
+|------|---------|-------------------|
+| `.env` | Active development configuration | ✅ Can edit specific lines |
+| `.env.development` | Backup of development settings | ✅ Can edit specific lines |
+| `.env.production` | **PRODUCTION SECRETS - READ-ONLY** | ❌ **NEVER modify via scripts** |
+| `.env.example` | Template for new developers | ✅ Can update structure |
+| `secrets/production-secrets.txt` | Backup of all secrets | ❌ **NEVER modify** |
+
+### ❌ ABSOLUTELY FORBIDDEN ACTIONS:
+
+1. **NEVER delete or overwrite `.env.production`** - This file contains production secrets that cannot be recovered if lost
+2. **NEVER run commands that could truncate or clear .env files** such as:
+   - `echo "" > .env.production`
+   - `> .env.production`
+   - `rm .env.production`
+   - `cp .env.example .env.production`
+3. **NEVER use Write tool to completely replace .env files** - Always use Edit tool for specific line changes
+4. **NEVER create scripts that copy .env.example over .env.production**
+
+### ✅ ALLOWED ACTIONS:
+
+1. **Edit specific lines** using the Edit tool with precise `old_string` and `new_string`
+2. **Add new variables** at the end of .env files
+3. **Read .env files** for debugging or configuration checks
+4. **Update .env.example** to reflect new required variables (without real secrets)
+
+### Environment Switching (Development ↔ Production)
+
+The `scripts/switch-env.ps1` script handles environment switching by:
+- Copying `.env.development` → `.env` (for development mode)
+- Copying `.env.production` → `.env` (for production mode)
+
+**IMPORTANT**: This script should NEVER modify `.env.production` - it only READS from it.
+
+### Recovery Procedure
+
+If `.env.production` is accidentally deleted or corrupted:
+1. Check `secrets/production-secrets.txt` for credential backup
+2. Use `.env` as template for structure
+3. Replace values with production credentials from secrets file
+4. Verify all sections are present before saving
+
+### Verification Before Any .env Modification
+
+Before modifying any .env file, agents MUST:
+1. **Read the current content** to understand what exists
+2. **Identify the specific line(s)** that need to change
+3. **Use Edit tool** with precise old_string matching
+4. **Never use Write tool** for existing .env files with secrets
 
 ## Before You Start
 

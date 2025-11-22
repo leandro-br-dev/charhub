@@ -1,10 +1,21 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/Button";
 import { ConversationHistory } from "../../pages/(chat)/shared/components/ConversationHistory";
 import { CharacterListSidebar } from "../../pages/(characters)/shared/components";
 import { StoryListSidebar } from "../../pages/story/shared/components";
+
+/**
+ * Loading placeholder for sidebar content while translations load
+ */
+function SidebarLoadingFallback(): JSX.Element {
+  return (
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="animate-pulse text-muted">Loading...</div>
+    </div>
+  );
+}
 
 type SidebarProps = {
   onClose?: () => void;
@@ -54,7 +65,9 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   if (activeView?.startsWith("/chat")) {
     content = (
       <div className="flex h-full w-full flex-col">
-        <ConversationHistory onLinkClick={handleLinkClick} />
+        <Suspense fallback={<SidebarLoadingFallback />}>
+          <ConversationHistory onLinkClick={handleLinkClick} />
+        </Suspense>
       </div>
     );
   } else if (activeView?.startsWith("/development")) {
@@ -78,7 +91,9 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   ) {
     content = (
       <div className="flex h-full w-full flex-col">
-        <CharacterListSidebar onLinkClick={handleLinkClick} />
+        <Suspense fallback={<SidebarLoadingFallback />}>
+          <CharacterListSidebar onLinkClick={handleLinkClick} />
+        </Suspense>
         <div className="mt-auto flex flex-col gap-2 p-4">
           <Button variant="primary" icon="add" onClick={handleCreateCharacter}>
             {t("dashboard:createCharacter", "Create character")}
@@ -99,7 +114,9 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   } else if (activeView?.startsWith("/story") || activeView?.startsWith("/stories")) {
     content = (
       <div className="flex h-full w-full flex-col">
-        <StoryListSidebar onLinkClick={handleLinkClick} />
+        <Suspense fallback={<SidebarLoadingFallback />}>
+          <StoryListSidebar onLinkClick={handleLinkClick} />
+        </Suspense>
         <div className="mt-auto flex flex-col gap-2 p-4">
           <Button variant="primary" icon="add" onClick={handleCreateStory}>
             {t("dashboard:createStory", "Create story")}

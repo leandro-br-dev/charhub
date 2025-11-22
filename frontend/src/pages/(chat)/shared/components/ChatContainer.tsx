@@ -162,7 +162,7 @@ const ChatContainer = () => {
   const processedParticipants = useMemo(() => {
     if (!conversation) return [];
 
-    const mapped = mapParticipants(conversation.participants);
+    const mapped = mapParticipants(conversation.participants ?? []);
 
     const ensureParticipant = (
       actorId: string | undefined,
@@ -211,7 +211,7 @@ const ChatContainer = () => {
 
   const assistantParticipantId = useMemo(() => {
     // Find first bot participant (assistant or character)
-    return conversation?.participants.find(
+    return (conversation?.participants ?? []).find(
       (participant) => participant.actingAssistantId || participant.actingCharacterId
     )?.id;
   }, [conversation]);
@@ -358,12 +358,12 @@ const ChatContainer = () => {
       if (!conversationId || !conversation) return;
 
       // Count bot participants (characters and assistants)
-      const botParticipants = conversation.participants.filter(
+      const botParticipants = (conversation.participants ?? []).filter(
         p => p.actingCharacterId || p.actingAssistantId
       );
 
       // Check if trying to remove the last bot participant
-      const participantToRemove = conversation.participants.find(p => p.id === participantId);
+      const participantToRemove = (conversation.participants ?? []).find(p => p.id === participantId);
       const isBot = participantToRemove?.actingCharacterId || participantToRemove?.actingAssistantId;
 
       if (isBot && botParticipants.length === 1) {
