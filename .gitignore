@@ -2,7 +2,7 @@
 node_modules/
 **/node_modules/
 
-# Environment variables
+# Environment variables (keep only .example files in git)
 .env
 .env.local
 .env.*.local
@@ -10,6 +10,14 @@ node_modules/
 .env.production
 .env.production.local
 **/env
+frontend/.env
+frontend/.env.development
+frontend/.env.production
+# Note: *.example files should be tracked
+
+# Docker compose environment-specific (only track production version)
+docker-compose.development.yml
+docker-compose.override.yml
 
 # Build output
 dist/
@@ -39,7 +47,6 @@ ehthumbs.db
 Desktop.ini
 
 # Docker
-docker-compose.override.yml
 .dockerignore
 
 # Testing

@@ -1,2 +1,4 @@
 # Cloudflare tunnel credentials (downloaded per environment)
+# These files contain sensitive authentication data
 config/*/*.json
+config/*/*.pem

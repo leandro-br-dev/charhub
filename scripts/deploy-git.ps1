@@ -1,17 +1,19 @@
 # Deploy via Git - Faz pull da branch main e rebuild
-# Uso: .\scripts\deploy-git.ps1
+# Uso: .\scripts\deploy-git.ps1 [-SkipSecrets] [-SkipMigrations] [-NoBuild]
 #
 # Este script:
-# 1. Conecta na VM de produção
-# 2. Faz git pull origin main
-# 3. Rebuild dos containers Docker
-# 4. Executa migrations do Prisma
+# 1. Sincroniza secrets de producao (sync-secrets.ps1)
+# 2. Conecta na VM de producao
+# 3. Faz git pull origin main
+# 4. Rebuild dos containers Docker
+# 5. Executa migrations do Prisma
 
 param(
     [string]$Zone = "us-central1-a",
     [string]$VMName = "charhub-vm",
     [switch]$SkipMigrations = $false,
-    [switch]$NoBuild = $false
+    [switch]$NoBuild = $false,
+    [switch]$SkipSecrets = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,6 +30,42 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  CharHub - Git-Based Deploy" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
+
+# Passo 0: Sincronizar secrets (a menos que --SkipSecrets)
+if (-not $SkipSecrets) {
+    Write-Step "Sincronizando secrets de producao..."
+    $syncSecretsScript = Join-Path $PSScriptRoot "sync-secrets.ps1"
+
+    if (Test-Path $syncSecretsScript) {
+        try {
+            # Executa sync-secrets com -NoRestart (o deploy vai reiniciar depois)
+            & $syncSecretsScript -Zone $Zone -VMName $VMName -NoRestart
+
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "sync-secrets.ps1 retornou codigo de erro"
+                $confirm = Read-Host "Deseja continuar mesmo assim? (s/N)"
+                if ($confirm -ne "s" -and $confirm -ne "S") {
+                    Write-Info "Deploy cancelado"
+                    exit 1
+                }
+            }
+        }
+        catch {
+            Write-Warning "Erro ao executar sync-secrets: $_"
+            $confirm = Read-Host "Deseja continuar mesmo assim? (s/N)"
+            if ($confirm -ne "s" -and $confirm -ne "S") {
+                Write-Info "Deploy cancelado"
+                exit 1
+            }
+        }
+    } else {
+        Write-Warning "sync-secrets.ps1 nao encontrado em $syncSecretsScript"
+    }
+    Write-Host ""
+} else {
+    Write-Info "Sincronizacao de secrets pulada (--SkipSecrets)"
+    Write-Host ""
+}
 
 # Verificar branch local (apenas warning)
 Write-Step "Verificando ambiente local..."
