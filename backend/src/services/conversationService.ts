@@ -111,7 +111,7 @@ export async function createConversation(
   data: CreateConversationInput
 ) {
   try {
-    const { participantIds, settings, projectId, ...conversationData } = data;
+    const { participantIds, settings, projectId, isMultiUser, maxUsers, allowUserInvites, requireApproval, ...conversationData } = data;
 
     // Create conversation with initial participants
     // participantIds can be: characterIds, assistantIds, or both
@@ -122,6 +122,13 @@ export async function createConversation(
         userId,
         settings: settings === null ? Prisma.JsonNull : (settings as Prisma.InputJsonValue | undefined),
         projectId: projectId === null ? null : projectId,
+
+        // Multi-user settings
+        isMultiUser: isMultiUser || false,
+        maxUsers: isMultiUser ? (maxUsers || 2) : 1,
+        allowUserInvites: isMultiUser ? (allowUserInvites || false) : false,
+        requireApproval: isMultiUser ? (requireApproval || false) : false,
+
         participants: {
           create: participantIds.map((characterId) => ({
             actingCharacterId: characterId,
@@ -131,8 +138,27 @@ export async function createConversation(
       include: conversationInclude,
     });
 
+    // If multi-user, create membership for the owner
+    if (isMultiUser) {
+      await prisma.userConversationMembership.create({
+        data: {
+          conversationId: conversation.id,
+          userId,
+          role: 'OWNER',
+          canWrite: true,
+          canInvite: true,
+          canModerate: true,
+        }
+      });
+
+      logger.info(
+        { conversationId: conversation.id, userId },
+        'Owner membership created for multi-user conversation'
+      );
+    }
+
     logger.info(
-      { conversationId: conversation.id, userId },
+      { conversationId: conversation.id, userId, isMultiUser },
       'Conversation created successfully'
     );
 

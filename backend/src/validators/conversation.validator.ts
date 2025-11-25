@@ -11,6 +11,31 @@ export const createConversationSchema = z.object({
   participantIds: z.array(z.string().uuid()).min(1, 'At least one participant is required'),
   settings: z.record(z.string(), z.unknown()).optional().nullable(), // Flexible JSON settings
   projectId: z.string().uuid().optional().nullable(),
+  visibility: z.enum(['PRIVATE', 'UNLISTED', 'PUBLIC']).optional().default('PRIVATE'),
+
+  // Multi-user settings (optional)
+  isMultiUser: z.boolean().optional().default(false),
+  maxUsers: z.number().int().min(1).max(4).optional().default(1),
+  allowUserInvites: z.boolean().optional().default(false),
+  requireApproval: z.boolean().optional().default(false),
+})
+.refine((data) => {
+  // If not multi-user, maxUsers must be 1
+  if (!data.isMultiUser && data.maxUsers && data.maxUsers > 1) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'maxUsers must be 1 for single-user conversations'
+})
+.refine((data) => {
+  // If not multi-user, invite settings must be false
+  if (!data.isMultiUser && (data.allowUserInvites || data.requireApproval)) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'Invite settings only available for multi-user conversations'
 });
 
 // Update conversation schema
