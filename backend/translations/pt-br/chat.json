@@ -20,14 +20,14 @@
       "yesterday": "Ontem",
       "last7Days": "Últimos 7 dias",
       "last30Days": "Últimos 30 dias",
-      "invalidDate": "Data inválida",
+      "invalidDate": "Data Inválida",
       "noResults": "Nenhuma conversa encontrada",
       "empty": "Nenhuma conversa ainda",
       "untitled": "Conversa sem título",
       "editTitle": "Editar título",
       "deleteConversation": "Excluir conversa",
       "deleteConfirmTitle": "Excluir Conversa",
-      "deleteConfirmMessage": "Você tem certeza que deseja excluir \"{{title}}\"? Esta ação não pode ser desfeita.",
+      "deleteConfirmMessage": "Tem certeza de que deseja excluir \"{{title}}\"? Esta ação não pode ser desfeita.",
       "thisConversation": "esta conversa",
       "deleteSuccess": "Conversa excluída com sucesso"
     },
@@ -140,16 +140,16 @@
       "loadingConversation": "Carregando conversa...",
       "addParticipantsPrompt": "Adicione participantes para iniciar a conversa.",
       "confirmDeleteTitle": "Confirmar Exclusão",
-      "confirmDeleteMessage": "Você tem certeza que deseja excluir esta mensagem?",
+      "confirmDeleteMessage": "Tem certeza de que deseja excluir esta mensagem?",
       "confirmReprocessTitle": "Confirmar Regeneração",
-      "confirmReprocessUserMessage": "Você tem certeza que deseja regenerar a resposta a esta mensagem?",
-      "confirmReprocessBotMessage": "Você tem certeza que deseja regenerar esta mensagem?",
+      "confirmReprocessUserMessage": "Tem certeza de que deseja regenerar a resposta a esta mensagem?",
+      "confirmReprocessBotMessage": "Tem certeza de que deseja regenerar esta mensagem?",
       "regenerateButton": "Regenerar",
       "conversationSettingsTitle": "Configurações da Conversa"
     },
     "participantConfigModal": {
-      "errorFetchingPersonas": "Impossível buscar personas.",
-      "errorLoadingPersonas": "Impossível carregar personas.",
+      "errorFetchingPersonas": "Não foi possível buscar personas.",
+      "errorLoadingPersonas": "Não foi possível carregar personas.",
       "viewGalleryButton": "Abrir galeria",
       "assistantDetails": "Assistente original: {{name}}",
       "galleryTitle": "Galeria de {{name}}"
@@ -167,12 +167,12 @@
       "useSlangLabel": "Usar gírias",
       "slangNone": "Nunca",
       "slangLow": "Ocasionalmente",
-      "slangMedium": "Frequentemente",
+      "slangMedium": "Com frequência",
       "roleplaySpecificTitle": "Detalhes do roleplay",
       "scenarioGenreLabel": "Gênero do cenário",
       "genreNone": "Nenhum",
       "genreFantasy": "Fantasia",
-      "genreSciFi": "Ficção científica",
+      "genreSciFi": "Ficção Científica",
       "genreModern": "Moderno",
       "genreCustom": "Personalizado",
       "customGenreDetailsLabel": "Detalhes do cenário personalizado",
@@ -192,7 +192,7 @@
       "selectFromGalleryButton": "Selecionar da galeria",
       "removeBgImageButton": "Remover imagem",
       "noImageSelected": "Nenhum fundo selecionado",
-      "autoBackgroundInfo": "Quando ativado, a imagem de capa do personagem será usada como fundo para conversas 1 a 1.",
+      "autoBackgroundInfo": "Quando habilitado, a imagem de capa do personagem será usada como fundo para conversas 1 a 1.",
       "errorLoadingGallery": "Não foi possível carregar as imagens da galeria.",
       "galleryButton": "Abrir galeria",
       "imageGalleryTitle": "Galeria do Chat",
@@ -202,7 +202,7 @@
         "private": "Privada",
         "unlisted": "Não listada",
         "public": "Pública",
-        "publicWarning": "Esta conversa será visível para todos e poderá ser encontrada em listas públicas.",
+        "publicWarning": "Esta conversa será visível para todos e descoberto em listas públicas.",
         "unlistedWarning": "Esta conversa pode ser acessada por qualquer pessoa com o link, mas não aparecerá em listas públicas."
       }
     },
@@ -211,8 +211,8 @@
       "delete": "Excluir",
       "save": "Salvar",
       "confirm": "Confirmar",
-      "enabled": "Ativado",
-      "disabled": "Desativado",
+      "enabled": "Habilitado",
+      "disabled": "Desabilitado",
       "allowed": "Permitido",
       "denied": "Negado",
       "deleting": "Excluindo...",
@@ -267,10 +267,10 @@
       "actionCancelledByUser": "Ação cancelada pelo usuário."
     },
     "memory": {
-      "active": "Memória ativa (atualizada {{timeAgo}})",
+      "active": "Memória ativa (atualizada há {{timeAgo}})",
       "activeTooltip": "O histórico da conversa está sendo comprimido automaticamente para salvar o contexto. Mensagens recentes são mantidas na íntegra, mensagens mais antigas são resumidas.",
       "compressing": "Compactando histórico da conversa...",
-      "compressingTooltip": "Sua conversa está sendo resumida para otimizar o uso da memória. Isso pode levar alguns momentos.",
+      "compressingTooltip": "Sua conversa está sendo resumida para otimizar o uso da memória. Isso pode levar alguns minutos.",
       "compressionComplete": "Histórico compactado com sucesso"
     },
     "presence": {
@@ -294,7 +294,7 @@
       "minSearchLength": "Digite pelo menos 2 caracteres para pesquisar",
       "searchFailed": "Falha ao pesquisar usuários. Por favor, tente novamente.",
       "allResultsAlreadyMembers": "Todos os usuários encontrados já são membros desta conversa.",
-      "noResults": "Nenhum usuário encontrado correspondente à sua pesquisa.",
+      "noResults": "Nenhum usuário encontrado que corresponda à sua pesquisa.",
       "searchHint": "Pesquise usuários pelo nome de usuário ou nome de exibição para convidá-los para esta conversa.",
       "invite": "Convidar",
       "inviting": "Convidando...",
@@ -315,7 +315,7 @@
       "failed": "Falha ao entrar na conversa",
       "errorTitle": "Impossível Entrar",
       "goHome": "Ir para Início",
-      "alreadyMember": "Você já é um membro desta conversa",
+      "alreadyMember": "Você já é membro desta conversa",
       "conversationFull": "Esta conversa atingiu o número máximo de usuários"
     },
     "addParticipantModal": {
@@ -334,6 +334,16 @@
       "addToConversationButtonTitle": "Adicionar à conversa",
       "maxParticipantsError": "Máximo de {{max}} participantes permitidos",
       "connectionError": "Erro de conexão. Por favor, tente novamente."
+    },
+    "multiUser": {
+      "label": "Conversa multiusuário",
+      "description": "Permitir que vários usuários participem desta conversa",
+      "maxUsers": "Máximo de usuários",
+      "maxUsersHint": "Até 4 usuários humanos podem participar (mais personagens ilimitados)",
+      "allowInvites": "Permitir que membros convidem",
+      "allowInvitesHint": "Membros podem convidar outros usuários para participar",
+      "requireApproval": "Requerer aprovação para entrar",
+      "requireApprovalHint": "O proprietário deve aprovar novos membros antes que eles possam participar"
     }
   }
 }

@@ -80,8 +80,30 @@ export function useConversationMutations() {
   });
 
   const createWithCharacterMutation = useMutation({
-    mutationFn: ({ characterId, title }: { characterId: string; title?: string }) =>
-      chatService.createConversationWithCharacter(characterId, title),
+    mutationFn: ({
+      characterId,
+      title,
+      isMultiUser,
+      maxUsers,
+      allowUserInvites,
+      requireApproval,
+    }: {
+      characterId: string;
+      title?: string;
+      isMultiUser?: boolean;
+      maxUsers?: number;
+      allowUserInvites?: boolean;
+      requireApproval?: boolean;
+    }) => {
+      return chatService.createConversation({
+        title: title || 'New Conversation',
+        participantIds: [characterId],
+        isMultiUser,
+        maxUsers,
+        allowUserInvites,
+        requireApproval,
+      });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
       handleFirstChatReward();

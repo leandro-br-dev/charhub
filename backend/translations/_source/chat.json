@@ -334,6 +334,16 @@
       "addToConversationButtonTitle": "Add to conversation",
       "maxParticipantsError": "Maximum {{max}} participants allowed",
       "connectionError": "Connection error. Please try again."
+    },
+    "multiUser": {
+      "label": "Multi-user conversation",
+      "description": "Allow multiple users to participate in this conversation",
+      "maxUsers": "Maximum users",
+      "maxUsersHint": "Up to 4 human users can join (plus unlimited characters)",
+      "allowInvites": "Allow members to invite",
+      "allowInvitesHint": "Members can invite other users to join",
+      "requireApproval": "Require approval to join",
+      "requireApprovalHint": "Owner must approve new members before they can participate"
     }
   }
 }

@@ -6,7 +6,7 @@
     "conversations": "Gespräche",
     "noConversations": "Noch keine Gespräche",
     "createFirst": "Erstellen Sie Ihr erstes Gespräch",
-    "loading": "Lädt...",
+    "loading": "Lade...",
     "error": "Fehler beim Laden des Chats",
     "unknownParticipant": "Unbekannt ({{id}})",
     "history": {
@@ -50,13 +50,13 @@
     },
     "message": {
       "send": "Senden",
-      "sending": "Wird gesendet...",
-      "placeholder": "Tippen Sie Ihre Nachricht ein...",
+      "sending": "Sende...",
+      "placeholder": "Tippen Sie Ihre Nachricht...",
       "delete": "Nachricht löschen",
       "edit": "Nachricht bearbeiten",
       "copy": "Kopieren",
-      "retry": "Erneut versuchen",
-      "failed": "Fehler beim Senden",
+      "retry": "Wiederholen",
+      "failed": "Senden fehlgeschlagen",
       "you": "Sie",
       "ai": "KI",
       "system": "System"
@@ -86,26 +86,26 @@
       "goBack": "Zurück zu Gesprächen"
     },
     "errors": {
-      "loadFailed": "Fehler beim Laden des Gesprächs",
-      "createFailed": "Fehler beim Erstellen des Gesprächs",
-      "sendFailed": "Fehler beim Senden der Nachricht",
-      "deleteFailed": "Fehler beim Löschen",
-      "updateFailed": "Fehler beim Aktualisieren",
+      "loadFailed": "Gespräch konnte nicht geladen werden",
+      "createFailed": "Gespräch konnte nicht erstellt werden",
+      "sendFailed": "Nachricht konnte nicht gesendet werden",
+      "deleteFailed": "Löschen fehlgeschlagen",
+      "updateFailed": "Aktualisierung fehlgeschlagen",
       "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
-      "unauthorized": "Sie haben keine Berechtigung, dies zu tun",
+      "unauthorized": "Sie haben keine Berechtigung dafür",
       "notFound": "Gespräch nicht gefunden",
-      "generateAiFailed": "Fehler beim Generieren der Antwort.",
-      "addParticipantFailed": "Fehler beim Hinzufügen des Teilnehmers.",
-      "removeParticipantFailed": "Fehler beim Entfernen des Teilnehmers.",
+      "generateAiFailed": "Generierung der Antwort fehlgeschlagen.",
+      "addParticipantFailed": "Teilnehmer konnte nicht hinzugefügt werden.",
+      "removeParticipantFailed": "Teilnehmer konnte nicht entfernt werden.",
       "cannotRemoveLastCharacter": "Der letzte Charakter kann nicht aus dem Gespräch entfernt werden. Es muss mindestens ein Charakter oder Assistent verbleiben.",
-      "updateConversationFailed": "Fehler beim Aktualisieren des Gesprächs.",
-      "reprocessNotAvailable": "Erneute Verarbeitung ist ohne einen Assistenten-Teilnehmer nicht verfügbar.",
-      "imageGenerationUnavailable": "Bildgenerierung ist noch nicht verfügbar.",
-      "cloneAssistantUnavailable": "Assistentenklonen ist noch nicht verfügbar.",
-      "promoteCharacterUnavailable": "Charakterförderung ist noch nicht verfügbar.",
+      "updateConversationFailed": "Gespräch konnte nicht aktualisiert werden.",
+      "reprocessNotAvailable": "Wiederholung ist ohne einen Assistenten-Teilnehmer nicht verfügbar.",
+      "imageGenerationUnavailable": "Bilderstellung ist noch nicht verfügbar.",
+      "cloneAssistantUnavailable": "Assistenten-Klonen ist noch nicht verfügbar.",
+      "promoteCharacterUnavailable": "Charakter-Beförderung ist noch nicht verfügbar.",
       "audioPlaybackUnavailable": "Audiowiedergabe ist noch nicht verfügbar.",
       "reviewFileUnavailable": "Dateiüberprüfung ist noch nicht verfügbar.",
-      "suggestionFailed": "Fehler beim Generieren des Antwortvorschlags."
+      "suggestionFailed": "Antwortvorschlag konnte nicht generiert werden."
     },
     "success": {
       "created": "Gespräch erfolgreich erstellt",
@@ -118,8 +118,8 @@
       "participantCount_plural": "{{count}} Teilnehmer",
       "configureParticipantTitle": "Teilnehmer konfigurieren",
       "configureBotTitle": "{{name}} konfigurieren",
-      "configureAssistantTitle": "Assistent {{name}} konfigurieren",
-      "configureUserRoleplayTitle": "{{name}}s Rollenspiel konfigurieren",
+      "configureAssistantTitle": "Assistenten {{name}} konfigurieren",
+      "configureUserRoleplayTitle": "Rollenspiel von {{name}} konfigurieren",
       "participantNotFound": "Teilnehmer nicht gefunden",
       "specificInstructionsLabel": "Spezifische Anweisungen",
       "specificInstructionsPlaceholder": "Fügen Sie Details hinzu, die Antworten während dieses Gesprächs beeinflussen sollen",
@@ -129,18 +129,18 @@
       "loadingPersonas": "Personas werden geladen...",
       "savingConfigurationButton": "Speichere...",
       "saveConfigurationButton": "Konfiguration speichern",
-      "promotingButton": "Fördere...",
-      "promoteToAssistantButton": "Zum Assistenten fördern",
+      "promotingButton": "Befördere...",
+      "promoteToAssistantButton": "Zum Assistenten befördern",
       "cloningButton": "Klone...",
       "cloneButton": "Assistenten klonen",
       "errorSavingConfig": "Konfiguration konnte nicht gespeichert werden.",
       "errorCloningAssistant": "Dieser Assistent konnte nicht geklont werden.",
-      "errorPromotingCharacter": "Dieser Charakter konnte nicht gefördert werden.",
+      "errorPromotingCharacter": "Dieser Charakter konnte nicht befördert werden.",
       "savingConfiguration": "Konfiguration wird gespeichert...",
       "loadingConversation": "Gespräch wird geladen...",
       "addParticipantsPrompt": "Fügen Sie Teilnehmer hinzu, um das Gespräch zu beginnen.",
       "confirmDeleteTitle": "Löschung bestätigen",
-      "confirmDeleteMessage": "Sind Sie sicher, dass Sie diese Nachricht löschen möchten?",
+      "confirmDeleteMessage": "Möchten Sie diese Nachricht wirklich löschen?",
       "confirmReprocessTitle": "Neugenerierung bestätigen",
       "confirmReprocessUserMessage": "Möchten Sie die Antwort auf diese Nachricht wirklich neu generieren?",
       "confirmReprocessBotMessage": "Möchten Sie diese Nachricht wirklich neu generieren?",
@@ -151,7 +151,7 @@
       "errorFetchingPersonas": "Personas konnten nicht abgerufen werden.",
       "errorLoadingPersonas": "Personas konnten nicht geladen werden.",
       "viewGalleryButton": "Galerie öffnen",
-      "assistantDetails": "Ursprünglicher Assistent: {{name}}",
+      "assistantDetails": "Original-Assistent: {{name}}",
       "galleryTitle": "{{name}}s Galerie"
     },
     "conversationSettings": {
@@ -165,7 +165,7 @@
       "lengthLong": "Lang",
       "useEmojisLabel": "Emojis verwenden",
       "useSlangLabel": "Umgangssprache verwenden",
-      "slangNone": "Niemals",
+      "slangNone": "Nie",
       "slangLow": "Gelegentlich",
       "slangMedium": "Oft",
       "roleplaySpecificTitle": "Rollenspiel-Details",
@@ -177,8 +177,8 @@
       "genreCustom": "Benutzerdefiniert",
       "customGenreDetailsLabel": "Details zum benutzerdefinierten Szenario",
       "customGenrePlaceholder": "Beschreiben Sie ein benutzerdefiniertes Szenario für das Rollenspiel",
-      "allowNsfwLabel": "Erwachseneninhalt zulassen",
-      "nsfwGlobalDisabledWarning": "Ihr Konto erlaubt keine Erwachseneninhalte.",
+      "allowNsfwLabel": "Reife Inhalte zulassen",
+      "nsfwGlobalDisabledWarning": "Ihr Konto erlaubt keine reifen Inhalte.",
       "showThoughtsLabel": "Assistenten-Gedanken anzeigen",
       "narrationStyleLabel": "Erzählstil",
       "narrationBalanced": "Ausgewogen",
@@ -187,7 +187,7 @@
       "viewOptionsTitle": "Visuelle Einstellungen",
       "bgTypeLabel": "Hintergrundtyp",
       "bgTypeAuto": "Automatisch (Charakter-Cover)",
-      "bgTypeTheme": "Thema verwenden",
+      "bgTypeTheme": "Theme verwenden",
       "bgTypeImage": "Bild verwenden",
       "selectFromGalleryButton": "Aus Galerie auswählen",
       "removeBgImageButton": "Bild entfernen",
@@ -197,13 +197,13 @@
       "galleryButton": "Galerie öffnen",
       "imageGalleryTitle": "Chat-Galerie",
       "visibility": {
-        "sectionTitle": "Privatsphäre-Einstellungen",
+        "sectionTitle": "Datenschutzeinstellungen",
         "label": "Gesichtssichtbarkeit",
         "private": "Privat",
         "unlisted": "Nicht gelistet",
         "public": "Öffentlich",
-        "publicWarning": "Dieses Gespräch wird für alle sichtbar und in öffentlichen Listen auffindbar sein.",
-        "unlistedWarning": "Dieses Gespräch kann von jedem mit dem Link aufgerufen werden, erscheint aber nicht in öffentlichen Listen."
+        "publicWarning": "Dieses Gespräch ist für alle sichtbar und kann in öffentlichen Listen gefunden werden.",
+        "unlistedWarning": "Jeder mit dem Link kann auf dieses Gespräch zugreifen, es wird aber nicht in öffentlichen Listen angezeigt."
       }
     },
     "common": {
@@ -216,14 +216,14 @@
       "allowed": "Erlaubt",
       "denied": "Verweigert",
       "deleting": "Wird gelöscht...",
-      "processing": "Verarbeitung...",
+      "processing": "Verarbeite...",
       "saving": "Speichere...",
       "unknown": "Unbekannt",
       "search": "Suchen",
       "searching": "Suche..."
     },
     "displayAvatarParticipants": {
-      "addParticipantPrompt": "Fügen Sie Teilnehmer hinzu, um das Gespräch zu beginnen.",
+      "addParticipantPrompt": "Fügen Sie Teilnehmer hinzu, um das Gespräch zu starten.",
       "configureParticipantTitle": "{{name}} konfigurieren",
       "removeParticipantTitle": "{{name}} entfernen",
       "addParticipantButtonTitle": "Teilnehmer hinzufügen"
@@ -231,11 +231,11 @@
     "messageInput": {
       "micNotSupportedError": "Mikrofon wird nicht unterstützt.",
       "transcriptionFailedError": "Transkription fehlgeschlagen.",
-      "transcriptionServiceError": "Fehler beim Transkriptionsdienst.",
+      "transcriptionServiceError": "Transkriptionsdienstfehler.",
       "micAccessError": "Mikrofonzugriff verweigert.",
       "placeholderProcessingAudio": "Audio wird verarbeitet...",
-      "placeholderRecording": "Aufnahme läuft...",
-      "placeholderSending": "Wird gesendet...",
+      "placeholderRecording": "Aufnahme...",
+      "placeholderSending": "Sende...",
       "placeholderWaiting": "Warte auf Antwort...",
       "placeholderDefault": "Nachricht eingeben...",
       "configureUser": "{{name}} konfigurieren",
@@ -245,7 +245,7 @@
       "suggestReplyAction": "Antwort vorschlagen",
       "generatingSuggestion": "Vorschlag wird generiert...",
       "micButtonStopRecordingTitle": "Aufnahme stoppen",
-      "micButtonProcessingTitle": "Verarbeitung...",
+      "micButtonProcessingTitle": "Verarbeite...",
       "micButtonRecordTitle": "Audio aufnehmen"
     },
     "messageItem": {
@@ -259,61 +259,61 @@
       "regenerateActionTitle": "Antwort neu generieren",
       "youSender": "Sie",
       "unknownSender": "Unbekannt",
-      "creditsUsedTitle": "{{count}} Credits verbraucht",
-      "filesToReviewTitle": "Zu prüfende Dateien:"
+      "creditsUsedTitle": "{{count}} Credits verwendet",
+      "filesToReviewTitle": "Dateien zur Überprüfung:"
     },
     "chatActions": {
       "actionConfirmedByUser": "Aktion vom Benutzer bestätigt.",
       "actionCancelledByUser": "Aktion vom Benutzer abgebrochen."
     },
     "memory": {
-      "active": "Speicher aktiv (aktualisiert vor {{timeAgo}})",
-      "activeTooltip": "Der Gesprächsverlauf wird automatisch komprimiert, um den Kontext zu speichern. Neuere Nachrichten werden vollständig beibehalten, ältere Nachrichten werden zusammengefasst.",
-      "compressing": "Gesprächsverlauf wird komprimiert...",
+      "active": "Speicher aktiv (zuletzt aktualisiert {{timeAgo}})",
+      "activeTooltip": "Der Gesprächsverlauf wird automatisch komprimiert, um den Kontext zu speichern. Neuere Nachrichten bleiben vollständig erhalten, ältere Nachrichten werden zusammengefasst.",
+      "compressing": "Komprimiert Gesprächsverlauf...",
       "compressingTooltip": "Ihr Gespräch wird zusammengefasst, um die Speichernutzung zu optimieren. Dies kann einige Momente dauern.",
       "compressionComplete": "Verlauf erfolgreich komprimiert"
     },
     "presence": {
-      "onlineTooltip": "{{count}} weitere Benutzer sind in diesem Gespräch online",
+      "onlineTooltip": "{{count}} weiterer Benutzer online in diesem Gespräch",
       "oneOnline": "1 online",
       "manyOnline": "{{count}} online"
     },
     "memberRole": {
       "owner": "Besitzer",
-      "ownerTooltip": "Gesprächseigentümer - volle Kontrolle über Einstellungen und Mitglieder",
-      "moderator": "Mod",
-      "moderatorTooltip": "Moderator - kann Mitglieder verwalten und Inhalte moderieren",
+      "ownerTooltip": "Gesprächseigentümer – volle Kontrolle über Einstellungen und Mitglieder",
+      "moderator": "Moderator",
+      "moderatorTooltip": "Moderator – kann Mitglieder verwalten und Inhalte moderieren",
       "member": "Mitglied",
-      "memberTooltip": "Mitglied - kann am Gespräch teilnehmen",
+      "memberTooltip": "Mitglied – kann am Gespräch teilnehmen",
       "viewer": "Betrachter",
-      "viewerTooltip": "Betrachter - schreibgeschützter Zugriff auf das Gespräch"
+      "viewerTooltip": "Betrachter – Nur-Lese-Zugriff auf das Gespräch"
     },
     "inviteUser": {
       "title": "Benutzer einladen",
       "searchPlaceholder": "Suche nach Benutzername oder Anzeigename...",
       "minSearchLength": "Geben Sie mindestens 2 Zeichen ein, um zu suchen",
-      "searchFailed": "Fehler bei der Benutzersuche. Bitte versuchen Sie es erneut.",
+      "searchFailed": "Benutzersuche fehlgeschlagen. Bitte versuchen Sie es erneut.",
       "allResultsAlreadyMembers": "Alle gefundenen Benutzer sind bereits Mitglieder dieses Gesprächs.",
       "noResults": "Keine Benutzer gefunden, die Ihrer Suche entsprechen.",
       "searchHint": "Suchen Sie nach Benutzernamen oder Anzeigenamen, um sie zu diesem Gespräch einzuladen.",
       "invite": "Einladen",
-      "inviting": "Wird eingeladen...",
-      "inviteFailed": "Fehler beim Einladen des Benutzers. Bitte versuchen Sie es erneut.",
+      "inviting": "Lade ein...",
+      "inviteFailed": "Benutzer konnte nicht eingeladen werden. Bitte versuchen Sie es erneut.",
       "inviteSuccess": "Benutzer erfolgreich eingeladen!"
     },
     "shareInvite": {
       "title": "Einladungslink teilen",
-      "description": "Jeder mit diesem Link kann am Gespräch teilnehmen.",
-      "generateFailed": "Fehler beim Generieren des Einladungslinks. Bitte versuchen Sie es erneut.",
+      "description": "Jeder mit diesem Link kann dem Gespräch beitreten.",
+      "generateFailed": "Einladungslink konnte nicht generiert werden. Bitte versuchen Sie es erneut.",
       "copy": "Link kopieren",
       "copied": "Kopiert!",
-      "expiresIn": "Link läuft in {{days}} Tagen ab"
+      "expiresIn": "Link läuft ab in {{days}} Tagen"
     },
     "joinChat": {
       "accepting": "Gespräch wird beigetreten...",
       "invalidLink": "Ungültiger oder fehlender Einladungslink",
-      "failed": "Fehler beim Beitreten des Gesprächs",
-      "errorTitle": "Beitritt nicht möglich",
+      "failed": "Gespräch konnte nicht beigetreten werden",
+      "errorTitle": "Kann nicht beitreten",
       "goHome": "Zur Startseite",
       "alreadyMember": "Sie sind bereits Mitglied dieses Gesprächs",
       "conversationFull": "Dieses Gespräch hat die maximale Benutzeranzahl erreicht"
@@ -334,6 +334,16 @@
       "addToConversationButtonTitle": "Zum Gespräch hinzufügen",
       "maxParticipantsError": "Maximal {{max}} Teilnehmer erlaubt",
       "connectionError": "Verbindungsfehler. Bitte versuchen Sie es erneut."
+    },
+    "multiUser": {
+      "label": "Multi-User-Gespräch",
+      "description": "Mehrere Benutzer können an diesem Gespräch teilnehmen",
+      "maxUsers": "Maximale Benutzeranzahl",
+      "maxUsersHint": "Bis zu 4 menschliche Benutzer können teilnehmen (plus unbegrenzte Charaktere)",
+      "allowInvites": "Mitgliedern erlauben, einzuladen",
+      "allowInvitesHint": "Mitglieder können andere Benutzer zur Teilnahme einladen",
+      "requireApproval": "Genehmigung zur Teilnahme erforderlich",
+      "requireApprovalHint": "Der Besitzer muss neuen Mitgliedern zustimmen, bevor sie teilnehmen können"
     }
   }
 }
