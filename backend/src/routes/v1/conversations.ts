@@ -556,7 +556,32 @@ router.post(
         logger.info({ userId, creditCost: estimatedCreditCost, messageId: message.id }, 'Credits charged for regeneration');
       }
 
-      // Step 7: Return the new message
+      // Step 7: Broadcast the regenerated message to all users in the conversation room via WebSocket
+      const io = (req.app as any).io;
+      if (io) {
+        const room = `conversation:${conversationId}`;
+        const serializedMessage = {
+          id: message.id,
+          conversationId: message.conversationId,
+          senderId: message.senderId,
+          senderType: message.senderType,
+          content: message.content,
+          attachments: message.attachments ?? null,
+          metadata: message.metadata ?? null,
+          timestamp: message.timestamp instanceof Date
+            ? message.timestamp.toISOString()
+            : new Date(message.timestamp).toISOString(),
+        };
+
+        io.to(room).emit('message_received', serializedMessage);
+
+        logger.info(
+          { conversationId, messageId: message.id, participantId },
+          'Broadcasted regenerated message via WebSocket'
+        );
+      }
+
+      // Step 8: Return the new message
       return res.status(201).json({
         success: true,
         data: message,
@@ -582,7 +607,7 @@ router.delete(
   requireAuth,
   async (req: Request, res: Response) => {
     try {
-      const { id, messageId } = req.params;
+      const { id: conversationId, messageId } = req.params;
       const userId = req.auth?.user?.id;
 
       if (!userId) {
@@ -592,17 +617,39 @@ router.delete(
         });
       }
 
-      await messageService.deleteMessage(id, messageId, userId);
+      const result = await messageService.deleteMessage(conversationId, messageId, userId);
+
+      // Broadcast message_deleted event to all users in the conversation room via WebSocket
+      const io = (req.app as any).io;
+      if (io) {
+        const room = `conversation:${conversationId}`;
+        io.to(room).emit('message_deleted', {
+          conversationId,
+          messageId,
+          deletedCount: result.deletedCount,
+          deletedBy: userId,
+        });
+
+        logger.info(
+          { conversationId, messageId, deletedCount: result.deletedCount },
+          'Broadcasted message_deleted event'
+        );
+      }
 
       return res.json({
         success: true,
         message: 'Message deleted successfully',
+        data: result,
       });
     } catch (error) {
-      logger.error({ error }, 'Error deleting message');
-      return res.status(500).json({
+      const statusCode = (error as any).statusCode || 500;
+      const message = error instanceof Error ? error.message : 'Failed to delete message';
+
+      logger.error({ error, statusCode }, 'Error deleting message');
+
+      return res.status(statusCode).json({
         success: false,
-        message: 'Failed to delete message',
+        message,
       });
     }
   }
@@ -624,8 +671,9 @@ router.get('/:id/background', requireAuth, async (req: Request, res: Response) =
       });
     }
 
-    // Verify user has access to this conversation
-    const hasAccess = await conversationService.isConversationOwner(id, userId);
+    // Verify user has access to this conversation (owner OR active member for multi-user)
+    const { membershipService } = await import('../../services/membershipService');
+    const hasAccess = await membershipService.hasAccess(id, userId);
     if (!hasAccess) {
       return res.status(403).json({
         success: false,

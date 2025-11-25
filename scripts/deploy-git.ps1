@@ -207,20 +207,22 @@ echo ""
 echo "[OK] Deploy concluido com sucesso!"
 '@
 
-# Criar arquivo temporário com o script
+# Criar arquivo temporário com o script (garantir LF line endings para Linux)
 $tempScript = Join-Path $env:TEMP "deploy-git-script.sh"
+$deployScriptLF = $deployScript -replace "`r`n", "`n" -replace "`r", "`n"
 $utf8NoBom = New-Object System.Text.UTF8Encoding $false
-[System.IO.File]::WriteAllText($tempScript, $deployScript, $utf8NoBom)
+[System.IO.File]::WriteAllText($tempScript, $deployScriptLF, $utf8NoBom)
 
 try {
     # Enviar e executar script
-    gcloud compute scp $tempScript ${VMName}:~/deploy-git.sh --zone=$Zone 2>$null
+    $remoteScript = "/tmp/deploy-git.sh"
+    gcloud compute scp $tempScript ${VMName}:$remoteScript --zone=$Zone
 
     if ($LASTEXITCODE -ne 0) {
         throw "Erro ao copiar script para VM"
     }
 
-    gcloud compute ssh $VMName --zone=$Zone --command="chmod +x ~/deploy-git.sh && bash ~/deploy-git.sh"
+    gcloud compute ssh $VMName --zone=$Zone --command="chmod +x $remoteScript && bash $remoteScript"
 
     if ($LASTEXITCODE -ne 0) {
         throw "Deploy falhou na VM"

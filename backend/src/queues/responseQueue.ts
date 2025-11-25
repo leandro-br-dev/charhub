@@ -16,6 +16,7 @@ export interface ResponseJobData {
   preferredLanguage?: string;
   estimatedCreditCost?: number;
   isNSFW?: boolean;
+  requestingUserId?: string; // ID of the user who triggered this AI response (who pays)
 }
 
 // Queue name
@@ -93,12 +94,22 @@ function ensureInitialized() {
 
       // Generate response using ResponseGenerationAgent
       const agent = agentService.getResponseGenerationAgent();
+
+      // Build map of all users in the conversation
+      const allUsers = new Map();
+      for (const p of conversation.participants) {
+        if (p.user) {
+          allUsers.set(p.user.id, p.user);
+        }
+      }
+
       const content = await agent.execute(
         conversation,
         conversation.owner,
         lastMessage,
         participantId,  // Pass the participant ID to use the correct character
-        job.data.preferredLanguage  // Pass the preferred language from job data
+        job.data.preferredLanguage,  // Pass the preferred language from job data
+        allUsers  // Pass all users for multi-user context
       );
 
       // Determine sender ID based on participant type
@@ -133,8 +144,12 @@ function ensureInitialized() {
       if (job.data.estimatedCreditCost && job.data.estimatedCreditCost > 0) {
         try {
           const { createTransaction } = await import('../services/creditService');
+          // Charge the user who triggered the AI response (requestingUserId)
+          // If not provided (old jobs), fall back to conversation owner
+          const payingUserId = job.data.requestingUserId || conversation.userId;
+
           await createTransaction(
-            conversation.userId,
+            payingUserId,
             'CONSUMPTION',
             -job.data.estimatedCreditCost,
             `Chat message (${job.data.isNSFW ? 'NSFW' : 'SFW'})`,
@@ -145,7 +160,9 @@ function ensureInitialized() {
           logger.info(
             {
               jobId: job.id,
-              userId: conversation.userId,
+              payingUserId,
+              requestingUserId: job.data.requestingUserId,
+              conversationOwnerId: conversation.userId,
               creditCost: job.data.estimatedCreditCost,
               isNSFW: job.data.isNSFW,
             },
@@ -153,7 +170,7 @@ function ensureInitialized() {
           );
         } catch (creditError) {
           logger.error(
-            { error: creditError, jobId: job.id, userId: conversation.userId },
+            { error: creditError, jobId: job.id, payingUserId: job.data.requestingUserId || conversation.userId },
             'Failed to charge credits (continuing anyway)'
           );
           // Don't fail the job if credit charging fails

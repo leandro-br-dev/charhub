@@ -274,6 +274,64 @@ export async function checkUsernameAvailability(username: string, currentUserId?
   return false;
 }
 
+interface SearchUsersResult {
+  id: string;
+  username: string | null;
+  displayName: string | null;
+  avatarUrl: string | null;
+}
+
+export async function searchUsers(
+  query: string,
+  excludeUserIds: string[] = [],
+  limit: number = 10
+): Promise<SearchUsersResult[]> {
+  if (!query || query.length < 2) {
+    return [];
+  }
+
+  const users = await prisma.user.findMany({
+    where: {
+      AND: [
+        {
+          id: {
+            notIn: excludeUserIds,
+          },
+        },
+        {
+          OR: [
+            {
+              username: {
+                contains: query,
+                mode: 'insensitive',
+              },
+            },
+            {
+              displayName: {
+                contains: query,
+                mode: 'insensitive',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    select: {
+      id: true,
+      username: true,
+      displayName: true,
+      avatarUrl: true,
+    },
+    take: limit,
+    orderBy: [
+      { displayName: 'asc' },
+      { username: 'asc' },
+    ],
+  });
+
+  return users;
+}
+
 export async function deleteUserAccount(userId: string): Promise<void> {
   const systemUser = await prisma.user.findUnique({
     where: { username: '@system' },

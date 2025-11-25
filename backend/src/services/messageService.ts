@@ -2,6 +2,7 @@ import { Prisma } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import { encryptMessage, decryptMessage } from './encryption';
+import { membershipService } from './membershipService';
 import type {
   CreateMessageInput,
   ListMessagesQuery,
@@ -89,12 +90,10 @@ export async function listMessages(
   query: ListMessagesQuery
 ) {
   try {
-    // Verify user owns the conversation
-    const conversation = await prisma.conversation.findFirst({
-      where: { id: conversationId, userId },
-    });
+    // Verify user has access (owner OR active member for multi-user)
+    const hasAccess = await membershipService.hasAccess(conversationId, userId);
 
-    if (!conversation) {
+    if (!hasAccess) {
       throw Object.assign(new Error('Conversation not found'), {
         statusCode: 404,
       });
@@ -190,19 +189,48 @@ export async function deleteMessage(
   userId: string
 ) {
   try {
-    // Verify user owns the conversation containing this message
+    // Verify user has access to the conversation (owner OR active member with write permission)
+    const hasAccess = await membershipService.hasAccess(conversationId, userId);
+
+    if (!hasAccess) {
+      throw Object.assign(new Error('Access denied to this conversation'), { statusCode: 403 });
+    }
+
+    // Find the message
     const message = await prisma.message.findFirst({
       where: {
         id: messageId,
         conversationId: conversationId,
-        conversation: {
-          userId,
-        },
       },
     });
 
     if (!message) {
-      throw Object.assign(new Error('Message not found or you do not have permission to delete it'), { statusCode: 404 });
+      throw Object.assign(new Error('Message not found'), { statusCode: 404 });
+    }
+
+    // Check if user has permission to delete (must be owner OR member with canWrite permission)
+    const conversation = await prisma.conversation.findUnique({
+      where: { id: conversationId },
+      select: { userId: true, isMultiUser: true }
+    });
+
+    const isOwner = conversation?.userId === userId;
+    let canDelete = isOwner;
+
+    if (!isOwner && conversation?.isMultiUser) {
+      // Check if member has write permission
+      const membership = await prisma.userConversationMembership.findUnique({
+        where: {
+          conversationId_userId: { conversationId, userId }
+        },
+        select: { canWrite: true, isActive: true }
+      });
+
+      canDelete = membership?.isActive && membership?.canWrite || false;
+    }
+
+    if (!canDelete) {
+      throw Object.assign(new Error('You do not have permission to delete messages in this conversation'), { statusCode: 403 });
     }
 
     // Delete the message and all subsequent messages (for regeneration)

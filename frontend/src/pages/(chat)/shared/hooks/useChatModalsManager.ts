@@ -48,6 +48,10 @@ export const useChatModalsManager = () => {
     [openModal]
   );
 
+  const openShareInviteLinkModal = useCallback(() => {
+    openModal("shareInviteLink");
+  }, [openModal]);
+
   return {
     activeModal,
     modalData,
@@ -56,6 +60,7 @@ export const useChatModalsManager = () => {
     openDeleteDialog,
     openReprocessDialog,
     openConversationSettingsModal,
+    openShareInviteLinkModal,
     closeActiveModal: closeModal,
   };
 };

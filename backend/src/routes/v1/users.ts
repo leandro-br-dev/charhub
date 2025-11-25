@@ -3,7 +3,7 @@ import { ZodError } from 'zod';
 import multer from 'multer';
 import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
-import { updateUserProfile, checkUsernameAvailability, deleteUserAccount } from '../../services/userService';
+import { updateUserProfile, checkUsernameAvailability, deleteUserAccount, searchUsers } from '../../services/userService';
 import { r2Service } from '../../services/r2Service';
 import { updateUserProfileSchema } from '../../validators';
 
@@ -17,6 +17,32 @@ router.get('/me', requireAuth, (req, res) => {
   }
 
   res.json({ success: true, data: req.auth.user });
+});
+
+// Search users by username or display name
+router.get('/search', requireAuth, async (req, res) => {
+  if (!req.auth?.user) {
+    res.status(401).json({ success: false, error: 'Authentication required' });
+    return;
+  }
+
+  const query = req.query.q as string;
+  const limitParam = parseInt(req.query.limit as string, 10);
+  const limit = isNaN(limitParam) ? 10 : Math.min(limitParam, 20);
+
+  if (!query || query.length < 2) {
+    res.status(400).json({ success: false, error: 'Search query must be at least 2 characters' });
+    return;
+  }
+
+  try {
+    // Exclude current user from results
+    const users = await searchUsers(query, [req.auth.user.id], limit);
+    res.json({ success: true, data: users });
+  } catch (error) {
+    logger.error({ error }, 'user_search_failed');
+    res.status(500).json({ success: false, error: 'Failed to search users' });
+  }
 });
 
 router.get('/check-username/:username', requireAuth, async (req, res) => {

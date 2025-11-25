@@ -8,11 +8,15 @@ import MessageList from './MessageList';
 import AddParticipantModal from './AddParticipantModal';
 import ParticipantConfigModal from './ParticipantConfigModal';
 import ConversationSettingsModal from './ConversationSettingsModal';
+import { ShareInviteLinkModal } from './ShareInviteLinkModal';
 import { Dialog } from '../../../../components/ui';
 import ImageGalleryModal from './ImageGalleryModal';
+import { MemoryIndicator } from './MemoryIndicator';
+import { OnlineUsersIndicator } from './OnlineUsersIndicator';
 import { useChatModalsManager } from '../hooks/useChatModalsManager';
 import { useConversationBackground } from '../hooks/useConversationBackground';
 import { chatService } from '../../../../services/chatService';
+import { useMembershipMutations, useMembersQuery } from '../hooks/useMembership';
 
 const ChatView: React.FC<any> = ({
   userId,
@@ -25,6 +29,8 @@ const ChatView: React.FC<any> = ({
   loadingConversationData,
   isWebSocketConnected,
   typingCharacters,
+  onlineUsers = [],
+  isMemoryCompressing = false,
   activeBackgroundTasks,
   playingAudioState,
   audioCache,
@@ -56,8 +62,21 @@ const ChatView: React.FC<any> = ({
     openDeleteDialog,
     openReprocessDialog,
     openConversationSettingsModal,
+    openShareInviteLinkModal,
     closeActiveModal,
   } = useChatModalsManager();
+
+  // Multi-user membership management
+  const { data: membersData } = useMembersQuery(conversation?.id);
+  const { inviteUser } = useMembershipMutations(conversation?.id);
+
+  const currentMemberIds = useMemo(() => {
+    return membersData?.items?.map((m) => m.userId) || [];
+  }, [membersData]);
+
+  const handleInviteUser = useCallback(async (invitedUserId: string) => {
+    await inviteUser.mutateAsync({ userId: invitedUserId });
+  }, [inviteUser]);
 
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
@@ -107,6 +126,17 @@ const ChatView: React.FC<any> = ({
       />
       {conversation && (
         <>
+          {conversation.isMultiUser && (
+            <Button
+              variant="light"
+              size="small"
+              icon="share"
+              onClick={openShareInviteLinkModal}
+              title={t('shareInvite.title')}
+              className="p-2 flex-shrink-0"
+              disabled={actionLoading || loadingConversationData}
+            />
+          )}
           <Button
             variant="light"
             size="small"
@@ -128,7 +158,7 @@ const ChatView: React.FC<any> = ({
         </>
       )}
     </>
-  ), [processedParticipants, openConfigModal, openAddParticipantModal, t, conversation, fetchAndOpenChatGallery, actionLoading, loadingConversationData, loadingGallery, openConversationSettingsModal]);
+  ), [processedParticipants, openConfigModal, openAddParticipantModal, t, conversation, fetchAndOpenChatGallery, actionLoading, loadingConversationData, loadingGallery, openConversationSettingsModal, openShareInviteLinkModal]);
 
   useEffect(() => {
     if (conversation?.title) {
@@ -239,6 +269,17 @@ const ChatView: React.FC<any> = ({
                   {t('chatPage.addParticipantsPrompt')}
                 </p>
               )}
+              {/* Multi-user and memory indicators */}
+              <div className="flex items-center justify-center gap-2 mt-2">
+                <OnlineUsersIndicator
+                  onlineUsers={onlineUsers}
+                  currentUserId={userId}
+                />
+                <MemoryIndicator
+                  conversation={conversation}
+                  isCompressing={isMemoryCompressing}
+                />
+              </div>
             </div>
 
             <MessageList
@@ -286,6 +327,10 @@ const ChatView: React.FC<any> = ({
         onClose={closeActiveModal}
         currentParticipants={processedParticipants}
         onAddParticipant={onAddParticipant}
+        conversationId={conversation?.id}
+        currentMemberIds={currentMemberIds}
+        onInviteUser={handleInviteUser}
+        isMultiUser={conversation?.isMultiUser}
       />
       {activeModal === "configParticipant" && modalData && (
         <ParticipantConfigModal
@@ -357,6 +402,13 @@ const ChatView: React.FC<any> = ({
         error={galleryError}
         title={t("conversationSettings.imageGalleryTitle")}
       />
+      {activeModal === "shareInviteLink" && conversation && (
+        <ShareInviteLinkModal
+          isOpen={true}
+          onClose={closeActiveModal}
+          conversationId={conversation.id}
+        />
+      )}
     </div>
   );
 };

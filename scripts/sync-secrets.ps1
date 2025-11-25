@@ -98,7 +98,7 @@ if (Test-Path $envProdPath) {
     }
 
     # Verificar variaveis criticas
-    $criticalVars = @("DATABASE_URL", "SESSION_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET")
+    $criticalVars = @("DATABASE_URL", "JWT_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET")
     foreach ($var in $criticalVars) {
         if ($envContent -notmatch "$var=.+") {
             Write-Warning "Variavel critica '$var' pode estar vazia ou ausente"
@@ -172,19 +172,10 @@ Write-Step "Enviando arquivos para a VM..."
 
 try {
     # Criar backup na VM primeiro
-    gcloud compute ssh $VMName --zone=$Zone --command="
-        cd $vmAppDir
-        BACKUP_DIR='.env_backups/$(Get-Date -Format 'yyyyMMdd_HHmmss')'
-        mkdir -p `$BACKUP_DIR
+    $backupTimestamp = Get-Date -Format 'yyyyMMdd_HHmmss'
+    $backupCmd = "cd $vmAppDir && BACKUP_DIR='.env_backups/$backupTimestamp' && mkdir -p `$BACKUP_DIR && [ -f .env ] && cp .env `$BACKUP_DIR/ ; [ -f frontend/.env ] && cp frontend/.env `$BACKUP_DIR/frontend.env ; [ -f cloudflared/config/prod/cert.pem ] && cp cloudflared/config/prod/cert.pem `$BACKUP_DIR/ ; cp cloudflared/config/prod/*.json `$BACKUP_DIR/ 2>/dev/null ; echo 'Backup criado em:' `$BACKUP_DIR"
 
-        # Backup dos arquivos existentes
-        [ -f .env ] && cp .env `$BACKUP_DIR/
-        [ -f frontend/.env ] && cp frontend/.env `$BACKUP_DIR/frontend.env
-        [ -f cloudflared/config/prod/cert.pem ] && cp cloudflared/config/prod/cert.pem `$BACKUP_DIR/
-        [ -f cloudflared/config/prod/*.json ] && cp cloudflared/config/prod/*.json `$BACKUP_DIR/ 2>/dev/null
-
-        echo 'Backup criado em:' `$BACKUP_DIR
-    " 2>$null
+    gcloud compute ssh $VMName --zone=$Zone --command=$backupCmd 2>$null
 
     if ($LASTEXITCODE -ne 0) {
         Write-Warning "Falha ao criar backup na VM (pode ser primeira execucao)"
@@ -208,13 +199,10 @@ try {
         Write-Success "$($file.Local) enviado"
     }
 
-    # Ajustar permissoes
+    # Ajustar permissoes (644 para que containers Docker possam ler)
     Write-Step "Ajustando permissoes..."
-    gcloud compute ssh $VMName --zone=$Zone --command="
-        cd $vmAppDir
-        chmod 600 .env frontend/.env cloudflared/config/prod/*.json cloudflared/config/prod/*.pem 2>/dev/null
-        echo 'Permissoes ajustadas'
-    " 2>$null
+    $chmodCmd = "cd $vmAppDir && chmod 644 .env frontend/.env cloudflared/config/prod/*.json cloudflared/config/prod/*.pem 2>/dev/null && echo 'Permissoes ajustadas'"
+    gcloud compute ssh $VMName --zone=$Zone --command=$chmodCmd 2>$null
 
     Write-Success "Todos os arquivos enviados com sucesso"
     Write-Host ""
@@ -222,14 +210,8 @@ try {
     if (-not $NoRestart) {
         Write-Step "Reiniciando containers para aplicar mudancas..."
 
-        gcloud compute ssh $VMName --zone=$Zone --command="
-            cd $vmAppDir
-            COMPOSE='/var/lib/toolbox/bin/docker-compose'
-            export DOCKER_CONFIG=/var/lib/docker/.docker
-            sudo DOCKER_CONFIG=`$DOCKER_CONFIG `$COMPOSE --env-file .env restart
-            sleep 5
-            sudo DOCKER_CONFIG=`$DOCKER_CONFIG `$COMPOSE --env-file .env ps
-        "
+        $restartCmd = "cd $vmAppDir && COMPOSE='/var/lib/toolbox/bin/docker-compose' && export DOCKER_CONFIG=/var/lib/docker/.docker && sudo DOCKER_CONFIG=`$DOCKER_CONFIG `$COMPOSE --env-file .env restart && sleep 5 && sudo DOCKER_CONFIG=`$DOCKER_CONFIG `$COMPOSE --env-file .env ps"
+        gcloud compute ssh $VMName --zone=$Zone --command=$restartCmd
 
         if ($LASTEXITCODE -ne 0) {
             Write-Warning "Falha ao reiniciar containers"

@@ -529,6 +529,8 @@ const ChatContainer = () => {
       loadingConversationData={loadingConversationData}
       isWebSocketConnected={socketState.isConnected}
       typingCharacters={socketState.typingParticipants}
+      onlineUsers={socketState.onlineUsers}
+      isMemoryCompressing={socketState.isMemoryCompressing}
       activeBackgroundTasks={{}}
       playingAudioState={{ messageId: null, isLoading: false, error: null, audioDataUrl: null }}
       audioCache={{}}

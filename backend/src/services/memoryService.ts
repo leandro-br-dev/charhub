@@ -379,10 +379,22 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
       if (recentMessages.length > 0) {
         context += '[= RECENT MESSAGES (FULL CONTEXT) =]\n\n';
 
+        const { decryptMessage } = await import('./encryption');
+
         recentMessages.forEach(msg => {
           const senderName = participantNames.get(msg.senderId) ||
                             (msg.senderType === 'USER' ? 'User' : 'Character');
-          context += `${senderName}: ${msg.content}\n`;
+
+          // Decrypt message content before adding to context
+          let decryptedContent = msg.content;
+          try {
+            decryptedContent = decryptMessage(msg.content);
+          } catch (error) {
+            logger.error({ error, messageId: msg.id }, 'Failed to decrypt message in memory context');
+            decryptedContent = '[Decryption failed]';
+          }
+
+          context += `${senderName}: ${decryptedContent}\n`;
         });
       }
 
@@ -399,8 +411,17 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
 
       fallbackMessages.reverse();
 
+      const { decryptMessage } = await import('./encryption');
+
       return fallbackMessages.map(msg => {
-        return `${msg.senderType === 'USER' ? 'User' : 'Character'}: ${msg.content}`;
+        let decryptedContent = msg.content;
+        try {
+          decryptedContent = decryptMessage(msg.content);
+        } catch (error) {
+          logger.error({ error, messageId: msg.id }, 'Failed to decrypt message in fallback');
+          decryptedContent = '[Decryption failed]';
+        }
+        return `${msg.senderType === 'USER' ? 'User' : 'Character'}: ${decryptedContent}`;
       }).join('\n');
     }
   }

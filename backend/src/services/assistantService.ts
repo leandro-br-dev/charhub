@@ -408,13 +408,22 @@ export async function sendAIMessage(
 
     const lastMessage = conversation.messages[conversation.messages.length - 1];
 
+    // Build map of all users in the conversation
+    const allUsers = new Map();
+    for (const p of conversation.participants) {
+      if (p.user) {
+        allUsers.set(p.user.id, p.user);
+      }
+    }
+
     // Generate response for the specific participant
     const content = await agent.execute(
       conversation,
       conversation.owner,
       lastMessage,
       participantId,  // Pass the participant ID to use the correct character
-      preferredLanguage  // Pass the preferred language from x-user-language header
+      preferredLanguage,  // Pass the preferred language from x-user-language header
+      allUsers  // Pass all users for multi-user context
     );
 
     // Find the participant and determine its type

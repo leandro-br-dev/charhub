@@ -57,7 +57,8 @@ export class ResponseGenerationAgent {
     user: User,
     lastMessage: Message,
     participantId?: string,
-    preferredLanguageOverride?: string
+    preferredLanguageOverride?: string,
+    allUsers?: Map<string, User>  // Map of userId -> User for all participants
   ): Promise<string> {
     logger.info(
       { conversationId: conversation.id, participantId },
@@ -164,7 +165,27 @@ export class ResponseGenerationAgent {
     // Use override language if provided (from x-user-language header), otherwise use user's database preference
     const effectiveLanguageCode = preferredLanguageOverride || user.preferredLanguage;
     const userLanguage = getLanguageName(effectiveLanguageCode);
-    const userContext = this.formatUserContext(user);
+
+    // Format context for all users in multi-user conversations
+    let allUsersContext = '';
+    let lastMessageSender = user.displayName || 'User';
+
+    if (allUsers && allUsers.size > 1) {
+      // Multi-user conversation: format all users
+      const userContexts: string[] = [];
+      allUsers.forEach((u, userId) => {
+        userContexts.push(`\n**${u.displayName || 'User'}** (ID: ${userId.slice(0, 8)}):\n${this.formatUserContext(u)}`);
+
+        // Check if this user sent the last message
+        if (lastMessage.senderId === userId) {
+          lastMessageSender = u.displayName || 'User';
+        }
+      });
+      allUsersContext = '\n\nAll Users in this Conversation:' + userContexts.join('\n');
+    } else {
+      // Solo conversation: use single user context
+      allUsersContext = '\n\nUser Information (Person you\'re talking to):\n' + this.formatUserContext(user);
+    }
 
     logger.debug({
       userId: user.id,
@@ -172,7 +193,8 @@ export class ResponseGenerationAgent {
       birthDate: user.birthDate,
       gender: user.gender,
       preferredLanguage: user.preferredLanguage,
-      formattedContext: userContext
+      isMultiUser: allUsers && allUsers.size > 1,
+      totalUsers: allUsers ? allUsers.size : 1
     }, 'User context for character response');
 
     const styleGuidePrompt = this.styleGuideService.buildPrompt({
@@ -180,13 +202,13 @@ export class ResponseGenerationAgent {
       contentFilters: character.contentTags,
     });
 
-    const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n\nUser Information (Person you're talking to):\n${userContext}\n\nAdditional Instructions for this Conversation (Override):\n${respondingParticipant.configOverride || ''}\n\nStyle Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context with ${user.displayName || 'User'}):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.\n4. You have access to the user's information above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for ${user.displayName || 'User'}. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: ${user.displayName || 'User'}'s preferred language is ${userLanguage}. You MUST respond in ${userLanguage} unless ${user.displayName || 'User'} explicitly requests a response in a different language. This is CRITICAL - always match the language preference of ${user.displayName || 'User'}.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like \"${characterName}:" or \"Naruto:\"). The UI already displays your name and avatar. Just write the response content directly.\n`;
+    const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n${allUsersContext}\n\nAdditional Instructions for this Conversation (Override):\n${respondingParticipant.configOverride || ''}\n\nStyle Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. ${allUsers && allUsers.size > 1 ? `This is a multi-user conversation. Pay close attention to WHO is speaking in each message. The conversation history clearly shows the sender's name for each message.` : `Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.`}\n4. You have access to information about ${allUsers && allUsers.size > 1 ? 'all users' : 'the user'} above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for other characters or users. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: The preferred language for this conversation is ${userLanguage}. You MUST respond in ${userLanguage} unless explicitly requested otherwise.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like \"${characterName}:" or \"Naruto:\"). The UI already displays your name and avatar. Just write the response content directly.\n`;
 
     const llmRequest: LLMRequest = {
       provider: 'gemini', // Or determine dynamically
       model: 'gemini-2.5-flash-lite', // Or determine dynamically
       systemPrompt: `${systemPrompt}\n\nTOOL USAGE:\nYou have access to web_search tool. Use it when you need current information, real-time data, or facts that may have changed since your training. Examples: weather, news, current events, recent facts.`,
-      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${characterName}. Remember: DO NOT include \"${characterName}:\" at the start of your response.`,
+      userPrompt: `${conversationContext}\n\nLatest message from ${lastMessageSender}:\n"${lastMessage.content}"\n\nRespond now as ${characterName} to ${lastMessageSender}'s message. Remember: DO NOT include \"${characterName}:\" at the start of your response.`,
       allowBrowsing: true,       // Enable web search
       autoExecuteTools: true,    // Auto-execute tools
       temperature: 0.8,          // Slightly creative for roleplay

@@ -379,7 +379,8 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         const creditsPerThousandTokens = serviceCost?.creditsPerUnit || (isNSFW ? 3 : 2);
         const estimatedCreditCost = Math.ceil((totalEstimatedTokens / 1000) * creditsPerThousandTokens);
 
-        // Check if user has enough credits
+        // Check if user (who sent the message) has enough credits
+        // Rule: whoever triggers the AI response pays for it
         const balance = await getCurrentBalance(user.id);
         const hasCredits = await hasEnoughCredits(user.id, estimatedCreditCost);
 
@@ -470,6 +471,7 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
               preferredLanguage,
               estimatedCreditCost: costPerBot,
               isNSFW,
+              requestingUserId: user.id, // Pass who sent the message (who pays)
             });
           }
         } else {
@@ -498,7 +500,7 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
                 try {
                   const { createTransaction } = await import('../services/creditService');
                   await createTransaction(
-                    user.id,
+                    user.id, // Whoever sends the message pays for the AI response
                     'CONSUMPTION',
                     -costPerBot,
                     `Chat message (${isNSFW ? 'NSFW' : 'SFW'})`,

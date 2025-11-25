@@ -344,4 +344,92 @@ router.post('/:conversationId/members/transfer-ownership', requireAuth, async (r
   }
 });
 
+/**
+ * POST /api/v1/conversations/:conversationId/members/generate-invite-link
+ * Generate shareable invite link (owner or members with canInvite permission)
+ */
+router.post('/:conversationId/members/generate-invite-link', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { conversationId } = req.params;
+    const inviterId = req.auth?.user?.id;
+
+    if (!inviterId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    // Capturar origin da requisição (prioridade: origin header, referer header, fallback para env)
+    const origin = req.get('origin') || req.get('referer')?.split('/').slice(0, 3).join('/');
+
+    const link = await membershipService.generateInviteLink(conversationId, inviterId, origin);
+
+    return res.json({
+      success: true,
+      data: { link },
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error({ error, conversationId: req.params.conversationId }, 'Error generating invite link');
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    logger.error({ error }, 'Unknown error generating invite link');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to generate invite link',
+    });
+  }
+});
+
+/**
+ * POST /api/v1/conversations/:conversationId/members/join-by-token
+ * Join conversation using invite token
+ */
+router.post('/:conversationId/members/join-by-token', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const userId = req.auth?.user?.id;
+    const { token } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: 'Token is required',
+      });
+    }
+
+    const result = await membershipService.acceptInviteByToken(token, userId);
+
+    return res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error({ error, conversationId: req.params.conversationId }, 'Error accepting invite');
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    logger.error({ error }, 'Unknown error accepting invite');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to accept invite',
+    });
+  }
+});
+
 export default router;

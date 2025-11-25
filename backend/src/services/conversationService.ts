@@ -182,11 +182,9 @@ export async function getConversationById(
   userId: string
 ) {
   try {
-    const conversation = await prisma.conversation.findFirst({
-      where: {
-        id: conversationId,
-        userId, // Ensure user owns the conversation
-      },
+    // First, try to find the conversation
+    const conversation = await prisma.conversation.findUnique({
+      where: { id: conversationId },
       include: conversationInclude,
     });
 
@@ -194,7 +192,31 @@ export async function getConversationById(
       return null;
     }
 
-    return conversation;
+    // Check if user has access (owner OR active member for multi-user)
+    const isOwner = conversation.userId === userId;
+
+    if (isOwner) {
+      return conversation;
+    }
+
+    // If not owner, check if it's multi-user and user is an active member
+    if (conversation.isMultiUser) {
+      const membership = await prisma.userConversationMembership.findUnique({
+        where: {
+          conversationId_userId: {
+            conversationId,
+            userId
+          }
+        }
+      });
+
+      if (membership?.isActive) {
+        return conversation;
+      }
+    }
+
+    // User doesn't have access
+    return null;
   } catch (error) {
     logger.error(
       { error, conversationId, userId },
@@ -214,9 +236,22 @@ export async function listConversations(
   try {
     const { search, projectId, skip, limit, sortBy, sortOrder } = filters;
 
-    // Build where clause
+    // Build where clause - include conversations where user is owner OR active member
     const where: Prisma.ConversationWhereInput = {
-      userId,
+      OR: [
+        // User is owner
+        { userId },
+        // User is active member in multi-user conversation
+        {
+          isMultiUser: true,
+          members: {
+            some: {
+              userId,
+              isActive: true
+            }
+          }
+        }
+      ]
     };
 
     // Add search filter (search in title)

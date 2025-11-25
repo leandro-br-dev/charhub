@@ -218,7 +218,9 @@
       "deleting": "Deleting...",
       "processing": "Processing...",
       "saving": "Saving...",
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "search": "Search",
+      "searching": "Searching..."
     },
     "displayAvatarParticipants": {
       "addParticipantPrompt": "Add participants to start the conversation.",
@@ -268,13 +270,60 @@
       "active": "Memory active (updated {{timeAgo}})",
       "activeTooltip": "Conversation history is being automatically compressed to save context. Recent messages are kept in full, older messages are summarized.",
       "compressing": "Compacting conversation history...",
+      "compressingTooltip": "Your conversation is being summarized to optimize memory usage. This may take a few moments.",
       "compressionComplete": "History compacted successfully"
+    },
+    "presence": {
+      "onlineTooltip": "{{count}} other user(s) online in this conversation",
+      "oneOnline": "1 online",
+      "manyOnline": "{{count}} online"
+    },
+    "memberRole": {
+      "owner": "Owner",
+      "ownerTooltip": "Conversation owner - full control over settings and members",
+      "moderator": "Mod",
+      "moderatorTooltip": "Moderator - can manage members and moderate content",
+      "member": "Member",
+      "memberTooltip": "Member - can participate in the conversation",
+      "viewer": "Viewer",
+      "viewerTooltip": "Viewer - read-only access to the conversation"
+    },
+    "inviteUser": {
+      "title": "Invite User",
+      "searchPlaceholder": "Search by username or display name...",
+      "minSearchLength": "Enter at least 2 characters to search",
+      "searchFailed": "Failed to search users. Please try again.",
+      "allResultsAlreadyMembers": "All found users are already members of this conversation.",
+      "noResults": "No users found matching your search.",
+      "searchHint": "Search for users by their username or display name to invite them to this conversation.",
+      "invite": "Invite",
+      "inviting": "Inviting...",
+      "inviteFailed": "Failed to invite user. Please try again.",
+      "inviteSuccess": "User invited successfully!"
+    },
+    "shareInvite": {
+      "title": "Share Invite Link",
+      "description": "Anyone with this link can join the conversation.",
+      "generateFailed": "Failed to generate invite link. Please try again.",
+      "copy": "Copy Link",
+      "copied": "Copied!",
+      "expiresIn": "Link expires in {{days}} days"
+    },
+    "joinChat": {
+      "accepting": "Joining conversation...",
+      "invalidLink": "Invalid or missing invite link",
+      "failed": "Failed to join conversation",
+      "errorTitle": "Unable to Join",
+      "goHome": "Go to Home",
+      "alreadyMember": "You are already a member of this conversation",
+      "conversationFull": "This conversation has reached its maximum number of users"
     },
     "addParticipantModal": {
       "title": "Add Participant",
       "charactersTab": "Characters",
       "myAssistantsTab": "My Assistants",
       "publicAssistantsTab": "Public Assistants",
+      "usersTab": "Users",
       "assistantsTab": "assistants",
       "searchCharactersPlaceholder": "Search characters...",
       "searchAssistantsPlaceholder": "Search assistants...",

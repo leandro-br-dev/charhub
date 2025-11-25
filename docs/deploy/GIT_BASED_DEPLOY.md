@@ -1,188 +1,147 @@
 # Deploy Baseado em Git
 
-> **Status: IMPLEMENTADO** - Este documento descreve o processo de deploy atual.
+> **Status: IMPLEMENTADO E TESTADO** - Sistema de deploy em produção desde novembro 2025.
+
+**Última atualização**: 2025-11-23
 
 ## Visão Geral
 
-### Problemas Identificados
+Sistema de deploy Git-based onde:
+- O código é sincronizado via `git pull` (apenas diferenças)
+- Os secrets são sincronizados separadamente via `sync-secrets.ps1`
+- O deploy é executado via `deploy-git.ps1`
 
-| Problema | Impacto | Risco |
-|----------|---------|-------|
-| Envia **todos os arquivos** a cada deploy | Lento, ~50-100MB por deploy | Baixo |
-| Não usa branches para controle | Pode enviar código não testado | **Alto** |
-| Depende da branch local | `feature/*` pode ir para produção acidentalmente | **Crítico** |
-| Compacta e transfere via GCS | Complexo, muitos pontos de falha | Médio |
-| Não tem rollback fácil | Restaurar versão anterior é manual | Alto |
-
-### Fluxo Atual (Problemático)
+### Arquitetura de Arquivos
 
 ```
-[Dev Local] → tar.gz (todos arquivos) → GCS → VM → Extrai → Build
-     ↑
- Qualquer branch!  ← PERIGO: pode ser feature/* não testada
-```
+# DESENVOLVIMENTO LOCAL
+├── .env                     # Configuração de desenvolvimento (usado localmente)
+├── .env.production          # Secrets de produção (enviado para VM como .env)
+├── frontend/.env.production # Vars do frontend produção (enviado para VM)
+├── cloudflared/config/prod/
+│   ├── *.json              # Credenciais do tunnel Cloudflare
+│   └── cert.pem            # Certificado do tunnel (NÃO versionado)
+└── secrets/
+    └── production-secrets.txt  # Backup automático de todos os secrets
 
----
-
-## Nova Estratégia: Git-Based Deploy
-
-### Princípios
-
-1. **Produção = Branch `main`** - Sempre e somente
-2. **Deploy = Git Pull** - Apenas sincroniza diferenças
-3. **Secrets separados** - `.env` nunca versionado, transferido separadamente
-4. **Rollback instantâneo** - `git checkout <commit>` + rebuild
-
-### Novo Fluxo
-
-```
-[GitHub main] ←── git pull ←── [VM Produção]
-                                    ↓
-                              docker compose build
-                              docker compose up -d
-```
-
-### Arquitetura
-
-```
-VM Produção (/mnt/stateful_partition/charhub/)
+# VM DE PRODUÇÃO (/mnt/stateful_partition/charhub/)
 ├── .git/                    # Repositório clonado
-├── .env                     # Secrets (NÃO versionado, transferido manualmente)
-├── .env.production          # Template de referência (opcional)
+├── .env                     # ← Vem de .env.production local
+├── frontend/.env            # ← Vem de frontend/.env.production local
+├── cloudflared/config/prod/
+│   ├── *.json              # ← Sincronizado do local
+│   └── cert.pem            # ← Sincronizado do local
 ├── backend/
 ├── frontend/
-├── docker-compose.yml
-└── ...
+└── docker-compose.yml
+```
+
+### Fluxo de Deploy
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    DEPLOY COMPLETO                               │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  1. sync-secrets.ps1 (automático via deploy-git.ps1)            │
+│     ├── .env.production → VM:.env                               │
+│     ├── frontend/.env.production → VM:frontend/.env             │
+│     ├── cloudflared/config/prod/*.json → VM (mesmo path)        │
+│     └── cloudflared/config/prod/cert.pem → VM (mesmo path)      │
+│                                                                  │
+│  2. deploy-git.ps1                                              │
+│     ├── git pull origin main (na VM)                            │
+│     ├── docker compose build                                     │
+│     ├── docker compose up -d                                     │
+│     └── prisma migrate deploy                                    │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Implementação em 3 Etapas
-
-### Etapa 1: Setup Inicial (Uma vez)
-
-**1.1 Configurar SSH Key na VM para GitHub**
-
-```bash
-# Na VM
-ssh-keygen -t ed25519 -C "charhub-vm-deploy"
-cat ~/.ssh/id_ed25519.pub
-# Adicionar esta chave como Deploy Key no GitHub (Settings → Deploy Keys)
-```
-
-**1.2 Clonar Repositório na VM**
-
-```bash
-# Na VM
-cd /mnt/stateful_partition
-git clone git@github.com:seu-usuario/charhub.git
-cd charhub
-```
-
-**1.3 Configurar .env de Produção**
-
-```bash
-# Na VM - criar .env com secrets de produção
-# Este arquivo NUNCA vai para o Git
-nano .env
-```
-
-### Etapa 2: Script de Deploy (Novo)
-
-O novo script será muito mais simples:
-
-```powershell
-# deploy-git.ps1
-# 1. Verificar se estamos na branch correta localmente (warning)
-# 2. Conectar na VM via SSH
-# 3. git pull origin main
-# 4. docker compose build
-# 5. docker compose up -d
-# 6. prisma migrate deploy
-```
-
-### Etapa 3: Script de Atualização de Secrets
-
-Quando `.env` mudar, script separado para enviar apenas secrets:
-
-```powershell
-# sync-env.ps1
-# Transfere .env.production local → .env na VM
-```
-
----
-
-## Scripts Propostos
+## Scripts Implementados
 
 ### 1. `deploy-git.ps1` - Deploy Principal
 
 ```powershell
-# Faz pull do main e rebuild na VM
-# - Seguro: sempre usa branch main
-# - Rápido: só baixa diferenças (git diff)
-# - Simples: sem compactação, sem GCS
+# Deploy normal (automático: sync-secrets + pull + rebuild + migrations)
+.\scripts\deploy-git.ps1
+
+# Pular sincronização de secrets
+.\scripts\deploy-git.ps1 -SkipSecrets
+
+# Pular migrations
+.\scripts\deploy-git.ps1 -SkipMigrations
+
+# Apenas restart (sem rebuild)
+.\scripts\deploy-git.ps1 -NoBuild
 ```
+
+**O que faz:**
+1. Executa `sync-secrets.ps1 -NoRestart` automaticamente
+2. Cria script bash temporário e envia para VM (`/tmp/deploy-git.sh`)
+3. Executa na VM: `git pull origin main`
+4. Rebuild: `docker compose build --no-cache`
+5. Restart: `docker compose down && docker compose up -d`
+6. Migrations: `npx prisma migrate deploy` (se não pulado)
+7. Health check: aguarda containers subirem
 
 ### 2. `sync-secrets.ps1` - Sincronização de Secrets
 
 ```powershell
-# Envia .env.production local para VM como .env
-# Usado apenas quando secrets mudam
+# Sincronizar todos os arquivos de produção + reiniciar containers
+.\scripts\sync-secrets.ps1
+
+# Sem reiniciar containers (usado pelo deploy-git.ps1)
+.\scripts\sync-secrets.ps1 -NoRestart
+
+# Ver o que seria enviado (não envia)
+.\scripts\sync-secrets.ps1 -DryRun
+
+# Forçar mesmo com arquivos faltando
+.\scripts\sync-secrets.ps1 -Force
 ```
+
+**Arquivos sincronizados:**
+| Arquivo Local | Destino na VM | Obrigatório |
+|---------------|---------------|-------------|
+| `.env.production` | `.env` | ✅ |
+| `frontend/.env.production` | `frontend/.env` | ✅ |
+| `cloudflared/config/prod/*.json` | mesmo path | ✅ |
+| `cloudflared/config/prod/cert.pem` | mesmo path | ✅ |
+
+**Funcionalidades:**
+- Cria backup na VM antes de sobrescrever (`/.env_backups/TIMESTAMP/`)
+- Valida variáveis críticas (DATABASE_URL, JWT_SECRET, GOOGLE_CLIENT_*)
+- Atualiza `secrets/production-secrets.txt` como backup local
+- Ajusta permissões para Docker (644)
 
 ### 3. `rollback.ps1` - Rollback Rápido
 
 ```powershell
-# Lista últimos commits
-# Permite escolher versão para rollback
-# Executa: git checkout <commit> + rebuild
+# Listar commits e escolher interativamente
+.\scripts\rollback.ps1
+
+# Voltar N commits
+.\scripts\rollback.ps1 -Steps 1
+
+# Voltar para commit específico
+.\scripts\rollback.ps1 -Commit abc1234
 ```
 
 ### 4. `vm-status.ps1` - Status da VM
 
 ```powershell
-# Mostra: branch atual, último commit, containers, logs
+# Status básico
+.\scripts\vm-status.ps1
+
+# Com logs
+.\scripts\vm-status.ps1 -Logs
+
+# Com mais linhas de log
+.\scripts\vm-status.ps1 -Logs -LogLines 50
 ```
-
----
-
-## Comparação: Antes vs Depois
-
-| Aspecto | Processo Atual | Git-Based Deploy |
-|---------|----------------|------------------|
-| **Tempo de deploy** | 5-10 min | 1-2 min |
-| **Dados transferidos** | ~50-100 MB | ~1-5 MB (diff) |
-| **Segurança** | Qualquer branch | Sempre `main` |
-| **Rollback** | Restaurar backup manual | `git checkout` + rebuild |
-| **Complexidade** | Alta (GCS, tar, etc) | Baixa (git pull) |
-| **Rastreabilidade** | Nenhuma | Commits exatos |
-| **Secrets** | Incluídos no tar | Separados, controlados |
-
----
-
-## Técnicas Adicionais de Mercado
-
-### Opção A: Deploy Simples (Recomendado para Começar)
-- Git pull + Docker rebuild
-- **Prós**: Simples, rápido de implementar
-- **Contras**: Downtime durante rebuild (~2-3 min)
-
-### Opção B: Blue-Green Deploy
-- Dois ambientes (blue/green), alterna entre eles
-- **Prós**: Zero downtime
-- **Contras**: Mais complexo, requer mais recursos
-
-### Opção C: GitHub Actions (CI/CD)
-- Deploy automático ao fazer merge na main
-- **Prós**: Totalmente automatizado
-- **Contras**: Requer configuração inicial mais elaborada
-
-### Opção D: Watchtower (Auto-update)
-- Container que monitora e atualiza automaticamente
-- **Prós**: Hands-off
-- **Contras**: Menos controle
-
-**Recomendação**: Começar com **Opção A** (simples), evoluir para **Opção C** (GitHub Actions) quando o projeto crescer.
 
 ---
 
@@ -194,7 +153,7 @@ Quando `.env` mudar, script separado para enviar apenas secrets:
 # 1. Criar branch para feature
 git checkout -b feature/nova-funcionalidade
 
-# 2. Desenvolver e testar localmente
+# 2. Desenvolver e testar localmente (usa .env para dev)
 npm run dev
 
 # 3. Commit e push
@@ -214,66 +173,21 @@ git push origin feature/nova-funcionalidade
 .\scripts\deploy-git.ps1
 
 # O script vai:
-# - Verificar que você NÃO está fazendo deploy da branch errada
-# - Conectar na VM
-# - Fazer git pull origin main
-# - Rebuild + restart containers
+# 1. Sincronizar secrets automaticamente (sync-secrets.ps1)
+# 2. Criar backup dos arquivos anteriores na VM
+# 3. Conectar na VM
+# 4. Fazer git pull origin main
+# 5. Rebuild + restart containers
+# 6. Executar migrations pendentes
 ```
 
-### Atualização de Secrets
+### Atualização Apenas de Secrets (sem código)
 
 ```powershell
-# Quando mudar .env.production local:
-.\scripts\sync-secrets.ps1
-```
-
----
-
-## Scripts Disponíveis
-
-### `deploy-git.ps1` - Deploy Principal
-```powershell
-# Deploy normal (pull + rebuild + migrations)
-.\scripts\deploy-git.ps1
-
-# Pular migrations
-.\scripts\deploy-git.ps1 -SkipMigrations
-
-# Apenas restart (sem rebuild)
-.\scripts\deploy-git.ps1 -NoBuild
-```
-
-### `sync-secrets.ps1` - Atualizar Secrets
-```powershell
-# Envia .env.production local para VM
+# Quando mudar APENAS variáveis de ambiente:
 .\scripts\sync-secrets.ps1
 
-# Sem reiniciar containers
-.\scripts\sync-secrets.ps1 -NoRestart
-```
-
-### `rollback.ps1` - Rollback
-```powershell
-# Listar commits e escolher interativamente
-.\scripts\rollback.ps1
-
-# Voltar N commits
-.\scripts\rollback.ps1 -Steps 1
-
-# Voltar para commit específico
-.\scripts\rollback.ps1 -Commit abc1234
-```
-
-### `vm-status.ps1` - Status da VM
-```powershell
-# Status básico
-.\scripts\vm-status.ps1
-
-# Com logs
-.\scripts\vm-status.ps1 -Logs
-
-# Com mais linhas de log
-.\scripts\vm-status.ps1 -Logs -LogLines 50
+# Isso sincroniza e reinicia os containers
 ```
 
 ---
@@ -281,38 +195,91 @@ git push origin feature/nova-funcionalidade
 ## Configuração da VM
 
 A VM de produção está configurada com:
+- **VM Name**: `charhub-vm`
+- **Zone**: `us-central1-a`
 - **Repositório**: `/mnt/stateful_partition/charhub`
 - **Branch**: `main` (sempre)
 - **Deploy Key**: Configurada para acesso read-only ao GitHub
-- **.env**: Arquivo local, não versionado
+- **Docker Compose**: `/var/lib/toolbox/bin/docker-compose`
 
 ---
 
-## Checklist de Migração (Concluído)
+## Configuração de Ambiente
+
+### Arquivos de Ambiente Locais
+
+| Arquivo | Propósito | Versionado |
+|---------|-----------|------------|
+| `.env` | Desenvolvimento local | ❌ .gitignore |
+| `.env.production` | Secrets de produção | ❌ .gitignore |
+| `.env.example` | Template para novos devs | ✅ |
+| `frontend/.env.production` | Frontend produção | ❌ .gitignore |
+| `cloudflared/config/prod/cert.pem` | Tunnel cert | ❌ .gitignore |
+| `cloudflared/config/prod/*.json` | Tunnel credentials | ❌ .gitignore |
+
+### Variáveis Críticas Validadas
+
+O `sync-secrets.ps1` valida que estas variáveis existem:
+- `DATABASE_URL`
+- `JWT_SECRET`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+
+---
+
+## Checklist de Migração ✅ COMPLETO
 
 - [x] Criar Deploy Key no GitHub para a VM
 - [x] Clonar repositório na VM
 - [x] Configurar .env na VM
 - [x] Criar script `deploy-git.ps1`
-- [x] Criar script `sync-secrets.ps1`
+- [x] Criar script `sync-secrets.ps1` (com backup automático)
 - [x] Criar script `rollback.ps1`
 - [x] Criar script `vm-status.ps1`
-- [x] Remover scripts antigos
-- [ ] Testar deploy completo
+- [x] Remover scripts antigos (switch-env.ps1, etc.)
+- [x] Testar deploy completo ✅ (2025-11-23)
+- [x] Site em produção: https://charhub.app
+
+---
+
+## Troubleshooting
+
+### Erro: `$'\r': command not found`
+
+**Causa**: Scripts bash com line endings CRLF (Windows) em vez de LF (Linux).
+
+**Solução**: Os scripts já convertem automaticamente:
+```powershell
+$deployScriptLF = $deployScript -replace "`r`n", "`n" -replace "`r", "`n"
+```
+
+### Erro: Cloudflare Tunnel 1033
+
+**Causa**: Permissões incorretas nos arquivos de credenciais.
+
+**Solução**: O `sync-secrets.ps1` aplica `chmod 644` automaticamente. Se persistir:
+```bash
+gcloud compute ssh charhub-vm --zone=us-central1-a --command="chmod 644 /mnt/stateful_partition/charhub/cloudflared/config/prod/*"
+```
+
+### Erro: Container não encontra .env
+
+**Causa**: Arquivo .env não foi sincronizado.
+
+**Solução**:
+```powershell
+.\scripts\sync-secrets.ps1
+```
 
 ---
 
 ## Evolução Futura
 
-### GitHub Actions (CI/CD Automático)
-Para implementar deploy automático no merge para `main`:
+Para melhorias planejadas (CI/CD, Blue-Green Deploy, etc.), consulte:
+- `docs/todo/CI_CD.md` - GitHub Actions workflow
+- `docs/todo/DEPLOY_IMPROVEMENTS.md` - Melhorias de infraestrutura
 
-1. Criar workflow `.github/workflows/deploy.yml`
-2. Configurar secrets no GitHub (SSH key, etc.)
-3. Trigger: push para `main`
+---
 
-### Blue-Green Deploy (Zero Downtime)
-Se necessário zero downtime no futuro:
-1. Dois diretórios: `charhub-blue` e `charhub-green`
-2. Nginx como proxy reverso
-3. Alternar entre ambientes no deploy
+**Documento mantido pelo time CharHub**
+**Última revisão**: 2025-11-23

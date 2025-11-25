@@ -96,6 +96,9 @@ if (isQueuesEnabled()) {
 
 const io = setupChatSocket(server);
 
+// Attach io to app for access in routes
+(app as any).io = io;
+
 // Start server
 server.listen(PORT, '0.0.0.0', () => {
   logger.info(`Server running on port ${PORT}`);

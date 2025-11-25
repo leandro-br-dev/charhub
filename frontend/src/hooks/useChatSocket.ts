@@ -26,11 +26,19 @@ interface SendMessageResult {
   respondingBots: string[];
 }
 
+interface OnlineUser {
+  id: string;
+  displayName?: string;
+  photo?: string;
+}
+
 interface ChatSocketState {
   isConnected: boolean;
   socketId: string | null;
   connectionError: string | null;
   typingParticipants: Set<string>;
+  onlineUsers: string[];
+  isMemoryCompressing: boolean;
   sendMessage: (payload: SendMessageOptions) => Promise<SendMessageResult>;
   emitTypingStart: (conversationId: string, participantId?: string) => void;
   emitTypingStop: (conversationId: string, participantId?: string) => void;
@@ -117,6 +125,8 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
   const [socketId, setSocketId] = useState<string | null>(null);
   const [connectionError, setConnectionError] = useState<string | null>(null);
   const [typingParticipants, setTypingParticipants] = useState<Set<string>>(new Set());
+  const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
+  const [isMemoryCompressing, setIsMemoryCompressing] = useState(false);
 
   // Debug logging for token availability
   useEffect(() => {
@@ -207,7 +217,7 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
 
     console.log('[useChatSocket] Emitting join_conversation', { conversationId });
 
-    socket.emit('join_conversation', { conversationId }, (response?: { success?: boolean; error?: string }) => {
+    socket.emit('join_conversation', { conversationId }, (response?: { success?: boolean; error?: string; onlineUsers?: string[] }) => {
       console.log('[useChatSocket] join_conversation callback', {
         conversationId,
         response
@@ -218,6 +228,10 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
         setConnectionError(response.error || 'Unable to join conversation');
       } else {
         console.log('[useChatSocket] Successfully joined conversation room');
+        // Set initial online users from join response
+        if (response?.onlineUsers) {
+          setOnlineUsers(response.onlineUsers);
+        }
       }
     });
 
@@ -323,16 +337,95 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
       }
     };
 
+    // Multi-user presence handlers
+    const handleUserJoined = (payload: { conversationId: string; userId: string; user?: OnlineUser }) => {
+      if (!conversationId || payload.conversationId !== conversationId) return;
+      console.log('[useChatSocket] User joined:', payload.userId);
+      setOnlineUsers((prev) => {
+        if (prev.includes(payload.userId)) return prev;
+        return [...prev, payload.userId];
+      });
+    };
+
+    const handleUserLeft = (payload: { conversationId: string; userId: string }) => {
+      if (!conversationId || payload.conversationId !== conversationId) return;
+      console.log('[useChatSocket] User left:', payload.userId);
+      setOnlineUsers((prev) => prev.filter((id) => id !== payload.userId));
+    };
+
+    const handlePresenceUpdate = (payload: { conversationId: string; onlineUsers: string[] }) => {
+      if (!conversationId || payload.conversationId !== conversationId) return;
+      console.log('[useChatSocket] Presence update:', payload.onlineUsers);
+      setOnlineUsers(payload.onlineUsers);
+    };
+
+    // Message deletion handler
+    const handleMessageDeleted = (payload: { conversationId: string; messageId: string; deletedCount: number }) => {
+      if (!payload || !payload.conversationId) {
+        console.warn('[useChatSocket] Invalid message_deleted payload', payload);
+        return;
+      }
+
+      console.log('[useChatSocket] message_deleted event received', {
+        conversationId: payload.conversationId,
+        messageId: payload.messageId,
+        deletedCount: payload.deletedCount
+      });
+
+      // Remove deleted message(s) from cache
+      queryClient.setQueryData<{ items: Message[]; total: number }>(
+        messageKeys.list(payload.conversationId),
+        (current) => {
+          if (!current) return current;
+
+          // If multiple messages were deleted (message + subsequent), filter them out
+          // For simplicity, we invalidate the query to refetch from server
+          return current;
+        }
+      );
+
+      // Invalidate queries to refetch fresh data
+      queryClient.invalidateQueries({ queryKey: messageKeys.list(payload.conversationId) });
+      queryClient.invalidateQueries({ queryKey: conversationKeys.detail(payload.conversationId) });
+
+      console.log('[useChatSocket] Message deletion handled, queries invalidated');
+    };
+
+    // Memory compression handlers
+    const handleMemoryCompressionStarted = (payload: { conversationId: string }) => {
+      if (!conversationId || payload.conversationId !== conversationId) return;
+      console.log('[useChatSocket] Memory compression started');
+      setIsMemoryCompressing(true);
+    };
+
+    const handleMemoryCompressionComplete = (payload: { conversationId: string }) => {
+      if (!conversationId || payload.conversationId !== conversationId) return;
+      console.log('[useChatSocket] Memory compression complete');
+      setIsMemoryCompressing(false);
+    };
+
     socket.on('message_received', handleMessageReceived);
+    socket.on('message_deleted', handleMessageDeleted);
     socket.on('typing_start', handleTypingStart);
     socket.on('typing_stop', handleTypingStop);
     socket.on('ai_response_error', handleAssistantError);
+    socket.on('user_joined', handleUserJoined);
+    socket.on('user_left', handleUserLeft);
+    socket.on('presence_update', handlePresenceUpdate);
+    socket.on('memory_compression_started', handleMemoryCompressionStarted);
+    socket.on('memory_compression_complete', handleMemoryCompressionComplete);
 
     return () => {
       socket.off('message_received', handleMessageReceived);
+      socket.off('message_deleted', handleMessageDeleted);
       socket.off('typing_start', handleTypingStart);
       socket.off('typing_stop', handleTypingStop);
       socket.off('ai_response_error', handleAssistantError);
+      socket.off('user_joined', handleUserJoined);
+      socket.off('user_left', handleUserLeft);
+      socket.off('presence_update', handlePresenceUpdate);
+      socket.off('memory_compression_started', handleMemoryCompressionStarted);
+      socket.off('memory_compression_complete', handleMemoryCompressionComplete);
     };
   }, [socket, queryClient, conversationId, currentUserId]);
 
@@ -421,6 +514,8 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
     socketId,
     connectionError,
     typingParticipants,
+    onlineUsers,
+    isMemoryCompressing,
     sendMessage,
     emitTypingStart,
     emitTypingStop,

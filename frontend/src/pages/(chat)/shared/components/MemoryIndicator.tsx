@@ -6,12 +6,35 @@ import { pt } from 'date-fns/locale';
 
 interface MemoryIndicatorProps {
   conversation: any; // Conversation with memoryLastUpdatedAt field
+  isCompressing?: boolean;
   className?: string;
 }
 
-export function MemoryIndicator({ conversation, className = '' }: MemoryIndicatorProps) {
+export function MemoryIndicator({
+  conversation,
+  isCompressing = false,
+  className = ''
+}: MemoryIndicatorProps) {
   const { t, i18n } = useTranslation('chat');
 
+  // Show compressing state
+  if (isCompressing) {
+    return (
+      <div
+        className={`flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 dark:bg-amber-500/20 rounded-lg text-xs border border-amber-500/30 ${className}`}
+        title={t('memory.compressingTooltip')}
+      >
+        <span className="material-symbols-outlined text-amber-500 text-base animate-pulse">
+          psychology
+        </span>
+        <span className="text-amber-600 dark:text-amber-400 font-medium">
+          {t('memory.compressing')}
+        </span>
+      </div>
+    );
+  }
+
+  // Don't show if no memory exists
   if (!conversation?.memoryLastUpdatedAt) {
     return null;
   }
@@ -24,10 +47,10 @@ export function MemoryIndicator({ conversation, className = '' }: MemoryIndicato
 
   return (
     <div
-      className={`flex items-center gap-2 px-3 py-2 bg-primary/10 dark:bg-primary/20 rounded-lg text-sm border border-primary/30 ${className}`}
+      className={`flex items-center gap-2 px-3 py-1.5 bg-primary/10 dark:bg-primary/20 rounded-lg text-xs border border-primary/30 ${className}`}
       title={t('memory.activeTooltip')}
     >
-      <span className="material-symbols-outlined text-primary text-lg">
+      <span className="material-symbols-outlined text-primary text-base">
         psychology
       </span>
       <span className="text-primary font-medium">

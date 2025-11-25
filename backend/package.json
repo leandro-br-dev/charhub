@@ -22,7 +22,8 @@
     "db:seed:verbose": "tsx src/scripts/seed.ts --verbose",
     "db:seed:tags": "tsx src/scripts/seedTags.ts",
     "db:seed:tags:dry": "tsx src/scripts/seedTags.ts --dry-run",
-    "migrate:multiuser": "tsx src/scripts/migrate-conversations-to-multiuser.ts"
+    "migrate:multiuser": "tsx src/scripts/migrate-conversations-to-multiuser.ts",
+    "fix:participants": "tsx src/scripts/fix-conversation-participants.ts"
   },
   "keywords": [
     "oauth",

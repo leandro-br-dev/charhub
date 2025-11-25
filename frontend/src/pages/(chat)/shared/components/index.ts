@@ -5,3 +5,7 @@ export { TypingIndicator, type TypingIndicatorProps } from './TypingIndicator';
 export { ConversationList, type ConversationListProps } from './ConversationList';
 export { ConversationHeader, type ConversationHeaderProps } from './ConversationHeader';
 export { ConversationHistory, type ConversationHistoryProps } from './ConversationHistory';
+export { MemoryIndicator } from './MemoryIndicator';
+export { OnlineUsersIndicator } from './OnlineUsersIndicator';
+export { MemberRoleBadge } from './MemberRoleBadge';
+export { ShareInviteLinkModal } from './ShareInviteLinkModal';
