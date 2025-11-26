@@ -14,6 +14,7 @@ import {
   messageKeys,
   useMessagesQuery,
 } from '../hooks/useMessages';
+import { useMembersQuery } from '../hooks/useMembership';
 import { chatService } from '../../../../services/chatService';
 import type { ConversationParticipant, Message } from '../../../../types/chat';
 
@@ -155,9 +156,11 @@ const ChatContainer = () => {
 
   const conversationQuery = useConversationQuery(conversationId || null);
   const messagesQuery = useMessagesQuery(conversationId || null);
+  const membersQuery = useMembersQuery(conversationId || null);
 
   const conversation = conversationQuery.data ?? null;
   const messages = messagesQuery.data?.items ?? [];
+  const members = membersQuery.data?.items ?? [];
 
   const processedParticipants = useMemo(() => {
     if (!conversation) return [];
@@ -201,8 +204,19 @@ const ChatContainer = () => {
     const currentUserAvatar: string | undefined = user?.photo ?? undefined;
     ensureParticipant(user?.id, user?.displayName ?? undefined, currentUserAvatar);
 
+    // In multi-user conversations, ensure all members are represented
+    if (conversation.isMultiUser && members.length > 0) {
+      members.forEach((member) => {
+        ensureParticipant(
+          member.userId,
+          member.user?.displayName ?? member.user?.username ?? undefined,
+          member.user?.avatarUrl ?? undefined
+        );
+      });
+    }
+
     return mapped;
-  }, [conversation, user?.id, user?.displayName, user?.photo]);
+  }, [conversation, user?.id, user?.displayName, user?.photo, members]);
 
   const currentUserRepresentation = useMemo(() => {
     return processedParticipants.find((participant) => participant.actorType === 'USER')
@@ -388,9 +402,24 @@ const ChatContainer = () => {
   );
 
   const handleSaveConversationSettings = useCallback(
-    async (convId: string, settingsData: Record<string, unknown>, visibility?: 'PRIVATE' | 'UNLISTED' | 'PUBLIC') => {
+    async (
+      convId: string,
+      settingsData: Record<string, unknown>,
+      visibility?: 'PRIVATE' | 'UNLISTED' | 'PUBLIC',
+      multiUserSettings?: {
+        isMultiUser: boolean;
+        maxUsers: number;
+        allowUserInvites: boolean;
+        requireApproval: boolean;
+      }
+    ) => {
       try {
-        const updated = await chatService.updateConversationSettings(convId, settingsData, visibility);
+        const updated = await chatService.updateConversationSettings(
+          convId,
+          settingsData,
+          visibility,
+          multiUserSettings
+        );
         queryClient.setQueryData(conversationKeys.detail(convId), updated);
         return true;
       } catch (error) {

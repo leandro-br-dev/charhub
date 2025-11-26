@@ -35,13 +35,6 @@ const JoinChatPage: React.FC = () => {
     const acceptInvite = async () => {
       console.log('[JoinChatPage] Starting acceptInvite', { inviteToken, conversationId });
 
-      if (!inviteToken) {
-        console.log('[JoinChatPage] No invite token found');
-        setStatus('error');
-        setErrorMessage(t('joinChat.invalidLink'));
-        return;
-      }
-
       if (!conversationId) {
         console.log('[JoinChatPage] No conversationId found');
         setStatus('error');
@@ -52,10 +45,18 @@ const JoinChatPage: React.FC = () => {
       try {
         setStatus('loading');
         console.log('[JoinChatPage] Sending request to backend...');
-        const response = await api.post(`/api/v1/conversations/${conversationId}/members/join-by-token`, {
-          token: inviteToken
-        });
-        console.log('[JoinChatPage] Backend response:', response.data);
+
+        // If there's a token, use the token endpoint (encrypted invites)
+        if (inviteToken) {
+          const response = await api.post(`/api/v1/conversations/${conversationId}/members/join-by-token`, {
+            token: inviteToken
+          });
+          console.log('[JoinChatPage] Backend response (token):', response.data);
+        } else {
+          // Otherwise, use open invite (direct join without token)
+          const response = await api.post(`/api/v1/conversations/${conversationId}/members/join`);
+          console.log('[JoinChatPage] Backend response (open):', response.data);
+        }
 
         setStatus('success');
         // Redirect to the conversation after 1 second

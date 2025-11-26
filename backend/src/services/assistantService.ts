@@ -410,11 +410,41 @@ export async function sendAIMessage(
 
     // Build map of all users in the conversation
     const allUsers = new Map();
+
+    // 1. Add owner and any user from participants
     for (const p of conversation.participants) {
       if (p.user) {
         allUsers.set(p.user.id, p.user);
       }
     }
+
+    // 2. In multi-user conversations, add all invited members
+    if (conversation.isMultiUser) {
+      const members = await prisma.userConversationMembership.findMany({
+        where: {
+          conversationId: conversation.id,
+          isActive: true
+        },
+        include: {
+          user: true
+        }
+      });
+
+      for (const member of members) {
+        if (member.user) {
+          allUsers.set(member.user.id, member.user);
+        }
+      }
+    }
+
+    logger.info({
+      conversationId: conversation.id,
+      isMultiUser: conversation.isMultiUser,
+      allUsersSize: allUsers.size,
+      allUsersIds: Array.from(allUsers.keys()),
+      allUsersNames: Array.from(allUsers.values()).map(u => u.displayName || u.username),
+      lastMessageSenderId: lastMessage.senderId
+    }, 'All users before calling agent.execute');
 
     // Generate response for the specific participant
     const content = await agent.execute(

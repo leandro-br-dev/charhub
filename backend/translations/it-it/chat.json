@@ -4,10 +4,10 @@
     "title": "Conversazioni",
     "newConversation": "Nuova Conversazione",
     "conversations": "Conversazioni",
-    "noConversations": "Nessuna conversazione al momento",
+    "noConversations": "Nessuna conversazione ancora",
     "createFirst": "Crea la tua prima conversazione",
-    "loading": "Caricamento...",
-    "error": "Errore durante il caricamento della chat",
+    "loading": "Caricamento in corso...",
+    "error": "Errore nel caricamento della chat",
     "unknownParticipant": "Sconosciuto ({{id}})",
     "history": {
       "title": "Cronologia conversazioni",
@@ -22,7 +22,7 @@
       "last30Days": "Ultimi 30 giorni",
       "invalidDate": "Data non valida",
       "noResults": "Nessuna conversazione trovata",
-      "empty": "Nessuna conversazione al momento",
+      "empty": "Nessuna conversazione ancora",
       "untitled": "Conversazione senza titolo",
       "editTitle": "Modifica titolo",
       "deleteConversation": "Elimina conversazione",
@@ -34,16 +34,16 @@
     "conversation": {
       "title": "Conversazione",
       "participants": "Partecipanti",
-      "addParticipant": "Aggiungi partecipante",
-      "removeParticipant": "Rimuovi partecipante",
-      "editTitle": "Modifica titolo",
-      "delete": "Elimina conversazione",
+      "addParticipant": "Aggiungi Partecipante",
+      "removeParticipant": "Rimuovi Partecipante",
+      "editTitle": "Modifica Titolo",
+      "delete": "Elimina Conversazione",
       "archive": "Archivia",
       "settings": "Impostazioni",
       "lastMessage": "Ultimo messaggio",
-      "noMessages": "Nessun messaggio al momento",
+      "noMessages": "Nessun messaggio ancora",
       "startTyping": "Inizia a scrivere per avviare la conversazione",
-      "justNow": "Appena adesso",
+      "justNow": "Ora",
       "minutesAgo": "{{count}}m",
       "hoursAgo": "{{count}}h",
       "daysAgo": "{{count}}d"
@@ -52,20 +52,20 @@
       "send": "Invia",
       "sending": "Invio in corso...",
       "placeholder": "Scrivi il tuo messaggio...",
-      "delete": "Elimina messaggio",
-      "edit": "Modifica messaggio",
+      "delete": "Elimina Messaggio",
+      "edit": "Modifica Messaggio",
       "copy": "Copia",
       "retry": "Riprova",
       "failed": "Invio fallito",
       "you": "Tu",
-      "ai": "AI",
+      "ai": "IA",
       "system": "Sistema"
     },
     "participant": {
       "character": "Personaggio",
       "assistant": "Assistente",
       "user": "Utente",
-      "addCharacter": "Aggiungi personaggio",
+      "addCharacter": "Aggiungi Personaggio",
       "selectCharacter": "Seleziona un personaggio da aggiungere",
       "noCharacters": "Nessun personaggio disponibile",
       "removed": "Partecipante rimosso",
@@ -74,7 +74,7 @@
     "typing": {
       "isTyping": "{{name}} sta scrivendo...",
       "areTyping": "{{names}} stanno scrivendo...",
-      "generating": "Generazione risposta in corso..."
+      "generating": "Generazione della risposta in corso..."
     },
     "actions": {
       "create": "Crea",
@@ -86,26 +86,26 @@
       "goBack": "Torna alle conversazioni"
     },
     "errors": {
-      "loadFailed": "Impossibile caricare la conversazione",
-      "createFailed": "Impossibile creare la conversazione",
-      "sendFailed": "Impossibile inviare il messaggio",
-      "deleteFailed": "Impossibile eliminare",
-      "updateFailed": "Impossibile aggiornare",
-      "networkError": "Errore di rete. Verifica la tua connessione.",
-      "unauthorized": "Non hai il permesso di fare questo",
+      "loadFailed": "Caricamento conversazione fallito",
+      "createFailed": "Creazione conversazione fallita",
+      "sendFailed": "Invio messaggio fallito",
+      "deleteFailed": "Eliminazione fallita",
+      "updateFailed": "Aggiornamento fallito",
+      "networkError": "Errore di rete. Controlla la tua connessione.",
+      "unauthorized": "Non hai il permesso di farlo",
       "notFound": "Conversazione non trovata",
-      "generateAiFailed": "Impossibile generare la risposta.",
-      "addParticipantFailed": "Impossibile aggiungere il partecipante.",
-      "removeParticipantFailed": "Impossibile rimuovere il partecipante.",
-      "cannotRemoveLastCharacter": "Non puoi rimuovere l'ultimo personaggio dalla conversazione. Deve rimanere almeno un personaggio o assistente.",
-      "updateConversationFailed": "Impossibile aggiornare la conversazione.",
+      "generateAiFailed": "Generazione risposta fallita.",
+      "addParticipantFailed": "Aggiunta partecipante fallita.",
+      "removeParticipantFailed": "Rimozione partecipante fallita.",
+      "cannotRemoveLastCharacter": "Non è possibile rimuovere l'ultimo personaggio dalla conversazione. Deve rimanere almeno un personaggio o un assistente.",
+      "updateConversationFailed": "Aggiornamento conversazione fallito.",
       "reprocessNotAvailable": "La rielaborazione non è disponibile senza un partecipante assistente.",
-      "imageGenerationUnavailable": "La generazione di immagini non è ancora disponibile.",
-      "cloneAssistantUnavailable": "Il clonaggio dell'assistente non è ancora disponibile.",
-      "promoteCharacterUnavailable": "La promozione del personaggio non è ancora disponibile.",
-      "audioPlaybackUnavailable": "La riproduzione audio non è ancora disponibile.",
-      "reviewFileUnavailable": "La revisione del file non è ancora disponibile.",
-      "suggestionFailed": "Impossibile generare il suggerimento di risposta."
+      "imageGenerationUnavailable": "Generazione di immagini non ancora disponibile.",
+      "cloneAssistantUnavailable": "Clonazione assistente non ancora disponibile.",
+      "promoteCharacterUnavailable": "Promozione personaggio non ancora disponibile.",
+      "audioPlaybackUnavailable": "Riproduzione audio non ancora disponibile.",
+      "reviewFileUnavailable": "Revisione file non ancora disponibile.",
+      "suggestionFailed": "Generazione suggerimento di risposta fallita."
     },
     "success": {
       "created": "Conversazione creata con successo",
@@ -127,7 +127,7 @@
       "changeVisualPersonaLabel": "Persona visiva",
       "selectCharacterPlaceholder": "Seleziona un personaggio",
       "loadingPersonas": "Caricamento persone...",
-      "savingConfigurationButton": "Salvataggio...",
+      "savingConfigurationButton": "Salvataggio in corso...",
       "saveConfigurationButton": "Salva configurazione",
       "promotingButton": "Promozione in corso...",
       "promoteToAssistantButton": "Promuovi ad assistente",
@@ -145,7 +145,7 @@
       "confirmReprocessUserMessage": "Sei sicuro di voler rigenerare la risposta a questo messaggio?",
       "confirmReprocessBotMessage": "Sei sicuro di voler rigenerare questo messaggio?",
       "regenerateButton": "Rigenera",
-      "conversationSettingsTitle": "Impostazioni conversazione"
+      "conversationSettingsTitle": "Impostazioni Conversazione"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "Impossibile recuperare le persone.",
@@ -156,7 +156,13 @@
     },
     "conversationSettings": {
       "modalTitle": "Impostazioni conversazione",
-      "interactionModeLabel": "Modalità di interazione",
+      "tabs": {
+        "general": "Generale",
+        "roleplay": "Roleplay",
+        "view": "Aspetto",
+        "multiuser": "Multi-Utente"
+      },
+      "interactionModeLabel": "Modalità interazione",
       "modeNormal": "Roleplay bilanciato",
       "modeRoleplay": "Roleplay completo",
       "responseLengthLabel": "Lunghezza risposta",
@@ -164,7 +170,7 @@
       "lengthMedium": "Media",
       "lengthLong": "Lunga",
       "useEmojisLabel": "Usa emoji",
-      "useSlangLabel": "Usa gergo",
+      "useSlangLabel": "Usa slang",
       "slangNone": "Mai",
       "slangLow": "Occasionalmente",
       "slangMedium": "Spesso",
@@ -177,13 +183,13 @@
       "genreCustom": "Personalizzato",
       "customGenreDetailsLabel": "Dettagli scenario personalizzato",
       "customGenrePlaceholder": "Descrivi uno scenario personalizzato per il roleplay",
-      "allowNsfwLabel": "Consenti contenuti maturi",
-      "nsfwGlobalDisabledWarning": "Il tuo account non consente contenuti maturi.",
+      "allowNsfwLabel": "Consenti contenuti per adulti",
+      "nsfwGlobalDisabledWarning": "Il tuo account non consente contenuti per adulti.",
       "showThoughtsLabel": "Mostra pensieri dell'assistente",
       "narrationStyleLabel": "Stile narrazione",
       "narrationBalanced": "Bilanciato",
       "narrationDescriptive": "Descrittivo",
-      "narrationDialogue": "Focalizzato sul dialogo",
+      "narrationDialogue": "Focalizzato sui dialoghi",
       "viewOptionsTitle": "Impostazioni visive",
       "bgTypeLabel": "Tipo sfondo",
       "bgTypeAuto": "Automatico (copertina personaggio)",
@@ -192,7 +198,7 @@
       "selectFromGalleryButton": "Seleziona dalla galleria",
       "removeBgImageButton": "Rimuovi immagine",
       "noImageSelected": "Nessuno sfondo selezionato",
-      "autoBackgroundInfo": "Quando abilitato, l'immagine di copertina del personaggio verrà utilizzata come sfondo per conversazioni 1-a-1.",
+      "autoBackgroundInfo": "Quando abilitato, l'immagine di copertina del personaggio verrà utilizzata come sfondo per le conversazioni 1-a-1.",
       "errorLoadingGallery": "Impossibile caricare le immagini della galleria.",
       "galleryButton": "Apri galleria",
       "imageGalleryTitle": "Galleria Chat",
@@ -203,7 +209,7 @@
         "unlisted": "Non in elenco",
         "public": "Pubblica",
         "publicWarning": "Questa conversazione sarà visibile a tutti e ricercabile negli elenchi pubblici.",
-        "unlistedWarning": "Questa conversazione può essere accessibile da chiunque abbia il link, ma non apparirà negli elenchi pubblici."
+        "unlistedWarning": "Questa conversazione è accessibile da chiunque abbia il link, ma non apparirà negli elenchi pubblici."
       }
     },
     "common": {
@@ -231,21 +237,21 @@
     "messageInput": {
       "micNotSupportedError": "Microfono non supportato.",
       "transcriptionFailedError": "Trascrizione fallita.",
-      "transcriptionServiceError": "Errore del servizio di trascrizione.",
-      "micAccessError": "Accesso al microfono negato.",
-      "placeholderProcessingAudio": "Elaborazione audio...",
-      "placeholderRecording": "Registrazione...",
+      "transcriptionServiceError": "Errore servizio trascrizione.",
+      "micAccessError": "Accesso microfono negato.",
+      "placeholderProcessingAudio": "Elaborazione audio in corso...",
+      "placeholderRecording": "Registrazione in corso...",
       "placeholderSending": "Invio in corso...",
       "placeholderWaiting": "In attesa di risposta...",
       "placeholderDefault": "Scrivi un messaggio...",
       "configureUser": "Configura {{name}}",
       "you": "Tu",
       "actionsMenuTitle": "Altre azioni",
-      "generateImageAction": "Genera Immagine",
+      "generateImageAction": "Genera immagine",
       "suggestReplyAction": "Suggerisci risposta",
       "generatingSuggestion": "Generazione suggerimento in corso...",
       "micButtonStopRecordingTitle": "Interrompi registrazione",
-      "micButtonProcessingTitle": "Elaborazione...",
+      "micButtonProcessingTitle": "Elaborazione in corso...",
       "micButtonRecordTitle": "Registra audio"
     },
     "messageItem": {
@@ -268,25 +274,25 @@
     },
     "memory": {
       "active": "Memoria attiva (aggiornata {{timeAgo}})",
-      "activeTooltip": "La cronologia della conversazione viene compressa automaticamente per salvare il contesto. I messaggi recenti vengono mantenuti per intero, i messaggi più vecchi vengono riassunti.",
+      "activeTooltip": "La cronologia della conversazione viene automaticamente compressa per salvare il contesto. I messaggi recenti vengono mantenuti per intero, quelli più vecchi vengono riassunti.",
       "compressing": "Compressione cronologia conversazione in corso...",
-      "compressingTooltip": "La tua conversazione viene riassunta per ottimizzare l'uso della memoria. Potrebbe richiedere qualche istante.",
+      "compressingTooltip": "La tua conversazione viene riassunta per ottimizzare l'uso della memoria. Potrebbe richiedere alcuni istanti.",
       "compressionComplete": "Cronologia compressa con successo"
     },
     "presence": {
-      "onlineTooltip": "{{count}} altro(i) utente(i) online in questa conversazione",
+      "onlineTooltip": "{{count}} altro utente(i) online in questa conversazione",
       "oneOnline": "1 online",
       "manyOnline": "{{count}} online"
     },
     "memberRole": {
       "owner": "Proprietario",
-      "ownerTooltip": "Proprietario della conversazione - controllo completo su impostazioni e membri",
+      "ownerTooltip": "Proprietario della conversazione - pieno controllo su impostazioni e membri",
       "moderator": "Mod",
       "moderatorTooltip": "Moderatore - può gestire i membri e moderare i contenuti",
       "member": "Membro",
       "memberTooltip": "Membro - può partecipare alla conversazione",
-      "viewer": "Visitatore",
-      "viewerTooltip": "Visitatore - accesso in sola lettura alla conversazione"
+      "viewer": "Visualizzatore",
+      "viewerTooltip": "Visualizzatore - accesso in sola lettura alla conversazione"
     },
     "inviteUser": {
       "title": "Invita Utente",
@@ -311,17 +317,17 @@
     },
     "joinChat": {
       "accepting": "Unione alla conversazione in corso...",
-      "invalidLink": "Link di invito non valido o mancante",
-      "failed": "Impossibile unirsi alla conversazione",
+      "invalidLink": "Link invito non valido o mancante",
+      "failed": "Unione alla conversazione fallita",
       "errorTitle": "Impossibile Unirsi",
       "goHome": "Vai alla Home",
-      "alreadyMember": "Sei già membro di questa conversazione",
+      "alreadyMember": "Sei già un membro di questa conversazione",
       "conversationFull": "Questa conversazione ha raggiunto il numero massimo di utenti"
     },
     "addParticipantModal": {
       "title": "Aggiungi Partecipante",
       "charactersTab": "Personaggi",
-      "myAssistantsTab": "Miei Assistenti",
+      "myAssistantsTab": "I Miei Assistenti",
       "publicAssistantsTab": "Assistenti Pubblici",
       "usersTab": "Utenti",
       "assistantsTab": "assistenti",
@@ -338,12 +344,15 @@
     "multiUser": {
       "label": "Conversazione multi-utente",
       "description": "Consenti a più utenti di partecipare a questa conversazione",
-      "maxUsers": "Massimo utenti",
+      "maxUsers": "Utenti massimi",
       "maxUsersHint": "Possono partecipare fino a 4 utenti umani (più personaggi illimitati)",
       "allowInvites": "Consenti ai membri di invitare",
-      "allowInvitesHint": "I membri possono invitare altri utenti ad unirsi",
+      "allowInvitesHint": "I membri possono invitare altri utenti a partecipare",
       "requireApproval": "Richiedi approvazione per unirsi",
-      "requireApprovalHint": "Il proprietario deve approvare i nuovi membri prima che possano partecipare"
+      "requireApprovalHint": "Il proprietario deve approvare i nuovi membri prima che possano partecipare",
+      "conversionWarning": "Questo convertirà la tua conversazione solitaria in modalità multi-utente. Diventerai il proprietario con il pieno controllo.",
+      "inviteLink": "Link Invito",
+      "inviteLinkDescription": "Condividi questo link con gli utenti che desideri invitare:"
     }
   }
 }

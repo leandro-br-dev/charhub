@@ -149,11 +149,23 @@ export const chatService = {
   async updateConversationSettings(
     conversationId: string,
     settingsData: Record<string, unknown>,
-    visibility?: 'PRIVATE' | 'UNLISTED' | 'PUBLIC'
+    visibility?: 'PRIVATE' | 'UNLISTED' | 'PUBLIC',
+    multiUserSettings?: {
+      isMultiUser: boolean;
+      maxUsers: number;
+      allowUserInvites: boolean;
+      requireApproval: boolean;
+    }
   ): Promise<Conversation> {
     const updatePayload: any = { settings: settingsData };
     if (visibility) {
       updatePayload.visibility = visibility;
+    }
+    if (multiUserSettings) {
+      updatePayload.isMultiUser = multiUserSettings.isMultiUser;
+      updatePayload.maxUsers = multiUserSettings.maxUsers;
+      updatePayload.allowUserInvites = multiUserSettings.allowUserInvites;
+      updatePayload.requireApproval = multiUserSettings.requireApproval;
     }
     return this.updateConversation(conversationId, updatePayload);
   },

@@ -11,7 +11,6 @@ export const createConversationSchema = z.object({
   participantIds: z.array(z.string().uuid()).min(1, 'At least one participant is required'),
   settings: z.record(z.string(), z.unknown()).optional().nullable(), // Flexible JSON settings
   projectId: z.string().uuid().optional().nullable(),
-  visibility: z.enum(['PRIVATE', 'UNLISTED', 'PUBLIC']).optional().default('PRIVATE'),
 
   // Multi-user settings (optional)
   isMultiUser: z.boolean().optional().default(false),
@@ -43,7 +42,12 @@ export const updateConversationSchema = z.object({
   title: z.string().min(1, 'Title must include at least 1 character').max(200, 'Title cannot exceed 200 characters').optional(),
   settings: z.record(z.string(), z.unknown()).optional().nullable(),
   isTitleUserEdited: z.boolean().optional(),
-  visibility: z.enum(['PRIVATE', 'UNLISTED', 'PUBLIC']).optional(),
+
+  // Multi-user settings (optional)
+  isMultiUser: z.boolean().optional(),
+  maxUsers: z.number().int().min(1).max(4).optional(),
+  allowUserInvites: z.boolean().optional(),
+  requireApproval: z.boolean().optional(),
 });
 
 // Add participant schema

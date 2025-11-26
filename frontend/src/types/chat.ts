@@ -90,7 +90,6 @@ export interface CreateConversationPayload {
   participantIds: string[]; // Character IDs
   settings?: Record<string, unknown>;
   projectId?: string;
-  visibility?: 'PRIVATE' | 'UNLISTED' | 'PUBLIC';
 
   // Multi-user settings
   isMultiUser?: boolean;

@@ -156,6 +156,12 @@
     },
     "conversationSettings": {
       "modalTitle": "Conversation settings",
+      "tabs": {
+        "general": "General",
+        "roleplay": "Roleplay",
+        "view": "Appearance",
+        "multiuser": "Multi-User"
+      },
       "interactionModeLabel": "Interaction mode",
       "modeNormal": "Balanced roleplay",
       "modeRoleplay": "Full roleplay",
@@ -343,7 +349,10 @@
       "allowInvites": "Allow members to invite",
       "allowInvitesHint": "Members can invite other users to join",
       "requireApproval": "Require approval to join",
-      "requireApprovalHint": "Owner must approve new members before they can participate"
+      "requireApprovalHint": "Owner must approve new members before they can participate",
+      "conversionWarning": "This will convert your solo conversation to multi-user mode. You will become the owner with full control.",
+      "inviteLink": "Invite Link",
+      "inviteLinkDescription": "Share this link with users you want to invite:"
     }
   }
 }

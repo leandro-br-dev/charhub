@@ -58,7 +58,7 @@ export default function App(): JSX.Element {
         <Route path="/characters/:characterId/edit" element={<CharacterEditPage />} />
         <Route path="/chat" element={<ChatIndexPage />} />
         <Route path="/chat/new" element={<NewConversationPage />} />
-        <Route path="/chat/:conversationId/join" element={<JoinChatPage />} />
+        <Route path="/chat/join/:conversationId" element={<JoinChatPage />} />
         <Route path="/chat/:conversationId" element={<ConversationDetailPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/stories" element={<StoryHubPage />} />

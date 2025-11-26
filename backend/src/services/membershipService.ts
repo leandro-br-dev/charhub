@@ -101,35 +101,82 @@ export class MembershipService {
   }
 
   /**
-   * Usuário aceita convite (join conversation)
+   * Usuário aceita convite (join conversation) ou entra via link aberto
    */
   async joinConversation(conversationId: string, userId: string) {
-    const membership = await prisma.userConversationMembership.findUnique({
+    // Verificar se a conversa existe e é multi-user
+    const conversation = await prisma.conversation.findUnique({
+      where: { id: conversationId }
+    });
+
+    if (!conversation) {
+      throw new Error('Conversation not found');
+    }
+
+    if (!conversation.isMultiUser) {
+      throw new Error('This conversation does not allow multiple users');
+    }
+
+    // Verificar se já existe membership
+    const existingMembership = await prisma.userConversationMembership.findUnique({
       where: {
         conversationId_userId: { conversationId, userId }
       }
     });
 
-    if (!membership) {
-      throw new Error('No invitation found');
+    if (existingMembership?.isActive) {
+      throw new Error('You are already a member of this conversation');
     }
 
-    if (membership.isActive) {
-      throw new Error('Already a member');
+    // Contar membros ativos
+    const activeMemberCount = await prisma.userConversationMembership.count({
+      where: {
+        conversationId,
+        isActive: true
+      }
+    });
+
+    // Verificar se a conversa está cheia
+    if (activeMemberCount >= conversation.maxUsers) {
+      throw new Error('This conversation has reached its maximum number of users');
     }
 
-    const updated = await prisma.userConversationMembership.update({
-      where: { id: membership.id },
-      data: { isActive: true }
+    // Se já existe membership inativo (convite prévio), ativa-lo
+    if (existingMembership && !existingMembership.isActive) {
+      const updated = await prisma.userConversationMembership.update({
+        where: { id: existingMembership.id },
+        data: { isActive: true }
+      });
+
+      logger.info({
+        conversationId,
+        userId,
+        membershipId: existingMembership.id
+      }, 'User accepted previous invitation');
+
+      return updated;
+    }
+
+    // Criar novo membership (open invite)
+    const newMembership = await prisma.userConversationMembership.create({
+      data: {
+        conversationId,
+        userId,
+        role: 'MEMBER',
+        canWrite: true,
+        canInvite: conversation.allowUserInvites,
+        canModerate: false,
+        isActive: true,
+      }
     });
 
     logger.info({
       conversationId,
       userId,
-      membershipId: membership.id
-    }, 'User joined conversation');
+      membershipId: newMembership.id
+    }, 'User joined conversation via open invite');
 
-    return updated;
+    return newMembership;
   }
 
   /**

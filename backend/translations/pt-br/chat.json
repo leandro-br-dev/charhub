@@ -55,7 +55,7 @@
       "delete": "Excluir Mensagem",
       "edit": "Editar Mensagem",
       "copy": "Copiar",
-      "retry": "Tentar Novamente",
+      "retry": "Tentar novamente",
       "failed": "Falha ao enviar",
       "you": "Você",
       "ai": "IA",
@@ -156,10 +156,16 @@
     },
     "conversationSettings": {
       "modalTitle": "Configurações da conversa",
+      "tabs": {
+        "general": "Geral",
+        "roleplay": "Roleplay",
+        "view": "Aparência",
+        "multiuser": "Multi-usuário"
+      },
       "interactionModeLabel": "Modo de interação",
       "modeNormal": "Roleplay equilibrado",
       "modeRoleplay": "Roleplay completo",
-      "responseLengthLabel": "Comprimento da resposta",
+      "responseLengthLabel": "Tamanho da resposta",
       "lengthShort": "Curto",
       "lengthMedium": "Médio",
       "lengthLong": "Longo",
@@ -167,7 +173,7 @@
       "useSlangLabel": "Usar gírias",
       "slangNone": "Nunca",
       "slangLow": "Ocasionalmente",
-      "slangMedium": "Com frequência",
+      "slangMedium": "Frequentemente",
       "roleplaySpecificTitle": "Detalhes do roleplay",
       "scenarioGenreLabel": "Gênero do cenário",
       "genreNone": "Nenhum",
@@ -192,17 +198,17 @@
       "selectFromGalleryButton": "Selecionar da galeria",
       "removeBgImageButton": "Remover imagem",
       "noImageSelected": "Nenhum fundo selecionado",
-      "autoBackgroundInfo": "Quando habilitado, a imagem de capa do personagem será usada como fundo para conversas 1 a 1.",
+      "autoBackgroundInfo": "Quando ativado, a imagem de capa do personagem será usada como fundo para conversas 1 a 1.",
       "errorLoadingGallery": "Não foi possível carregar as imagens da galeria.",
       "galleryButton": "Abrir galeria",
-      "imageGalleryTitle": "Galeria do Chat",
+      "imageGalleryTitle": "Galeria de Chat",
       "visibility": {
         "sectionTitle": "Configurações de Privacidade",
         "label": "Visibilidade da conversa",
         "private": "Privada",
         "unlisted": "Não listada",
         "public": "Pública",
-        "publicWarning": "Esta conversa será visível para todos e descoberto em listas públicas.",
+        "publicWarning": "Esta conversa será visível para todos e poderá ser encontrada em listas públicas.",
         "unlistedWarning": "Esta conversa pode ser acessada por qualquer pessoa com o link, mas não aparecerá em listas públicas."
       }
     },
@@ -211,8 +217,8 @@
       "delete": "Excluir",
       "save": "Salvar",
       "confirm": "Confirmar",
-      "enabled": "Habilitado",
-      "disabled": "Desabilitado",
+      "enabled": "Ativado",
+      "disabled": "Desativado",
       "allowed": "Permitido",
       "denied": "Negado",
       "deleting": "Excluindo...",
@@ -267,10 +273,10 @@
       "actionCancelledByUser": "Ação cancelada pelo usuário."
     },
     "memory": {
-      "active": "Memória ativa (atualizada há {{timeAgo}})",
-      "activeTooltip": "O histórico da conversa está sendo comprimido automaticamente para salvar o contexto. Mensagens recentes são mantidas na íntegra, mensagens mais antigas são resumidas.",
+      "active": "Memória ativa (atualizada {{timeAgo}})",
+      "activeTooltip": "O histórico da conversa está sendo automaticamente compactado para salvar o contexto. Mensagens recentes são mantidas na íntegra, mensagens mais antigas são resumidas.",
       "compressing": "Compactando histórico da conversa...",
-      "compressingTooltip": "Sua conversa está sendo resumida para otimizar o uso da memória. Isso pode levar alguns minutos.",
+      "compressingTooltip": "Sua conversa está sendo resumida para otimizar o uso de memória. Isso pode levar alguns momentos.",
       "compressionComplete": "Histórico compactado com sucesso"
     },
     "presence": {
@@ -295,7 +301,7 @@
       "searchFailed": "Falha ao pesquisar usuários. Por favor, tente novamente.",
       "allResultsAlreadyMembers": "Todos os usuários encontrados já são membros desta conversa.",
       "noResults": "Nenhum usuário encontrado que corresponda à sua pesquisa.",
-      "searchHint": "Pesquise usuários pelo nome de usuário ou nome de exibição para convidá-los para esta conversa.",
+      "searchHint": "Pesquise usuários pelo nome de usuário ou nome de exibição para convidá-los a esta conversa.",
       "invite": "Convidar",
       "inviting": "Convidando...",
       "inviteFailed": "Falha ao convidar usuário. Por favor, tente novamente.",
@@ -303,19 +309,19 @@
     },
     "shareInvite": {
       "title": "Compartilhar Link de Convite",
-      "description": "Qualquer pessoa com este link pode entrar na conversa.",
+      "description": "Qualquer pessoa com este link pode participar da conversa.",
       "generateFailed": "Falha ao gerar link de convite. Por favor, tente novamente.",
       "copy": "Copiar Link",
       "copied": "Copiado!",
-      "expiresIn": "Link expira em {{days}} dias"
+      "expiresIn": "O link expira em {{days}} dias"
     },
     "joinChat": {
       "accepting": "Entrando na conversa...",
       "invalidLink": "Link de convite inválido ou ausente",
       "failed": "Falha ao entrar na conversa",
-      "errorTitle": "Impossível Entrar",
+      "errorTitle": "Não é Possível Entrar",
       "goHome": "Ir para Início",
-      "alreadyMember": "Você já é membro desta conversa",
+      "alreadyMember": "Você já é um membro desta conversa",
       "conversationFull": "Esta conversa atingiu o número máximo de usuários"
     },
     "addParticipantModal": {
@@ -336,14 +342,17 @@
       "connectionError": "Erro de conexão. Por favor, tente novamente."
     },
     "multiUser": {
-      "label": "Conversa multiusuário",
+      "label": "Conversa multi-usuário",
       "description": "Permitir que vários usuários participem desta conversa",
-      "maxUsers": "Máximo de usuários",
+      "maxUsers": "Usuários máximos",
       "maxUsersHint": "Até 4 usuários humanos podem participar (mais personagens ilimitados)",
       "allowInvites": "Permitir que membros convidem",
       "allowInvitesHint": "Membros podem convidar outros usuários para participar",
-      "requireApproval": "Requerer aprovação para entrar",
-      "requireApprovalHint": "O proprietário deve aprovar novos membros antes que eles possam participar"
+      "requireApproval": "Exigir aprovação para entrar",
+      "requireApprovalHint": "O proprietário deve aprovar novos membros antes que eles possam participar",
+      "conversionWarning": "Isso converterá sua conversa individual para o modo multi-usuário. Você se tornará o proprietário com controle total.",
+      "inviteLink": "Link de Convite",
+      "inviteLinkDescription": "Compartilhe este link com os usuários que você deseja convidar:"
     }
   }
 }

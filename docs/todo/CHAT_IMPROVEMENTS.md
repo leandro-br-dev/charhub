@@ -76,9 +76,36 @@
    - Créditos cobrados de quem acionou
    - Arquivo: `conversations.ts:559-582`
 
+### Correções Críticas de Multi-User (Nov 26, 2025)
+
+22. **Identificação de Usuários em Multi-User** - Agent agora reconhece todos os usuários:
+   - Problema: Agent respondia sempre ao owner, mesmo quando outro usuário enviava mensagem
+   - Causa: Queue worker (`responseQueue.ts`) não incluía membros convidados no `allUsers` Map
+   - Solução: Adicionado fetch de `UserConversationMembership` para conversas multi-user
+   - Agent agora recebe informações completas de todos os usuários
+   - Arquivo: `responseQueue.ts:108-125`
+
+23. **Nomes de Remetentes no Histórico** - Contexto correto para multi-user:
+   - Problema: Mensagens apareciam como "Desconhecido" no histórico
+   - Solução: `memoryService.ts` agora mapeia todos os membros via `UserConversationMembership`
+   - Formato de mensagem específico para multi-user: `[Message from {nome}]\n{conteúdo}`
+   - Arquivo: `memoryService.ts:172-198, 484-490`
+
+24. **Prompts Específicos Multi-User** - LLM ciente de múltiplos usuários:
+   - Adicionado prompt crítico alertando sobre múltiplos usuários
+   - LLM agora verifica nome do remetente de cada mensagem
+   - Destaca quem enviou a última mensagem para resposta correta
+   - Arquivo: `responseGenerationAgent.ts:205, 211`
+
+25. **Display de Membros no Frontend** - Todos os usuários visíveis:
+   - `ChatContainer.tsx` agora usa `useMembersQuery` para buscar membros
+   - `processedParticipants` inclui todos os membros em conversas multi-user
+   - Elimina display de "Desconhecido (ID)" para usuários convidados
+   - Arquivo: `ChatContainer.tsx:159, 207-216`
+
 ### Documentação de Entregas
 
-22. **RECENT_DELIVERIES_REVIEW.md** - Revisão completa:
+26. **RECENT_DELIVERIES_REVIEW.md** - Revisão completa:
    - Documenta todas as 21 entregas da Fase 4
    - Inclui métricas de código (~3,030 LOC)
    - Testes realizados e cenários validados

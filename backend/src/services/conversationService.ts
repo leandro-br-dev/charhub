@@ -385,6 +385,20 @@ export async function updateConversation(
       settings: data.settings === null ? Prisma.JsonNull : (data.settings as Prisma.InputJsonValue | undefined),
     };
 
+    // Add multi-user fields if provided
+    if (data.isMultiUser !== undefined) {
+      updateData.isMultiUser = data.isMultiUser;
+    }
+    if (data.maxUsers !== undefined) {
+      updateData.maxUsers = data.maxUsers;
+    }
+    if (data.allowUserInvites !== undefined) {
+      updateData.allowUserInvites = data.allowUserInvites;
+    }
+    if (data.requireApproval !== undefined) {
+      updateData.requireApproval = data.requireApproval;
+    }
+
     const conversation = await prisma.conversation.update({
       where: {
         id: conversationId,
@@ -394,7 +408,24 @@ export async function updateConversation(
       include: conversationInclude,
     });
 
-    logger.info({ conversationId }, 'Conversation updated successfully');
+    // If converting to multi-user, create owner membership if it doesn't exist
+    if (data.isMultiUser && !await prisma.userConversationMembership.findFirst({
+      where: { conversationId, userId }
+    })) {
+      await prisma.userConversationMembership.create({
+        data: {
+          conversationId,
+          userId,
+          role: 'OWNER',
+          canWrite: true,
+          canInvite: true,
+          canModerate: true,
+        }
+      });
+      logger.info({ conversationId, userId }, 'Owner membership created during conversion to multi-user');
+    }
+
+    logger.info({ conversationId, isMultiUser: data.isMultiUser }, 'Conversation updated successfully');
 
     return conversation;
   } catch (error) {

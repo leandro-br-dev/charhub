@@ -154,6 +154,8 @@ class MemoryService {
 
       // Map para lookup rápido de nomes
       const participantNames = new Map<string, string>();
+
+      // 1. Mapear participantes (characters/assistants)
       conversation?.participants.forEach(p => {
         if (p.user) {
           participantNames.set(p.user.id, (p.user.displayName || p.user.username) ?? 'User');
@@ -167,11 +169,43 @@ class MemoryService {
         }
       });
 
+      // 2. Mapear todos os membros usuários em conversas multi-user
+      if (conversation?.isMultiUser) {
+        const members = await prisma.userConversationMembership.findMany({
+          where: {
+            conversationId,
+            isActive: true
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                displayName: true,
+                username: true
+              }
+            }
+          }
+        });
+
+        members.forEach(member => {
+          if (member.user) {
+            const userName = (member.user.displayName || member.user.username) ?? 'User';
+            participantNames.set(member.user.id, userName);
+          }
+        });
+      }
+
       // Construir contexto para o LLM
       const conversationText = messages.map(msg => {
         const senderName = participantNames.get(msg.senderId) ||
                           (msg.senderType === 'USER' ? 'User' : 'Character');
-        return `[${msg.timestamp.toISOString()}] ${senderName}: ${msg.content}`;
+
+        // Use explicit format for multi-user conversations
+        if (conversation?.isMultiUser) {
+          return `[Message from ${senderName} at ${msg.timestamp.toISOString()}]\n${msg.content}\n`;
+        } else {
+          return `[${msg.timestamp.toISOString()}] ${senderName}: ${msg.content}`;
+        }
       }).join('\n');
 
       // Importação dinâmica para evitar circular dependency
@@ -337,6 +371,8 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
 
       // Map para lookup rápido de nomes
       const participantNames = new Map<string, string>();
+
+      // 1. Mapear participantes (characters/assistants)
       conversation?.participants.forEach(p => {
         if (p.user) {
           participantNames.set(p.user.id, (p.user.displayName || p.user.username) ?? 'User');
@@ -349,6 +385,32 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
           participantNames.set(p.id, p.actingAssistant.name);
         }
       });
+
+      // 2. Mapear todos os membros usuários em conversas multi-user
+      if (conversation?.isMultiUser) {
+        const members = await prisma.userConversationMembership.findMany({
+          where: {
+            conversationId,
+            isActive: true
+          },
+          include: {
+            user: {
+              select: {
+                id: true,
+                displayName: true,
+                username: true
+              }
+            }
+          }
+        });
+
+        members.forEach(member => {
+          if (member.user) {
+            const userName = (member.user.displayName || member.user.username) ?? 'User';
+            participantNames.set(member.user.id, userName);
+          }
+        });
+      }
 
       // Reverter ordem (mais antiga primeiro)
       recentMessages.reverse();
@@ -394,7 +456,12 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
             decryptedContent = '[Decryption failed]';
           }
 
-          context += `${senderName}: ${decryptedContent}\n`;
+          // Use explicit format for multi-user conversations
+          if (conversation?.isMultiUser) {
+            context += `[Message from ${senderName}]\n${decryptedContent}\n\n`;
+          } else {
+            context += `${senderName}: ${decryptedContent}\n`;
+          }
         });
       }
 

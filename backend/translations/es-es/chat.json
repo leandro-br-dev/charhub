@@ -12,7 +12,7 @@
     "history": {
       "title": "Historial de conversaciones",
       "newChat": "Nuevo chat",
-      "searchPlaceholder": "Buscar conversaciones...",
+      "searchPlaceholder": "Busca conversaciones...",
       "groupBy": "Agrupar por:",
       "groupByDate": "Fecha",
       "groupByName": "Nombre",
@@ -83,7 +83,7 @@
       "delete": "Eliminar",
       "confirm": "Confirmar",
       "close": "Cerrar",
-      "goBack": "Volver a conversaciones"
+      "goBack": "Volver a las conversaciones"
     },
     "errors": {
       "loadFailed": "Error al cargar la conversación",
@@ -91,10 +91,10 @@
       "sendFailed": "Error al enviar el mensaje",
       "deleteFailed": "Error al eliminar",
       "updateFailed": "Error al actualizar",
-      "networkError": "Error de red. Por favor, comprueba tu conexión.",
+      "networkError": "Error de red. Comprueba tu conexión.",
       "unauthorized": "No tienes permiso para hacer esto",
       "notFound": "Conversación no encontrada",
-      "generateAiFailed": "Error al generar respuesta.",
+      "generateAiFailed": "Error al generar la respuesta.",
       "addParticipantFailed": "Error al añadir participante.",
       "removeParticipantFailed": "Error al eliminar participante.",
       "cannotRemoveLastCharacter": "No se puede eliminar el último personaje de la conversación. Debe quedar al menos un personaje o asistente.",
@@ -119,17 +119,17 @@
       "configureParticipantTitle": "Configurar participante",
       "configureBotTitle": "Configurar {{name}}",
       "configureAssistantTitle": "Configurar asistente {{name}}",
-      "configureUserRoleplayTitle": "Configurar el juego de roles de {{name}}",
+      "configureUserRoleplayTitle": "Configurar el roleplay de {{name}}",
       "participantNotFound": "Participante no encontrado",
       "specificInstructionsLabel": "Instrucciones específicas",
       "specificInstructionsPlaceholder": "Añade detalles que deban influir en las respuestas durante esta conversación",
       "assumePersonaLabel": "Asumir persona",
       "changeVisualPersonaLabel": "Persona visual",
-      "selectCharacterPlaceholder": "Selecciona un personaje",
+      "selectCharacterPlaceholder": "Seleccionar personaje",
       "loadingPersonas": "Cargando personas...",
       "savingConfigurationButton": "Guardando...",
       "saveConfigurationButton": "Guardar configuración",
-      "promotingButton": "Promocionando...",
+      "promotingButton": "Promoviendo...",
       "promoteToAssistantButton": "Promover a asistente",
       "cloningButton": "Clonando...",
       "cloneButton": "Clonar asistente",
@@ -156,19 +156,25 @@
     },
     "conversationSettings": {
       "modalTitle": "Configuración de la conversación",
+      "tabs": {
+        "general": "General",
+        "roleplay": "Roleplay",
+        "view": "Apariencia",
+        "multiuser": "Multiusuario"
+      },
       "interactionModeLabel": "Modo de interacción",
-      "modeNormal": "Juego de roles equilibrado",
-      "modeRoleplay": "Juego de roles completo",
-      "responseLengthLabel": "Longitud de la respuesta",
-      "lengthShort": "Corta",
-      "lengthMedium": "Media",
-      "lengthLong": "Larga",
+      "modeNormal": "Roleplay equilibrado",
+      "modeRoleplay": "Roleplay completo",
+      "responseLengthLabel": "Longitud de respuesta",
+      "lengthShort": "Corto",
+      "lengthMedium": "Mediano",
+      "lengthLong": "Largo",
       "useEmojisLabel": "Usar emojis",
       "useSlangLabel": "Usar jerga",
       "slangNone": "Nunca",
       "slangLow": "Ocasionalmente",
       "slangMedium": "A menudo",
-      "roleplaySpecificTitle": "Detalles del juego de roles",
+      "roleplaySpecificTitle": "Detalles del roleplay",
       "scenarioGenreLabel": "Género del escenario",
       "genreNone": "Ninguno",
       "genreFantasy": "Fantasía",
@@ -176,14 +182,14 @@
       "genreModern": "Moderno",
       "genreCustom": "Personalizado",
       "customGenreDetailsLabel": "Detalles del escenario personalizado",
-      "customGenrePlaceholder": "Describe un escenario personalizado para el juego de roles",
+      "customGenrePlaceholder": "Describe un escenario personalizado para el roleplay",
       "allowNsfwLabel": "Permitir contenido para adultos",
       "nsfwGlobalDisabledWarning": "Tu cuenta no permite contenido para adultos.",
       "showThoughtsLabel": "Mostrar pensamientos del asistente",
       "narrationStyleLabel": "Estilo de narración",
       "narrationBalanced": "Equilibrado",
       "narrationDescriptive": "Descriptivo",
-      "narrationDialogue": "Enfocado en diálogos",
+      "narrationDialogue": "Centrado en diálogos",
       "viewOptionsTitle": "Configuración visual",
       "bgTypeLabel": "Tipo de fondo",
       "bgTypeAuto": "Automático (portada del personaje)",
@@ -191,18 +197,18 @@
       "bgTypeImage": "Usar imagen",
       "selectFromGalleryButton": "Seleccionar de la galería",
       "removeBgImageButton": "Eliminar imagen",
-      "noImageSelected": "Ningún fondo seleccionado",
-      "autoBackgroundInfo": "Cuando está activado, la imagen de portada del personaje se utilizará como fondo para conversaciones individuales.",
+      "noImageSelected": "No hay fondo seleccionado",
+      "autoBackgroundInfo": "Cuando está activado, la imagen de portada del personaje se utilizará como fondo para conversaciones 1 a 1.",
       "errorLoadingGallery": "No se pudieron cargar las imágenes de la galería.",
       "galleryButton": "Abrir galería",
       "imageGalleryTitle": "Galería de chat",
       "visibility": {
-        "sectionTitle": "Configuración de privacidad",
+        "sectionTitle": "Ajustes de privacidad",
         "label": "Visibilidad de la conversación",
         "private": "Privada",
         "unlisted": "No listada",
         "public": "Pública",
-        "publicWarning": "Esta conversación será visible para todos y se podrá encontrar en listados públicos.",
+        "publicWarning": "Esta conversación será visible para todos y se podrá descubrir en listados públicos.",
         "unlistedWarning": "Cualquiera con el enlace podrá acceder a esta conversación, pero no aparecerá en los listados públicos."
       }
     },
@@ -230,7 +236,7 @@
     },
     "messageInput": {
       "micNotSupportedError": "Micrófono no compatible.",
-      "transcriptionFailedError": "La transcripción falló.",
+      "transcriptionFailedError": "Error al transcribir.",
       "transcriptionServiceError": "Error del servicio de transcripción.",
       "micAccessError": "Acceso al micrófono denegado.",
       "placeholderProcessingAudio": "Procesando audio...",
@@ -259,7 +265,7 @@
       "regenerateActionTitle": "Regenerar respuesta",
       "youSender": "Tú",
       "unknownSender": "Desconocido",
-      "creditsUsedTitle": "{{count}} créditos utilizados",
+      "creditsUsedTitle": "{{count}} créditos usados",
       "filesToReviewTitle": "Archivos para revisar:"
     },
     "chatActions": {
@@ -267,8 +273,8 @@
       "actionCancelledByUser": "El usuario canceló la acción."
     },
     "memory": {
-      "active": "Memoria activa (actualizada hace {{timeAgo}})",
-      "activeTooltip": "El historial de la conversación se está comprimiendo automáticamente para guardar el contexto. Los mensajes recientes se mantienen completos, los mensajes más antiguos se resumen.",
+      "active": "Memoria activa (actualizado hace {{timeAgo}})",
+      "activeTooltip": "El historial de la conversación se está comprimiendo automáticamente para guardar el contexto. Los mensajes recientes se mantienen completos, los mensajes antiguos se resumen.",
       "compressing": "Compactando historial de conversación...",
       "compressingTooltip": "Tu conversación se está resumiendo para optimizar el uso de memoria. Esto puede tardar unos momentos.",
       "compressionComplete": "Historial compactado con éxito"
@@ -285,38 +291,38 @@
       "moderatorTooltip": "Moderador: puede administrar miembros y moderar contenido",
       "member": "Miembro",
       "memberTooltip": "Miembro: puede participar en la conversación",
-      "viewer": "Observador",
-      "viewerTooltip": "Observador: acceso de solo lectura a la conversación"
+      "viewer": "Visualizador",
+      "viewerTooltip": "Visualizador: acceso de solo lectura a la conversación"
     },
     "inviteUser": {
-      "title": "Invitar Usuario",
-      "searchPlaceholder": "Buscar por nombre de usuario o nombre visible...",
+      "title": "Invitar usuario",
+      "searchPlaceholder": "Busca por nombre de usuario o nombre de visualización...",
       "minSearchLength": "Introduce al menos 2 caracteres para buscar",
-      "searchFailed": "Error al buscar usuarios. Inténtalo de nuevo.",
+      "searchFailed": "Error al buscar usuarios. Por favor, inténtalo de nuevo.",
       "allResultsAlreadyMembers": "Todos los usuarios encontrados ya son miembros de esta conversación.",
       "noResults": "No se encontraron usuarios que coincidan con tu búsqueda.",
-      "searchHint": "Busca usuarios por su nombre de usuario o nombre visible para invitarlos a esta conversación.",
+      "searchHint": "Busca usuarios por su nombre de usuario o nombre de visualización para invitarlos a esta conversación.",
       "invite": "Invitar",
       "inviting": "Invitando...",
-      "inviteFailed": "Error al invitar al usuario. Inténtalo de nuevo.",
+      "inviteFailed": "Error al invitar al usuario. Por favor, inténtalo de nuevo.",
       "inviteSuccess": "¡Usuario invitado con éxito!"
     },
     "shareInvite": {
       "title": "Compartir enlace de invitación",
       "description": "Cualquiera con este enlace puede unirse a la conversación.",
-      "generateFailed": "Error al generar el enlace de invitación. Inténtalo de nuevo.",
+      "generateFailed": "Error al generar el enlace de invitación. Por favor, inténtalo de nuevo.",
       "copy": "Copiar enlace",
       "copied": "¡Copiado!",
       "expiresIn": "El enlace caduca en {{days}} días"
     },
     "joinChat": {
-      "accepting": "Uniéndome a la conversación...",
-      "invalidLink": "Enlace de invitación inválido o faltante",
+      "accepting": "Uniéndose a la conversación...",
+      "invalidLink": "Enlace de invitación no válido o faltante",
       "failed": "Error al unirse a la conversación",
-      "errorTitle": "Imposible unirse",
+      "errorTitle": "No se puede unir",
       "goHome": "Ir a Inicio",
       "alreadyMember": "Ya eres miembro de esta conversación",
-      "conversationFull": "Esta conversación ha alcanzado su número máximo de usuarios"
+      "conversationFull": "Esta conversación ha alcanzado el número máximo de usuarios"
     },
     "addParticipantModal": {
       "title": "Añadir participante",
@@ -333,17 +339,20 @@
       "noDescription": "No hay descripción disponible",
       "addToConversationButtonTitle": "Añadir a la conversación",
       "maxParticipantsError": "Se permiten un máximo de {{max}} participantes",
-      "connectionError": "Error de conexión. Inténtalo de nuevo."
+      "connectionError": "Error de conexión. Por favor, inténtalo de nuevo."
     },
     "multiUser": {
-      "label": "Conversación multijugador",
-      "description": "Permitir que varios usuarios participen en esta conversación",
+      "label": "Conversación multiusuario",
+      "description": "Permite que varios usuarios participen en esta conversación",
       "maxUsers": "Usuarios máximos",
       "maxUsersHint": "Pueden unirse hasta 4 usuarios humanos (más personajes ilimitados)",
-      "allowInvites": "Permitir que los miembros inviten",
+      "allowInvites": "Permitir invitaciones a miembros",
       "allowInvitesHint": "Los miembros pueden invitar a otros usuarios a unirse",
-      "requireApproval": "Requerir aprobación para unirse",
-      "requireApprovalHint": "El propietario debe aprobar a los nuevos miembros antes de que puedan participar"
+      "requireApproval": "Requiere aprobación para unirse",
+      "requireApprovalHint": "El propietario debe aprobar a los nuevos miembros antes de que puedan participar",
+      "conversionWarning": "Esto convertirá tu conversación individual a modo multiusuario. Te convertirás en el propietario con control total.",
+      "inviteLink": "Enlace de invitación",
+      "inviteLinkDescription": "Comparte este enlace con los usuarios que desees invitar:"
     }
   }
 }

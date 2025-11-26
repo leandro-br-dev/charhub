@@ -202,17 +202,29 @@ export class ResponseGenerationAgent {
       contentFilters: character.contentTags,
     });
 
-    const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n${allUsersContext}\n\nAdditional Instructions for this Conversation (Override):\n${respondingParticipant.configOverride || ''}\n\nStyle Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. ${allUsers && allUsers.size > 1 ? `This is a multi-user conversation. Pay close attention to WHO is speaking in each message. The conversation history clearly shows the sender's name for each message.` : `Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.`}\n4. You have access to information about ${allUsers && allUsers.size > 1 ? 'all users' : 'the user'} above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for other characters or users. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: The preferred language for this conversation is ${userLanguage}. You MUST respond in ${userLanguage} unless explicitly requested otherwise.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like \"${characterName}:" or \"Naruto:\"). The UI already displays your name and avatar. Just write the response content directly.\n`;
+    const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n${allUsersContext}\n\nAdditional Instructions for this Conversation (Override):\n${respondingParticipant.configOverride || ''}\n\nStyle Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. ${allUsers && allUsers.size > 1 ? `⚠️ CRITICAL - MULTI-USER CONVERSATION ⚠️\nThis conversation has MULTIPLE DIFFERENT PEOPLE. Each message in the history shows WHO sent it.\n- DO NOT assume all messages are from the same person\n- ALWAYS check the name before each message to know WHO is speaking\n- When responding, address the person who sent the LATEST message\n- Each user has their own profile information listed in "All Users in this Conversation" above` : `Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.`}\n4. You have access to information about ${allUsers && allUsers.size > 1 ? 'all users' : 'the user'} above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for other characters or users. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: The preferred language for this conversation is ${userLanguage}. You MUST respond in ${userLanguage} unless explicitly requested otherwise.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like \"${characterName}:" or \"Naruto:\"). The UI already displays your name and avatar. Just write the response content directly.\n`;
 
     const llmRequest: LLMRequest = {
       provider: 'gemini', // Or determine dynamically
       model: 'gemini-2.5-flash-lite', // Or determine dynamically
       systemPrompt: `${systemPrompt}\n\nTOOL USAGE:\nYou have access to web_search tool. Use it when you need current information, real-time data, or facts that may have changed since your training. Examples: weather, news, current events, recent facts.`,
-      userPrompt: `${conversationContext}\n\nLatest message from ${lastMessageSender}:\n"${lastMessage.content}"\n\nRespond now as ${characterName} to ${lastMessageSender}'s message. Remember: DO NOT include \"${characterName}:\" at the start of your response.`,
+      userPrompt: `${conversationContext}\n\n🎯 LATEST MESSAGE TO RESPOND TO:\nFrom: **${lastMessageSender}**\nMessage: "${lastMessage.content}"\n\n${allUsers && allUsers.size > 1 ? `⚠️ IMPORTANT: You are responding to ${lastMessageSender}, NOT to any other person in the conversation. Make sure to address ${lastMessageSender} directly in your response.\n\n` : ''}Respond now as ${characterName}. Remember: DO NOT include \"${characterName}:\" at the start of your response.`,
       allowBrowsing: true,       // Enable web search
       autoExecuteTools: true,    // Auto-execute tools
       temperature: 0.8,          // Slightly creative for roleplay
     };
+
+    // Log the complete prompt being sent to LLM for debugging
+    logger.info({
+      conversationId: conversation.id,
+      isMultiUser: allUsers && allUsers.size > 1,
+      lastMessageSender,
+      lastMessageSenderId: lastMessage.senderId,
+      systemPromptPreview: llmRequest.systemPrompt?.substring(0, 500) + '...',
+      userPromptPreview: llmRequest.userPrompt?.substring(0, 500) + '...',
+      fullSystemPrompt: llmRequest.systemPrompt,
+      fullUserPrompt: llmRequest.userPrompt
+    }, 'LLM Request Details');
 
     try {
       const llmResponse = await callLLM(llmRequest);

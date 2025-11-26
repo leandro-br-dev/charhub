@@ -10,6 +10,7 @@ interface SyncOAuthUserInput {
   email?: string | null;
   displayName?: string | null;
   photo?: string | null;
+  preferredLanguage?: string | null;
 }
 
 interface UpdateUserProfileParams {
@@ -128,6 +129,7 @@ export async function syncOAuthUser(input: SyncOAuthUserInput): Promise<Authenti
         ...(input.email && { email: input.email }),
         ...(input.displayName && { displayName: input.displayName }),
         ...(input.photo && { avatarUrl: input.photo }),
+        ...(input.preferredLanguage && { preferredLanguage: input.preferredLanguage }),
       },
     });
 

@@ -134,13 +134,22 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const loginWithProvider = (provider: OAuthProvider) => {
     const baseUrl = resolveApiBaseUrl() ?? window.location.origin;
     const callbackUrl = `${window.location.origin}${CALLBACK_PATH}`;
+
+    // Get current language from localStorage (set by i18next)
+    const preferredLanguage = window.localStorage.getItem('i18nextLng');
+
     const params = new URLSearchParams({
       redirect_uri: `${callbackUrl}?provider=${provider}`
     });
 
+    // Add preferredLanguage to params if available
+    if (preferredLanguage) {
+      params.append('preferredLanguage', preferredLanguage);
+    }
+
     const target = new URL(providerPaths[provider], baseUrl);
     target.search = params.toString();
-    console.debug('[auth] redirecting to provider', { provider, target: target.toString() });
+    console.debug('[auth] redirecting to provider', { provider, preferredLanguage, target: target.toString() });
     window.location.href = target.toString();
   };
 

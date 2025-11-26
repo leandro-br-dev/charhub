@@ -9,6 +9,7 @@ const router = Router();
 type StateValue = {
   createdAt: number;
   redirectUri: string;
+  preferredLanguage?: string;
 };
 
 const stateStore = new Map<string, StateValue>();
@@ -87,10 +88,10 @@ function sanitizeRedirectUri(candidate?: string, req?: Request): string {
   return defaultRedirect();
 }
 
-function generateState(redirectUri: string, req: Request): string {
+function generateState(redirectUri: string, preferredLanguage: string | undefined, req: Request): string {
   const state = crypto.randomBytes(16).toString('hex');
-  stateStore.set(state, { createdAt: Date.now(), redirectUri });
-  req.log.info({ state, redirectUri }, 'oauth_state_created');
+  stateStore.set(state, { createdAt: Date.now(), redirectUri, preferredLanguage });
+  req.log.info({ state, redirectUri, preferredLanguage }, 'oauth_state_created');
 
   for (const [key, value] of stateStore.entries()) {
     if (Date.now() - value.createdAt > STATE_TTL_MS) {
@@ -142,13 +143,27 @@ function handlePassportSuccess(
   req: Request,
   res: Response,
   provider: OAuthProvider,
-  redirectUri: string
+  redirectUri: string,
+  preferredLanguage: string | undefined
 ) {
-  return (err: any, user: AuthenticatedUser | undefined) => {
+  return async (err: any, user: AuthenticatedUser | undefined) => {
     if (err || !user) {
       req.log.error({ err }, 'oauth_auth_failed');
       res.status(401).json({ error: 'Authentication failed' });
       return;
+    }
+
+    // Update preferred language if provided and not already set
+    if (preferredLanguage && !user.preferredLanguage) {
+      try {
+        const { updateUserProfile } = await import('../services/userService');
+        const updatedUser = await updateUserProfile(user.id, { preferredLanguage });
+        user = updatedUser;
+        req.log.info({ userId: user.id, preferredLanguage }, 'oauth_language_set');
+      } catch (error) {
+        req.log.warn({ error, userId: user.id }, 'oauth_language_update_failed');
+        // Continue with original user if update fails
+      }
     }
 
     const token = generateJWT(user);
@@ -167,7 +182,8 @@ function handlePassportSuccess(
 
 router.get('/google', (req: Request, res: Response, next: NextFunction): void => {
   const redirectUri = sanitizeRedirectUri(req.query.redirect_uri as string | undefined, req);
-  const state = generateState(redirectUri, req);
+  const preferredLanguage = req.query.preferredLanguage as string | undefined;
+  const state = generateState(redirectUri, preferredLanguage, req);
 
   passport.authenticate('google', {
     scope: ['profile', 'email'],
@@ -198,14 +214,15 @@ router.get(
     passport.authenticate(
       'google',
       { session: false },
-      handlePassportSuccess(req, res, 'google', stateData.redirectUri)
+      handlePassportSuccess(req, res, 'google', stateData.redirectUri, stateData.preferredLanguage)
     )(req, res, next);
   }
 );
 
 router.get('/facebook', (req: Request, res: Response, next: NextFunction): void => {
   const redirectUri = sanitizeRedirectUri(req.query.redirect_uri as string | undefined, req);
-  const state = generateState(redirectUri, req);
+  const preferredLanguage = req.query.preferredLanguage as string | undefined;
+  const state = generateState(redirectUri, preferredLanguage, req);
   passport.authenticate('facebook', {
     scope: ['email'],
     state,
@@ -235,7 +252,7 @@ router.get(
     passport.authenticate(
       'facebook',
       { session: false },
-      handlePassportSuccess(req, res, 'facebook', stateData.redirectUri)
+      handlePassportSuccess(req, res, 'facebook', stateData.redirectUri, stateData.preferredLanguage)
     )(req, res, next);
   }
 );

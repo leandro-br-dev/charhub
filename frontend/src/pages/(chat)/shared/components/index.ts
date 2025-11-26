@@ -9,3 +9,4 @@ export { MemoryIndicator } from './MemoryIndicator';
 export { OnlineUsersIndicator } from './OnlineUsersIndicator';
 export { MemberRoleBadge } from './MemberRoleBadge';
 export { ShareInviteLinkModal } from './ShareInviteLinkModal';
+export { default as MultiUserSettings } from './MultiUserSettings';

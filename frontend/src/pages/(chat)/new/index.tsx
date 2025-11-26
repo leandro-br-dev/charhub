@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useConversationMutations } from '../shared/hooks/useConversations';
 import { Button, Avatar } from '../../../components/ui';
-import Switch from '../../../components/ui/switch';
+import MultiUserSettings from '../shared/components/MultiUserSettings';
 import { characterService } from '../../../services/characterService';
 import type { Character } from '../../../types/characters';
 import { usePageHeader } from '../../../hooks/usePageHeader';
@@ -91,53 +91,16 @@ export default function NewConversationPage() {
         {/* Multi-user settings */}
         <div className="mb-6 w-full">
           <div className="p-4 bg-light/50 border border-normal rounded-lg">
-            <Switch
-              label={t('multiUser.label', { defaultValue: 'Multi-user conversation' })}
-              description={t('multiUser.description', { defaultValue: 'Allow multiple users to participate in this conversation' })}
-              checked={isMultiUser}
-              onChange={setIsMultiUser}
-              className="mb-4"
+            <MultiUserSettings
+              isMultiUser={isMultiUser}
+              onIsMultiUserChange={setIsMultiUser}
+              maxUsers={maxUsers}
+              onMaxUsersChange={setMaxUsers}
+              allowUserInvites={allowUserInvites}
+              onAllowUserInvitesChange={setAllowUserInvites}
+              requireApproval={requireApproval}
+              onRequireApprovalChange={setRequireApproval}
             />
-
-            {isMultiUser && (
-              <div className="mt-4 pl-4 space-y-4 border-l-2 border-primary/20">
-                {/* Max Users Slider */}
-                <div>
-                  <label className="block text-sm font-medium text-content mb-2">
-                    {t('multiUser.maxUsers', { defaultValue: 'Maximum users' })}: <span className="text-primary font-semibold">{maxUsers}</span>
-                  </label>
-                  <input
-                    type="range"
-                    min="2"
-                    max="4"
-                    value={maxUsers}
-                    onChange={(e) => setMaxUsers(parseInt(e.target.value))}
-                    className="w-full h-2 bg-input rounded-lg appearance-none cursor-pointer accent-primary"
-                  />
-                  <p className="text-xs text-muted mt-1">
-                    {t('multiUser.maxUsersHint', { defaultValue: 'Up to 4 human users can join (plus unlimited characters)' })}
-                  </p>
-                </div>
-
-                {/* Allow user invites */}
-                <Switch
-                  label={t('multiUser.allowInvites', { defaultValue: 'Allow members to invite' })}
-                  description={t('multiUser.allowInvitesHint', { defaultValue: 'Members can invite other users to join' })}
-                  checked={allowUserInvites}
-                  onChange={setAllowUserInvites}
-                  size="small"
-                />
-
-                {/* Require approval */}
-                <Switch
-                  label={t('multiUser.requireApproval', { defaultValue: 'Require approval to join' })}
-                  description={t('multiUser.requireApprovalHint', { defaultValue: 'Owner must approve new members before they can participate' })}
-                  checked={requireApproval}
-                  onChange={setRequireApproval}
-                  size="small"
-                />
-              </div>
-            )}
           </div>
         </div>
 
@@ -223,8 +186,6 @@ export default function NewConversationPage() {
           variant="primary"
           onClick={handleCreate}
           disabled={!selectedCharacterId || createWithCharacter.isPending}
-          icon={createWithCharacter.isPending ? 'progress_activity' : undefined}
-          className={createWithCharacter.isPending ? 'animate-spin' : ''}
         >
           {createWithCharacter.isPending ? t('actions.creating', { defaultValue: 'Creating...' }) : t('actions.create')}
         </Button>

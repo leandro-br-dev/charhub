@@ -13,7 +13,7 @@
       "title": "Historique des conversations",
       "newChat": "Nouveau chat",
       "searchPlaceholder": "Rechercher des conversations...",
-      "groupBy": "Regrouper par :",
+      "groupBy": "Grouper par :",
       "groupByDate": "Date",
       "groupByName": "Nom",
       "today": "Aujourd'hui",
@@ -46,7 +46,7 @@
       "justNow": "Maintenant",
       "minutesAgo": "{{count}}m",
       "hoursAgo": "{{count}}h",
-      "daysAgo": "{{count}}j"
+      "daysAgo": "{{count}}d"
     },
     "message": {
       "send": "Envoyer",
@@ -72,8 +72,8 @@
       "added": "Participant ajouté"
     },
     "typing": {
-      "isTyping": "{{name}} est en train d'écrire...",
-      "areTyping": "{{names}} sont en train d'écrire...",
+      "isTyping": "{{name}} est en train de taper...",
+      "areTyping": "{{names}} sont en train de taper...",
       "generating": "Génération de la réponse..."
     },
     "actions": {
@@ -93,23 +93,23 @@
       "updateFailed": "Échec de la mise à jour",
       "networkError": "Erreur réseau. Veuillez vérifier votre connexion.",
       "unauthorized": "Vous n'avez pas l'autorisation d'effectuer cette action",
-      "notFound": "Conversation non trouvée",
+      "notFound": "Conversation introuvable",
       "generateAiFailed": "Échec de la génération de la réponse.",
       "addParticipantFailed": "Échec de l'ajout du participant.",
       "removeParticipantFailed": "Échec de la suppression du participant.",
-      "cannotRemoveLastCharacter": "Impossible de supprimer le dernier personnage de la conversation. Au moins un personnage ou assistant doit rester.",
+      "cannotRemoveLastCharacter": "Impossible de supprimer le dernier personnage de la conversation. Au moins un personnage ou un assistant doit rester.",
       "updateConversationFailed": "Échec de la mise à jour de la conversation.",
-      "reprocessNotAvailable": "La nouvelle tentative n'est pas disponible sans un participant assistant.",
+      "reprocessNotAvailable": "La nouvelle génération n'est pas disponible sans participant assistant.",
       "imageGenerationUnavailable": "La génération d'images n'est pas encore disponible.",
       "cloneAssistantUnavailable": "Le clonage d'assistant n'est pas encore disponible.",
       "promoteCharacterUnavailable": "La promotion de personnage n'est pas encore disponible.",
       "audioPlaybackUnavailable": "La lecture audio n'est pas encore disponible.",
-      "reviewFileUnavailable": "La révision de fichier n'est pas encore disponible.",
-      "suggestionFailed": "Échec de la génération de suggestions de réponse."
+      "reviewFileUnavailable": "L'examen de fichier n'est pas encore disponible.",
+      "suggestionFailed": "Échec de la génération de suggestion de réponse."
     },
     "success": {
       "created": "Conversation créée avec succès",
-      "updated": "Mis à jour avec succès",
+      "updated": "Mise à jour réussie",
       "deleted": "Supprimé avec succès",
       "sent": "Message envoyé"
     },
@@ -120,17 +120,17 @@
       "configureBotTitle": "Configurer {{name}}",
       "configureAssistantTitle": "Configurer l'assistant {{name}}",
       "configureUserRoleplayTitle": "Configurer le jeu de rôle de {{name}}",
-      "participantNotFound": "Participant non trouvé",
+      "participantNotFound": "Participant introuvable",
       "specificInstructionsLabel": "Instructions spécifiques",
       "specificInstructionsPlaceholder": "Ajoutez des détails qui devraient influencer les réponses pendant cette conversation",
-      "assumePersonaLabel": "Adopter la personnalité",
-      "changeVisualPersonaLabel": "Personnalité visuelle",
+      "assumePersonaLabel": "Adopter la persona",
+      "changeVisualPersonaLabel": "Persona visuelle",
       "selectCharacterPlaceholder": "Sélectionnez un personnage",
-      "loadingPersonas": "Chargement des personnalités...",
-      "savingConfigurationButton": "Enregistrement en cours...",
+      "loadingPersonas": "Chargement des personas...",
+      "savingConfigurationButton": "Enregistrement...",
       "saveConfigurationButton": "Enregistrer la configuration",
       "promotingButton": "Promotion en cours...",
-      "promoteToAssistantButton": "Promouvoir en assistant",
+      "promoteToAssistantButton": "Promouvoir en tant qu'assistant",
       "cloningButton": "Clonage en cours...",
       "cloneButton": "Cloner l'assistant",
       "errorSavingConfig": "Impossible d'enregistrer la configuration.",
@@ -148,14 +148,20 @@
       "conversationSettingsTitle": "Paramètres de la conversation"
     },
     "participantConfigModal": {
-      "errorFetchingPersonas": "Impossible de récupérer les personnalités.",
-      "errorLoadingPersonas": "Impossible de charger les personnalités.",
+      "errorFetchingPersonas": "Impossible de récupérer les personas.",
+      "errorLoadingPersonas": "Impossible de charger les personas.",
       "viewGalleryButton": "Ouvrir la galerie",
       "assistantDetails": "Assistant d'origine : {{name}}",
       "galleryTitle": "Galerie de {{name}}"
     },
     "conversationSettings": {
       "modalTitle": "Paramètres de la conversation",
+      "tabs": {
+        "general": "Général",
+        "roleplay": "Jeu de rôle",
+        "view": "Apparence",
+        "multiuser": "Multi-utilisateur"
+      },
       "interactionModeLabel": "Mode d'interaction",
       "modeNormal": "Jeu de rôle équilibré",
       "modeRoleplay": "Jeu de rôle complet",
@@ -163,7 +169,7 @@
       "lengthShort": "Courte",
       "lengthMedium": "Moyenne",
       "lengthLong": "Longue",
-      "useEmojisLabel": "Utiliser des émojis",
+      "useEmojisLabel": "Utiliser des emojis",
       "useSlangLabel": "Utiliser de l'argot",
       "slangNone": "Jamais",
       "slangLow": "Occasionnellement",
@@ -177,13 +183,13 @@
       "genreCustom": "Personnalisé",
       "customGenreDetailsLabel": "Détails du scénario personnalisé",
       "customGenrePlaceholder": "Décrivez un scénario personnalisé pour le jeu de rôle",
-      "allowNsfwLabel": "Autoriser le contenu mature",
-      "nsfwGlobalDisabledWarning": "Votre compte n'autorise pas le contenu mature.",
+      "allowNsfwLabel": "Autoriser le contenu pour adultes",
+      "nsfwGlobalDisabledWarning": "Votre compte n'autorise pas le contenu pour adultes.",
       "showThoughtsLabel": "Afficher les pensées de l'assistant",
       "narrationStyleLabel": "Style de narration",
       "narrationBalanced": "Équilibré",
       "narrationDescriptive": "Descriptif",
-      "narrationDialogue": "Axé sur les dialogues",
+      "narrationDialogue": "Axé sur le dialogue",
       "viewOptionsTitle": "Paramètres visuels",
       "bgTypeLabel": "Type d'arrière-plan",
       "bgTypeAuto": "Automatique (couverture du personnage)",
@@ -192,7 +198,7 @@
       "selectFromGalleryButton": "Sélectionner dans la galerie",
       "removeBgImageButton": "Supprimer l'image",
       "noImageSelected": "Aucun arrière-plan sélectionné",
-      "autoBackgroundInfo": "Lorsqu'il est activé, l'image de couverture du personnage sera utilisée comme arrière-plan pour les conversations en tête-à-tête.",
+      "autoBackgroundInfo": "Lorsque cette option est activée, l'image de couverture du personnage sera utilisée comme arrière-plan pour les conversations en tête-à-tête.",
       "errorLoadingGallery": "Impossible de charger les images de la galerie.",
       "galleryButton": "Ouvrir la galerie",
       "imageGalleryTitle": "Galerie de discussion",
@@ -202,8 +208,8 @@
         "private": "Privée",
         "unlisted": "Non répertoriée",
         "public": "Publique",
-        "publicWarning": "Cette conversation sera visible par tout le monde et trouvable dans les listes publiques.",
-        "unlistedWarning": "Cette conversation peut être accédée par toute personne disposant du lien, mais n'apparaîtra pas dans les listes publiques."
+        "publicWarning": "Cette conversation sera visible par tout le monde et découvrable dans les listes publiques.",
+        "unlistedWarning": "Cette conversation est accessible par toute personne disposant du lien, mais n'apparaîtra pas dans les listes publiques."
       }
     },
     "common": {
@@ -235,15 +241,15 @@
       "micAccessError": "Accès au microphone refusé.",
       "placeholderProcessingAudio": "Traitement audio...",
       "placeholderRecording": "Enregistrement...",
-      "placeholderSending": "Envoi...",
+      "placeholderSending": "Envoi en cours...",
       "placeholderWaiting": "Attente de la réponse...",
       "placeholderDefault": "Tapez un message...",
       "configureUser": "Configurer {{name}}",
       "you": "Vous",
-      "actionsMenuTitle": "Plus d'actions",
+      "actionsMenuTitle": "Autres actions",
       "generateImageAction": "Générer une image",
       "suggestReplyAction": "Suggérer une réponse",
-      "generatingSuggestion": "Génération de la suggestion...",
+      "generatingSuggestion": "Génération de suggestion en cours...",
       "micButtonStopRecordingTitle": "Arrêter l'enregistrement",
       "micButtonProcessingTitle": "Traitement...",
       "micButtonRecordTitle": "Enregistrer l'audio"
@@ -263,8 +269,8 @@
       "filesToReviewTitle": "Fichiers à examiner :"
     },
     "chatActions": {
-      "actionConfirmedByUser": "L'utilisateur a confirmé l'action.",
-      "actionCancelledByUser": "L'utilisateur a annulé l'action."
+      "actionConfirmedByUser": "Action confirmée par l'utilisateur.",
+      "actionCancelledByUser": "Action annulée par l'utilisateur."
     },
     "memory": {
       "active": "Mémoire active (mise à jour il y a {{timeAgo}})",
@@ -280,7 +286,7 @@
     },
     "memberRole": {
       "owner": "Propriétaire",
-      "ownerTooltip": "Propriétaire de la conversation - contrôle total sur les paramètres et les membres",
+      "ownerTooltip": "Propriétaire de la conversation - contrôle total des paramètres et des membres",
       "moderator": "Modérateur",
       "moderatorTooltip": "Modérateur - peut gérer les membres et modérer le contenu",
       "member": "Membre",
@@ -295,7 +301,7 @@
       "searchFailed": "Échec de la recherche d'utilisateurs. Veuillez réessayer.",
       "allResultsAlreadyMembers": "Tous les utilisateurs trouvés sont déjà membres de cette conversation.",
       "noResults": "Aucun utilisateur trouvé correspondant à votre recherche.",
-      "searchHint": "Recherchez des utilisateurs par leur nom d'utilisateur ou nom d'affichage pour les inviter à cette conversation.",
+      "searchHint": "Recherchez des utilisateurs par leur nom d'utilisateur ou leur nom d'affichage pour les inviter à cette conversation.",
       "invite": "Inviter",
       "inviting": "Invitation en cours...",
       "inviteFailed": "Échec de l'invitation de l'utilisateur. Veuillez réessayer.",
@@ -312,7 +318,7 @@
     "joinChat": {
       "accepting": "Rejoindre la conversation...",
       "invalidLink": "Lien d'invitation invalide ou manquant",
-      "failed": "Échec de la participation à la conversation",
+      "failed": "Échec du rejoindre la conversation",
       "errorTitle": "Impossible de rejoindre",
       "goHome": "Aller à l'accueil",
       "alreadyMember": "Vous êtes déjà membre de cette conversation",
@@ -324,7 +330,7 @@
       "myAssistantsTab": "Mes assistants",
       "publicAssistantsTab": "Assistants publics",
       "usersTab": "Utilisateurs",
-      "assistantsTab": "assistants",
+      "assistantsTab": "Assistants",
       "searchCharactersPlaceholder": "Rechercher des personnages...",
       "searchAssistantsPlaceholder": "Rechercher des assistants...",
       "noItemsForSearch": "Aucun résultat trouvé pour \"{{searchTerm}}\"",
@@ -332,18 +338,21 @@
       "alreadyAddedMaybe": "(Tous les éléments disponibles sont déjà dans la conversation)",
       "noDescription": "Aucune description disponible",
       "addToConversationButtonTitle": "Ajouter à la conversation",
-      "maxParticipantsError": "Maximum de {{max}} participants autorisés",
+      "maxParticipantsError": "{{max}} participants maximum autorisés",
       "connectionError": "Erreur de connexion. Veuillez réessayer."
     },
     "multiUser": {
       "label": "Conversation multi-utilisateurs",
       "description": "Permettre à plusieurs utilisateurs de participer à cette conversation",
-      "maxUsers": "Nombre maximum d'utilisateurs",
+      "maxUsers": "Utilisateurs maximum",
       "maxUsersHint": "Jusqu'à 4 utilisateurs humains peuvent rejoindre (plus un nombre illimité de personnages)",
       "allowInvites": "Permettre aux membres d'inviter",
       "allowInvitesHint": "Les membres peuvent inviter d'autres utilisateurs à rejoindre",
-      "requireApproval": "Nécessiter une approbation pour rejoindre",
-      "requireApprovalHint": "Le propriétaire doit approuver les nouveaux membres avant qu'ils ne puissent participer"
+      "requireApproval": "Exiger l'approbation pour rejoindre",
+      "requireApprovalHint": "Le propriétaire doit approuver les nouveaux membres avant qu'ils ne puissent participer",
+      "conversionWarning": "Cela convertira votre conversation solo en mode multi-utilisateur. Vous deviendrez le propriétaire avec un contrôle total.",
+      "inviteLink": "Lien d'invitation",
+      "inviteLinkDescription": "Partagez ce lien avec les utilisateurs que vous souhaitez inviter :"
     }
   }
 }
