@@ -21,6 +21,7 @@ import llmTestRoutes from './llm-test';
 import creditsRoutes from './credits';
 import plansRoutes from './plans';
 import subscriptionsRoutes from './subscriptions';
+import imageGenerationRoutes from './image-generation';
 
 const router = Router();
 
@@ -45,6 +46,7 @@ router.use('/llm-test', llmTestRoutes);
 router.use('/credits', creditsRoutes);
 router.use('/plans', plansRoutes);
 router.use('/subscriptions', subscriptionsRoutes);
+router.use('/image-generation', imageGenerationRoutes);
 router.use('/', accessRoutes);
 
 export default router;

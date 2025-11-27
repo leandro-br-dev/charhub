@@ -3,6 +3,7 @@ import { registerTestWorker } from './testWorker';
 import { registerUsageProcessingWorker } from './usageProcessingWorker';
 import { registerCreditsMonthlyWorker } from './creditsMonthlyWorker';
 import { registerMemoryCompressionWorker } from './memoryCompressionWorker';
+import { registerImageGenerationWorker } from './imageGenerationWorkerRegister';
 
 /**
  * Initialize all queue workers
@@ -21,6 +22,9 @@ export function initializeWorkers(): void {
 
     // Register memory compression worker
     registerMemoryCompressionWorker();
+
+    // Register image generation worker
+    registerImageGenerationWorker();
   } catch (error) {
     logger.error({ error }, 'Failed to register workers (queues disabled or Redis unavailable)');
     return;
@@ -28,7 +32,6 @@ export function initializeWorkers(): void {
 
   // Future workers will be registered here:
   // registerCharacterWorker();
-  // registerImageGenerationWorker();
   // registerStoryWorker();
 
   logger.info('All queue workers initialized');
