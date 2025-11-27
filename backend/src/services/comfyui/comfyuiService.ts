@@ -31,13 +31,21 @@ export class ComfyUIService {
     this.baseUrl = config?.baseUrl || process.env.COMFYUI_URL || 'http://localhost:8188';
     const timeout = config?.timeout || parseInt(process.env.COMFYUI_TIMEOUT || '300000', 10);
 
+    // Build headers - token is optional (ComfyUI typically doesn't use auth)
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    const serviceToken = config?.serviceToken || process.env.COMFYUI_SERVICE_TOKEN;
+    if (serviceToken) {
+      headers['Authorization'] = `Bearer ${serviceToken}`;
+      logger.info('ComfyUI Service Token configured');
+    }
+
     this.client = axios.create({
       baseURL: this.baseUrl,
       timeout,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(config?.serviceToken && { Authorization: `Bearer ${config.serviceToken}` }),
-      },
+      headers,
     });
 
     logger.info({ baseUrl: this.baseUrl }, 'ComfyUI Service initialized');
