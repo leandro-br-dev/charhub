@@ -9,6 +9,7 @@ import type {
   UpdateConversationInput,
   AddParticipantInput,
   ListConversationsQuery,
+  DiscoverConversationsQuery,
 } from '../validators/conversation.validator';
 import { updateParticipantSchema } from '../validators/conversation.validator';
 
@@ -923,6 +924,189 @@ export async function resolveConversationBackground(
     };
   } catch (error) {
     logger.error({ error, conversationId }, 'Error resolving conversation background');
+    throw error;
+  }
+}
+
+/**
+ * Discover public conversations
+ * Returns PUBLIC conversations with metadata for discovery page
+ */
+export async function discoverPublicConversations(query: DiscoverConversationsQuery) {
+  try {
+    const { search, gender, tags, sortBy, skip, limit } = query;
+
+    // Build where clause
+    // TODO: Add visibility filter when Conversation model has visibility field
+    // For now, we return all multi-user conversations as they're intended to be discoverable
+    const where: Prisma.ConversationWhereInput = {
+      isMultiUser: true, // Only multi-user conversations are discoverable
+    };
+
+    // Search in title
+    if (search && search.trim()) {
+      where.title = {
+        contains: search.trim(),
+        mode: 'insensitive',
+      };
+    }
+
+    // Build order by based on sortBy
+    let orderBy: Prisma.ConversationOrderByWithRelationInput = {};
+
+    switch (sortBy) {
+      case 'recent':
+        orderBy = { lastMessageAt: 'desc' };
+        break;
+      case 'newest':
+        orderBy = { createdAt: 'desc' };
+        break;
+      case 'popular':
+      default:
+        // For popular, we'll sort by lastMessageAt but filter active conversations
+        orderBy = { lastMessageAt: 'desc' };
+        // Only show conversations with recent activity (last 7 days)
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        where.lastMessageAt = {
+          gte: sevenDaysAgo,
+        };
+        break;
+    }
+
+    // Fetch conversations with participants and latest messages
+    const conversations = await prisma.conversation.findMany({
+      where,
+      include: {
+        owner: {
+          select: {
+            id: true,
+            displayName: true,
+            avatarUrl: true,
+          },
+        },
+        participants: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                displayName: true,
+                avatarUrl: true,
+              },
+            },
+            actingCharacter: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                avatar: true,
+                gender: true,
+                contentTags: true,
+              },
+            },
+            actingAssistant: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+            representingCharacter: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                avatar: true,
+                gender: true,
+                contentTags: true,
+              },
+            },
+          },
+        },
+        messages: {
+          orderBy: {
+            timestamp: 'desc',
+          },
+          take: 3, // Latest 3 messages for preview
+          select: {
+            id: true,
+            content: true,
+            senderId: true,
+            senderType: true,
+            timestamp: true,
+          },
+        },
+        members: {
+          where: {
+            isActive: true,
+          },
+          select: {
+            userId: true,
+            role: true,
+          },
+        },
+      },
+      orderBy,
+      skip,
+      take: limit,
+    });
+
+    // Filter by gender if specified (check characters in participants)
+    let filteredConversations = conversations;
+    if (gender) {
+      filteredConversations = conversations.filter(conv =>
+        conv.participants.some(p => {
+          const char = p.actingCharacter || p.representingCharacter;
+          return char && char.gender?.toLowerCase() === gender.toLowerCase();
+        })
+      );
+    }
+
+    // Filter by tags if specified
+    if (tags) {
+      const tagList = tags.split(',').map(t => t.trim().toLowerCase());
+      filteredConversations = filteredConversations.filter(conv =>
+        conv.participants.some(p => {
+          const char = p.actingCharacter || p.representingCharacter;
+          return char && char.contentTags?.some(tag =>
+            tagList.includes(tag.toLowerCase())
+          );
+        })
+      );
+    }
+
+    // Build response with metadata
+    const result = filteredConversations.map(conv => {
+      // Decrypt latest messages for preview
+      const decryptedMessages = conv.messages.map(msg => ({
+        ...msg,
+        content: decryptMessage(msg.content),
+      }));
+
+      return {
+        id: conv.id,
+        title: conv.title,
+        lastMessageAt: conv.lastMessageAt,
+        createdAt: conv.createdAt,
+        isMultiUser: conv.isMultiUser,
+        maxUsers: conv.maxUsers,
+        owner: conv.owner,
+        participants: conv.participants,
+        latestMessages: decryptedMessages,
+        memberCount: conv.members.length,
+        // Note: online count would require presenceService integration
+        // For now, returning member count
+        onlineCount: 0, // TODO: Integrate with presenceService
+      };
+    });
+
+    logger.info(
+      { count: result.length, filters: query },
+      'Public conversations discovered'
+    );
+
+    return result;
+  } catch (error) {
+    logger.error({ error, query }, 'Error discovering public conversations');
     throw error;
   }
 }

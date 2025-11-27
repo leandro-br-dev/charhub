@@ -12,6 +12,7 @@ import {
   addParticipantSchema,
   listConversationsQuerySchema,
   updateParticipantSchema,
+  discoverConversationsQuerySchema,
 } from '../../validators/conversation.validator';
 import {
   sendMessageSchema,
@@ -141,6 +142,46 @@ router.get('/', requireAuth, async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to list conversations',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/conversations/public
+ * Discover public conversations (no auth required)
+ */
+router.get('/public', async (req: Request, res: Response) => {
+  try {
+    // Parse query parameters
+    const query = discoverConversationsQuerySchema.parse({
+      search: req.query.search,
+      gender: req.query.gender,
+      tags: req.query.tags,
+      sortBy: req.query.sortBy || 'popular',
+      skip: req.query.skip ? parseInt(req.query.skip as string, 10) : 0,
+      limit: req.query.limit ? parseInt(req.query.limit as string, 10) : 20,
+    });
+
+    const conversations = await conversationService.discoverPublicConversations(query);
+
+    return res.json({
+      success: true,
+      data: conversations,
+      count: conversations.length,
+    });
+  } catch (error) {
+    if (error instanceof Error && 'issues' in error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: error,
+      });
+    }
+
+    logger.error({ error }, 'Error discovering public conversations');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to discover public conversations',
     });
   }
 });

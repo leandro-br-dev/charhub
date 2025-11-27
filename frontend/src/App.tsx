@@ -22,6 +22,7 @@ import StoryHubPage from './pages/story/hub';
 import { StoryDetailPage } from './pages/story/[storyId]';
 import PlansPage from './pages/plans';
 import TasksPage from './pages/tasks';
+import DiscoverPage from './pages/(discover)';
 
 function PublicShell(): JSX.Element {
   return (
@@ -52,6 +53,7 @@ export default function App(): JSX.Element {
         }
       >
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/discover" element={<DiscoverPage />} />
         <Route path="/characters" element={<CharacterHubPage />} />
         <Route path="/characters/create" element={<CharacterCreatePage />} />
         <Route path="/characters/:characterId" element={<CharacterDetailPage />} />

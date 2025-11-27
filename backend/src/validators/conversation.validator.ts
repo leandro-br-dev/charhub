@@ -102,8 +102,23 @@ export const listConversationsQuerySchema = z.object({
   sortOrder: z.union([z.literal('asc'), z.literal('desc')]).default('desc'),
 });
 
+// Query parameters for discovering public conversations
+export const discoverConversationsQuerySchema = z.object({
+  search: z.string().max(200).optional(),
+  gender: z.string().optional(), // Filter by character gender
+  tags: z.string().optional(), // Comma-separated tags
+  sortBy: z.union([
+    z.literal('popular'),      // Sort by online users + recent activity
+    z.literal('recent'),        // Sort by lastMessageAt
+    z.literal('newest')         // Sort by createdAt
+  ]).default('popular'),
+  skip: z.number().int().min(0).default(0),
+  limit: z.number().int().min(1).max(50).default(20),
+});
+
 // Type exports
 export type CreateConversationInput = z.infer<typeof createConversationSchema>;
 export type UpdateConversationInput = z.infer<typeof updateConversationSchema>;
 export type AddParticipantInput = z.infer<typeof addParticipantSchema>;
 export type ListConversationsQuery = z.infer<typeof listConversationsQuerySchema>;
+export type DiscoverConversationsQuery = z.infer<typeof discoverConversationsQuerySchema>;
