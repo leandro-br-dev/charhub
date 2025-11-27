@@ -5,6 +5,7 @@
  */
 
 import type { SDPrompt, LoraConfig } from './types';
+import { callGemini } from '../llm/gemini';
 
 // Aesthetic quality tags for pony/illustrious models
 const AESTHETIC_SCORE_TAGS = 'score_9, score_8_up, score_7_up';
@@ -34,11 +35,59 @@ interface CharacterPromptData {
 
 export class PromptEngineering {
   /**
+   * Convert prose description to Stable Diffusion tags (en-US)
+   * Uses LLM to extract visual features and translate to SD format
+   */
+  async convertToSDTags(description: string): Promise<string> {
+    if (!description || description.trim().length === 0) {
+      return '';
+    }
+
+    const userPrompt = `Convert the following character description into concise Stable Diffusion tags in English.
+
+RULES:
+1. Extract ONLY visual/physical features (hair, eyes, body, clothing, accessories)
+2. Use danbooru-style tags: "blue hair, red eyes, tall, slender"
+3. Output ONLY the tags separated by commas, NO explanations
+4. Use English (en-US) only
+5. Keep it concise - max 15 tags
+6. Use specific colors, styles, and measurements when mentioned
+
+Description:
+${description}
+
+SD Tags:`;
+
+    try {
+      const response = await callGemini({
+        model: 'gemini-2.5-flash-lite',
+        systemPrompt:
+          'You are a Stable Diffusion prompt expert. Output only comma-separated tags, nothing else.',
+        userPrompt,
+        maxTokens: 150,
+        temperature: 0.3,
+      });
+
+      return response.content.trim();
+    } catch (error) {
+      console.error('Failed to convert description to SD tags:', error);
+      // Fallback: return empty string if LLM fails
+      return '';
+    }
+  }
+
+  /**
    * Build avatar prompt for character portrait
    */
-  buildAvatarPrompt(character: CharacterPromptData): SDPrompt {
+  async buildAvatarPrompt(character: CharacterPromptData): Promise<SDPrompt> {
     const genderTag = this.getGenderTag(character.gender);
     const loraName = character.lora?.name?.split('|')[0]?.trim() || character.name;
+
+    // Convert character descriptions to SD tags (in English)
+    const physicalTags = character.physicalCharacteristics
+      ? await this.convertToSDTags(character.physicalCharacteristics)
+      : '';
+    const attireTags = character.defaultAttire ? await this.convertToSDTags(character.defaultAttire) : '';
 
     const positiveParts = [
       `(${AESTHETIC_SCORE_TAGS})`,
@@ -48,8 +97,8 @@ export class PromptEngineering {
       'solo',
       genderTag,
       `(${loraName}:1.2)`,
-      character.physicalCharacteristics || '',
-      character.defaultAttire || '',
+      physicalTags,
+      attireTags,
     ];
 
     const loras: LoraConfig[] = character.lora
@@ -72,14 +121,20 @@ export class PromptEngineering {
   /**
    * Build sticker prompt with emotion/action
    */
-  buildStickerPrompt(
+  async buildStickerPrompt(
     character: CharacterPromptData,
     _emotion: string,
     actionTag: string,
     chromaKeyPrompt: string = 'solid green background, plain background, simple background, chroma key'
-  ): SDPrompt {
+  ): Promise<SDPrompt> {
     const genderTag = this.getGenderTag(character.gender);
     const loraName = character.lora?.name?.split('|')[0]?.trim() || character.name;
+
+    // Convert character descriptions to SD tags (in English)
+    const physicalTags = character.physicalCharacteristics
+      ? await this.convertToSDTags(character.physicalCharacteristics)
+      : '';
+    const attireTags = character.defaultAttire ? await this.convertToSDTags(character.defaultAttire) : '';
 
     const positiveParts = [
       AESTHETIC_SCORE_TAGS,
@@ -88,8 +143,8 @@ export class PromptEngineering {
       'full body',
       loraName,
       genderTag,
-      character.physicalCharacteristics || '',
-      character.defaultAttire || '',
+      physicalTags,
+      attireTags,
       actionTag,
       chromaKeyPrompt,
     ];

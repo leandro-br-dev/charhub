@@ -167,3 +167,6 @@ project_analyzer.py
 project_context.log
 
 old_project_reference
+# Image generation test scripts
+test-*.ps1
+debug-*.ps1

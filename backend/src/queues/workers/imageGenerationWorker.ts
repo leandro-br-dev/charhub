@@ -70,8 +70,8 @@ async function processAvatarGeneration(
     throw new Error(`Character ${characterId} not found`);
   }
 
-  // Build prompt
-  const prompt = promptEngineering.buildAvatarPrompt({
+  // Build prompt (with LLM-powered translation to SD tags)
+  const prompt = await promptEngineering.buildAvatarPrompt({
     name: `${character.firstName} ${character.lastName || ''}`.trim(),
     style: character.style || undefined,
     age: character.age || undefined,
@@ -190,8 +190,8 @@ async function processStickerGeneration(
       }
     }
 
-    // Build prompt
-    const prompt = promptEngineering.buildStickerPrompt(
+    // Build prompt (with LLM-powered translation to SD tags)
+    const prompt = await promptEngineering.buildStickerPrompt(
       {
         name: `${character.firstName} ${character.lastName || ''}`.trim(),
         style: character.style || undefined,

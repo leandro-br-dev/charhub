@@ -73,6 +73,8 @@ services:
       - /app/node_modules
     expose:
       - "3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     depends_on:
       postgres:
