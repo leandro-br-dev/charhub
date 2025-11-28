@@ -1,0 +1,148 @@
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '../../../../components/ui/Button';
+import { CachedImage } from '../../../../components/ui/CachedImage';
+import { imageGenerationService, type GeneratedImage, type ImagesByType } from '../../../../services/imageGenerationService';
+import { useToast } from '../../../../contexts/ToastContext';
+
+interface ImageGalleryProps {
+  characterId: string;
+  imageType: 'AVATAR' | 'COVER';
+  onImageActivated?: () => void;
+}
+
+export function ImageGallery({ characterId, imageType, onImageActivated }: ImageGalleryProps): JSX.Element {
+  const { t } = useTranslation(['characters', 'common']);
+  const { addToast } = useToast();
+  const [images, setImages] = useState<GeneratedImage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [activatingId, setActivatingId] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadImages();
+  }, [characterId, imageType]);
+
+  const loadImages = async () => {
+    try {
+      setIsLoading(true);
+      const data = await imageGenerationService.listCharacterImages(characterId);
+      setImages(data[imageType] || []);
+    } catch (error) {
+      console.error('Failed to load images:', error);
+      addToast({
+        type: 'error',
+        message: t('characters:errors.failedToLoadImages', 'Failed to load images'),
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleActivate = async (imageId: string) => {
+    try {
+      setActivatingId(imageId);
+      await imageGenerationService.activateImage(characterId, imageId);
+
+      // Update local state
+      setImages((prev) =>
+        prev.map((img) => ({
+          ...img,
+          isActive: img.id === imageId,
+        }))
+      );
+
+      addToast({
+        type: 'success',
+        message: t('characters:images.imageActivated', 'Image activated successfully'),
+      });
+
+      if (onImageActivated) {
+        onImageActivated();
+      }
+    } catch (error) {
+      console.error('Failed to activate image:', error);
+      addToast({
+        type: 'error',
+        message: t('characters:errors.failedToActivateImage', 'Failed to activate image'),
+      });
+    } finally {
+      setActivatingId(null);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <span className="material-symbols-outlined animate-spin text-4xl text-muted">
+          progress_activity
+        </span>
+      </div>
+    );
+  }
+
+  if (images.length === 0) {
+    return (
+      <div className="rounded-xl border border-border bg-card p-8 text-center">
+        <p className="text-sm text-description">
+          {t('characters:images.noImagesYet', 'No images generated yet')}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+      {images.map((image) => (
+        <div
+          key={image.id}
+          className={`group relative overflow-hidden rounded-xl border transition-all ${
+            image.isActive
+              ? 'border-accent shadow-lg ring-2 ring-accent/20'
+              : 'border-border hover:border-accent/50'
+          }`}
+        >
+          <CachedImage
+            src={image.url}
+            alt={`${imageType} image`}
+            className="aspect-square w-full object-cover"
+          />
+
+          {image.isActive && (
+            <div className="absolute left-2 top-2 rounded-full bg-accent px-2 py-1 text-xs font-medium text-white">
+              {t('characters:images.active', 'Active')}
+            </div>
+          )}
+
+          {!image.isActive && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+              <Button
+                onClick={() => handleActivate(image.id)}
+                disabled={activatingId === image.id}
+                className="bg-accent text-white hover:bg-accent/90"
+              >
+                {activatingId === image.id ? (
+                  <span className="material-symbols-outlined animate-spin text-lg">
+                    progress_activity
+                  </span>
+                ) : (
+                  t('characters:images.setAsActive', 'Set as active')
+                )}
+              </Button>
+            </div>
+          )}
+
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+            <p className="text-xs text-white">
+              {new Date(image.createdAt).toLocaleDateString()}
+            </p>
+            {image.sizeBytes && (
+              <p className="text-xs text-white/70">
+                {(image.sizeBytes / 1024).toFixed(1)} KB
+              </p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

@@ -258,4 +258,136 @@ router.get('/health', requireAuth, async (_req, res) => {
   }
 });
 
+/**
+ * GET /api/v1/image-generation/characters/:characterId/images
+ * List all images for a character, grouped by type
+ */
+router.get('/characters/:characterId/images', async (req, res) => {
+  try {
+    const { characterId } = req.params;
+    const userId = req.auth?.user.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Verify character ownership or public visibility
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+      select: { userId: true, visibility: true },
+    });
+
+    if (!character) {
+      return res.status(404).json({ error: 'Character not found' });
+    }
+
+    if (character.userId !== userId && character.visibility !== 'PUBLIC') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Fetch all images grouped by type
+    const images = await prisma.characterImage.findMany({
+      where: { characterId },
+      orderBy: [{ type: 'asc' }, { createdAt: 'desc' }],
+      select: {
+        id: true,
+        type: true,
+        url: true,
+        width: true,
+        height: true,
+        sizeBytes: true,
+        isActive: true,
+        createdAt: true,
+      },
+    });
+
+    // Group by type
+    const grouped = images.reduce(
+      (acc, img) => {
+        if (!acc[img.type]) {
+          acc[img.type] = [];
+        }
+        acc[img.type].push(img);
+        return acc;
+      },
+      {} as Record<string, typeof images>
+    );
+
+    return res.json({
+      success: true,
+      data: grouped,
+      total: images.length,
+    });
+  } catch (error) {
+    logger.error({ err: error }, 'Failed to list character images');
+    return res.status(500).json({ error: 'Failed to list images' });
+  }
+});
+
+/**
+ * PATCH /api/v1/image-generation/characters/:characterId/images/:imageId/activate
+ * Set an image as active (deactivates others of the same type)
+ */
+router.patch('/characters/:characterId/images/:imageId/activate', async (req, res) => {
+  try {
+    const { characterId, imageId } = req.params;
+    const userId = req.auth?.user.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Verify character ownership
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+      select: { userId: true },
+    });
+
+    if (!character) {
+      return res.status(404).json({ error: 'Character not found' });
+    }
+
+    if (character.userId !== userId) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Get the image to activate
+    const image = await prisma.characterImage.findFirst({
+      where: { id: imageId, characterId },
+      select: { type: true },
+    });
+
+    if (!image) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    // Transaction: deactivate all images of this type, then activate the selected one
+    await prisma.$transaction([
+      // Deactivate all images of this type for this character
+      prisma.characterImage.updateMany({
+        where: {
+          characterId,
+          type: image.type,
+        },
+        data: { isActive: false },
+      }),
+      // Activate the selected image
+      prisma.characterImage.update({
+        where: { id: imageId },
+        data: { isActive: true },
+      }),
+    ]);
+
+    logger.info({ characterId, imageId, type: image.type }, 'Image activated');
+
+    return res.json({
+      success: true,
+      message: 'Image activated successfully',
+    });
+  } catch (error) {
+    logger.error({ err: error }, 'Failed to activate image');
+    return res.status(500).json({ error: 'Failed to activate image' });
+  }
+});
+
 export default router;

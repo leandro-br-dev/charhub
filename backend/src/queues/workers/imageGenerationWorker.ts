@@ -107,17 +107,29 @@ async function processAvatarGeneration(
     contentType: 'image/webp',
   });
 
-  // Save to database
-  await prisma.characterImage.create({
-    data: {
-      characterId,
-      type: 'AVATAR',
-      url: publicUrl,
-      key: objectKey,
-      contentType: 'image/webp',
-      sizeBytes: webpBuffer.length,
-    },
-  });
+  // Save to database - deactivate other avatars and set this as active
+  await prisma.$transaction([
+    // Deactivate all existing avatars for this character
+    prisma.characterImage.updateMany({
+      where: {
+        characterId,
+        type: 'AVATAR',
+      },
+      data: { isActive: false },
+    }),
+    // Create new avatar as active
+    prisma.characterImage.create({
+      data: {
+        characterId,
+        type: 'AVATAR',
+        url: publicUrl,
+        key: objectKey,
+        contentType: 'image/webp',
+        sizeBytes: webpBuffer.length,
+        isActive: true, // Set as active by default
+      },
+    }),
+  ]);
 
   logger.info({ characterId, url: publicUrl }, 'Avatar generated successfully');
 

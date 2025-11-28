@@ -389,12 +389,16 @@ model CharacterImage {
   contentTags ContentTag[] @default([])
   description String?      @db.Text
 
+  // Active image flag - only one active per type per character
+  isActive    Boolean      @default(false)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([characterId])
   @@index([type])
   @@index([ageRating])
+  @@index([characterId, type, isActive])
 }
 
 model Story {
