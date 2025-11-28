@@ -262,7 +262,7 @@ router.get('/health', requireAuth, async (_req, res) => {
  * GET /api/v1/image-generation/characters/:characterId/images
  * List all images for a character, grouped by type
  */
-router.get('/characters/:characterId/images', async (req, res) => {
+router.get('/characters/:characterId/images', requireAuth, async (req, res) => {
   try {
     const { characterId } = req.params;
     const userId = req.auth?.user.id;
@@ -328,7 +328,7 @@ router.get('/characters/:characterId/images', async (req, res) => {
  * PATCH /api/v1/image-generation/characters/:characterId/images/:imageId/activate
  * Set an image as active (deactivates others of the same type)
  */
-router.patch('/characters/:characterId/images/:imageId/activate', async (req, res) => {
+router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, async (req, res) => {
   try {
     const { characterId, imageId } = req.params;
     const userId = req.auth?.user.id;

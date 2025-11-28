@@ -19,10 +19,10 @@ export function ImageGenerationPanel({ characterId, imageType, onImageGenerated 
 
   const handleGenerate = async () => {
     if (imageType !== 'AVATAR') {
-      addToast({
-        type: 'info',
-        message: t('characters:images.onlyAvatarSupported', 'Only avatar generation is supported at the moment'),
-      });
+      addToast(
+        t('characters:images.onlyAvatarSupported', 'Only avatar generation is supported at the moment'),
+        'info'
+      );
       return;
     }
 
@@ -52,10 +52,10 @@ export function ImageGenerationPanel({ characterId, imageType, onImageGenerated 
         setProgress(t('characters:images.generationComplete', 'Generation complete!'));
         setGeneratedImageUrl(result.result.imageUrl);
 
-        addToast({
-          type: 'success',
-          message: t('characters:images.imageGeneratedSuccess', 'Image generated successfully!'),
-        });
+        addToast(
+          t('characters:images.imageGeneratedSuccess', 'Image generated successfully!'),
+          'success'
+        );
 
         if (onImageGenerated) {
           onImageGenerated();
@@ -66,10 +66,10 @@ export function ImageGenerationPanel({ characterId, imageType, onImageGenerated 
     } catch (error) {
       console.error('Failed to generate image:', error);
       setProgress('');
-      addToast({
-        type: 'error',
-        message: t('characters:errors.failedToGenerateImage', 'Failed to generate image. Please try again.'),
-      });
+      addToast(
+        t('characters:errors.failedToGenerateImage', 'Failed to generate image. Please try again.'),
+        'error'
+      );
     } finally {
       setIsGenerating(false);
     }

@@ -1,4 +1,4 @@
-import axios from '../lib/axios';
+import api from '../lib/api';
 
 export interface GeneratedImage {
   id: string;
@@ -47,7 +47,7 @@ class ImageGenerationService {
    * List all generated images for a character
    */
   async listCharacterImages(characterId: string): Promise<ImagesByType> {
-    const response = await axios.get<{ success: boolean; data: ImagesByType; total: number }>(
+    const response = await api.get<{ success: boolean; data: ImagesByType; total: number }>(
       `/api/v1/image-generation/characters/${characterId}/images`
     );
     return response.data.data;
@@ -57,7 +57,7 @@ class ImageGenerationService {
    * Activate an image (deactivates others of the same type)
    */
   async activateImage(characterId: string, imageId: string): Promise<void> {
-    await axios.patch(
+    await api.patch(
       `/api/v1/image-generation/characters/${characterId}/images/${imageId}/activate`
     );
   }
@@ -66,7 +66,7 @@ class ImageGenerationService {
    * Generate avatar for a character
    */
   async generateAvatar(request: GenerateAvatarRequest): Promise<{ jobId: string; message: string }> {
-    const response = await axios.post<{ jobId: string; message: string }>(
+    const response = await api.post<{ jobId: string; message: string }>(
       '/api/v1/image-generation/avatar',
       { characterId: request.characterId }
     );
@@ -77,7 +77,7 @@ class ImageGenerationService {
    * Check job status
    */
   async getJobStatus(jobId: string): Promise<JobStatus> {
-    const response = await axios.get<JobStatus>(`/api/v1/image-generation/status/${jobId}`);
+    const response = await api.get<JobStatus>(`/api/v1/image-generation/status/${jobId}`);
     return response.data;
   }
 
@@ -116,7 +116,7 @@ class ImageGenerationService {
    * Check if ComfyUI is healthy
    */
   async checkHealth(): Promise<{ comfyui: string }> {
-    const response = await axios.get<{ comfyui: string }>('/api/v1/image-generation/health');
+    const response = await api.get<{ comfyui: string }>('/api/v1/image-generation/health');
     return response.data;
   }
 }

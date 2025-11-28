@@ -29,10 +29,10 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
       setImages(data[imageType] || []);
     } catch (error) {
       console.error('Failed to load images:', error);
-      addToast({
-        type: 'error',
-        message: t('characters:errors.failedToLoadImages', 'Failed to load images'),
-      });
+      addToast(
+        t('characters:errors.failedToLoadImages', 'Failed to load images'),
+        'error'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -51,20 +51,20 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
         }))
       );
 
-      addToast({
-        type: 'success',
-        message: t('characters:images.imageActivated', 'Image activated successfully'),
-      });
+      addToast(
+        t('characters:images.imageActivated', 'Image activated successfully'),
+        'success'
+      );
 
       if (onImageActivated) {
         onImageActivated();
       }
     } catch (error) {
       console.error('Failed to activate image:', error);
-      addToast({
-        type: 'error',
-        message: t('characters:errors.failedToActivateImage', 'Failed to activate image'),
-      });
+      addToast(
+        t('characters:errors.failedToActivateImage', 'Failed to activate image'),
+        'error'
+      );
     } finally {
       setActivatingId(null);
     }
