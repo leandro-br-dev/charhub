@@ -321,7 +321,36 @@ router.post('/avatar', requireAuth, asyncMulterHandler(upload.single('avatar')),
     });
 
     if (trimmedCharacterId) {
-      await characterService.updateCharacter(trimmedCharacterId, { avatar: publicUrl });
+      // Create or update avatar in CharacterImage table
+      await prisma.$transaction(async (tx) => {
+        // Deactivate existing avatars
+        await tx.characterImage.updateMany({
+          where: {
+            characterId: trimmedCharacterId,
+            type: 'AVATAR',
+          },
+          data: {
+            isActive: false,
+          },
+        });
+
+        // Create new active avatar
+        await tx.characterImage.create({
+          data: {
+            characterId: trimmedCharacterId,
+            type: 'AVATAR',
+            url: publicUrl,
+            key,
+            sizeBytes: processed.sizeBytes,
+            contentType: processed.contentType,
+            width: processed.width,
+            height: processed.height,
+            isActive: true,
+            ageRating: 'L', // Default to safest rating
+            contentTags: [],
+          },
+        });
+      });
     }
 
     logger.info(

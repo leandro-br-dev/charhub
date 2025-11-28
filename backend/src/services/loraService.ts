@@ -17,7 +17,6 @@ const loraInclude = {
       id: true,
       firstName: true,
       lastName: true,
-      avatar: true,
     },
     take: 10, // Limit to avoid performance issues
   },

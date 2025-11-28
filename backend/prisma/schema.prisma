@@ -300,7 +300,6 @@ model Character {
   reference String? // Source reference (e.g., "One Piece", "Marvel Comics")
 
   // Visual and descriptive
-  avatar                  String? // Avatar image URL
   physicalCharacteristics String? @db.Text // Physical appearance description
   personality             String? @db.Text // Personality traits
   history                 String? @db.Text // Background/backstory

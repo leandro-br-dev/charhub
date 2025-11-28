@@ -31,7 +31,6 @@ export async function createStory(data: unknown, authorId: string): Promise<Stor
           id: true,
           firstName: true,
           lastName: true,
-          avatar: true,
         },
       },
       tags: {
@@ -63,7 +62,6 @@ export async function getStoryById(id: string, userId?: string): Promise<Story |
           id: true,
           firstName: true,
           lastName: true,
-          avatar: true,
         },
       },
       tags: {
@@ -168,7 +166,6 @@ export async function listStories(params: {
             id: true,
             firstName: true,
             lastName: true,
-            avatar: true,
           },
         },
         tags: {
@@ -242,7 +239,6 @@ export async function updateStory(
           id: true,
           firstName: true,
           lastName: true,
-          avatar: true,
         },
       },
       tags: {

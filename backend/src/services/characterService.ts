@@ -20,7 +20,6 @@ export interface CharacterWithRelations {
   gender: string | null;
   species: string | null;
   style: string | null;
-  avatar: string | null;
   physicalCharacteristics: string | null;
   personality: string | null;
   history: string | null;
@@ -94,6 +93,36 @@ const characterInclude = {
 } as const;
 
 /**
+ * Helper: Extract active avatar URL from character images
+ */
+export function getActiveAvatarUrl(images?: any[]): string | null {
+  if (!images || images.length === 0) return null;
+  const activeAvatar = images.find((img: any) => img.type === 'AVATAR' && img.isActive);
+  return activeAvatar?.url || null;
+}
+
+/**
+ * Helper: Enrich character with computed avatar field
+ */
+export function enrichCharacterWithAvatar<T extends Record<string, any>>(
+  character: T
+): T & { avatar: string | null } {
+  return {
+    ...character,
+    avatar: getActiveAvatarUrl((character as any).images),
+  };
+}
+
+/**
+ * Helper: Enrich array of characters with computed avatar field
+ */
+export function enrichCharactersWithAvatar<T extends Record<string, any>>(
+  characters: T[]
+): Array<T & { avatar: string | null }> {
+  return characters.map(enrichCharacterWithAvatar);
+}
+
+/**
  * Create a new character
  */
 export async function createCharacter(data: CreateCharacterInput) {
@@ -142,7 +171,7 @@ export async function createCharacter(data: CreateCharacterInput) {
       'Character created successfully'
     );
 
-    return character;
+    return enrichCharacterWithAvatar(character);
   } catch (error) {
     logger.error({ error, data }, 'Error creating character');
     throw error;
@@ -163,7 +192,7 @@ export async function getCharacterById(characterId: string) {
       return null;
     }
 
-    return character;
+    return enrichCharacterWithAvatar(character);
   } catch (error) {
     logger.error({ error, characterId }, 'Error getting character by ID');
     throw error;
@@ -242,7 +271,7 @@ export async function getCharactersByUserId(
       'Characters fetched for user'
     );
 
-    return characters;
+    return enrichCharactersWithAvatar(characters);
   } catch (error) {
     logger.error({ error, userId, options }, 'Error getting characters by user');
     throw error;
@@ -318,7 +347,7 @@ export async function getPublicCharacters(options?: {
       'Public characters fetched'
     );
 
-    return characters;
+    return enrichCharactersWithAvatar(characters);
   } catch (error) {
     logger.error({ error, options }, 'Error getting public characters');
     throw error;
@@ -405,7 +434,7 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
       'Public and own characters fetched'
     );
 
-    return characters;
+    return enrichCharactersWithAvatar(characters);
   } catch (error) {
     logger.error({ error, userId, options }, 'Error getting public and own characters');
     throw error;
@@ -472,7 +501,7 @@ export async function updateCharacter(
 
     logger.info({ characterId }, 'Character updated successfully');
 
-    return character;
+    return enrichCharacterWithAvatar(character);
   } catch (error) {
     logger.error({ error, characterId, data }, 'Error updating character');
     throw error;
@@ -617,8 +646,19 @@ export async function getMyCharactersForConversation(
         id: true,
         firstName: true,
         lastName: true,
-        avatar: true,
         personality: true,
+        images: {
+          where: {
+            type: 'AVATAR',
+            isActive: true,
+          },
+          select: {
+            type: true,
+            url: true,
+            isActive: true,
+          },
+          take: 1,
+        },
       },
       orderBy: { createdAt: 'desc' },
       skip,
@@ -630,7 +670,7 @@ export async function getMyCharactersForConversation(
       'Characters fetched for conversation'
     );
 
-    return characters;
+    return enrichCharactersWithAvatar(characters);
   } catch (error) {
     logger.error({ error, userId, options }, 'Error getting characters for conversation');
     throw error;

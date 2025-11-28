@@ -25,7 +25,6 @@ const assistantInclude = {
       id: true,
       firstName: true,
       lastName: true,
-      avatar: true,
     },
   },
 } as const;
@@ -216,7 +215,6 @@ export async function getMyAssistantsForConversation(
         defaultCharacter: {
           select: {
             id: true,
-            avatar: true,
             firstName: true,
             lastName: true,
           },
@@ -275,7 +273,6 @@ export async function getPublicAssistantsForConversation(options?: {
         defaultCharacter: {
           select: {
             id: true,
-            avatar: true,
             firstName: true,
             lastName: true,
           },
