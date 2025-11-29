@@ -126,7 +126,7 @@ async function processAvatarGeneration(
         key: objectKey,
         contentType: 'image/webp',
         sizeBytes: webpBuffer.length,
-        isActive: true, // Set as active by default
+        isActive: false, // User must manually activate
       },
     }),
   ]);

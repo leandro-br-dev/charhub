@@ -217,6 +217,16 @@ export async function getMyAssistantsForConversation(
             id: true,
             firstName: true,
             lastName: true,
+            images: {
+              where: {
+                type: 'AVATAR',
+                isActive: true,
+              },
+              select: {
+                url: true,
+              },
+              take: 1,
+            },
           },
         },
       },
@@ -275,6 +285,16 @@ export async function getPublicAssistantsForConversation(options?: {
             id: true,
             firstName: true,
             lastName: true,
+            images: {
+              where: {
+                type: 'AVATAR',
+                isActive: true,
+              },
+              select: {
+                url: true,
+              },
+              take: 1,
+            },
           },
         },
       },

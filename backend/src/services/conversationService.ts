@@ -73,6 +73,16 @@ const conversationInclude: any = {
           gender: true,
           contentTags: true,
           personality: true,
+          images: {
+            where: {
+              type: 'AVATAR',
+              isActive: true,
+            },
+            select: {
+              url: true,
+            },
+            take: 1,
+          },
         },
       },
       actingAssistant: {
@@ -90,6 +100,16 @@ const conversationInclude: any = {
           gender: true,
           contentTags: true,
           personality: true,
+          images: {
+            where: {
+              type: 'AVATAR',
+              isActive: true,
+            },
+            select: {
+              url: true,
+            },
+            take: 1,
+          },
         },
       },
     },
@@ -309,6 +329,16 @@ export async function listConversations(
                 id: true,
                 firstName: true,
                 lastName: true,
+                images: {
+                  where: {
+                    type: 'AVATAR',
+                    isActive: true,
+                  },
+                  select: {
+                    url: true,
+                  },
+                  take: 1,
+                },
               },
             },
             actingAssistant: {
@@ -322,6 +352,16 @@ export async function listConversations(
                 id: true,
                 firstName: true,
                 lastName: true,
+                images: {
+                  where: {
+                    type: 'AVATAR',
+                    isActive: true,
+                  },
+                  select: {
+                    url: true,
+                  },
+                  take: 1,
+                },
               },
             },
           },
@@ -995,6 +1035,16 @@ export async function discoverPublicConversations(query: DiscoverConversationsQu
                 lastName: true,
                 gender: true,
                 contentTags: true,
+                images: {
+                  where: {
+                    type: 'AVATAR',
+                    isActive: true,
+                  },
+                  select: {
+                    url: true,
+                  },
+                  take: 1,
+                },
               },
             },
             actingAssistant: {
@@ -1010,6 +1060,16 @@ export async function discoverPublicConversations(query: DiscoverConversationsQu
                 lastName: true,
                 gender: true,
                 contentTags: true,
+                images: {
+                  where: {
+                    type: 'AVATAR',
+                    isActive: true,
+                  },
+                  select: {
+                    url: true,
+                  },
+                  take: 1,
+                },
               },
             },
           },

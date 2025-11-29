@@ -186,7 +186,7 @@ router.post('/:id/images', requireAuth, asyncMulterHandler(upload.single('image'
     const processed = await processImageByType(file.buffer, type);
 
     const baseName = (file.originalname ? file.originalname.replace(/[^a-z0-9._-]+/gi, '-').toLowerCase() : 'image').replace(/\.[^.]+$/, '');
-    const key = `characters/${userId}/${id}/images/${type.toLowerCase()}/${Date.now()}-${randomUUID()}-${baseName}.webp`;
+    const key = `characters/${id}/images/${type.toLowerCase()}/${Date.now()}-${randomUUID()}-${baseName}.webp`;
 
     const { publicUrl } = await r2Service.uploadObject({
       key,
@@ -311,7 +311,7 @@ router.post('/avatar', requireAuth, asyncMulterHandler(upload.single('avatar')),
 
     const baseName = sanitizedName.replace(/\.[^.]+$/, '');
 
-    const key = `characters/${userId}/${targetEntityId}/avatar/${Date.now()}-${randomUUID()}-${baseName}.webp`;
+    const key = `characters/${targetEntityId}/avatar/${Date.now()}-${randomUUID()}-${baseName}.webp`;
 
     const { publicUrl } = await r2Service.uploadObject({
       key,

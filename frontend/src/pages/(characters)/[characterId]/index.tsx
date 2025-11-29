@@ -511,13 +511,13 @@ export default function CharacterDetailPage(): JSX.Element {
                     <div className="flex items-start gap-2">
                       <span className="material-symbols-outlined text-base text-primary">event</span>
                       <span>
-                        {t('characters:detail.labels.createdAt', 'Created')}: {new Date(data.createdAt).toLocaleDateString()}
+                        {t('characters:detail.labels.createdAt', 'Created')}: {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : 'N/A'}
                       </span>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="material-symbols-outlined text-base text-primary">update</span>
                       <span>
-                        {t('characters:detail.labels.updatedAt', 'Updated')}: {new Date(data.updatedAt).toLocaleDateString()}
+                        {t('characters:detail.labels.updatedAt', 'Updated')}: {data.updatedAt ? new Date(data.updatedAt).toLocaleDateString() : 'N/A'}
                       </span>
                     </div>
                   </div>

@@ -18,6 +18,10 @@ export function ConversationCard({ conversation, onWatch, onJoin }: Conversation
     (p) => p.actingCharacter || p.representingCharacter
   );
   const character = primaryCharacter?.actingCharacter || primaryCharacter?.representingCharacter;
+  const characterName = character ?
+    (character.lastName ? `${character.firstName} ${character.lastName}` : character.firstName)
+    : '';
+  const characterAvatar = character?.images?.[0]?.url;
 
   // Format last message time
   const formatLastMessageTime = (timestamp: string | null): string => {
@@ -67,10 +71,10 @@ export function ConversationCard({ conversation, onWatch, onJoin }: Conversation
     >
       {/* Character Avatar Section */}
       <div className="relative h-48 bg-gradient-to-b from-dark to-light">
-        {character?.avatarUrl ? (
+        {characterAvatar ? (
           <img
-            src={character.avatarUrl}
-            alt={character.displayName}
+            src={characterAvatar}
+            alt={characterName}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -106,7 +110,7 @@ export function ConversationCard({ conversation, onWatch, onJoin }: Conversation
         {/* Character Name */}
         {character && (
           <p className="text-sm text-muted">
-            {t('discover:withCharacter', { name: character.displayName })}
+            {t('discover:withCharacter', { name: characterName })}
           </p>
         )}
 

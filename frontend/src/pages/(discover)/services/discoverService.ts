@@ -25,11 +25,13 @@ export interface PublicConversation {
     } | null;
     actingCharacter: {
       id: string;
-      name: string;
-      displayName: string;
-      avatarUrl: string | null;
+      firstName: string;
+      lastName: string | null;
       gender: string | null;
       contentTags: string[] | null;
+      images?: Array<{
+        url: string;
+      }>;
     } | null;
     actingAssistant: {
       id: string;
@@ -37,11 +39,13 @@ export interface PublicConversation {
     } | null;
     representingCharacter: {
       id: string;
-      name: string;
-      displayName: string;
-      avatarUrl: string | null;
+      firstName: string;
+      lastName: string | null;
       gender: string | null;
       contentTags: string[] | null;
+      images?: Array<{
+        url: string;
+      }>;
     } | null;
   }>;
   latestMessages: Array<{

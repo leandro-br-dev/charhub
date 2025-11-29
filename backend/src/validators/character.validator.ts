@@ -7,6 +7,7 @@ import { AgeRating, ContentTag, Visibility, VisualStyle } from '../generated/pri
  */
 
 // Base character schema with common fields
+// Note: avatar field removed - now stored in CharacterImage table
 const characterBaseSchema = z.object({
   firstName: z.string().min(1, 'First name is required').max(100),
   lastName: z.string().max(100).optional().nullable(),
@@ -15,7 +16,6 @@ const characterBaseSchema = z.object({
   species: z.string().max(100).optional().nullable(),
   style: z.nativeEnum(VisualStyle).default(VisualStyle.ANIME).optional().nullable(),
   reference: z.string().max(200).optional().nullable(),
-  avatar: z.string().url().optional().nullable(),
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),
   history: z.string().max(5000).optional().nullable(),
@@ -35,6 +35,7 @@ export const createCharacterSchema = characterBaseSchema.extend({
 });
 
 // Update character schema (all fields optional except constraints)
+// Note: avatar field removed - now stored in CharacterImage table
 export const updateCharacterSchema = z.object({
   firstName: z.string().min(1).max(100).optional(),
   lastName: z.string().max(100).optional().nullable(),
@@ -43,7 +44,6 @@ export const updateCharacterSchema = z.object({
   species: z.string().max(100).optional().nullable(),
   style: z.nativeEnum(VisualStyle).optional().nullable(),
   reference: z.string().max(200).optional().nullable(),
-  avatar: z.string().url().optional().nullable(),
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),
   history: z.string().max(5000).optional().nullable(),

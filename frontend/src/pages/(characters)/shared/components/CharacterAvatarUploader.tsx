@@ -7,6 +7,8 @@ import { ImageCropperModal } from '../../../../components/ui/ImageCropperModal';
 import { SmartDropdown } from '../../../../components/ui/SmartDropdown';
 import { Modal } from '../../../../components/ui/Modal';
 import { characterService } from '../../../../services/characterService';
+import { imageGenerationService } from '../../../../services/imageGenerationService';
+import { useToast } from '../../../../contexts/ToastContext';
 
 interface CharacterAvatarUploaderProps {
   mode: 'create' | 'edit';
@@ -15,6 +17,7 @@ interface CharacterAvatarUploaderProps {
   draftId?: string;
   characterId?: string;
   onAvatarChange: (url: string | null) => void;
+  refreshTrigger?: number; // Increment to trigger refresh of current avatar from server
 }
 
 export function CharacterAvatarUploader({
@@ -24,8 +27,10 @@ export function CharacterAvatarUploader({
   draftId,
   characterId,
   onAvatarChange,
+  refreshTrigger,
 }: CharacterAvatarUploaderProps): JSX.Element {
   const { t } = useTranslation(['characters']);
+  const { addToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentAvatar ?? null);
   const [imageToCrop, setImageToCrop] = useState<string | null>(null);
@@ -35,10 +40,51 @@ export function CharacterAvatarUploader({
   const [isUrlModalOpen, setIsUrlModalOpen] = useState(false);
   const [urlInput, setUrlInput] = useState('');
   const [urlError, setUrlError] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [imageCreditCost, setImageCreditCost] = useState<number>(10); // Default 10 credits
 
   useEffect(() => {
     setPreviewUrl(currentAvatar ?? null);
   }, [currentAvatar]);
+
+  // Fetch active avatar when refreshTrigger changes
+  useEffect(() => {
+    if (!characterId || refreshTrigger === undefined) return;
+
+    const fetchActiveAvatar = async () => {
+      try {
+        const images = await import('../../../../services/imageGenerationService').then((m) =>
+          m.imageGenerationService.listCharacterImages(characterId)
+        );
+        const activeAvatar = images.AVATAR?.find((img) => img.isActive);
+        if (activeAvatar) {
+          setPreviewUrl(activeAvatar.url);
+          onAvatarChange(activeAvatar.url);
+        }
+      } catch (error) {
+        console.error('Failed to fetch active avatar:', error);
+      }
+    };
+
+    fetchActiveAvatar();
+  }, [refreshTrigger, characterId, onAvatarChange]);
+
+  // Fetch service costs on mount
+  useEffect(() => {
+    const fetchServiceCosts = async () => {
+      try {
+        const response = await api.get<{ success: boolean; data: any[] }>('/api/v1/credits/service-costs');
+        const imageGenCost = response.data.data.find((cost) => cost.serviceIdentifier === 'IMAGE_GENERATION');
+        if (imageGenCost) {
+          setImageCreditCost(imageGenCost.creditsPerUnit);
+        }
+      } catch (error) {
+        console.error('Failed to fetch service costs:', error);
+      }
+    };
+
+    fetchServiceCosts();
+  }, []);
 
   const helperText = mode === 'create'
     ? t(
@@ -211,6 +257,84 @@ export function CharacterAvatarUploader({
     }
   };
 
+  const handleAIGeneration = async () => {
+    if (!characterId) {
+      addToast(
+        t('characters:form.avatar.saveFirst', 'Please save the character first before generating avatar'),
+        'error'
+      );
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      setUploadError(null);
+
+      // Check balance
+      const balanceResponse = await api.post<{
+        success: boolean;
+        data: { hasEnough: boolean; currentBalance: number; requiredCredits: number; deficit: number };
+      }>('/api/v1/credits/check-balance', {
+        requiredCredits: imageCreditCost,
+      });
+
+      if (!balanceResponse.data.data.hasEnough) {
+        addToast(
+          t(
+            'characters:form.avatar.insufficientCredits',
+            'Insufficient credits. You need {{required}} credits but have {{current}}.',
+            {
+              required: imageCreditCost,
+              current: balanceResponse.data.data.currentBalance,
+            }
+          ),
+          'error'
+        );
+        return;
+      }
+
+      // Start generation
+      const { jobId } = await imageGenerationService.generateAvatar({ characterId });
+
+      addToast(
+        t(
+          'characters:form.avatar.generationStarted',
+          'Avatar generation started! This may take a minute. Check the Images tab for results.'
+        ),
+        'success',
+        8000
+      );
+
+      // Optional: Poll for completion
+      imageGenerationService
+        .pollJobStatus(jobId, undefined, 60, 5000)
+        .then((status) => {
+          if (status.state === 'completed' && status.result?.success) {
+            addToast(
+              t('characters:form.avatar.generationComplete', 'Avatar generated successfully!'),
+              'success'
+            );
+          } else if (status.state === 'failed') {
+            addToast(
+              t('characters:form.avatar.generationFailed', 'Avatar generation failed. Please try again.'),
+              'error'
+            );
+          }
+        })
+        .catch((error) => {
+          console.error('Failed to poll job status:', error);
+        });
+    } catch (error) {
+      console.error('[CharacterAvatarUploader] AI generation failed', error);
+      addToast(
+        t('characters:form.avatar.generationError', 'Failed to start avatar generation. Please try again.'),
+        'error'
+      );
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <div className="mt-6 flex flex-col items-center gap-4">
       <input
@@ -222,7 +346,7 @@ export function CharacterAvatarUploader({
       />
 
       {previewUrl ? (
-        <img
+        <CachedImage
           src={previewUrl}
           alt={t('characters:form.avatar.previewAlt', 'Character avatar preview') ?? 'Character avatar preview'}
           className="h-24 w-24 rounded-full object-cover shadow-sm"
@@ -241,7 +365,7 @@ export function CharacterAvatarUploader({
               variant="light"
               size="small"
               icon="upload"
-              disabled={isUploading}
+              disabled={isUploading || isGenerating}
             >
               {previewUrl
                 ? t('characters:form.avatar.change', 'Change image')
@@ -251,6 +375,31 @@ export function CharacterAvatarUploader({
           menuWidth="w-60"
         >
           <div className="py-1 text-sm">
+            {mode === 'edit' && characterId && (
+              <>
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10"
+                  onClick={handleAIGeneration}
+                  disabled={isGenerating}
+                >
+                  <span className="material-symbols-outlined text-base">
+                    {isGenerating ? 'progress_activity' : 'auto_awesome'}
+                  </span>
+                  <div className="flex flex-1 items-center justify-between">
+                    <span>
+                      {isGenerating
+                        ? t('characters:form.avatar.generating', 'Generating...')
+                        : t('characters:form.avatar.generateAI', 'Generate with AI')}
+                    </span>
+                    <span className="ml-2 text-xs text-accent">
+                      {imageCreditCost} {t('common:credits', 'credits')}
+                    </span>
+                  </div>
+                </button>
+                <div className="border-t border-border" />
+              </>
+            )}
             <button
               type="button"
               className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10"

@@ -63,7 +63,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
               >
                 <div className="relative h-40">
                   <img
-                    src={mainParticipant?.avatar || '/placeholder-character.png'}
+                    src={mainParticipant?.images?.[0]?.url || '/placeholder-character.png'}
                     alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character')}
                     className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
                   />
@@ -72,7 +72,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
                       {otherParticipants.map((p: any, idx: number) => (
                         <Avatar
                           key={idx}
-                          src={p.avatar}
+                          src={p.images?.[0]?.url}
                           alt={p.firstName || p.name || t('common:character')}
                           size="small"
                           className="border-2 border-light"
@@ -122,7 +122,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
           >
             <div className="relative h-40">
               <img
-                src={mainParticipant?.avatar || '/placeholder-character.png'}
+                src={mainParticipant?.images?.[0]?.url || '/placeholder-character.png'}
                 alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character')}
                 className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
               />
@@ -131,7 +131,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
                   {otherParticipants.map((p: any, idx: number) => (
                     <Avatar
                       key={idx}
-                      src={p.avatar}
+                      src={p.images?.[0]?.url}
                       alt={p.firstName || p.name || t('common:character')}
                       size="small"
                       className="border-2 border-light"

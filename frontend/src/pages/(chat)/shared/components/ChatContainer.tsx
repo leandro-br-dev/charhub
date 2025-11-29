@@ -61,7 +61,7 @@ function buildParticipantRepresentation(
       actorType: 'CHARACTER',
       representation: {
         name,
-        avatar: character?.avatar || null,
+        avatar: character?.images?.[0]?.url || null,
       },
       raw: participant,
     };
@@ -71,7 +71,7 @@ function buildParticipantRepresentation(
     const assistant = participant.actingAssistant;
     const persona = participant.representingCharacter;
     const name = persona?.firstName || assistant?.name || `Assistant ${participant.actingAssistantId.slice(0, 4)}`;
-    const avatar = persona?.avatar || null;
+    const avatar = persona?.images?.[0]?.url || null;
     return {
       id: participant.id,
       actorId: participant.actingAssistantId,

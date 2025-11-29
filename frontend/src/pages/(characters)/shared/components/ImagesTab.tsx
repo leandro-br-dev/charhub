@@ -8,15 +8,23 @@ import { ImageGenerationPanel } from './ImageGenerationPanel';
 interface ImagesTabProps {
   form: UseCharacterFormReturn;
   characterId?: string;
+  onAvatarActivated?: () => void;
 }
 
-export function ImagesTab({ form, characterId }: ImagesTabProps): JSX.Element {
+export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabProps): JSX.Element {
   const { t } = useTranslation(['characters']);
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handleImageUpdate = () => {
     // Trigger refresh of gallery
     setRefreshKey((prev) => prev + 1);
+  };
+
+  const handleAvatarActivated = () => {
+    handleImageUpdate();
+    if (onAvatarActivated) {
+      onAvatarActivated();
+    }
   };
 
   if (!characterId) {
@@ -58,7 +66,7 @@ export function ImagesTab({ form, characterId }: ImagesTabProps): JSX.Element {
             key={`avatar-${refreshKey}`}
             characterId={characterId}
             imageType="AVATAR"
-            onImageActivated={handleImageUpdate}
+            onImageActivated={handleAvatarActivated}
           />
         </div>
       </div>

@@ -63,6 +63,15 @@ class ImageGenerationService {
   }
 
   /**
+   * Delete an image
+   */
+  async deleteImage(characterId: string, imageId: string): Promise<void> {
+    await api.delete(
+      `/api/v1/image-generation/characters/${characterId}/images/${imageId}`
+    );
+  }
+
+  /**
    * Generate avatar for a character
    */
   async generateAvatar(request: GenerateAvatarRequest): Promise<{ jobId: string; message: string }> {

@@ -390,4 +390,62 @@ router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, a
   }
 });
 
+/**
+ * DELETE /api/v1/image-generation/characters/:characterId/images/:imageId
+ * Delete an image
+ */
+router.delete('/characters/:characterId/images/:imageId', requireAuth, async (req, res) => {
+  try {
+    const { characterId, imageId } = req.params;
+    const userId = req.auth?.user.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Verify character ownership
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+      select: { userId: true },
+    });
+
+    if (!character) {
+      return res.status(404).json({ error: 'Character not found' });
+    }
+
+    if (character.userId !== userId) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Get the image to delete
+    const image = await prisma.characterImage.findFirst({
+      where: { id: imageId, characterId },
+      select: { id: true, key: true },
+    });
+
+    if (!image) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    // Delete from database
+    await prisma.characterImage.delete({
+      where: { id: imageId },
+    });
+
+    // TODO: Delete from R2 storage using image.key
+    // This would require r2Service.deleteObject({ key: image.key })
+    // For now, we just delete the database record
+
+    logger.info({ characterId, imageId }, 'Image deleted');
+
+    return res.json({
+      success: true,
+      message: 'Image deleted successfully',
+    });
+  } catch (error) {
+    logger.error({ err: error }, 'Failed to delete image');
+    return res.status(500).json({ error: 'Failed to delete image' });
+  }
+});
+
 export default router;

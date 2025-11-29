@@ -333,19 +333,27 @@ export const ConversationHistory = ({ onLinkClick }: ConversationHistoryProps) =
                             {(conv.participants ?? [])
                               .filter((p) => p.actingCharacterId && p.actingCharacter)
                               .slice(0, 3)
-                              .map((p) => (
-                                <Avatar
-                                  key={p.id}
-                                  src={p.actingCharacter!.avatar}
-                                  alt={
-                                    p.actingCharacter!.lastName
-                                      ? `${p.actingCharacter!.firstName} ${p.actingCharacter!.lastName}`
-                                      : p.actingCharacter!.firstName
-                                  }
-                                  size="mini"
-                                  className="border-2 border-light"
-                                />
-                              ))}
+                              .map((p) => {
+                                console.log('[ConversationHistory] Participant:', {
+                                  id: p.id,
+                                  actingCharacter: p.actingCharacter,
+                                  images: p.actingCharacter?.images,
+                                  firstImage: p.actingCharacter?.images?.[0],
+                                });
+                                return (
+                                  <Avatar
+                                    key={p.id}
+                                    src={p.actingCharacter!.images?.[0]?.url}
+                                    alt={
+                                      p.actingCharacter!.lastName
+                                        ? `${p.actingCharacter!.firstName} ${p.actingCharacter!.lastName}`
+                                        : p.actingCharacter!.firstName
+                                    }
+                                    size="mini"
+                                    className="border-2 border-light"
+                                  />
+                                );
+                              })}
                             {(conv.participants ?? []).filter((p) => p.actingCharacterId).length > 3 && (
                               <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-xs font-semibold text-white border-2 border-light">
                                 +{(conv.participants ?? []).filter((p) => p.actingCharacterId).length - 3}

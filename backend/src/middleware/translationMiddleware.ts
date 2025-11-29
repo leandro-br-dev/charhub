@@ -116,6 +116,11 @@ async function translateResponseData(data: any, targetLanguage: string): Promise
 
   // Object
   if (typeof data === 'object') {
+    // Skip Date objects (they serialize to JSON strings automatically)
+    if (data instanceof Date) {
+      return data;
+    }
+
     // Check for data wrapper (common API format)
     if (data.data !== undefined) {
       const translatedData = await translateResponseData(data.data, targetLanguage);

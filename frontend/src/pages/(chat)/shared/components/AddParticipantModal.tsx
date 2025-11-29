@@ -328,12 +328,12 @@ const AddParticipantModal = React.memo(
         itemName = item.lastName
           ? `${item.firstName} ${item.lastName}`
           : item.firstName;
-        itemAvatar = item.avatar;
+        itemAvatar = item.images?.[0]?.url || null;
         descriptionText = item.personality?.substring(0, 100) || "";
       } else {
         // Assistant structure
         itemName = item.name;
-        itemAvatar = item.defaultCharacter?.avatar || null;
+        itemAvatar = item.defaultCharacter?.images?.[0]?.url || null;
         descriptionText = item.description ||
           (item.instructions
             ? item.instructions.substring(0, 70) + "..."

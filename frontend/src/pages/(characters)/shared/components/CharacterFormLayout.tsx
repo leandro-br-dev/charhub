@@ -44,6 +44,7 @@ export function CharacterFormLayout({
   const [tabsApi, setTabsApi] = useState<{ setActiveTab: (label: string) => void } | null>(null);
   const [incompatibleTagIds, setIncompatibleTagIds] = useState<string[]>([]);
   const [isAutoCompleting, setIsAutoCompleting] = useState(false);
+  const [avatarRefreshTrigger, setAvatarRefreshTrigger] = useState(0);
 
   const pageTitle = mode === 'create'
     ? t('characters:create.title')
@@ -164,6 +165,7 @@ export function CharacterFormLayout({
               draftId={draftId}
               characterId={characterId}
               onAvatarChange={url => form.updateField('avatar', url)}
+              refreshTrigger={avatarRefreshTrigger}
             />
           </div>
 
@@ -208,7 +210,11 @@ export function CharacterFormLayout({
                 )}
               </TabPanel>
               <TabPanel label="images">
-                <ImagesTab form={form} characterId={characterId} />
+                <ImagesTab
+                  form={form}
+                  characterId={characterId}
+                  onAvatarActivated={() => setAvatarRefreshTrigger(prev => prev + 1)}
+                />
               </TabPanel>
             </TabPanels>
           </Tabs>

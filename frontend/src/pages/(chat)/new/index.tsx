@@ -130,6 +130,7 @@ export default function NewConversationPage() {
                 const displayName = character.lastName
                   ? `${character.firstName} ${character.lastName}`
                   : character.firstName;
+                const avatarUrl = (character as any).images?.find((img: any) => img.type === 'AVATAR' && img.isActive)?.url;
 
                 return (
                   <button
@@ -143,7 +144,7 @@ export default function NewConversationPage() {
                   >
                     <div className="flex-shrink-0">
                       <Avatar
-                        src={character.avatar}
+                        src={avatarUrl}
                         alt={displayName}
                         size="medium"
                       />
