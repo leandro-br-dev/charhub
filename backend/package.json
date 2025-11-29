@@ -23,8 +23,7 @@
     "db:seed:tags": "tsx src/scripts/seedTags.ts",
     "db:seed:tags:dry": "tsx src/scripts/seedTags.ts --dry-run",
     "migrate:multiuser": "tsx src/scripts/migrate-conversations-to-multiuser.ts",
-    "fix:participants": "tsx src/scripts/fix-conversation-participants.ts",
-    "migrate:avatar-to-image": "tsx src/scripts/migrate-avatar-to-character-image.ts"
+    "fix:participants": "tsx src/scripts/fix-conversation-participants.ts"    
   },
   "keywords": [
     "oauth",

@@ -196,26 +196,39 @@ async function seedCharacters(options: SeedOptions): Promise<{ created: number; 
       }
 
       const now = new Date();
+      
+      const characterPayload = {
+        firstName: charData.firstName,
+        lastName: charData.lastName,
+        age: charData.age,
+        gender: charData.gender,
+        species: charData.species,
+        style: charData.style as VisualStyle | null,
+        physicalCharacteristics: charData.physicalCharacteristics,
+        personality: charData.personality,
+        history: charData.history,
+        visibility: charData.visibility as Visibility,
+        ageRating: charData.ageRating as AgeRating,
+        contentTags: charData.contentTags as ContentTag[],
+        updatedAt: now,
+      };
 
       if (existing && options.force) {
         // Update existing
         await prisma.character.update({
           where: { id: charData.id },
           data: {
-            firstName: charData.firstName,
-            lastName: charData.lastName,
-            age: charData.age,
-            gender: charData.gender,
-            species: charData.species,
-            style: charData.style as VisualStyle | null,
-            avatar: charData.avatar,
-            physicalCharacteristics: charData.physicalCharacteristics,
-            personality: charData.personality,
-            history: charData.history,
-            visibility: charData.visibility as Visibility,
-            ageRating: charData.ageRating as AgeRating,
-            contentTags: charData.contentTags as ContentTag[],
-            updatedAt: now,
+            ...characterPayload,
+            images: charData.avatar ? {
+              deleteMany: {
+                type: 'AVATAR',
+              },
+              create: {
+                type: 'AVATAR',
+                url: charData.avatar,
+                isActive: true,
+              }
+            } : undefined,
           },
         });
         console.log(`  ✏️  Updated: ${charData.firstName}`);
@@ -225,22 +238,16 @@ async function seedCharacters(options: SeedOptions): Promise<{ created: number; 
           data: {
             id: charData.id,
             userId: charData.userId,
-            firstName: charData.firstName,
-            lastName: charData.lastName,
-            age: charData.age,
-            gender: charData.gender,
-            species: charData.species,
-            style: charData.style as VisualStyle | null,
-            avatar: charData.avatar,
-            physicalCharacteristics: charData.physicalCharacteristics,
-            personality: charData.personality,
-            history: charData.history,
-            visibility: charData.visibility as Visibility,
+            ...characterPayload,
             isSystemCharacter: charData.isSystemCharacter,
-            ageRating: charData.ageRating as AgeRating,
-            contentTags: charData.contentTags as ContentTag[],
             createdAt: now,
-            updatedAt: now,
+            images: charData.avatar ? {
+              create: {
+                type: 'AVATAR',
+                url: charData.avatar,
+                isActive: true,
+              }
+            } : undefined,
           },
         });
         stats.created++;
