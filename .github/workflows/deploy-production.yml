@@ -223,7 +223,7 @@ jobs:
           echo "emoji=$EMOJI" >> $GITHUB_OUTPUT
 
       - name: Notify Slack (optional)
-        if: secrets.SLACK_WEBHOOK_URL != ''
+        if: ${{ secrets.SLACK_WEBHOOK_URL != '' }}
         uses: slackapi/slack-github-action@v1
         with:
           payload: |
