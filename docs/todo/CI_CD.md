@@ -226,6 +226,50 @@ jobs:
 
 ---
 
+## Fase 1.5: Adicionar Staging (FUTURO - Quando Receitas Aumentarem)
+
+> **Status**: Bloqueado por custos
+> **Prioridade**: Alta
+> **Data Sugerida**: Quando usuários > 100 ou receitas > R$1000/mês
+> **Motivo**: Atualmente 7 usuários, custos crescentes, sem receitas
+
+### Por que Staging é Importante
+
+- **Testes isolados**: Validar mudanças sem afetar produção
+- **Dados produção-like**: Testar com escala real antes de deploy
+- **Rollback seguro**: Se algo quebrar, usuários não são afetados
+- **Integração APIs**: Validar PayPal, Cloudflare, Gemini antes do deploy
+
+### Setup quando Implementar
+
+1. **Criar VM Staging**:
+```bash
+gcloud compute instances create charhub-vm-staging \
+  --zone=us-central1-a \
+  --machine-type=e2-micro \
+  --image-family=cos-stable \
+  --image-project=cos-cloud
+```
+
+2. **Cloudflare Tunnel**: `staging.charhub.app` → VM staging
+
+3. **GitHub Workflow**: Deploy automático para staging após merge em main
+
+4. **Fluxo Ideal**:
+```
+develop/feature → (CI) → main → (CD) → staging → (Manual Approval) → (CD) → production
+```
+
+### Tarefas para o Futuro
+
+- [ ] Quando receitas aumentarem, criar VM staging (custo: ~R$90/mês)
+- [ ] Configurar Cloudflare tunnel para staging.charhub.app
+- [ ] Implementar workflow `deploy-staging.yml`
+- [ ] Atualizar workflow `deploy-production.yml` para requer aprovação após staging tests
+- [ ] Adicionar notificações Slack/Discord para staging deploys
+
+---
+
 ## Fase 2: Deploy Staging Automatico
 
 ### Infraestrutura Necessaria

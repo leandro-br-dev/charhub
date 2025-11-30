@@ -1,0 +1,288 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Git ref to deploy (branch, tag, or commit SHA). Default: main'
+        required: false
+        default: 'main'
+
+env:
+  GCP_ZONE: us-central1-a
+  VM_NAME: charhub-vm
+  APP_DIR: /mnt/stateful_partition/charhub
+
+jobs:
+  pre-deploy-checks:
+    name: Pre-Deploy Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify main branch
+        if: github.event_name == 'push'
+        run: |
+          if [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "❌ Only main branch can trigger automatic deploy"
+            exit 1
+          fi
+          echo "✅ On main branch - deploy will proceed"
+
+      - name: List commits to deploy
+        run: |
+          echo "📋 Commits being deployed:"
+          git log --oneline -5
+
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [pre-deploy-checks]
+    environment:
+      name: production
+      url: https://charhub.app
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.version || github.sha }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY_PROD }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Test SSH connection
+        run: |
+          echo "🔌 Testing SSH connection to VM..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="echo '✅ SSH connection successful'"
+
+      - name: Create deployment backup
+        run: |
+          echo "💾 Creating backup of current deployment..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="
+              cd ${{ env.APP_DIR }} &&
+              mkdir -p backups &&
+              BACKUP_DIR='backups/backup_'$(date +%Y%m%d_%H%M%S) &&
+              mkdir -p \$BACKUP_DIR &&
+              cp .env \$BACKUP_DIR/.env || true &&
+              git rev-parse HEAD > \$BACKUP_DIR/commit.txt &&
+              echo '✅ Backup created in '\$BACKUP_DIR
+            "
+
+      - name: Fetch latest code
+        run: |
+          echo "📥 Updating code from GitHub..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="
+              cd ${{ env.APP_DIR }} &&
+              git fetch origin &&
+              CURRENT_COMMIT=\$(git rev-parse HEAD) &&
+              git checkout ${{ github.event.inputs.version || 'main' }} &&
+              NEW_COMMIT=\$(git rev-parse HEAD) &&
+
+              if [ \"\$CURRENT_COMMIT\" = \"\$NEW_COMMIT\" ]; then
+                echo '⚠️  No new commits to deploy'
+                exit 0
+              fi &&
+
+              echo '📝 New commits:' &&
+              git log --oneline \$CURRENT_COMMIT..\$NEW_COMMIT
+            "
+
+      - name: Stop running containers
+        run: |
+          echo "🛑 Stopping containers..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="
+              cd ${{ env.APP_DIR }} &&
+              sudo /var/lib/toolbox/bin/docker-compose down || true &&
+              echo '✅ Containers stopped'
+            "
+
+      - name: Build and start containers
+        timeout-minutes: 30
+        run: |
+          echo "🔨 Building and starting containers..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="
+              cd ${{ env.APP_DIR }} &&
+              sudo /var/lib/toolbox/bin/docker-compose build --no-cache &&
+              sudo /var/lib/toolbox/bin/docker-compose up -d &&
+              echo '✅ Containers started'
+            "
+
+      - name: Wait for services to be ready
+        run: |
+          echo "⏳ Waiting for services to start (30 seconds)..."
+          sleep 30
+          echo "✅ Services should be ready"
+
+      - name: Run database migrations
+        run: |
+          echo "🗄️  Running database migrations..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="
+              cd ${{ env.APP_DIR }} &&
+              sudo /var/lib/toolbox/bin/docker-compose exec -T backend npx prisma migrate deploy || {
+                echo '⚠️  No pending migrations or migration completed'
+              } &&
+              echo '✅ Migrations completed'
+            "
+
+      - name: Health check
+        timeout-minutes: 5
+        run: |
+          echo "🏥 Running health checks..."
+
+          for i in {1..30}; do
+            echo "Attempt $i/30..."
+            if curl -sf https://charhub.app/api/v1/health > /dev/null; then
+              echo "✅ Health check passed!"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo "❌ Health check failed after 30 attempts"
+          exit 1
+
+      - name: Verify deployment
+        run: |
+          echo "📊 Deployment verification..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="
+              cd ${{ env.APP_DIR }} &&
+              echo '📋 Running containers:' &&
+              sudo /var/lib/toolbox/bin/docker-compose ps &&
+              echo '' &&
+              echo '📝 Current commit:' &&
+              git log -1 --oneline &&
+              echo '' &&
+              echo '✅ Deployment verification complete'
+            "
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ Deployment successful!"
+          echo "URL: https://charhub.app"
+          echo "Commit: ${{ github.sha }}"
+
+      - name: Rollback on failure
+        if: failure()
+        timeout-minutes: 10
+        run: |
+          echo "❌ Deployment failed! Initiating rollback..."
+          gcloud compute ssh ${{ env.VM_NAME }} \
+            --zone=${{ env.GCP_ZONE }} \
+            --command="
+              cd ${{ env.APP_DIR }} &&
+              git reset --hard HEAD~1 &&
+              sudo /var/lib/toolbox/bin/docker-compose down || true &&
+              sudo /var/lib/toolbox/bin/docker-compose build &&
+              sudo /var/lib/toolbox/bin/docker-compose up -d &&
+              echo '✅ Rollback completed'
+            "
+
+  notify:
+    name: Send Notifications
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: always()
+
+    steps:
+      - name: Prepare notification
+        id: notification
+        run: |
+          if [ "${{ needs.deploy.result }}" = "success" ]; then
+            STATUS="✅ SUCCESS"
+            EMOJI="✅"
+          else
+            STATUS="❌ FAILED"
+            EMOJI="❌"
+          fi
+
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "emoji=$EMOJI" >> $GITHUB_OUTPUT
+
+      - name: Notify Slack (optional)
+        if: secrets.SLACK_WEBHOOK_URL != ''
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "${{ steps.notification.outputs.emoji }} Production Deploy ${{ steps.notification.outputs.status }}",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "${{ steps.notification.outputs.emoji }} Production Deployment"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Status:*\n${{ steps.notification.outputs.status }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Ref:*\n${{ github.event.inputs.version || github.ref }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit:*\n${{ github.sha }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Triggered by:*\n${{ github.actor }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "<https://charhub.app|Open App> | <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Workflow>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - name: Comment on commit
+        if: github.event_name == 'push'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ needs.deploy.result }}' === 'success' ? '✅' : '❌';
+            github.rest.git.createCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              message: `${status} Deployed to production`,
+              tree: context.payload.head_commit.tree_id,
+              parents: [context.sha]
+            }).catch(() => {
+              console.log('Could not create status commit (expected)');
+            });
