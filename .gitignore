@@ -162,6 +162,11 @@ crashlytics-build.properties
 # Claude AI
 .claude
 
+# Claude Code - Agent-specific guides (local only, not versioned)
+# Each agent has their own CLAUDE-[agent].md in docs/[agent]/ folder (those ARE versioned)
+# But the root CLAUDE.md is local configuration and should NOT be tracked
+/CLAUDE.md
+
 # Project Analyzer
 project_analyzer.py
 project_context.log
