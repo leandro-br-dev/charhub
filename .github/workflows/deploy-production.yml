@@ -59,73 +59,117 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Test SSH connection
+      - name: Generate Ephemeral SSH Key
+        run: |
+          echo "🔑 Generating ephemeral SSH key for this deployment..."
+          mkdir -p ~/.ssh
+          ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/deploy_key -C "github-actions-$(date +%s)"
+          echo "✅ SSH key generated"
+          ssh-keygen -lf ~/.ssh/deploy_key.pub
+
+      - name: Register SSH Key with OS Login (TTL 10min)
+        run: |
+          echo "📝 Registering SSH key with osLogin..."
+          gcloud compute os-login ssh-keys add \
+            --key-file=~/.ssh/deploy_key.pub \
+            --ttl=600s
+          echo "✅ SSH key registered with 10-minute TTL"
+
+      - name: Get OS Login Username
+        id: oslogin
+        run: |
+          echo "👤 Extracting OS Login username..."
+          UNIQUE_ID=$(gcloud iam service-accounts describe \
+            github-deployer@charhub-prod.iam.gserviceaccount.com \
+            --format='value(uniqueId)')
+          echo "username=sa_${UNIQUE_ID}" >> $GITHUB_OUTPUT
+          echo "✅ OS Login username: sa_${UNIQUE_ID}"
+
+      - name: Test SSH Connection
         run: |
           echo "🔌 Testing SSH connection to VM..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="echo '✅ SSH connection successful'" \
-            --no-user-output-enabled 2>&1 || echo "SSH test failed but continuing..."
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'echo "✅ SSH connection successful"' || exit 1
 
       - name: Create deployment backup
         run: |
           echo "💾 Creating backup of current deployment..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="
-              cd ${{ env.APP_DIR }} &&
-              mkdir -p backups &&
-              BACKUP_DIR='backups/backup_'$(date +%Y%m%d_%H%M%S) &&
-              mkdir -p \$BACKUP_DIR &&
-              cp .env \$BACKUP_DIR/.env || true &&
-              git rev-parse HEAD > \$BACKUP_DIR/commit.txt &&
-              echo '✅ Backup created in '\$BACKUP_DIR
-            "
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'bash -s' << 'EOF'
+            set -e
+            cd ${{ env.APP_DIR }}
+            mkdir -p backups
+            BACKUP_DIR="backups/backup_$(date +%Y%m%d_%H%M%S)"
+            mkdir -p "$BACKUP_DIR"
+            cp .env "$BACKUP_DIR/.env" || true
+            git rev-parse HEAD > "$BACKUP_DIR/commit.txt"
+            echo "✅ Backup created in $BACKUP_DIR"
+          EOF
 
       - name: Fetch latest code
         run: |
           echo "📥 Updating code from GitHub..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="
-              cd ${{ env.APP_DIR }} &&
-              git fetch origin &&
-              CURRENT_COMMIT=\$(git rev-parse HEAD) &&
-              git checkout ${{ github.event.inputs.version || 'main' }} &&
-              NEW_COMMIT=\$(git rev-parse HEAD) &&
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'bash -s' << 'EOF'
+            set -e
+            cd ${{ env.APP_DIR }}
+            git fetch origin
+            CURRENT_COMMIT=$(git rev-parse HEAD)
+            git checkout ${{ github.event.inputs.version || 'main' }}
+            NEW_COMMIT=$(git rev-parse HEAD)
 
-              if [ \"\$CURRENT_COMMIT\" = \"\$NEW_COMMIT\" ]; then
-                echo '⚠️  No new commits to deploy'
-                exit 0
-              fi &&
+            if [ "$CURRENT_COMMIT" = "$NEW_COMMIT" ]; then
+              echo "⚠️  No new commits to deploy"
+              exit 0
+            fi
 
-              echo '📝 New commits:' &&
-              git log --oneline \$CURRENT_COMMIT..\$NEW_COMMIT
-            "
+            echo "📝 New commits:"
+            git log --oneline "$CURRENT_COMMIT".."$NEW_COMMIT"
+          EOF
 
       - name: Stop running containers
         run: |
           echo "🛑 Stopping containers..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="
-              cd ${{ env.APP_DIR }} &&
-              sudo /var/lib/toolbox/bin/docker-compose down || true &&
-              echo '✅ Containers stopped'
-            "
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'bash -s' << 'EOF'
+            set -e
+            cd ${{ env.APP_DIR }}
+            sudo /var/lib/toolbox/bin/docker-compose down || true
+            echo "✅ Containers stopped"
+          EOF
 
       - name: Build and start containers
         timeout-minutes: 30
         run: |
           echo "🔨 Building and starting containers..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="
-              cd ${{ env.APP_DIR }} &&
-              sudo /var/lib/toolbox/bin/docker-compose build --no-cache &&
-              sudo /var/lib/toolbox/bin/docker-compose up -d &&
-              echo '✅ Containers started'
-            "
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'bash -s' << 'EOF'
+            set -e
+            cd ${{ env.APP_DIR }}
+            sudo /var/lib/toolbox/bin/docker-compose build --no-cache
+            sudo /var/lib/toolbox/bin/docker-compose up -d
+            echo "✅ Containers started"
+          EOF
 
       - name: Wait for services to be ready
         run: |
@@ -136,15 +180,19 @@ jobs:
       - name: Run database migrations
         run: |
           echo "🗄️  Running database migrations..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="
-              cd ${{ env.APP_DIR }} &&
-              sudo /var/lib/toolbox/bin/docker-compose exec -T backend npx prisma migrate deploy || {
-                echo '⚠️  No pending migrations or migration completed'
-              } &&
-              echo '✅ Migrations completed'
-            "
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'bash -s' << 'EOF'
+            set -e
+            cd ${{ env.APP_DIR }}
+            sudo /var/lib/toolbox/bin/docker-compose exec -T backend npx prisma migrate deploy || {
+              echo "⚠️  No pending migrations or migration completed"
+            }
+            echo "✅ Migrations completed"
+          EOF
 
       - name: Health check
         timeout-minutes: 5
@@ -166,18 +214,22 @@ jobs:
       - name: Verify deployment
         run: |
           echo "📊 Deployment verification..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="
-              cd ${{ env.APP_DIR }} &&
-              echo '📋 Running containers:' &&
-              sudo /var/lib/toolbox/bin/docker-compose ps &&
-              echo '' &&
-              echo '📝 Current commit:' &&
-              git log -1 --oneline &&
-              echo '' &&
-              echo '✅ Deployment verification complete'
-            "
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'bash -s' << 'EOF'
+            set -e
+            cd ${{ env.APP_DIR }}
+            echo "📋 Running containers:"
+            sudo /var/lib/toolbox/bin/docker-compose ps
+            echo ""
+            echo "📝 Current commit:"
+            git log -1 --oneline
+            echo ""
+            echo "✅ Deployment verification complete"
+          EOF
 
       - name: Notify deployment success
         if: success()
@@ -191,16 +243,29 @@ jobs:
         timeout-minutes: 10
         run: |
           echo "❌ Deployment failed! Initiating rollback..."
-          gcloud compute ssh ${{ env.VM_NAME }} \
-            --zone=${{ env.GCP_ZONE }} \
-            --command="
-              cd ${{ env.APP_DIR }} &&
-              git reset --hard HEAD~1 &&
-              sudo /var/lib/toolbox/bin/docker-compose down || true &&
-              sudo /var/lib/toolbox/bin/docker-compose build &&
-              sudo /var/lib/toolbox/bin/docker-compose up -d &&
-              echo '✅ Rollback completed'
-            "
+          VM_IP=34.66.66.202
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/deploy_key \
+              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              'bash -s' << 'EOF' || true
+            set -e
+            cd ${{ env.APP_DIR }}
+            git reset --hard HEAD~1
+            sudo /var/lib/toolbox/bin/docker-compose down || true
+            sudo /var/lib/toolbox/bin/docker-compose build
+            sudo /var/lib/toolbox/bin/docker-compose up -d
+            echo "✅ Rollback completed"
+          EOF
+
+      - name: Cleanup SSH Key
+        if: always()
+        run: |
+          echo "🧹 Cleaning up ephemeral SSH key..."
+          gcloud compute os-login ssh-keys remove \
+            --key-file=~/.ssh/deploy_key.pub || true
+          rm -f ~/.ssh/deploy_key ~/.ssh/deploy_key.pub
+          echo "✅ SSH key removed"
 
   notify:
     name: Send Notifications
