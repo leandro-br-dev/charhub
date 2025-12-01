@@ -59,62 +59,51 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Generate Ephemeral SSH Key
+      - name: Setup Static SSH Key for Deployment
         run: |
-          echo "🔑 Generating ephemeral SSH key for this deployment..."
-          mkdir -p ~/.ssh
-          ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/deploy_key -C "github-actions-$(date +%s)"
-          echo "✅ SSH key generated"
-          ssh-keygen -lf ~/.ssh/deploy_key.pub
+          echo "🔑 Setting up SSH key for deployment..."
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.GH_DEPLOY_SSH_PRIVATE_KEY }}" > $HOME/.ssh/deploy_key
+          chmod 600 $HOME/.ssh/deploy_key
+          ssh-keygen -lf $HOME/.ssh/deploy_key 2>/dev/null || echo "Key loaded"
+          echo "✅ SSH key configured"
 
-      - name: Register SSH Key with OS Login (TTL 10min)
+      - name: Set Deployment Variables
+        id: deploy_vars
         run: |
-          echo "📝 Registering SSH key with osLogin..."
-          gcloud compute os-login ssh-keys add \
-            --key-file=$HOME/.ssh/deploy_key.pub \
-            --ttl=600s
-          echo "✅ SSH key registered with 10-minute TTL"
-
-      - name: Get OS Login Username
-        id: oslogin
-        run: |
-          echo "👤 Setting OS Login username..."
-          # The unique ID for service account github-deployer@charhub-prod.iam.gserviceaccount.com is stable
-          UNIQUE_ID="110491369899107386224"
-          echo "username=sa_${UNIQUE_ID}" >> $GITHUB_OUTPUT
-          echo "✅ OS Login username: sa_${UNIQUE_ID}"
+          echo "👤 Setting deployment variables..."
+          # Using osLogin username for leandro_br_dev_gmail_com user
+          echo "ssh_user=leandro_br_dev_gmail_com" >> $GITHUB_OUTPUT
+          echo "ssh_host=34.66.66.202" >> $GITHUB_OUTPUT
+          echo "✅ Variables set"
 
       - name: Test SSH Connection
         run: |
           echo "🔌 Testing SSH connection to VM..."
-          VM_IP=34.66.66.202
-          USERNAME="${{ steps.oslogin.outputs.username }}"
-
-          # Debug: show SSH key info
-          echo "Using SSH key:"
-          ssh-keygen -lf $HOME/.ssh/deploy_key.pub
+          SSH_USER="${{ steps.deploy_vars.outputs.ssh_user }}"
+          SSH_HOST="${{ steps.deploy_vars.outputs.ssh_host }}"
 
           echo "SSH Config:"
-          echo "  Host: $USERNAME@$VM_IP"
+          echo "  User: $SSH_USER"
+          echo "  Host: $SSH_HOST"
           echo "  Key: $HOME/.ssh/deploy_key"
 
-          # Try SSH with verbose output and retries
+          # Try SSH with retries
           for attempt in 1 2 3; do
             echo ""
             echo "Attempt $attempt/3..."
-            if ssh -v -o StrictHostKeyChecking=no \
+            if ssh -o StrictHostKeyChecking=no \
                    -o UserKnownHostsFile=/dev/null \
                    -o ConnectTimeout=10 \
-                   -o BatchMode=yes \
                    -i $HOME/.ssh/deploy_key \
-                   "$USERNAME@$VM_IP" \
+                   "$SSH_USER@$SSH_HOST" \
                    'echo "✅ SSH connection successful"'; then
               echo "✅ SSH test passed on attempt $attempt"
               exit 0
             fi
             if [ $attempt -lt 3 ]; then
-              echo "⏳ Waiting 10s before retry..."
-              sleep 10
+              echo "⏳ Waiting 5s before retry..."
+              sleep 5
             fi
           done
 
@@ -124,11 +113,10 @@ jobs:
       - name: Create deployment backup
         run: |
           echo "💾 Creating backup of current deployment..."
-          VM_IP=34.66.66.202
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              -i $HOME/.ssh/deploy_key \
+              "${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }}" \
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
@@ -143,11 +131,10 @@ jobs:
       - name: Fetch latest code
         run: |
           echo "📥 Updating code from GitHub..."
-          VM_IP=34.66.66.202
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              -i $HOME/.ssh/deploy_key \
+              "${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }}" \
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
@@ -168,11 +155,11 @@ jobs:
       - name: Stop running containers
         run: |
           echo "🛑 Stopping containers..."
-          VM_IP=34.66.66.202
+
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              -i $HOME/.ssh/deploy_key \
+              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
@@ -184,11 +171,11 @@ jobs:
         timeout-minutes: 30
         run: |
           echo "🔨 Building and starting containers..."
-          VM_IP=34.66.66.202
+
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              -i $HOME/.ssh/deploy_key \
+              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
@@ -206,11 +193,11 @@ jobs:
       - name: Run database migrations
         run: |
           echo "🗄️  Running database migrations..."
-          VM_IP=34.66.66.202
+
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              -i $HOME/.ssh/deploy_key \
+              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
@@ -240,11 +227,11 @@ jobs:
       - name: Verify deployment
         run: |
           echo "📊 Deployment verification..."
-          VM_IP=34.66.66.202
+
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              -i $HOME/.ssh/deploy_key \
+              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
@@ -269,11 +256,11 @@ jobs:
         timeout-minutes: 10
         run: |
           echo "❌ Deployment failed! Initiating rollback..."
-          VM_IP=34.66.66.202
+
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
+              -i $HOME/.ssh/deploy_key \
+              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
               'bash -s' << 'EOF' || true
             set -e
             cd ${{ env.APP_DIR }}
@@ -287,10 +274,8 @@ jobs:
       - name: Cleanup SSH Key
         if: always()
         run: |
-          echo "🧹 Cleaning up ephemeral SSH key..."
-          gcloud compute os-login ssh-keys remove \
-            --key-file=$HOME/.ssh/deploy_key.pub || true
-          rm -f $HOME/.ssh/deploy_key $HOME/.ssh/deploy_key.pub
+          echo "🧹 Cleaning up SSH key from runner..."
+          rm -f $HOME/.ssh/deploy_key
           echo "✅ SSH key removed"
 
   notify:
