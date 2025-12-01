@@ -59,12 +59,21 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Setup SSH for Service Account
+        env:
+          SSH_KEY: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/google_compute_engine
+          chmod 600 ~/.ssh/google_compute_engine
+          echo "✅ SSH key configured for service account"
+
       - name: Test SSH connection
         run: |
           echo "🔌 Testing SSH connection to VM..."
           gcloud compute ssh ${{ env.VM_NAME }} \
             --zone=${{ env.GCP_ZONE }} \
-            --command="echo '✅ SSH connection successful'" || true
+            --command="echo '✅ SSH connection successful'"
 
       - name: Create deployment backup
         run: |
