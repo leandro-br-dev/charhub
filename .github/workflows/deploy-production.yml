@@ -110,6 +110,21 @@ jobs:
           echo "❌ SSH test failed after 3 attempts"
           exit 1
 
+      - name: Configure Git Safe Directory
+        run: |
+          echo "🔧 Configuring git safe directory..."
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i $HOME/.ssh/deploy_key \
+              "${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }}" \
+              'bash -s' << 'EOF'
+            set -e
+            cd ${{ env.APP_DIR }}
+            # Configure git to allow access to repository owned by different user
+            sudo git config --add safe.directory "${{ env.APP_DIR }}"
+            echo "✅ Git safe directory configured"
+          EOF
+
       - name: Create deployment backup
         run: |
           echo "💾 Creating backup of current deployment..."
