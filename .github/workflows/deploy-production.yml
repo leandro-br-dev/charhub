@@ -120,11 +120,11 @@ jobs:
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
-            mkdir -p backups
+            sudo mkdir -p backups
             BACKUP_DIR="backups/backup_$(date +%Y%m%d_%H%M%S)"
-            mkdir -p "$BACKUP_DIR"
-            cp .env "$BACKUP_DIR/.env" || true
-            git rev-parse HEAD > "$BACKUP_DIR/commit.txt"
+            sudo mkdir -p "$BACKUP_DIR"
+            sudo cp .env "$BACKUP_DIR/.env" || true
+            sudo bash -c "git rev-parse HEAD > $BACKUP_DIR/commit.txt"
             echo "✅ Backup created in $BACKUP_DIR"
           EOF
 
@@ -138,10 +138,10 @@ jobs:
               'bash -s' << 'EOF'
             set -e
             cd ${{ env.APP_DIR }}
-            git fetch origin
-            CURRENT_COMMIT=$(git rev-parse HEAD)
-            git checkout ${{ github.event.inputs.version || 'main' }}
-            NEW_COMMIT=$(git rev-parse HEAD)
+            sudo git fetch origin
+            CURRENT_COMMIT=$(sudo git rev-parse HEAD)
+            sudo git checkout ${{ github.event.inputs.version || 'main' }}
+            NEW_COMMIT=$(sudo git rev-parse HEAD)
 
             if [ "$CURRENT_COMMIT" = "$NEW_COMMIT" ]; then
               echo "⚠️  No new commits to deploy"
@@ -149,7 +149,7 @@ jobs:
             fi
 
             echo "📝 New commits:"
-            git log --oneline "$CURRENT_COMMIT".."$NEW_COMMIT"
+            sudo git log --oneline "$CURRENT_COMMIT".."$NEW_COMMIT"
           EOF
 
       - name: Stop running containers
@@ -239,7 +239,7 @@ jobs:
             sudo /var/lib/toolbox/bin/docker-compose ps
             echo ""
             echo "📝 Current commit:"
-            git log -1 --oneline
+            sudo git log -1 --oneline
             echo ""
             echo "✅ Deployment verification complete"
           EOF
@@ -264,7 +264,7 @@ jobs:
               'bash -s' << 'EOF' || true
             set -e
             cd ${{ env.APP_DIR }}
-            git reset --hard HEAD~1
+            sudo git reset --hard HEAD~1
             sudo /var/lib/toolbox/bin/docker-compose down || true
             sudo /var/lib/toolbox/bin/docker-compose build
             sudo /var/lib/toolbox/bin/docker-compose up -d
