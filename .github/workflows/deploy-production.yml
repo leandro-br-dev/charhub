@@ -81,7 +81,11 @@ jobs:
           echo "👤 Extracting OS Login username..."
           UNIQUE_ID=$(gcloud iam service-accounts describe \
             github-deployer@charhub-prod.iam.gserviceaccount.com \
-            --format='value(uniqueId)')
+            --format=value\(uniqueId\) 2>&1)
+          if [ -z "$UNIQUE_ID" ] || [ "$UNIQUE_ID" = "null" ]; then
+            echo "⚠️  Could not get unique ID from service account, using hardcoded value"
+            UNIQUE_ID="110491369899107386224"
+          fi
           echo "username=sa_${UNIQUE_ID}" >> $GITHUB_OUTPUT
           echo "✅ OS Login username: sa_${UNIQUE_ID}"
 
