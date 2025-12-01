@@ -198,20 +198,54 @@ docker-compose logs postgres
 
 ### Deploy Falha por SSH
 
-**Sintoma**: "Permission denied" ou "Connection refused"
+**Sintoma**: "Permission denied", "Connection refused" ou "Required 'compute.instances.setMetadata' permission"
 
 **Causas possíveis**:
-- Service Account sem permissões SSH
+- Service Account sem permissões SSH/osLogin
 - Key expirada no GCP
 - VM indisponível
+- osLogin não configurado no gcloud (GitHub Actions)
 
-**Solução**:
-1. Verifique `GCP_SERVICE_ACCOUNT_KEY_PROD` no GitHub
-2. Teste SSH manualmente:
-   ```bash
-   gcloud compute ssh charhub-vm --zone=us-central1-a
-   ```
-3. Se falhar, regenere a key do Service Account
+**Solução Completa**:
+
+#### 1. Verificar Permissões da Service Account
+```bash
+# Verificar roles atribuídas
+gcloud projects get-iam-policy charhub-prod \
+  --flatten="bindings[].members" \
+  --filter="bindings.members:github-deployer@charhub-prod.iam.gserviceaccount.com"
+
+# Esperado: roles/compute.osLogin deve estar presente
+```
+
+#### 2. Testar SSH Manualmente
+```bash
+# Se funciona localmente, o problema está no GitHub Actions
+gcloud compute ssh charhub-vm --zone=us-central1-a
+```
+
+#### 3. Verificar Configuração no GitHub Actions
+
+O workflow agora configura osLogin automaticamente com:
+```yaml
+- name: Configure gcloud SSH to use osLogin
+  run: |
+    gcloud config set compute/use_os_login true
+```
+
+Isso instrui gcloud a usar **OS Login para autenticação** em vez de tentar adicionar SSH keys ao metadata da instância.
+
+#### 4. Se Ainda Falhar
+```bash
+# Regenerar key do Service Account
+gcloud iam service-accounts keys create /tmp/new-key.json \
+  --iam-account=github-deployer@charhub-prod.iam.gserviceaccount.com
+
+# Atualizar secret GCP_SERVICE_ACCOUNT_KEY_PROD no GitHub:
+# 1. Copiar conteúdo de /tmp/new-key.json
+# 2. Ir para GitHub > Settings > Secrets > GCP_SERVICE_ACCOUNT_KEY_PROD
+# 3. Substituir valor antigo pelo novo
+```
 
 ### Deploy Parcial (algumas partes atualizam, outras não)
 
