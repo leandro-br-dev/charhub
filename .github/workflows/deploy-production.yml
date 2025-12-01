@@ -71,7 +71,7 @@ jobs:
         run: |
           echo "📝 Registering SSH key with osLogin..."
           gcloud compute os-login ssh-keys add \
-            --key-file=~/.ssh/deploy_key.pub \
+            --key-file=$HOME/.ssh/deploy_key.pub \
             --ttl=600s
           echo "✅ SSH key registered with 10-minute TTL"
 
@@ -263,8 +263,8 @@ jobs:
         run: |
           echo "🧹 Cleaning up ephemeral SSH key..."
           gcloud compute os-login ssh-keys remove \
-            --key-file=~/.ssh/deploy_key.pub || true
-          rm -f ~/.ssh/deploy_key ~/.ssh/deploy_key.pub
+            --key-file=$HOME/.ssh/deploy_key.pub || true
+          rm -f $HOME/.ssh/deploy_key $HOME/.ssh/deploy_key.pub
           echo "✅ SSH key removed"
 
   notify:
