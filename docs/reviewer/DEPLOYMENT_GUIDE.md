@@ -198,42 +198,48 @@ docker-compose logs postgres
 
 ### Deploy Falha por SSH
 
-**Sintoma**: "Permission denied", "Connection refused" ou "Required 'compute.instances.setMetadata' permission"
+**Sintoma**: "Permission denied" ou "Connection refused"
 
 **Causas possíveis**:
-- Service Account sem permissões SSH/osLogin
+- Service Account sem permissões SSH
 - Key expirada no GCP
 - VM indisponível
-- osLogin não configurado no gcloud (GitHub Actions)
+- OS Login não habilitado na VM
 
-**Solução Completa**:
+**Solução**:
 
-#### 1. Verificar Permissões da Service Account
+#### 1. Habilitar OS Login na VM
+
+Para que gcloud possa fazer SSH sem tentar adicionar keys ao metadata, a VM precisa ter OS Login habilitado:
+
 ```bash
-# Verificar roles atribuídas
+# Habilitar osLogin na VM
+gcloud compute instances add-metadata charhub-vm \
+  --zone=us-central1-a \
+  --metadata enable-oslogin=TRUE
+
+# Verificar se foi habilitado
+gcloud compute instances describe charhub-vm \
+  --zone=us-central1-a \
+  --format="get(metadata.items[name='enable-oslogin'].value)"
+# Esperado: TRUE
+```
+
+#### 2. Verificar Permissões da Service Account
+```bash
+# Verificar se compute.osLogin role está atribuída
 gcloud projects get-iam-policy charhub-prod \
   --flatten="bindings[].members" \
   --filter="bindings.members:github-deployer@charhub-prod.iam.gserviceaccount.com"
 
-# Esperado: roles/compute.osLogin deve estar presente
+# Esperado: roles/compute.osLogin deve estar na lista
 ```
 
-#### 2. Testar SSH Manualmente
+#### 3. Testar SSH Manualmente
 ```bash
-# Se funciona localmente, o problema está no GitHub Actions
-gcloud compute ssh charhub-vm --zone=us-central1-a
+# Se funciona localmente, GitHub Actions deveria funcionar também
+gcloud compute ssh charhub-vm --zone=us-central1-a --command="echo 'SSH works!'"
 ```
-
-#### 3. Verificar Configuração no GitHub Actions
-
-O workflow agora configura osLogin automaticamente com:
-```yaml
-- name: Configure gcloud SSH to use osLogin
-  run: |
-    gcloud config set compute/use_os_login true
-```
-
-Isso instrui gcloud a usar **OS Login para autenticação** em vez de tentar adicionar SSH keys ao metadata da instância.
 
 #### 4. Se Ainda Falhar
 ```bash

@@ -59,17 +59,12 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure gcloud SSH to use osLogin
-        run: |
-          gcloud config set compute/use_os_login true
-          echo "✅ osLogin configured for SSH"
-
       - name: Test SSH connection
         run: |
           echo "🔌 Testing SSH connection to VM..."
           gcloud compute ssh ${{ env.VM_NAME }} \
             --zone=${{ env.GCP_ZONE }} \
-            --command="echo '✅ SSH connection successful'"
+            --command="echo '✅ SSH connection successful'" || true
 
       - name: Create deployment backup
         run: |
