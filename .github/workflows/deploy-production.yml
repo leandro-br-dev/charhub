@@ -59,6 +59,11 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Configure gcloud SSH to use osLogin
+        run: |
+          gcloud config set compute/use_os_login true
+          echo "✅ osLogin configured for SSH"
+
       - name: Test SSH connection
         run: |
           echo "🔌 Testing SSH connection to VM..."
