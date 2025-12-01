@@ -88,11 +88,38 @@ jobs:
         run: |
           echo "🔌 Testing SSH connection to VM..."
           VM_IP=34.66.66.202
-          ssh -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -i ~/.ssh/deploy_key \
-              ${{ steps.oslogin.outputs.username }}@${VM_IP} \
-              'echo "✅ SSH connection successful"' || exit 1
+          USERNAME="${{ steps.oslogin.outputs.username }}"
+
+          # Debug: show SSH key info
+          echo "Using SSH key:"
+          ssh-keygen -lf $HOME/.ssh/deploy_key.pub
+
+          echo "SSH Config:"
+          echo "  Host: $USERNAME@$VM_IP"
+          echo "  Key: $HOME/.ssh/deploy_key"
+
+          # Try SSH with verbose output and retries
+          for attempt in 1 2 3; do
+            echo ""
+            echo "Attempt $attempt/3..."
+            if ssh -v -o StrictHostKeyChecking=no \
+                   -o UserKnownHostsFile=/dev/null \
+                   -o ConnectTimeout=10 \
+                   -o BatchMode=yes \
+                   -i $HOME/.ssh/deploy_key \
+                   "$USERNAME@$VM_IP" \
+                   'echo "✅ SSH connection successful"'; then
+              echo "✅ SSH test passed on attempt $attempt"
+              exit 0
+            fi
+            if [ $attempt -lt 3 ]; then
+              echo "⏳ Waiting 10s before retry..."
+              sleep 10
+            fi
+          done
+
+          echo "❌ SSH test failed after 3 attempts"
+          exit 1
 
       - name: Create deployment backup
         run: |
