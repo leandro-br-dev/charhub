@@ -4,11 +4,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Git ref to deploy (branch, tag, or commit SHA). Default: main'
-        required: false
-        default: 'main'
 
 env:
   GCP_ZONE: us-central1-a
@@ -48,8 +43,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.version || github.sha }}
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -59,272 +52,117 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Setup Static SSH Key for Deployment
+      - name: Setup SSH Key
         run: |
-          echo "🔑 Setting up SSH key for deployment..."
+          echo "🔑 Setting up SSH key..."
           mkdir -p $HOME/.ssh
           echo "${{ secrets.GH_DEPLOY_SSH_PRIVATE_KEY }}" > $HOME/.ssh/deploy_key
           chmod 600 $HOME/.ssh/deploy_key
-          ssh-keygen -lf $HOME/.ssh/deploy_key 2>/dev/null || echo "Key loaded"
           echo "✅ SSH key configured"
-
-      - name: Set Deployment Variables
-        id: deploy_vars
-        run: |
-          echo "👤 Setting deployment variables..."
-          # Using osLogin username for leandro_br_dev_gmail_com user
-          echo "ssh_user=leandro_br_dev_gmail_com" >> $GITHUB_OUTPUT
-          echo "ssh_host=34.66.66.202" >> $GITHUB_OUTPUT
-          echo "✅ Variables set"
 
       - name: Test SSH Connection
         run: |
-          echo "🔌 Testing SSH connection to VM..."
-          SSH_USER="${{ steps.deploy_vars.outputs.ssh_user }}"
-          SSH_HOST="${{ steps.deploy_vars.outputs.ssh_host }}"
+          echo "🔌 Testing SSH connection..."
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -o ConnectTimeout=10 \
+              -i $HOME/.ssh/deploy_key \
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'echo "✅ SSH connection successful"'
 
-          echo "SSH Config:"
-          echo "  User: $SSH_USER"
-          echo "  Host: $SSH_HOST"
-          echo "  Key: $HOME/.ssh/deploy_key"
-
-          # Try SSH with retries
-          for attempt in 1 2 3; do
-            echo ""
-            echo "Attempt $attempt/3..."
-            if ssh -o StrictHostKeyChecking=no \
-                   -o UserKnownHostsFile=/dev/null \
-                   -o ConnectTimeout=10 \
-                   -i $HOME/.ssh/deploy_key \
-                   "$SSH_USER@$SSH_HOST" \
-                   'echo "✅ SSH connection successful"'; then
-              echo "✅ SSH test passed on attempt $attempt"
-              exit 0
-            fi
-            if [ $attempt -lt 3 ]; then
-              echo "⏳ Waiting 5s before retry..."
-              sleep 5
-            fi
-          done
-
-          echo "❌ SSH test failed after 3 attempts"
-          exit 1
-
-      - name: Configure Git Safe Directory
+      - name: Pull Latest Code
         run: |
-          echo "🔧 Configuring git safe directory..."
+          echo "📥 Pulling latest code from GitHub..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -i $HOME/.ssh/deploy_key \
-              "${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }}" \
-              'bash -s' << 'EOF'
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            # Configure git to allow access to repository owned by different user
-            sudo git config --add safe.directory "$APP_DIR"
-            echo "✅ Git safe directory configured"
-          EOF
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'PULL'
+          cd /mnt/stateful_partition/charhub
+          git fetch origin
+          BEFORE=$(git rev-parse HEAD)
+          git reset --hard origin/main
+          AFTER=$(git rev-parse HEAD)
 
-      - name: Create deployment backup
+          if [ "$BEFORE" = "$AFTER" ]; then
+            echo "⚠️  No new commits"
+            exit 0
+          fi
+
+          echo "📝 New commits:"
+          git log --oneline $BEFORE..$AFTER
+          PULL
+
+      - name: Rebuild Containers
         run: |
-          echo "💾 Creating backup of current deployment..."
+          echo "🔨 Rebuilding containers..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -i $HOME/.ssh/deploy_key \
-              "${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }}" \
-              'bash -s' << 'EOF'
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            sudo mkdir -p backups
-            BACKUP_DIR="backups/backup_$(date +%Y%m%d_%H%M%S)"
-            sudo mkdir -p "$BACKUP_DIR"
-            sudo cp .env "$BACKUP_DIR/.env" || true
-            sudo bash -c "git rev-parse HEAD > $BACKUP_DIR/commit.txt"
-            echo "✅ Backup created in $BACKUP_DIR"
-          EOF
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'BUILD'
+          cd /mnt/stateful_partition/charhub
+          COMPOSE="/var/lib/toolbox/bin/docker-compose"
 
-      - name: Fetch latest code
+          echo "Stopping containers..."
+          sudo $COMPOSE down 2>/dev/null || true
+
+          echo "Building..."
+          sudo $COMPOSE build --no-cache
+
+          echo "Starting containers..."
+          sudo $COMPOSE up -d
+
+          sleep 15
+          echo "✅ Containers started"
+          BUILD
+
+      - name: Health Check
         run: |
-          echo "📥 Updating code from GitHub..."
-          ssh -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -i $HOME/.ssh/deploy_key \
-              "${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }}" \
-              'bash -s' << 'EOF'
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            sudo git fetch origin
-            CURRENT_COMMIT=$(sudo git rev-parse HEAD)
-            sudo git checkout main
-            NEW_COMMIT=$(sudo git rev-parse HEAD)
-
-            if [ "$CURRENT_COMMIT" = "$NEW_COMMIT" ]; then
-              echo "⚠️  No new commits to deploy"
-              exit 0
-            fi
-
-            echo "📝 New commits:"
-            sudo git log --oneline "$CURRENT_COMMIT".."$NEW_COMMIT"
-          EOF
-
-      - name: Stop running containers
-        run: |
-          echo "🛑 Stopping containers..."
-
-          ssh -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -i $HOME/.ssh/deploy_key \
-              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
-              'bash -s' << 'EOF'
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            sudo /var/lib/toolbox/bin/docker-compose down || true
-            echo "✅ Containers stopped"
-          EOF
-
-      - name: Build and start containers
-        timeout-minutes: 30
-        run: |
-          echo "🔨 Building and starting containers..."
-
-          ssh -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -i $HOME/.ssh/deploy_key \
-              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
-              'bash -s' << 'EOF'
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            sudo /var/lib/toolbox/bin/docker-compose build --no-cache
-            sudo /var/lib/toolbox/bin/docker-compose up -d
-            echo "✅ Containers started"
-          EOF
-
-      - name: Wait for services to be ready
-        run: |
-          echo "⏳ Waiting for services to start (30 seconds)..."
-          sleep 30
-          echo "✅ Services should be ready"
-
-      - name: Run database migrations
-        run: |
-          echo "🗄️  Running database migrations..."
-
-          ssh -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -i $HOME/.ssh/deploy_key \
-              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
-              'bash -s' << 'EOF'
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            sudo /var/lib/toolbox/bin/docker-compose exec -T backend npx prisma migrate deploy || {
-              echo "⚠️  No pending migrations or migration completed"
-            }
-            echo "✅ Migrations completed"
-          EOF
-
-      - name: Health check
-        timeout-minutes: 5
-        run: |
-          echo "🏥 Running health checks..."
-
+          echo "🏥 Running health check..."
           for i in {1..30}; do
             echo "Attempt $i/30..."
-            if curl -sf https://charhub.app/api/v1/health > /dev/null; then
+            if curl -sf https://charhub.app/api/v1/health > /dev/null 2>&1; then
               echo "✅ Health check passed!"
               exit 0
             fi
             sleep 5
           done
 
-          echo "❌ Health check failed after 30 attempts"
+          echo "❌ Health check failed"
           exit 1
 
-      - name: Verify deployment
+      - name: Verify Deployment
         run: |
-          echo "📊 Deployment verification..."
-
+          echo "📊 Verifying deployment..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -i $HOME/.ssh/deploy_key \
-              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
-              'bash -s' << 'EOF'
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            echo "📋 Running containers:"
-            sudo /var/lib/toolbox/bin/docker-compose ps
-            echo ""
-            echo "📝 Current commit:"
-            sudo git log -1 --oneline
-            echo ""
-            echo "✅ Deployment verification complete"
-          EOF
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'VERIFY'
+          cd /mnt/stateful_partition/charhub
+          COMPOSE="/var/lib/toolbox/bin/docker-compose"
 
-      - name: Notify deployment success
+          echo "Container status:"
+          sudo $COMPOSE ps
+
+          echo ""
+          echo "Git status:"
+          git log -1 --oneline
+
+          echo ""
+          echo "✅ Deployment verified"
+          VERIFY
+
+      - name: Notify Success
         if: success()
         run: |
           echo "✅ Deployment successful!"
           echo "URL: https://charhub.app"
           echo "Commit: ${{ github.sha }}"
 
-      - name: Rollback on failure
-        if: failure()
-        timeout-minutes: 10
-        run: |
-          echo "❌ Deployment failed! Initiating rollback..."
-
-          ssh -o StrictHostKeyChecking=no \
-              -o UserKnownHostsFile=/dev/null \
-              -i $HOME/.ssh/deploy_key \
-              ${{ steps.deploy_vars.outputs.ssh_user }}@${{ steps.deploy_vars.outputs.ssh_host }} \
-              'bash -s' << 'EOF' || true
-            set -e
-            APP_DIR="/mnt/stateful_partition/charhub"
-            cd "$APP_DIR"
-            sudo git reset --hard HEAD~1
-            sudo /var/lib/toolbox/bin/docker-compose down || true
-            sudo /var/lib/toolbox/bin/docker-compose build
-            sudo /var/lib/toolbox/bin/docker-compose up -d
-            echo "✅ Rollback completed"
-          EOF
-
       - name: Cleanup SSH Key
         if: always()
         run: |
-          echo "🧹 Cleaning up SSH key from runner..."
           rm -f $HOME/.ssh/deploy_key
-          echo "✅ SSH key removed"
-
-  notify:
-    name: Send Notifications
-    runs-on: ubuntu-latest
-    needs: [deploy]
-    if: always()
-
-    steps:
-      - name: Prepare notification
-        id: notification
-        run: |
-          if [ "${{ needs.deploy.result }}" = "success" ]; then
-            STATUS="✅ SUCCESS"
-            EMOJI="✅"
-          else
-            STATUS="❌ FAILED"
-            EMOJI="❌"
-          fi
-
-          echo "status=$STATUS" >> $GITHUB_OUTPUT
-          echo "emoji=$EMOJI" >> $GITHUB_OUTPUT
-
-      - name: Print deployment result
-        run: |
-          echo "Deployment Status: ${{ steps.notification.outputs.status }}"
-          echo "Production URL: https://charhub.app"
-          echo "Commit: ${{ github.sha }}"
-          echo "Triggered by: ${{ github.actor }}"
+          echo "✅ SSH key cleaned up"
