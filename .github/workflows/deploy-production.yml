@@ -85,8 +85,12 @@ jobs:
           APP_DIR="/mnt/stateful_partition/charhub"
           cd "$APP_DIR"
 
-          # Configure git to allow access to repo
+          # Configure git to allow access to repo (BEFORE any git commands)
+          git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
           git config --local --add safe.directory "$APP_DIR" 2>/dev/null || true
+
+          # Verify safe.directory was set
+          echo "✓ Git safe.directory configured"
 
           git fetch origin
           BEFORE=$(git rev-parse HEAD)
@@ -128,10 +132,13 @@ jobs:
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
 
           echo "Stopping containers..."
-          sudo $COMPOSE down 2>/dev/null || true
+          sudo $COMPOSE down --remove-orphans -v 2>/dev/null || true
+
+          echo "Waiting for containers to fully stop..."
+          sleep 5
 
           echo "Building..."
-          sudo $COMPOSE build --no-cache
+          sudo $COMPOSE build --no-cache 2>&1 | tail -20
 
           echo "Starting containers..."
           sudo $COMPOSE up -d
@@ -187,6 +194,10 @@ jobs:
               'bash -s' << 'VERIFY'
           cd /mnt/stateful_partition/charhub
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
+
+          # Configure git BEFORE using git commands
+          git config --global --add safe.directory "$(pwd)" 2>/dev/null || true
+          git config --local --add safe.directory "$(pwd)" 2>/dev/null || true
 
           echo "Container status:"
           sudo $COMPOSE ps
