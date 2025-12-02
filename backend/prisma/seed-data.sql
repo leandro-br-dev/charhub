@@ -2,60 +2,63 @@
 -- This script populates essential master data that should exist before users can interact with the app
 
 -- Insert Plans (Subscription plans)
-INSERT INTO "Plan" (id, name, description, "monthlyPrice", "yearlyPrice", "maxCharacters", "maxStorageGB", "createdAt", "updatedAt")
+-- Columns: id, tier (enum: FREE, PLUS, PREMIUM), name, priceMonthly, creditsPerMonth, description, features, isActive, createdAt, updatedAt, paypalPlanId
+INSERT INTO "Plan" (id, tier, name, "priceMonthly", "creditsPerMonth", description, "isActive", "createdAt", "updatedAt")
 VALUES
-  ('plan_free', 'Free', 'Basic access', 0, 0, 5, 1, NOW(), NOW()),
-  ('plan_pro', 'Pro', 'Enhanced features', 9.99, 99.99, 50, 10, NOW(), NOW()),
-  ('plan_premium', 'Premium', 'Everything', 29.99, 299.99, 999, 100, NOW(), NOW())
+  ('plan_free', 'FREE', 'Free Plan', 0, 10, 'Basic access with limited credits', true, NOW(), NOW()),
+  ('plan_plus', 'PLUS', 'Plus Plan', 9.99, 100, 'Enhanced features with monthly credits', true, NOW(), NOW()),
+  ('plan_premium', 'PREMIUM', 'Premium Plan', 29.99, 500, 'Everything with premium support', true, NOW(), NOW())
 ON CONFLICT (id) DO NOTHING;
 
 -- Insert ServiceCreditCost (How many credits each service costs)
-INSERT INTO "ServiceCreditCost" (id, service, "baseCost", description, "createdAt", "updatedAt")
+-- Columns: id, serviceIdentifier (unique), creditsPerUnit, unitDescription, isActive, createdAt, updatedAt
+INSERT INTO "ServiceCreditCost" (id, "serviceIdentifier", "creditsPerUnit", "unitDescription", "isActive", "createdAt", "updatedAt")
 VALUES
-  ('cost_chat_default', 'CHAT', 1, 'Chat message', NOW(), NOW()),
-  ('cost_image_generation', 'IMAGE_GENERATION', 10, 'Image generation via AI', NOW(), NOW()),
-  ('cost_story_generation', 'STORY_GENERATION', 5, 'Story generation via AI', NOW(), NOW()),
-  ('cost_character_creation', 'CHARACTER_CREATION', 5, 'Create new character', NOW(), NOW())
-ON CONFLICT (id) DO NOTHING;
+  ('cost_llm_chat', 'llm_chat_safe', 1, 'Chat message via LLM', true, NOW(), NOW()),
+  ('cost_image_generation', 'image_generation', 10, 'Image generation via AI', true, NOW(), NOW()),
+  ('cost_story_generation', 'story_generation', 5, 'Story generation via AI', true, NOW(), NOW()),
+  ('cost_character_creation', 'character_creation', 5, 'Create new character', true, NOW(), NOW())
+ON CONFLICT ("serviceIdentifier") DO NOTHING;
 
 -- Insert Tags (Content categorization)
-INSERT INTO "Tag" (id, type, name, label, color, "createdAt", "updatedAt")
+-- Columns: id, name (unique per type), description, type (enum: CHARACTER, STORY, ASSET, GAME, MEDIA, GENERAL), ageRating (enum: L, TEN, TWELVE, FOURTEEN, SIXTEEN, EIGHTEEN), contentTags (array), originalLanguageCode, weight, searchable, createdAt, updatedAt
+INSERT INTO "Tag" (id, name, description, type, "ageRating", weight, searchable, "createdAt", "updatedAt")
 VALUES
   -- Character Tags
-  ('tag_char_anime', 'CHARACTER', 'anime', 'Anime', '#FF69B4', NOW(), NOW()),
-  ('tag_char_fantasy', 'CHARACTER', 'fantasy', 'Fantasy', '#8B4513', NOW(), NOW()),
-  ('tag_char_scifi', 'CHARACTER', 'scifi', 'Sci-Fi', '#4169E1', NOW(), NOW()),
-  ('tag_char_romance', 'CHARACTER', 'romance', 'Romance', '#FF1493', NOW(), NOW()),
-  ('tag_char_horror', 'CHARACTER', 'horror', 'Horror', '#2F4F4F', NOW(), NOW()),
-  ('tag_char_comedy', 'CHARACTER', 'comedy', 'Comedy', '#FFD700', NOW(), NOW()),
-  ('tag_char_mystery', 'CHARACTER', 'mystery', 'Mystery', '#8B008B', NOW(), NOW()),
-  ('tag_char_adventure', 'CHARACTER', 'adventure', 'Adventure', '#FF8C00', NOW(), NOW()),
-  ('tag_char_drama', 'CHARACTER', 'drama', 'Drama', '#DC143C', NOW(), NOW()),
-  ('tag_char_historical', 'CHARACTER', 'historical', 'Historical', '#8B7355', NOW(), NOW()),
-  ('tag_char_supernatural', 'CHARACTER', 'supernatural', 'Supernatural', '#9370DB', NOW(), NOW()),
-  ('tag_char_cyberpunk', 'CHARACTER', 'cyberpunk', 'Cyberpunk', '#00FF00', NOW(), NOW()),
+  ('tag_char_anime', 'anime', 'Anime style characters', 'CHARACTER', 'L', 1, true, NOW(), NOW()),
+  ('tag_char_fantasy', 'fantasy', 'Fantasy themed characters', 'CHARACTER', 'L', 1, true, NOW(), NOW()),
+  ('tag_char_scifi', 'scifi', 'Science fiction characters', 'CHARACTER', 'L', 1, true, NOW(), NOW()),
+  ('tag_char_romance', 'romance', 'Romance oriented characters', 'CHARACTER', 'FOURTEEN', 1, true, NOW(), NOW()),
+  ('tag_char_horror', 'horror', 'Horror themed characters', 'CHARACTER', 'SIXTEEN', 1, true, NOW(), NOW()),
+  ('tag_char_comedy', 'comedy', 'Comedic characters', 'CHARACTER', 'L', 1, true, NOW(), NOW()),
+  ('tag_char_mystery', 'mystery', 'Mystery themed characters', 'CHARACTER', 'TWELVE', 1, true, NOW(), NOW()),
+  ('tag_char_adventure', 'adventure', 'Adventure oriented characters', 'CHARACTER', 'L', 1, true, NOW(), NOW()),
+  ('tag_char_drama', 'drama', 'Drama centered characters', 'CHARACTER', 'TWELVE', 1, true, NOW(), NOW()),
+  ('tag_char_historical', 'historical', 'Historical period characters', 'CHARACTER', 'L', 1, true, NOW(), NOW()),
+  ('tag_char_supernatural', 'supernatural', 'Supernatural themed characters', 'CHARACTER', 'FOURTEEN', 1, true, NOW(), NOW()),
+  ('tag_char_cyberpunk', 'cyberpunk', 'Cyberpunk aesthetic characters', 'CHARACTER', 'SIXTEEN', 1, true, NOW(), NOW()),
 
   -- Story Tags
-  ('tag_story_short', 'STORY', 'short-story', 'Short Story', '#87CEEB', NOW(), NOW()),
-  ('tag_story_novel', 'STORY', 'novel', 'Novel', '#4169E1', NOW(), NOW()),
-  ('tag_story_serialized', 'STORY', 'serialized', 'Serialized', '#20B2AA', NOW(), NOW()),
-  ('tag_story_dark', 'STORY', 'dark', 'Dark', '#2F4F4F', NOW(), NOW()),
-  ('tag_story_wholesome', 'STORY', 'wholesome', 'Wholesome', '#FFB6C1', NOW(), NOW()),
-  ('tag_story_action', 'STORY', 'action', 'Action', '#FF4500', NOW(), NOW()),
-  ('tag_story_slice_of_life', 'STORY', 'slice-of-life', 'Slice of Life', '#DEB887', NOW(), NOW()),
-  ('tag_story_tragedy', 'STORY', 'tragedy', 'Tragedy', '#8B0000', NOW(), NOW()),
-  ('tag_story_comedy_story', 'STORY', 'comedy-story', 'Comedy Story', '#FFD700', NOW(), NOW()),
-  ('tag_story_philosophical', 'STORY', 'philosophical', 'Philosophical', '#9932CC', NOW(), NOW()),
+  ('tag_story_short', 'short-story', 'Short story format', 'STORY', 'L', 1, true, NOW(), NOW()),
+  ('tag_story_novel', 'novel', 'Novel length story', 'STORY', 'L', 1, true, NOW(), NOW()),
+  ('tag_story_serialized', 'serialized', 'Serialized story format', 'STORY', 'L', 1, true, NOW(), NOW()),
+  ('tag_story_dark', 'dark', 'Dark themed story', 'STORY', 'SIXTEEN', 1, true, NOW(), NOW()),
+  ('tag_story_wholesome', 'wholesome', 'Wholesome content story', 'STORY', 'L', 1, true, NOW(), NOW()),
+  ('tag_story_action', 'action', 'Action packed story', 'STORY', 'FOURTEEN', 1, true, NOW(), NOW()),
+  ('tag_story_slice_of_life', 'slice-of-life', 'Slice of life story', 'STORY', 'L', 1, true, NOW(), NOW()),
+  ('tag_story_tragedy', 'tragedy', 'Tragedy themed story', 'STORY', 'SIXTEEN', 1, true, NOW(), NOW()),
+  ('tag_story_comedy_story', 'comedy-story', 'Comedy story format', 'STORY', 'L', 1, true, NOW(), NOW()),
+  ('tag_story_philosophical', 'philosophical', 'Philosophical themed story', 'STORY', 'SIXTEEN', 1, true, NOW(), NOW()),
 
   -- Asset Tags
-  ('tag_asset_portrait', 'ASSET', 'portrait', 'Portrait', '#C0C0C0', NOW(), NOW()),
-  ('tag_asset_landscape', 'ASSET', 'landscape', 'Landscape', '#A9A9A9', NOW(), NOW()),
-  ('tag_asset_illustration', 'ASSET', 'illustration', 'Illustration', '#D3D3D3', NOW(), NOW()),
-  ('tag_asset_fanart', 'ASSET', 'fanart', 'Fanart', '#F0E68C', NOW(), NOW()),
-  ('tag_asset_original', 'ASSET', 'original', 'Original', '#FFFACD', NOW(), NOW()),
-  ('tag_asset_nsfw', 'ASSET', 'nsfw', 'NSFW', '#FF0000', NOW(), NOW()),
-  ('tag_asset_sfw', 'ASSET', 'sfw', 'SFW', '#00FF00', NOW(), NOW())
-ON CONFLICT (id) DO NOTHING;
+  ('tag_asset_portrait', 'portrait', 'Portrait format image', 'ASSET', 'L', 1, true, NOW(), NOW()),
+  ('tag_asset_landscape', 'landscape', 'Landscape format image', 'ASSET', 'L', 1, true, NOW(), NOW()),
+  ('tag_asset_illustration', 'illustration', 'Illustration style asset', 'ASSET', 'L', 1, true, NOW(), NOW()),
+  ('tag_asset_fanart', 'fanart', 'Fanart asset', 'ASSET', 'L', 1, true, NOW(), NOW()),
+  ('tag_asset_original', 'original', 'Original asset', 'ASSET', 'L', 1, true, NOW(), NOW()),
+  ('tag_asset_nsfw', 'nsfw', 'NSFW content asset', 'ASSET', 'EIGHTEEN', 1, true, NOW(), NOW()),
+  ('tag_asset_sfw', 'sfw', 'Safe for work asset', 'ASSET', 'L', 1, true, NOW(), NOW())
+ON CONFLICT (name, type) DO NOTHING;
 
 -- Log completion
 SELECT 'Seed data loaded successfully' AS status;
