@@ -589,6 +589,59 @@ secrets/               # Backups de produção (read-only)
 - Resetar banco de dados sem aprovação
 - Modificar `.env.production`
 
+### **Regras de Git Push - CRÍTICO**
+
+> **⚠️ IMPORTANTE: Controle de Deploy em Produção**
+>
+> Cada push para `main` **dispara automaticamente o GitHub Actions** que faz rebuild completo da aplicação em produção. Isso causa:
+> - Reinício de containers (downtime de ~3-5 minutos)
+> - Rebuild de imagens Docker
+> - Execução de migrations
+> - Restart de serviços
+>
+> **REGRA**: Só faça `git push origin main` quando:
+>
+> ✅ **Com Autorização Explícita do Usuário**:
+> - Usuário pediu para fazer push
+> - Usuário autorizou o deploy
+> - Usuário confirmou que pode ter downtime
+>
+> ✅ **Mudanças que Impactam Diretamente Produção** (deploy necessário):
+> - Fix crítico de bug em produção
+> - Hotfix de segurança
+> - Correção de Dockerfile, docker-compose.yml
+> - Alteração em migrations do Prisma
+> - Mudança em código backend/frontend
+> - Atualização de dependências (package.json)
+> - Mudança em GitHub Actions workflows
+>
+> ❌ **NUNCA faça push automático para** (apenas commit local):
+> - Documentação técnica (`docs/**/*.md`)
+> - Arquivos de planejamento (`docs/todo/`, `docs/metrics/`)
+> - Status reports (`FINAL_STATUS_*.md`, `*_INVESTIGATION.md`)
+> - Guias e tutoriais
+> - Anotações do usuário (`user-notes.md`)
+> - README updates
+>
+> **Workflow Correto para Documentação**:
+> ```bash
+> # 1. Fazer commit local (SEM push)
+> git add docs/reviewer/NOVO_DOCUMENTO.md
+> git commit -m "docs: add investigation report"
+>
+> # 2. Informar o usuário
+> echo "✅ Documento criado e commitado localmente"
+> echo "📍 Localização: docs/reviewer/NOVO_DOCUMENTO.md"
+> echo "ℹ️  Commit: $(git rev-parse --short HEAD)"
+> echo ""
+> echo "Para fazer push para produção (vai disparar rebuild):"
+> echo "  git push origin main"
+>
+> # 3. Aguardar autorização do usuário antes de push
+> ```
+>
+> **Exceção**: Se o usuário explicitamente pedir "commite e faça push", então pode fazer push imediatamente.
+
 ---
 
 ## 🏥 Troubleshooting para Agent Reviewer

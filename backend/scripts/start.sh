@@ -15,22 +15,14 @@ if [ "$RUN_MIGRATIONS" != "false" ]; then
 
   # Run database seeding after migrations
   echo "[entrypoint] Running database seed"
-  if timeout 30 npm run db:seed 2>/dev/null; then
+  npm run db:seed
+
+  if [ $? -eq 0 ]; then
     echo "[entrypoint] ✅ Database seed completed successfully"
   else
-    SEED_EXIT_CODE=$?
-    echo "[entrypoint] ⚠️  Database seed failed (exit code $SEED_EXIT_CODE)"
-    echo "[entrypoint] Attempting fallback: Loading seed data via SQL..."
-
-    # Fallback: Use psql to execute SQL seed file
-    if [ -f "/app/prisma/seed-data.sql" ]; then
-      PGPASSWORD="${DATABASE_URL##*:}" psql "${DATABASE_URL%/*}" < /app/prisma/seed-data.sql 2>/dev/null || {
-        echo "[entrypoint] ⚠️  SQL seed also failed - data may need to be populated manually"
-        echo "[entrypoint] This is expected if Tables already contain data or if Prisma has binary issues"
-      }
-    else
-      echo "[entrypoint] ⚠️  Seed SQL file not found at /app/prisma/seed-data.sql"
-    fi
+    echo "[entrypoint] ❌ Database seed failed"
+    echo "[entrypoint] This is a critical error - container will stop"
+    exit 1
   fi
 
   # Rebuild translations after seeding (tags may have changed)
@@ -139,5 +131,5 @@ if [ "$NODE_ENV" = "development" ]; then
   exec ./node_modules/.bin/ts-node-dev --respawn --ignore-watch translations src/index.ts
 else
   echo "[entrypoint] Running production server as user 'nodejs'"
-  exec su-exec nodejs node dist/index.js
+  exec gosu nodejs node dist/index.js
 fi

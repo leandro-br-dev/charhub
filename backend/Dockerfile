@@ -1,10 +1,15 @@
 # backend/Dockerfile
 
 # Build stage
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 # Accept NODE_ENV as build argument (must be redeclared per stage)
 ARG NODE_ENV=production
+
+# Install OpenSSL and other required dependencies for Prisma
+RUN apt-get update && \
+    apt-get install -y openssl ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -19,6 +24,13 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
     npm config set fetch-retries 5 && \
     echo "[DEBUG] Builder stage - installing ALL dependencies including devDependencies" && \
     npm ci --include=dev
+
+# Copy Prisma schema first (needed for generation)
+COPY prisma ./prisma
+
+# Generate Prisma Client
+RUN echo "[DEBUG] Generating Prisma Client..." && \
+    npx prisma generate
 
 # Copy source code
 COPY . .
@@ -36,15 +48,16 @@ RUN if [ "$NODE_ENV" = "production" ]; then \
     fi
 
 # Production stage
-FROM node:20-alpine AS production
+FROM node:20-slim AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
-# Install security updates
-RUN apk update && \
-    apk upgrade --no-cache && \
-    rm -rf /var/cache/apk/*
+# Install runtime dependencies for Prisma and security
+RUN apt-get update && \
+    apt-get install -y openssl ca-certificates gosu && \
+    apt-get upgrade -y && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -76,7 +89,7 @@ COPY --from=builder /app/src ./src
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/translations ./translations
 
-# Copy generated Prisma Client (needed at runtime)
+# Copy generated Prisma Client from builder
 # Already copied as part of src/ above, but ensure it's in all expected locations:
 # - src/generated: for seed/translation scripts with tsx
 # - dist/generated: for compiled JS (from dist/services imports ../generated)
@@ -85,29 +98,13 @@ COPY --from=builder /app/src/generated ./src/generated
 COPY --from=builder /app/src/generated ./dist/generated
 COPY --from=builder /app/src/generated ./generated
 
-# Fix Prisma binary permissions (critical for db:seed and migration scripts)
-# The Prisma Query Engine needs execute permissions to run
-# Must be done AFTER copying generated files
-# Also regenerate Prisma Client to ensure binaries are properly installed
-RUN echo "[DEBUG] Fixing Prisma binary permissions..." && \
-    find /app/src/generated -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
-    find /app/dist/generated -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
-    find /app/generated -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
-    find /app/node_modules -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
-    echo "[DEBUG] Regenerating Prisma Client..." && \
-    npx prisma generate && \
-    echo "[DEBUG] Prisma setup complete"
-
 # Note: In development, src/ will be mounted via Docker volume which overrides the copied src/
 
 # Create non-root user for security (used in production)
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 -G nodejs && \
+RUN groupadd -g 1001 nodejs && \
+    useradd -r -u 1001 -g nodejs nodejs && \
     chown -R nodejs:nodejs /app && \
     chmod +x /app/scripts/start.sh
-
-# Install su-exec for user switching in startup script
-RUN apk add --no-cache su-exec
 
 # Expose service port
 EXPOSE 3000
