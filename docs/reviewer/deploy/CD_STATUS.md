@@ -133,17 +133,19 @@ The following secrets must be configured in GitHub repository settings:
 ## Deployment History
 
 ### Latest Deployment
-- **Commit**: `b4ff826`
-- **Message**: `feat(deploy): add cloudflare credentials sync step to workflow`
+- **Commit**: `d63fabe`
+- **Message**: `fix(deploy): resolve git safe.directory and docker container cleanup issues`
 - **Date**: 2025-12-02
-- **Status**: ✅ Successful
+- **Status**: ✅ Ready for Testing
+- **Key Fixes**: Git config execution, docker container cleanup, build output visibility
 
-### Recent Commits (Last 5)
-1. `b4ff826` - feat(deploy): add cloudflare credentials sync step to workflow
-2. `0fc2c8f` - fix(deploy): resolve three workflow issues - SSH warning, git ownership, health check
-3. `f999e1e` - refactor(deploy): simplify workflow to use proven approach
-4. `d2cc053` - fix(deploy): replace env variables with hardcoded paths in SSH heredocs
-5. `76656e2` - fix(deploy): configure git safe.directory to fix dubious ownership error
+### Recent Commits (Last 6)
+1. `d63fabe` - fix(deploy): resolve git safe.directory and docker container cleanup issues
+2. `df46f89` - docs(deploy): add CD pipeline status report
+3. `b4ff826` - feat(deploy): add cloudflare credentials sync step to workflow
+4. `0fc2c8f` - fix(deploy): resolve three workflow issues - SSH warning, git ownership, health check
+5. `f999e1e` - refactor(deploy): simplify workflow to use proven approach
+6. `d2cc053` - fix(deploy): replace env variables with hardcoded paths in SSH heredocs
 
 ---
 
@@ -193,6 +195,37 @@ ssh leandro_br_dev_gmail_com@34.66.66.202 'cd /mnt/stateful_partition/charhub &&
 ```bash
 ssh leandro_br_dev_gmail_com@34.66.66.202 'cd /mnt/stateful_partition/charhub && docker-compose logs cloudflared'
 ```
+
+---
+
+## Recent Fixes (Latest Iteration)
+
+### Issue 1: Git Safe Directory Configuration Failed
+**Problem**: `git config --local --add safe.directory` was not being executed before git commands, causing "fatal: detected dubious ownership" errors
+**Fix**:
+- Added both `git config --global` and `git config --local` for redundancy
+- Executed before ANY git commands (fetch, reset, log)
+- Added verification message to confirm configuration took effect
+- Applied to all steps that use git commands
+
+### Issue 2: Docker Containers Not Being Fully Cleaned
+**Problem**: `docker-compose down` did not remove all containers, causing "container name already in use" conflicts on rebuild
+**Fix**:
+- Changed `docker-compose down` to `docker-compose down --remove-orphans -v`
+- Added 5-second wait after down to ensure full cleanup
+- This ensures fresh containers on next up
+
+### Issue 3: Build Output Not Visible
+**Problem**: Docker build errors were hidden, making debugging difficult
+**Fix**:
+- Added `2>&1 | tail -20` to capture last 20 lines of build output
+- Helps identify actual build failures vs silent errors
+
+### Issue 4: Git Logs Failing in Verify Step
+**Problem**: `git log -1 --oneline` failed in Verify Deployment step with same git ownership error
+**Fix**:
+- Added git config commands at the start of Verify Deployment step
+- Uses `$(pwd)` for absolute path reference
 
 ---
 
