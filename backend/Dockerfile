@@ -88,10 +88,15 @@ COPY --from=builder /app/src/generated ./generated
 # Fix Prisma binary permissions (critical for db:seed and migration scripts)
 # The Prisma Query Engine needs execute permissions to run
 # Must be done AFTER copying generated files
-RUN find /app/src/generated -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
+# Also regenerate Prisma Client to ensure binaries are properly installed
+RUN echo "[DEBUG] Fixing Prisma binary permissions..." && \
+    find /app/src/generated -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
     find /app/dist/generated -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
     find /app/generated -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
-    echo "[DEBUG] Prisma binary permissions fixed"
+    find /app/node_modules -name "libquery_engine*.so*" -exec chmod +x {} \; 2>/dev/null || true && \
+    echo "[DEBUG] Regenerating Prisma Client..." && \
+    npx prisma generate && \
+    echo "[DEBUG] Prisma setup complete"
 
 # Note: In development, src/ will be mounted via Docker volume which overrides the copied src/
 
