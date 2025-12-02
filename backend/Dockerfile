@@ -63,6 +63,12 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
     npm ci --include=dev && \
     npm cache clean --force
 
+# Fix Prisma binary permissions (critical for db:seed and migration scripts)
+# The Prisma Query Engine needs execute permissions to run
+RUN chmod +x /app/node_modules/.prisma/client/libquery_engine* 2>/dev/null || true && \
+    chmod +x /app/node_modules/@prisma/engines/dist/* 2>/dev/null || true && \
+    echo "[DEBUG] Prisma binary permissions fixed"
+
 # Copy files from builder stage
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
