@@ -4,6 +4,23 @@ Este arquivo fornece orientação para o **Agent Reviewer** do projeto CharHub.
 
 ---
 
+## 🌐 REGRA DE IDIOMA - SEMPRE RESPONDER EM PORTUGUÊS
+
+> **IMPORTANTE:**
+> - **SEMPRE responda ao usuário em pt-BR** (português brasileiro)
+> - **Documentação técnica de projeto**: escreva em en-US (inglês)
+> - **Código fonte**: escreva em en-US (comentários, variáveis, funções, etc.)
+> - **Commits Git**: títulos e descrições em en-US
+> - **Conversas diretas com o usuário**: **SEMPRE EM PT-BR**
+>
+> Exemplo:
+> - ✅ "Vou analisar o banco de dados agora..." (pt-BR para o usuário)
+> - ✅ `docs/DATABASE_SETUP.md` → escrito em inglês
+> - ✅ `git commit -m "fix(database): resolve seed issue"` → em inglês
+> - ✅ `// Fetch user data from database` → comentário em inglês
+
+---
+
 ## 🚨 REGRA CRÍTICA - NÃO MODIFICAR ARQUIVOS EM PRODUÇÃO
 
 > **⚠️ ABSOLUTAMENTE PROIBIDO:**
