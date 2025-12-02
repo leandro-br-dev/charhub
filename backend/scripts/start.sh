@@ -15,10 +15,23 @@ if [ "$RUN_MIGRATIONS" != "false" ]; then
 
   # Run database seeding after migrations
   echo "[entrypoint] Running database seed"
-  npm run db:seed || {
-    echo "[entrypoint] WARNING: Database seed failed (exit code $?)"
-    echo "[entrypoint] This may be expected if data already exists"
-  }
+  if timeout 30 npm run db:seed 2>/dev/null; then
+    echo "[entrypoint] ✅ Database seed completed successfully"
+  else
+    SEED_EXIT_CODE=$?
+    echo "[entrypoint] ⚠️  Database seed failed (exit code $SEED_EXIT_CODE)"
+    echo "[entrypoint] Attempting fallback: Loading seed data via SQL..."
+
+    # Fallback: Use psql to execute SQL seed file
+    if [ -f "/app/prisma/seed-data.sql" ]; then
+      PGPASSWORD="${DATABASE_URL##*:}" psql "${DATABASE_URL%/*}" < /app/prisma/seed-data.sql 2>/dev/null || {
+        echo "[entrypoint] ⚠️  SQL seed also failed - data may need to be populated manually"
+        echo "[entrypoint] This is expected if Tables already contain data or if Prisma has binary issues"
+      }
+    else
+      echo "[entrypoint] ⚠️  Seed SQL file not found at /app/prisma/seed-data.sql"
+    fi
+  fi
 
   # Rebuild translations after seeding (tags may have changed)
   if [ "$NODE_ENV" = "production" ]; then

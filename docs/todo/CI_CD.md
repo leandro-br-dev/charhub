@@ -1,232 +1,57 @@
 # CI/CD com GitHub Actions
 
-> **Status**: Planejamento
+> **Status**: PARCIALMENTE IMPLEMENTADO
 > **Prioridade**: Alta
 > **Complexidade**: Media
-> **Ultima atualizacao**: 2025-11-23
+> **Ultima atualizacao**: 2025-12-02
 
 ## Resumo
 
-Implementar CI/CD automatizado com GitHub Actions para:
-- Rodar testes automaticamente em cada PR
-- Deploy automatico para staging
-- Deploy manual com aprovacao para producao
+Implementar CI/CD automatizado com GitHub Actions:
+- ✅ Deploy automatico para producao (CONCLUÍDO)
+- 🔲 Deploy automatico para staging (PENDENTE)
+- 🔲 Testes automaticos em cada PR (PENDENTE - requer test suites)
 
-## Beneficios
+## Status Atual
 
-- Previne bugs de chegar em producao
-- Valida code quality automaticamente
-- Documentacao viva via testes
-- Deploys mais rapidos e confiaveis
+### ✅ CONCLUÍDO
 
-## Pre-requisitos
+1. **Workflow Deploy Production**
+   - Arquivo: `.github/workflows/deploy-production.yml`
+   - Status: ✅ Production Ready
+   - Trigger: Push to main
+   - Features:
+     - SSH via static key
+     - Git safe.directory handling
+     - Docker-compose rebuild with --remove-orphans
+     - Health checks via container status
+     - Cloudflare tunnel credentials sync
+   - Documentação: `docs/reviewer/deploy/CD_DEPLOY_GUIDE.md`
 
-Antes de implementar CI/CD:
-- [ ] Implementar testes unitarios no backend
-- [ ] Implementar testes unitarios no frontend
-- [ ] Configurar banco de dados de teste
-- [ ] Implementar integration tests
+2. **Production VM Setup**
+   - ✅ GCP Compute Engine instance
+   - ✅ Container-Optimized OS
+   - ✅ Docker Compose orchestration
+   - ✅ Cloudflare tunnel for HTTPS
+   - Documentação: `docs/reviewer/deploy/VM_SETUP_AND_RECOVERY.md`
 
----
+3. **SSH Infrastructure**
+   - ✅ Static RSA 4096-bit key in GitHub Secrets
+   - ✅ OS Login configured on VM
+   - ✅ Permission handling in workflow
 
-## Fase 1: CI Basico
+## Pre-requisitos para Próximas Fases
 
-### Workflow Backend CI
-
-Arquivo: `.github/workflows/backend-ci.yml`
-
-```yaml
-name: Backend CI
-
-on:
-  pull_request:
-    branches: [main, develop]
-    paths:
-      - 'backend/**'
-  push:
-    branches: [main, develop]
-    paths:
-      - 'backend/**'
-
-jobs:
-  lint-and-typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
-
-      - name: Install dependencies
-        working-directory: backend
-        run: npm ci
-
-      - name: Run linter
-        working-directory: backend
-        run: npm run lint
-
-      - name: Run type check
-        working-directory: backend
-        run: npm run typecheck
-
-  test:
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: charhub_test
-        ports:
-          - 5432:5432
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
-
-      - name: Install dependencies
-        working-directory: backend
-        run: npm ci
-
-      - name: Run migrations
-        working-directory: backend
-        run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: postgresql://test:test@localhost:5432/charhub_test
-
-      - name: Run tests
-        working-directory: backend
-        run: npm test
-        env:
-          DATABASE_URL: postgresql://test:test@localhost:5432/charhub_test
-          REDIS_URL: redis://localhost:6379
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build Docker image
-        run: docker build -t charhub-backend ./backend
-
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run npm audit
-        working-directory: backend
-        run: npm audit --audit-level=high
-```
-
-### Workflow Frontend CI
-
-Arquivo: `.github/workflows/frontend-ci.yml`
-
-```yaml
-name: Frontend CI
-
-on:
-  pull_request:
-    branches: [main, develop]
-    paths:
-      - 'frontend/**'
-  push:
-    branches: [main, develop]
-    paths:
-      - 'frontend/**'
-
-jobs:
-  lint-and-typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm ci
-
-      - name: Run linter
-        working-directory: frontend
-        run: npm run lint
-
-      - name: Run type check
-        working-directory: frontend
-        run: npm run typecheck
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm ci
-
-      - name: Run tests
-        working-directory: frontend
-        run: npm test
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm ci
-
-      - name: Build
-        working-directory: frontend
-        run: npm run build
-        env:
-          VITE_API_URL: https://charhub.app/api
-
-      - name: Check bundle size
-        working-directory: frontend
-        run: |
-          SIZE=$(du -sb dist | cut -f1)
-          if [ $SIZE -gt 10485760 ]; then
-            echo "Bundle too large: $SIZE bytes (max 10MB)"
-            exit 1
-          fi
-```
-
-### Tarefas Fase 1
-
-- [ ] Criar `.github/workflows/backend-ci.yml`
-- [ ] Criar `.github/workflows/frontend-ci.yml`
-- [ ] Adicionar scripts `lint` e `typecheck` em package.json
-- [ ] Configurar ESLint em ambos projetos
-- [ ] Testar workflows em PR de teste
+Antes de implementar Staging:
+- [ ] Criar VM staging (custo: ~R$90/mês)
+- [ ] Configurar Cloudflare tunnel para staging.charhub.app
+- [ ] Implementar testes automaticos (requer test suites)
 
 ---
 
-## Fase 1.5: Adicionar Staging (FUTURO - Quando Receitas Aumentarem)
+## Fase Staging: Deploy Automatico para Staging Environment
+
+### Status: 🔲 PENDENTE
 
 > **Status**: Bloqueado por custos
 > **Prioridade**: Alta
@@ -260,249 +85,54 @@ gcloud compute instances create charhub-vm-staging \
 develop/feature → (CI) → main → (CD) → staging → (Manual Approval) → (CD) → production
 ```
 
-### Tarefas para o Futuro
+### Why Staging is Important
 
-- [ ] Quando receitas aumentarem, criar VM staging (custo: ~R$90/mês)
-- [ ] Configurar Cloudflare tunnel para staging.charhub.app
-- [ ] Implementar workflow `deploy-staging.yml`
-- [ ] Atualizar workflow `deploy-production.yml` para requer aprovação após staging tests
-- [ ] Adicionar notificações Slack/Discord para staging deploys
+- **Testes isolados**: Validar mudanças sem afetar produção
+- **Dados produção-like**: Testar com escala real antes de deploy
+- **Rollback seguro**: Se algo quebrar, usuários não são afetados
+- **Integração APIs**: Validar PayPal, Cloudflare, Gemini antes do deploy
 
----
+### Setup when Implementing
 
-## Fase 2: Deploy Staging Automatico
-
-### Infraestrutura Necessaria
-
+1. **Create Staging VM**:
 ```bash
-# Criar VM staging
 gcloud compute instances create charhub-vm-staging \
   --zone=us-central1-a \
   --machine-type=e2-micro \
   --image-family=cos-stable \
   --image-project=cos-cloud
-
-# Criar Cloud SQL staging (opcional - pode usar mesma instancia)
-# URL: https://staging.charhub.app
 ```
 
-### Workflow Deploy Staging
+2. **Cloudflare Tunnel**: `staging.charhub.app` → VM staging
 
-Arquivo: `.github/workflows/deploy-staging.yml`
+3. **GitHub Workflow**: Deploy automático para staging após merge em main
 
-```yaml
-name: Deploy Staging
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: staging
-      url: https://staging.charhub.app
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Deploy to Staging
-        run: |
-          gcloud compute ssh charhub-vm-staging --zone=us-central1-a --command="
-            cd /mnt/stateful_partition/charhub &&
-            git pull origin main &&
-            docker compose build &&
-            docker compose up -d
-          "
-
-      - name: Run smoke tests
-        run: |
-          sleep 30
-          curl -f https://staging.charhub.app/api/v1/health || exit 1
-
-      - name: Notify on failure
-        if: failure()
-        run: echo "Deploy staging failed!"
+4. **Fluxo Ideal**:
+```
+main push → (CD) → staging → (Manual Approval) → (CD) → production
 ```
 
-### Tarefas Fase 2
+### Tarefas for Staging Implementation
 
-- [ ] Criar VM staging no GCP
+- [ ] Quando receitas aumentarem, criar VM staging (custo: ~R$90/mês)
 - [ ] Configurar Cloudflare tunnel para staging.charhub.app
-- [ ] Criar service account com permissoes SSH
-- [ ] Adicionar `GCP_SA_KEY` nos secrets do GitHub
-- [ ] Criar workflow `deploy-staging.yml`
-- [ ] Testar deploy automatico
+- [ ] Implementar workflow `deploy-staging.yml`
+- [ ] Adicionar notificações Slack/Discord para staging deploys
+- [ ] Atualizar workflow `deploy-production.yml` para requer aprovação após staging tests
 
 ---
 
-## Fase 3: Deploy Production com Aprovacao
-
-### Workflow Deploy Production
-
-Arquivo: `.github/workflows/deploy-production.yml`
-
-```yaml
-name: Deploy Production
-
-on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Git ref to deploy (tag, branch, or commit)'
-        required: true
-        default: 'main'
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://charhub.app
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.version }}
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY_PROD }}
-
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: Create backup
-        run: |
-          gcloud compute ssh charhub-vm --zone=us-central1-a --command="
-            cd /mnt/stateful_partition/charhub &&
-            mkdir -p backups &&
-            cp .env backups/.env.$(date +%Y%m%d_%H%M%S)
-          "
-
-      - name: Deploy to Production
-        run: |
-          gcloud compute ssh charhub-vm --zone=us-central1-a --command="
-            cd /mnt/stateful_partition/charhub &&
-            git fetch origin &&
-            git checkout ${{ github.event.inputs.version }} &&
-            docker compose build &&
-            docker compose up -d &&
-            docker compose exec -T backend npx prisma migrate deploy
-          "
-
-      - name: Health check
-        run: |
-          sleep 60
-          curl -f https://charhub.app/api/v1/health || exit 1
-
-      - name: Rollback on failure
-        if: failure()
-        run: |
-          gcloud compute ssh charhub-vm --zone=us-central1-a --command="
-            cd /mnt/stateful_partition/charhub &&
-            git checkout HEAD~1 &&
-            docker compose build &&
-            docker compose up -d
-          "
-```
-
-### Configuracao GitHub
-
-1. Settings → Environments → Production
-2. Required reviewers: adicionar aprovadores
-3. Deployment protection rules: exigir aprovacao
-
-### Tarefas Fase 3
-
-- [ ] Criar workflow `deploy-production.yml`
-- [ ] Configurar environment "production" no GitHub
-- [ ] Adicionar required reviewers
-- [ ] Criar service account separada para producao
-- [ ] Testar fluxo de aprovacao
-
----
-
-## Fase 4: Dependabot e Notificacoes
-
-### Dependabot
-
-Arquivo: `.github/dependabot.yml`
-
-```yaml
-version: 2
-updates:
-  - package-ecosystem: 'npm'
-    directory: '/backend'
-    schedule:
-      interval: 'weekly'
-    reviewers:
-      - 'seu-usuario-github'
-    labels:
-      - 'dependencies'
-      - 'backend'
-
-  - package-ecosystem: 'npm'
-    directory: '/frontend'
-    schedule:
-      interval: 'weekly'
-    reviewers:
-      - 'seu-usuario-github'
-    labels:
-      - 'dependencies'
-      - 'frontend'
-```
-
-### Notificacoes Slack/Discord
-
-```yaml
-# Adicionar ao final de cada workflow
-- name: Notify Slack
-  if: always()
-  uses: slackapi/slack-github-action@v1
-  with:
-    payload: |
-      {
-        "text": "${{ job.status == 'success' && '✅' || '❌' }} ${{ github.workflow }} - ${{ job.status }}"
-      }
-  env:
-    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
-```
-
-### Tarefas Fase 4
-
-- [ ] Criar `.github/dependabot.yml`
-- [ ] Configurar webhook Slack/Discord
-- [ ] Adicionar notificacoes aos workflows
-- [ ] Adicionar badges no README
-
----
-
-## Estimativas
-
-| Fase | Esforco | Pre-requisitos |
-|------|---------|----------------|
-| Fase 1: CI Basico | 40-60h | Testes implementados |
-| Fase 2: Deploy Staging | 30-40h | VM staging criada |
-| Fase 3: Deploy Production | 20-30h | Fase 2 completa |
-| Fase 4: Extras | 15-20h | Fases anteriores |
-| **Total** | **105-150h** | |
-
-## Custos
+## Custos Atuais
 
 - **GitHub Actions Free Tier**: 2000 min/mes (repos privados)
+- **VM Production (e2-medium)**: ~$15-20/mes
+- **Cloudflare Tunnel**: Free (included in Cloudflare Free plan)
+- **Estimativa de uso CD**: ~1440 min/mes (dentro do free tier)
+
+### Custos Futuros (com Staging)
+
 - **VM Staging (e2-micro)**: ~$8/mes
-- **Estimativa de uso**: ~1440 min/mes (dentro do free tier)
+- **Total mensal**: ~$23-28/mes
 
 ---
 

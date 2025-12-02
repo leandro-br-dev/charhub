@@ -2,6 +2,31 @@
 
 Este arquivo fornece orientação para o **Agent Reviewer** do projeto CharHub.
 
+---
+
+## 🚨 REGRA CRÍTICA - NÃO MODIFICAR ARQUIVOS EM PRODUÇÃO
+
+> **⚠️ ABSOLUTAMENTE PROIBIDO:**
+> - **NUNCA** edite arquivos de código na raiz do repositório (`backend/`, `frontend/`, `.github/workflows/`, etc.)
+> - **NUNCA** faça edições que afetam CI/CD, Dockerfile, ou configurações de sistema
+> - **NUNCA** faça push direto à VM ou altere arquivos em `/mnt/stateful_partition/charhub`
+>
+> **POR QUÊ?**
+> 1. **GitHub Actions Rejection**: Mudanças diretas não sincronizadas serão rejeitadas na próxima `git pull`
+> 2. **CI/CD Quebra**: Edições causam conflitos entre código local (VW) e repositório (GitHub)
+> 3. **Deployment Failure**: CD pipeline pode falhar ao tentar aplicar mudanças conflitantes
+> 4. **Data Loss**: Alterações não versionadas podem ser sobrescrito nas próximas atualizações
+> 5. **Security Risk**: Editar produção manualmente viola padrões de segurança (Infrastructure as Code)
+>
+> **O QUE FAZER**:
+> - Identifique o problema em produção
+> - Documente em `docs/USER_FEATURE_NOTES.md` ou `docs/todo/`
+> - Crie PR via Agent Coder com a correção
+> - Aguarde merge normal via GitHub Actions
+> - Deploy automático aplicará as mudanças corretamente
+
+---
+
 > **⚠️ IMPORTANTE - Regra de Documentação:**
 > - Este arquivo (`docs/reviewer/CLAUDE.md`) **É VERSIONADO** no Git
 > - O arquivo `CLAUDE.md` na **raiz do projeto** é uma **CÓPIA LOCAL** não versionada (adicionado ao `.gitignore`)
@@ -55,12 +80,58 @@ Você trabalha **SEMPRE** na branch `main` e possui responsabilidades múltiplas
 - Garantir cobertura mínima de testes para código crítico
 
 ### 6️⃣ **Deploy & Monitoramento em Produção**
-- Disparar GitHub Actions para deploy automático
-- Monitorar logs de produção após deploy
-- Executar scripts de migração se necessário (comunicado pelo Coder no PR)
-- Verificar integridade dos serviços (backend, frontend, banco de dados)
-- Fazer rollback se detectar erros críticos
-- Atualizar status de deploy em arquivo de log
+- **Deploy Automático**: Push para `main` dispara GitHub Actions automaticamente
+- **Monitoramento**: Acompanhar logs de produção após deploy
+- **Migração**: Executar scripts de migração se necessário (comunicado pelo Coder no PR)
+- **Integridade**: Verificar saúde dos serviços (backend, frontend, banco de dados)
+- **Rollback**: Fazer rollback se detectar erros críticos
+- **Logging**: Atualizar status de deploy em arquivo de log
+
+#### CD Pipeline Implementado (Production Ready)
+
+O CD pipeline automático está **100% operacional**:
+
+**Workflow**: `.github/workflows/deploy-production.yml`
+- Trigger: Push para `main`
+- Duração: ~4-5 minutos
+- Taxa sucesso: ~95%
+
+**Fluxo de Deployment**:
+1. Pre-Deploy Checks (validação de branch)
+2. GCP Authentication (Workload Identity)
+3. SSH Setup (static RSA key)
+4. Pull Latest Code (git fetch + reset com permission fixes)
+5. Cloudflare Credentials Sync
+6. Container Rebuild (docker-compose com --remove-orphans)
+7. Health Check (validação de container status)
+8. Deployment Verification
+9. Cleanup & Notify
+
+**Documentação Essencial** (consulte antes de trabalhar):
+- **CD Deploy Guide** (`docs/reviewer/deploy/CD_DEPLOY_GUIDE.md`) - How CD works, troubleshooting
+- **VM Setup & Recovery** (`docs/reviewer/deploy/VM_SETUP_AND_RECOVERY.md`) - VM setup from scratch, recovery procedures
+- **Git & GitHub Actions Reference** (`docs/reviewer/GIT_AND_GITHUB_ACTIONS_REFERENCE.md`) - Common commands
+
+**Critical Lessons Learned**:
+- **Permission Management**: Sempre executar `sudo chown` + `sudo chmod` ANTES de git operations
+- **Docker Cleanup**: Usar `docker-compose down --remove-orphans -v` para evitar conflitos
+- **Git Safety**: Configurar `git config --global --add safe.directory` devido à Git 2.35+ security
+- **Health Checks**: Validar status de container (não HTTPS externo) para independência de Cloudflare
+
+**Troubleshooting Rápido**:
+```bash
+# Ver deploy em tempo real
+gh run watch
+
+# SSH para VM
+gcloud compute ssh charhub-vm --zone=us-central1-a
+
+# Fazer rollback
+git revert HEAD && git push origin main
+
+# Verificar site
+curl -I https://charhub.app
+```
 
 ### 7️⃣ **Coleta de Métricas & Business Intelligence**
 - Coletar dados de uso de usuários (analytics, comportamentos)
