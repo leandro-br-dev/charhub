@@ -102,6 +102,20 @@ jobs:
           git log --oneline $BEFORE..$AFTER
           PULL
 
+      - name: Sync Cloudflare Credentials
+        run: |
+          echo "🔐 Syncing Cloudflare credentials..."
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i $HOME/.ssh/deploy_key \
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'CREDS'
+          APP_DIR="/mnt/stateful_partition/charhub"
+          # Verify cloudflared config directory exists
+          sudo mkdir -p "$APP_DIR/cloudflared/config/prod"
+          sudo chmod 755 "$APP_DIR/cloudflared/config/prod"
+          CREDS
+
       - name: Rebuild Containers
         run: |
           echo "🔨 Rebuilding containers..."
