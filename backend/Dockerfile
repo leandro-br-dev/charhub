@@ -1,15 +1,13 @@
 # backend/Dockerfile
 
 # Build stage
-FROM node:20-slim AS builder
+FROM node:20-alpine AS builder
 
 # Accept NODE_ENV as build argument (must be redeclared per stage)
 ARG NODE_ENV=production
 
 # Install OpenSSL and other required dependencies for Prisma
-RUN apt-get update && \
-    apt-get install -y openssl ca-certificates && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache openssl libc6-compat
 
 WORKDIR /app
 
@@ -48,16 +46,14 @@ RUN if [ "$NODE_ENV" = "production" ]; then \
     fi
 
 # Production stage
-FROM node:20-slim AS production
+FROM node:20-alpine AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 # Install runtime dependencies for Prisma and security
-RUN apt-get update && \
-    apt-get install -y openssl ca-certificates gosu && \
-    apt-get upgrade -y && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache openssl libc6-compat su-exec && \
+    apk upgrade --no-cache
 
 WORKDIR /app
 
@@ -101,8 +97,8 @@ COPY --from=builder /app/src/generated ./generated
 # Note: In development, src/ will be mounted via Docker volume which overrides the copied src/
 
 # Create non-root user for security (used in production)
-RUN groupadd -g 1001 nodejs && \
-    useradd -r -u 1001 -g nodejs nodejs && \
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 -G nodejs && \
     chown -R nodejs:nodejs /app && \
     chmod +x /app/scripts/start.sh
 

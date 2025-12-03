@@ -131,5 +131,5 @@ if [ "$NODE_ENV" = "development" ]; then
   exec ./node_modules/.bin/ts-node-dev --respawn --ignore-watch translations src/index.ts
 else
   echo "[entrypoint] Running production server as user 'nodejs'"
-  exec gosu nodejs node dist/index.js
+  exec su-exec nodejs node dist/index.js
 fi
