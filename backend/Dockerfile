@@ -76,6 +76,10 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
 
+# Copy node_modules from builder (CRITICAL: needed for npx and dependencies)
+# This ensures we have the pre-compiled modules and tools like npm, npx
+COPY --from=builder /app/node_modules ./node_modules
+
 # Copy source code (needed for seed and translation scripts that run at startup)
 COPY --from=builder /app/src ./src
 
