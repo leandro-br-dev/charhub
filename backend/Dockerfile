@@ -57,8 +57,14 @@ RUN apk add --no-cache openssl libc6-compat su-exec && \
 
 WORKDIR /app
 
-# Copy dependency manifests
+# Copy dependency manifests first
 COPY package*.json ./
+
+# Copy all files from builder BEFORE npm install
+# This ensures prisma schema and source are available during npm install/prisma operations
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/src ./src
 
 # Install dependencies based on environment
 # Configure npm for network resilience before installation
@@ -71,17 +77,6 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
     echo "Installing all dependencies (including dev tools needed for seed/translations)"; \
     npm ci --include=dev && \
     npm cache clean --force
-
-# Copy files from builder stage
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/scripts ./scripts
-
-# Copy node_modules from builder (CRITICAL: needed for npx and dependencies)
-# This ensures we have the pre-compiled modules and tools like npm, npx
-COPY --from=builder /app/node_modules ./node_modules
-
-# Copy source code (needed for seed and translation scripts that run at startup)
-COPY --from=builder /app/src ./src
 
 # Copy built artifacts from builder
 # Production: dist/ has compiled code, translations/ has all languages
