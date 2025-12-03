@@ -8,6 +8,18 @@ ENABLE_HOT_RELOAD=${ENABLE_HOT_RELOAD:-true}
 echo "[entrypoint] Environment: $NODE_ENV"
 echo "[entrypoint] Hot reload: $ENABLE_HOT_RELOAD"
 
+# Generate Prisma Client (critical for development with volume mounts)
+echo "[entrypoint] Generating Prisma Client..."
+npx prisma generate
+
+if [ $? -eq 0 ]; then
+  echo "[entrypoint] ✅ Prisma Client generated successfully"
+else
+  echo "[entrypoint] ❌ Prisma Client generation failed"
+  echo "[entrypoint] This is a critical error - container will stop"
+  exit 1
+fi
+
 # Run database migrations
 if [ "$RUN_MIGRATIONS" != "false" ]; then
   echo "[entrypoint] Running database migrations"
