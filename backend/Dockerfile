@@ -26,12 +26,12 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
 # Copy Prisma schema first (needed for generation)
 COPY prisma ./prisma
 
-# Generate Prisma Client
-RUN echo "[DEBUG] Generating Prisma Client..." && \
-    npx prisma generate
-
-# Copy source code
+# Copy source code (which includes pre-generated Prisma Client with correct binaryTarget)
 COPY . .
+
+# IMPORTANT: DO NOT run prisma generate here - we're using pre-generated binaries committed to Git
+# The binaries are already in src/generated/prisma/ with the correct binaryTarget for this OS
+# Running generate would regenerate with the wrong binaryTarget for the build platform
 
 # Build TypeScript output (production only)
 # Always create dist/ and translations/ directories (even if empty in dev)
