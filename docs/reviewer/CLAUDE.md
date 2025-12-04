@@ -642,6 +642,65 @@ secrets/               # Backups de produção (read-only)
 >
 > **Exceção**: Se o usuário explicitamente pedir "commite e faça push", então pode fazer push imediatamente.
 
+### **⚠️ REGRA CRÍTICA: Aguardar GitHub Actions Completar Antes de Múltiplos Pushes**
+
+> **ABSOLUTAMENTE PROIBIDO:**
+> - **NÃO FAÇA DOIS OU MAIS PUSHES PARA `main` EM SEQUÊNCIA RÁPIDA**
+> - **SEMPRE aguarde o GitHub Actions completar (✅ ou ❌) antes de fazer novo push**
+>
+> **POR QUÊ?**
+> 1. **Race Condition em Produção**: Dois workflows simultâneos causam conflito
+>    - Backend CI #37 e Deploy #59 rodando ao mesmo tempo
+>    - Ambos executando `docker-compose down` e `up` na mesma VM
+>    - Containers corrompidos, charhub.app inacessível
+> 2. **CI/CD Pipeline Quebra**: GitHub Actions não consegue processar múltiplos pushes simultâneos
+> 3. **Downtime em Produção**: Usuários ficam sem acesso enquanto containers estão em conflito
+> 4. **Debugging Impossível**: Não sabemos qual push causou qual erro
+> 5. **Desastre Exponencial**: Cada novo push dispara MAIS workflows, piorando o problema
+>
+> **O QUE FAZER CORRETAMENTE**:
+> ```bash
+> # 1. Fazer commit e push
+> git add backend/Dockerfile
+> git commit -m "fix(dockerfile): correct prisma binary issue"
+> git push origin main
+> echo "✅ Push #1 enviado"
+>
+> # 2. AGUARDAR GitHub Actions completar (2-3 minutos)
+> # - Abrir: https://github.com/seu-repo/actions
+> # - Esperar Backend CI terminar (lint, test, build, security)
+> # - Esperar Deploy to Production terminar (health check)
+> # - Verificar: ✅ "All checks passed" ou ❌ "Failed"
+>
+> # 3. SOMENTE DEPOIS fazer novo commit/push
+> git add backend/package.json
+> git commit -m "fix(deps): update vulnerable dependency"
+> git push origin main
+> echo "✅ Push #2 enviado (após aguardar Push #1)"
+> ```
+>
+> **Como Monitorar**:
+> - Terminal: `gh run watch`
+> - GitHub Web: https://github.com/seu-repo/actions (abrir último workflow)
+> - Buscar: "✅ All checks passed" ou "❌ Failed"
+> - Tempo esperado: 2-3 minutos por push (Deploy #60, Deploy #61, etc.)
+>
+> **Sintomas de Violação**:
+> - Múltiplos workflows de Deploy rodando (`Deploy #58`, `Deploy #59` simultâneos)
+> - Status "In Progress" durante muitos minutos
+> - Erro: `Health check failed - backend not healthy`
+> - Production: `charhub.app` inacessível, containers offline
+>
+> **Recuperação de Erro**:
+> 1. Se detectar múltiplos pushes simultâneos, fazer imediatamente rollback:
+>    ```bash
+>    git revert HEAD
+>    git push origin main
+>    # Aguardar Deploy completar (revert de revert)
+>    ```
+> 2. Documentar o incident em `/docs/reviewer/incident-log.md`
+> 3. Aguardar aprovação do usuário para novo push
+
 ---
 
 ## 🏥 Troubleshooting para Agent Reviewer
