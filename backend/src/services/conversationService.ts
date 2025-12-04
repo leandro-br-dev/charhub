@@ -996,7 +996,7 @@ export async function discoverPublicConversations(query: DiscoverConversationsQu
         orderBy = { createdAt: 'desc' };
         break;
       case 'popular':
-      default:
+      default: {
         // For popular, we'll sort by lastMessageAt but filter active conversations
         orderBy = { lastMessageAt: 'desc' };
         // Only show conversations with recent activity (last 7 days)
@@ -1006,6 +1006,7 @@ export async function discoverPublicConversations(query: DiscoverConversationsQu
           gte: sevenDaysAgo,
         };
         break;
+      }
     }
 
     // Fetch conversations with participants and latest messages

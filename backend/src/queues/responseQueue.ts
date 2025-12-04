@@ -304,8 +304,8 @@ export async function queueAIResponse(data: ResponseJobData): Promise<string> {
 process.on('SIGTERM', async () => {
   if (!responseWorker || !responseQueue) return;
   logger.info('SIGTERM received, closing response worker and queue');
-  try { await responseWorker.close(); } catch {}
-  try { await responseQueue.close(); } catch {}
-  try { await queueConnection?.quit(); } catch {}
-  try { await workerConnection?.quit(); } catch {}
+  try { await responseWorker.close(); } catch { /* Ignore close errors during shutdown */ }
+  try { await responseQueue.close(); } catch { /* Ignore close errors during shutdown */ }
+  try { await queueConnection?.quit(); } catch { /* Ignore quit errors during shutdown */ }
+  try { await workerConnection?.quit(); } catch { /* Ignore quit errors during shutdown */ }
 });
