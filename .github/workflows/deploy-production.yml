@@ -37,10 +37,70 @@ jobs:
           echo "📋 Commits being deployed:"
           git log --oneline -5
 
+  ci-gate:
+    name: Wait for CI Pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Wait for Backend CI to complete
+        run: |
+          echo "🔄 Waiting for Backend CI workflow to complete..."
+
+          # Get the current workflow run ID
+          CURRENT_RUN_ID="${{ github.run_id }}"
+
+          # Get the commit SHA
+          COMMIT_SHA="${{ github.sha }}"
+
+          # Poll for Backend CI completion (max 30 retries = 30 minutes)
+          for i in {1..30}; do
+            echo "Attempt $i/30..."
+
+            # Get the latest Backend CI run for this commit
+            BACKEND_CI_RUN=$(gh run list \
+              --workflow=backend-ci.yml \
+              --branch=main \
+              --json status,conclusion,databaseId \
+              --limit=1 \
+              --jq '.[] | select(.status != "requested") | {status, conclusion, id: .databaseId}' \
+              2>/dev/null)
+
+            if [ -z "$BACKEND_CI_RUN" ]; then
+              echo "  ℹ️  Backend CI not yet started, waiting..."
+              sleep 60
+              continue
+            fi
+
+            STATUS=$(echo "$BACKEND_CI_RUN" | jq -r '.status')
+            CONCLUSION=$(echo "$BACKEND_CI_RUN" | jq -r '.conclusion')
+
+            if [ "$STATUS" = "completed" ]; then
+              if [ "$CONCLUSION" = "success" ]; then
+                echo "✅ Backend CI passed!"
+                exit 0
+              else
+                echo "❌ Backend CI failed (conclusion: $CONCLUSION)"
+                exit 1
+              fi
+            else
+              echo "  ⏳ Backend CI still running (status: $STATUS)"
+              sleep 60
+            fi
+          done
+
+          echo "❌ Timeout waiting for Backend CI to complete (30 minutes)"
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   deploy:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    needs: [pre-deploy-checks]
+    needs: [pre-deploy-checks, ci-gate]
+    if: always()
     environment:
       name: production
       url: https://charhub.app
