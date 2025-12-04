@@ -65,7 +65,7 @@ jobs:
               --branch=main \
               --json status,conclusion,databaseId \
               --limit=1 \
-              --jq '.[] | select(.status != "requested") | {status, conclusion, id: .databaseId}' \
+              --jq '.[] | {status, conclusion, id: .databaseId}' \
               2>/dev/null)
 
             if [ -z "$BACKEND_CI_RUN" ]; then
