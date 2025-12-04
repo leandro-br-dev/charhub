@@ -66,12 +66,6 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/src ./src
 
-# Copy Prisma query engine binaries BEFORE npm ci
-# (npm ci creates fresh node_modules, so must have these pre-built binaries available)
-# This directory contains the compiled binaries for the target architecture
-# Without this, Prisma cannot find the query engine at runtime
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-
 # Install dependencies based on environment
 # Configure npm for network resilience before installation
 # NOTE: Installing ALL dependencies (including dev) in both environments
@@ -89,6 +83,11 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
 # Development: dist/ and translations/ are empty (will be generated at runtime)
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/translations ./translations
+
+# Copy Prisma query engine binaries (CRITICAL - needed at runtime for musl)
+# This directory contains the compiled binaries for the target architecture
+# Without this, Prisma cannot find the query engine at runtime
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
 # Copy generated Prisma Client from builder
 # Already copied as part of src/ above, but ensure it's in all expected locations:
