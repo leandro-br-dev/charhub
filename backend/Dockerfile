@@ -26,12 +26,16 @@ RUN npm config set fetch-retry-mintimeout 20000 && \
 # Copy Prisma schema first (needed for generation)
 COPY prisma ./prisma
 
-# Copy source code (which includes pre-generated Prisma Client with correct binaryTarget)
-COPY . .
+# Generate Prisma Client with correct binaryTargets
+# This is now safe because:
+# 1. schema.prisma has binaryTargets = ["native", "debian-openssl-3.0.x"]
+# 2. Build image is Debian Slim (node:20-slim), so "native" = debian
+# 3. Explicit "debian-openssl-3.0.x" ensures compatibility with target runtime
+RUN echo "[DEBUG] Generating Prisma Client..." && \
+    npx prisma generate
 
-# IMPORTANT: DO NOT run prisma generate here - we're using pre-generated binaries committed to Git
-# The binaries are already in src/generated/prisma/ with the correct binaryTarget for this OS
-# Running generate would regenerate with the wrong binaryTarget for the build platform
+# Copy rest of source code AFTER generation
+COPY . .
 
 # Build TypeScript output (production only)
 # Always create dist/ and translations/ directories (even if empty in dev)
