@@ -96,7 +96,7 @@ jobs:
           DATABASE_URL: postgresql://test:test@localhost:5432/charhub_test?schema=public
 
       - name: Run tests
-        run: npm test --passWithNoTests --if-present
+        run: npm test -- --passWithNoTests
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/charhub_test?schema=public
           REDIS_HOST: localhost
