@@ -642,6 +642,42 @@ secrets/               # Backups de produção (read-only)
 >
 > **Exceção**: Se o usuário explicitamente pedir "commite e faça push", então pode fazer push imediatamente.
 
+### **REGRA CRÍTICA - AGUARDE CONCLUSÃO DO GITHUB ACTIONS ANTERIOR**
+
+> **⚠️ ABSOLUTAMENTE PROIBIDO: Fazer múltiplos pushs em sequência rápida**
+>
+> Cada `git push origin main` dispara:
+> 1. Backend CI workflow
+> 2. Deploy to Production workflow
+> 3. Ambos podem falhar se houver push enquanto o anterior ainda está rodando
+>
+> **REGRA DE OURO:**
+> ```
+> ✅ CORRETO: Push → Aguardar GitHub Actions completar → Novo push
+> ❌ ERRADO: Push → Push → Push (workflows competindo)
+> ```
+>
+> **Procedimento Obrigatório:**
+> 1. Fazer commit e push para `main`
+> 2. Imediatamente ir para: https://github.com/leandro-br-dev/charhub/actions
+> 3. Aguardar **TODOS** os workflows (Backend CI + Deploy) ficarem:
+>    - ✅ PASSED (sucesso)
+>    - 🔴 FAILED (falha detectada)
+>    - ⏸️ CANCELED (cancelado)
+> 4. Apenas após conclusão, fazer novo push se necessário
+>
+> **Tempo de Espera Típico:**
+> - Backend CI: ~5-10 minutos
+> - Deploy to Production: ~4-5 minutos
+> - **Total: ~10-15 minutos antes do próximo push**
+>
+> Se ambos falharam (como pode ocorrer em pushes simultâneos):
+> 1. `git revert HEAD` para desfazer o push problemático
+> 2. `git push origin main` para fazer deploy da reversão
+> 3. Aguardar workflows completarem
+> 4. Investigar e corrigir o problema
+> 5. Apenas após tudo estável, tentar novo push
+
 ---
 
 ## 🏥 Troubleshooting para Agent Reviewer
