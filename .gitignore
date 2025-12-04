@@ -58,16 +58,13 @@ coverage/
 *.tsbuildinfo
 .cache/
 
-# Prisma
-**/src/generated/prisma
-
 # Frontend
 frontend/dist/
 frontend/build/
 
 # Backend
 backend/dist/
-backend/src/generated/
+# Note: Prisma generated files must be tracked for Docker builds
 
 # Database
 *.db
