@@ -33,13 +33,14 @@ export async function processImageGeneration(
     switch (type) {
       case 'avatar':
         return await processAvatarGeneration(job.data as AvatarGenerationJobData);
-      case 'sticker':
+      case 'sticker': {
         // Check if it's bulk or single
         const stickerData = job.data as StickerGenerationJobData | BulkStickerGenerationJobData;
         if ('emotions' in stickerData) {
           return await processBulkStickerGeneration(stickerData as BulkStickerGenerationJobData);
         }
         return await processStickerGeneration(stickerData as StickerGenerationJobData);
+      }
       default:
         throw new Error(`Unsupported generation type: ${type}`);
     }

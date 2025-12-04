@@ -39,7 +39,7 @@ router.get('/', async (req: Request, res: Response) => {
     }
 
     // Resolve translation file path
-    function mapLangDir(code: string): string | null {
+    const mapLangDir = (code: string): string | null => {
       const lc = (code || '').toLowerCase();
       const map: Record<string, string> = {
         'pt-br': 'pt-br', 'pt': 'pt-br',
@@ -56,7 +56,7 @@ router.get('/', async (req: Request, res: Response) => {
         'it-it': 'it-it', 'it': 'it-it',
       };
       return map[lc] || null;
-    }
+    };
 
     const langDir = mapLangDir(lang) || '_source';
     // Only character tags translation file for now

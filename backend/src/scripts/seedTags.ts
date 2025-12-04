@@ -50,7 +50,7 @@ async function generateTranslationSourceFile(namespace: string, tagData: TagSour
   const outputPath = path.join(TRANSLATIONS_ROOT, SOURCE_FOLDER, `${namespace}.json`);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
 
-  let existing: any = { description: tagData.description, resources: {} as Record<string, any> };
+  const existing: any = { description: tagData.description, resources: {} as Record<string, any> };
 
   if (existsSync(outputPath)) {
     try {

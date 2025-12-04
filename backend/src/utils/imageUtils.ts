@@ -31,7 +31,7 @@ export async function convertToWebP(
     const image = sharp(imageBuffer);
     const imageMetadata = await image.metadata();
 
-    let webpOptions: sharp.WebpOptions = { quality };
+    const webpOptions: sharp.WebpOptions = { quality };
 
     // If image has alpha channel, use lossless compression
     if (imageMetadata.hasAlpha) {
@@ -40,7 +40,7 @@ export async function convertToWebP(
     }
 
     // Convert to WebP
-    let pipeline = image.webp(webpOptions);
+    const pipeline = image.webp(webpOptions);
 
     // Add EXIF metadata if provided
     if (metadata) {
