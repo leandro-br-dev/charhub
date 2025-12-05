@@ -62,9 +62,12 @@ coverage/
 frontend/dist/
 frontend/build/
 
+# Prisma
+**/src/generated/prisma
+
 # Backend
 backend/dist/
-# Note: Prisma generated files must be tracked for Docker builds
+backend/src/generated/
 
 # Database
 *.db

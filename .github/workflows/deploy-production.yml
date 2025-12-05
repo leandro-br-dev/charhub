@@ -135,6 +135,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o ConnectTimeout=10 \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'echo "✅ SSH connection successful"'
@@ -144,6 +146,8 @@ jobs:
           echo "📥 Pulling latest code from GitHub..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'PULL'
@@ -180,6 +184,8 @@ jobs:
           echo "🔐 Syncing Cloudflare credentials..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'CREDS'
@@ -194,23 +200,29 @@ jobs:
           echo "🔨 Rebuilding containers..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'BUILD'
           cd /mnt/stateful_partition/charhub
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
 
+          # Set HOME to user's home directory (Container-Optimized OS best practice)
+          # This allows Docker to create config files in /home/user/.docker/
+          export HOME="/home/leandro_br_dev_gmail_com"
+
           echo "Stopping containers..."
-          sudo $COMPOSE down --remove-orphans -v 2>/dev/null || true
+          sudo -E HOME="$HOME" $COMPOSE down --remove-orphans -v 2>/dev/null || true
 
           echo "Waiting for containers to fully stop..."
           sleep 5
 
-          echo "Building..."
-          sudo $COMPOSE build --no-cache 2>&1 | tail -20
+          echo "Building with cache (use manual workflow for clean build)..."
+          sudo -E HOME="$HOME" $COMPOSE build --pull
 
           echo "Starting containers..."
-          sudo $COMPOSE up -d
+          sudo -E HOME="$HOME" $COMPOSE up -d
 
           sleep 15
           echo "✅ Containers started"
@@ -221,6 +233,8 @@ jobs:
           echo "🏥 Running health check..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'HEALTH'
@@ -258,6 +272,8 @@ jobs:
           echo "📊 Verifying deployment..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'VERIFY'
