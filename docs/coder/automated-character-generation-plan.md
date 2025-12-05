@@ -798,11 +798,14 @@ test('Create character via automated mode', async () => {
 3. ⏭️ Get user approval for plan
 4. ⏭️ Begin Phase 2 implementation
 
-### Questions for User
-1. Should we add a "review" step before final character creation?
-2. What should happen if avatar generation fails? (use placeholder?)
-3. Should automated mode replace manual mode, or coexist?
-4. Any specific character types to prioritize testing? (anime, realistic, cartoon)
+### User Decisions ✅
+
+**Date**: 2025-12-03
+
+1. **Review Step**: ✅ YES - Redirect to manual form with pre-filled data for user review
+2. **Avatar Fallback**: ✅ Use uploaded image if available, otherwise leave empty (UI has default)
+3. **Mode Coexistence**: ✅ Both modes should coexist (Manual + Automated)
+4. **Plan Approved**: ✅ YES - Proceed with implementation
 
 ---
 
