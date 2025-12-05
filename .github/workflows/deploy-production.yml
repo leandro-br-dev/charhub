@@ -135,6 +135,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o ConnectTimeout=10 \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'echo "✅ SSH connection successful"'
@@ -144,6 +146,8 @@ jobs:
           echo "📥 Pulling latest code from GitHub..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'PULL'
@@ -180,6 +184,8 @@ jobs:
           echo "🔐 Syncing Cloudflare credentials..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'CREDS'
@@ -194,6 +200,8 @@ jobs:
           echo "🔨 Rebuilding containers..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'BUILD'
@@ -210,8 +218,8 @@ jobs:
           echo "Waiting for containers to fully stop..."
           sleep 5
 
-          echo "Building..."
-          sudo -E HOME="$HOME" $COMPOSE build --no-cache 2>&1 | tail -20
+          echo "Building with cache (use manual workflow for clean build)..."
+          sudo -E HOME="$HOME" $COMPOSE build --pull
 
           echo "Starting containers..."
           sudo -E HOME="$HOME" $COMPOSE up -d
@@ -225,6 +233,8 @@ jobs:
           echo "🏥 Running health check..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'HEALTH'
@@ -262,6 +272,8 @@ jobs:
           echo "📊 Verifying deployment..."
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
               'bash -s' << 'VERIFY'
