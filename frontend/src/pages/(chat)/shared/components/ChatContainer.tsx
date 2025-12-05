@@ -156,7 +156,7 @@ const ChatContainer = () => {
 
   const conversationQuery = useConversationQuery(conversationId || null);
   const messagesQuery = useMessagesQuery(conversationId || null);
-  const membersQuery = useMembersQuery(conversationId || null);
+  const membersQuery = useMembersQuery(conversationId);
 
   const conversation = conversationQuery.data ?? null;
   const messages = messagesQuery.data?.items ?? [];
@@ -201,7 +201,7 @@ const ChatContainer = () => {
     );
 
     // Ensure current authenticated user is represented
-    const currentUserAvatar: string | undefined = user?.photo ?? undefined;
+    const currentUserAvatar: string | null | undefined = user?.photo;
     ensureParticipant(user?.id, user?.displayName ?? undefined, currentUserAvatar);
 
     // In multi-user conversations, ensure all members are represented

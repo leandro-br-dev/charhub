@@ -11,6 +11,19 @@ export enum SenderType {
   SYSTEM = 'SYSTEM',
 }
 
+// Character image type
+export interface CharacterImage {
+  id: string;
+  characterId: string;
+  type: string;
+  url: string;
+  key: string | null;
+  width: number | null;
+  height: number | null;
+  sizeBytes: number | null;
+  contentType: string | null;
+}
+
 // Base participant information
 export interface ParticipantCharacter {
   id: string;
@@ -18,6 +31,7 @@ export interface ParticipantCharacter {
   lastName: string | null;
   avatar: string | null;
   gender: string | null;
+  images?: CharacterImage[]; // Optional relation from Prisma schema
 }
 
 export interface ParticipantAssistant {
@@ -77,6 +91,11 @@ export interface Conversation {
   createdAt: string;
   updatedAt: string;
   userId: string;
+
+  // Multi-user support (from Prisma schema)
+  isMultiUser?: boolean;
+  maxUsers?: number;
+  ownerUserId?: string | null;
 
   // Relations
   owner?: ParticipantUser;
