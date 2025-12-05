@@ -1,7 +1,7 @@
 # Continuous Deployment (CD) Guide
 
-**Last Updated**: 2025-12-02
-**Status**: ✅ Production Ready
+**Last Updated**: 2025-12-05
+**Status**: ✅ Production Ready (All Issues Resolved)
 **Workflow**: `.github/workflows/deploy-production.yml`
 
 ---
@@ -110,17 +110,20 @@ sudo chmod 755 "$APP_DIR/cloudflared/config/prod"
 
 **Operations**:
 ```bash
+# Set HOME environment variable (Container-Optimized OS best practice)
+export HOME="/home/leandro_br_dev_gmail_com"
+
 # Complete cleanup of old containers
-sudo docker-compose down --remove-orphans -v
+sudo -E HOME="$HOME" docker-compose down --remove-orphans -v
 
 # Wait for cleanup to complete
 sleep 5
 
-# Build fresh images
-sudo docker-compose build --no-cache
+# Build images (using cache for efficiency)
+sudo -E HOME="$HOME" docker-compose build --pull
 
 # Start all containers
-sudo docker-compose up -d
+sudo -E HOME="$HOME" docker-compose up -d
 
 # Wait for services to stabilize
 sleep 15
@@ -129,7 +132,15 @@ sleep 15
 **Key Flags Explained**:
 - `--remove-orphans`: Removes containers not in compose file
 - `-v`: Removes unnamed volumes (prevents data conflicts)
-- `--no-cache`: Forces fresh build (no cached layers)
+- `--pull`: Pulls fresh base images without invalidating entire cache
+- `-E`: Preserves environment variables (HOME) when using sudo
+- `HOME="/home/leandro_br_dev_gmail_com"`: Writable directory for Docker config
+
+**Why HOME Configuration Matters (Container-Optimized OS)**:
+- Container-Optimized OS mounts `/` as read-only for security
+- Docker tries to create `/root/.docker/` which fails
+- Setting `HOME=/home/[user]/` points to writable partition
+- Prevents `mkdir: read-only file system` errors during build
 
 ### 7. Health Check
 
@@ -273,6 +284,41 @@ git config --local --add safe.directory "$APP_DIR"
 sudo chown -R leandro_br_dev_gmail_com:leandro_br_dev_gmail_com "$APP_DIR/.git"
 sudo chmod -R u+w "$APP_DIR/.git"
 ```
+
+###Issue: "client_loop: send disconnect: Broken pipe"
+
+**Symptom**: SSH connection drops during long-running operations (e.g., `docker-compose build`)
+
+**Cause**:
+- GitHub Actions SSH has ~10 minute idle timeout
+- Long builds (especially with `--no-cache`) exceed this timeout
+- No keepalive packets sent during build process
+
+**Solution**: Add SSH keepalive configuration:
+```yaml
+ssh -o ServerAliveInterval=60 \
+    -o ServerAliveCountMax=10 \
+    -i $HOME/.ssh/deploy_key \
+    user@host 'bash -s' << 'SCRIPT'
+# Long-running commands here
+SCRIPT
+```
+
+**Configuration Explained**:
+- `ServerAliveInterval=60`: Send keepalive packet every 60 seconds
+- `ServerAliveCountMax=10`: Allow up to 10 minutes (10 × 60s) without response
+- Together: Prevents timeout for operations up to 10 minutes
+
+**Performance Impact**:
+- Before fix: ~10 minute builds with `--no-cache` → SSH timeout
+- After fix: ~2-3 minute builds with `--pull` + SSH keepalive → No timeout
+- Use `--pull` instead of `--no-cache` for normal deploys (cache reuse)
+- Reserve `--no-cache` for manual troubleshooting via SSH
+
+**Resolution Timeline**:
+- Issue: Commit 4f7560f identified SSH timeout on rebuild step
+- Fix: Added `ServerAliveInterval` and replaced `--no-cache` with `--pull`
+- Result: Deploy time reduced from 10+ minutes → 4-5 minutes total
 
 ---
 
@@ -432,9 +478,11 @@ sudo $COMPOSE logs --tail 50 backend
 
 ---
 
-## Key Learning: Permission Management
+## Key Learnings
 
-The biggest lesson learned during CD implementation was **permission management**:
+### 1. Permission Management
+
+The first critical lesson during CD implementation was **permission management**:
 
 - Containers run as different users (root from docker, nodejs, postgres, etc.)
 - Files created by sudo are owned by root, not accessible by deploy user
@@ -446,6 +494,87 @@ The biggest lesson learned during CD implementation was **permission management*
 sudo chown -R <user>:<group> <directory>
 sudo chmod -R u+w <directory>
 ```
+
+### 2. Container-Optimized OS Read-Only Filesystem
+
+Google's Container-Optimized OS enforces **read-only root filesystem** for security:
+
+**The Problem**:
+- `/` is mounted read-only: `/dev/mapper/vroot on / type ext2 (ro,relatime)`
+- Docker tries to create `/root/.docker/` during build
+- Error: `mkdir /root/.docker: read-only file system`
+
+**The Solution**:
+```bash
+# Set HOME to writable user directory
+export HOME="/home/leandro_br_dev_gmail_com"
+
+# Preserve HOME when using sudo
+sudo -E HOME="$HOME" docker-compose build
+```
+
+**Why This Works**:
+- `/home/[user]/` is on writable partition
+- Docker creates config in `$HOME/.docker/` which now works
+- `-E` flag preserves environment variables through sudo
+
+**Official Documentation**:
+- [Container-Optimized OS Overview](https://cloud.google.com/container-optimized-os/docs/concepts/features-and-benefits)
+- Best practice: Always set HOME to user's home directory
+
+### 3. SSH Timeout Prevention
+
+Long-running operations over SSH require **keepalive configuration**:
+
+**The Problem**:
+- GitHub Actions SSH times out after ~10 minutes of idle
+- Docker builds can take longer than 10 minutes with `--no-cache`
+- Connection drops mid-build: `client_loop: send disconnect: Broken pipe`
+
+**The Solution**:
+```yaml
+ssh -o ServerAliveInterval=60 \
+    -o ServerAliveCountMax=10 \
+    -i $HOME/.ssh/deploy_key \
+    user@host 'commands'
+```
+
+**Why This Works**:
+- Sends keepalive packet every 60 seconds
+- Allows up to 10 minutes of unresponsiveness
+- Prevents idle timeout during long builds
+
+**Performance Optimization**:
+- Replace `--no-cache` with `--pull` for faster builds
+- `--pull` updates base images but reuses cached layers
+- Build time: 10+ minutes → 2-3 minutes
+
+###4. Frontend TypeScript Type Synchronization
+
+Frontend types must **exactly match backend Prisma schema**:
+
+**The Problem**:
+- Development Dockerfile doesn't run TypeScript compilation
+- Production Dockerfile runs `tsc -b && vite build`
+- Type mismatches only caught during production builds
+
+**The Solution**:
+```typescript
+// Frontend types must match Prisma schema exactly
+export interface ParticipantCharacter {
+  id: string;
+  firstName: string;
+  lastName: string | null;
+  avatar: string | null;
+  gender: string | null;
+  images?: CharacterImage[]; // Add missing fields from schema
+}
+```
+
+**Best Practice**:
+- Run `npm run build` locally before pushing
+- Test both development and production Docker stages
+- Keep frontend types synchronized with Prisma schema changes
 
 ---
 
