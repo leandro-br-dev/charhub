@@ -91,9 +91,20 @@ export default function CharacterHubPage(): JSX.Element {
           <p className="max-w-2xl text-sm text-description">
             {t('characters:hub.subtitle')}
           </p>
-          <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
-            {t('characters:hub.actions.createCharacter')}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              icon="auto_awesome"
+              onClick={() => navigate('/characters/create-ai')}
+              title={t('characters:hub.actions.createAI', 'AI Quick Create')}
+            >
+              {t('characters:hub.actions.aiCreate', 'AI Create')}
+            </Button>
+            <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
+              {t('characters:hub.actions.createCharacter', 'Manual Create')}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -155,9 +166,19 @@ export default function CharacterHubPage(): JSX.Element {
                 {search ? t('characters:hub.states.emptySearchHint') : t('characters:hub.states.emptyHint')}
               </p>
             </div>
-            <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
-              {t('characters:hub.actions.createCharacter')}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="secondary"
+                icon="auto_awesome"
+                onClick={() => navigate('/characters/create-ai')}
+              >
+                {t('characters:hub.actions.aiCreate', 'AI Create')}
+              </Button>
+              <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
+                {t('characters:hub.actions.createCharacter')}
+              </Button>
+            </div>
           </div>
         )}
 

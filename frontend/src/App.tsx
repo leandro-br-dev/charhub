@@ -9,6 +9,7 @@ import Dashboard from './pages/dashboard';
 import NotFound from './pages/not-found';
 import CharacterHubPage from './pages/(characters)/hub';
 import CharacterCreatePage from './pages/(characters)/create';
+import AutomatedCharacterCreatePage from './pages/(characters)/create-ai';
 import CharacterDetailPage from './pages/(characters)/[characterId]';
 import CharacterEditPage from './pages/(characters)/[characterId]/edit';
 import ProfilePage from './pages/profile';
@@ -55,6 +56,7 @@ export default function App(): JSX.Element {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/discover" element={<DiscoverPage />} />
         <Route path="/characters" element={<CharacterHubPage />} />
+        <Route path="/characters/create-ai" element={<AutomatedCharacterCreatePage />} />
         <Route path="/characters/create" element={<CharacterCreatePage />} />
         <Route path="/characters/:characterId" element={<CharacterDetailPage />} />
         <Route path="/characters/:characterId/edit" element={<CharacterEditPage />} />
