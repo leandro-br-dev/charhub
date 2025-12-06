@@ -271,10 +271,19 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
     let textData: GeneratedCharacterData | null = null;
     if (description && typeof description === 'string' && description.trim().length > 0) {
       textData = await analyzeTextDescription(description.trim());
+      logger.info({ textData }, 'text_description_analyzed');
+    } else {
+      logger.info('no_text_description_provided');
     }
 
     // Merge results
     const characterData = mergeAnalysisResults(imageAnalysis, textData);
+
+    logger.info({
+      hasImageAnalysis: !!imageAnalysis,
+      hasTextData: !!textData,
+      mergedData: characterData
+    }, 'analysis_results_merged');
 
     // Determine age rating (prioritize image classification if available)
     const ageRating = imageAgeRating !== AgeRating.L
@@ -301,6 +310,27 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
     });
 
     logger.info({ characterId: character.id, userId: user.id }, 'automated_character_created');
+
+    // Save uploaded image as character image (fallback/reference) if provided
+    if (uploadedImageUrl && imageFile) {
+      try {
+        const { addCharacterImage } = await import('../services/imageService');
+
+        await addCharacterImage({
+          characterId: character.id,
+          url: uploadedImageUrl,
+          type: 'REFERENCE' as any, // Save as reference image
+          contentType: imageFile.mimetype,
+          sizeBytes: imageFile.size,
+          runClassification: false, // Already classified
+        });
+
+        logger.info({ characterId: character.id, url: uploadedImageUrl }, 'uploaded_image_saved_as_reference');
+      } catch (error) {
+        logger.warn({ error, characterId: character.id }, 'failed_to_save_uploaded_image');
+        // Continue even if saving uploaded image fails
+      }
+    }
 
     // Queue avatar generation job
     let avatarJobId: string | undefined;
