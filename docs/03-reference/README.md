@@ -14,12 +14,14 @@ This section contains technical specifications, API documentation, and reference
 
 ### 🔌 [API](./api/)
 API specifications and integration guides:
-- [LLM Tools](./api/llm-tools.md) - AI/LLM integration
+- [LLM Providers](./api/llm-providers.md) - Using Gemini, OpenAI, and Grok providers
+- [LLM Tools](./api/llm-tools.md) - Tool-calling system (web search, etc.)
 
 ### 💻 [Backend](./backend/)
 Backend technical reference:
 - [Backend Overview](./backend/README.md)
 - [Translation System](./backend/translation-system.md)
+- [Tags System](./backend/tags-system.md)
 
 ### 🎨 [Frontend](./frontend/)
 Frontend technical reference:

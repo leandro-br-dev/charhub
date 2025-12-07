@@ -218,7 +218,7 @@ curl -X POST http://localhost/api/v1/llm/chat \
 
 **Note:** GPT-5 and GPT-Realtime models do not accept `temperature` or `maxTokens` parameters (they use defaults only).
 
-Full API documentation: `backend/docs/LLM_API.md`
+Full API documentation: [LLM Providers Guide](../api/llm-providers.md)
 
 ### Localization (`/api/v1/i18n/:language/:namespace`)
 
@@ -334,9 +334,10 @@ For implementation details, see `backend/src/agents/style-guides/README.md`.
 
 ## Related Documentation
 
-- **Tag System**: `backend/docs/TAGS_SYSTEM.md` - Content classification and filtering with tags
-- **Translations**: `backend/translations/README.md` - Complete translation workflow
-- **LLM Integration**: `backend/docs/LLM_API.md` - Full API documentation for AI providers
+- **[Tag System](tags-system.md)** - Content classification and filtering with tags
+- **[Credit Verification](../../02-guides/development/credit-verification.md)** - Guide for credit system integration
+- **[LLM Providers](../api/llm-providers.md)** - Full API documentation for AI providers (Gemini, OpenAI, Grok)
+- **[LLM Tool-Calling](../api/llm-tools.md)** - Web search and tool integration for LLMs
+- **[Translation System](translation-system.md)** - Complete translation workflow
 - **Style Guides**: `backend/src/agents/style-guides/README.md` - AI response customization
-- **Infrastructure**: `docs/DEV_OPERATIONS.md` - Environment setup and deployment
-- **Project TODO**: `docs/TODO.md` - Pending features and enhancements
+- **[Development Operations](../../02-guides/development/dev-operations.md)** - Environment setup and deployment

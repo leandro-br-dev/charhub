@@ -32,46 +32,7 @@
 
 ---
 
-### Bug Reports - Production (2025-12-02)
-
-**[BUG-001]**: Profile Plans Tab Crashes with Null Reference Error
-- **Date Reported**: 2025-12-02
-- **Severity**: Critical
-- **Environment**: Production
-- **Description**: Clicking "Planos" (Plans) tab in user profile page causes JavaScript error and blank page
-- **Steps to Reproduce**:
-  1. Log in to https://charhub.app
-  2. Click on user profile menu (top right)
-  3. Select "Perfil" (Profile)
-  4. Click on "Planos" tab
-  5. Page crashes
-- **Expected Behavior**: Plans tab displays available subscription plans
-- **Actual Behavior**:
-  ```
-  TypeError: Cannot read properties of null (reading 'name')
-      at uI (index-DrVw2j_Q.js:106:121679)
-  ```
-  The component tries to access `.name` property on a null subscription object.
-- **Screenshots/Logs**: Error trace in browser console (minified React app)
-- **Status**: New
-- **Notes**: Likely cause is missing/null subscription data when user loads. May be related to new user account not having initial subscription assigned.
-
-**[BUG-002]**: New User Missing 200 Initial Credits Bonus
-- **Date Reported**: 2025-12-02
-- **Severity**: High
-- **Environment**: Production
-- **Description**: New user account created but did not receive 200 initial signup bonus credits
-- **Steps to Reproduce**:
-  1. Create new account with signup form
-  2. Complete OAuth/email verification
-  3. Check credit balance
-- **Expected Behavior**: New user should immediately receive 200 bonus credits with welcome message
-- **Actual Behavior**: Credit balance shows 0, no welcome message about bonus credits
-- **Status**: New
-- **Notes**: Need to verify:
-  - Is initial credit grant triggered in account creation flow?
-  - Check if database seed includes initial credit transactions
-  - Is welcome message component implemented?
+### Bug Reports - Production (2025-12-07)
 
 **[BUG-003]**: User Sidebar Credit Balance Not Auto-Updating
 - **Date Reported**: 2025-12-02
@@ -94,23 +55,21 @@
 
   Needs real-time update mechanism (context/hook/state management)
 
-**[BUG-004]**: Tags Not Available During User Registration
-- **Date Reported**: 2025-12-02
-- **Severity**: High
-- **Environment**: Production
-- **Description**: Tags dropdown/selection is empty or unavailable when creating new user account or character
-- **Steps to Reproduce**:
-  1. Create new account
-  2. Try to create character or add tags
-  3. Tags field shows no options
-- **Expected Behavior**: Complete list of tags available from database seed
-- **Actual Behavior**: Tags list is empty or fails to load
-- **Status**: New
-- **Notes**: Investigation needed:
-  - Check if `npm run db:seed:tags` was executed on production
-  - Verify tags are in database: `SELECT COUNT(*) FROM tags;`
-  - Check if tags seed is part of main `db:seed` or separate script
-  - May be related to migrations mentioned in package.json
+---
+
+### Recently Resolved (2025-12-07)
+
+**[BUG-001]**: ~~Profile Plans Tab Crashes~~ ✅ **RESOLVED**
+- **Resolution**: Fixed by correcting database seed loading
+- **Status**: Fixed in production
+
+**[BUG-002]**: ~~New User Missing 200 Initial Credits~~ ✅ **RESOLVED**
+- **Resolution**: Fixed by correcting database seed loading
+- **Status**: Fixed in production
+
+**[BUG-004]**: ~~Tags Not Available~~ ✅ **RESOLVED**
+- **Resolution**: Fixed by correcting database seed loading (npm run db:seed:tags)
+- **Status**: Fixed in production
 
 ---
 
