@@ -21,6 +21,27 @@ Este arquivo fornece orientação para o **Agent Reviewer** do projeto CharHub.
 
 ---
 
+## 🚨 REGRA CRÍTICA - NUNCA COMMITAR APENAS DOCUMENTAÇÃO
+
+> **⚠️ ABSOLUTAMENTE PROIBIDO - NÃO COMMITAR E FAZER PUSH PARA MAIN APENAS DOCUMENTAÇÃO:**
+>
+> Documentação (análises, investigações, relatórios) **NUNCA** deve ser commitada sozinha porque:
+>
+> 1. **Dispara Deploy Desnecessário**: Push para `main` → GitHub Actions constrói tudo novamente (~5-10 minutos de desperdício)
+> 2. **Recursos Wasted**: Se documentação foi sobre um problema identificado mas NÃO RESOLVIDO, é pior ainda
+> 3. **Ciclo de Feedback Lento**: Enquanto você espera o build, não está investigando o problema real
+>
+> **O QUE FAZER CORRETAMENTE**:
+> - ✅ Documentar problemas/análises em arquivos locais sem commitar
+> - ✅ Ou: Commitar JUNTO com o fix/solução do problema (não só doc)
+> - ✅ Se documentação é critical: Criar PR separada para discussão (não push direto)
+>
+> **EXEMPLO DO ERRO**:
+> - ❌ Commit 956e32a: Apenas adicionou `GITHUB_ACTIONS_ANALYSIS.md` + modificou workflow
+> - ❌ Resultado: Deploy desnecessário while o real problema (deploy failure) não foi investigado
+>
+> ---
+
 ## 🚨 REGRA CRÍTICA - NÃO MODIFICAR ARQUIVOS EM PRODUÇÃO
 
 > **⚠️ ABSOLUTAMENTE PROIBIDO:**
@@ -641,65 +662,6 @@ secrets/               # Backups de produção (read-only)
 > ```
 >
 > **Exceção**: Se o usuário explicitamente pedir "commite e faça push", então pode fazer push imediatamente.
-
-### **⚠️ REGRA CRÍTICA: Aguardar GitHub Actions Completar Antes de Múltiplos Pushes**
-
-> **ABSOLUTAMENTE PROIBIDO:**
-> - **NÃO FAÇA DOIS OU MAIS PUSHES PARA `main` EM SEQUÊNCIA RÁPIDA**
-> - **SEMPRE aguarde o GitHub Actions completar (✅ ou ❌) antes de fazer novo push**
->
-> **POR QUÊ?**
-> 1. **Race Condition em Produção**: Dois workflows simultâneos causam conflito
->    - Backend CI #37 e Deploy #59 rodando ao mesmo tempo
->    - Ambos executando `docker-compose down` e `up` na mesma VM
->    - Containers corrompidos, charhub.app inacessível
-> 2. **CI/CD Pipeline Quebra**: GitHub Actions não consegue processar múltiplos pushes simultâneos
-> 3. **Downtime em Produção**: Usuários ficam sem acesso enquanto containers estão em conflito
-> 4. **Debugging Impossível**: Não sabemos qual push causou qual erro
-> 5. **Desastre Exponencial**: Cada novo push dispara MAIS workflows, piorando o problema
->
-> **O QUE FAZER CORRETAMENTE**:
-> ```bash
-> # 1. Fazer commit e push
-> git add backend/Dockerfile
-> git commit -m "fix(dockerfile): correct prisma binary issue"
-> git push origin main
-> echo "✅ Push #1 enviado"
->
-> # 2. AGUARDAR GitHub Actions completar (2-3 minutos)
-> # - Abrir: https://github.com/seu-repo/actions
-> # - Esperar Backend CI terminar (lint, test, build, security)
-> # - Esperar Deploy to Production terminar (health check)
-> # - Verificar: ✅ "All checks passed" ou ❌ "Failed"
->
-> # 3. SOMENTE DEPOIS fazer novo commit/push
-> git add backend/package.json
-> git commit -m "fix(deps): update vulnerable dependency"
-> git push origin main
-> echo "✅ Push #2 enviado (após aguardar Push #1)"
-> ```
->
-> **Como Monitorar**:
-> - Terminal: `gh run watch`
-> - GitHub Web: https://github.com/seu-repo/actions (abrir último workflow)
-> - Buscar: "✅ All checks passed" ou "❌ Failed"
-> - Tempo esperado: 2-3 minutos por push (Deploy #60, Deploy #61, etc.)
->
-> **Sintomas de Violação**:
-> - Múltiplos workflows de Deploy rodando (`Deploy #58`, `Deploy #59` simultâneos)
-> - Status "In Progress" durante muitos minutos
-> - Erro: `Health check failed - backend not healthy`
-> - Production: `charhub.app` inacessível, containers offline
->
-> **Recuperação de Erro**:
-> 1. Se detectar múltiplos pushes simultâneos, fazer imediatamente rollback:
->    ```bash
->    git revert HEAD
->    git push origin main
->    # Aguardar Deploy completar (revert de revert)
->    ```
-> 2. Documentar o incident em `/docs/reviewer/incident-log.md`
-> 3. Aguardar aprovação do usuário para novo push
 
 ---
 
