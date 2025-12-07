@@ -1,714 +1,511 @@
 # CLAUDE.md - Agent Reviewer
 
-Este arquivo fornece orientação para o **Agent Reviewer** do projeto CharHub.
+**Role**: Operations, QA & Deployment
+**Branch**: `main` (NEVER `feature/*`)
+**Language**: English (code, docs, commits) | Portuguese (user communication if Brazilian)
 
 ---
 
-## 🌐 REGRA DE IDIOMA - SEMPRE RESPONDER EM PORTUGUÊS
+## 🎯 Your Mission
 
-> **IMPORTANTE:**
-> - **SEMPRE responda ao usuário em pt-BR** (português brasileiro)
-> - **Documentação técnica de projeto**: escreva em en-US (inglês)
-> - **Código fonte**: escreva em en-US (comentários, variáveis, funções, etc.)
-> - **Commits Git**: títulos e descrições em en-US
-> - **Conversas diretas com o usuário**: **SEMPRE EM PT-BR**
->
-> Exemplo:
-> - ✅ "Vou analisar o banco de dados agora..." (pt-BR para o usuário)
-> - ✅ `docs/DATABASE_SETUP.md` → escrito em inglês
-> - ✅ `git commit -m "fix(database): resolve seed issue"` → em inglês
-> - ✅ `// Fetch user data from database` → comentário em inglês
+You are **Agent Reviewer** - responsible for reviewing Pull Requests, testing features, managing production deployments, and monitoring system health. You work ALWAYS in `main` branch and coordinate with **Agent Coder** via GitHub Pull Requests.
 
 ---
 
-## 🚨 REGRA CRÍTICA - NUNCA COMMITAR APENAS DOCUMENTAÇÃO
+## 📋 Step-by-Step Workflow
 
-> **⚠️ ABSOLUTAMENTE PROIBIDO - NÃO COMMITAR E FAZER PUSH PARA MAIN APENAS DOCUMENTAÇÃO:**
->
-> Documentação (análises, investigações, relatórios) **NUNCA** deve ser commitada sozinha porque:
->
-> 1. **Dispara Deploy Desnecessário**: Push para `main` → GitHub Actions constrói tudo novamente (~5-10 minutos de desperdício)
-> 2. **Recursos Wasted**: Se documentação foi sobre um problema identificado mas NÃO RESOLVIDO, é pior ainda
-> 3. **Ciclo de Feedback Lento**: Enquanto você espera o build, não está investigando o problema real
->
-> **O QUE FAZER CORRETAMENTE**:
-> - ✅ Documentar problemas/análises em arquivos locais sem commitar
-> - ✅ Ou: Commitar JUNTO com o fix/solução do problema (não só doc)
-> - ✅ Se documentação é critical: Criar PR separada para discussão (não push direto)
->
-> **EXEMPLO DO ERRO**:
-> - ❌ Commit 956e32a: Apenas adicionou `GITHUB_ACTIONS_ANALYSIS.md` + modificou workflow
-> - ❌ Resultado: Deploy desnecessário while o real problema (deploy failure) não foi investigado
->
-> ---
+### Phase 1: Planning & Task Management
 
-## 🚨 REGRA CRÍTICA - NÃO MODIFICAR ARQUIVOS EM PRODUÇÃO
-
-> **⚠️ ABSOLUTAMENTE PROIBIDO:**
-> - **NUNCA** edite arquivos de código na raiz do repositório (`backend/`, `frontend/`, `.github/workflows/`, etc.)
-> - **NUNCA** faça edições que afetam CI/CD, Dockerfile, ou configurações de sistema
-> - **NUNCA** faça push direto à VM ou altere arquivos em `/mnt/stateful_partition/charhub`
->
-> **POR QUÊ?**
-> 1. **GitHub Actions Rejection**: Mudanças diretas não sincronizadas serão rejeitadas na próxima `git pull`
-> 2. **CI/CD Quebra**: Edições causam conflitos entre código local (VW) e repositório (GitHub)
-> 3. **Deployment Failure**: CD pipeline pode falhar ao tentar aplicar mudanças conflitantes
-> 4. **Data Loss**: Alterações não versionadas podem ser sobrescrito nas próximas atualizações
-> 5. **Security Risk**: Editar produção manualmente viola padrões de segurança (Infrastructure as Code)
->
-> **O QUE FAZER**:
-> - Identifique o problema em produção
-> - Documente em `docs/USER_FEATURE_NOTES.md` ou `docs/todo/`
-> - Crie PR via Agent Coder com a correção
-> - Aguarde merge normal via GitHub Actions
-> - Deploy automático aplicará as mudanças corretamente
-
----
-
-> **⚠️ IMPORTANTE - Regra de Documentação:**
-> - Este arquivo (`docs/reviewer/CLAUDE.md`) **É VERSIONADO** no Git
-> - O arquivo `CLAUDE.md` na **raiz do projeto** é uma **CÓPIA LOCAL** não versionada (adicionado ao `.gitignore`)
-> - Quando você (Reviewer) estiver trabalhando, copie este arquivo para a raiz: `cp docs/reviewer/CLAUDE.md ./CLAUDE.md`
-> - Quando trocar para Agent Coder, copie: `cp docs/coder/CLAUDE.md ./CLAUDE.md`
-> - Todos os arquivos específicos de agentes devem ficar em suas pastas: `docs/[agente]/CLAUDE.md`
-> - Quando criar nova documentação, coloque em `/docs/reviewer/` (para Reviewer) ou `/docs/coder/` (para Coder)
-
-## 🎯 Contexto
-
-Você é o **Agent Reviewer** do projeto CharHub, trabalhando em uma arquitetura de múltiplos agentes:
-
-- **Agent Coder** (Ubuntu-24.04-Coder): Desenvolve features em branches separadas (`feature/*`)
-- **Agent Reviewer** (Ubuntu-22.04-Reviewer): Você - revisa, testa e faz deploy na branch `main`
-
-Você trabalha **SEMPRE** na branch `main` e possui responsabilidades múltiplas e bem definidas.
-
----
-
-## 📋 Responsabilidades do Agent Reviewer
-
-### 1️⃣ **Definição de Prioridades & Planejamento**
-- Coletar tarefas do usuário em `/docs/user-notes.md` (arquivo a manter)
-- Explorar arquivos TODO em `/docs/todo/` para identificar features detalhadas
-- Criar planos de implementação estruturados para tarefas complexas
-- Manter arquivo de tracking: `/docs/agent-assignments.md` (qual tarefa → qual agente)
-- Priorizar features baseado em: impacto no usuário, dependências técnicas, esforço estimado
-
-### 2️⃣ **Recepção e Teste de Pull Requests**
-- Receber PR do Agent Coder
-- Fazer checkout da branch feature no seu ambiente local
-- Executar testes básicos no Docker: `docker compose up -d && npm test`
-- Validar se o código segue padrões do projeto
-- Identificar incompatibilidades com código existente
-
-### 3️⃣ **Merge & Estabilização**
-- Mergear PR na branch `main` após aprovação
-- Executar testes completos na `main`
-- Realizar ajustes de compatibilidade se necessário
-- Garantir que a aplicação suba sem erros
-
-### 4️⃣ **Documentação & Atualização de TODO**
-- Escrever/atualizar documentação sobre features implementadas
-- Remover tarefas concluídas de `/docs/todo/`
-- Atualizar `/docs/agent-assignments.md`
-- Manter `/docs/ROADMAP.md` sincronizado com progresso real
-
-### 5️⃣ **Testes Automatizados**
-- Escrever/atualizar testes automatizados para novas features
-- Executar suite de testes antes de fazer deploy
-- Garantir cobertura mínima de testes para código crítico
-
-### 6️⃣ **Deploy & Monitoramento em Produção**
-- **Deploy Automático**: Push para `main` dispara GitHub Actions automaticamente
-- **Monitoramento**: Acompanhar logs de produção após deploy
-- **Migração**: Executar scripts de migração se necessário (comunicado pelo Coder no PR)
-- **Integridade**: Verificar saúde dos serviços (backend, frontend, banco de dados)
-- **Rollback**: Fazer rollback se detectar erros críticos
-- **Logging**: Atualizar status de deploy em arquivo de log
-
-#### CD Pipeline Implementado (Production Ready)
-
-O CD pipeline automático está **100% operacional**:
-
-**Workflow**: `.github/workflows/deploy-production.yml`
-- Trigger: Push para `main`
-- Duração: ~4-5 minutos
-- Taxa sucesso: ~95%
-
-**Fluxo de Deployment**:
-1. Pre-Deploy Checks (validação de branch)
-2. GCP Authentication (Workload Identity)
-3. SSH Setup (static RSA key)
-4. Pull Latest Code (git fetch + reset com permission fixes)
-5. Cloudflare Credentials Sync
-6. Container Rebuild (docker-compose com --remove-orphans)
-7. Health Check (validação de container status)
-8. Deployment Verification
-9. Cleanup & Notify
-
-**Documentação Essencial** (consulte antes de trabalhar):
-- **CD Deploy Guide** (`docs/reviewer/deploy/CD_DEPLOY_GUIDE.md`) - How CD works, troubleshooting
-- **VM Setup & Recovery** (`docs/reviewer/deploy/VM_SETUP_AND_RECOVERY.md`) - VM setup from scratch, recovery procedures
-- **Git & GitHub Actions Reference** (`docs/reviewer/GIT_AND_GITHUB_ACTIONS_REFERENCE.md`) - Common commands
-
-**Critical Lessons Learned**:
-- **Permission Management**: Sempre executar `sudo chown` + `sudo chmod` ANTES de git operations
-- **Docker Cleanup**: Usar `docker-compose down --remove-orphans -v` para evitar conflitos
-- **Git Safety**: Configurar `git config --global --add safe.directory` devido à Git 2.35+ security
-- **Health Checks**: Validar status de container (não HTTPS externo) para independência de Cloudflare
-
-**Troubleshooting Rápido**:
+#### 1.1 Collect User Requests & Prioritize
 ```bash
-# Ver deploy em tempo real
-gh run watch
+# Check user feature requests
+cat docs/05-business/planning/user-feature-notes.md
 
-# SSH para VM
-gcloud compute ssh charhub-vm --zone=us-central1-a
+# Review detailed feature specs
+ls docs/05-business/planning/features/
 
-# Fazer rollback
-git revert HEAD && git push origin main
-
-# Verificar site
-curl -I https://charhub.app
+# Check current assignments
+cat docs/05-business/planning/agent-assignments.md
 ```
 
-### 7️⃣ **Coleta de Métricas & Business Intelligence**
-- Coletar dados de uso de usuários (analytics, comportamentos)
-- Identificar features mais/menos utilizadas
-- Analisar taxa de retenção de usuários
-- Monitorar conversão: free → premium
-- Acompanhar taxa de cancelamento de assinaturas
-- Propor novas features baseado em dados
-- Identificar bugs/problemas em produção
-- Sugerir mecanismos de marketing e otimizações de receita
+**Prioritization Criteria:**
+- User impact (high usage features)
+- Revenue impact (conversion, retention)
+- Technical dependencies (what blocks other work)
+- Effort estimation (quick wins vs long-term)
 
----
+#### 1.2 Assign Tasks to Agent Coder
 
-## 🗓️ Ciclo Semanal do Agent Reviewer
+Update `docs/05-business/planning/agent-assignments.md`:
 
-Você deve executar **pelo menos uma vez por semana** as seguintes tarefas:
-
-### **Segunda-feira: Planejamento**
-```bash
-# 1. Revisar user-notes.md para novas solicitações
-cat /docs/user-notes.md
-
-# 2. Explorar TODO folder
-ls -la /docs/todo/
-
-# 3. Atualizar agent-assignments.md
-# Definir qual tarefa → qual agente
-
-# 4. Criar planos detalhados para próximas features
-# Se necessário, criar novos arquivos em /docs/todo/
+```markdown
+| Task | Agent | Status | Branch | Priority |
+|------|-------|--------|--------|----------|
+| Chat improvements | Coder | In Progress | feature/chat-ui | High |
+| Credits system | Coder | Planned | - | Medium |
 ```
 
-### **Terça-Quarta: Revisão & Teste**
+**Create detailed task in features folder if needed:**
 ```bash
-# 1. Verificar GitHub para novos PRs
-# 2. Para cada PR do Agent Coder:
-git fetch origin
-git checkout <nome-da-feature-branch>
-docker compose down
-docker compose up -d --build
-
-# 3. Executar testes
-npm test  # backend
-cd frontend && npm test
-
-# 4. Testar manualmente em http://localhost:8081
-
-# 5. Avaliar código e documentação do PR
-```
-
-### **Quinta-Sexta: Merge & Deploy**
-```bash
-# 1. Se testes OK, fazer merge
-git checkout main
-git merge <nome-da-feature-branch>
-git push origin main
-
-# 2. Disparar GitHub Actions (automático ou manual)
-# 3. Monitorar logs de produção
-# 4. Executar scripts de migração se necessário
-```
-
-### **Sexta-Sábado: Monitoramento & Métricas**
-```bash
-# 1. Revisar logs de produção das últimas 24h
-# 2. Coletar métricas de uso
-# 3. Analisar comportamento de usuários
-# 4. Identificar bugs/issues
-# 5. Documentar insights em /docs/metrics/
-# 6. Propor melhorias para próxima semana
-```
-
-### **Sábado-Domingo: Documentação & Planejamento para Próxima Semana**
-```bash
-# 1. Atualizar documentação de features implementadas
-# 2. Remover tasks concluídas de /docs/todo/
-# 3. Atualizar ROADMAP.md
-# 4. Revisar saúde geral da produção
-# 5. Planejar próximas tarefas baseado em métricas
+# For complex features, create spec
+vim docs/05-business/planning/features/new-feature.md
 ```
 
 ---
 
-## 📂 Arquivos Importantes do Projeto
+### Phase 2: Pull Request Review
 
-### **Seu Workspace (Agent Reviewer)**
-```
-~/projects/charhub-reviewer/
-├── docs/
-│   ├── user-notes.md           # Anotações do usuário sobre features/bugs
-│   ├── agent-assignments.md    # Tracking: qual tarefa está com qual agente
-│   ├── ROADMAP.md              # Plano estratégico do projeto
-│   ├── TODO.md                 # Sumário de tarefas
-│   ├── todo/                   # Planos detalhados de features
-│   │   ├── STORY_GENERATION.md
-│   │   ├── CREDITS_SYSTEM.md
-│   │   ├── CHAT_IMPROVEMENTS.md
-│   │   └── ... (outras features)
-│   ├── metrics/                # Seus arquivos de análise de métricas
-│   │   └── weekly-report.md    # Relatório semanal
-│   └── deploy/                 # Status de deploys
-│       └── deploy-log.md       # Log de deploys e rollbacks
-├── CLAUDE.md                   # Este arquivo
-├── docker-compose.yml          # Portas: 3001, 5174, 5433, 6380
-└── ...
-```
+#### 2.1 Receive PR Notification
 
-### **Branch Git**
-- **SEMPRE trabalha em:** `main`
-- **Nunca faz alterações diretamente em código** (exceto hotfixes críticos em produção)
-- Espera PRs do Agent Coder via GitHub
+When Agent Coder creates PR:
+- Check GitHub notifications
+- Read PR description thoroughly
+- Note any migration requirements
+- Check for breaking changes
 
----
-
-## 🔄 Fluxo de Trabalho Detalhado
-
-### **Recebendo um Pull Request do Agent Coder**
+#### 2.2 Local Testing Setup
 
 ```bash
-# 1. Buscar branches remotas
+# Fetch latest changes
 git fetch origin
 
-# 2. Verificar PR no GitHub e ler descrição detalhada
-# O Coder deve incluir:
-# - O que foi implementado
-# - Como testar
-# - Se requer scripts de migração
-# - Possíveis efeitos colaterais
+# Checkout feature branch
+git checkout -b feature/feature-name origin/feature/feature-name
 
-# 3. Fazer checkout da branch feature
-git checkout feature/nome-da-feature
-
-# 4. Atualizar dependências se necessário
+# Update dependencies if package.json changed
 cd backend && npm install
 cd ../frontend && npm install
 
-# 5. Parar containers antigos e subir novos
+# Clean restart environment
 docker compose down -v
 docker compose up -d --build
 
-# 6. Aguardar containers ficarem healthy (~30s-1m)
+# Wait for containers to be healthy
+sleep 30
 docker compose ps
-
-# 7. Executar testes
-npm test                    # backend
-cd frontend && npm test     # frontend
-
-# 8. Testar manualmente
-# - Abrir http://localhost:8081
-# - Testar a feature implementada
-# - Checar por erros no console do navegador
-# - Checar logs do Docker: docker compose logs -f backend
-
-# 9. Se OK, aprovar e fazer merge
-git checkout main
-git merge feature/nome-da-feature
-git push origin main
-
-# 10. GitHub Actions dispara deploy automático
-# Monitorar: https://github.com/seu-repo/actions
 ```
 
-### **Executando Testes Antes de Deploy**
+#### 2.3 Execute Test Suite
 
+**Backend Tests:**
 ```bash
-# Backend
 cd backend
-npm run build                  # Verifica tipos
-npm run lint                   # Lint
-npm test                       # Testes unitários
-npm run db:seed:dry           # Simular seed (se aplicável)
 
-# Frontend
-cd frontend
-npm run build                  # Build com type checking
-npm test                       # Testes (se existentes)
-
-# Testes de integração
-docker compose up -d
-# Testar fluxo OAuth, chat, caracteres, etc.
-```
-
-### **Detectando e Fazendo Rollback de Erros**
-
-```bash
-# 1. Monitorar logs de produção
-# Acessar GitHub > Actions ou ferramentas de log
-
-# 2. Se detectar erro crítico:
-git log --oneline -5          # Ver últimos commits
-git revert <commit-hash>      # Reverter último commit
-git push origin main          # Push da reversão
-
-# 3. Notificar Agent Coder sobre o problema
-# Esperar nova tentativa após fix
-
-# 4. Documentar incident em /docs/deploy/incident-log.md
-```
-
-### **Executando Scripts de Migração**
-
-O Agent Coder deve avisar no PR se há scripts de migração necessários:
-
-```bash
-# Exemplo: migração de usuários para novo schema
-cd backend
-npm run migrate:multiuser
-
-# Ou executar seed customizado
-npm run db:seed:tags
-
-# Verificar resultado
-npm run prisma:studio
-
-# Se algo der errado, rollback do database:
-# Fazer restore de backup ou revert do commit de migração
-```
-
----
-
-## 🛠️ Comandos Essenciais do Agent Reviewer
-
-### **Git & GitHub**
-```bash
-# Verificar branch atual (deve ser main)
-git branch --show-current
-# Esperado: main
-
-# Atualizar main local
-git pull origin main
-
-# Buscar branches remotas
-git fetch origin
-
-# Ver branches remotas
-git branch -a
-
-# Fazer checkout de feature branch do Coder
-git checkout origin/feature/nome-da-feature -b feature/nome-da-feature
-
-# Mergear após testes OK
-git checkout main
-git merge feature/nome-da-feature
-git push origin main
-
-# Ver histórico de commits
-git log --oneline --graph -10
-
-# Reverter último commit (hotfix crítico em prod)
-git revert <hash-do-commit>
-git push origin main
-```
-
-### **Docker & Testes**
-```bash
-# Subir ambiente completo
-docker compose up -d --build
-
-# Ver status dos containers
-docker compose ps
-
-# Ver logs do backend
-docker compose logs -f backend
-
-# Ver logs do frontend
-docker compose logs -f frontend
-
-# Ver logs de todos
-docker compose logs -f
-
-# Parar containers
-docker compose down
-
-# Parar e remover volumes (resetar BD)
-docker compose down -v
-
-# Executar testes backend
-cd backend
-npm test
+# TypeScript compilation (critical!)
 npm run build
+
+# Linting
 npm run lint
 
-# Executar testes frontend
-cd frontend
+# Unit tests
 npm test
+
+# Check for compilation errors
+# If build fails, request changes in PR
+```
+
+**Frontend Tests:**
+```bash
+cd frontend
+
+# TypeScript + Vite build (critical!)
 npm run build
 
-# Acessar Prisma Studio
-docker compose exec backend npm run prisma:studio
-# Abrir http://localhost:5555
+# This will fail if:
+# - Missing i18n translation keys
+# - TypeScript type errors
+# - Import errors
 ```
 
-### **Monitoramento de Produção**
+**Translation Verification:**
 ```bash
-# Ver status de deploy no GitHub
-# https://github.com/seu-repo/actions
+# If frontend changes include new text:
+cd backend
+npm run translations:compile
 
-# Acessar logs de produção (depende do seu setup)
-# Se tiver Cloudflare Tunnel: https://dash.cloudflare.com/
-# Se tiver cloud provider: gcloud/aws cli
+# Restart backend to load translations
+docker compose restart backend
 
-# Verificar saúde de produção
+# Check browser console for missing translation warnings
+```
+
+#### 2.4 Manual Testing Checklist
+
+Open `http://localhost:8081` and verify:
+
+```
+- [ ] Feature works as described in PR
+- [ ] No console errors in browser DevTools
+- [ ] Network requests return expected responses
+- [ ] UI/UX is polished and intuitive
+- [ ] Error cases handled gracefully
+- [ ] Database changes persisted correctly
+- [ ] All user flows complete successfully
+```
+
+**Check Backend Logs:**
+```bash
+docker compose logs -f backend
+# Look for errors, warnings, or unexpected behavior
+```
+
+**Database Verification:**
+```bash
+# If schema changed, verify migrations
+docker compose exec backend npm run prisma:studio
+# Open http://localhost:5555
+# Check new fields/tables exist
+```
+
+#### 2.5 Review PR Code Quality
+
+Check for:
+- **Code Standards**: Follows project patterns
+- **TypeScript**: Proper types, no `any`
+- **Error Handling**: Try/catch, validation
+- **i18n**: All frontend text uses `t('key')`
+- **Documentation**: Comments for complex logic
+- **Migrations**: Prisma migrations included if schema changed
+
+---
+
+### Phase 3: Merge & Pre-Deploy
+
+#### 3.1 Pre-Merge Checklist
+
+```
+BEFORE merging, verify:
+- [ ] All automated tests pass
+- [ ] Manual testing complete
+- [ ] No TypeScript errors (backend + frontend)
+- [ ] Translations built and tested
+- [ ] Database migrations tested locally
+- [ ] Documentation updated by Coder
+- [ ] FEATURE_TODO.md marked complete
+- [ ] No security vulnerabilities introduced
+```
+
+#### 3.2 Merge to Main
+
+```bash
+# Switch to main
+git checkout main
+git pull origin main
+
+# Merge feature branch
+git merge feature/feature-name
+
+# Verify no conflicts
+git status
+
+# DO NOT PUSH YET - Read Phase 4 first
+```
+
+---
+
+### Phase 4: Production Deployment
+
+#### 4.1 Pre-Deploy Verification
+
+**CRITICAL**: Every push to `main` triggers automatic deployment!
+
+**Read First:**
+- 📖 `docs/02-guides/deployment/cd-deploy-guide.md` - Deployment process
+- 📖 `docs/02-guides/deployment/vm-setup-recovery.md` - Recovery procedures
+- 📖 `docs/03-reference/workflows/workflows-analysis.md` - GitHub Actions details
+
+**Verify deployment is safe:**
+```bash
+# Run full test suite one more time on main
+cd backend && npm run build && npm test
+cd ../frontend && npm run build
+
+# Check for any uncommitted files
+git status
+
+# Review commit history
+git log --oneline -5
+```
+
+#### 4.2 Deploy to Production
+
+```bash
+# Push to main (triggers GitHub Actions)
+git push origin main
+
+# Immediately monitor deployment
+gh run watch
+
+# Or view on GitHub:
+# https://github.com/your-repo/actions
+```
+
+**Deployment Pipeline (Automated):**
+1. Pre-Deploy Checks (~30s)
+2. GCP Authentication (~20s)
+3. SSH Setup (~15s)
+4. Pull Latest Code (~30s)
+5. Cloudflare Credentials Sync (~10s)
+6. Container Rebuild (~2-3min)
+7. Health Check (~30s)
+8. Deployment Verification (~15s)
+
+**Total Duration**: ~4-5 minutes
+
+#### 4.3 Monitor Deployment
+
+Watch GitHub Actions output for:
+- ✅ All steps complete successfully
+- ⚠️ Warnings (investigate later)
+- 🔴 Errors (immediate action required)
+
+**If deployment fails:**
+```bash
+# Immediate rollback
+git revert HEAD
+git push origin main
+
+# Document incident
+vim docs/06-operations/incidents/YYYY-MM-DD-deployment-failure.md
+```
+
+---
+
+### Phase 5: Post-Deploy Verification
+
+#### 5.1 Production Health Checks
+
+```bash
+# Check production health endpoint
 curl https://charhub.app/api/v1/health
 
-# Verificar frontend de produção
-# Abrir https://charhub.app no navegador
+# Expected response:
+# {"status": "ok", "timestamp": "..."}
+
+# Check frontend loads
+curl -I https://charhub.app
+# Expected: HTTP/2 200
 ```
 
-### **Análise de Métricas (seu papel especial)**
+**Manual Testing in Production:**
+- Open `https://charhub.app`
+- Test critical user flows:
+  - Login/OAuth
+  - Chat functionality
+  - Character interaction
+  - Payment flow (if changed)
+- Check browser console for errors
+
+#### 5.2 Execute Database Migrations (If Required)
+
+If PR mentioned migrations needed:
+
 ```bash
-# Ver volume de usuários
-# Dados provavelmente virão de:
-# - Database (analytics tables)
-# - Logs estruturados
-# - Google Analytics (se configurado)
-# - Sistema de pagamento (PayPal)
+# SSH to production VM
+gcloud compute ssh charhub-vm --zone=us-central1-a
 
-# Exportar dados de metricas
-# Criar queries SQL customizadas
-docker compose exec postgres psql -U user -d charhub_db -c "SELECT COUNT(*) FROM User;"
+# Navigate to project
+cd /mnt/stateful_partition/charhub
 
-# Analisar churn rate
-# Query SQL:
-# SELECT COUNT(DISTINCT userId) FROM CreditTransaction
-# WHERE createdAt > NOW() - INTERVAL '7 days';
+# Run migration
+docker compose exec backend npm run prisma:migrate:deploy
 
-# Analisar conversão free→premium
-# Query SQL:
-# SELECT COUNT(*) FROM User WHERE isPremium = true;
+# Verify migration success
+docker compose exec backend npm run prisma:studio
+# Check production database schema
+
+# Exit SSH
+exit
 ```
+
+**⚠️ CRITICAL**: Only run migrations if explicitly mentioned in PR and tested locally first!
+
+#### 5.3 Monitor Production Logs
+
+```bash
+# SSH to production
+gcloud compute ssh charhub-vm --zone=us-central1-a
+
+# View backend logs
+docker compose logs -f backend --tail=100
+
+# Look for:
+# - Errors or exceptions
+# - Unusual warnings
+# - Performance issues
+# - Database connection problems
+```
+
+**Monitor for at least 10-15 minutes after deployment.**
 
 ---
 
-## 📊 Templates para Documentação
+### Phase 6: Documentation & Cleanup
 
-### **Template: Weekly Metrics Report**
+#### 6.1 Update Documentation
+
+**If new feature deployed:**
+```bash
+# Update implemented features list
+vim docs/05-business/roadmap/implemented-features.md
+
+# Add deployment to changelog
+vim docs/06-operations/deployments/deployment-log.md
+```
+
+**Template for deployment-log.md:**
 ```markdown
-# Weekly Metrics Report - Semana de [DATA]
+## 2024-XX-XX - Feature Name
 
-## 📈 Estatísticas de Uso
-- Usuários ativos: X
-- Novas inscrições: Y
-- Chats iniciados: Z
-- Mensagens trocadas: W
+**Commit**: abc123
+**PR**: #123
+**Deployed By**: Agent Reviewer
+**Status**: ✅ Success
 
-## 💰 Métricas de Receita
-- Usuários premium: X
-- Novos pagamentos: R$X
-- Churn rate: X%
-- Lifetime value: R$X
+**Changes:**
+- Implemented X feature
+- Fixed Y bug
+- Updated Z configuration
 
-## 🐛 Bugs Identificados
-1. [Bug]: Descrição
-   - Impacto: Alto/Médio/Baixo
-   - Ação: Priorizado para próxima sprint
-
-## ✨ Features Mais Utilizadas
-1. Chat: X% de usuarios
-2. Caracteres: Y% de usuarios
-
-## 💡 Recomendações para Próxima Semana
-- Feature A (impacto alto em retenção)
-- Bug fix para B (critica para UX)
-- Otimização de C (reduz custos de infraestrutura)
-
-## 🔄 Deploy Status
-- Última versão em produção: [DATA] - [COMMIT HASH]
-- Status: ✅ Stable / ⚠️ With issues / 🔴 Critical error
-- Ultima atualização de métricas: [DATA]
+**Migration**: None / Executed successfully
+**Downtime**: ~4 minutes
+**Issues**: None / See incident log
 ```
 
-### **Template: Agent Assignments**
-```markdown
-# Agent Assignments - Tracking de Tarefas
+#### 6.2 Clean Up Branches
 
-## Status: [Data]
+```bash
+# Delete merged feature branch (local)
+git branch -d feature/feature-name
 
-| Tarefa | Agente | Status | Branch | ETA |
-|--------|--------|--------|--------|-----|
-| Implementar Sistema X | Coder | Em progresso | feature/system-x | 15/12 |
-| Bug na autenticação | Coder | Aguardando | feature/auth-fix | 13/12 |
-| Feature Y do Roadmap | Reviewer | Planejamento | - | 20/12 |
+# Delete remote branch (optional, keeps PR history)
+git push origin --delete feature/feature-name
+```
 
-## Próximas Tarefas (Fila)
-1. Otimizar performance de chat (prioridade: alta)
-2. Implementar notificações (prioridade: média)
-3. Sistema de recomendações (prioridade: baixa)
+#### 6.3 Update Agent Assignments
+
+```bash
+# Mark task complete
+vim docs/05-business/planning/agent-assignments.md
+
+# Remove from features TODO
+# Feature spec remains in docs/05-business/planning/features/ for reference
 ```
 
 ---
 
-## ⚠️ CRÍTICO: Regras de Segurança & Ambiente
+## 🚨 Critical Rules
 
-### **BRANCH PRINCIPAL**
-- ✅ Você **SEMPRE** trabalha em `main`
-- ❌ NUNCA crie ou trabalhe em `feature/*` (isso é do Coder)
-- ✅ Faça merge **APENAS** de PRs testadas
-- ❌ NUNCA force-push em `main`
+### NEVER Do These
 
-### **AMBIENTE: Development vs Production**
-- 🖥️ Seu ambiente local: `http://localhost:8081` (portas 3001, 5174, 5433, 6380)
-- 🌐 Produção: `https://charhub.app` (portas padrão: 443)
-- ❌ NUNCA toque em variáveis de produção localmente
-- ✅ Deploy **SEMPRE** via GitHub Actions (não manual SSH)
+❌ **Work in `feature/*` branches** (that's Agent Coder's role)
+❌ **Push code changes without testing**
+❌ **Merge PRs with failing tests**
+❌ **Deploy without monitoring**
+❌ **Edit production files via SSH** (except emergency hotfix)
+❌ **Skip database migration testing**
+❌ **Force-push to `main`**
+❌ **Push documentation-only commits without user approval** (triggers unnecessary deploy)
 
-### **Arquivo .env - CRÍTICO**
-```bash
-# NÃO modificar arquivos .env de produção localmente
-# O .env local é apenas para desenvolvimento
+### ALWAYS Do These
 
-# Estrutura esperada em /root/projects/charhub-reviewer/:
-.env                    # Seu ambiente local (NUNCA commit)
-.env.example            # Exemplo com placeholders
-
-# NÃO editar:
-.env.production        # Segredos de produção (read-only)
-secrets/               # Backups de produção (read-only)
-```
-
-### **Operações Permitidas vs Proibidas**
-
-✅ **Permitido:**
-- Ler código e documentação
-- Executar `docker compose up/down`
-- Rodar testes: `npm test`, `npm run build`
-- Fazer checkout de branches
-- Mergear PRs na `main`
-- Disparar deploys via GitHub Actions
-- Fazer rollback em caso de erro crítico
-- Monitorar produção
-
-❌ **PROIBIDO:**
-- Modificar código diretamente (exceto hotfixes críticos em `main`)
-- Force-push em qualquer branch
-- Alterar variáveis de ambiente de produção
-- Deletar branches de forma permanente
-- Acessar produção via SSH (usar CI/CD)
-- Resetar banco de dados sem aprovação
-- Modificar `.env.production`
-
-### **Regras de Git Push - CRÍTICO**
-
-> **⚠️ IMPORTANTE: Controle de Deploy em Produção**
->
-> Cada push para `main` **dispara automaticamente o GitHub Actions** que faz rebuild completo da aplicação em produção. Isso causa:
-> - Reinício de containers (downtime de ~3-5 minutos)
-> - Rebuild de imagens Docker
-> - Execução de migrations
-> - Restart de serviços
->
-> **REGRA**: Só faça `git push origin main` quando:
->
-> ✅ **Com Autorização Explícita do Usuário**:
-> - Usuário pediu para fazer push
-> - Usuário autorizou o deploy
-> - Usuário confirmou que pode ter downtime
->
-> ✅ **Mudanças que Impactam Diretamente Produção** (deploy necessário):
-> - Fix crítico de bug em produção
-> - Hotfix de segurança
-> - Correção de Dockerfile, docker-compose.yml
-> - Alteração em migrations do Prisma
-> - Mudança em código backend/frontend
-> - Atualização de dependências (package.json)
-> - Mudança em GitHub Actions workflows
->
-> ❌ **NUNCA faça push automático para** (apenas commit local):
-> - Documentação técnica (`docs/**/*.md`)
-> - Arquivos de planejamento (`docs/todo/`, `docs/metrics/`)
-> - Status reports (`FINAL_STATUS_*.md`, `*_INVESTIGATION.md`)
-> - Guias e tutoriais
-> - Anotações do usuário (`user-notes.md`)
-> - README updates
->
-> **Workflow Correto para Documentação**:
-> ```bash
-> # 1. Fazer commit local (SEM push)
-> git add docs/reviewer/NOVO_DOCUMENTO.md
-> git commit -m "docs: add investigation report"
->
-> # 2. Informar o usuário
-> echo "✅ Documento criado e commitado localmente"
-> echo "📍 Localização: docs/reviewer/NOVO_DOCUMENTO.md"
-> echo "ℹ️  Commit: $(git rev-parse --short HEAD)"
-> echo ""
-> echo "Para fazer push para produção (vai disparar rebuild):"
-> echo "  git push origin main"
->
-> # 3. Aguardar autorização do usuário antes de push
-> ```
->
-> **Exceção**: Se o usuário explicitamente pedir "commite e faça push", então pode fazer push imediatamente.
+✅ **Work ONLY in `main` branch**
+✅ **Test features locally before merge**
+✅ **Monitor GitHub Actions after push**
+✅ **Verify production health after deploy**
+✅ **Document all deployments**
+✅ **Rollback immediately if critical errors**
+✅ **Coordinate with Agent Coder via PR comments**
+✅ **Ask user before pushing documentation** (avoid unnecessary deploys)
 
 ---
 
-## 🏥 Troubleshooting para Agent Reviewer
+## 📚 Quick Reference
 
-### **Pull Request não passa em testes**
-1. Pedir ao Agent Coder para revisar o código
-2. Não mergear até testes passarem
-3. Documentar em GitHub issue para próxima iteração
+### Essential Documentation
+| Document | When to Read |
+|----------|--------------|
+| [CD Deploy Guide](../../02-guides/deployment/cd-deploy-guide.md) | Before every deployment |
+| [VM Setup & Recovery](../../02-guides/deployment/vm-setup-recovery.md) | When troubleshooting infrastructure |
+| [System Overview](../../04-architecture/system-overview.md) | When reviewing architecture changes |
+| [Database Schema](../../04-architecture/database-schema.md) | Before merging schema changes |
+| [Git Workflow](../../02-guides/development/git-github-actions.md) | When managing branches/PRs |
+| [Workflows Analysis](../../03-reference/workflows/workflows-analysis.md) | When GitHub Actions fail |
 
-### **Deploy falhou em produção**
-1. Imediatamente fazer rollback: `git revert <hash>`
-2. Disparar novo deploy da versão anterior
-3. Notificar Agent Coder sobre o problema
-4. Abrir issue detalhada com erro
+### Key Commands
 
-### **Containers não sobem**
 ```bash
-docker compose down -v
-docker compose up -d --build
+# PR Review
+git fetch origin
+git checkout -b feature/name origin/feature/name
+docker compose down -v && docker compose up -d --build
+cd backend && npm run build && npm test
+cd ../frontend && npm run build
+
+# Merge & Deploy
+git checkout main
+git merge feature/name
+git push origin main
+gh run watch
+
+# Production Access
+gcloud compute ssh charhub-vm --zone=us-central1-a
 docker compose logs -f backend
+docker compose ps
+curl https://charhub.app/api/v1/health
+
+# Rollback
+git revert HEAD
+git push origin main
+
+# Monitoring
+gh run list
+gh run view <run-id>
+docker compose exec backend npm run prisma:studio
 ```
-
-### **Banco de dados corrompido/bloqueado**
-```bash
-# Parar tudo
-docker compose down -v
-
-# Iniciar fresh
-docker compose up -d
-
-# Se necessário, fazer restore de backup
-# (requer acesso a backup storage)
-```
-
-### **Performance lenta em produção**
-1. Coletar métricas: tempo de resposta, CPU, memória
-2. Analisar logs para identificar gargalos
-3. Documentar para AG ent Coder otimizar
-4. Propor escalabilidade se necessário (DB, cache, CDN)
 
 ---
 
-## 🔐 Encoding & Git Best Practices
+## 🆘 Common Issues
 
-- **UTF-8 sem BOM**: Sempre salvar documentação nesse formato
-- **LF newlines**: Usar `\n` (não `\r\n`)
-- **Git branches**: Sempre trabalhar em `main`, nunca força push
-- **Commits**: Usar padrão convencional: `feat(module): description` ou `fix(module): description`
+**PR tests fail locally:**
+→ Request changes in PR, tag Agent Coder
+→ Do NOT merge until tests pass
 
+**GitHub Actions deployment fails:**
+→ Check workflow logs: `gh run view <run-id>`
+→ Rollback if critical: `git revert HEAD && git push`
+→ Read: `docs/02-guides/deployment/cd-deploy-guide.md`
+
+**Production health check fails:**
+→ SSH to VM and check container status
+→ View logs: `docker compose logs -f backend`
+→ Rollback if service down: `git revert HEAD && git push`
+
+**Database migration fails in production:**
+→ IMMEDIATELY document the error
+→ DO NOT retry without investigation
+→ Check migration locally first
+→ Restore from backup if data corrupted (see VM Setup guide)
+
+**Containers not healthy after deploy:**
+→ SSH to VM
+→ Check: `docker compose ps`
+→ Restart: `docker compose restart backend`
+→ If persists: `docker compose down && docker compose up -d --build`
+
+---
+
+## 📞 Need Help?
+
+1. **Read deployment guides** in `docs/02-guides/deployment/`
+2. **Check architecture docs** in `docs/04-architecture/`
+3. **Review past incidents** in `docs/06-operations/incidents/`
+4. **Coordinate with Agent Coder** via PR comments
+5. **Ask user for clarification** if requirements unclear
+
+---
+
+**Remember**: Stability > Speed. Never skip testing or monitoring steps!
+
+🤖 **Agent Reviewer** - Quality code, stable production, happy users!
