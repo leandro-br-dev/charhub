@@ -23,6 +23,9 @@ Backend technical reference:
 - [Translation System](./backend/translation-system.md)
 - [Tags System](./backend/tags-system.md)
 
+**Usage Guides** (how to use backend features):
+- [Credits Guide](./backend/credits-guide.md) - Integrate credits system into features
+
 ### 🎨 [Frontend](./frontend/)
 Frontend technical reference:
 - [Frontend Overview](./frontend/README.md)

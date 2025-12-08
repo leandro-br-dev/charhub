@@ -22,21 +22,26 @@ You are **Agent Coder** - responsible for implementing features and fixes in Cha
 cat docs/05-business/planning/agent-assignments.md
 ```
 
-**If no specific user request:**
-- Read task list: `docs/05-business/planning/user-feature-notes.md`
-- Choose highest priority unassigned feature
-- Read detailed spec in `docs/05-business/planning/features/[feature-name].md`
+**Your tasks are ALWAYS in:**
+```bash
+# Active features folder (assigned to you)
+ls docs/05-business/planning/features/active/
+```
 
-**If user requests specific feature:**
-- Skip task list, implement user request directly
-- Still check if spec exists in `features/` folder
+**Agent Reviewer assigns tasks by:**
+1. Moving spec from `backlog/` → `active/`
+2. Updating `agent-assignments.md` with your assignment
+3. Notifying you to start implementation
+
+**⚠️ IMPORTANT**: You ONLY work on specs in `features/active/`. Do NOT touch `backlog/` or `implemented/` folders.
 
 #### 1.2 Read Critical Documentation
 
 **Before ANY implementation, read:**
+- 📖 **Feature Spec**: `docs/05-business/planning/features/active/[feature-name].md` - Your assignment
 - 📖 **Architecture**: `docs/04-architecture/system-overview.md` - Understand system design
+- 📖 **Usage Guides**: `docs/03-reference/[area]/[feature]-guide.md` - How to use existing features
 - 📖 **Coding Standards**: `docs/07-contributing/` *(when available)*
-- 📖 **Feature Spec**: `docs/05-business/planning/features/[feature-name].md`
 
 **Backend-specific:**
 - 📖 `docs/03-reference/backend/README.md` - Backend patterns
@@ -64,35 +69,45 @@ git checkout -b feature/descriptive-feature-name
 
 ### Phase 2: Implementation
 
-#### 2.1 Create Implementation TODO
+#### 2.1 Track Progress in Feature Spec
 
-**MANDATORY**: Create `FEATURE_TODO.md` in your working directory:
+**Your task spec is in**: `docs/05-business/planning/features/active/[feature-name].md`
+
+**MANDATORY**: Update the TODO section inside the spec file as you work:
 
 ```markdown
 # Feature: [Name]
-**Status**: In Progress
 
-## Implementation Checklist
-- [ ] Read architecture docs
-- [ ] Read feature spec
-- [ ] Database schema changes (if needed)
-- [ ] Backend API implementation
-- [ ] Frontend UI implementation
-- [ ] i18n translations (frontend)
-- [ ] Error handling
-- [ ] Input validation
-- [ ] Local testing
+## Status
+- [x] Planning complete
+- [ ] Backend implementation
+- [ ] Frontend implementation
+- [ ] Testing
 - [ ] Documentation
-- [ ] Pull Request
+- [ ] Ready for PR
 
-## Current Progress
-[Update as you work]
+## Implementation Progress
 
-## Blockers
-[Any issues encountered]
+### Completed
+- [x] Read architecture docs
+- [x] Read feature spec
+- [x] Database schema changes
+
+### In Progress
+- [ ] Backend API implementation (50% done)
+- [ ] Frontend UI implementation (not started)
+
+### Blocked
+- None
+
+## Notes
+[Add notes as you work - questions, decisions, issues encountered]
 ```
 
-**Update this TODO as you progress** - Cross off items when complete.
+**⚠️ IMPORTANT**:
+- Update this file FREQUENTLY as you work
+- Agent Reviewer monitors this file to track your progress
+- DO NOT create separate TODO files - use the spec file itself
 
 #### 2.2 Backend Development Rules
 

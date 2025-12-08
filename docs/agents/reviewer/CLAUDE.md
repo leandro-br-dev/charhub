@@ -36,20 +36,31 @@ cat docs/05-business/planning/agent-assignments.md
 
 #### 1.2 Assign Tasks to Agent Coder
 
-Update `docs/05-business/planning/agent-assignments.md`:
+**Workflow for new features:**
 
-```markdown
-| Task | Agent | Status | Branch | Priority |
-|------|-------|--------|--------|----------|
-| Chat improvements | Coder | In Progress | feature/chat-ui | High |
-| Credits system | Coder | Planned | - | Medium |
-```
+1. **Create detailed spec** in `features/backlog/`:
+   ```bash
+   vim docs/05-business/planning/features/backlog/new-feature.md
+   ```
 
-**Create detailed task in features folder if needed:**
-```bash
-# For complex features, create spec
-vim docs/05-business/planning/features/new-feature.md
-```
+2. **When ready to assign**, move to `active/`:
+   ```bash
+   git mv docs/05-business/planning/features/backlog/new-feature.md \
+           docs/05-business/planning/features/active/new-feature.md
+   ```
+
+3. **Update agent-assignments.md**:
+   ```markdown
+   | Task | Agent | Status | Branch | Priority |
+   |------|-------|--------|--------|----------|
+   | New Feature | Coder | In Progress | feature/new-feature | High |
+   ```
+
+4. **Notify Agent Coder** that task is in `features/active/`
+
+**⚠️ IMPORTANT**:
+- Agent Coder ONLY works on specs in `features/active/`
+- You manage all folder movements (backlog → active → implemented)
 
 ---
 
@@ -342,37 +353,90 @@ docker compose logs -f backend --tail=100
 
 ### Phase 6: Documentation & Cleanup
 
-#### 6.1 Update Documentation
+#### 6.1 Move Feature Spec to Implemented
 
-**If new feature deployed:**
+```bash
+# Move spec from active/ to implemented/
+git mv docs/05-business/planning/features/active/feature-name.md \
+        docs/05-business/planning/features/implemented/feature-name.md
+```
+
+#### 6.2 Create Usage Guide ⭐ **CRITICAL**
+
+**After deploying a feature, create a concise usage guide for other developers:**
+
+```bash
+# Create guide in appropriate reference section
+vim docs/03-reference/[backend|frontend|api]/feature-name-guide.md
+```
+
+**Usage guide structure** (keep it SHORT and practical):
+
+```markdown
+# Feature Name - Usage Guide
+
+## Overview
+One-sentence description of what this does.
+
+## Quick Start
+```[language]
+// Minimal working example
+import { feature } from '@/services/feature';
+await feature.use();
+```
+
+## Available Functions
+- `function1(param)` - Brief description
+- `function2(param)` - Brief description
+
+## Common Use Cases
+### Use Case 1
+```[language]
+// Code example
+```
+
+### Use Case 2
+```[language]
+// Code example
+```
+
+## See Also
+- Implementation spec: [features/implemented/feature-name.md](...)
+- API reference: [API docs](...)
+```
+
+**Examples of guides:**
+- `docs/03-reference/backend/credits-guide.md` - How to integrate credits
+- `docs/03-reference/backend/notifications-guide.md` - How to send notifications
+- `docs/03-reference/api/chat-api.md` - Chat API endpoints
+
+#### 6.3 Update Documentation Indexes
+
+```bash
+# Add to CHANGELOG
+vim docs/05-business/CHANGELOG.md
+```
+
+**CHANGELOG entry template:**
+```markdown
+## [2025-XX-XX]
+
+### ✨ Features Added
+- **Feature Name**: Brief description of what was added
+
+### 🐛 Bugs Fixed
+- **Bug Name**: Brief description of what was fixed
+```
+
 ```bash
 # Update implemented features list
 vim docs/05-business/roadmap/implemented-features.md
 
-# Add deployment to changelog
-vim docs/06-operations/deployments/deployment-log.md
+# Delete original request from user-feature-notes.md
+vim docs/05-business/planning/user-feature-notes.md
 ```
 
-**Template for deployment-log.md:**
-```markdown
-## 2024-XX-XX - Feature Name
-
-**Commit**: abc123
-**PR**: #123
-**Deployed By**: Agent Reviewer
-**Status**: ✅ Success
-
-**Changes:**
-- Implemented X feature
-- Fixed Y bug
-- Updated Z configuration
-
-**Migration**: None / Executed successfully
-**Downtime**: ~4 minutes
-**Issues**: None / See incident log
-```
-
-#### 6.2 Clean Up Branches
+#### 6.4 Clean Up Branches
 
 ```bash
 # Delete merged feature branch (local)
@@ -382,14 +446,18 @@ git branch -d feature/feature-name
 git push origin --delete feature/feature-name
 ```
 
-#### 6.3 Update Agent Assignments
+#### 6.5 Update Agent Assignments
 
 ```bash
-# Mark task complete
+# Mark task complete in agent-assignments.md
 vim docs/05-business/planning/agent-assignments.md
+```
 
-# Remove from features TODO
-# Feature spec remains in docs/05-business/planning/features/ for reference
+**Mark as complete:**
+```markdown
+| Task | Agent | Status | Branch | Completed |
+|------|-------|--------|--------|-----------|
+| Feature Name | Coder | ✅ Deployed | feature/name | 2025-XX-XX |
 ```
 
 ---
