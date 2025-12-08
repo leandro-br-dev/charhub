@@ -1,21 +1,27 @@
-# Implemented Features - Needs Documentation & Testing
+# Implemented Features - Quality Dashboard
 
-**Last Updated**: 2025-12-02
-**Status**: 75% of core project complete
-**Purpose**: Summary of features already implemented that require testing, documentation, or final validation
+**Last Updated**: 2025-12-08
+**Status**: Strategic quality tracking document
+**Purpose**: Dashboard showing documentation, testing, and QA status of implemented features
 
 ---
 
 ## 📋 Overview
 
-This document lists all major features that have been **implemented in code** but need:
-- ✅ Comprehensive documentation updates
-- ✅ Automated test coverage
-- ✅ Manual testing validation in production environment
-- ✅ Performance benchmarking
-- ✅ Edge case handling validation
+This document provides a **quality dashboard** for features already in production.
 
-For detailed implementation status of each feature, see the corresponding file in `docs/todo/`.
+**What this shows**:
+- ✅ Documentation status (complete/partial/missing)
+- ✅ Test coverage status (complete/partial/missing)
+- ✅ QA validation status (complete/partial/missing)
+- ✅ Priority for testing/documentation work
+
+**What this does NOT show**:
+- Technical implementation details → See `../planning/features/implemented/`
+- How to use features → See `../../03-reference/[area]/[feature]-guide.md`
+- Features not yet implemented → See `missing-features.md`
+
+**For detailed technical specs**: See `../planning/features/implemented/[feature-name].md`
 
 ---
 
@@ -478,8 +484,21 @@ npm run build:translations  # From backend directory
 
 ---
 
-**See Also**:
-- `docs/BACKEND.md` - API reference
-- `docs/FRONTEND.md` - Component reference
-- `docs/todo/` - Detailed feature specifications
-- `docs/ROADMAP.md` - Strategic priorities
+---
+
+## 🔗 Related Documents
+
+**Strategic Planning**:
+- [Missing Features](./missing-features.md) - What needs to be built
+- [Undocumented Features](./undocumented-features.md) - What needs documentation
+- [Roadmap Overview](./README.md) - Strategic roadmap guide
+
+**Technical Details**:
+- [Implemented Specs](../planning/features/implemented/) - Technical implementation details
+- [Backend Reference](../../03-reference/backend/) - Backend usage guides
+- [Frontend Reference](../../03-reference/frontend/) - Frontend usage guides
+- [API Reference](../../03-reference/api/) - API documentation
+
+---
+
+[← Back to Roadmap](./README.md) | [← Back to Business](../) | [← Back to Documentation Home](../../README.md)
