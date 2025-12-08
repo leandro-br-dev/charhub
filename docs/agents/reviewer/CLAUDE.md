@@ -460,6 +460,37 @@ vim docs/05-business/planning/agent-assignments.md
 | Feature Name | Coder | ✅ Deployed | feature/name | 2025-XX-XX |
 ```
 
+#### 6.6 Update Strategic Roadmap (After Deploy)
+
+**⚠️ IMPORTANTE**: Atualizar roadmap apenas APÓS deploy bem-sucedido.
+
+```bash
+# 1. Atualizar implemented-features.md (adicionar feature na tabela)
+vim docs/05-business/roadmap/implemented-features.md
+# Adicionar linha na tabela resumo com status de Docs/Tests/QA
+
+# 2. Remover feature de missing-features.md
+vim docs/05-business/roadmap/missing-features.md
+# Localizar seção da feature e deletar entrada
+```
+
+**Frequência de atualização do roadmap:**
+- **`implemented-features.md`**: Atualizar **por deploy** (adicionar linha na tabela)
+- **`missing-features.md`**: Remover entrada **por deploy** + revisar prioridades **mensalmente**
+- **NO DIA-A-DIA**: Trabalhar apenas em `features/` + `agent-assignments.md`
+
+**Princípio: Single Source of Truth**
+```
+features/backlog/     → Specs técnicas (FONTE DE VERDADE - trabalho diário)
+         ↓
+roadmap/missing-features.md  → Índice estratégico (DERIVADO - atualizações pontuais)
+```
+
+**Evitar duplicação**:
+- ✅ Criar spec detalhada APENAS em `features/backlog/`
+- ✅ Roadmap é atualizado apenas ao deploy (não durante desenvolvimento)
+- ❌ NÃO manter mesma informação em dois lugares
+
 ---
 
 ## 🚨 Critical Rules
