@@ -1,54 +1,100 @@
 # Feature Specifications
 
-**Last Updated**: 2025-12-05
+**Last Updated**: 2025-12-07
 
 ---
 
 ## 📋 Overview
 
-Detailed feature specifications and TODO items for CharHub development.
+This folder contains all feature specifications for CharHub, organized by implementation status.
 
 ---
 
-## 📂 Contents
+## 📂 Folder Structure
 
-### Implemented Features
-See [Implemented Features](../implemented-features.md) for features already in production.
+### 🏗️ [active/](./active/)
+Features currently being developed by Agent Coder.
 
-### Detailed Specifications
+**Status**: Work in progress, PRs not yet merged
 
-**Chat Features**:
-- [Chat Improvements](./chat-improvements.md) - Detailed spec
-- [Multi-User Chat](./multi-user-chat.md) - Detailed spec
-- [TODO: Chat Improvements](./todo-chat-improvements.md) - Implementation tasks
-- [TODO: Chat Invite Links](./todo-chat-invite-links.md) - Implementation tasks
-- [TODO: Multiuser Conversation](./todo-multiuser-conversation.md) - Implementation tasks
+**When to use**: Agent Reviewer moves specs here when assigning to Agent Coder
 
-**Credits & Payment**:
-- [Credits System](./credits-system.md) - Detailed spec
-- [TODO: Credits System](./todo-credits-system.md) - Implementation tasks
+### ✅ [implemented/](./implemented/)
+Features already deployed to production.
 
-**Content Features**:
-- [Memory System](./memory-system.md) - Detailed spec
-- [TODO: Image Generation](./todo-image-generation.md) - Implementation tasks
+**Status**: Live in production, may have TODOs for improvements
 
-**Infrastructure**:
-- [TODO: CI/CD](./todo-ci-cd.md) - Implementation tasks
-- [TODO: Deploy Improvements](./todo-deploy-improvements.md) - Implementation tasks
+**Contents**:
+- Detailed specs of implemented features
+- TODO lists for enhancements/improvements
+- Reference documentation
 
-**Future Ideas**:
-- [TODO: Game Modules](./todo-game-modules.md) - Exploratory
+**Current Features**:
+- Credits System
+- Multi-User Chat
+- Chat Improvements (TODO)
+- Chat Invite Links (TODO)
+- Notification System (TODO)
+- Image Generation (TODO)
+
+### 📋 [backlog/](./backlog/)
+Features planned for future development.
+
+**Status**: Not yet assigned, awaiting prioritization
+
+**Contents**:
+- Story Generation
+- Game Modules
+- Memory System
+- Chat Improvements (future enhancements)
+- CI/CD Improvements
+- Deploy Improvements
 
 ---
 
-## 📊 Organization
+## 🔄 Feature Lifecycle
 
-### File Naming Convention
-- `feature-name.md` - Detailed specification (comprehensive)
-- `todo-feature-name.md` - Implementation tasks (actionable)
+### 1. Request Phase
+User reports feature request in [`user-feature-notes.md`](../user-feature-notes.md)
 
-### Specification Structure
+### 2. Planning Phase
+Agent Reviewer creates detailed spec:
+- Creates `backlog/feature-name.md` with complete specification
+- Adds to [`agent-assignments.md`](../agent-assignments.md) for prioritization
+
+### 3. Development Phase
+Agent Reviewer assigns to Agent Coder:
+- Moves spec from `backlog/` → `active/`
+- Updates agent-assignments.md with branch name
+- Agent Coder creates feature branch and implements
+
+### 4. Review & Deploy Phase
+Agent Reviewer tests and deploys:
+- Reviews PR from Agent Coder
+- Tests locally and in staging
+- Merges to main
+- Monitors production deployment
+
+### 5. Completed Phase
+Feature is live:
+- Moves spec from `active/` → `implemented/`
+- Adds entry to [`../../CHANGELOG.md`](../../CHANGELOG.md)
+- Updates [`../../roadmap/implemented-features.md`](../../roadmap/implemented-features.md)
+- Deletes original request from `user-feature-notes.md`
+
+---
+
+## 📝 File Naming Convention
+
+- `feature-name.md` - Detailed specification (comprehensive design doc)
+- `todo-feature-name.md` - Implementation tasks (actionable checklist)
+
+---
+
+## 📋 Specification Structure
+
 Each detailed spec should include:
+
 1. **Overview** - What is this feature?
 2. **User Stories** - Who benefits and how?
 3. **Technical Design** - How will it work?
@@ -58,14 +104,18 @@ Each detailed spec should include:
 7. **Testing** - How to verify it works
 8. **Rollout** - Deployment strategy
 
-### TODO Structure
+---
+
+## ✅ TODO Structure
+
 Each TODO should include:
+
 1. **Summary** - Quick overview
 2. **Tasks** - Checkbox list of work items
 3. **Dependencies** - What must be done first
 4. **Acceptance Criteria** - Definition of done
-5. **Estimated Effort** - Time estimate
-6. **Assigned To** - Agent Coder or Agent Reviewer
+5. **Estimated Effort** - Time estimate (optional)
+6. **Status** - Pending / In Progress / Blocked / Done
 
 ---
 

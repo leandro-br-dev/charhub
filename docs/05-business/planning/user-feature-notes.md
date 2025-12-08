@@ -5,8 +5,9 @@
 **How to Use**:
 1. Add new entries at the TOP of each section (most recent first)
 2. Use the template format provided
-3. Delete entries once they've been addressed and assigned to Agent Coder
-4. Agent Reviewer reads this weekly (Mondays) to prioritize work
+3. Agent Reviewer reads this weekly (Mondays) to prioritize work
+4. **When resolved**: DELETE the entry (don't keep "Resolved" section here)
+5. **History tracking**: Resolved bugs/features go to `../CHANGELOG.md` automatically
 
 ---
 
@@ -32,7 +33,7 @@
 
 ---
 
-### Bug Reports - Production (2025-12-07)
+### Bug Reports - Active
 
 **[BUG-003]**: User Sidebar Credit Balance Not Auto-Updating
 - **Date Reported**: 2025-12-02
@@ -54,22 +55,6 @@
   - Spending credits on features
 
   Needs real-time update mechanism (context/hook/state management)
-
----
-
-### Recently Resolved (2025-12-07)
-
-**[BUG-001]**: ~~Profile Plans Tab Crashes~~ ✅ **RESOLVED**
-- **Resolution**: Fixed by correcting database seed loading
-- **Status**: Fixed in production
-
-**[BUG-002]**: ~~New User Missing 200 Initial Credits~~ ✅ **RESOLVED**
-- **Resolution**: Fixed by correcting database seed loading
-- **Status**: Fixed in production
-
-**[BUG-004]**: ~~Tags Not Available~~ ✅ **RESOLVED**
-- **Resolution**: Fixed by correcting database seed loading (npm run db:seed:tags)
-- **Status**: Fixed in production
 
 ---
 
