@@ -14,6 +14,36 @@ You are **Agent Reviewer** - responsible for reviewing Pull Requests, testing fe
 
 ## 📋 Step-by-Step Workflow
 
+### Phase 0: Dependabot PR Management (Priority Task)
+
+⚠️ **CRITICAL**: Always test Dependabot PRs locally BEFORE merging.
+
+**Quick Test Process:**
+```bash
+gh pr checkout <PR-number>
+cd backend  # or frontend
+npm install
+npx tsc --noEmit  # CRITICAL - catches type errors
+npm test
+```
+
+**Real Example - @types/sharp Issue (2025-12-10):**
+- PR #22: Updated @types/sharp 0.31 → 0.32
+- Merged without local test
+- CI failed: "Cannot find type definition file for 'sharp'"
+- Root cause: sharp@0.34+ has built-in types, @types/sharp deprecated
+- Fix: `npm uninstall @types/sharp`
+
+**When Local Testing is MANDATORY:**
+- Major version bumps (v7 → v8)
+- @types/* packages
+- TypeScript/build tool updates
+- Any PR where CI fails
+
+**Complete Guide**: `docs/06-operations/dependabot-management.md`
+
+---
+
 ### Phase 1: Planning & Task Management
 
 #### 1.1 Collect User Requests & Prioritize
