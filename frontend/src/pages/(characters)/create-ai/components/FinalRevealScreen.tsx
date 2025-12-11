@@ -242,7 +242,7 @@ export function FinalRevealScreen({ character }: FinalRevealScreenProps): JSX.El
               </Button>
 
               <Button
-                variant="ghost"
+                variant="light"
                 onClick={handleDiscard}
                 disabled={isDiscarding}
                 className="px-5 py-2 text-sm text-danger hover:text-danger/80 hover:bg-danger/10"

@@ -19,7 +19,7 @@ export default function CharacterCreatePage(): JSX.Element {
     setError(null);
     try {
       const newCharacter = await createMutation.mutateAsync(form.values);
-      navigate(`/characters/${newCharacter.id}`);
+      navigate(`/characters/${newCharacter.character?.id}`);
     } catch (mutationError) {
       const fallbackKey = 'characters:errors.createFailed';
       const messageKey = mutationError instanceof Error ? mutationError.message : fallbackKey;
