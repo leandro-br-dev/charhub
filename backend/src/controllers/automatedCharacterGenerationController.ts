@@ -627,6 +627,7 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
         let imageAnalysis: CharacterImageAnalysisResult | null = null;
         let uploadedImageBuffer: Buffer | null = null;
         let uploadedImageUrl: string | null = null;
+        let presignedImageUrl: string | null = null;
         let uploadedImageSizeBytes: number = 0;
         let imageAgeRating: AgeRating = AgeRating.L;
 
@@ -667,8 +668,12 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
 
             uploadedImageUrl = tempUploadResult.publicUrl;
 
+            // Generate presigned URL for AI analysis (1 hour expiration)
+            presignedImageUrl = await r2Service.getPresignedUrl(tempFilename, 3600);
+
             logger.info({
               url: uploadedImageUrl,
+              presignedUrl: presignedImageUrl,
               originalSize: imageFile.size,
               webpSize: webpBuffer.length
             }, 'image_converted_and_uploaded_for_analysis');
@@ -685,11 +690,11 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
               )
             );
 
-            // Analyze image for character details
-            imageAnalysis = await analyzeCharacterImage(uploadedImageUrl);
+            // Analyze image for character details using presigned URL
+            imageAnalysis = await analyzeCharacterImage(presignedImageUrl);
 
-            // Classify image for age rating
-            const classification = await classifyImageViaLLM(uploadedImageUrl);
+            // Classify image for age rating using presigned URL
+            const classification = await classifyImageViaLLM(presignedImageUrl);
             imageAgeRating = classification.ageRating;
 
             logger.info({ imageAnalysis, ageRating: imageAgeRating }, 'image_analysis_completed');
@@ -836,9 +841,9 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
 
         // Prepare content tags from image classification
         let contentTags: any[] = [];
-        if (imageFile) {
+        if (imageFile && presignedImageUrl) {
           try {
-            const classification = await classifyImageViaLLM(uploadedImageUrl!);
+            const classification = await classifyImageViaLLM(presignedImageUrl);
             contentTags = classification.contentTags || [];
             logger.info({ contentTags }, 'content_tags_extracted_from_image');
           } catch (error) {
