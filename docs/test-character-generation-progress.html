@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Generation Progress Test</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-top: 0;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 30px;
+      background: #e0e0e0;
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      width: 0%;
+      transition: width 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+    .step {
+      padding: 15px;
+      margin: 10px 0;
+      border-left: 4px solid #ddd;
+      background: #f9f9f9;
+      border-radius: 4px;
+    }
+    .step.active {
+      border-left-color: #4CAF50;
+      background: #e8f5e9;
+    }
+    .step.completed {
+      border-left-color: #8BC34A;
+      opacity: 0.7;
+    }
+    .step.error {
+      border-left-color: #f44336;
+      background: #ffebee;
+    }
+    .data-display {
+      background: #f5f5f5;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    .input-group {
+      margin: 20px 0;
+    }
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .input-group input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .status.info {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎭 Character Generation Progress Test</h1>
+
+    <div class="input-group">
+      <label>JWT Token (from localStorage or login):</label>
+      <input type="text" id="jwtToken" placeholder="Bearer token...">
+    </div>
+
+    <div class="input-group">
+      <label>Character Description (optional):</label>
+      <input type="text" id="description" placeholder="A brave knight with golden armor...">
+    </div>
+
+    <div class="input-group">
+      <label>Image File:</label>
+      <input type="file" id="imageFile" accept="image/*">
+    </div>
+
+    <button id="startBtn">Start Character Generation</button>
+    <button id="disconnectBtn" disabled>Disconnect WebSocket</button>
+
+    <div id="status"></div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressBar">0%</div>
+    </div>
+
+    <div id="currentStep" style="font-weight: bold; margin: 10px 0;"></div>
+
+    <div id="steps"></div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3000';
+    const WS_PATH = '/api/v1/ws';
+
+    let socket = null;
+    let sessionId = null;
+
+    const steps = {
+      'uploading_image': 'Uploading Image',
+      'analyzing_image': 'Analyzing Image',
+      'extracting_description': 'Extracting Description',
+      'generating_details': 'Generating Details',
+      'generating_history': 'Generating History',
+      'creating_character': 'Creating Character',
+      'queuing_avatar': 'Queuing Avatar',
+      'generating_avatar': 'Generating Avatar',
+      'completed': 'Completed',
+      'error': 'Error'
+    };
+
+    function showStatus(message, type = 'info') {
+      const statusDiv = document.getElementById('status');
+      statusDiv.className = `status ${type}`;
+      statusDiv.textContent = message;
+    }
+
+    function updateProgress(progress, message) {
+      const progressBar = document.getElementById('progressBar');
+      progressBar.style.width = `${progress}%`;
+      progressBar.textContent = `${progress}%`;
+
+      document.getElementById('currentStep').textContent = message;
+    }
+
+    function addStepDisplay(step, progress, message, data) {
+      const stepsContainer = document.getElementById('steps');
+
+      // Remove previous active states
+      document.querySelectorAll('.step').forEach(el => {
+        if (el.classList.contains('active')) {
+          el.classList.remove('active');
+          el.classList.add('completed');
+        }
+      });
+
+      // Create new step element
+      const stepEl = document.createElement('div');
+      stepEl.className = step === 'error' ? 'step error' : 'step active';
+      stepEl.id = `step-${step}`;
+
+      let html = `<strong>${steps[step] || step}</strong>: ${message}`;
+
+      if (data) {
+        html += `<div class="data-display">${JSON.stringify(data, null, 2)}</div>`;
+      }
+
+      stepEl.innerHTML = html;
+      stepsContainer.appendChild(stepEl);
+
+      // Scroll to bottom
+      stepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function connectWebSocket(token) {
+      if (socket) {
+        socket.disconnect();
+      }
+
+      showStatus('Connecting to WebSocket...', 'info');
+
+      socket = io(API_BASE, {
+        path: WS_PATH,
+        auth: {
+          token: token
+        }
+      });
+
+      socket.on('connect', () => {
+        showStatus('WebSocket connected!', 'success');
+        document.getElementById('disconnectBtn').disabled = false;
+      });
+
+      socket.on('disconnect', () => {
+        showStatus('WebSocket disconnected', 'info');
+        document.getElementById('disconnectBtn').disabled = true;
+      });
+
+      socket.on('connection_established', (data) => {
+        console.log('Connection established:', data);
+      });
+
+      socket.on('character_generation_joined', (data) => {
+        console.log('Joined character generation room:', data);
+        showStatus(`Joined progress room for session: ${data.sessionId}`, 'success');
+      });
+
+      socket.on('character_generation_progress', (progress) => {
+        console.log('Progress update:', progress);
+
+        updateProgress(progress.progress, progress.message);
+        addStepDisplay(progress.step, progress.progress, progress.message, progress.data);
+
+        if (progress.step === 'completed') {
+          showStatus('Character generation completed!', 'success');
+        } else if (progress.step === 'error') {
+          showStatus(`Error: ${progress.message}`, 'error');
+        }
+      });
+
+      socket.on('error', (error) => {
+        console.error('WebSocket error:', error);
+        showStatus(`WebSocket error: ${error.message || error}`, 'error');
+      });
+    }
+
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      const token = document.getElementById('jwtToken').value.trim();
+      const description = document.getElementById('description').value.trim();
+      const imageFile = document.getElementById('imageFile').files[0];
+
+      if (!token) {
+        alert('Please enter JWT token');
+        return;
+      }
+
+      if (!description && !imageFile) {
+        alert('Please provide either a description or an image');
+        return;
+      }
+
+      // Clear previous progress
+      document.getElementById('steps').innerHTML = '';
+      updateProgress(0, 'Starting...');
+
+      try {
+        // Connect to WebSocket if not connected
+        if (!socket || !socket.connected) {
+          connectWebSocket(token);
+          await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for connection
+        }
+
+        // Prepare form data
+        const formData = new FormData();
+        if (description) {
+          formData.append('description', description);
+        }
+        if (imageFile) {
+          formData.append('image', imageFile);
+        }
+
+        showStatus('Starting character generation...', 'info');
+
+        // Start character generation
+        const response = await fetch(`${API_BASE}/api/v1/characters/generate-automated`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Failed to start generation');
+        }
+
+        sessionId = result.sessionId;
+        showStatus(`Generation started! Session ID: ${sessionId}`, 'success');
+
+        // Join the character generation room
+        socket.emit('join_character_generation', { sessionId }, (response) => {
+          if (response.success) {
+            console.log('Successfully joined character generation room');
+          } else {
+            console.error('Failed to join room:', response.error);
+            showStatus(`Failed to join progress room: ${response.error}`, 'error');
+          }
+        });
+
+      } catch (error) {
+        console.error('Error:', error);
+        showStatus(`Error: ${error.message}`, 'error');
+      }
+    });
+
+    document.getElementById('disconnectBtn').addEventListener('click', () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    });
+
+    // Auto-connect if token is already in localStorage
+    window.addEventListener('load', () => {
+      const storedToken = localStorage.getItem('token');
+      if (storedToken) {
+        document.getElementById('jwtToken').value = storedToken;
+        showStatus('Token loaded from localStorage', 'info');
+      }
+    });
+  </script>
+</body>
+</html>

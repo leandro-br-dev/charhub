@@ -12,6 +12,7 @@ export interface LLMRequest {
   model: string;
   systemPrompt?: string;
   userPrompt: string;
+  images?: string[]; // Array of image URLs for vision models
   temperature?: number;
   maxTokens?: number;
   tools?: string[]; // Array of tool names to enable (e.g., ['web_search'])
@@ -121,6 +122,7 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
         model: request.model,
         systemPrompt: request.systemPrompt,
         userPrompt: request.userPrompt,
+        images: request.images, // Pass images for vision models
         temperature: request.temperature,
         maxTokens: request.maxTokens,
       });

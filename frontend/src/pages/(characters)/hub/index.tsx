@@ -43,16 +43,17 @@ export default function CharacterHubPage(): JSX.Element {
   }, []);
 
   const filters = useMemo(() => {
-    const params: { search?: string; ageRatings?: AgeRating[]; isPublic?: boolean } = {};
+    const params: { search?: string; ageRatings?: AgeRating[]; public?: string } = {};
     if (search.trim()) {
       params.search = search.trim();
     }
     if (ageRatings.length > 0) {
       params.ageRatings = ageRatings as any;
     }
-    if (viewMode === 'public') {
-      params.isPublic = true;
+    if (viewMode === 'private') {
+      params.public = 'false'; // Request only user's own characters
     }
+    // When viewMode is 'public', don't set any filter - backend will return public + own
     return params;
   }, [search, ageRatings, viewMode]);
 
@@ -92,17 +93,8 @@ export default function CharacterHubPage(): JSX.Element {
             {t('characters:hub.subtitle')}
           </p>
           <div className="flex gap-2">
-            <Button
-              type="button"
-              variant="secondary"
-              icon="auto_awesome"
-              onClick={() => navigate('/characters/create-ai')}
-              title={t('characters:hub.actions.createAI', 'AI Quick Create')}
-            >
-              {t('characters:hub.actions.aiCreate', 'AI Create')}
-            </Button>
             <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
-              {t('characters:hub.actions.createCharacter', 'Manual Create')}
+              {t('characters:hub.actions.newCharacter', 'New Character')}
             </Button>
           </div>
         </div>
@@ -167,16 +159,8 @@ export default function CharacterHubPage(): JSX.Element {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="secondary"
-                icon="auto_awesome"
-                onClick={() => navigate('/characters/create-ai')}
-              >
-                {t('characters:hub.actions.aiCreate', 'AI Create')}
-              </Button>
               <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
-                {t('characters:hub.actions.createCharacter')}
+                {t('characters:hub.actions.newCharacter', 'New Character')}
               </Button>
             </div>
           </div>

@@ -6,8 +6,8 @@ FROM node:20-slim AS builder
 # Accept NODE_ENV as build argument (must be redeclared per stage)
 ARG NODE_ENV=production
 
-# Install OpenSSL (libc compatibility not needed in Debian Slim)
-RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
+# Install OpenSSL and wget (for healthcheck)
+RUN apt-get update && apt-get install -y --no-install-recommends openssl wget && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -55,8 +55,8 @@ FROM node:20-slim AS production
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
-# Install runtime dependencies for Prisma and security
-RUN apt-get update && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
+# Install runtime dependencies for Prisma, security, and healthcheck
+RUN apt-get update && apt-get install -y --no-install-recommends openssl wget && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

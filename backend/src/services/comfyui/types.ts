@@ -68,6 +68,7 @@ export interface SDPrompt {
   positive: string;
   negative: string;
   loras?: LoraConfig[];
+  referenceImagePath?: string; // Optional path to reference image for IP-Adapter
 }
 
 export enum ImageGenerationType {

@@ -15,6 +15,7 @@ import type {
 } from './types';
 import { ImageGenerationType } from './types';
 import avatarWorkflow from './workflows/avatar.workflow.json';
+import avatarWithIPAdapterWorkflow from './workflows/avatar-with-ipadapter.workflow.json';
 import stickerWorkflow from './workflows/sticker.workflow.json';
 
 interface ComfyUIConfig {
@@ -203,7 +204,14 @@ export class ComfyUIService {
 
     switch (type) {
       case ImageGenerationType.AVATAR:
-        workflow = JSON.parse(JSON.stringify(avatarWorkflow));
+        // Use IP-Adapter workflow if reference image is provided
+        if (prompt.referenceImagePath) {
+          workflow = JSON.parse(JSON.stringify(avatarWithIPAdapterWorkflow));
+          logger.info({ referenceImagePath: prompt.referenceImagePath }, 'Using avatar workflow with IP-Adapter');
+        } else {
+          workflow = JSON.parse(JSON.stringify(avatarWorkflow));
+          logger.info('Using standard avatar workflow');
+        }
         break;
       case ImageGenerationType.STICKER:
         workflow = JSON.parse(JSON.stringify(stickerWorkflow));
@@ -235,7 +243,48 @@ export class ComfyUIService {
       });
     }
 
+    // Set reference image for IP-Adapter if provided
+    if (prompt.referenceImagePath && workflow['16']) {
+      workflow['16'].inputs.image = prompt.referenceImagePath;
+      logger.info({ referenceImage: prompt.referenceImagePath }, 'Set reference image for IP-Adapter');
+    }
+
     return workflow;
+  }
+
+  /**
+   * Upload image to ComfyUI server
+   * Required for LoadImage nodes to access images
+   */
+  async uploadImage(imageBuffer: Buffer, filename: string, overwrite: boolean = false): Promise<string> {
+    try {
+      const FormData = (await import('form-data')).default;
+      const formData = new FormData();
+
+      // Add image file
+      formData.append('image', imageBuffer, {
+        filename,
+        contentType: 'image/png',
+      });
+
+      // Add metadata
+      formData.append('type', 'input');
+      formData.append('overwrite', overwrite.toString());
+
+      // Upload to ComfyUI
+      const response = await this.client.post('/upload/image', formData, {
+        headers: formData.getHeaders(),
+      });
+
+      // Response contains: { name: string, subfolder: string, type: string }
+      const uploadedFilename = response.data.name;
+      logger.info({ filename: uploadedFilename }, 'Image uploaded to ComfyUI');
+
+      return uploadedFilename;
+    } catch (error) {
+      logger.error({ err: error, filename }, 'Failed to upload image to ComfyUI');
+      throw new Error(`Failed to upload image to ComfyUI: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   /**

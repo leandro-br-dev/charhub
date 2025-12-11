@@ -88,18 +88,19 @@ function buildSystemPrompt(): string {
   ].join('\n');
 }
 
-function buildUserPrompt(imageUrl: string): string {
+function buildUserPrompt(): string {
   return [
-    `Image URL: ${imageUrl}`,
+    'Analyze the character in the provided image and extract information as per the JSON schema.',
     '',
-    'Analyze this image and extract character information as per the JSON schema provided.',
-    'Focus on visual details that can help describe and generate this character.',
+    'CRITICAL: Only describe what is ACTUALLY VISIBLE in the image. Do not invent or hallucinate details.',
+    'If a feature is not clearly visible, omit it from the JSON response.',
+    'Focus on objective, observable visual details only.',
   ].join('\n');
 }
 
 export async function analyzeCharacterImage(imageUrl: string): Promise<CharacterImageAnalysisResult> {
   const systemPrompt = buildSystemPrompt();
-  const userPrompt = buildUserPrompt(imageUrl);
+  const userPrompt = buildUserPrompt();
 
   try {
     const response = await callLLM({
@@ -107,6 +108,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
       model: 'grok-4-fast-non-reasoning',
       systemPrompt,
       userPrompt,
+      images: [imageUrl], // Pass image URL for vision analysis
       temperature: 0.3, // Slightly higher than 0 for more creative trait suggestions
       maxTokens: 1024,
     } as any);

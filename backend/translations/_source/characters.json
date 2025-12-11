@@ -105,6 +105,7 @@
       "title": "Characters",
       "subtitle": "Create, organize and evolve the cast that powers your stories, chat agents and AI experiences.",
       "actions": {
+        "newCharacter": "New Character",
         "createCharacter": "New character",
         "retry": "Try again",
         "blurSensitive": "Blur sensitive",
@@ -224,7 +225,42 @@
       "title": "Create a new character",
       "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
       "saveButton": "Save character",
-      "cancelButton": "Cancel and go back"
+      "cancelButton": "Cancel and go back",
+      "chooseMethod": {
+        "title": "How would you like to create your character?",
+        "subtitle": "Choose the method that best suits your needs",
+        "manual": {
+          "title": "Manual Creation",
+          "description": "Create your character step by step with full control over every detail",
+          "features": [
+            "Complete customization",
+            "Fill in all fields manually",
+            "Perfect for detailed characters"
+          ],
+          "button": "Create Manually",
+          "cost": "Free"
+        },
+        "ai": {
+          "title": "AI-Powered Creation",
+          "description": "Let AI generate your character from a description or image",
+          "features": [
+            "Automatic generation",
+            "Upload image or describe",
+            "Fast and creative"
+          ],
+          "button": "Create with AI",
+          "cost": "{{credits}} credits",
+          "costWithoutImage": "{{credits}} credits (without image)",
+          "costBreakdown": {
+            "title": "Credit Cost Breakdown",
+            "imageAnalysis": "Image analysis: {{credits}} credits (only if image uploaded)",
+            "textAnalysis": "Text analysis: {{credits}} credits",
+            "characterEnrichment": "Character enrichment: {{credits}} credits",
+            "avatarGeneration": "Avatar generation: {{credits}} credits",
+            "total": "Total: {{credits}} credits"
+          }
+        }
+      }
     },
     "edit": {
       "title": "Edit character",
@@ -279,11 +315,71 @@
         "updateNotes": "Update Notes"
       }
     },
+    "createAI": {
+      "title": "AI Character Generator",
+      "subtitle": "Describe your character or upload an image, and AI will generate the details for you",
+      "descriptionLabel": "Character Description",
+      "descriptionPlaceholder": "Describe your character... (e.g., \"A brave knight with silver armor and a noble heart\")",
+      "descriptionHint": "The more detailed your description, the better the results",
+      "imageLabel": "Character Image",
+      "uploadPrompt": "Click to upload character image",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (max 10MB)",
+      "generateButton": "Generate Character",
+      "generating": "Generating...",
+      "howItWorks": "How it works",
+      "step1": "Provide a text description and/or upload an image",
+      "step2": "AI analyzes your input and generates character details",
+      "step3": "Review and edit the generated character before saving",
+      "step4": "An avatar will be automatically generated for you",
+      "loading": {
+        "creatingCharacter": "Creating Your Character",
+        "analyzingEssence": "Analyzing the essence...",
+        "threadsOfFate": "The threads of fate are being woven...",
+        "gatheringMagic": "Gathering ancient magic...",
+        "shapingDestiny": "Shaping their destiny...",
+        "breathingLife": "Breathing life into existence..."
+      },
+      "progress": {
+        "uploadingImage": "Uploading your vision",
+        "analyzingImage": "Analyzing the essence",
+        "extractingDescription": "Reading the character",
+        "generatingDetails": "Forging their identity",
+        "generatingHistory": "Weaving their tale",
+        "creatingCharacter": "Bringing them to life",
+        "queuingAvatar": "Preparing the visual",
+        "generatingAvatar": "Painting their portrait",
+        "completed": "Your hero awaits",
+        "error": "An unexpected twist",
+        "preparing": "Preparing your adventure"
+      },
+      "reveal": {
+        "heroEmerges": "A hero emerges",
+        "personalityTitle": "Personality",
+        "backstoryTitle": "Their Story",
+        "successBanner": "Character Created Successfully!"
+      },
+      "actions": {
+        "editCharacter": "Edit Character",
+        "viewProfile": "View Profile",
+        "discard": "Discard",
+        "discarding": "Discarding...",
+        "createAnother": "Create Another Character"
+      },
+      "confirmDiscard": "Are you sure you want to discard this character? This action cannot be undone.",
+      "characterDiscarded": "Character discarded successfully",
+      "discardFailed": "Failed to discard character",
+      "generationStarted": "Character generation started! Watching progress...",
+      "generationFailed": "Character generation failed. Please try again."
+    },
     "errors": {
       "createFailed": "We could not create the character. Please try again.",
       "updateFailed": "We could not update the character.",
       "deleteFailed": "We could not delete the character.",
-      "detailUnavailable": "Unable to load character details right now."
+      "detailUnavailable": "Unable to load character details right now.",
+      "descriptionOrImageRequired": "Please provide either a description or an image",
+      "imageTooLarge": "Image must be smaller than 10MB",
+      "invalidImageType": "Image must be PNG, JPEG, WEBP, or GIF",
+      "generationFailed": "Failed to generate character"
     }
   }
 }

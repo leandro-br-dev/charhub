@@ -59,7 +59,7 @@ export async function processImageGeneration(
 async function processAvatarGeneration(
   data: AvatarGenerationJobData
 ): Promise<ImageGenerationJobResult> {
-  const { characterId } = data;
+  const { characterId, referenceImageUrl, prompt: providedPrompt } = data;
 
   // Get character data
   const character = await prisma.character.findUnique({
@@ -71,24 +71,59 @@ async function processAvatarGeneration(
     throw new Error(`Character ${characterId} not found`);
   }
 
-  // Build prompt (with LLM-powered translation to SD tags)
-  const prompt = await promptEngineering.buildAvatarPrompt({
-    name: `${character.firstName} ${character.lastName || ''}`.trim(),
-    style: character.style || undefined,
-    age: character.age || undefined,
-    gender: character.gender || undefined,
-    species: character.species || undefined,
-    physicalCharacteristics: character.physicalCharacteristics || undefined,
-    defaultAttire: character.mainAttire?.description || undefined,
-    lora: character.lora
-      ? {
-          name: character.lora.name,
-          filepathRelative: character.lora.filepathRelative || '',
-        }
-      : undefined,
-  });
+  // Download and upload reference image to ComfyUI if provided (for IP-Adapter)
+  let referenceImageFilename: string | undefined;
+  if (referenceImageUrl) {
+    try {
+      const response = await fetch(referenceImageUrl);
+      const imageBuffer = Buffer.from(await response.arrayBuffer());
 
-  logger.info({ characterId, prompt: prompt.positive }, 'Generated avatar prompt');
+      // Upload to ComfyUI server
+      const tempFilename = `ref_${Date.now()}_${characterId}.png`;
+      referenceImageFilename = await comfyuiService.uploadImage(imageBuffer, tempFilename, true);
+
+      logger.info({ referenceImageFilename, originalUrl: referenceImageUrl }, 'Reference image uploaded to ComfyUI for IP-Adapter');
+    } catch (error) {
+      logger.warn({ error, referenceImageUrl }, 'Failed to upload reference image to ComfyUI, proceeding without IP-Adapter');
+    }
+  }
+
+  // Use provided prompt if available, otherwise build from character data
+  let prompt: any;
+  if (providedPrompt && providedPrompt.trim().length > 0) {
+    // Use the pre-generated Stable Diffusion prompt
+    logger.info({ characterId, providedPrompt }, 'Using pre-generated Stable Diffusion prompt');
+    prompt = {
+      positive: providedPrompt,
+      negative: 'low quality, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry',
+      referenceImagePath: referenceImageFilename,
+    };
+  } else {
+    // Fallback: Build prompt using LLM-powered translation to SD tags
+    logger.info({ characterId }, 'No prompt provided, building from character data');
+    prompt = await promptEngineering.buildAvatarPrompt({
+      name: `${character.firstName} ${character.lastName || ''}`.trim(),
+      style: character.style || undefined,
+      age: character.age || undefined,
+      gender: character.gender || undefined,
+      species: character.species || undefined,
+      physicalCharacteristics: character.physicalCharacteristics || undefined,
+      defaultAttire: character.mainAttire?.description || undefined,
+      lora: character.lora
+        ? {
+            name: character.lora.name,
+            filepathRelative: character.lora.filepathRelative || '',
+          }
+        : undefined,
+    });
+
+    // Add reference image filename to prompt if available (for ComfyUI LoadImage node)
+    if (referenceImageFilename) {
+      prompt.referenceImagePath = referenceImageFilename;
+    }
+  }
+
+  logger.info({ characterId, prompt: prompt.positive, hasReferenceImage: !!referenceImageFilename, usedProvidedPrompt: !!providedPrompt }, 'Avatar prompt ready');
 
   // Generate image with ComfyUI
   const result = await comfyuiService.generateAvatar(prompt);
@@ -127,7 +162,7 @@ async function processAvatarGeneration(
         key: objectKey,
         contentType: 'image/webp',
         sizeBytes: webpBuffer.length,
-        isActive: false, // User must manually activate
+        isActive: true, // Set as active avatar automatically
       },
     }),
   ]);

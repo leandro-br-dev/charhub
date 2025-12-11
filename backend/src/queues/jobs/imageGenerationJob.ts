@@ -13,6 +13,8 @@ export interface BaseImageJobData {
 export interface AvatarGenerationJobData extends BaseImageJobData {
   type: ImageGenerationType.AVATAR;
   characterId: string;
+  referenceImageUrl?: string; // Optional URL to reference image for IP-Adapter
+  prompt?: string; // Optional Stable Diffusion prompt for avatar generation
 }
 
 export interface StickerGenerationJobData extends BaseImageJobData {
