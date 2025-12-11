@@ -1,5 +1,6 @@
 import type { Readable } from 'node:stream';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { logger } from '../config/logger';
 
 type UploadBody = Buffer | Uint8Array | string | Readable;
@@ -131,6 +132,32 @@ export class R2Service {
     } catch (error) {
       logger.error({ err: error, key: cleanKey }, 'Failed to upload object to Cloudflare R2');
       throw Object.assign(new Error('Failed to upload file to Cloudflare R2'), { cause: error, statusCode: 502 });
+    }
+  }
+
+  /**
+   * Generate a presigned URL for temporary access to an object
+   * @param key - Object key in R2
+   * @param expiresIn - Expiration time in seconds (default: 1 hour)
+   * @returns Presigned URL that grants temporary access
+   */
+  public async getPresignedUrl(key: string, expiresIn: number = 3600): Promise<string> {
+    const client = this.ensureClient();
+    const cleanKey = sanitizeKey(key);
+
+    try {
+      const command = new GetObjectCommand({
+        Bucket: this.config.bucketName,
+        Key: cleanKey,
+      });
+
+      const presignedUrl = await getSignedUrl(client, command, { expiresIn });
+      logger.debug({ key: cleanKey, expiresIn }, 'Generated presigned URL for R2 object');
+
+      return presignedUrl;
+    } catch (error) {
+      logger.error({ err: error, key: cleanKey }, 'Failed to generate presigned URL');
+      throw Object.assign(new Error('Failed to generate presigned URL'), { cause: error, statusCode: 502 });
     }
   }
 }
