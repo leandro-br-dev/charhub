@@ -32,6 +32,22 @@ export function TagsTab({ form }: TagsTabProps): JSX.Element {
     return tagsAll.filter((tag) => (AGE_RANK[tag.ageRating as AgeRating] ?? AGE_RANK.L) <= limitRank);
   }, [tagsAll, selectedAge]);
 
+  // Memoize shuffled suggestions to prevent infinite re-renders
+  const shuffledSuggestions = useMemo(() => {
+    const list = filteredTags.slice();
+    for (let i = list.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = list[i];
+      list[i] = list[j];
+      list[j] = tmp;
+    }
+    return list.slice(0, 12).sort((a, b) => {
+      const la = t('tags-character:' + a.name + '.name', a.name);
+      const lb = t('tags-character:' + b.name + '.name', b.name);
+      return la.localeCompare(lb);
+    });
+  }, [filteredTags, t]);
+
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
@@ -128,20 +144,7 @@ export function TagsTab({ form }: TagsTabProps): JSX.Element {
           <p className="text-xs text-muted">{t('characters:form.tags.noResults', 'No results')}</p>
         ) : (
           <ul className="flex flex-wrap gap-2">
-            {(() => {
-              const list = filteredTags.slice();
-              for (let i = list.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                const tmp = list[i];
-                list[i] = list[j];
-                list[j] = tmp;
-              }
-              return list.slice(0, 12).sort((a, b) => {
-                const la = t('tags-character:' + a.name + '.name', a.name);
-                const lb = t('tags-character:' + b.name + '.name', b.name);
-                return la.localeCompare(lb);
-              });
-            })().map((tag) => (
+            {shuffledSuggestions.map((tag) => (
               <li key={tag.id}>
                 <UITag
                   label={t('tags-character:' + tag.name + '.name', tag.name)}

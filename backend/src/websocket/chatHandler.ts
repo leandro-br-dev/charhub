@@ -28,10 +28,18 @@ const typingEventSchema = z.object({
   participantId: z.string().uuid().optional(),
 });
 
+const joinCharacterGenerationSchema = z.object({
+  sessionId: z.string().min(1, 'sessionId is required'),
+});
+
 // Removed assistantParticipantId - we'll determine which bots respond automatically
 
 function getRoomName(conversationId: string): string {
   return 'conversation:' + conversationId;
+}
+
+function getCharacterGenerationRoomName(userId: string, sessionId: string): string {
+  return `character-generation:${userId}:${sessionId}`;
 }
 
 
@@ -164,6 +172,39 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         email: user.email,
         photo: user.photo,
       },
+    });
+
+    socket.on('join_character_generation', async (rawPayload, callback) => {
+      try {
+        const payload = joinCharacterGenerationSchema.parse(rawPayload);
+        const room = getCharacterGenerationRoomName(user.id, payload.sessionId);
+        await socket.join(room);
+
+        logger.debug(
+          { userId: user.id, sessionId: payload.sessionId, room },
+          'socket_joined_character_generation'
+        );
+
+        socket.emit('character_generation_joined', {
+          sessionId: payload.sessionId,
+        });
+
+        if (typeof callback === 'function') {
+          callback({ success: true, sessionId: payload.sessionId });
+        }
+      } catch (error) {
+        logger.warn(
+          { error, userId: user.id },
+          'join_character_generation_failed'
+        );
+
+        if (typeof callback === 'function') {
+          callback({
+            success: false,
+            error: error instanceof Error ? error.message : 'Invalid payload',
+          });
+        }
+      }
     });
 
     socket.on('join_conversation', async (rawPayload, callback) => {
