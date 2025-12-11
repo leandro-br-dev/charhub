@@ -17,6 +17,7 @@ import {
   createCharacterSchema,
   updateCharacterSchema,
 } from '../../validators';
+import { generateAutomatedCharacter } from '../../controllers/automatedCharacterGenerationController';
 
 const router = Router();
 const upload = multer({
@@ -33,6 +34,20 @@ const ALLOWED_IMAGE_TYPES: Record<string, string> = {
   'image/webp': 'webp',
   'image/gif': 'gif',
 };
+
+/**
+ * POST /api/v1/characters/generate-automated
+ * Automatically generate a character from text description and/or image
+ * Accepts multipart/form-data with:
+ * - description: string (optional) - text description of the character
+ * - image: file (optional) - character image for analysis
+ */
+router.post(
+  '/generate-automated',
+  requireAuth,
+  asyncMulterHandler(upload.single('image')),
+  generateAutomatedCharacter
+);
 
 /**
  * POST /api/v1/characters

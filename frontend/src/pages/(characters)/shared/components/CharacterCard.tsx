@@ -36,7 +36,7 @@ export function CharacterCard({
   favoriteCount,
   imageCount,
 }: CharacterCardProps): JSX.Element | null {
-  const { t } = useTranslation(['characters', 'tags-character']);
+  const { t } = useTranslation(['characters', 'tags-character'], { useSuspense: false });
   const navigate = useNavigate();
   const destination = to ?? `/characters/${character.id}`;
   const [isCreatingChat, setIsCreatingChat] = useState(false);

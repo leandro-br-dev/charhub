@@ -20,9 +20,13 @@ async function fetchAsBlobUrl(src: string): Promise<string> {
     return existing.promise;
   }
 
+  // Always use 'cors' mode for proper CORS handling with blob cache
+  // R2 CORS must be configured with allowed origins
   const promise = fetch(src, { mode: 'cors', credentials: 'omit', cache: 'force-cache' })
     .then((resp) => {
-      if (!resp.ok) throw new Error(`Failed to load: ${resp.status}`);
+      if (!resp.ok) {
+        throw new Error(`Failed to load: ${resp.status}`);
+      }
       return resp.blob();
     })
     .then((blob) => {
@@ -47,6 +51,7 @@ export type CachedImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
   src?: string | null;
   ttlMs?: number;
   useBlobCache?: boolean; // when false, rely on browser cache and render src directly
+  crossOrigin?: 'anonymous' | 'use-credentials'; // for CORS images
 };
 
 export function CachedImage({
@@ -55,6 +60,7 @@ export function CachedImage({
   ttlMs = DEFAULT_TTL_MS,
   useBlobCache = true,
   loading = 'lazy',
+  crossOrigin,
   ...imgProps
 }: CachedImageProps): JSX.Element {
   const [resolvedSrc, setResolvedSrc] = useState<string | undefined>(undefined);
@@ -65,6 +71,7 @@ export function CachedImage({
       return;
     }
 
+    // Use blob cache for all images unless explicitly disabled
     if (!useBlobCache) {
       setResolvedSrc(src);
       return;
@@ -96,6 +103,14 @@ export function CachedImage({
     return <span />;
   }
 
-  return <img src={resolvedSrc ?? src ?? undefined} alt={alt} loading={loading} {...imgProps} />;
+  return (
+    <img
+      src={resolvedSrc ?? src ?? undefined}
+      alt={alt}
+      loading={loading}
+      crossOrigin={crossOrigin}
+      {...imgProps}
+    />
+  );
 }
 

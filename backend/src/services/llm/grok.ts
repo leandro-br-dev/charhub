@@ -4,6 +4,7 @@ export interface GrokRequest {
   model: string;
   systemPrompt?: string;
   userPrompt: string;
+  images?: string[]; // Array of image URLs for vision models
   temperature?: number;
   maxTokens?: number;
 }
@@ -41,10 +42,36 @@ export async function callGrok(request: GrokRequest): Promise<GrokResponse> {
     });
   }
 
-  messages.push({
-    role: 'user',
-    content: request.userPrompt,
-  });
+  // If images are provided, create multimodal message for vision models
+  if (request.images && request.images.length > 0) {
+    const content: OpenAI.Chat.ChatCompletionContentPart[] = [
+      {
+        type: 'text',
+        text: request.userPrompt,
+      },
+    ];
+
+    // Add each image URL as an image_url part
+    for (const imageUrl of request.images) {
+      content.push({
+        type: 'image_url',
+        image_url: {
+          url: imageUrl,
+        },
+      });
+    }
+
+    messages.push({
+      role: 'user',
+      content,
+    });
+  } else {
+    // Text-only message
+    messages.push({
+      role: 'user',
+      content: request.userPrompt,
+    });
+  }
 
   const completion = await grok.chat.completions.create({
     model: request.model,

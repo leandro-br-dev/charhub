@@ -23,22 +23,23 @@ function buildSystemPrompt() {
   ].join('\n');
 }
 
-function buildUserPrompt(imageUrl: string) {
+function buildUserPrompt() {
   return [
-    `Image URL: ${imageUrl}`,
-    'Analyze this image and respond with the JSON object described.',
+    'Analyze the provided image and respond with the JSON object described.',
+    'Base your classification only on what is actually visible in the image.',
   ].join('\n');
 }
 
 export async function classifyImageViaLLM(imageUrl: string): Promise<ImageClassificationResult> {
   const systemPrompt = buildSystemPrompt();
-  const userPrompt = buildUserPrompt(imageUrl);
+  const userPrompt = buildUserPrompt();
 
   const response = await callLLM({
     provider: 'grok',
     model: 'grok-4-fast-non-reasoning',
     systemPrompt,
     userPrompt,
+    images: [imageUrl], // Pass image URL for vision analysis
     temperature: 0,
     maxTokens: 512,
   } as any);

@@ -43,16 +43,17 @@ export default function CharacterHubPage(): JSX.Element {
   }, []);
 
   const filters = useMemo(() => {
-    const params: { search?: string; ageRatings?: AgeRating[]; isPublic?: boolean } = {};
+    const params: { search?: string; ageRatings?: AgeRating[]; public?: string } = {};
     if (search.trim()) {
       params.search = search.trim();
     }
     if (ageRatings.length > 0) {
       params.ageRatings = ageRatings as any;
     }
-    if (viewMode === 'public') {
-      params.isPublic = true;
+    if (viewMode === 'private') {
+      params.public = 'false'; // Request only user's own characters
     }
+    // When viewMode is 'public', don't set any filter - backend will return public + own
     return params;
   }, [search, ageRatings, viewMode]);
 
@@ -91,9 +92,11 @@ export default function CharacterHubPage(): JSX.Element {
           <p className="max-w-2xl text-sm text-description">
             {t('characters:hub.subtitle')}
           </p>
-          <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
-            {t('characters:hub.actions.createCharacter')}
-          </Button>
+          <div className="flex gap-2">
+            <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
+              {t('characters:hub.actions.newCharacter', 'New Character')}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -155,9 +158,11 @@ export default function CharacterHubPage(): JSX.Element {
                 {search ? t('characters:hub.states.emptySearchHint') : t('characters:hub.states.emptyHint')}
               </p>
             </div>
-            <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
-              {t('characters:hub.actions.createCharacter')}
-            </Button>
+            <div className="flex gap-2">
+              <Button type="button" icon="add" onClick={() => navigate('/characters/create')}>
+                {t('characters:hub.actions.newCharacter', 'New Character')}
+              </Button>
+            </div>
           </div>
         )}
 
