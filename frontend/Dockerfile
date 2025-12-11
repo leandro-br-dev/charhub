@@ -8,7 +8,9 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install all dependencies (dev + prod) so both environments share the cache
-RUN npm ci
+# Using --legacy-peer-deps to bypass React 19 peer dependency conflicts
+# TODO: Remove when @headlessui/react is updated to support React 19
+RUN npm ci --legacy-peer-deps
 
 # Copy application source
 COPY . .
