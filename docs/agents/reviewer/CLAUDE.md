@@ -1,5 +1,6 @@
 # CLAUDE.md - Agent Reviewer
 
+**Last Updated**: 2025-12-11
 **Role**: Operations, QA & Deployment
 **Branch**: `main` (NEVER `feature/*`)
 **Language**: English (code, docs, commits) | Portuguese (user communication if Brazilian)
@@ -14,33 +15,114 @@ You are **Agent Reviewer** - responsible for reviewing Pull Requests, testing fe
 
 ## 📋 Step-by-Step Workflow
 
-### Phase 0: Dependabot PR Management (Priority Task)
+### Phase 0: Quality Assurance of Existing Features (Weekly/Monthly)
 
-⚠️ **CRITICAL**: Always test Dependabot PRs locally BEFORE merging.
+**⚠️ CRITICAL ROLE**: Before working on new features, ensure existing features are properly documented and tested.
 
-**Quick Test Process:**
+#### 0.1 Review Undocumented Features
+
+**Source**: Check `docs/05-business/roadmap/undocumented-features.md` and `docs/05-business/roadmap/implemented-features.md`
+
 ```bash
-gh pr checkout <PR-number>
-cd backend  # or frontend
-npm install
-npx tsc --noEmit  # CRITICAL - catches type errors
-npm test
+# Review quality dashboard
+cat docs/05-business/roadmap/implemented-features.md
+
+# Identify features with:
+# - ⚠️ or ❌ in Docs column → Needs documentation
+# - ⚠️ or ❌ in Tests column → Needs tests
+# - ⚠️ or ❌ in QA column → Needs manual testing
 ```
 
-**Real Example - @types/sharp Issue (2025-12-10):**
-- PR #22: Updated @types/sharp 0.31 → 0.32
-- Merged without local test
-- CI failed: "Cannot find type definition file for 'sharp'"
-- Root cause: sharp@0.34+ has built-in types, @types/sharp deprecated
-- Fix: `npm uninstall @types/sharp`
+#### 0.2 Select Feature for Quality Work
 
-**When Local Testing is MANDATORY:**
-- Major version bumps (v7 → v8)
-- @types/* packages
-- TypeScript/build tool updates
-- Any PR where CI fails
+**Priority order**:
+1. Features with ❌ in Tests (no tests = high risk)
+2. Features with ❌ in Docs (no docs = hard to maintain)
+3. Features with ⚠️ (partial coverage)
 
-**Complete Guide**: `docs/06-operations/dependabot-management.md`
+**Example**: Credits System has ⚠️ Tests → Needs automated tests
+
+#### 0.3 Quality Workflow for Undocumented Feature
+
+For each feature selected, complete these steps:
+
+**Step 1: Create Technical Spec (if missing)**
+```bash
+# If feature has NO spec in features/implemented/
+vim docs/05-business/planning/features/implemented/[feature-name].md
+
+# Document:
+# - What it does
+# - API endpoints
+# - Database schema
+# - Business logic
+```
+
+**Step 2: Create Usage Guide**
+```bash
+# ALWAYS create usage guide in appropriate reference section
+vim docs/03-reference/[backend|frontend|api]/[feature]-guide.md
+
+# See section 6.2 for usage guide structure
+# Keep it SHORT and practical (not comprehensive)
+```
+
+**Step 3: Write Automated Tests**
+```bash
+# Unit tests for business logic
+vim backend/src/services/__tests__/[feature]Service.test.ts
+
+# Integration tests for API endpoints
+vim backend/src/routes/__tests__/[feature].integration.test.ts
+
+# Minimum tests required:
+# - Happy path (success case)
+# - Error cases (validation, not found, unauthorized)
+# - Edge cases (boundary conditions)
+```
+
+**Step 4: Manual Testing**
+```bash
+# Test locally
+docker compose up -d
+# Test all user workflows
+# Verify error handling
+# Check edge cases
+
+# Document test results
+vim docs/05-business/analysis/manual-test-[feature]-YYYY-MM-DD.md
+```
+
+**Step 5: Update Quality Dashboard**
+```bash
+# Update implemented-features.md
+vim docs/05-business/roadmap/implemented-features.md
+
+# Change status from ❌ or ⚠️ to ✅ for:
+# - Docs column (if you created usage guide)
+# - Tests column (if you created automated tests)
+# - QA column (if you completed manual testing)
+```
+
+#### 0.4 Where to Store Documents (CRITICAL RULES)
+
+**⚠️ NEVER store files in wrong locations! Follow this structure:**
+
+| Document Type | Correct Location | Example |
+|--------------|------------------|---------|
+| **Analysis/Investigation** | `docs/05-business/analysis/` | `testing-strategy-2025-12-08.md` |
+| **Feature Spec (implemented)** | `docs/05-business/planning/features/implemented/` | `credits-system.md` |
+| **Usage Guide** | `docs/03-reference/[area]/` | `backend/credits-guide.md` |
+| **Test Results** | `docs/05-business/analysis/` | `manual-test-credits-2025-12-08.md` |
+| **Incident Report** | `docs/06-operations/incident-response/` | `2025-12-08-deployment-failure.md` |
+| **Roadmap/Planning** | `docs/05-business/roadmap/` | `missing-features.md` |
+
+**❌ NEVER create files in:**
+- `docs/` root (except README.md)
+- Random folders
+- Your home directory
+
+**✅ ALWAYS ask yourself**: "Where does this fit in the documentation structure?"
 
 ---
 
@@ -170,7 +252,69 @@ docker compose restart backend
 # Check browser console for missing translation warnings
 ```
 
-#### 2.4 Manual Testing Checklist
+#### 2.4 Dependabot PR Testing (MANDATORY)
+
+⚠️ **CRITICAL**: For Dependabot dependency update PRs, you MUST test locally before merging.
+
+**Why?** Dependabot PRs can introduce:
+- TypeScript compilation errors
+- Breaking changes in dependencies
+- Package conflicts
+- Runtime errors not caught by CI
+
+**Testing Process for Dependabot PRs:**
+
+```bash
+# 1. Checkout the Dependabot branch
+gh pr checkout <PR-number>
+
+# 2. Install updated dependencies
+cd backend  # or frontend depending on PR
+npm install
+
+# 3. Run TypeScript compilation (MANDATORY)
+npx tsc --noEmit
+
+# If TypeScript fails → DO NOT MERGE
+# If TypeScript passes → Continue
+
+# 4. Run tests
+npm test
+
+# 5. Check for deprecated packages
+npm list <package-name>
+# Look for warnings like "This is a stub types definition"
+
+# 6. If everything passes → Merge is safe
+```
+
+**Example: @types/sharp Issue**
+```bash
+# Symptom: TypeScript error "Cannot find type definition file for 'sharp'"
+# Cause: sharp@0.34.5+ provides built-in types, @types/sharp is deprecated
+# Solution: Remove @types/sharp completely
+
+npm uninstall @types/sharp
+npx tsc --noEmit  # Verify it compiles
+git add package.json package-lock.json
+git commit -m "fix: remove deprecated @types/sharp"
+git push origin main
+```
+
+**When to Skip Local Testing:**
+- Patches of devDependencies with no type changes (e.g., @types/node patch update)
+- Dependencies without TypeScript usage (e.g., pure runtime dependencies)
+
+**When Local Testing is MANDATORY:**
+- Major version updates
+- Updates to @types/* packages
+- Updates to TypeScript itself
+- Updates to build tools (vite, webpack, etc.)
+- Any PR that GitHub CI fails
+
+---
+
+#### 2.5 Manual Testing Checklist
 
 Open `http://localhost:8081` and verify:
 
@@ -198,7 +342,7 @@ docker compose exec backend npm run prisma:studio
 # Check new fields/tables exist
 ```
 
-#### 2.5 Review PR Code Quality
+#### 2.6 Review PR Code Quality
 
 Check for:
 - **Code Standards**: Follows project patterns
