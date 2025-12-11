@@ -739,7 +739,7 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
 
         // Compile results using LLM to ensure coherence and proper language
         const userDescriptionText = description && typeof description === 'string' ? description.trim() : null;
-        let characterData = await compileCharacterDataWithLLM(
+        const characterData = await compileCharacterDataWithLLM(
           userDescriptionText,
           imageAnalysis,
           textData,
