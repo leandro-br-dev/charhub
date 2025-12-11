@@ -22,7 +22,7 @@ interface UseInfiniteScrollReturn<T> {
   error: Error | null;
   loadMore: () => Promise<void>;
   refetch: () => Promise<void>;
-  observerTarget: React.RefObject<HTMLDivElement>;
+  observerTarget: React.RefObject<HTMLDivElement | null>;
 }
 
 export function useInfiniteScroll<T>({

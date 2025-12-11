@@ -31,9 +31,10 @@ export function Modal({
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(isOpen);
   const overlayRef = useRef<HTMLDivElement | null>(null);
-  const closeTimeoutRef = useRef<number>();
-  const openFrameRef = useRef<number>();
-  const openSecondFrameRef = useRef<number>();
+  const closeTimeoutRef = useRef<number | undefined>(undefined);
+  const openFrameRef = useRef<number | undefined>(undefined);
+  const openSecondFrameRef = useRef<number | undefined>(undefined);
+
 
   useEffect(() => {
     if (isOpen) {
