@@ -160,6 +160,42 @@ export class R2Service {
       throw Object.assign(new Error('Failed to generate presigned URL'), { cause: error, statusCode: 502 });
     }
   }
+
+  /**
+   * Download an object directly from R2
+   * @param key - Object key in R2
+   * @returns Buffer containing the object data
+   */
+  public async downloadObject(key: string): Promise<Buffer> {
+    const client = this.ensureClient();
+    const cleanKey = sanitizeKey(key);
+
+    try {
+      const command = new GetObjectCommand({
+        Bucket: this.config.bucketName,
+        Key: cleanKey,
+      });
+
+      const response = await client.send(command);
+
+      if (!response.Body) {
+        throw new Error('No data received from R2');
+      }
+
+      // Convert stream to buffer
+      const chunks: Uint8Array[] = [];
+      for await (const chunk of response.Body as AsyncIterable<Uint8Array>) {
+        chunks.push(chunk);
+      }
+      const buffer = Buffer.concat(chunks);
+
+      logger.debug({ key: cleanKey, sizeBytes: buffer.length }, 'Downloaded object from R2');
+      return buffer;
+    } catch (error) {
+      logger.error({ err: error, key: cleanKey }, 'Failed to download object from R2');
+      throw Object.assign(new Error('Failed to download file from Cloudflare R2'), { cause: error, statusCode: 502 });
+    }
+  }
 }
 
 export const r2Service = new R2Service();
