@@ -8,9 +8,12 @@
 process.env.NODE_ENV = 'test';
 
 // Database configuration
-// Respect existing DATABASE_URL (used in CI), otherwise use DATABASE_URL_TEST, or fallback to local dev
-if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = process.env.DATABASE_URL_TEST || 'postgresql://charhub:charhub_dev_password@localhost:5433/charhub_db?schema=public';
+// DO NOT set DATABASE_URL here - let it be configured via environment variables:
+// - In CI: set by GitHub Actions workflow
+// - Locally: set DATABASE_URL_TEST in .env or shell before running tests
+// Default for local dev (only if nothing is set):
+if (!process.env.DATABASE_URL && !process.env.DATABASE_URL_TEST) {
+  process.env.DATABASE_URL = 'postgresql://charhub:charhub_dev_password@localhost:5433/charhub_db?schema=public';
 }
 
 // Authentication secrets
