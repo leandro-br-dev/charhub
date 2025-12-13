@@ -8,10 +8,13 @@ jest.setTimeout(10000);
 
 // Mock environment variables for tests
 process.env.NODE_ENV = 'test';
-// Use localhost:5433 for tests running outside Docker (matches docker-compose port mapping)
-process.env.DATABASE_URL = process.env.DATABASE_URL_TEST || 'postgresql://charhub:charhub_dev_password@localhost:5433/charhub_db?schema=public';
-process.env.SESSION_SECRET = 'test-secret-key';
-process.env.JWT_SECRET = 'test-jwt-secret';
+// DATABASE_URL is configured in test-env-setup.ts (setupFiles) - do NOT override here
+// This file (setupFilesAfterEnv) runs AFTER setupFiles, so any DATABASE_URL set here
+// would override CI and environment variables
+
+// Only set auth secrets if not already set
+if (!process.env.SESSION_SECRET) process.env.SESSION_SECRET = 'test-secret-key';
+if (!process.env.JWT_SECRET) process.env.JWT_SECRET = 'test-jwt-secret';
 
 // Disable external services that require API keys
 process.env.OPENAI_API_KEY = 'test-key-disabled';
