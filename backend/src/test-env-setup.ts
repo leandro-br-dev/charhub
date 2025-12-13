@@ -8,7 +8,10 @@
 process.env.NODE_ENV = 'test';
 
 // Database configuration
-process.env.DATABASE_URL = process.env.DATABASE_URL_TEST || 'postgresql://charhub:charhub_dev_password@localhost:5433/charhub_db?schema=public';
+// Respect existing DATABASE_URL (used in CI), otherwise use DATABASE_URL_TEST, or fallback to local dev
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = process.env.DATABASE_URL_TEST || 'postgresql://charhub:charhub_dev_password@localhost:5433/charhub_db?schema=public';
+}
 
 // Authentication secrets
 process.env.SESSION_SECRET = 'test-secret-key';
