@@ -6,6 +6,7 @@ on:
     paths:
       - 'backend/**'
       - 'frontend/**'
+      - 'nginx/**'
       - 'docker-compose.yml'
       - '.github/workflows/deploy-production.yml'
   workflow_dispatch:
