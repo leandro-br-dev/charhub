@@ -4,7 +4,7 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Descobrir",
-      "chat": "Chat",
+      "chat": "Bate-papo",
       "story": "História"
     },
     "sections": {
@@ -14,9 +14,9 @@
       "favorites": "Favoritos",
       "myStories": "Minhas Histórias",
       "popularStories": "Histórias Populares",
-      "mine": "Meu"
+      "mine": "Minhas"
     },
-    "noStories": "Nenhuma história ainda. Crie sua primeira história!",
+    "noStories": "Ainda não há histórias. Crie sua primeira história!",
     "createStory": "Criar História",
     "plusRequired": "Requer Plano Plus",
     "recentConversations": "Conversas Recentes",

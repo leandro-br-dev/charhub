@@ -1,10 +1,10 @@
 {
   "description": "Landing page strings for the home page with call-to-action buttons.",
   "resources": {
-    "titleLine1": "اجعل",
-    "titleLine2Highlight": "محادثاتك وقصصك تنبض بالحياة",
-    "subtitle": "ابتكر شخصيات آسرة وانغمس في روايات تفاعلية مولدة بالذكاء الاصطناعي. مغامرتك تبدأ الآن.",
+    "titleLine1": "أحضر",
+    "titleLine2Highlight": "محادثاتك وقصصك إلى الحياة",
+    "subtitle": "أنشئ شخصيات آسرة وانغمس في روايات تفاعلية تم إنشاؤها بواسطة الذكاء الاصطناعي. مغامرتك تبدأ الآن.",
     "accessButton": "تسجيل الدخول",
-    "signupButton": "إنشاء حساب"
+    "signupButton": "تسجيل"
   }
 }

@@ -59,19 +59,19 @@
     },
     "Yaoi": {
       "name": "Yaoi",
-      "description": "Romance masculino/masculino"
+      "description": "Romance entre homens"
     },
     "Yuri": {
       "name": "Yuri",
-      "description": "Romance feminino/feminino"
+      "description": "Romance entre mulheres"
     },
     "Ecchi": {
       "name": "Ecchi",
-      "description": "Conteúdo sexual sugestivo"
+      "description": "Conteúdo sexualmente sugestivo"
     },
     "Hentai": {
       "name": "Hentai",
-      "description": "Conteúdo sexual explícito"
+      "description": "Conteúdo sexualmente explícito"
     },
     "Gore": {
       "name": "Gore",
@@ -103,7 +103,7 @@
     },
     "Post-Apocalyptic": {
       "name": "Pós-Apocalíptico",
-      "description": "Mundo após um desastre"
+      "description": "Mundo após desastre"
     },
     "Dystopian": {
       "name": "Distópico",
@@ -119,7 +119,7 @@
     },
     "Martial Arts": {
       "name": "Artes Marciais",
-      "description": "Foco em artes marciais"
+      "description": "Focado em artes marciais"
     },
     "Mecha": {
       "name": "Mecha",
@@ -143,7 +143,7 @@
     },
     "Crime": {
       "name": "Crime",
-      "description": "Crimes e atividades criminosas"
+      "description": "Crime e atividades criminosas"
     },
     "Noir": {
       "name": "Noir",
@@ -194,8 +194,8 @@
       "description": "Paródia ou sátira"
     },
     "Wholesome": {
-      "name": "Aconchegante",
-      "description": "Conteúdo que faz sentir bem"
+      "name": "Edificante",
+      "description": "Conteúdo que faz se sentir bem"
     },
     "Grimdark": {
       "name": "Grimdark",
@@ -207,7 +207,7 @@
     },
     "NTR": {
       "name": "NTR",
-      "description": "Temas de infidelidade (Netorare)"
+      "description": "Temas de Netorare (infidelidade)"
     },
     "Incest": {
       "name": "Incesto",
@@ -223,7 +223,7 @@
     },
     "Monster Girl": {
       "name": "Garota Monstro",
-      "description": "Personagens femininas monstro"
+      "description": "Personagens femininas de monstros"
     },
     "Transformation": {
       "name": "Transformação",
@@ -247,7 +247,7 @@
     },
     "Dungeon": {
       "name": "Dungeon",
-      "description": "Exploração de dungeon"
+      "description": "Exploração de masmorras"
     },
     "Game World": {
       "name": "Mundo de Jogo",
@@ -255,7 +255,7 @@
     },
     "LitRPG": {
       "name": "LitRPG",
-      "description": "Mecânicas de jogo em narrativa"
+      "description": "Mecânicas de jogo na narrativa"
     }
   }
 }

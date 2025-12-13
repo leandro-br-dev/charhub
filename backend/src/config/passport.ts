@@ -4,9 +4,8 @@ import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { syncOAuthUser } from '../services/userService';
 import type { OAuthProvider } from '../types';
 
-// Use PUBLIC_FACING_URL for OAuth callbacks (accessible from external providers)
-// Fall back to BASE_URL for local development
-const OAUTH_BASE_URL = process.env.PUBLIC_FACING_URL || process.env.BASE_URL || 'http://localhost:3000';
+// Use relative callback URLs to support multiple environments (localhost, dev, prod)
+// Passport will automatically construct the full URL based on the incoming request
 const API_VERSION = process.env.API_VERSION || '/api/v1';
 
 const defaultGoogleCallback = `${API_VERSION}/oauth/google/callback`;
@@ -39,8 +38,9 @@ export function configurePassport(): void {
         {
           clientID: process.env.GOOGLE_CLIENT_ID,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          callbackURL: `${OAUTH_BASE_URL}${process.env.GOOGLE_CALLBACK_PATH || defaultGoogleCallback}`,
+          callbackURL: process.env.GOOGLE_CALLBACK_PATH || defaultGoogleCallback,
           scope: ['profile', 'email'],
+          proxy: true, // Trust X-Forwarded-* headers from nginx
         },
         async (_accessToken, _refreshToken, profile, done) => {
           await handleStrategyCallback('google', profile, done);
@@ -55,8 +55,9 @@ export function configurePassport(): void {
         {
           clientID: process.env.FACEBOOK_CLIENT_ID,
           clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-          callbackURL: `${OAUTH_BASE_URL}${process.env.FACEBOOK_CALLBACK_PATH || defaultFacebookCallback}`,
+          callbackURL: process.env.FACEBOOK_CALLBACK_PATH || defaultFacebookCallback,
           profileFields: ['id', 'displayName', 'email', 'photos'],
+          proxy: true, // Trust X-Forwarded-* headers from nginx
         },
         async (_accessToken, _refreshToken, profile, done) => {
           await handleStrategyCallback('facebook', profile, done);

@@ -7,11 +7,11 @@
     },
     "Anime": {
       "name": "Anime",
-      "description": "Personagem estilo Anime"
+      "description": "Personagem no estilo Anime"
     },
     "Manga": {
       "name": "Manga",
-      "description": "Personagem estilo Mangá"
+      "description": "Personagem no estilo Mangá"
     },
     "Elf": {
       "name": "Elfo",
@@ -27,7 +27,7 @@
     },
     "Vampire": {
       "name": "Vampiro",
-      "description": "Personagem vampiro"
+      "description": "Personagem de vampiro"
     },
     "Werewolf": {
       "name": "Lobisomem",
@@ -79,7 +79,7 @@
     },
     "Knight": {
       "name": "Cavaleiro(a)",
-      "description": "Personagem cavaleiro ou paladino(a)"
+      "description": "Personagem de cavaleiro(a) ou paladino(a)"
     },
     "Samurai": {
       "name": "Samurai",
@@ -99,7 +99,7 @@
     },
     "Wizard": {
       "name": "Mago",
-      "description": "Usuário de magia masculino"
+      "description": "Usuário de magia do sexo masculino"
     },
     "Healer": {
       "name": "Curandeiro(a)",
@@ -111,7 +111,7 @@
     },
     "Thief": {
       "name": "Ladrão(a)",
-      "description": "Personagem trapaceiro(a) ou ladrão(a)"
+      "description": "Personagem ladino(a) ou ladrão(a)"
     },
     "Pirate": {
       "name": "Pirata",
@@ -134,8 +134,8 @@
       "description": "Profissional de enfermagem"
     },
     "Idol": {
-      "name": "Idol",
-      "description": "Ídolo pop ou artista performático(a)"
+      "name": "Ídolo",
+      "description": "Ídolo pop ou artista"
     },
     "Musician": {
       "name": "Músico(a)",
@@ -150,7 +150,7 @@
       "description": "Profissional de esportes"
     },
     "Chef": {
-      "name": "Chef",
+      "name": "Chef de Cozinha",
       "description": "Profissional culinário(a)"
     },
     "Royalty": {
@@ -159,15 +159,15 @@
     },
     "Princess": {
       "name": "Princesa",
-      "description": "Personagem princesa"
+      "description": "Personagem de princesa"
     },
     "Prince": {
       "name": "Príncipe",
-      "description": "Personagem príncipe"
+      "description": "Personagem de príncipe"
     },
     "Tsundere": {
       "name": "Tsundere",
-      "description": "Personalidade inicialmente fria, gradualmente quente"
+      "description": "Personalidade inicialmente fria, gradualmente calorosa"
     },
     "Yandere": {
       "name": "Yandere",
@@ -175,7 +175,7 @@
     },
     "Kuudere": {
       "name": "Kuudere",
-      "description": "Personalidade fria e emocionalmente distante"
+      "description": "Personalidade fria e distante emocionalmente"
     },
     "Dandere": {
       "name": "Dandere",
@@ -187,18 +187,18 @@
     },
     "Tomboy": {
       "name": "Tomboy",
-      "description": "Personagem feminina com apresentação masculina"
+      "description": "Personagem feminina com comportamento masculino"
     },
     "Femboy": {
       "name": "Femboy",
-      "description": "Personagem masculino com apresentação feminina"
+      "description": "Personagem masculino com comportamento feminino"
     },
     "BDSM": {
       "name": "BDSM",
-      "description": "Temas de Bondage, Disciplina, Dominação/Submissão"
+      "description": "Temas de bondage, disciplina, dominância/submissão"
     },
     "Dominatrix": {
-      "name": "Dominatrix",
+      "name": "Dominatriz",
       "description": "Papel sexual dominante"
     },
     "Submissive": {
@@ -207,11 +207,11 @@
     },
     "Succubus": {
       "name": "Súcubo",
-      "description": "Sedutora demoníaca"
+      "description": "Demônio sedutor"
     },
     "Monster Girl": {
       "name": "Garota Monstro",
-      "description": "Personagem monstro feminino"
+      "description": "Personagem monstro feminina"
     },
     "Monster Boy": {
       "name": "Garoto Monstro",
@@ -238,15 +238,15 @@
       "description": "Homem maduro atraente"
     },
     "Schoolgirl": {
-      "name": "Estudante (Garota)",
+      "name": "Garota Escolar",
       "description": "Personagem estudante feminina"
     },
     "Schoolboy": {
-      "name": "Estudante (Garoto)",
+      "name": "Garoto Escolar",
       "description": "Personagem estudante masculino"
     },
     "Office Lady": {
-      "name": "Funcionária de Escritório",
+      "name": "Escriturária",
       "description": "Trabalhadora de escritório feminina"
     },
     "Salaryman": {
@@ -259,7 +259,7 @@
     },
     "Goth": {
       "name": "Gótico",
-      "description": "Estilo de moda gótico"
+      "description": "Estilo de moda gótica"
     },
     "Punk": {
       "name": "Punk",
@@ -279,7 +279,7 @@
     },
     "Mercenary": {
       "name": "Mercenário(a)",
-      "description": "Soldado(a) ou lutador(a) contratado(a)"
+      "description": "Soldado ou lutador(a) contratado(a)"
     },
     "Gladiator": {
       "name": "Gladiador(a)",
@@ -318,11 +318,11 @@
       "description": "Curandeiro(a) religioso(a) ou padre"
     },
     "Warlock": {
-      "name": "Bruxo(a)",
+      "name": "Bruxo",
       "description": "Usuário(a) de magia sombria com pacto"
     },
     "Sorcerer": {
-      "name": "Feiticeiro(a)",
+      "name": "Feiticeiro",
       "description": "Usuário(a) de magia inata"
     },
     "Alchemist": {
@@ -331,10 +331,10 @@
     },
     "Blacksmith": {
       "name": "Ferreiro(a)",
-      "description": "Artesão(ã) de armas e armaduras"
+      "description": "Criador(a) de armas e armaduras"
     },
     "Merchant": {
-      "name": "Mercador(a)",
+      "name": "Comerciante",
       "description": "Comerciante ou dono(a) de loja"
     },
     "Adventurer": {

@@ -4,10 +4,10 @@
     "loading": "Carregando imagens...",
     "error": "Falha ao carregar imagens.",
     "tabs": {
-      "gallery": "Galeria de Conversas",
+      "gallery": "Galeria de Conversa",
       "avatar": "Avatares",
       "samples": "Exemplos",
-      "stickers": "Stickers"
+      "stickers": "Figurinhas"
     },
     "upload": "Enviar Imagem",
     "close": "Fechar",
