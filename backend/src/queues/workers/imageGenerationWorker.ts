@@ -75,8 +75,15 @@ async function processAvatarGeneration(
   let referenceImageFilename: string | undefined;
   if (referenceImageUrl) {
     try {
-      const response = await fetch(referenceImageUrl);
-      const imageBuffer = Buffer.from(await response.arrayBuffer());
+      // Extract R2 key from URL
+      // URL format: https://pub-xxx.r2.dev/characters/xxx/reference/uploaded_xxx.webp
+      // or: https://media.charhub.app/characters/xxx/reference/uploaded_xxx.webp
+      const urlObj = new URL(referenceImageUrl);
+      const r2Key = urlObj.pathname.replace(/^\//, ''); // Remove leading slash
+
+      // Download image directly from R2 using SDK (more reliable than fetch with presigned URL)
+      const imageBuffer = await r2Service.downloadObject(r2Key);
+      logger.info({ r2Key, sizeBytes: imageBuffer.length }, 'Downloaded reference image from R2');
 
       // Upload to ComfyUI server
       const tempFilename = `ref_${Date.now()}_${characterId}.png`;
@@ -227,9 +234,11 @@ async function processStickerGeneration(
 
     if (existingAvatar?.url) {
       try {
-        // Fetch avatar image
-        const response = await fetch(existingAvatar.url);
-        const avatarBuffer = Buffer.from(await response.arrayBuffer());
+        // Download avatar image from R2
+        const urlObj = new URL(existingAvatar.url);
+        const r2Key = urlObj.pathname.replace(/^\//, '');
+        const avatarBuffer = await r2Service.downloadObject(r2Key);
+
         const chromaKey = await getContrastingChromaKey(avatarBuffer);
         chromaKeyPrompt = `solid ${chromaKey.name} background, plain background, simple background, chroma key`;
         logger.info({ characterId, chromaKey }, 'Using dynamic chroma key color');
