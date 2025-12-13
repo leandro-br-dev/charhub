@@ -11,7 +11,7 @@
     },
     "School Uniform": {
       "name": "Uniforme Escolar",
-      "description": "Vestimenta de uniforme escolar"
+      "description": "Roupas de uniforme escolar"
     },
     "Maid Outfit": {
       "name": "Uniforme de Empregada Doméstica",
@@ -22,12 +22,12 @@
       "description": "Uniforme de mordomo"
     },
     "Kimono": {
-      "name": "Kimono",
-      "description": "Vestimenta tradicional japonesa"
+      "name": "Quimono",
+      "description": "Vestuário tradicional japonês"
     },
     "Yukata": {
       "name": "Yukata",
-      "description": "Kimono de verão"
+      "description": "Quimono de verão"
     },
     "Armor": {
       "name": "Armadura",
@@ -59,10 +59,10 @@
     },
     "Dress": {
       "name": "Vestido",
-      "description": "Vestimenta tipo vestido"
+      "description": "Vestuário tipo vestido"
     },
     "Wedding Dress": {
-      "name": "Vestido de Noiva",
+      "name": "Vestido de Casamento",
       "description": "Vestido de noiva"
     },
     "Ball Gown": {
@@ -71,7 +71,7 @@
     },
     "Swimsuit": {
       "name": "Traje de Banho",
-      "description": "Vestimenta para nadar"
+      "description": "Roupa de banho"
     },
     "Bikini": {
       "name": "Biquíni",
@@ -79,7 +79,7 @@
     },
     "Lingerie": {
       "name": "Lingerie",
-      "description": "Roupas íntimas"
+      "description": "Roupa íntima"
     },
     "Latex": {
       "name": "Látex",
@@ -103,7 +103,7 @@
     },
     "Cowboy Outfit": {
       "name": "Traje de Cowboy",
-      "description": "Traje estilo western/cowboy"
+      "description": "Traje western/cowboy"
     },
     "Steampunk Outfit": {
       "name": "Traje Steampunk",
@@ -115,11 +115,11 @@
     },
     "Military Uniform": {
       "name": "Uniforme Militar",
-      "description": "Uniforme militar de gala"
+      "description": "Uniforme militar formal"
     },
     "Police Uniform": {
       "name": "Uniforme de Polícia",
-      "description": "Uniforme de policial"
+      "description": "Uniforme de oficial de polícia"
     },
     "Nurse Uniform": {
       "name": "Uniforme de Enfermeira",
@@ -135,7 +135,7 @@
     },
     "Chef Uniform": {
       "name": "Uniforme de Chef",
-      "description": "Vestimenta de profissional culinário"
+      "description": "Traje de profissional culinário"
     },
     "Bunny Suit": {
       "name": "Traje de Coelho",
@@ -155,7 +155,7 @@
     },
     "Idol Outfit": {
       "name": "Traje de Idol",
-      "description": "Traje de palco de ídolo pop"
+      "description": "Traje de palco de idol pop"
     },
     "Gothic Lolita": {
       "name": "Gothic Lolita",
@@ -179,11 +179,11 @@
     },
     "Sportswear": {
       "name": "Roupa Esportiva",
-      "description": "Vestimenta atlética"
+      "description": "Roupa atlética"
     },
     "Gym Clothes": {
       "name": "Roupa de Academia",
-      "description": "Vestimenta para exercícios"
+      "description": "Roupa de exercício"
     },
     "Pajamas": {
       "name": "Pijama",
@@ -195,7 +195,7 @@
     },
     "Bathrobe": {
       "name": "Roupão",
-      "description": "Roupão de banho ou para ficar em casa"
+      "description": "Roupão de banho ou de casa"
     },
     "Towel": {
       "name": "Toalha",
@@ -206,7 +206,7 @@
       "description": "Nua/sem roupa"
     },
     "Topless": {
-      "name": "Sem Roupa Em Cima",
+      "name": "Sem Topo",
       "description": "Sem roupa na parte superior"
     },
     "Covered Nude": {
@@ -214,12 +214,12 @@
       "description": "Nudez estrategicamente coberta"
     },
     "Business Suit": {
-      "name": "Terno Executivo",
-      "description": "Vestimenta profissional de negócios"
+      "name": "Terno de Negócios",
+      "description": "Traje de negócios profissional"
     },
     "Tuxedo": {
-      "name": "Terno de Smoking",
-      "description": "Smoking formal"
+      "name": "Tuxedo",
+      "description": "Tuxedo formal"
     },
     "Crown": {
       "name": "Coroa",
@@ -243,11 +243,11 @@
     },
     "Witch Hat": {
       "name": "Chapéu de Bruxa",
-      "description": "Chapéu pontudo de bruxa"
+      "description": "Chapéu de bruxa pontudo"
     },
     "Cat Ears": {
       "name": "Orelhas de Gato",
-      "description": "Tiara de orelhas de gato"
+      "description": "Faixa de orelhas de gato"
     },
     "Fox Ears": {
       "name": "Orelhas de Raposa",
@@ -270,8 +270,8 @@
       "description": "Acessório de cauda de animal"
     },
     "Collar": {
-      "name": "Coleira",
-      "description": "Acessório de coleira no pescoço"
+      "name": "Colar",
+      "description": "Acessório de colar no pescoço"
     },
     "Choker": {
       "name": "Gargantilha",

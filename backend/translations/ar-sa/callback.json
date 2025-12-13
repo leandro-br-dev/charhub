@@ -1,14 +1,14 @@
 {
   "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
   "resources": {
-    "processingTitle": "جاري إتمام تسجيل الدخول...",
-    "processingMessage": "جاري إتمام المصادقة...",
+    "processingTitle": "جاري إكمال تسجيل الدخول...",
+    "processingMessage": "جاري إكمال المصادقة...",
     "successTitle": "أهلاً بعودتك!",
     "redirectingMessage": "اكتملت المصادقة. جاري إعادة التوجيه...",
     "errorTitle": "خطأ في المصادقة",
-    "cancelledMessage": "تم إلغاء المصادقة من قِبل المزوّد.",
+    "cancelledMessage": "تم إلغاء المصادقة بواسطة المزود.",
     "missingParamsMessage": "معلمات التفويض مفقودة. يرجى إعادة بدء عملية تسجيل الدخول.",
-    "exchangeFailedMessage": "تعذر علينا إتمام تبادل OAuth. الرجاء المحاولة مرة أخرى.",
+    "exchangeFailedMessage": "لم نتمكن من إكمال تبادل OAuth. يرجى المحاولة مرة أخرى.",
     "returnButton": "العودة إلى تسجيل الدخول"
   }
 }

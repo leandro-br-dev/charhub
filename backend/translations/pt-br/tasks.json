@@ -24,11 +24,11 @@
     "yourCredits": "Seus Créditos",
     "availableCredits": "Créditos Disponíveis",
     "comingSoon": "Mais tarefas em breve",
-    "comingSoonDescription": "Estamos trabalhando para adicionar mais maneiras de ganhar créditos através de tarefas diárias e conquistas.",
+    "comingSoonDescription": "Estamos trabalhando para adicionar mais maneiras de ganhar créditos através de tarefas e conquistas diárias.",
     "messages": {
       "rewardClaimed": "Recompensa diária resgatada com sucesso!",
       "alreadyClaimed": "Você já resgatou sua recompensa diária hoje. Volte amanhã!",
-      "error": "Falha ao resgatar recompensa. Por favor, tente novamente."
+      "error": "Falha ao resgatar a recompensa. Por favor, tente novamente."
     }
   }
 }

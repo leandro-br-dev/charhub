@@ -115,7 +115,15 @@ function getProvider(options: BuildOptions): LLMProvider {
     return options.provider;
   }
 
-  return 'gemini';
+  return (process.env.TRANSLATION_DEFAULT_PROVIDER as LLMProvider) || 'gemini';
+}
+
+function getModel(options: BuildOptions): string {
+  if (options.model) {
+    return options.model;
+  }
+
+  return process.env.TRANSLATION_DEFAULT_MODEL || 'gemini-2.5-flash';
 }
 
 function getCredentialCheck(provider: LLMProvider): ProviderCredentialCheck {
@@ -338,7 +346,7 @@ async function generateTranslation(
   }
 
   const provider = getProvider(options);
-  const model = options.model ?? 'gemini-2.5-flash-lite';
+  const model = getModel(options);
 
   if (options.verbose) {
     console.log(`  🤖 Generating with ${provider}/${model}...`);

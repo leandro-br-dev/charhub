@@ -16,14 +16,14 @@
       "popularStories": "قصص مشهورة",
       "mine": "خاصتي"
     },
-    "noStories": "لا توجد قصص بعد. أنشئ قصتك الأولى!",
+    "noStories": "لا توجد قصص حتى الآن. أنشئ قصتك الأولى!",
     "createStory": "إنشاء قصة",
     "plusRequired": "يتطلب خطة Plus",
-    "recentConversations": "المحادثات الأخيرة",
+    "recentConversations": "آخر المحادثات",
     "newConversation": "محادثة جديدة",
     "carousel": {
       "alt": "صورة دوارة لـ {{title}}",
-      "goToSlide": "الانتقال إلى الشريحة {{slide}}",
+      "goToSlide": "انتقل إلى الشريحة {{slide}}",
       "plus": "PLUS"
     },
     "storyCard": {

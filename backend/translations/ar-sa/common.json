@@ -5,19 +5,19 @@
     "language": "اللغة",
     "continueGoogle": "متابعة باستخدام Google",
     "continueFacebook": "متابعة باستخدام Facebook",
-    "privacy": "بمتابعتك، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
     "logoutLoading": "جاري تسجيل الخروج...",
-    "authenticatedUser": "مستخدم مصادق عليه",
+    "authenticatedUser": "المستخدم المصادق عليه",
     "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض توضيحي لـ OAuth آمن",
+    "navTagline": "تجريبي للتحقق الآمن (OAuth)",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "مزود الخدمة",
+    "provider": "المزود",
     "theme": {
       "label": "السمة",
       "option": {
@@ -36,26 +36,26 @@
     "deleting": "جاري الحذف...",
     "enabled": "ممكّن",
     "disabled": "معطّل",
-    "selectOption": "اختر خياراً",
+    "selectOption": "اختر خيارًا",
     "noResults": "لم يتم العثور على خيارات.",
     "chat": {
-      "with": "دردشة مع"
+      "with": "دردش مع"
     },
     "messages": {
       "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-      "chatStarted": "بدأت المحادثة بنجاح!",
+      "chatStarted": "بدأت الدردشة بنجاح!",
       "characterDeleted": "تم حذف الشخصية بنجاح"
     },
     "contentFilter": {
-      "ariaLabel": "مرشح المحتوى",
-      "title": "مرشح المحتوى",
-      "ageRating": "التصنيف العمري",
+      "ariaLabel": "فلتر المحتوى",
+      "title": "فلتر المحتوى",
+      "ageRating": "تقييم العمر",
       "blurNsfw": "تمويه المحتوى الصريح",
-      "none": "لا يوجد مرشح",
-      "blur": "تمويه المحتوى الحساس",
-      "hidden": "إخفاء المحتوى الناضج",
+      "none": "لا يوجد فلتر",
+      "blur": "تمويه حساس",
+      "hidden": "إخفاء ناضج",
       "descriptions": {
-        "none": "عرض جميع المحتويات بدون قيود",
+        "none": "عرض كل المحتوى بدون قيود",
         "blur": "تطبيق التمويه على المحتوى الناضج",
         "hidden": "إخفاء المحتوى الناضج بالكامل"
       },
@@ -70,7 +70,7 @@
     },
     "errors": {
       "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
-      "failedToFetchData": "فشل جلب البيانات"
+      "failedToFetchData": "فشل في جلب البيانات"
     },
     "character": "شخصية",
     "seeMore": "شاهد المزيد",

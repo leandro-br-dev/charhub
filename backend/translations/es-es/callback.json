@@ -2,13 +2,13 @@
   "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
   "resources": {
     "processingTitle": "Iniciando sesión...",
-    "processingMessage": "Completando la autenticación...",
+    "processingMessage": "Completando autenticación...",
     "successTitle": "¡Bienvenido de nuevo!",
-    "redirectingMessage": "Autenticación completada. Redireccionando...",
+    "redirectingMessage": "Autenticación completada. Redirigiendo...",
     "errorTitle": "Error de autenticación",
     "cancelledMessage": "La autenticación fue cancelada por el proveedor.",
     "missingParamsMessage": "Faltan parámetros de autorización. Por favor, reinicie el proceso de inicio de sesión.",
-    "exchangeFailedMessage": "No pudimos completar el intercambio OAuth. Por favor, inténtelo de nuevo.",
+    "exchangeFailedMessage": "No pudimos finalizar el intercambio OAuth. Por favor, inténtelo de nuevo.",
     "returnButton": "Volver al inicio de sesión"
   }
 }
