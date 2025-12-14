@@ -6,14 +6,13 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ---
 
-## 📊 Status Atual: 30 de Novembro de 2025
+## 📊 Status Atual: 14 de Dezembro de 2025
 
 ### Tarefas em Progresso
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
-| T001 | Implementar Sistema X | Agent Coder | Em Progresso | `feature/system-x` | 15/12/2025 | 30/11 - Iniciado |
-| T002 | Bug na Autenticação OAuth | Agent Coder | Aguardando | `feature/auth-fix` | 13/12/2025 | 28/11 - Identificado |
+| T003 | **Integração Stripe** | Agent Coder | 🚀 Pronto para Iniciar | `feature/stripe-integration` (a criar) | 31/12/2025 | 14/12 - Spec aprovada e movida para active |
 
 ---
 
@@ -29,6 +28,31 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 ---
 
 ## 🚀 Histórico Recente de Atribuições
+
+### Semana de 14-20 Dezembro
+
+| Tarefa | Agente | Status | Detalhes |
+|--------|--------|--------|----------|
+| **Integração Stripe** | Agent Coder | ✅ Atribuído | Spec completa em `active/stripe-payment-integration.md`. Pronto para iniciar desenvolvimento. |
+
+**Contexto da Tarefa Stripe** (T003):
+- **Por que urgente**: PayPal exige CNPJ para produção, mas Stripe permite operar com CPF
+- **Objetivo**: Habilitar pagamentos reais em produção ASAP
+- **Abordagem**: Criar arquitetura multi-provider flexível (Payment Provider Adapter Pattern)
+- **Status PayPal**: Mantido como fallback, código existente não será quebrado
+- **Benefícios futuros**: Usuário poderá escolher forma de pagamento (Stripe, PayPal, futuramente PIX)
+- **Estimativa**: 2-3 semanas (5 fases detalhadas na spec)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/stripe-payment-integration.md`
+- **Branch sugerida**: `feature/stripe-integration`
+
+**Instruções para Agent Coder**:
+1. Criar branch `feature/stripe-integration` a partir de `main`
+2. Ler spec completa em `docs/05-business/planning/features/active/stripe-payment-integration.md`
+3. Seguir roadmap de implementação (5 fases)
+4. Fazer commits incrementais por fase
+5. Abrir PR quando Fase 1 estiver completa para review inicial
+6. Continuar fases 2-4 após feedback
+7. Agent Reviewer testará e fará deploy da Fase 4
 
 ### Semana de 23-29 Novembro
 
