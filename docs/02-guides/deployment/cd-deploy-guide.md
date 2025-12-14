@@ -114,7 +114,8 @@ sudo chmod 755 "$APP_DIR/cloudflared/config/prod"
 export HOME="/home/leandro_br_dev_gmail_com"
 
 # Complete cleanup of old containers
-sudo -E HOME="$HOME" docker-compose down --remove-orphans -v
+# IMPORTANT: DO NOT use -v flag to preserve database volumes (postgres_data, redis_data)
+sudo -E HOME="$HOME" docker-compose down --remove-orphans
 
 # Wait for cleanup to complete
 sleep 5
@@ -235,16 +236,20 @@ Error response from daemon: Conflict. The container name "/charhub-backend-1" al
 
 **Cause**: Previous containers not fully removed
 
-**Solution**: Already handled with `docker-compose down --remove-orphans -v`
+**Solution**: Already handled with `docker-compose down --remove-orphans`
 
 **Manual Fix**:
 ```bash
 ssh leandro_br_dev_gmail_com@34.66.66.202
 COMPOSE="/var/lib/toolbox/bin/docker-compose"
 cd /mnt/stateful_partition/charhub
-sudo $COMPOSE down --remove-orphans -v
+# Remove containers but PRESERVE database volumes
+sudo $COMPOSE down --remove-orphans
 sleep 5
 sudo $COMPOSE up -d
+
+# ⚠️ ONLY use -v flag if you intentionally want to DELETE all data:
+# sudo $COMPOSE down --remove-orphans -v  # DESTROYS DATABASE!
 ```
 
 ### Issue: "Cloudflare tunnel not connecting"
