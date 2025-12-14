@@ -301,6 +301,66 @@ jobs:
           echo "✅ Deployment verified"
           VERIFY
 
+      - name: Monitor Disk Space
+        run: |
+          echo "💾 Monitoring disk space..."
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
+              -i $HOME/.ssh/deploy_key \
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'MONITOR'
+          cd /mnt/stateful_partition/charhub
+
+          # Run disk space monitoring script
+          if [ -f scripts/ops/monitor-disk-space.sh ]; then
+            chmod +x scripts/ops/monitor-disk-space.sh
+            ./scripts/ops/monitor-disk-space.sh || true
+          else
+            echo "⚠️  Monitoring script not found, showing basic stats..."
+            df -h /mnt/stateful_partition
+            sudo docker system df
+          fi
+          MONITOR
+
+      - name: Cleanup Docker Resources
+        run: |
+          echo "🧹 Cleaning up Docker resources..."
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
+              -i $HOME/.ssh/deploy_key \
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'CLEANUP'
+          cd /mnt/stateful_partition/charhub
+
+          # Get current disk usage
+          DISK_USAGE=$(df /mnt/stateful_partition | awk 'NR==2 {print $5}' | sed 's/%//')
+
+          echo "Current disk usage: ${DISK_USAGE}%"
+
+          # Run cleanup if disk usage > 70% or if cleanup script exists
+          if [ "$DISK_USAGE" -gt 70 ] || [ -f scripts/ops/cleanup-docker.sh ]; then
+            echo "Running Docker cleanup (disk usage: ${DISK_USAGE}%)..."
+
+            if [ -f scripts/ops/cleanup-docker.sh ]; then
+              chmod +x scripts/ops/cleanup-docker.sh
+              ./scripts/ops/cleanup-docker.sh
+            else
+              echo "⚠️  Cleanup script not found, running manual cleanup..."
+              # Remove dangling images and build cache
+              sudo docker image prune -af
+              # Remove dangling volumes only
+              sudo docker volume prune -f
+              echo "✅ Manual cleanup completed"
+            fi
+          else
+            echo "✅ Disk usage healthy (${DISK_USAGE}%), skipping cleanup"
+          fi
+          CLEANUP
+
       - name: Notify Success
         if: success()
         run: |

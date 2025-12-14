@@ -1,251 +1,375 @@
-# 📑 Índice de Documentação - Agent Reviewer
+# Agent Reviewer - Checklists Index
 
-Guia de navegação para encontrar o que você precisa rapidamente.
-
----
-
-## 🚀 **COMECE AQUI** (Ordem Recomendada)
-
-1. **[QUICK-START-REVIEWER.md](./QUICK-START-REVIEWER.md)** ← Leia primeiro! (5 min)
-   - Setup de 5 minutos
-   - Primeiros passos
-   - Problemas comuns
-
-2. **[AGENT-REVIEWER-README.md](./AGENT-REVIEWER-README.md)** ← Depois leia isto (20 min)
-   - Visão geral completa
-   - Ciclo semanal
-   - Exemplos de tarefas reais
-
-3. **[CLAUDE.md](./CLAUDE.md)** ← Seu guia de referência (consulte quando precisar)
-   - Responsabilidades detalhadas
-   - Comandos essenciais
-   - Troubleshooting
+**Quick Navigation**: Jump directly to the checklist you need
 
 ---
 
-## 📋 Arquivos de Operação (Seu Dia a Dia)
+## 🎯 Quick Start
 
-### **Entrada de Tarefas**
-- **[docs/user-notes.md](./docs/user-notes.md)**
-  - Onde VOCÊ anota features/bugs
-  - Agent Reviewer lê toda segunda-feira
-  - Exemplos inclusos
+**New to Agent Reviewer?** Read `CLAUDE.md` first for context and workflow overview.
 
-### **Rastreamento de Tarefas**
-- **[docs/agent-assignments.md](./docs/agent-assignments.md)**
-  - Quem está fazendo o quê
-  - Status e ETAs
-  - Histórico mensal
-  - ATUALIZAR toda segunda-feira
-
-### **Histórico de Deploys**
-- **[docs/deploy/deploy-log.md](./docs/deploy/deploy-log.md)**
-  - Todos os deploys registrados
-  - Status e problemas
-  - Checklists pré/pós-deploy
-  - ATUALIZAR após cada deploy
-
-### **Relatórios de Métricas**
-- **[docs/metrics/weekly-report-template.md](./docs/metrics/weekly-report-template.md)**
-  - Template para relatório semanal
-  - Estatísticas, receita, bugs, recomendações
-  - CRIAR 1x por semana
+**Ready to work?** Use checklists below for step-by-step task execution.
 
 ---
 
-## 🎯 Por Que Você Veio Aqui? (Encontre a Resposta)
+## 📋 Operational Checklists
 
-### "Quero começar AGORA"
-→ Leia: **[QUICK-START-REVIEWER.md](./QUICK-START-REVIEWER.md)**
+### Core Workflow (Execute in Order)
 
-### "Quero entender meu papel completamente"
-→ Leia: **[AGENT-REVIEWER-README.md](./AGENT-REVIEWER-README.md)**
+| # | Checklist | When to Use | Duration |
+|---|-----------|-------------|----------|
+| 1 | [PR Review](checklists/pr-review.md) | Agent Coder creates PR | ~15-30 min |
+| 2 | [Local Testing](checklists/local-testing.md) | After code review passes | ~10-20 min |
+| 3 | [Pre-Deploy](checklists/pre-deploy.md) | Before merging to main | ~10-15 min |
+| 4 | [Deploy Monitoring](checklists/deploy-monitoring.md) | Immediately after push to main | ~5-10 min |
+| 5 | [Post-Deploy](checklists/post-deploy.md) | After deployment succeeds | ~10-15 min |
 
-### "Preciso de um comando específico"
-→ Vá para: **[CLAUDE.md](./CLAUDE.md)** → Seção "Comandos Essenciais"
-
-### "Como recebo um PR do Agent Coder?"
-→ Vá para: **[CLAUDE.md](./CLAUDE.md)** → "Recebendo um Pull Request"
-
-### "Como faço deploy?"
-→ Vá para: **[CLAUDE.md](./CLAUDE.md)** → "Merge & Deploy"
-
-### "Como monitoro produção?"
-→ Vá para: **[CLAUDE.md](./CLAUDE.md)** → "Monitoramento de Produção"
-
-### "Como faço um relatório semanal?"
-→ Copie e preencha: **[docs/metrics/weekly-report-template.md](./docs/metrics/weekly-report-template.md)**
-
-### "O que fazer se quebrar produção?"
-→ Vá para: **[CLAUDE.md](./CLAUDE.md)** → "Detectando e Fazendo Rollback"
-
-### "Como registrar uma nova tarefa?"
-→ Edite: **[docs/user-notes.md](./docs/user-notes.md)**
-
-### "Como ver status de todas as tarefas?"
-→ Consulte: **[docs/agent-assignments.md](./docs/agent-assignments.md)**
-
-### "Como ver histórico de deploys?"
-→ Consulte: **[docs/deploy/deploy-log.md](./docs/deploy/deploy-log.md)**
+**Total typical deployment time**: ~50-90 minutes
 
 ---
 
-## 📊 Estrutura de Pastas (Visual)
+### Supporting Checklists
+
+| Checklist | When to Use | Critical Level |
+|-----------|-------------|----------------|
+| [Environment Validation](checklists/env-validation.md) | Before EVERY deploy | 🔴 MANDATORY |
+| [Rollback](checklists/rollback.md) | Deployment failure or critical bug | 🔴 EMERGENCY |
+
+---
+
+## 🔗 Checklist Flow Diagram
 
 ```
-~/projects/charhub-reviewer/
-│
-├── 📄 CLAUDE.md                          ← Seu guia de trabalho (consulta)
-├── 📄 QUICK-START-REVIEWER.md            ← LEIA PRIMEIRO (5 min)
-├── 📄 AGENT-REVIEWER-README.md           ← Leia segundo (20 min)
-├── 📄 INDEX.md                           ← Este arquivo
-│
-├── 📂 docs/
-│   ├── 📄 user-notes.md                  ← Você anota tarefas aqui
-│   ├── 📄 agent-assignments.md           ← Agent Reviewer atualiza segunda-feira
-│   ├── 📄 ROADMAP.md                     ← Plano estratégico
-│   ├── 📄 TODO.md                        ← Resumo de tarefas
-│   │
-│   ├── 📂 deploy/
-│   │   └── 📄 deploy-log.md              ← Agent Reviewer atualiza pós-deploy
-│   │
-│   ├── 📂 metrics/
-│   │   ├── 📄 weekly-report-template.md  ← Template (copie e preencha)
-│   │   └── 📄 weekly-[data].md           ← Seus relatórios (gerados 1x/semana)
-│   │
-│   └── 📂 todo/
-│       ├── 📄 STORY_GENERATION.md        ← Planos detalhados
-│       ├── 📄 CREDITS_SYSTEM.md
-│       ├── 📄 CHAT_IMPROVEMENTS.md
-│       └── ... (outras features)
-│
-├── 📂 backend/
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── ... (código)
-│
-└── 📂 frontend/
-    ├── package.json
-    ├── tsconfig.json
-    └── ... (código)
+┌─────────────────┐
+│  PR Created     │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  PR Review      │ ← checklists/pr-review.md
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Local Testing  │ ← checklists/local-testing.md
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Env Validation │ ← checklists/env-validation.md (CRITICAL)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Pre-Deploy     │ ← checklists/pre-deploy.md
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Push to Main   │ → Triggers GitHub Actions
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Monitor Deploy │ ← checklists/deploy-monitoring.md
+└────────┬────────┘
+         │
+    ┌────┴────┐
+    │         │
+    ▼         ▼
+  Success   Failure
+    │         │
+    │         └──────────┐
+    ▼                    ▼
+┌─────────────┐  ┌──────────────┐
+│ Post-Deploy │  │   Rollback   │ ← checklists/rollback.md
+└─────────────┘  └──────────────┘
+         │                │
+         ▼                ▼
+┌─────────────────────────┐
+│  Update Docs & Cleanup  │
+└─────────────────────────┘
 ```
 
 ---
 
-## 🗓️ Seu Calendário Semanal (Onde Ir Cada Dia)
+## 📖 Detailed Checklist Descriptions
 
-### **Segunda-feira: Planejamento**
-1. Leia: [docs/user-notes.md](./docs/user-notes.md)
-2. Consulte: [docs/todo/](./docs/todo/) para planos detalhados
-3. Atualize: [docs/agent-assignments.md](./docs/agent-assignments.md)
-4. Referência: [CLAUDE.md](./CLAUDE.md) se precisar de detalhes
+### 1. PR Review (`pr-review.md`)
 
-### **Terça-Quarta: Revisão & Teste**
-1. Receba PR do Agent Coder (GitHub)
-2. Siga: [CLAUDE.md](./CLAUDE.md) → "Recebendo um Pull Request"
-3. Teste localmente
-4. Aprove ou pida ajustes
+**Purpose**: Review code quality, security, and standards before testing
 
-### **Quinta-Sexta: Merge & Deploy**
-1. Mergear quando PR aprovada
-2. Siga: [CLAUDE.md](./CLAUDE.md) → "Executando Testes Antes de Deploy"
-3. Monitore GitHub Actions
-4. Atualize: [docs/deploy/deploy-log.md](./docs/deploy/deploy-log.md)
+**Key checks**:
+- Code quality and TypeScript standards
+- Security vulnerabilities
+- i18n translation keys
+- Database migration safety
+- Documentation completeness
+- Test coverage
 
-### **Sexta-Sábado: Monitoramento**
-1. Revise: logs de produção
-2. Consulte: [CLAUDE.md](./CLAUDE.md) → "Monitoramento de Produção"
-3. Se problema: [CLAUDE.md](./CLAUDE.md) → "Rollback"
-
-### **Sábado-Domingo: Documentação**
-1. Copie: [docs/metrics/weekly-report-template.md](./docs/metrics/weekly-report-template.md)
-2. Crie: `docs/metrics/weekly-[data].md` e preencha
-3. Atualize: documentação de features
-4. Limpe: tarefas concluídas de [docs/todo/](./docs/todo/)
+**Next step**: If approved → Local Testing
 
 ---
 
-## 🔗 Links Rápidos Por Tópico
+### 2. Local Testing (`local-testing.md`)
 
-### **Começar**
-- [QUICK-START-REVIEWER.md](./QUICK-START-REVIEWER.md) - Setup 5 min
-- [AGENT-REVIEWER-README.md](./AGENT-REVIEWER-README.md) - Onboarding 20 min
+**Purpose**: Verify feature works correctly in local environment
 
-### **Referência de Comando**
-- [CLAUDE.md](./CLAUDE.md) - Comandos Git, Docker, Monitoramento
+**Key checks**:
+- TypeScript compilation (backend + frontend)
+- Linting
+- Unit tests
+- Database migrations
+- Translation compilation
+- Manual feature testing
+- Browser console errors
+- Backend logs
 
-### **Tarefas & Planejamento**
-- [docs/user-notes.md](./docs/user-notes.md) - Onde você anota
-- [docs/agent-assignments.md](./docs/agent-assignments.md) - Tracking
-- [docs/todo/](./docs/todo/) - Planos detalhados
-
-### **Deploy & Produção**
-- [docs/deploy/deploy-log.md](./docs/deploy/deploy-log.md) - Histórico
-- [CLAUDE.md](./CLAUDE.md) - Guia detalhado de deploy
-
-### **Métricas & Business**
-- [docs/metrics/weekly-report-template.md](./docs/metrics/weekly-report-template.md) - Template
-- [docs/metrics/](./docs/metrics/) - Seus relatórios anteriores
-
-### **Arquitetura Geral**
-- [README.md](./README.md) - Overview do projeto
-- [docs/PROJECT_OVERVIEW.md](./docs/PROJECT_OVERVIEW.md) - Arquitetura geral
-- [docs/ROADMAP.md](./docs/ROADMAP.md) - Plano estratégico
-
-### **Referências Técnicas**
-- [docs/BACKEND.md](./docs/BACKEND.md) - Backend reference
-- [docs/FRONTEND.md](./docs/FRONTEND.md) - Frontend reference
-- [docs/DEV_OPERATIONS.md](./docs/DEV_OPERATIONS.md) - Operações
+**Next step**: If tests pass → Pre-Deploy
 
 ---
 
-## ⚡ Atalhos por Situação
+### 3. Environment Validation (`env-validation.md`)
 
-| Situação | Vá Para |
-|----------|---------|
-| Preciso começar agora | [QUICK-START-REVIEWER.md](./QUICK-START-REVIEWER.md) |
-| Tenho uma nova feature/bug | Edite [docs/user-notes.md](./docs/user-notes.md) |
-| Recebi uma PR para testar | [CLAUDE.md](./CLAUDE.md) - "Recebendo PR" |
-| Preciso fazer deploy | [CLAUDE.md](./CLAUDE.md) - "Deploy" |
-| Algo quebrou em produção | [CLAUDE.md](./CLAUDE.md) - "Rollback" |
-| Preciso de um comando | [CLAUDE.md](./CLAUDE.md) - "Comandos Essenciais" |
-| Preciso coletar métricas | [docs/metrics/weekly-report-template.md](./docs/metrics/weekly-report-template.md) |
-| Quero ver histórico de deploys | [docs/deploy/deploy-log.md](./docs/deploy/deploy-log.md) |
-| Não sei qual é minha próxima tarefa | [docs/agent-assignments.md](./docs/agent-assignments.md) |
-| Preciso entender a arquitetura | [AGENT-REVIEWER-README.md](./AGENT-REVIEWER-README.md) |
+**Purpose**: Ensure production environment variables are correct
 
----
+**⚠️ CRITICAL**: Must be executed before every deploy
 
-## 📞 Se Ficar Preso
+**Key checks**:
+- Compare `.env.example` with `.env.production`
+- Validate production values (not dev values)
+- Sync `.env.production` to production server
+- Verify new environment variables documented
 
-1. **Procure neste Índice** - Temos a resposta para 90% das perguntas
-2. **Leia CLAUDE.md** - É seu melhor amigo
-3. **Leia AGENT-REVIEWER-README.md** - Para contexto geral
-4. **Consulte histórico** - Veja o que foi feito antes em deploy-log.md
+**Common issues prevented**:
+- Backend crashes due to missing env vars
+- Wrong database URL (connecting to dev instead of prod)
+- Wrong R2 credentials (images not loading)
+- OAuth issues (wrong client ID/secret)
+
+**Next step**: If validated → Pre-Deploy
 
 ---
 
-## ✅ Checklist de Leitura
+### 4. Pre-Deploy (`pre-deploy.md`)
 
-- [ ] Ler QUICK-START-REVIEWER.md (5 min)
-- [ ] Ler AGENT-REVIEWER-README.md (20 min)
-- [ ] Ler CLAUDE.md primeira metade (15 min)
-- [ ] Ver exemplos em docs/user-notes.md (5 min)
-- [ ] Explorar docs/agent-assignments.md (5 min)
-- [ ] Entender docs/deploy/deploy-log.md (5 min)
-- [ ] Copiar template de metrics (2 min)
-- [ ] Executar docker compose ps (2 min)
-- [ ] Abrir http://localhost:8081 (2 min)
+**Purpose**: Final safety checks before triggering production deployment
 
-**Total: ~61 minutos para estar 100% preparado**
+**Key checks**:
+- Environment validation completed
+- Final test suite run
+- Database migration safety
+- Documentation complete
+- No breaking changes
+- Ready to monitor deployment
 
----
+**⚠️ WARNING**: Every push to `main` triggers automatic deploy
 
-## 🎯 Próximo Passo
-
-👉 **Abra agora:** [QUICK-START-REVIEWER.md](./QUICK-START-REVIEWER.md)
+**Next step**: Push to main → Deploy Monitoring
 
 ---
 
-**Última Atualização:** 30 de Novembro de 2025
-**Status:** ✅ Completo e Pronto
+### 5. Deploy Monitoring (`deploy-monitoring.md`)
+
+**Purpose**: Actively watch deployment process in real-time
+
+**Key checks**:
+- GitHub Actions workflow progress
+- Each deployment step succeeds
+- Container rebuild succeeds
+- Health check passes
+- Deployment verification succeeds
+
+**⚠️ DO NOT walk away during deployment**
+
+**Expected duration**: ~4-5 minutes
+
+**Next step**:
+- If successful → Post-Deploy
+- If fails → Rollback
+
+---
+
+### 6. Post-Deploy (`post-deploy.md`)
+
+**Purpose**: Verify production is actually working after deployment
+
+**Key checks**:
+- Production health endpoint responds
+- Frontend loads correctly
+- Main feature works
+- No regressions in existing features
+- Database migration succeeded (if applicable)
+- Production logs clean
+- Containers healthy
+- Performance acceptable
+
+**Monitor for**: 15 minutes after initial verification
+
+**Next step**: Update documentation and clean up
+
+---
+
+### 7. Rollback (`rollback.md`)
+
+**Purpose**: Emergency procedure to restore production to working state
+
+**When to use**:
+- Deployment fails
+- Production health endpoint down
+- Critical feature completely broken
+- Database corruption
+- Widespread user issues
+
+**When NOT to use**:
+- Minor UI bugs (hotfix instead)
+- Non-critical issues (hotfix instead)
+- Single user reports (investigate first)
+
+**Key steps**:
+- Git revert (preferred method)
+- Monitor rollback deployment
+- Verify production restored
+- Database rollback (if needed)
+- Document incident
+
+**Expected duration**: ~5-10 minutes
+
+---
+
+## 🚨 Emergency Quick Reference
+
+### Production is Down Right Now
+
+1. **Execute**: `checklists/rollback.md`
+2. **Don't investigate first** - rollback, then debug
+3. **Monitor**: Verify rollback succeeds
+4. **Document**: Create incident report
+
+### Deployment Currently Failing
+
+1. **Don't push again** - it will fail again
+2. **Execute**: `checklists/rollback.md`
+3. **Fix issue** locally and test thoroughly
+4. **Re-deploy** following full workflow
+
+### Forgot to Check Environment Variables
+
+1. **STOP** - don't deploy yet
+2. **Execute**: `checklists/env-validation.md`
+3. **Fix** any missing/wrong variables
+4. **Resume**: `checklists/pre-deploy.md`
+
+### Not Sure What to Do
+
+1. **Read**: `CLAUDE.md` for context
+2. **Find** where you are in workflow (see diagram above)
+3. **Execute** appropriate checklist
+4. **Ask** user if still unclear
+
+---
+
+## 📂 File Organization
+
+```
+docs/agents/reviewer/
+├── CLAUDE.md                      # Main agent instructions (read first)
+├── INDEX.md                       # This file - checklist navigation
+└── checklists/                    # Operational checklists
+    ├── pr-review.md              # Step 1: Code review
+    ├── local-testing.md          # Step 2: Test locally
+    ├── env-validation.md         # Step 2.5: CRITICAL env check
+    ├── pre-deploy.md             # Step 3: Pre-deploy checks
+    ├── deploy-monitoring.md      # Step 4: Watch deployment
+    ├── post-deploy.md            # Step 5: Verify production
+    └── rollback.md               # Emergency: Restore production
+```
+
+---
+
+## 🔍 Finding What You Need
+
+### By Task
+
+| I need to... | Use this checklist |
+|--------------|-------------------|
+| Review a PR | [pr-review.md](checklists/pr-review.md) |
+| Test a feature locally | [local-testing.md](checklists/local-testing.md) |
+| Check environment variables | [env-validation.md](checklists/env-validation.md) |
+| Prepare for deployment | [pre-deploy.md](checklists/pre-deploy.md) |
+| Watch a deployment | [deploy-monitoring.md](checklists/deploy-monitoring.md) |
+| Verify production works | [post-deploy.md](checklists/post-deploy.md) |
+| Fix a broken deployment | [rollback.md](checklists/rollback.md) |
+
+### By Problem
+
+| Problem | Likely cause | Check this |
+|---------|--------------|------------|
+| Backend won't start | Missing env var | [env-validation.md](checklists/env-validation.md) |
+| Tests fail locally | Code issue | [local-testing.md](checklists/local-testing.md) |
+| Deployment fails | Build error | [deploy-monitoring.md](checklists/deploy-monitoring.md) |
+| Production broken | Bad deploy | [rollback.md](checklists/rollback.md) |
+| Images not loading | R2 config wrong | [env-validation.md](checklists/env-validation.md) |
+| OAuth doesn't work | OAuth credentials wrong | [env-validation.md](checklists/env-validation.md) |
+
+---
+
+## 💡 Tips for Using Checklists
+
+### Do's
+
+✅ **Execute checklists in order** - Don't skip steps
+✅ **Check every checkbox** - They're there for a reason
+✅ **Read the "See Also" sections** - They reference deeper docs
+✅ **Document issues** - Note what you find
+✅ **Ask questions** - If unclear, ask user
+
+### Don'ts
+
+❌ **Don't skip env-validation.md** - It catches critical issues
+❌ **Don't assume tests pass** - Always verify
+❌ **Don't walk away during deploy** - Monitor actively
+❌ **Don't skip rollback if needed** - Stability > debugging
+❌ **Don't deploy without testing** - Test locally first
+
+---
+
+## 📚 Additional Resources
+
+### Core Documentation
+
+- `CLAUDE.md` - Agent Reviewer instructions and workflow
+- `../../02-guides/deployment/cd-deploy-guide.md` - Deployment process details
+- `../../02-guides/deployment/vm-setup-recovery.md` - Production VM guide
+- `../../04-architecture/system-overview.md` - System architecture
+
+### Reference Guides
+
+- `../../03-reference/workflows/workflows-analysis.md` - GitHub Actions details
+- `../../03-reference/backend/environment-variables.md` - Env var documentation
+- `../../02-guides/development/testing-strategy.md` - Testing guidelines
+
+### Incident Management
+
+- `../../06-operations/incident-response/` - Incident documentation templates
+
+---
+
+## 🤖 About Agent Reviewer
+
+**Role**: Operations, QA & Deployment
+**Branch**: Always `main` (never feature branches)
+**Coordinates with**: Agent Coder (via GitHub Pull Requests)
+**Responsibilities**:
+- Review and test Pull Requests
+- Manage production deployments
+- Monitor system health
+- Rollback when needed
+- Document incidents
+- Maintain quality standards
+
+**Mission**: Ensure stable, high-quality production deployments
+
+---
+
+**Remember**: Checklists are your safety net. Use them every time! 🎯
