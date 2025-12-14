@@ -38,11 +38,11 @@ Windows Host (48GB RAM)
 │   ├── Projeto: ~/projects/charhub-coder
 │   ├── Docker Engine: Nativo (isolado)
 │   └── Stack completa:
-│       ├── PostgreSQL: porta 5432
-│       ├── Redis: porta 6379
-│       ├── Backend: porta 3000
-│       ├── Frontend: porta 5173
-│       ├── Nginx: porta 8080 (HTTP) / 8443 (HTTPS)
+│       ├── PostgreSQL: porta 5434
+│       ├── Redis: porta 6381
+│       ├── Backend: porta 3002
+│       ├── Frontend: porta 5175
+│       ├── Nginx: porta 8082 (HTTP) / 8445 (HTTPS)
 │       └── Cloudflared
 │
 └── WSL: Ubuntu-22.04-Reviewer
@@ -52,8 +52,8 @@ Windows Host (48GB RAM)
     ├── Projeto: ~/projects/charhub-reviewer
     ├── Docker Engine: Nativo (isolado)
     └── Stack completa:
-        ├── PostgreSQL: porta 5433
-        ├── Redis: porta 6380
+        ├── PostgreSQL: porta 5433 (main) / 5435 (test)
+        ├── Redis: porta 6380 (main) / 6382 (test)
         ├── Backend: porta 3001
         ├── Frontend: porta 5174
         ├── Nginx: porta 8081 (HTTP) / 8444 (HTTPS)
@@ -170,12 +170,12 @@ wsl --list --verbose
 - **Branch Git:** `feature/*` (sempre em branch separada)
 - **Conta Claude:** Coder
 - **Portas de Acesso:**
-  - Nginx (HTTP): `http://localhost:8080`
-  - Nginx (HTTPS): `https://localhost:8443`
-  - Backend API: `http://localhost:3000`
-  - Frontend Dev: `http://localhost:5173`
-  - PostgreSQL: `localhost:5432`
-  - Redis: `localhost:6379`
+  - Nginx (HTTP): `http://localhost:8082`
+  - Nginx (HTTPS): `https://localhost:8445`
+  - Backend API: `http://localhost:3002`
+  - Frontend Dev: `http://localhost:5175`
+  - PostgreSQL: `localhost:5434`
+  - Redis: `localhost:6381`
 
 **Comando de Início:**
 ```bash
@@ -211,13 +211,16 @@ claude
 **Ambiente:**
 - **Branch Git:** `main` (sempre)
 - **Conta Claude:** Reviewer
-- **Portas de Acesso:**
+- **Portas de Acesso (Main):**
   - Nginx (HTTP): `http://localhost:8081`
   - Nginx (HTTPS): `https://localhost:8444`
   - Backend API: `http://localhost:3001`
   - Frontend Dev: `http://localhost:5174`
   - PostgreSQL: `localhost:5433`
   - Redis: `localhost:6380`
+- **Portas de Acesso (Test):**
+  - PostgreSQL Test: `localhost:5435`
+  - Redis Test: `localhost:6382`
 
 **Comando de Início:**
 ```bash
@@ -235,21 +238,23 @@ claude
 
 | Serviço | Coder | Reviewer |
 |---------|-------|----------|
-| **Aplicação (HTTP)** | http://localhost:8080 | http://localhost:8081 |
-| **Aplicação (HTTPS)** | https://localhost:8443 | https://localhost:8444 |
-| **Backend API** | http://localhost:3000 | http://localhost:3001 |
-| **Frontend Dev** | http://localhost:5173 | http://localhost:5174 |
+| **Aplicação (HTTP)** | http://localhost:8082 | http://localhost:8081 |
+| **Aplicação (HTTPS)** | https://localhost:8445 | https://localhost:8444 |
+| **Backend API** | http://localhost:3002 | http://localhost:3001 |
+| **Frontend Dev** | http://localhost:5175 | http://localhost:5174 |
 
 ### **Ferramentas de Banco de Dados**
 
 **PostgreSQL:**
-- **Coder:** `localhost:5432`
-- **Reviewer:** `localhost:5433`
+- **Coder:** `localhost:5434`
+- **Reviewer (Main):** `localhost:5433`
+- **Reviewer (Test):** `localhost:5435`
 - **Usuário/Senha:** Configurados no `.env`
 
 **Redis:**
-- **Coder:** `localhost:6379`
-- **Reviewer:** `localhost:6380`
+- **Coder:** `localhost:6381`
+- **Reviewer (Main):** `localhost:6380`
+- **Reviewer (Test):** `localhost:6382`
 
 ### **VS Code Remote**
 
@@ -316,7 +321,7 @@ claude
 
 # Testa
 docker compose up -d
-# Testa em http://localhost:8080
+# Testa em http://localhost:8082
 
 # Finaliza
 git add .
@@ -489,7 +494,7 @@ wsl -d Ubuntu-24.04-Coder
 ### **IP do WSL mudou**
 
 Os IPs dos WSL são dinâmicos. Use sempre `localhost` com as portas específicas:
-- Coder: `localhost:8080`
+- Coder: `localhost:8082`
 - Reviewer: `localhost:8081`
 
 ### **Containers não se comunicam**
@@ -555,7 +560,7 @@ Use este checklist para garantir que tudo está funcionando:
 - [ ] Repositório clonado em `~/projects/charhub-coder`
 - [ ] Docker Engine rodando
 - [ ] Containers sobem sem erro (`docker compose up -d`)
-- [ ] Aplicação acessível em `http://localhost:8080`
+- [ ] Aplicação acessível em `http://localhost:8082`
 - [ ] Git configurado (branch `feature/*`)
 
 ### **Ambiente Reviewer**

@@ -46,10 +46,12 @@ services:
 
 CharHub uses two simultaneous environments on the same host:
 
-| Environment | WSL Distribution | Port Prefix |
-|-------------|------------------|-------------|
-| Reviewer    | Ubuntu-22.04-Reviewer | 5433, 6380, 3001, 5174, 8081, 8444 |
-| Coder       | Ubuntu-24.04-Coder | 5434, 6381, 3002, 5175, 8082, 8445 |
+| Environment | WSL Distribution | Main Ports | Test Ports |
+|-------------|------------------|------------|------------|
+| Reviewer    | Ubuntu-22.04-Reviewer | Postgres: 5433<br>Redis: 6380<br>Backend: 3001<br>Frontend: 5174<br>Nginx: 8081, 8444 | Postgres: 5435<br>Redis: 6382 |
+| Coder       | Ubuntu-24.04-Coder | Postgres: 5434<br>Redis: 6381<br>Backend: 3002<br>Frontend: 5175<br>Nginx: 8082, 8445 | N/A |
+
+**Note:** Test containers are used by Agent Reviewer for integration testing without affecting the main development database.
 
 ### Reviewer Override Example
 
@@ -80,6 +82,23 @@ services:
     ports: !override
       - "8081:80"
       - "8444:443"
+
+# If using test containers (optional, for integration testing):
+# Add these to your docker-compose.test.yml or similar
+
+  postgres-test:
+    image: postgres:16-alpine
+    ports: !override
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: charhub_test
+      POSTGRES_USER: charhub
+      POSTGRES_PASSWORD: charhub_test_pass
+
+  redis-test:
+    image: redis:7-alpine
+    ports: !override
+      - "6382:6379"
 ```
 
 ### Coder Override Example
@@ -148,17 +167,21 @@ If you see port `5432` published instead of `5434`, the `!override` modifier is 
 ### From Host (WSL)
 
 ```bash
-# Test Postgres connection (Coder environment)
-psql -h 172.22.220.48 -p 5434 -U charhub -d charhub_db
+# AGENT CODER - Test connections
+psql -h localhost -p 5434 -U charhub -d charhub_db  # Postgres
+redis-cli -h localhost -p 6381 ping                  # Redis
+curl http://localhost:3002/api/v1/health             # Backend API
+curl http://localhost:8082                           # Frontend (Nginx)
 
-# Test Postgres connection (Reviewer environment)
-psql -h 172.22.220.48 -p 5433 -U charhub -d charhub_db
+# AGENT REVIEWER - Test main environment connections
+psql -h localhost -p 5433 -U charhub -d charhub_db  # Postgres
+redis-cli -h localhost -p 6380 ping                  # Redis
+curl http://localhost:3001/api/v1/health             # Backend API
+curl http://localhost:8081                           # Frontend (Nginx)
 
-# Test Redis connection (Coder)
-redis-cli -h 172.22.220.48 -p 6381 ping
-
-# Test backend API (Coder)
-curl http://172.22.220.48:3002/api/v1/health
+# AGENT REVIEWER - Test environment connections (if using test containers)
+psql -h localhost -p 5435 -U charhub -d charhub_test  # Postgres Test
+redis-cli -h localhost -p 6382 ping                   # Redis Test
 ```
 
 ### From Other Containers (Docker Network)
@@ -254,3 +277,31 @@ services:
 3. Use `docker compose config` to verify merged configuration
 4. Each environment (Reviewer/Coder) has its own override file with unique ports
 5. Never commit `docker-compose.override.yml` to git (add to `.gitignore`)
+
+## Port Reference Table
+
+### Complete Port Allocation
+
+| Service | Agent Reviewer | Agent Coder | Notes |
+|---------|---------------|-------------|-------|
+| **Postgres (Main)** | 5433 | 5434 | Main development database |
+| **Postgres (Test)** | 5435 | N/A | Test database (Reviewer only) |
+| **Redis (Main)** | 6380 | 6381 | Main cache/sessions |
+| **Redis (Test)** | 6382 | N/A | Test cache (Reviewer only) |
+| **Backend API** | 3001 | 3002 | Express REST API |
+| **Frontend Dev** | 5174 | 5175 | Vite dev server (direct access) |
+| **Nginx HTTP** | 8081 | 8082 | Production-like frontend proxy |
+| **Nginx HTTPS** | 8444 | 8445 | SSL/TLS frontend proxy |
+
+### Quick Access URLs
+
+**Agent Reviewer (Ubuntu-22.04-Reviewer):**
+- Main App: http://localhost:8081
+- API: http://localhost:3001/api/v1/health
+- Postgres: `psql -h localhost -p 5433 -U charhub -d charhub_db`
+- Postgres Test: `psql -h localhost -p 5435 -U charhub -d charhub_test`
+
+**Agent Coder (Ubuntu-24.04-Coder):**
+- Main App: http://localhost:8082
+- API: http://localhost:3002/api/v1/health
+- Postgres: `psql -h localhost -p 5434 -U charhub -d charhub_db`

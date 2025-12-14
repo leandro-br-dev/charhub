@@ -37,11 +37,11 @@ Se sim:
 
 ## 🔄 Seu Ciclo de Trabalho (Simplificado)
 
-1. **Leia suas tarefas:** `docs/reviewer/user-notes.md`
-2. **Consulte plano:** `docs/todo/[tarefa].md`
+1. **Leia suas tarefas:** `docs/05-business/planning/user-feature-notes.md`
+2. **Consulte plano:** `docs/05-business/planning/features/active/[tarefa].md`
 3. **Crie branch:** `git checkout -b feature/nome`
 4. **Desenvolva:** Implemente a feature
-5. **Teste:** Localmente em `http://localhost:8080`
+5. **Teste:** Localmente em `http://localhost:8082`
 6. **Abra PR:** No GitHub
 7. **Aguarde:** Agent Reviewer testar e mergear
 
