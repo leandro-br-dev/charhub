@@ -222,7 +222,7 @@ docker compose logs -f backend  # Check for errors
 ```
 
 **Manual Testing:**
-1. Open `http://localhost:8081` (frontend via nginx)
+1. Open `http://localhost:8082` (frontend via nginx)
 2. Test feature completely:
    - ✅ Happy path works
    - ✅ Error cases handled gracefully

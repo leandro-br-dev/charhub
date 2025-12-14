@@ -30,10 +30,12 @@ Você é um agente Claude Code com responsabilidades bem definidas em uma arquit
 │   │  └─ Propor Próximas Tarefas                        │
 │   │                                                     │
 │   └─ Acesso:                                           │
-│      └─ localhost:8081 (frontend)                      │
-│      └─ localhost:3001 (backend)                       │
-│      └─ localhost:5433 (postgres)                      │
-│      └─ localhost:6380 (redis)                         │
+│      ├─ localhost:8081 (frontend via nginx)            │
+│      ├─ localhost:3001 (backend)                       │
+│      ├─ localhost:5433 (postgres)                      │
+│      ├─ localhost:6380 (redis)                         │
+│      ├─ localhost:5435 (postgres-test)                 │
+│      └─ localhost:6382 (redis-test)                    │
 │                                                         │
 │  🤖 AGENT CODER (Ubuntu-24.04-Coder) [OUTRO AGENTE]   │
 │   ├─ Trabalha em: feature/* (branches)                 │
@@ -44,10 +46,10 @@ Você é um agente Claude Code com responsabilidades bem definidas em uma arquit
 │   │  └─ Abrir PRs no GitHub                            │
 │   │                                                     │
 │   └─ Acesso:                                           │
-│      └─ localhost:8080 (frontend)                      │
-│      └─ localhost:3000 (backend)                       │
-│      └─ localhost:5432 (postgres)                      │
-│      └─ localhost:6379 (redis)                         │
+│      └─ localhost:8082 (frontend via nginx)            │
+│      └─ localhost:3002 (backend)                       │
+│      └─ localhost:5434 (postgres)                      │
+│      └─ localhost:6381 (redis)                         │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -491,6 +493,42 @@ R: Depende da configuração. Geralmente:
 - [ ] Entendi meu ciclo semanal
 - [ ] Copiei email/contato do Agent Coder para futuras comunicações
 - [ ] Pronto para receber primeira PR! 🚀
+
+---
+
+## 🔌 Referência Rápida de Portas
+
+### Agent Reviewer (Ubuntu-22.04-Reviewer)
+
+| Serviço | Porta Host | Porta Interna | Uso |
+|---------|------------|---------------|-----|
+| **Nginx** | 8081 / 8444 | 80 / 443 | Frontend via proxy |
+| **Backend** | 3001 | 3000 | API REST |
+| **Postgres** | 5433 | 5432 | Banco de dados principal |
+| **Redis** | 6380 | 6379 | Cache e sessões |
+| **Postgres Test** | 5435 | 5432 | Banco de dados de testes |
+| **Redis Test** | 6382 | 6379 | Cache para testes |
+
+**URLs de Acesso:**
+- Frontend: http://localhost:8081
+- Backend API: http://localhost:3001/api/v1
+- Health Check: http://localhost:3001/api/v1/health
+
+### Agent Coder (Ubuntu-24.04-Coder)
+
+| Serviço | Porta Host | Porta Interna | Uso |
+|---------|------------|---------------|-----|
+| **Nginx** | 8082 / 8445 | 80 / 443 | Frontend via proxy |
+| **Backend** | 3002 | 3000 | API REST |
+| **Postgres** | 5434 | 5432 | Banco de dados principal |
+| **Redis** | 6381 | 6379 | Cache e sessões |
+
+**URLs de Acesso:**
+- Frontend: http://localhost:8082
+- Backend API: http://localhost:3002/api/v1
+- Health Check: http://localhost:3002/api/v1/health
+
+**Nota:** Veja `docs/02-guides/development/docker-override.md` para detalhes sobre configuração de portas.
 
 ---
 
