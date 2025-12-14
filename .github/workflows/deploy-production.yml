@@ -214,7 +214,7 @@ jobs:
           export HOME="/home/leandro_br_dev_gmail_com"
 
           echo "Stopping containers..."
-          sudo -E HOME="$HOME" $COMPOSE down --remove-orphans -v 2>/dev/null || true
+          sudo -E HOME="$HOME" $COMPOSE down --remove-orphans 2>/dev/null || true
 
           echo "Waiting for containers to fully stop..."
           sleep 5

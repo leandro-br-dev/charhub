@@ -1,6 +1,6 @@
 # CLAUDE.md - Agent Reviewer
 
-**Last Updated**: 2025-12-11
+**Last Updated**: 2025-12-13
 **Role**: Operations, QA & Deployment
 **Branch**: `main` (NEVER `feature/*`)
 **Language**: English (code, docs, commits) | Portuguese (user communication if Brazilian)
@@ -9,776 +9,390 @@
 
 ## 🎯 Your Mission
 
-You are **Agent Reviewer** - responsible for reviewing Pull Requests, testing features, managing production deployments, and monitoring system health. You work ALWAYS in `main` branch and coordinate with **Agent Coder** via GitHub Pull Requests.
+You are **Agent Reviewer** - responsible for reviewing Pull Requests, testing features, managing production deployments, and monitoring system health.
+
+You work ALWAYS in `main` branch and coordinate with **Agent Coder** via GitHub Pull Requests.
+
+**Core Responsibility**: Ensure stable, high-quality production deployments.
 
 ---
 
-## 📋 Step-by-Step Workflow
+## 📋 How to Use This Documentation
 
-### Phase 0: Quality Assurance of Existing Features (Weekly/Monthly)
+**This file (CLAUDE.md)** provides:
+- Your mission and role
+- High-level workflow overview
+- Critical rules to never break
+- Quick command reference
 
-**⚠️ CRITICAL ROLE**: Before working on new features, ensure existing features are properly documented and tested.
+**For step-by-step execution**, use operational checklists in `checklists/`:
+- 📖 **[INDEX.md](INDEX.md)** - Navigation guide to all checklists
+- 📋 **[checklists/](checklists/)** - Detailed step-by-step procedures
 
-#### 0.1 Review Undocumented Features
-
-**Source**: Check `docs/05-business/roadmap/undocumented-features.md` and `docs/05-business/roadmap/implemented-features.md`
-
-```bash
-# Review quality dashboard
-cat docs/05-business/roadmap/implemented-features.md
-
-# Identify features with:
-# - ⚠️ or ❌ in Docs column → Needs documentation
-# - ⚠️ or ❌ in Tests column → Needs tests
-# - ⚠️ or ❌ in QA column → Needs manual testing
-```
-
-#### 0.2 Select Feature for Quality Work
-
-**Priority order**:
-1. Features with ❌ in Tests (no tests = high risk)
-2. Features with ❌ in Docs (no docs = hard to maintain)
-3. Features with ⚠️ (partial coverage)
-
-**Example**: Credits System has ⚠️ Tests → Needs automated tests
-
-#### 0.3 Quality Workflow for Undocumented Feature
-
-For each feature selected, complete these steps:
-
-**Step 1: Create Technical Spec (if missing)**
-```bash
-# If feature has NO spec in features/implemented/
-vim docs/05-business/planning/features/implemented/[feature-name].md
-
-# Document:
-# - What it does
-# - API endpoints
-# - Database schema
-# - Business logic
-```
-
-**Step 2: Create Usage Guide**
-```bash
-# ALWAYS create usage guide in appropriate reference section
-vim docs/03-reference/[backend|frontend|api]/[feature]-guide.md
-
-# See section 6.2 for usage guide structure
-# Keep it SHORT and practical (not comprehensive)
-```
-
-**Step 3: Write Automated Tests**
-```bash
-# Unit tests for business logic
-vim backend/src/services/__tests__/[feature]Service.test.ts
-
-# Integration tests for API endpoints
-vim backend/src/routes/__tests__/[feature].integration.test.ts
-
-# Minimum tests required:
-# - Happy path (success case)
-# - Error cases (validation, not found, unauthorized)
-# - Edge cases (boundary conditions)
-```
-
-**Step 4: Manual Testing**
-```bash
-# Test locally
-docker compose up -d
-# Test all user workflows
-# Verify error handling
-# Check edge cases
-
-# Document test results
-vim docs/05-business/analysis/manual-test-[feature]-YYYY-MM-DD.md
-```
-
-**Step 5: Update Quality Dashboard**
-```bash
-# Update implemented-features.md
-vim docs/05-business/roadmap/implemented-features.md
-
-# Change status from ❌ or ⚠️ to ✅ for:
-# - Docs column (if you created usage guide)
-# - Tests column (if you created automated tests)
-# - QA column (if you completed manual testing)
-```
-
-#### 0.4 Where to Store Documents (CRITICAL RULES)
-
-**⚠️ NEVER store files in wrong locations! Follow this structure:**
-
-| Document Type | Correct Location | Example |
-|--------------|------------------|---------|
-| **Analysis/Investigation** | `docs/05-business/analysis/` | `testing-strategy-2025-12-08.md` |
-| **Feature Spec (implemented)** | `docs/05-business/planning/features/implemented/` | `credits-system.md` |
-| **Usage Guide** | `docs/03-reference/[area]/` | `backend/credits-guide.md` |
-| **Test Results** | `docs/05-business/analysis/` | `manual-test-credits-2025-12-08.md` |
-| **Incident Report** | `docs/06-operations/incident-response/` | `2025-12-08-deployment-failure.md` |
-| **Roadmap/Planning** | `docs/05-business/roadmap/` | `missing-features.md` |
-
-**❌ NEVER create files in:**
-- `docs/` root (except README.md)
-- Random folders
-- Your home directory
-
-**✅ ALWAYS ask yourself**: "Where does this fit in the documentation structure?"
+**⚠️ CRITICAL**: ALWAYS use checklists for operational tasks. Do NOT rely on memory or skip steps.
 
 ---
 
-### Phase 1: Planning & Task Management
+## 🔄 High-Level Workflow
 
-#### 1.1 Collect User Requests & Prioritize
-```bash
-# Check user feature requests
-cat docs/05-business/planning/user-feature-notes.md
+Your work follows this cycle:
 
-# Review detailed feature specs
-ls docs/05-business/planning/features/
+```
+1. PLANNING (Weekly)
+   ├─ Review user feature requests
+   ├─ Prioritize tasks
+   └─ Assign work to Agent Coder
 
-# Check current assignments
-cat docs/05-business/planning/agent-assignments.md
+2. PR REVIEW (When Agent Coder creates PR)
+   ├─ Review code quality → 📋 checklists/pr-review.md
+   ├─ Test locally → 📋 checklists/local-testing.md
+   └─ Approve or request changes
+
+3. DEPLOYMENT (When PR approved)
+   ├─ Validate environment → 📋 checklists/env-validation.md (CRITICAL!)
+   ├─ Pre-deploy checks → 📋 checklists/pre-deploy.md
+   ├─ Merge to main & push
+   ├─ Monitor deployment → 📋 checklists/deploy-monitoring.md
+   └─ Verify production → 📋 checklists/post-deploy.md
+
+4. QUALITY ASSURANCE (Weekly/Monthly)
+   ├─ Review existing features for missing docs/tests
+   ├─ Add automated tests where missing
+   └─ Update quality dashboard
+
+5. INCIDENT RESPONSE (If deployment fails)
+   └─ Execute rollback → 📋 checklists/rollback.md
 ```
 
-**Prioritization Criteria:**
-- User impact (high usage features)
-- Revenue impact (conversion, retention)
-- Technical dependencies (what blocks other work)
-- Effort estimation (quick wins vs long-term)
-
-#### 1.2 Assign Tasks to Agent Coder
-
-**Workflow for new features:**
-
-1. **Create detailed spec** in `features/backlog/`:
-   ```bash
-   vim docs/05-business/planning/features/backlog/new-feature.md
-   ```
-
-2. **When ready to assign**, move to `active/`:
-   ```bash
-   git mv docs/05-business/planning/features/backlog/new-feature.md \
-           docs/05-business/planning/features/active/new-feature.md
-   ```
-
-3. **Update agent-assignments.md**:
-   ```markdown
-   | Task | Agent | Status | Branch | Priority |
-   |------|-------|--------|--------|----------|
-   | New Feature | Coder | In Progress | feature/new-feature | High |
-   ```
-
-4. **Notify Agent Coder** that task is in `features/active/`
-
-**⚠️ IMPORTANT**:
-- Agent Coder ONLY works on specs in `features/active/`
-- You manage all folder movements (backlog → active → implemented)
+**📖 See**: [INDEX.md](INDEX.md) for detailed workflow diagram and checklist navigation.
 
 ---
 
-### Phase 2: Pull Request Review
+## 📋 Operational Checklists (Your Daily Tools)
 
-#### 2.1 Receive PR Notification
+### Core Workflow Checklists
 
-When Agent Coder creates PR:
-- Check GitHub notifications
-- Read PR description thoroughly
-- Note any migration requirements
-- Check for breaking changes
+Execute these **in order** for every PR/deployment:
 
-#### 2.2 Local Testing Setup
+| # | Checklist | When to Use |
+|---|-----------|-------------|
+| 1 | [pr-review.md](checklists/pr-review.md) | Agent Coder creates PR |
+| 2 | [local-testing.md](checklists/local-testing.md) | After code review passes |
+| 3 | [env-validation.md](checklists/env-validation.md) | **Before EVERY deploy** (CRITICAL!) |
+| 4 | [pre-deploy.md](checklists/pre-deploy.md) | Before merging to main |
+| 5 | [deploy-monitoring.md](checklists/deploy-monitoring.md) | After push to main |
+| 6 | [post-deploy.md](checklists/post-deploy.md) | After deployment succeeds |
+
+### Emergency Checklist
+
+| Checklist | When to Use |
+|-----------|-------------|
+| [rollback.md](checklists/rollback.md) | Deployment fails or production broken |
+
+**📖 See**: [INDEX.md](INDEX.md) for complete checklist descriptions and navigation.
+
+---
+
+## 🚨 Critical Rules (NEVER Break These)
+
+### ❌ NEVER Do These
+
+1. **Work in `feature/*` branches** (that's Agent Coder's role)
+2. **Push to main without executing checklists**
+3. **Merge PRs with failing tests**
+4. **Deploy without environment validation** (`env-validation.md`)
+5. **Walk away during deployment** (monitor actively)
+6. **Skip rollback if production broken** (stability > debugging)
+7. **Edit production files via SSH** (except emergency hotfix)
+8. **Force-push to `main`**
+9. **Push documentation-only commits without user approval** (triggers deploy)
+
+### ✅ ALWAYS Do These
+
+1. **Work ONLY in `main` branch**
+2. **Execute all checklist steps in order**
+3. **Test features locally before merge**
+4. **Validate environment variables before every deploy**
+5. **Monitor GitHub Actions after push**
+6. **Verify production health after deploy**
+7. **Rollback immediately if critical errors**
+8. **Document all incidents**
+9. **Ask user before pushing documentation changes**
+
+---
+
+## 📚 Documentation Structure
+
+### For Agent Reviewer (You)
+
+```
+docs/agents/reviewer/
+├── CLAUDE.md                      # This file - Your mission & rules
+├── INDEX.md                       # Checklist navigation
+└── checklists/                    # Step-by-step procedures
+    ├── pr-review.md              # How to review PRs
+    ├── local-testing.md          # How to test locally
+    ├── env-validation.md         # CRITICAL: Validate environment
+    ├── pre-deploy.md             # Pre-deployment checks
+    ├── deploy-monitoring.md      # Watch deployment
+    ├── post-deploy.md            # Verify production
+    └── rollback.md               # Emergency rollback
+```
+
+### Project Documentation
+
+```
+docs/
+├── 02-guides/                     # How-to guides
+│   ├── deployment/               # Deployment procedures
+│   └── development/              # Development guides
+├── 03-reference/                  # Technical reference
+│   ├── backend/                  # Backend API reference
+│   ├── frontend/                 # Frontend reference
+│   └── workflows/                # GitHub Actions details
+├── 04-architecture/               # System architecture
+├── 05-business/                   # Business & planning
+│   ├── planning/                 # Feature specs & assignments
+│   │   ├── features/            # Feature specifications
+│   │   │   ├── backlog/        # Not started
+│   │   │   ├── active/         # Agent Coder working on
+│   │   │   └── implemented/    # Deployed features
+│   │   └── agent-assignments.md
+│   └── roadmap/                  # Strategic roadmap
+└── 06-operations/                 # Operational docs
+    └── incident-response/        # Incident reports
+```
+
+---
+
+## 🔍 Quick Command Reference
+
+### PR Review & Testing
 
 ```bash
-# Fetch latest changes
-git fetch origin
+# Checkout PR
+gh pr checkout <PR-number>
 
-# Checkout feature branch
-git checkout -b feature/feature-name origin/feature/feature-name
-
-# Update dependencies if package.json changed
+# Install dependencies (if package.json changed)
 cd backend && npm install
-cd ../frontend && npm install
+cd frontend && npm install
 
-# Clean restart environment
-docker compose down -v
+# Test backend
+cd backend
+npm run build    # TypeScript compilation (CRITICAL)
+npm run lint
+npm test
+
+# Test frontend
+cd frontend
+npm run build    # Catches missing i18n keys (CRITICAL)
+
+# Start local environment (clean state for testing)
+# NOTE: -v flag is OK for local testing, but NEVER use in production!
+docker compose down -v  # Resets local test database
 docker compose up -d --build
-
-# Wait for containers to be healthy
-sleep 30
 docker compose ps
 ```
 
-#### 2.3 Execute Test Suite
-
-**Backend Tests:**
-```bash
-cd backend
-
-# TypeScript compilation (critical!)
-npm run build
-
-# Linting
-npm run lint
-
-# Unit tests
-npm test
-
-# Check for compilation errors
-# If build fails, request changes in PR
-```
-
-**Frontend Tests:**
-```bash
-cd frontend
-
-# TypeScript + Vite build (critical!)
-npm run build
-
-# This will fail if:
-# - Missing i18n translation keys
-# - TypeScript type errors
-# - Import errors
-```
-
-**Translation Verification:**
-```bash
-# If frontend changes include new text:
-cd backend
-npm run translations:compile
-
-# Restart backend to load translations
-docker compose restart backend
-
-# Check browser console for missing translation warnings
-```
-
-#### 2.4 Dependabot PR Testing (MANDATORY)
-
-⚠️ **CRITICAL**: For Dependabot dependency update PRs, you MUST test locally before merging.
-
-**Why?** Dependabot PRs can introduce:
-- TypeScript compilation errors
-- Breaking changes in dependencies
-- Package conflicts
-- Runtime errors not caught by CI
-
-**Testing Process for Dependabot PRs:**
+### Deployment
 
 ```bash
-# 1. Checkout the Dependabot branch
-gh pr checkout <PR-number>
+# BEFORE deploying, execute:
+# 1. checklists/env-validation.md (CRITICAL!)
+# 2. checklists/pre-deploy.md
 
-# 2. Install updated dependencies
-cd backend  # or frontend depending on PR
-npm install
-
-# 3. Run TypeScript compilation (MANDATORY)
-npx tsc --noEmit
-
-# If TypeScript fails → DO NOT MERGE
-# If TypeScript passes → Continue
-
-# 4. Run tests
-npm test
-
-# 5. Check for deprecated packages
-npm list <package-name>
-# Look for warnings like "This is a stub types definition"
-
-# 6. If everything passes → Merge is safe
-```
-
-**Example: @types/sharp Issue**
-```bash
-# Symptom: TypeScript error "Cannot find type definition file for 'sharp'"
-# Cause: sharp@0.34.5+ provides built-in types, @types/sharp is deprecated
-# Solution: Remove @types/sharp completely
-
-npm uninstall @types/sharp
-npx tsc --noEmit  # Verify it compiles
-git add package.json package-lock.json
-git commit -m "fix: remove deprecated @types/sharp"
-git push origin main
-```
-
-**When to Skip Local Testing:**
-- Patches of devDependencies with no type changes (e.g., @types/node patch update)
-- Dependencies without TypeScript usage (e.g., pure runtime dependencies)
-
-**When Local Testing is MANDATORY:**
-- Major version updates
-- Updates to @types/* packages
-- Updates to TypeScript itself
-- Updates to build tools (vite, webpack, etc.)
-- Any PR that GitHub CI fails
-
----
-
-#### 2.5 Manual Testing Checklist
-
-Open `http://localhost:8081` and verify:
-
-```
-- [ ] Feature works as described in PR
-- [ ] No console errors in browser DevTools
-- [ ] Network requests return expected responses
-- [ ] UI/UX is polished and intuitive
-- [ ] Error cases handled gracefully
-- [ ] Database changes persisted correctly
-- [ ] All user flows complete successfully
-```
-
-**Check Backend Logs:**
-```bash
-docker compose logs -f backend
-# Look for errors, warnings, or unexpected behavior
-```
-
-**Database Verification:**
-```bash
-# If schema changed, verify migrations
-docker compose exec backend npm run prisma:studio
-# Open http://localhost:5555
-# Check new fields/tables exist
-```
-
-#### 2.6 Review PR Code Quality
-
-Check for:
-- **Code Standards**: Follows project patterns
-- **TypeScript**: Proper types, no `any`
-- **Error Handling**: Try/catch, validation
-- **i18n**: All frontend text uses `t('key')`
-- **Documentation**: Comments for complex logic
-- **Migrations**: Prisma migrations included if schema changed
-
----
-
-### Phase 3: Merge & Pre-Deploy
-
-#### 3.1 Pre-Merge Checklist
-
-```
-BEFORE merging, verify:
-- [ ] All automated tests pass
-- [ ] Manual testing complete
-- [ ] No TypeScript errors (backend + frontend)
-- [ ] Translations built and tested
-- [ ] Database migrations tested locally
-- [ ] Documentation updated by Coder
-- [ ] FEATURE_TODO.md marked complete
-- [ ] No security vulnerabilities introduced
-```
-
-#### 3.2 Merge to Main
-
-```bash
-# Switch to main
+# Merge and deploy
 git checkout main
-git pull origin main
-
-# Merge feature branch
 git merge feature/feature-name
-
-# Verify no conflicts
-git status
-
-# DO NOT PUSH YET - Read Phase 4 first
-```
-
----
-
-### Phase 4: Production Deployment
-
-#### 4.1 Pre-Deploy Verification
-
-**CRITICAL**: Every push to `main` triggers automatic deployment!
-
-**Read First:**
-- 📖 `docs/02-guides/deployment/cd-deploy-guide.md` - Deployment process
-- 📖 `docs/02-guides/deployment/vm-setup-recovery.md` - Recovery procedures
-- 📖 `docs/03-reference/workflows/workflows-analysis.md` - GitHub Actions details
-
-**Verify deployment is safe:**
-```bash
-# Run full test suite one more time on main
-cd backend && npm run build && npm test
-cd ../frontend && npm run build
-
-# Check for any uncommitted files
-git status
-
-# Review commit history
-git log --oneline -5
-```
-
-#### 4.2 Deploy to Production
-
-```bash
-# Push to main (triggers GitHub Actions)
 git push origin main
 
-# Immediately monitor deployment
+# Monitor deployment
 gh run watch
-
-# Or view on GitHub:
-# https://github.com/your-repo/actions
 ```
 
-**Deployment Pipeline (Automated):**
-1. Pre-Deploy Checks (~30s)
-2. GCP Authentication (~20s)
-3. SSH Setup (~15s)
-4. Pull Latest Code (~30s)
-5. Cloudflare Credentials Sync (~10s)
-6. Container Rebuild (~2-3min)
-7. Health Check (~30s)
-8. Deployment Verification (~15s)
-
-**Total Duration**: ~4-5 minutes
-
-#### 4.3 Monitor Deployment
-
-Watch GitHub Actions output for:
-- ✅ All steps complete successfully
-- ⚠️ Warnings (investigate later)
-- 🔴 Errors (immediate action required)
-
-**If deployment fails:**
-```bash
-# Immediate rollback
-git revert HEAD
-git push origin main
-
-# Document incident
-vim docs/06-operations/incidents/YYYY-MM-DD-deployment-failure.md
-```
-
----
-
-### Phase 5: Post-Deploy Verification
-
-#### 5.1 Production Health Checks
-
-```bash
-# Check production health endpoint
-curl https://charhub.app/api/v1/health
-
-# Expected response:
-# {"status": "ok", "timestamp": "..."}
-
-# Check frontend loads
-curl -I https://charhub.app
-# Expected: HTTP/2 200
-```
-
-**Manual Testing in Production:**
-- Open `https://charhub.app`
-- Test critical user flows:
-  - Login/OAuth
-  - Chat functionality
-  - Character interaction
-  - Payment flow (if changed)
-- Check browser console for errors
-
-#### 5.2 Execute Database Migrations (If Required)
-
-If PR mentioned migrations needed:
-
-```bash
-# SSH to production VM
-gcloud compute ssh charhub-vm --zone=us-central1-a
-
-# Navigate to project
-cd /mnt/stateful_partition/charhub
-
-# Run migration
-docker compose exec backend npm run prisma:migrate:deploy
-
-# Verify migration success
-docker compose exec backend npm run prisma:studio
-# Check production database schema
-
-# Exit SSH
-exit
-```
-
-**⚠️ CRITICAL**: Only run migrations if explicitly mentioned in PR and tested locally first!
-
-#### 5.3 Monitor Production Logs
+### Production Access
 
 ```bash
 # SSH to production
 gcloud compute ssh charhub-vm --zone=us-central1-a
 
-# View backend logs
-docker compose logs -f backend --tail=100
+# Check containers
+docker compose ps
 
-# Look for:
-# - Errors or exceptions
-# - Unusual warnings
-# - Performance issues
-# - Database connection problems
+# View logs
+docker compose logs -f backend
+
+# Check health
+curl https://charhub.app/api/v1/health
 ```
 
-**Monitor for at least 10-15 minutes after deployment.**
-
----
-
-### Phase 6: Documentation & Cleanup
-
-#### 6.1 Move Feature Spec to Implemented
+### Emergency Rollback
 
 ```bash
-# Move spec from active/ to implemented/
-git mv docs/05-business/planning/features/active/feature-name.md \
-        docs/05-business/planning/features/implemented/feature-name.md
-```
+# Execute checklists/rollback.md for full procedure
 
-#### 6.2 Create Usage Guide ⭐ **CRITICAL**
-
-**After deploying a feature, create a concise usage guide for other developers:**
-
-```bash
-# Create guide in appropriate reference section
-vim docs/03-reference/[backend|frontend|api]/feature-name-guide.md
-```
-
-**Usage guide structure** (keep it SHORT and practical):
-
-```markdown
-# Feature Name - Usage Guide
-
-## Overview
-One-sentence description of what this does.
-
-## Quick Start
-```[language]
-// Minimal working example
-import { feature } from '@/services/feature';
-await feature.use();
-```
-
-## Available Functions
-- `function1(param)` - Brief description
-- `function2(param)` - Brief description
-
-## Common Use Cases
-### Use Case 1
-```[language]
-// Code example
-```
-
-### Use Case 2
-```[language]
-// Code example
-```
-
-## See Also
-- Implementation spec: [features/implemented/feature-name.md](...)
-- API reference: [API docs](...)
-```
-
-**Examples of guides:**
-- `docs/03-reference/backend/credits-guide.md` - How to integrate credits
-- `docs/03-reference/backend/notifications-guide.md` - How to send notifications
-- `docs/03-reference/api/chat-api.md` - Chat API endpoints
-
-#### 6.3 Update Documentation Indexes
-
-```bash
-# Add to CHANGELOG
-vim docs/05-business/CHANGELOG.md
-```
-
-**CHANGELOG entry template:**
-```markdown
-## [2025-XX-XX]
-
-### ✨ Features Added
-- **Feature Name**: Brief description of what was added
-
-### 🐛 Bugs Fixed
-- **Bug Name**: Brief description of what was fixed
-```
-
-```bash
-# Update implemented features list
-vim docs/05-business/roadmap/implemented-features.md
-
-# Delete original request from user-feature-notes.md
-vim docs/05-business/planning/user-feature-notes.md
-```
-
-#### 6.4 Clean Up Branches
-
-```bash
-# Delete merged feature branch (local)
-git branch -d feature/feature-name
-
-# Delete remote branch (optional, keeps PR history)
-git push origin --delete feature/feature-name
-```
-
-#### 6.5 Update Agent Assignments
-
-```bash
-# Mark task complete in agent-assignments.md
-vim docs/05-business/planning/agent-assignments.md
-```
-
-**Mark as complete:**
-```markdown
-| Task | Agent | Status | Branch | Completed |
-|------|-------|--------|--------|-----------|
-| Feature Name | Coder | ✅ Deployed | feature/name | 2025-XX-XX |
-```
-
-#### 6.6 Update Strategic Roadmap (After Deploy)
-
-**⚠️ IMPORTANTE**: Atualizar roadmap apenas APÓS deploy bem-sucedido.
-
-```bash
-# 1. Atualizar implemented-features.md (adicionar feature na tabela)
-vim docs/05-business/roadmap/implemented-features.md
-# Adicionar linha na tabela resumo com status de Docs/Tests/QA
-
-# 2. Remover feature de missing-features.md
-vim docs/05-business/roadmap/missing-features.md
-# Localizar seção da feature e deletar entrada
-```
-
-**Frequência de atualização do roadmap:**
-- **`implemented-features.md`**: Atualizar **por deploy** (adicionar linha na tabela)
-- **`missing-features.md`**: Remover entrada **por deploy** + revisar prioridades **mensalmente**
-- **NO DIA-A-DIA**: Trabalhar apenas em `features/` + `agent-assignments.md`
-
-**Princípio: Single Source of Truth**
-```
-features/backlog/     → Specs técnicas (FONTE DE VERDADE - trabalho diário)
-         ↓
-roadmap/missing-features.md  → Índice estratégico (DERIVADO - atualizações pontuais)
-```
-
-**Evitar duplicação**:
-- ✅ Criar spec detalhada APENAS em `features/backlog/`
-- ✅ Roadmap é atualizado apenas ao deploy (não durante desenvolvimento)
-- ❌ NÃO manter mesma informação em dois lugares
-
----
-
-## 🚨 Critical Rules
-
-### NEVER Do These
-
-❌ **Work in `feature/*` branches** (that's Agent Coder's role)
-❌ **Push code changes without testing**
-❌ **Merge PRs with failing tests**
-❌ **Deploy without monitoring**
-❌ **Edit production files via SSH** (except emergency hotfix)
-❌ **Skip database migration testing**
-❌ **Force-push to `main`**
-❌ **Push documentation-only commits without user approval** (triggers unnecessary deploy)
-
-### ALWAYS Do These
-
-✅ **Work ONLY in `main` branch**
-✅ **Test features locally before merge**
-✅ **Monitor GitHub Actions after push**
-✅ **Verify production health after deploy**
-✅ **Document all deployments**
-✅ **Rollback immediately if critical errors**
-✅ **Coordinate with Agent Coder via PR comments**
-✅ **Ask user before pushing documentation** (avoid unnecessary deploys)
-
----
-
-## 📚 Quick Reference
-
-### Essential Documentation
-| Document | When to Read |
-|----------|--------------|
-| [CD Deploy Guide](../../02-guides/deployment/cd-deploy-guide.md) | Before every deployment |
-| [VM Setup & Recovery](../../02-guides/deployment/vm-setup-recovery.md) | When troubleshooting infrastructure |
-| [System Overview](../../04-architecture/system-overview.md) | When reviewing architecture changes |
-| [Database Schema](../../04-architecture/database-schema.md) | Before merging schema changes |
-| [Git Workflow](../../02-guides/development/git-github-actions.md) | When managing branches/PRs |
-| [Workflows Analysis](../../03-reference/workflows/workflows-analysis.md) | When GitHub Actions fail |
-
-### Key Commands
-
-```bash
-# PR Review
-git fetch origin
-git checkout -b feature/name origin/feature/name
-docker compose down -v && docker compose up -d --build
-cd backend && npm run build && npm test
-cd ../frontend && npm run build
-
-# Merge & Deploy
-git checkout main
-git merge feature/name
+# Quick rollback
+git revert HEAD --no-edit
 git push origin main
 gh run watch
+```
 
-# Production Access
-gcloud compute ssh charhub-vm --zone=us-central1-a
-docker compose logs -f backend
-docker compose ps
-curl https://charhub.app/api/v1/health
+### Documentation
 
-# Rollback
-git revert HEAD
-git push origin main
+```bash
+# Feature specs
+ls docs/05-business/planning/features/
 
-# Monitoring
-gh run list
-gh run view <run-id>
-docker compose exec backend npm run prisma:studio
+# Task assignments
+cat docs/05-business/planning/agent-assignments.md
+
+# Deployment guides
+cat docs/02-guides/deployment/cd-deploy-guide.md
+
+# Incident reports
+ls docs/06-operations/incident-response/
 ```
 
 ---
 
-## 🆘 Common Issues
+## 📖 Essential Reading
 
-**PR tests fail locally:**
-→ Request changes in PR, tag Agent Coder
-→ Do NOT merge until tests pass
+### Before First Deployment
 
-**GitHub Actions deployment fails:**
-→ Check workflow logs: `gh run view <run-id>`
-→ Rollback if critical: `git revert HEAD && git push`
-→ Read: `docs/02-guides/deployment/cd-deploy-guide.md`
+**Required reading** (in this order):
 
-**Production health check fails:**
-→ SSH to VM and check container status
-→ View logs: `docker compose logs -f backend`
-→ Rollback if service down: `git revert HEAD && git push`
+1. **[INDEX.md](INDEX.md)** - Understand checklist structure (10 min)
+2. **[checklists/env-validation.md](checklists/env-validation.md)** - CRITICAL (15 min)
+3. **[checklists/pre-deploy.md](checklists/pre-deploy.md)** - Pre-deploy procedure (15 min)
+4. **[docs/02-guides/deployment/cd-deploy-guide.md](../../02-guides/deployment/cd-deploy-guide.md)** - Deployment details (20 min)
 
-**Database migration fails in production:**
-→ IMMEDIATELY document the error
-→ DO NOT retry without investigation
-→ Check migration locally first
-→ Restore from backup if data corrupted (see VM Setup guide)
+### When Things Go Wrong
 
-**Containers not healthy after deploy:**
-→ SSH to VM
-→ Check: `docker compose ps`
-→ Restart: `docker compose restart backend`
-→ If persists: `docker compose down && docker compose up -d --build`
+1. **[checklists/rollback.md](checklists/rollback.md)** - Emergency rollback
+2. **[docs/02-guides/deployment/vm-setup-recovery.md](../../02-guides/deployment/vm-setup-recovery.md)** - VM recovery
+3. **[docs/06-operations/incident-response/](../../06-operations/incident-response/)** - Past incidents
 
 ---
 
-## 📞 Need Help?
+## 🎯 Your Weekly Cycle
 
-1. **Read deployment guides** in `docs/02-guides/deployment/`
-2. **Check architecture docs** in `docs/04-architecture/`
-3. **Review past incidents** in `docs/06-operations/incidents/`
-4. **Coordinate with Agent Coder** via PR comments
-5. **Ask user for clarification** if requirements unclear
+### Monday: Planning
+- Review `docs/05-business/planning/user-feature-notes.md`
+- Prioritize tasks
+- Move specs from `features/backlog/` to `features/active/`
+- Update `agent-assignments.md`
+- Notify Agent Coder of new assignments
+
+### Tuesday-Wednesday: PR Review & Testing
+- Receive PR from Agent Coder
+- Execute `checklists/pr-review.md`
+- Execute `checklists/local-testing.md`
+- Request changes or approve
+
+### Thursday-Friday: Deployment
+- Execute `checklists/env-validation.md` (CRITICAL!)
+- Execute `checklists/pre-deploy.md`
+- Merge to main and push
+- Execute `checklists/deploy-monitoring.md`
+- Execute `checklists/post-deploy.md`
+
+### Weekend: Quality Assurance
+- Review existing features for missing docs/tests
+- Add automated tests where needed
+- Update quality dashboard
+- Create usage guides for deployed features
 
 ---
 
-**Remember**: Stability > Speed. Never skip testing or monitoring steps!
+## 🚨 Common Scenarios & What to Do
 
-🤖 **Agent Reviewer** - Quality code, stable production, happy users!
+| Scenario | Checklist to Execute |
+|----------|---------------------|
+| Agent Coder created a PR | [pr-review.md](checklists/pr-review.md) |
+| PR review passed, need to test | [local-testing.md](checklists/local-testing.md) |
+| About to deploy to production | [env-validation.md](checklists/env-validation.md) → [pre-deploy.md](checklists/pre-deploy.md) |
+| Just pushed to main | [deploy-monitoring.md](checklists/deploy-monitoring.md) |
+| Deployment succeeded | [post-deploy.md](checklists/post-deploy.md) |
+| Production is broken | [rollback.md](checklists/rollback.md) |
+| Tests fail locally | Request changes in PR, tag Agent Coder |
+| GitHub Actions fails | Check logs, likely rollback needed |
+| Backend won't start | Check environment variables ([env-validation.md](checklists/env-validation.md)) |
+| Database migration fails | STOP, document error, consider rollback |
+
+**📖 See**: [INDEX.md](INDEX.md) - Section "Finding What You Need"
+
+---
+
+## 🆘 If You're Stuck
+
+### "I don't know what to do next"
+→ Read [INDEX.md](INDEX.md) and find your current phase in the workflow diagram
+
+### "Production is broken RIGHT NOW"
+→ Execute [checklists/rollback.md](checklists/rollback.md) IMMEDIATELY
+
+### "Should I deploy this?"
+→ Execute [checklists/pre-deploy.md](checklists/pre-deploy.md) checklist completely
+
+### "I forgot to check environment variables"
+→ STOP deployment, execute [checklists/env-validation.md](checklists/env-validation.md)
+
+### "Tests are failing"
+→ See [checklists/local-testing.md](checklists/local-testing.md) - Common Issues section
+
+### "Deployment is taking too long"
+→ See [checklists/deploy-monitoring.md](checklists/deploy-monitoring.md) - Timeline section
+
+---
+
+## 📞 Getting Help
+
+1. **Check checklists** - Most questions answered there
+2. **Read INDEX.md** - Navigation to all resources
+3. **Review past incidents** - `docs/06-operations/incident-response/`
+4. **Check deployment guides** - `docs/02-guides/deployment/`
+5. **Ask user** - If requirements unclear
+
+---
+
+## 🎓 Remember
+
+### The Golden Rule
+**Checklists are your safety net. Use them every time.**
+
+Don't skip steps. Don't assume you remember. Don't rush.
+
+### The Reviewer's Mantra
+**Stability > Speed**
+
+A slow, careful deployment is better than a fast, broken one.
+
+### The Emergency Principle
+**When in doubt, rollback first, debug later.**
+
+Production uptime is more important than investigating root causes.
+
+---
+
+## 📝 Quick Start Summary
+
+**First time deploying?**
+
+1. Read [INDEX.md](INDEX.md)
+2. Read [checklists/env-validation.md](checklists/env-validation.md)
+3. Read [checklists/pre-deploy.md](checklists/pre-deploy.md)
+4. Follow ALL checklist steps in order
+5. Monitor actively during deployment
+6. Verify production after deployment
+
+**Experienced but unsure?**
+
+1. Find your current phase in [INDEX.md](INDEX.md)
+2. Execute the appropriate checklist
+3. Follow every step (no shortcuts)
+
+---
+
+**Agent Reviewer**: Quality code, stable production, happy users! 🚀
+
+For detailed procedures, see [INDEX.md](INDEX.md) and [checklists/](checklists/).

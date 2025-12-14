@@ -169,14 +169,17 @@ sudo chmod -R u+w "$APP_DIR/.git"
 COMPOSE="/var/lib/toolbox/bin/docker-compose"
 cd /mnt/stateful_partition/charhub
 
-# Remove all containers with volumes
-sudo $COMPOSE down --remove-orphans -v
+# Remove all containers (preserves database volumes)
+sudo $COMPOSE down --remove-orphans
 
 # Wait for cleanup
 sleep 5
 
 # Restart
 sudo $COMPOSE up -d
+
+# ⚠️ WARNING: Only use -v if you want to DELETE all data:
+# sudo $COMPOSE down --remove-orphans -v  # DESTROYS DATABASE!
 ```
 
 ### Issue: Cloudflare Tunnel Not Connecting
@@ -219,9 +222,11 @@ sudo $COMPOSE ps postgres --format='{{.Status}}'
 # View logs
 sudo $COMPOSE logs postgres --tail 20
 
-# If needed, reset database
-sudo $COMPOSE down -v
-sudo $COMPOSE up -d postgres
+# ⚠️ CRITICAL WARNING: This will DELETE ALL DATABASE DATA!
+# Only use if database is corrupted and you have backups
+# If needed, reset database (DESTROYS ALL DATA):
+# sudo $COMPOSE down -v
+# sudo $COMPOSE up -d postgres
 ```
 
 ---
