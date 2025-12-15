@@ -7,8 +7,8 @@
 
 import { PaymentProvider } from '../../generated/prisma';
 import { IPaymentProvider } from './IPaymentProvider';
+import { StripeProvider } from './StripeProvider';
 import { PayPalProvider } from './PayPalProvider';
-// import { StripeProvider } from './StripeProvider'; // Will be implemented in Phase 2
 
 export class PaymentProviderFactory {
   /**
@@ -20,26 +20,23 @@ export class PaymentProviderFactory {
   static getProvider(provider: PaymentProvider): IPaymentProvider {
     switch (provider) {
       case 'STRIPE':
-        // Temporary: Return PayPal until Stripe is implemented
-        // return new StripeProvider();
-        throw new Error('Stripe provider not yet implemented. Use PAYPAL for now.');
+        return new StripeProvider();
 
       case 'PAYPAL':
         return new PayPalProvider();
 
       default:
-        // Default to PayPal for now (will be Stripe in Phase 2)
-        return new PayPalProvider();
+        // Default to Stripe
+        return new StripeProvider();
     }
   }
 
   /**
    * Get the default payment provider
    *
-   * @returns Default payment provider instance
+   * @returns Default payment provider instance (Stripe)
    */
   static getDefaultProvider(): IPaymentProvider {
-    // Default to PayPal for now (will be Stripe in Phase 2)
-    return new PayPalProvider();
+    return new StripeProvider();
   }
 }
