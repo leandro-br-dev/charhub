@@ -1,60 +1,43 @@
+/**
+ * Subscription Service
+ *
+ * High-level service for managing user subscriptions
+ * Uses PaymentProviderFactory to support multiple payment providers
+ */
+
 import { PrismaClient } from '../generated/prisma';
-import { requirePayPal } from '../config/paypal';
 import { logger } from '../config/logger';
 import { grantMonthlyCredits } from './creditService';
-import {
-  SubscriptionsController,
-  ExperienceContextShippingPreference,
-  ApplicationContextUserAction
-} from '@paypal/paypal-server-sdk';
+import { PaymentProviderFactory } from './payments/PaymentProviderFactory';
+import { WebhookResult } from './payments/IPaymentProvider';
 
 const prisma = new PrismaClient();
 
-function getSubscriptionsController() {
-  const client = requirePayPal();
-  return new SubscriptionsController(client);
-}
-
 /**
- * Create PayPal subscription for a user
+ * Subscribe user to a plan
  */
 export async function subscribeToPlan(
   userId: string,
   planId: string
-): Promise<{ subscriptionId: string; approvalUrl: string }> {
-  const subscriptions = getSubscriptionsController();
+): Promise<{ subscriptionId: string; clientSecret?: string; approvalUrl?: string; provider: string }> {
+  // 1. Get plan and user
+  const plan = await prisma.plan.findUnique({ where: { id: planId } });
+  const user = await prisma.user.findUnique({ where: { id: userId } });
 
-  // Get user
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { email: true, username: true },
-  });
-
-  if (!user || !user.email) {
-    throw new Error('User not found or email missing');
+  if (!plan || !user?.email) {
+    throw new Error('Plan or user not found');
   }
 
-  // Get plan
-  const plan = await prisma.plan.findUnique({
-    where: { id: planId },
-  });
-
-  if (!plan || !plan.isActive) {
-    throw new Error('Plan not found or not active');
+  if (!plan.isActive) {
+    throw new Error('Plan is not active');
   }
 
-  if (!plan.paypalPlanId) {
-    throw new Error('Plan does not have PayPal configuration');
-  }
-
-  // Check if user already has an active subscription
+  // 2. Check for existing active subscription
   const existingSubscription = await prisma.userPlan.findFirst({
     where: {
       userId,
       status: 'ACTIVE',
-      currentPeriodEnd: {
-        gt: new Date(),
-      },
+      currentPeriodEnd: { gt: new Date() },
     },
   });
 
@@ -62,46 +45,25 @@ export async function subscribeToPlan(
     throw new Error('User already has an active subscription');
   }
 
-  // Create PayPal subscription
-  const response = await subscriptions.createSubscription({
-    body: {
-      planId: plan.paypalPlanId,
-      subscriber: {
-        name: {
-          givenName: user.username || 'User',
-        },
-      },
-      applicationContext: {
-        brandName: 'CharHub',
-        locale: 'en-US',
-        shippingPreference: ExperienceContextShippingPreference.NoShipping,
-        userAction: ApplicationContextUserAction.SubscribeNow,
-        returnUrl: `${process.env.PUBLIC_FACING_URL}/plans?success=true`,
-        cancelUrl: `${process.env.PUBLIC_FACING_URL}/plans?cancelled=true`,
-      },
-      customId: userId,
-    },
-  });
+  // 3. Get appropriate payment provider
+  const provider = PaymentProviderFactory.getProvider(plan.paymentProvider);
 
-  const subscription = response.result;
-
-  // Find approval URL
-  const approvalUrl = subscription.links?.find(
-    (link: any) => link.rel === 'approve'
-  )?.href;
-
-  if (!approvalUrl) {
-    throw new Error('PayPal approval URL not found');
-  }
+  // 4. Create subscription with provider
+  const result = await provider.createSubscription(userId, planId, user.email);
 
   logger.info(
-    { userId, planId, subscriptionId: subscription.id },
-    'PayPal subscription created'
+    {
+      userId,
+      planId,
+      provider: plan.paymentProvider,
+      subscriptionId: result.subscriptionId,
+    },
+    'Subscription initiated'
   );
 
   return {
-    subscriptionId: subscription.id || '',
-    approvalUrl,
+    ...result,
+    provider: plan.paymentProvider,
   };
 }
 
@@ -112,29 +74,34 @@ export async function cancelSubscription(
   userId: string,
   reason?: string
 ): Promise<void> {
-  const subscriptions = getSubscriptionsController();
-
   const userPlan = await prisma.userPlan.findFirst({
     where: {
       userId,
       status: 'ACTIVE',
-      currentPeriodEnd: {
-        gt: new Date(),
-      },
+      currentPeriodEnd: { gt: new Date() },
     },
+    include: { plan: true },
   });
 
-  if (!userPlan || !userPlan.paypalSubscriptionId) {
+  if (!userPlan || !userPlan.paymentProvider) {
     throw new Error('No active subscription found');
   }
 
-  await subscriptions.cancelSubscription({
-    id: userPlan.paypalSubscriptionId,
-    body: {
-      reason: reason || 'Customer requested cancellation',
-    },
-  });
+  // Get subscription ID based on provider
+  const subscriptionId =
+    userPlan.paymentProvider === 'STRIPE'
+      ? userPlan.stripeSubscriptionId
+      : userPlan.paypalSubscriptionId;
 
+  if (!subscriptionId) {
+    throw new Error('Subscription ID not found');
+  }
+
+  // Get provider and cancel
+  const provider = PaymentProviderFactory.getProvider(userPlan.paymentProvider);
+  await provider.cancelSubscription(subscriptionId, reason);
+
+  // Update database
   await prisma.userPlan.update({
     where: { id: userPlan.id },
     data: {
@@ -144,40 +111,41 @@ export async function cancelSubscription(
     },
   });
 
-  logger.info(
-    { userId, subscriptionId: userPlan.paypalSubscriptionId },
-    'Subscription canceled'
-  );
+  logger.info({ userId, subscriptionId }, 'Subscription canceled');
 }
 
 /**
  * Reactivate a canceled subscription
  */
 export async function reactivateSubscription(userId: string): Promise<void> {
-  const subscriptions = getSubscriptionsController();
-
   const userPlan = await prisma.userPlan.findFirst({
     where: {
       userId,
       status: 'CANCELLED',
       cancelAtPeriodEnd: true,
-      currentPeriodEnd: {
-        gt: new Date(),
-      },
+      currentPeriodEnd: { gt: new Date() },
     },
   });
 
-  if (!userPlan || !userPlan.paypalSubscriptionId) {
+  if (!userPlan || !userPlan.paymentProvider) {
     throw new Error('No subscription pending cancellation found');
   }
 
-  await subscriptions.activateSubscription({
-    id: userPlan.paypalSubscriptionId,
-    body: {
-      reason: 'Reactivating on customer request',
-    },
-  });
+  // Get subscription ID based on provider
+  const subscriptionId =
+    userPlan.paymentProvider === 'STRIPE'
+      ? userPlan.stripeSubscriptionId
+      : userPlan.paypalSubscriptionId;
 
+  if (!subscriptionId) {
+    throw new Error('Subscription ID not found');
+  }
+
+  // Get provider and reactivate
+  const provider = PaymentProviderFactory.getProvider(userPlan.paymentProvider);
+  await provider.reactivateSubscription(subscriptionId);
+
+  // Update database
   await prisma.userPlan.update({
     where: { id: userPlan.id },
     data: {
@@ -187,32 +155,23 @@ export async function reactivateSubscription(userId: string): Promise<void> {
     },
   });
 
-  logger.info(
-    { userId, subscriptionId: userPlan.paypalSubscriptionId },
-    'Subscription reactivated'
-  );
+  logger.info({ userId, subscriptionId }, 'Subscription reactivated');
 }
 
 /**
  * Update subscription to a different plan
  */
 export async function changePlan(userId: string, newPlanId: string): Promise<void> {
-  const subscriptions = getSubscriptionsController();
-
   const userPlan = await prisma.userPlan.findFirst({
     where: {
       userId,
       status: 'ACTIVE',
-      currentPeriodEnd: {
-        gt: new Date(),
-      },
+      currentPeriodEnd: { gt: new Date() },
     },
-    include: {
-      plan: true,
-    },
+    include: { plan: true },
   });
 
-  if (!userPlan || !userPlan.paypalSubscriptionId) {
+  if (!userPlan || !userPlan.paymentProvider) {
     throw new Error('No active subscription found');
   }
 
@@ -220,28 +179,36 @@ export async function changePlan(userId: string, newPlanId: string): Promise<voi
     where: { id: newPlanId },
   });
 
-  if (!newPlan || !newPlan.isActive || !newPlan.paypalPlanId) {
+  if (!newPlan || !newPlan.isActive) {
     throw new Error('Invalid new plan');
   }
 
-  await subscriptions.reviseSubscription({
-    id: userPlan.paypalSubscriptionId,
-    body: {
-      planId: newPlan.paypalPlanId,
-    },
-  });
+  // Verify both plans use the same provider
+  if (newPlan.paymentProvider !== userPlan.paymentProvider) {
+    throw new Error('Cannot change to a plan with a different payment provider');
+  }
 
+  // Get subscription ID based on provider
+  const subscriptionId =
+    userPlan.paymentProvider === 'STRIPE'
+      ? userPlan.stripeSubscriptionId
+      : userPlan.paypalSubscriptionId;
+
+  if (!subscriptionId) {
+    throw new Error('Subscription ID not found');
+  }
+
+  // Get provider and change plan
+  const provider = PaymentProviderFactory.getProvider(userPlan.paymentProvider);
+  await provider.changePlan(subscriptionId, newPlanId);
+
+  // Update database
   await prisma.userPlan.update({
     where: { id: userPlan.id },
-    data: {
-      planId: newPlan.id,
-    },
+    data: { planId: newPlan.id },
   });
 
-  logger.info(
-    { userId, oldPlanId: userPlan.planId, newPlanId },
-    'Plan changed successfully'
-  );
+  logger.info({ userId, oldPlanId: userPlan.planId, newPlanId }, 'Plan changed successfully');
 }
 
 /**
@@ -249,16 +216,9 @@ export async function changePlan(userId: string, newPlanId: string): Promise<voi
  */
 export async function getSubscriptionStatus(userId: string): Promise<any> {
   const userPlan = await prisma.userPlan.findFirst({
-    where: {
-      userId,
-      status: 'ACTIVE',
-    },
-    include: {
-      plan: true,
-    },
-    orderBy: {
-      currentPeriodEnd: 'desc',
-    },
+    where: { userId, status: 'ACTIVE' },
+    include: { plan: true },
+    orderBy: { currentPeriodEnd: 'desc' },
   });
 
   if (!userPlan) {
@@ -279,6 +239,7 @@ export async function getSubscriptionStatus(userId: string): Promise<any> {
     plan: userPlan.plan,
     status: userPlan.status,
     isFree: false,
+    paymentProvider: userPlan.paymentProvider,
     currentPeriodStart: userPlan.currentPeriodStart,
     currentPeriodEnd: userPlan.currentPeriodEnd,
     cancelAtPeriodEnd: userPlan.cancelAtPeriodEnd,
@@ -287,13 +248,55 @@ export async function getSubscriptionStatus(userId: string): Promise<any> {
 }
 
 /**
- * Process successful PayPal subscription (called by webhook)
+ * Process webhook event from payment provider
+ *
+ * This function handles webhook events from any payment provider
  */
-export async function processSubscriptionActivated(
-  paypalSubscriptionId: string,
+export async function processSubscriptionWebhook(webhookResult: WebhookResult): Promise<void> {
+  const { action, subscriptionId, userId, planId, metadata } = webhookResult;
+
+  logger.info({ action, subscriptionId, userId }, 'Processing subscription webhook');
+
+  switch (action) {
+    case 'ACTIVATED':
+      if (!userId || !planId || !subscriptionId) {
+        logger.error({ webhookResult }, 'Missing required fields for ACTIVATED webhook');
+        return;
+      }
+      await processSubscriptionActivated(subscriptionId, userId, planId, metadata);
+      break;
+
+    case 'CANCELLED':
+      if (!subscriptionId) {
+        logger.error({ webhookResult }, 'Missing subscriptionId for CANCELLED webhook');
+        return;
+      }
+      await processSubscriptionCancelled(subscriptionId);
+      break;
+
+    case 'PAYMENT_FAILED':
+      if (!subscriptionId) {
+        logger.error({ webhookResult }, 'Missing subscriptionId for PAYMENT_FAILED webhook');
+        return;
+      }
+      await processPaymentFailed(subscriptionId);
+      break;
+
+    case 'NONE':
+    default:
+      // No action needed
+      break;
+  }
+}
+
+/**
+ * Process successful subscription activation (called by webhook)
+ */
+async function processSubscriptionActivated(
+  subscriptionId: string,
   userId: string,
   planId: string,
-  billingInfo: any
+  metadata?: any
 ): Promise<void> {
   const plan = await prisma.plan.findUnique({ where: { id: planId } });
 
@@ -301,31 +304,98 @@ export async function processSubscriptionActivated(
     throw new Error('Plan not found');
   }
 
+  // Determine which field to use based on provider
+  const subscriptionData =
+    plan.paymentProvider === 'STRIPE'
+      ? { stripeSubscriptionId: subscriptionId }
+      : { paypalSubscriptionId: subscriptionId };
+
   await prisma.$transaction(async (tx) => {
+    // Cancel existing active subscriptions
     await tx.userPlan.updateMany({
       where: { userId, status: 'ACTIVE' },
       data: { status: 'CANCELLED' },
     });
 
     const now = new Date();
-    const nextBillingTime = billingInfo.nextBillingTime
-      ? new Date(billingInfo.nextBillingTime)
+    const nextBillingTime = metadata?.billingInfo?.nextBillingTime
+      ? new Date(metadata.billingInfo.nextBillingTime)
       : new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
+    // Create new active subscription
     await tx.userPlan.create({
       data: {
         userId,
         planId: plan.id,
         status: 'ACTIVE',
-        paypalSubscriptionId,
+        paymentProvider: plan.paymentProvider,
+        ...subscriptionData,
         currentPeriodStart: now,
         currentPeriodEnd: nextBillingTime,
         lastCreditsGrantedAt: now,
       },
     });
 
+    // Grant monthly credits
     await grantMonthlyCredits(userId);
   });
 
-  logger.info({ userId, planId, paypalSubscriptionId }, 'Subscription activated');
+  logger.info({ userId, planId, subscriptionId }, 'Subscription activated');
+}
+
+/**
+ * Process subscription cancellation (called by webhook)
+ */
+async function processSubscriptionCancelled(subscriptionId: string): Promise<void> {
+  const userPlan = await prisma.userPlan.findFirst({
+    where: {
+      OR: [
+        { paypalSubscriptionId: subscriptionId },
+        { stripeSubscriptionId: subscriptionId },
+      ],
+    },
+  });
+
+  if (!userPlan) {
+    logger.warn({ subscriptionId }, 'UserPlan not found for cancelled subscription');
+    return;
+  }
+
+  await prisma.userPlan.update({
+    where: { id: userPlan.id },
+    data: {
+      status: 'CANCELLED',
+      canceledAt: new Date(),
+    },
+  });
+
+  logger.info({ subscriptionId }, 'Subscription marked as cancelled');
+}
+
+/**
+ * Process failed payment (called by webhook)
+ */
+async function processPaymentFailed(subscriptionId: string): Promise<void> {
+  const userPlan = await prisma.userPlan.findFirst({
+    where: {
+      OR: [
+        { paypalSubscriptionId: subscriptionId },
+        { stripeSubscriptionId: subscriptionId },
+      ],
+    },
+  });
+
+  if (!userPlan) {
+    logger.warn({ subscriptionId }, 'UserPlan not found for failed payment');
+    return;
+  }
+
+  await prisma.userPlan.update({
+    where: { id: userPlan.id },
+    data: {
+      status: 'PAYMENT_FAILED',
+    },
+  });
+
+  logger.warn({ subscriptionId, userId: userPlan.userId }, 'Payment failed for subscription');
 }

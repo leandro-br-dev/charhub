@@ -756,21 +756,32 @@ model CreditTransaction {
 
 // Subscription plans
 model Plan {
-  id                String       @id @default(uuid())
-  tier              PlanTier     @unique
+  id                String          @id @default(uuid())
+  tier              PlanTier        @unique
   name              String
   priceMonthly      Float
   creditsPerMonth   Int
   description       String?
   features          Json?
-  isActive          Boolean      @default(true)
-  createdAt         DateTime     @default(now())
-  updatedAt         DateTime     @updatedAt
-  paypalPlanId      String?      @unique
-  userPlans         UserPlan[]   @relation("PlanSubscriptions")
+  isActive          Boolean         @default(true)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  // Multi-provider support
+  paymentProvider   PaymentProvider @default(STRIPE)
+
+  // PayPal (existing)
+  paypalPlanId      String?         @unique
+
+  // Stripe (new)
+  stripePriceId     String?         @unique
+  stripeProductId   String?
+
+  userPlans         UserPlan[]      @relation("PlanSubscriptions")
 
   @@index([tier])
   @@index([isActive])
+  @@index([paymentProvider])
 }
 
 // Service credit costs configuration
@@ -841,6 +852,17 @@ model UserPlan {
   planId                String
   plan                  Plan               @relation("PlanSubscriptions", fields: [planId], references: [id])
   status                SubscriptionStatus @default(ACTIVE)
+
+  // Multi-provider support
+  paymentProvider       PaymentProvider?
+
+  // PayPal (existing)
+  paypalSubscriptionId  String?            @unique
+
+  // Stripe (new)
+  stripeSubscriptionId  String?            @unique
+  stripeCustomerId      String?
+
   currentPeriodStart    DateTime
   currentPeriodEnd      DateTime
   cancelAtPeriodEnd     Boolean            @default(false)
@@ -848,13 +870,14 @@ model UserPlan {
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @updatedAt
   lastCreditsGrantedAt  DateTime?
-  paypalSubscriptionId  String?            @unique
 
   @@index([userId])
   @@index([planId])
   @@index([status])
   @@index([currentPeriodEnd])
+  @@index([paymentProvider])
   @@index([paypalSubscriptionId])
+  @@index([stripeSubscriptionId])
 }
 
 // Plus tier access grants (for admin-granted access)
@@ -902,4 +925,10 @@ enum SubscriptionStatus {
   CANCELLED    // British spelling to match code
   EXPIRED
   PAYMENT_FAILED
+}
+
+// Payment provider options for subscriptions
+enum PaymentProvider {
+  STRIPE
+  PAYPAL
 }

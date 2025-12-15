@@ -2,7 +2,8 @@ import { Router, Request, Response } from 'express';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 import { grantMonthlyCredits } from '../../services/creditService';
-import { processSubscriptionActivated } from '../../services/subscriptionService';
+import { processSubscriptionWebhook } from '../../services/subscriptionService';
+import { PayPalProvider } from '../../services/payments/PayPalProvider';
 
 const router = Router();
 
@@ -22,30 +23,43 @@ router.post(
       const event = req.body;
       logger.info({ type: event.event_type, id: event.id }, 'Received PayPal webhook');
 
-      // Handle the event
+      const paypalProvider = new PayPalProvider();
+
+      // Handle the event based on type
       switch (event.event_type) {
         case 'BILLING.SUBSCRIPTION.ACTIVATED':
-          await handleSubscriptionActivated(event.resource);
-          break;
-
         case 'BILLING.SUBSCRIPTION.UPDATED':
-          await handleSubscriptionUpdated(event.resource);
-          break;
-
         case 'BILLING.SUBSCRIPTION.CANCELLED':
-          await handleSubscriptionCancelled(event.resource);
+        case 'BILLING.SUBSCRIPTION.EXPIRED':
+        case 'BILLING.SUBSCRIPTION.PAYMENT.FAILED': {
+          // Get plan ID if this is an activation
+          let planId: string | undefined;
+          if (event.event_type === 'BILLING.SUBSCRIPTION.ACTIVATED') {
+            const plan = await prisma.plan.findFirst({
+              where: { paypalPlanId: event.resource.plan_id },
+            });
+            planId = plan?.id;
+          }
+
+          // Process webhook using PayPalProvider
+          const webhookResult = await paypalProvider.processWebhook(event);
+
+          // Add planId if we found it
+          if (planId) {
+            webhookResult.planId = planId;
+          }
+
+          // Process the webhook result
+          await processSubscriptionWebhook(webhookResult);
+          break;
+        }
+
+        case 'PAYMENT.SALE.COMPLETED':
+          await handlePaymentCompleted(event.resource);
           break;
 
         case 'BILLING.SUBSCRIPTION.SUSPENDED':
           await handleSubscriptionSuspended(event.resource);
-          break;
-
-        case 'BILLING.SUBSCRIPTION.EXPIRED':
-          await handleSubscriptionExpired(event.resource);
-          break;
-
-        case 'PAYMENT.SALE.COMPLETED':
-          await handlePaymentCompleted(event.resource);
           break;
 
         default:
@@ -61,112 +75,8 @@ router.post(
 );
 
 /**
- * Handle subscription.activated event
- */
-async function handleSubscriptionActivated(subscription: any): Promise<void> {
-  const userId = subscription.custom_id;
-  const subscriptionId = subscription.id;
-
-  if (!userId) {
-    logger.warn({ subscriptionId }, 'Subscription missing userId in custom_id');
-    return;
-  }
-
-  // Find the plan by PayPal plan ID
-  const plan = await prisma.plan.findFirst({
-    where: { paypalPlanId: subscription.plan_id },
-  });
-
-  if (!plan) {
-    logger.warn({ planId: subscription.plan_id }, 'Plan not found for PayPal plan ID');
-    return;
-  }
-
-  await processSubscriptionActivated(
-    subscriptionId,
-    userId,
-    plan.id,
-    subscription.billing_info
-  );
-
-  logger.info(
-    { userId, planId: plan.id, subscriptionId },
-    'Subscription activated'
-  );
-}
-
-/**
- * Handle subscription.updated event
- */
-async function handleSubscriptionUpdated(subscription: any): Promise<void> {
-  const userPlan = await prisma.userPlan.findUnique({
-    where: { paypalSubscriptionId: subscription.id },
-  });
-
-  if (!userPlan) {
-    logger.warn({ subscriptionId: subscription.id }, 'UserPlan not found for subscription update');
-    return;
-  }
-
-  const updates: any = {
-    currentPeriodStart: subscription.billing_info?.last_payment?.time
-      ? new Date(subscription.billing_info.last_payment.time)
-      : undefined,
-    currentPeriodEnd: subscription.billing_info?.next_billing_time
-      ? new Date(subscription.billing_info.next_billing_time)
-      : undefined,
-  };
-
-  // Update status based on PayPal status
-  if (subscription.status === 'ACTIVE') {
-    updates.status = 'ACTIVE';
-  } else if (subscription.status === 'CANCELLED') {
-    updates.status = 'CANCELLED';
-    updates.canceledAt = new Date();
-  } else if (subscription.status === 'SUSPENDED') {
-    updates.status = 'PAYMENT_FAILED';
-  }
-
-  await prisma.userPlan.update({
-    where: { id: userPlan.id },
-    data: updates,
-  });
-
-  logger.info(
-    { userId: userPlan.userId, subscriptionId: subscription.id, status: subscription.status },
-    'Subscription updated'
-  );
-}
-
-/**
- * Handle subscription.cancelled event
- */
-async function handleSubscriptionCancelled(subscription: any): Promise<void> {
-  const userPlan = await prisma.userPlan.findUnique({
-    where: { paypalSubscriptionId: subscription.id },
-  });
-
-  if (!userPlan) {
-    logger.warn({ subscriptionId: subscription.id }, 'UserPlan not found for subscription cancellation');
-    return;
-  }
-
-  await prisma.userPlan.update({
-    where: { id: userPlan.id },
-    data: {
-      status: 'CANCELLED',
-      canceledAt: new Date(),
-    },
-  });
-
-  logger.info(
-    { userId: userPlan.userId, subscriptionId: subscription.id },
-    'Subscription cancelled'
-  );
-}
-
-/**
  * Handle subscription.suspended event
+ * Note: Suspended is treated separately as it may require special handling beyond PAYMENT_FAILED
  */
 async function handleSubscriptionSuspended(subscription: any): Promise<void> {
   const userPlan = await prisma.userPlan.findUnique({
@@ -188,32 +98,6 @@ async function handleSubscriptionSuspended(subscription: any): Promise<void> {
   logger.warn(
     { userId: userPlan.userId, subscriptionId: subscription.id },
     'Subscription suspended due to payment failure'
-  );
-}
-
-/**
- * Handle subscription.expired event
- */
-async function handleSubscriptionExpired(subscription: any): Promise<void> {
-  const userPlan = await prisma.userPlan.findUnique({
-    where: { paypalSubscriptionId: subscription.id },
-  });
-
-  if (!userPlan) {
-    logger.warn({ subscriptionId: subscription.id }, 'UserPlan not found');
-    return;
-  }
-
-  await prisma.userPlan.update({
-    where: { id: userPlan.id },
-    data: {
-      status: 'EXPIRED',
-    },
-  });
-
-  logger.info(
-    { userId: userPlan.userId, subscriptionId: subscription.id },
-    'Subscription expired'
   );
 }
 
