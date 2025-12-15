@@ -36,7 +36,7 @@
     "@aws-sdk/s3-request-presigner": "^3.948.0",
     "@google/genai": "^1.29.0",
     "@paypal/paypal-server-sdk": "^2.0.0",
-    "@prisma/client": "^6.17.1",
+    "@prisma/client": "^7.1.0",
     "@types/multer": "^2.0.0",
     "@types/socket.io": "^3.0.1",
     "bullmq": "^5.61.0",
