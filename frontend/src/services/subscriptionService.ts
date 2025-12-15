@@ -25,7 +25,9 @@ export interface CurrentSubscription {
 
 export interface SubscribeResponse {
   subscriptionId: string;
-  approvalUrl: string;
+  approvalUrl?: string; // PayPal only
+  clientSecret?: string; // Stripe only
+  provider: 'STRIPE' | 'PAYPAL';
 }
 
 export const subscriptionService = {

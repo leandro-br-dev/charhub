@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PlansComparison } from './components/PlansComparison';
+import { StripeCheckout } from '../../components/payments/StripeCheckout';
 import { Alert, AlertDescription } from '../../components/ui/alert';
-import { Loader2, CheckCircle, Sparkles } from 'lucide-react';
+import { Loader2, CheckCircle, Sparkles, ArrowLeft } from 'lucide-react';
 import { subscriptionService, planService } from '../../services';
 import type { Plan, CurrentSubscription } from '../../services/subscriptionService';
 import { Button } from '../../components/ui/Button';
@@ -16,6 +17,13 @@ export default function PlansPage() {
   const [currentSubscription, setCurrentSubscription] = useState<CurrentSubscription | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Stripe checkout state
+  const [checkoutData, setCheckoutData] = useState<{
+    clientSecret: string;
+    provider: string;
+    planName: string;
+  } | null>(null);
 
   useEffect(() => {
     loadData();
@@ -62,15 +70,43 @@ export default function PlansPage() {
       return;
     }
 
-    // For paid plans, redirect to PayPal
+    // For paid plans, subscribe via appropriate provider
     try {
       const response = await subscriptionService.subscribe(planId);
-      // Redirect to PayPal approval URL
-      window.location.href = response.approvalUrl;
+
+      // Check which provider was used
+      if (response.provider === 'STRIPE' && response.clientSecret) {
+        // Show Stripe checkout inline
+        setCheckoutData({
+          clientSecret: response.clientSecret,
+          provider: response.provider,
+          planName: plan.name,
+        });
+      } else if (response.provider === 'PAYPAL' && response.approvalUrl) {
+        // Redirect to PayPal
+        window.location.href = response.approvalUrl;
+      } else {
+        throw new Error('Invalid subscription response');
+      }
     } catch (err: any) {
       console.error('[Plans] Failed to subscribe:', err);
       alert(err.response?.data?.message || t('error_starting_subscription'));
     }
+  };
+
+  const handleStripeSuccess = async () => {
+    setCheckoutData(null);
+    alert(t('subscription_activated'));
+    await loadData();
+  };
+
+  const handleStripeError = (error: string) => {
+    console.error('[Plans] Stripe payment failed:', error);
+    alert(error || t('payment_failed'));
+  };
+
+  const handleBackToPlans = () => {
+    setCheckoutData(null);
   };
 
   const switchToFreePlan = async (planId: string) => {
@@ -117,6 +153,41 @@ export default function PlansPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // If showing Stripe checkout, render that instead
+  if (checkoutData) {
+    return (
+      <div className="container max-w-4xl mx-auto px-4 py-8">
+        <div className="mb-6">
+          <Button
+            variant="secondary"
+            onClick={handleBackToPlans}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t('back_to_plans') || 'Voltar aos planos'}
+          </Button>
+        </div>
+
+        <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold mb-2">
+              {t('complete_subscription') || 'Complete sua assinatura'}
+            </h1>
+            <p className="text-muted-foreground">
+              {t('subscribing_to') || 'Assinando'}: <strong>{checkoutData.planName}</strong>
+            </p>
+          </div>
+
+          <StripeCheckout
+            clientSecret={checkoutData.clientSecret}
+            onSuccess={handleStripeSuccess}
+            onError={handleStripeError}
+          />
+        </div>
       </div>
     );
   }
