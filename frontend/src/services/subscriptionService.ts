@@ -72,5 +72,14 @@ export const subscriptionService = {
     await api.post<{ success: boolean }>(`${BASE_PATH}/change-plan`, {
       newPlanId
     });
+  },
+
+  /**
+   * Activate Stripe subscription after successful payment
+   */
+  async activateStripeSubscription(subscriptionId: string): Promise<void> {
+    await api.post<{ success: boolean }>(`${BASE_PATH}/activate-stripe`, {
+      subscriptionId
+    });
   }
 };

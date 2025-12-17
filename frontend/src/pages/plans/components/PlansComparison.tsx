@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components/ui/card';
@@ -30,10 +31,11 @@ interface PlansComparisonProps {
 }
 
 export function PlansComparison({ plans, currentPlanId, onSelectPlan, loading }: PlansComparisonProps) {
+  const { t } = useTranslation('plans');
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const formatPrice = (price: number) => {
-    return price === 0 ? 'Grátis' : `$${price.toFixed(2)}`;
+    return price === 0 ? t('free') : `$${price.toFixed(2)}`;
   };
 
   const handleSelectPlan = (planId: string) => {
@@ -50,21 +52,21 @@ export function PlansComparison({ plans, currentPlanId, onSelectPlan, loading }:
           key={plan.id}
           className={`relative flex flex-col ${
             plan.popular ? 'border-primary shadow-lg' : ''
-          } ${isCurrentPlan(plan.id) ? 'border-green-500' : ''}`}
+          } ${isCurrentPlan(plan.id) ? 'border-blue-500' : ''}`}
         >
           {plan.popular && (
             <div className="absolute -top-3 left-1/2 -translate-x-1/2">
               <Badge className="bg-primary text-primary-foreground px-3 py-1 flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
-                Mais Popular
+                {t('most_popular')}
               </Badge>
             </div>
           )}
 
           {isCurrentPlan(plan.id) && (
             <div className="absolute -top-3 right-4">
-              <Badge className="bg-green-500 text-white px-3 py-1">
-                Plano Atual
+              <Badge className="bg-blue-500 text-white px-3 py-1">
+                {t('current_plan')}
               </Badge>
             </div>
           )}
@@ -78,26 +80,26 @@ export function PlansComparison({ plans, currentPlanId, onSelectPlan, loading }:
             {/* Price */}
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold">
-                {plan.priceMonthly === 0 ? 'Grátis' : `$${plan.priceMonthly}`}
+                {plan.priceMonthly === 0 ? t('free') : `$${plan.priceMonthly}`}
               </span>
               {plan.priceMonthly > 0 && (
-                <span className="text-muted-foreground">/mês</span>
+                <span className="text-muted-foreground">/{t('month')}</span>
               )}
             </div>
 
             {/* Credits */}
             <div className="flex items-center gap-2 text-sm bg-secondary/50 rounded-lg p-3">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="font-medium">{plan.creditsPerMonth.toLocaleString()} créditos/mês</span>
+              <Sparkles className="w-4 h-4 text-primary/70" />
+              <span className="font-medium">{plan.creditsPerMonth.toLocaleString()} {t('credits_per_month')}</span>
             </div>
 
             {/* Features */}
             <div className="space-y-3">
-              <p className="text-sm font-semibold text-muted-foreground">Recursos inclusos:</p>
+              <p className="text-sm font-semibold text-muted-foreground">{t('included_features')}:</p>
               <ul className="space-y-2">
                 {plan.features.map((feature, index) => (
                   <li key={index} className="flex items-start gap-2 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                    <CheckCircle2 className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
                     <span>{feature}</span>
                   </li>
                 ))}
@@ -113,10 +115,10 @@ export function PlansComparison({ plans, currentPlanId, onSelectPlan, loading }:
               onClick={() => handleSelectPlan(plan.id)}
             >
               {isCurrentPlan(plan.id)
-                ? 'Plano Atual'
+                ? t('current_plan')
                 : plan.priceMonthly === 0
-                ? 'Selecionar Grátis'
-                : `Assinar ${plan.name}`}
+                ? t('select_free')
+                : t('subscribe_to', { plan: plan.name })}
             </Button>
           </CardFooter>
         </Card>

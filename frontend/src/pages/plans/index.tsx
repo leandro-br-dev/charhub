@@ -4,14 +4,16 @@ import { useTranslation } from 'react-i18next';
 import { PlansComparison } from './components/PlansComparison';
 import { StripeCheckout } from '../../components/payments/StripeCheckout';
 import { Alert, AlertDescription } from '../../components/ui/alert';
-import { Loader2, CheckCircle, Sparkles, ArrowLeft } from 'lucide-react';
+import { Loader2, CheckCircle, ArrowLeft } from 'lucide-react';
 import { subscriptionService, planService } from '../../services';
 import type { Plan, CurrentSubscription } from '../../services/subscriptionService';
 import { Button } from '../../components/ui/Button';
+import { useToast } from '../../contexts/ToastContext';
 
 export default function PlansPage() {
   const { t } = useTranslation('plans');
   const [searchParams] = useSearchParams();
+  const { addToast } = useToast();
 
   const [plans, setPlans] = useState<Plan[]>([]);
   const [currentSubscription, setCurrentSubscription] = useState<CurrentSubscription | null>(null);
@@ -23,6 +25,7 @@ export default function PlansPage() {
     clientSecret: string;
     provider: string;
     planName: string;
+    subscriptionId: string;
   } | null>(null);
 
   useEffect(() => {
@@ -30,15 +33,15 @@ export default function PlansPage() {
 
     // Check for success parameter from PayPal redirect
     if (searchParams.get('success') === 'true') {
-      alert(t('subscription_activated'));
+      addToast(t('subscription_activated'), 'success');
       window.history.replaceState({}, '', '/plans');
     }
 
     if (searchParams.get('cancelled') === 'true') {
-      alert(t('subscription_cancelled'));
+      addToast(t('subscription_cancelled'), 'info');
       window.history.replaceState({}, '', '/plans');
     }
-  }, [searchParams, t]);
+  }, [searchParams, t, addToast]);
 
   const loadData = async () => {
     setLoading(true);
@@ -81,6 +84,7 @@ export default function PlansPage() {
           clientSecret: response.clientSecret,
           provider: response.provider,
           planName: plan.name,
+          subscriptionId: response.subscriptionId,
         });
       } else if (response.provider === 'PAYPAL' && response.approvalUrl) {
         // Redirect to PayPal
@@ -90,19 +94,29 @@ export default function PlansPage() {
       }
     } catch (err: any) {
       console.error('[Plans] Failed to subscribe:', err);
-      alert(err.response?.data?.message || t('error_starting_subscription'));
+      addToast(err.response?.data?.message || t('error_starting_subscription'), 'error');
     }
   };
 
   const handleStripeSuccess = async () => {
-    setCheckoutData(null);
-    alert(t('subscription_activated'));
-    await loadData();
+    if (!checkoutData) return;
+
+    try {
+      // Call backend to activate the subscription
+      await subscriptionService.activateStripeSubscription(checkoutData.subscriptionId);
+
+      setCheckoutData(null);
+      addToast(t('subscription_activated'), 'success');
+      await loadData();
+    } catch (err: any) {
+      console.error('[Plans] Failed to activate subscription:', err);
+      addToast(err.response?.data?.message || 'Erro ao ativar assinatura', 'error');
+    }
   };
 
   const handleStripeError = (error: string) => {
     console.error('[Plans] Stripe payment failed:', error);
-    alert(error || t('payment_failed'));
+    addToast(error || t('payment_failed'), 'error');
   };
 
   const handleBackToPlans = () => {
@@ -115,11 +129,11 @@ export default function PlansPage() {
         await subscriptionService.cancel('Switching to free plan');
       }
 
-      alert(t('plan_changed_to_free'));
+      addToast(t('plan_changed_to_free'), 'success');
       await loadData();
     } catch (err: any) {
       console.error('[Plans] Failed to switch to free plan:', err);
-      alert(err.response?.data?.message || t('error_changing_plan'));
+      addToast(err.response?.data?.message || t('error_changing_plan'), 'error');
     }
   };
 
@@ -130,22 +144,22 @@ export default function PlansPage() {
 
     try {
       await subscriptionService.cancel('User requested cancellation');
-      alert(t('subscription_will_cancel'));
+      addToast(t('subscription_will_cancel'), 'success');
       await loadData();
     } catch (err: any) {
       console.error('[Plans] Failed to cancel subscription:', err);
-      alert(err.response?.data?.message || t('error_cancelling_subscription'));
+      addToast(err.response?.data?.message || t('error_cancelling_subscription'), 'error');
     }
   };
 
   const handleReactivateSubscription = async () => {
     try {
       await subscriptionService.reactivate();
-      alert(t('subscription_reactivated'));
+      addToast(t('subscription_reactivated'), 'success');
       await loadData();
     } catch (err: any) {
       console.error('[Plans] Failed to reactivate subscription:', err);
-      alert(err.response?.data?.message || t('error_reactivating_subscription'));
+      addToast(err.response?.data?.message || t('error_reactivating_subscription'), 'error');
     }
   };
 
@@ -204,17 +218,17 @@ export default function PlansPage() {
           </div>
         </div>
 
-        {/* Current Subscription Status */}
+        {/* Current Subscription Status - Only show for paid plans */}
         {currentSubscription && !currentSubscription.isFree && (
           <div className="mb-8">
-            <Alert className="border-green-500 bg-green-50 dark:bg-green-950">
-              <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
-              <AlertDescription className="text-green-900 dark:text-green-100">
+            <Alert className="border-blue-500 bg-blue-50 dark:bg-blue-950">
+              <CheckCircle className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <AlertDescription className="text-blue-900 dark:text-blue-100">
                 <div className="flex items-center justify-between">
                   <div>
                     <strong>{t('active_plan')}:</strong> {currentSubscription.plan.name}
                     {currentSubscription.cancelAtPeriodEnd && (
-                      <span className="ml-2 text-yellow-600">
+                      <span className="ml-2 text-muted-foreground">
                         ({t('will_cancel_on')}{' '}
                         {currentSubscription.currentPeriodEnd
                           ? new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
@@ -266,18 +280,6 @@ export default function PlansPage() {
           loading={loading}
         />
 
-        {/* Features Comparison Table */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold text-center mb-8">
-            {t('detailed_comparison')}
-          </h2>
-          <div className="bg-card rounded-lg border p-8">
-            <div className="space-y-4 text-center text-muted-foreground">
-              <Sparkles className="h-12 w-12 mx-auto text-primary" />
-              <p>{t('coming_soon')}</p>
-            </div>
-          </div>
-        </div>
       </div>
   );
 }

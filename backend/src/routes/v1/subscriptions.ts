@@ -1,7 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
-import { isPayPalEnabled } from '../../config/paypal';
 import {
   subscribeToPlan,
   cancelSubscription,
@@ -18,14 +17,6 @@ const router = Router();
  */
 router.post('/subscribe', requireAuth, async (req: Request, res: Response): Promise<void> => {
   try {
-    if (!isPayPalEnabled()) {
-      res.status(503).json({
-        success: false,
-        message: 'Payment processing is not enabled',
-      });
-      return;
-    }
-
     const userId = req.auth?.user?.id;
     if (!userId) {
       res.status(401).json({
@@ -47,10 +38,16 @@ router.post('/subscribe', requireAuth, async (req: Request, res: Response): Prom
 
     const result = await subscribeToPlan(userId, planId);
 
+    // Dynamic message based on provider
+    const message =
+      result.provider === 'STRIPE'
+        ? 'Subscription created. Complete payment with Stripe.'
+        : 'Subscription created. Redirect to PayPal to complete payment.';
+
     res.json({
       success: true,
       data: result,
-      message: 'Subscription created. Redirect to PayPal to complete payment.',
+      message,
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -219,6 +216,55 @@ router.get('/status', requireAuth, async (req: Request, res: Response): Promise<
         message: error.message,
       });
       logger.error({ error, userId: req.auth?.user?.id }, 'Get subscription status error');
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Internal server error',
+      });
+    }
+  }
+});
+
+/**
+ * POST /api/v1/subscriptions/activate-stripe
+ * Activate Stripe subscription after successful payment
+ */
+router.post('/activate-stripe', requireAuth, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = req.auth?.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+      return;
+    }
+
+    const { subscriptionId } = req.body;
+
+    if (!subscriptionId) {
+      res.status(400).json({
+        success: false,
+        message: 'subscriptionId is required',
+      });
+      return;
+    }
+
+    // Import the activation function
+    const { activateStripeSubscription } = await import('../../services/stripeActivationService');
+    await activateStripeSubscription(userId, subscriptionId);
+
+    res.json({
+      success: true,
+      message: 'Subscription activated successfully',
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+      logger.error({ error, userId: req.auth?.user?.id, subscriptionId: req.body.subscriptionId }, 'Activate Stripe subscription error');
     } else {
       res.status(500).json({
         success: false,

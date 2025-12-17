@@ -11,7 +11,14 @@ import { Button } from '../ui/Button';
 import { Loader2 } from 'lucide-react';
 
 // Initialize Stripe
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '');
+const publishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
+
+// Validate Stripe key is configured
+if (!publishableKey) {
+  console.error('⚠️ VITE_STRIPE_PUBLISHABLE_KEY not configured in .env');
+}
+
+const stripePromise = loadStripe(publishableKey);
 
 interface StripeCheckoutFormProps {
   clientSecret: string;
@@ -36,19 +43,23 @@ function StripeCheckoutForm({ clientSecret, onSuccess, onError }: StripeCheckout
     setErrorMessage(null);
 
     try {
-      const { error } = await stripe.confirmPayment({
+      // Confirm payment WITHOUT redirect (process inline)
+      const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/plans?success=true`,
-        },
+        redirect: 'if_required', // Only redirect if required by payment method
       });
 
       if (error) {
         setErrorMessage(error.message || 'Erro ao processar pagamento');
         onError(error.message || 'Erro ao processar pagamento');
         setIsProcessing(false);
-      } else {
+      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+        // Payment successful, call onSuccess
         onSuccess();
+      } else {
+        setErrorMessage('Pagamento não foi concluído');
+        onError('Pagamento não foi concluído');
+        setIsProcessing(false);
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'Erro inesperado ao processar pagamento');

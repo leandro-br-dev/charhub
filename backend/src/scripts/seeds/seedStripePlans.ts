@@ -22,7 +22,7 @@ async function seedStripePlans() {
   }
 
   const stripe = new Stripe(apiKey, {
-    apiVersion: '2025-11-17.clover',
+    apiVersion: '2025-12-15.clover',
   });
 
   console.log('🚀 Starting Stripe plans seeding...\n');

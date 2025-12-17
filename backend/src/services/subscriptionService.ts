@@ -39,10 +39,31 @@ export async function subscribeToPlan(
       status: 'ACTIVE',
       currentPeriodEnd: { gt: new Date() },
     },
+    include: { plan: true },
   });
 
+  // If user already has an active subscription
   if (existingSubscription) {
-    throw new Error('User already has an active subscription');
+    // If trying to subscribe to the same plan, return error
+    if (existingSubscription.planId === planId) {
+      throw new Error('User already subscribed to this plan');
+    }
+
+    // If user is on FREE plan (no paymentProvider), allow creating a new paid subscription
+    if (!existingSubscription.paymentProvider || existingSubscription.plan.priceMonthly === 0) {
+      // Free plan -> Paid plan: Continue to create new subscription (don't use changePlan)
+      // Fall through to normal subscription creation
+    } else {
+      // Paid plan -> Another paid plan: Use changePlan
+      await changePlan(userId, planId);
+
+      // Return a response indicating plan was changed
+      // Note: No clientSecret or approvalUrl needed since plan is being changed, not created
+      return {
+        subscriptionId: existingSubscription.stripeSubscriptionId || existingSubscription.paypalSubscriptionId || '',
+        provider: existingSubscription.paymentProvider,
+      };
+    }
   }
 
   // 3. Get appropriate payment provider
@@ -238,7 +259,7 @@ export async function getSubscriptionStatus(userId: string): Promise<any> {
   return {
     plan: userPlan.plan,
     status: userPlan.status,
-    isFree: false,
+    isFree: userPlan.plan.priceMonthly === 0, // Check if plan is FREE based on price
     paymentProvider: userPlan.paymentProvider,
     currentPeriodStart: userPlan.currentPeriodStart,
     currentPeriodEnd: userPlan.currentPeriodEnd,

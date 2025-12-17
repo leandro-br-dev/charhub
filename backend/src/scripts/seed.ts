@@ -308,17 +308,35 @@ async function seedPlans(options: SeedOptions): Promise<{ created: number; skipp
         continue;
       }
 
+      // Get Stripe Price ID from environment variable based on tier
+      const stripePriceIdMap: Record<string, string | undefined> = {
+        FREE: process.env.STRIPE_PRICE_FREE,
+        PLUS: process.env.STRIPE_PRICE_PLUS,
+        PREMIUM: process.env.STRIPE_PRICE_PREMIUM,
+      };
+
+      const stripePriceId = stripePriceIdMap[planData.tier];
+
+      // Build update data conditionally
+      const updateData: any = {
+        name: planData.name,
+        priceMonthly: planData.priceMonthly,
+        creditsPerMonth: planData.creditsPerMonth,
+        description: planData.description,
+        features: planData.features,
+      };
+
+      // Only set Stripe fields if we have a Price ID
+      if (stripePriceId) {
+        updateData.stripePriceId = stripePriceId;
+        updateData.paymentProvider = 'STRIPE';
+      }
+
       if (existing && options.force) {
         // Update existing
         await prisma.plan.update({
           where: { tier: planData.tier as PlanTier },
-          data: {
-            name: planData.name,
-            priceMonthly: planData.priceMonthly,
-            creditsPerMonth: planData.creditsPerMonth,
-            description: planData.description,
-            features: planData.features,
-          },
+          data: updateData,
         });
         console.log(`  ✏️  Updated: ${planData.name}`);
       } else {
@@ -326,11 +344,7 @@ async function seedPlans(options: SeedOptions): Promise<{ created: number; skipp
         await prisma.plan.create({
           data: {
             tier: planData.tier as PlanTier,
-            name: planData.name,
-            priceMonthly: planData.priceMonthly,
-            creditsPerMonth: planData.creditsPerMonth,
-            description: planData.description,
-            features: planData.features,
+            ...updateData,
           },
         });
         stats.created++;

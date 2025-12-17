@@ -25,10 +25,9 @@
       "features": [
         "2,000 credits per month",
         "50 daily login bonus",
-        "Priority queue for generation",
-        "Access to NSFW content (18+)",
+        "High priority queue",
+        "Access to all content",
         "Advanced character customization",
-        "Unlimited character creation",
         "Higher quality image generation",
         "Voice synthesis (TTS)"
       ]
@@ -36,7 +35,7 @@
     {
       "tier": "PREMIUM",
       "name": "Premium",
-      "priceMonthly": 15.00,
+      "priceMonthly": 10.00,
       "creditsPerMonth": 5000,
       "description": "For power users and creators",
       "features": [
@@ -45,10 +44,7 @@
         "Highest priority queue",
         "Access to all content",
         "Premium AI models",
-        "Unlimited everything",
-        "Early access to new features",
-        "Advanced analytics",
-        "API access (future)"
+        "Early access to new features"
       ]
     }
   ]

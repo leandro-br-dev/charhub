@@ -756,26 +756,30 @@ model CreditTransaction {
 
 // Subscription plans
 model Plan {
-  id                String          @id @default(uuid())
-  tier              PlanTier        @unique
-  name              String
-  priceMonthly      Float
-  creditsPerMonth   Int
-  description       String?
-  features          Json?
-  isActive          Boolean         @default(true)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
+  id                   String          @id @default(uuid())
+  tier                 PlanTier        @unique
+  name                 String
+  priceMonthly         Float
+  creditsPerMonth      Int
+  description          String?
+  features             Json?
+  isActive             Boolean         @default(true)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  // Translation support
+  originalLanguageCode String          @default("en-US")
+  contentVersion       Int             @default(1)
 
   // Multi-provider support
-  paymentProvider   PaymentProvider @default(STRIPE)
+  paymentProvider      PaymentProvider @default(STRIPE)
 
   // PayPal (existing)
-  paypalPlanId      String?         @unique
+  paypalPlanId         String?         @unique
 
   // Stripe (new)
-  stripePriceId     String?         @unique
-  stripeProductId   String?
+  stripePriceId        String?         @unique
+  stripeProductId      String?
 
   userPlans         UserPlan[]      @relation("PlanSubscriptions")
 

@@ -10,6 +10,7 @@ const TRANSLATABLE_FIELDS: Record<string, string[]> = {
   Story: ['title', 'synopsis', 'initialText'],
   Attire: ['name', 'description'],
   Tag: ['name', 'description'],
+  Plan: ['description', 'features'],
 };
 
 /**
@@ -193,6 +194,10 @@ function inferContentType(data: any): string | null {
     return 'Tag';
   }
 
+  if ('tier' in data && 'priceMonthly' in data && 'creditsPerMonth' in data) {
+    return 'Plan';
+  }
+
   return null;
 }
 
@@ -211,19 +216,49 @@ async function translateContent(data: any, targetLanguage: string): Promise<any>
   // Translate each field in parallel
   await Promise.all(
     fields.map(async (fieldName) => {
-      const originalText = data[fieldName];
+      const originalValue = data[fieldName];
 
       // Skip if field is empty
-      if (!originalText || typeof originalText !== 'string') {
+      if (!originalValue) {
         return;
       }
 
       try {
+        // Handle array fields (like Plan.features)
+        if (Array.isArray(originalValue)) {
+          const translatedArray = await Promise.all(
+            originalValue.map(async (item, index) => {
+              if (typeof item !== 'string') return item;
+
+              const result = await translationService.translate({
+                contentType,
+                contentId: data.id,
+                fieldName: `${fieldName}[${index}]`,
+                originalText: item,
+                originalLanguageCode: data.originalLanguageCode,
+                targetLanguageCode: targetLanguage,
+                context: buildContext(data, contentType),
+                sourceVersion: data.contentVersion,
+              });
+
+              return result.translatedText;
+            })
+          );
+
+          translated[fieldName] = translatedArray;
+          return;
+        }
+
+        // Handle string fields
+        if (typeof originalValue !== 'string') {
+          return;
+        }
+
         const result = await translationService.translate({
           contentType,
           contentId: data.id,
           fieldName,
-          originalText,
+          originalText: originalValue,
           originalLanguageCode: data.originalLanguageCode,
           targetLanguageCode: targetLanguage,
           context: buildContext(data, contentType),

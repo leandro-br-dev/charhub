@@ -7,7 +7,7 @@ import { resolveApiBaseUrl } from './lib/resolveApiBaseUrl';
 const resolvedBase = resolveApiBaseUrl();
 const loadPath = resolvedBase ? `${resolvedBase}/api/v1/i18n/{{lng}}/{{ns}}` : '/api/v1/i18n/{{lng}}/{{ns}}';
 
-const namespaces = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal', 'characters', 'chat', 'imageGallery', 'story', 'navigation', 'profile'];
+const namespaces = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal', 'characters', 'chat', 'imageGallery', 'story', 'navigation', 'profile', 'plans'];
 const supportedLngs = ['en-US', 'pt-BR', 'es-ES', 'fr-FR', 'de-DE', 'zh-CN', 'hi-IN', 'ar-SA', 'ru-RU', 'ja-JP', 'ko-KR', 'it-IT'];
 
 i18n

@@ -3,6 +3,7 @@ import { redis } from '../../config/redis';
 import { logger } from '../../config/logger';
 import { callLLM, type LLMResponse } from '../llm';
 import { TranslationStatus } from '../../generated/prisma';
+import crypto from 'crypto';
 
 export interface TranslationRequest {
   contentType: string;
@@ -330,7 +331,9 @@ export class TranslationService {
    * Build cache key
    */
   private buildCacheKey(request: TranslationRequest): string {
-    return `translation:${request.contentType}:${request.contentId}:${request.fieldName}:${request.targetLanguageCode}`;
+    // Create a hash of the original text to ensure unique cache keys for different texts
+    const textHash = crypto.createHash('md5').update(request.originalText).digest('hex').substring(0, 8);
+    return `translation:${request.contentType}:${request.contentId}:${request.fieldName}:${textHash}:${request.targetLanguageCode}`;
   }
 
   /**

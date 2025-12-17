@@ -27,7 +27,7 @@ export class StripeProvider implements IPaymentProvider {
     }
 
     this.stripe = new Stripe(apiKey, {
-      apiVersion: '2025-11-17.clover',
+      apiVersion: '2025-12-15.clover',
     });
   }
 
@@ -48,13 +48,13 @@ export class StripeProvider implements IPaymentProvider {
     // 2. Get or create Stripe Customer
     const customer = await this.getOrCreateCustomer(userId, userEmail);
 
-    // 3. Create Stripe Subscription
+    // 3. Create Stripe Subscription with manual invoice
     const subscription = await this.stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: plan.stripePriceId }],
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
-      expand: ['latest_invoice.payment_intent'],
+      expand: ['latest_invoice'],
       metadata: {
         userId,
         planId,
@@ -62,17 +62,51 @@ export class StripeProvider implements IPaymentProvider {
       },
     });
 
+    // Get the created invoice
     const invoice = subscription.latest_invoice as Stripe.Invoice;
-    const paymentIntent = (invoice as any).payment_intent as Stripe.PaymentIntent;
+
+    if (!invoice) {
+      logger.error({ subscriptionId: subscription.id }, 'No invoice created for subscription');
+      throw new Error('No invoice created by Stripe');
+    }
+
+    // 4. Manually create a PaymentIntent for the invoice
+    // This ensures we have a client_secret to return
+    const paymentIntent = await this.stripe.paymentIntents.create({
+      amount: (invoice as any).amount_due,
+      currency: 'usd',
+      customer: customer.id,
+      payment_method_types: ['card'],
+      setup_future_usage: 'off_session',
+      metadata: {
+        userId,
+        planId,
+        subscriptionId: subscription.id,
+        invoiceId: (invoice as any).id,
+        charhubEnvironment: process.env.NODE_ENV || 'development',
+      },
+    });
+
+    if (!paymentIntent.client_secret) {
+      logger.error({ paymentIntentId: paymentIntent.id }, 'No client_secret in PaymentIntent');
+      throw new Error('Failed to create payment intent');
+    }
 
     logger.info(
-      { userId, planId, subscriptionId: subscription.id },
-      'Stripe subscription created'
+      {
+        userId,
+        planId,
+        subscriptionId: subscription.id,
+        invoiceId: (invoice as any).id,
+        paymentIntentId: paymentIntent.id,
+        amount: paymentIntent.amount,
+      },
+      'Stripe subscription and payment intent created'
     );
 
     return {
       subscriptionId: subscription.id,
-      clientSecret: paymentIntent?.client_secret || '',
+      clientSecret: paymentIntent.client_secret,
       customerId: customer.id,
     };
   }

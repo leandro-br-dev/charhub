@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { optionalAuth } from '../../middleware/auth';
+import { translationMiddleware } from '../../middleware/translationMiddleware';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 
@@ -9,7 +10,7 @@ const router = Router();
  * GET /api/v1/plans
  * Get all available subscription plans
  */
-router.get('/', optionalAuth, async (_req: Request, res: Response): Promise<void> => {
+router.get('/', optionalAuth, translationMiddleware(), async (_req: Request, res: Response): Promise<void> => {
   try {
     const plans = await prisma.plan.findMany({
       where: {
@@ -37,7 +38,7 @@ router.get('/', optionalAuth, async (_req: Request, res: Response): Promise<void
  * GET /api/v1/plans/:tier
  * Get specific plan by tier
  */
-router.get('/:tier', optionalAuth, async (req: Request, res: Response): Promise<void> => {
+router.get('/:tier', optionalAuth, translationMiddleware(), async (req: Request, res: Response): Promise<void> => {
   try {
     const { tier } = req.params;
 
