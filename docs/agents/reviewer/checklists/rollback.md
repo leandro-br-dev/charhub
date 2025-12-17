@@ -242,7 +242,9 @@ git push origin main --force
 
 **⚠️ CRITICAL: If bad deployment ran database migrations**
 
-**Check if migration was run:**
+---
+
+#### Check if Migration Was Applied
 
 ```bash
 # SSH to production
@@ -253,27 +255,216 @@ cd /mnt/stateful_partition/charhub
 docker compose exec backend npm run prisma:migrate:status
 ```
 
-**If new migration was applied:**
+**Checklist:**
+- [ ] Migration status checked
+- [ ] Identified if new migration was applied
+- [ ] Determined migration risk level (safe/unsafe to revert)
 
-**Option A: Revert Migration (If Safe)**
+---
+
+#### Option A: Restore from Automatic Backup (RECOMMENDED)
+
+**⚠️ Use this option if:**
+- Migration deleted or modified data
+- Migration is complex or has dependencies
+- You want guaranteed full restore to pre-deploy state
+
+**Step 1: List Available Backups**
+
 ```bash
-# Mark migration as rolled back
-docker compose exec backend npm run prisma:migrate:resolve --rolled-back <migration-name>
+# SSH to production (if not already connected)
+gcloud compute ssh charhub-vm --zone=us-central1-a
 
-# Manually revert schema changes (if needed)
-docker compose exec postgres psql -U charhub -d charhub_db
-# Run SQL to undo migration changes
-# (ALTER TABLE DROP COLUMN, DROP TABLE, etc.)
-# EXIT: \q
+# List available backups
+cd /mnt/stateful_partition/charhub
+ls -lht backups/database/backup_*.sql.gz | head -10
 ```
 
-**Option B: Restore from Backup (If Unsafe)**
-→ See `docs/02-guides/deployment/vm-setup-recovery.md`
-→ Database backup/restore procedure
+**Expected output:**
+```
+backup_20251217_143022_abc1234.sql.gz  (5.2M) - Dec 17 14:30
+backup_20251217_100015_def5678.sql.gz  (5.1M) - Dec 17 10:00
+...
+```
 
-**⚠️ DATA LOSS RISK:**
-- If migration deleted data → backup is only option
-- If migration added fields → safe to drop them
+**Checklist:**
+- [ ] Found backups in `backups/database/`
+- [ ] Identified backup taken BEFORE failed deployment
+- [ ] Verified backup timestamp and commit SHA
+
+**Step 2: Restore Using Script**
+
+```bash
+# Navigate to project directory
+cd /mnt/stateful_partition/charhub
+
+# Run restore script with backup file
+./scripts/ops/restore-database-backup.sh backups/database/backup_20251217_143022_abc1234.sql.gz
+
+# Script will:
+# 1. Stop backend container
+# 2. Drop and recreate database
+# 3. Restore from backup
+# 4. Restart backend
+# 5. Verify health
+
+# Expected duration: 5-10 minutes
+```
+
+**Checklist:**
+- [ ] Restore script executed successfully
+- [ ] Backend restarted and healthy
+- [ ] Database tables verified
+- [ ] No errors in restore output
+
+**Step 3: Verify Database Restore**
+
+```bash
+# Check backend status
+docker compose ps backend
+
+# Verify backend health
+docker compose logs backend --tail=50
+
+# Test database connectivity
+docker compose exec postgres psql -U charhub -d charhub_db -c "\dt"
+
+# Exit SSH
+exit
+```
+
+**Checklist:**
+- [ ] Backend shows "Up (healthy)"
+- [ ] Database contains expected tables
+- [ ] No errors in backend logs
+- [ ] Application is functional
+
+---
+
+#### Option B: Manual Database Restore (If Script Unavailable)
+
+**Only use if restore script is not available:**
+
+```bash
+# SSH to production
+gcloud compute ssh charhub-vm --zone=us-central1-a
+cd /mnt/stateful_partition/charhub
+
+# Set variables
+BACKUP_FILE="backups/database/backup_20251217_143022_abc1234.sql.gz"
+COMPOSE="/var/lib/toolbox/bin/docker-compose"
+
+# Stop backend
+sudo $COMPOSE stop backend
+sleep 2
+
+# Terminate connections
+sudo $COMPOSE exec -T postgres psql -U charhub -d postgres << SQL
+SELECT pg_terminate_backend(pid)
+FROM pg_stat_activity
+WHERE datname = 'charhub_db' AND pid <> pg_backend_pid();
+SQL
+
+# Drop and recreate database
+sudo $COMPOSE exec -T postgres psql -U charhub -d postgres << SQL
+DROP DATABASE IF EXISTS charhub_db;
+CREATE DATABASE charhub_db;
+GRANT ALL PRIVILEGES ON DATABASE charhub_db TO charhub;
+SQL
+
+# Restore from backup
+gunzip -c "$BACKUP_FILE" | sudo $COMPOSE exec -T postgres psql \
+  -U charhub -d charhub_db --set ON_ERROR_STOP=on
+
+# Restart backend
+sudo $COMPOSE start backend
+sleep 10
+
+# Verify
+sudo $COMPOSE ps backend
+```
+
+**Checklist:**
+- [ ] Database dropped and recreated
+- [ ] Backup restored successfully
+- [ ] Backend restarted
+- [ ] System is healthy
+
+---
+
+#### Option C: Revert Migration Manually (ONLY for Simple Migrations)
+
+**⚠️ Use this option ONLY if:**
+- Migration only added new columns/tables (no data modification)
+- You're confident you can manually revert the changes
+- Backup restore is not available or practical
+
+**Step 1: Mark Migration as Rolled Back**
+
+```bash
+# SSH to production
+gcloud compute ssh charhub-vm --zone=us-central1-a
+cd /mnt/stateful_partition/charhub
+
+# Mark migration as rolled back in Prisma
+docker compose exec backend npx prisma migrate resolve \
+  --rolled-back "20251217_migration_name"
+```
+
+**Step 2: Manually Revert Schema Changes**
+
+```bash
+# Connect to database
+docker compose exec postgres psql -U charhub -d charhub_db
+
+# Example: Drop added column
+ALTER TABLE users DROP COLUMN IF EXISTS new_field;
+
+# Example: Drop added table
+DROP TABLE IF EXISTS new_table;
+
+# Exit psql
+\q
+```
+
+**Step 3: Verify and Restart**
+
+```bash
+# Restart backend
+docker compose restart backend
+
+# Verify health
+docker compose ps backend
+docker compose logs backend --tail=50
+
+# Exit SSH
+exit
+```
+
+**Checklist:**
+- [ ] Migration marked as rolled back
+- [ ] Schema changes reverted manually
+- [ ] Backend restarted successfully
+- [ ] No errors in logs
+
+---
+
+#### Database Rollback Decision Matrix
+
+| Migration Type | Recommended Option | Risk Level |
+|----------------|-------------------|------------|
+| Added data, modified data | ✅ Option A (Restore Backup) | 🔴 High |
+| Deleted data | ✅ Option A (Restore Backup) | 🔴 Critical |
+| Complex schema changes | ✅ Option A (Restore Backup) | 🔴 High |
+| Only added columns | ⚠️ Option C (Manual Revert) | 🟡 Medium |
+| Only added tables | ⚠️ Option C (Manual Revert) | 🟡 Medium |
+| No migration was run | ℹ️ Skip this step | 🟢 None |
+
+**⚠️ CRITICAL NOTES:**
+- **Always prefer Option A (Backup Restore)** - safest and fastest
+- Automatic backups are created before every deployment (if implemented)
+- Backup restore guarantees full return to pre-deploy state
+- Manual reversion is error-prone - use only as last resort
 
 ---
 
