@@ -11,6 +11,9 @@ on:
       - '.github/workflows/deploy-production.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write  # Required for pushing git tags (latest-stable)
+
 env:
   GCP_ZONE: us-central1-a
   VM_NAME: charhub-vm
