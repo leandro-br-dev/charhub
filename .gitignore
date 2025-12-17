@@ -175,3 +175,4 @@ old_project_reference
 # Image generation test scripts
 test-*.ps1
 debug-*.ps1
+STRIPE_SETUP.md
