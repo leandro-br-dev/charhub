@@ -66,6 +66,13 @@ export async function teardownTestDatabase(): Promise<void> {
 export async function seedTestPlans(): Promise<void> {
   const db = getTestDb();
 
+  // Delete existing test plans to ensure clean state in CI
+  await db.plan.deleteMany({
+    where: {
+      id: { in: ['plan_free', 'plan_plus', 'plan_premium'] },
+    },
+  });
+
   await db.plan.createMany({
     data: [
       {
@@ -96,6 +103,5 @@ export async function seedTestPlans(): Promise<void> {
         isActive: true,
       },
     ],
-    skipDuplicates: true,
   });
 }
