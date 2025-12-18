@@ -17,7 +17,7 @@ interface Plan {
   description: string;
   priceMonthly: number;
   creditsPerMonth: number;
-  features: string[];
+  features: string[] | null;
   isActive: boolean;
   stripePriceId?: string;
   popular?: boolean;
@@ -97,12 +97,18 @@ export function PlansComparison({ plans, currentPlanId, onSelectPlan, loading }:
             <div className="space-y-3">
               <p className="text-sm font-semibold text-muted-foreground">{t('included_features')}:</p>
               <ul className="space-y-2">
-                {plan.features.map((feature, index) => (
-                  <li key={index} className="flex items-start gap-2 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                    <span>{feature}</span>
+                {plan.features && plan.features.length > 0 ? (
+                  plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm">
+                      <CheckCircle2 className="w-4 h-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-sm text-muted-foreground italic">
+                    No features available
                   </li>
-                ))}
+                )}
               </ul>
             </div>
           </CardContent>
