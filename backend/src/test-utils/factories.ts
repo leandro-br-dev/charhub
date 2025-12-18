@@ -29,6 +29,7 @@ export async function createTestUser(overrides: any = {}) {
  * Create test user with initial balance
  */
 export async function createTestUserWithBalance(balance: number, overrides: any = {}) {
+  const db = getTestDb();
   const user = await createTestUser(overrides);
 
   // Create initial credit transaction to set balance
@@ -109,6 +110,3 @@ export async function createTestTransaction(userId: string, overrides: any = {})
     data: defaultData,
   });
 }
-
-// Fix: Import db properly
-const db = getTestDb();

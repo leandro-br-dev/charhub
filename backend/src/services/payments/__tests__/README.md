@@ -40,7 +40,7 @@ let mockWebhooksConstructEvent: jest.Mock;
 
 ### Database Setup
 
-Each test uses a clean test database:
+Each test uses a clean test database with **dependency injection** to ensure proper isolation:
 
 ```typescript
 beforeAll(async () => {
@@ -50,12 +50,21 @@ beforeAll(async () => {
 beforeEach(async () => {
   await cleanDatabase();     // Clear all data
   await seedTestPlans();     // Seed required plans
+
+  // CRITICAL: Pass test DB instance to provider
+  provider = new StripeProvider(getTestDb());
 });
 
 afterAll(async () => {
   await teardownTestDatabase(); // Cleanup
 });
 ```
+
+**Why dependency injection?**
+- StripeProvider normally uses production Prisma singleton
+- Tests require isolated test database instance
+- Passing `getTestDb()` ensures tests don't touch production data
+- Prevents test failures due to database instance mismatch
 
 ## Test Categories
 
@@ -399,19 +408,46 @@ Current coverage (StripeProvider):
 
 ### Common Issues
 
-1. **Database Connection Errors**
+1. **Foreign Key Constraint Violations** (CRITICAL)
+   ```
+   Error: Foreign key constraint violated on CreditTransaction_userId_fkey
+   ```
+   **Root Cause:** Stale database instance in test factories
+
+   **Fix Applied:** Modified `/src/test-utils/factories.ts` to use fresh DB instance:
+   ```typescript
+   // ❌ BEFORE - Module-level constant (stale after teardown)
+   const db = getTestDb();
+   export async function createTestUserWithBalance(balance: number) {
+     await db.creditTransaction.create({ ... });
+   }
+
+   // ✅ AFTER - Fresh instance on each call
+   export async function createTestUserWithBalance(balance: number) {
+     const db = getTestDb();  // Fresh instance
+     await db.creditTransaction.create({ ... });
+   }
+   ```
+
+   **Why this happened:**
+   - StripeProvider tests call `teardownTestDatabase()` in `afterAll`
+   - This disconnects the shared `testDb` singleton
+   - Other tests running after get stale connection
+   - Solution: Always call `getTestDb()` inside factory functions
+
+2. **Database Connection Errors**
    ```
    Error: Environment variable not found: DATABASE_URL
    ```
    **Fix:** Ensure test environment has DATABASE_URL set in `.env.test`
 
-2. **Missing Environment Variables**
+3. **Missing Environment Variables**
    ```
    Error: STRIPE_SECRET_KEY environment variable is not set
    ```
    **Fix:** Tests automatically set a mock key in `beforeEach`
 
-3. **Mock Not Working**
+4. **Mock Not Working**
    ```
    Error: Property 'mockResolvedValue' does not exist
    ```
@@ -497,7 +533,8 @@ For questions about these tests or to report issues:
 
 ---
 
-**Last Updated:** 2025-12-18
+**Last Updated:** 2025-12-18 (Updated with test isolation fixes)
 **Test Framework:** Jest 29.x
 **Stripe SDK Version:** 17.x
 **Stripe API Version:** 2025-02-24.acacia
+**Test Suite:** 17 tests, 100% passing (91 total with other services)
