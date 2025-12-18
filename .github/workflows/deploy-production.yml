@@ -11,6 +11,9 @@ on:
       - '.github/workflows/deploy-production.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write  # Required for pushing git tags (latest-stable)
+
 env:
   GCP_ZONE: us-central1-a
   VM_NAME: charhub-vm
@@ -196,6 +199,33 @@ jobs:
           sudo chmod 755 "$APP_DIR/cloudflared/config/prod"
           CREDS
 
+      - name: Create Pre-Deploy Database Backup
+        id: backup
+        run: |
+          echo "💾 Creating database backup before deploy..."
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
+              -i $HOME/.ssh/deploy_key \
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'BACKUP'
+          cd /mnt/stateful_partition/charhub
+
+          # Make backup script executable
+          chmod +x scripts/ops/backup-database.sh
+
+          # Run backup
+          export GITHUB_SHA="${{ github.sha }}"
+          export APP_DIR="/mnt/stateful_partition/charhub"
+          export COMPOSE="/var/lib/toolbox/bin/docker-compose"
+          export POSTGRES_USER="charhub"
+          export POSTGRES_DB="charhub_db"
+          ./scripts/ops/backup-database.sh
+
+          echo "✅ Pre-deploy backup completed"
+          BACKUP
+
       - name: Rebuild Containers
         run: |
           echo "🔨 Rebuilding containers..."
@@ -267,6 +297,140 @@ jobs:
           sudo $COMPOSE ps backend
           exit 1
           HEALTH
+
+      - name: Mark Deployment as Stable
+        if: success()
+        run: |
+          echo "✅ Health check passed - marking as stable version"
+
+          # Configure git
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Create tag with timestamp (for history)
+          STABLE_TAG="stable-$(date +%Y%m%d-%H%M%S)"
+          git tag -a "$STABLE_TAG" -m "Stable deployment - commit ${{ github.sha }}"
+
+          # Move tag 'latest-stable' to this commit
+          git tag -f latest-stable -m "Latest stable version - deployed at $(date)"
+
+          # Push tags to origin
+          git push origin "$STABLE_TAG"
+          git push origin latest-stable --force
+
+          echo "📌 Tagged as: $STABLE_TAG"
+          echo "📌 Moved 'latest-stable' to current commit"
+
+      - name: Rollback to Last Stable Version
+        if: failure()
+        run: |
+          echo "❌ Health check failed - rolling back to last stable version..."
+
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
+              -i $HOME/.ssh/deploy_key \
+              leandro_br_dev_gmail_com@34.66.66.202 \
+              'bash -s' << 'ROLLBACK'
+
+          APP_DIR="/mnt/stateful_partition/charhub"
+          COMPOSE="/var/lib/toolbox/bin/docker-compose"
+          cd "$APP_DIR"
+
+          # Fix permissions
+          sudo chown -R leandro_br_dev_gmail_com:leandro_br_dev_gmail_com "$APP_DIR" 2>/dev/null || true
+          sudo chmod -R u+w "$APP_DIR" 2>/dev/null || true
+          git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
+
+          # Fetch latest tags
+          git fetch --tags
+
+          # Verificar se tag latest-stable existe
+          if ! git rev-parse latest-stable >/dev/null 2>&1; then
+            echo "⚠️  Tag 'latest-stable' not found!"
+            echo "This is likely the first deployment with this feature."
+            echo "Falling back to HEAD~1 (legacy behavior)"
+            ROLLBACK_TARGET="HEAD~1"
+          else
+            ROLLBACK_TARGET="latest-stable"
+            echo "📌 Found latest-stable tag"
+          fi
+
+          # Get commit info
+          CURRENT=$(git rev-parse HEAD)
+          STABLE=$(git rev-parse $ROLLBACK_TARGET)
+
+          echo "Current commit (failed): $CURRENT"
+          echo "Rolling back to: $STABLE ($ROLLBACK_TARGET)"
+
+          # Verificar se já estamos na versão estável
+          if [ "$CURRENT" = "$STABLE" ]; then
+            echo "⚠️  Already at stable version but health check failed!"
+            echo "This indicates the stable version is broken - CRITICAL!"
+            echo "Manual intervention required - do not rollback further"
+            exit 1
+          fi
+
+          # Mostrar log de commits que serão revertidos
+          echo ""
+          echo "📝 Commits being reverted:"
+          git log --oneline $STABLE..$CURRENT
+          echo ""
+
+          # Rollback para versão estável
+          git reset --hard $ROLLBACK_TARGET
+          echo "✅ Code rolled back to stable version"
+
+          # Restore database backup
+          echo "🔄 Restoring database from backup..."
+          BACKUP_FILE=$(ls -t backups/database/backup_*.sql.gz | head -1)
+          if [ -f "$BACKUP_FILE" ]; then
+            echo "Restoring from: $BACKUP_FILE"
+            chmod +x scripts/ops/restore-database-backup.sh
+            export SKIP_CONFIRMATION="true"
+            ./scripts/ops/restore-database-backup.sh "$BACKUP_FILE" || echo "⚠️  Database restore failed"
+          else
+            echo "⚠️  No backup found, skipping database restore"
+          fi
+
+          # Rebuild containers
+          export HOME="/home/leandro_br_dev_gmail_com"
+          echo "🔨 Rebuilding containers with stable version..."
+          sudo -E HOME="$HOME" $COMPOSE down --remove-orphans
+          sleep 5
+          sudo -E HOME="$HOME" $COMPOSE build --pull
+          sudo -E HOME="$HOME" $COMPOSE up -d
+          sleep 15
+
+          # Verify rollback
+          STATUS=$(sudo $COMPOSE ps backend --format='{{.Status}}' 2>/dev/null)
+          echo "Backend status after rollback: $STATUS"
+
+          if [[ "$STATUS" =~ "Up" ]] || [[ "$STATUS" =~ "healthy" ]]; then
+            echo "✅ Rollback successful - stable version restored"
+            exit 0
+          else
+            echo "❌ Rollback failed - manual intervention required"
+            exit 1
+          fi
+          ROLLBACK
+
+      - name: Notify Rollback Details
+        if: failure()
+        run: |
+          echo "🚨 AUTOMATIC ROLLBACK EXECUTED"
+          echo ""
+          echo "Failed commit: ${{ github.sha }}"
+          echo "Rolled back to: latest-stable tag"
+          echo ""
+          echo "Action required:"
+          echo "1. Check GitHub Actions logs for reverted commits"
+          echo "2. Fix the issue locally"
+          echo "3. Test thoroughly before pushing again"
+          echo ""
+          echo "View stable versions: git tag -l 'stable-*'"
+          echo "View latest stable: git show latest-stable"
 
       - name: Verify Deployment
         run: |
