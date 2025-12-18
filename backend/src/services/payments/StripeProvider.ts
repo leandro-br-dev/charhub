@@ -5,7 +5,7 @@
  */
 
 import Stripe from 'stripe';
-import { prisma } from '../../config/database';
+import { prisma as defaultPrisma } from '../../config/database';
 import { logger } from '../../config/logger';
 import {
   IPaymentProvider,
@@ -13,11 +13,13 @@ import {
   WebhookResult,
   SubscriptionStatus,
 } from './IPaymentProvider';
+import { PrismaClient } from '../../generated/prisma';
 
 export class StripeProvider implements IPaymentProvider {
   private stripe: Stripe;
+  private prisma: PrismaClient;
 
-  constructor() {
+  constructor(prisma?: PrismaClient) {
     const apiKey = process.env.STRIPE_SECRET_KEY;
 
     if (!apiKey) {
@@ -27,6 +29,8 @@ export class StripeProvider implements IPaymentProvider {
     this.stripe = new Stripe(apiKey, {
       apiVersion: '2025-02-24.acacia',
     });
+
+    this.prisma = prisma || defaultPrisma;
   }
 
   async createSubscription(
@@ -35,7 +39,7 @@ export class StripeProvider implements IPaymentProvider {
     userEmail: string
   ): Promise<SubscriptionResult> {
     // 1. Get plan from database
-    const plan = await prisma.plan.findUnique({
+    const plan = await this.prisma.plan.findUnique({
       where: { id: planId },
     });
 
@@ -129,7 +133,7 @@ export class StripeProvider implements IPaymentProvider {
   }
 
   async changePlan(subscriptionId: string, newPlanId: string): Promise<void> {
-    const newPlan = await prisma.plan.findUnique({
+    const newPlan = await this.prisma.plan.findUnique({
       where: { id: newPlanId },
     });
 
@@ -232,7 +236,7 @@ export class StripeProvider implements IPaymentProvider {
    */
   private async getOrCreateCustomer(userId: string, email: string): Promise<Stripe.Customer> {
     // Check if user already has a Stripe customer ID
-    const userPlan = await prisma.userPlan.findFirst({
+    const userPlan = await this.prisma.userPlan.findFirst({
       where: {
         userId,
         stripeCustomerId: { not: null },

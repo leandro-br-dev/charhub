@@ -77,7 +77,8 @@ describe('StripeProvider', () => {
 
     (Stripe as any).mockImplementation(() => mockStripe);
 
-    provider = new StripeProvider();
+    // Pass test Prisma instance to provider
+    provider = new StripeProvider(getTestDb());
   });
 
   afterAll(async () => {
