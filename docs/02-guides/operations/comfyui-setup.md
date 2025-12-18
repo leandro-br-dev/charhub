@@ -1,6 +1,6 @@
-# ComfyUI Setup com Cloudflare Tunnel
+# ComfyUI Setup com Middleware e Cloudflare Tunnel
 
-Este documento descreve a configuração do ComfyUI para geração de imagens no CharHub, utilizando Cloudflare Tunnel para expor o serviço localmente para desenvolvimento e produção.
+Este documento descreve a configuração do ComfyUI para geração de imagens no CharHub, utilizando um Middleware Node.js para segurança e Cloudflare Tunnel para exposição pública.
 
 ## Arquitetura
 
@@ -11,9 +11,10 @@ Este documento descreve a configuração do ComfyUI para geração de imagens no
 │                 │
 │  COMFYUI_URL=   │
 │  https://...    │
+│  + Auth Token   │
 └────────┬────────┘
          │
-         │ HTTPS
+         │ HTTPS + Bearer Token
          ▼
 ┌─────────────────┐
 │ Cloudflare      │
@@ -22,6 +23,19 @@ Este documento descreve a configuração do ComfyUI para geração de imagens no
 └────────┬────────┘
          │
          │ HTTP
+         ▼
+┌─────────────────┐
+│ ComfyUI         │
+│ Middleware      │
+│ (Node.js)       │
+│ Port 5001       │
+│                 │
+│ - Auth Layer    │
+│ - Proxy Routes  │
+│ - Batch Support │
+└────────┬────────┘
+         │
+         │ HTTP (internal)
          ▼
 ┌─────────────────┐
 │ ComfyUI         │
@@ -40,15 +54,16 @@ Este documento descreve a configuração do ComfyUI para geração de imagens no
 - Acesso direto à GPU RTX 3060 TI sem overhead de virtualização
 - CUDA 12.8 funciona melhor no Windows nativo
 
-### 2. **Flexibilidade de Deployment**
-- Mesmo endpoint funciona para dev e produção
-- Backend em Docker/WSL acessa via HTTPS público
-- Fácil migrar para servidor GPU dedicado no futuro
+### 2. **Segurança**
+- **Middleware com autenticação obrigatória** via Bearer Token
+- ComfyUI não fica exposto diretamente na internet
+- Cloudflare fornece SSL/TLS e proteção DDoS
 
-### 3. **Segurança e Monitoramento**
-- Cloudflare fornece SSL/TLS automaticamente
-- Logs centralizados
-- Proteção DDoS nativa
+### 3. **Flexibilidade e Features**
+- Proxy transparente para endpoints nativos do ComfyUI
+- Suporte para batch de imagens de referência
+- Endpoint `/middleware/generate` para workflows avançados
+- Mesmo endpoint funciona para dev e produção
 
 ## Configuração Atual
 
@@ -67,14 +82,18 @@ Este endpoint está configurado via Cloudflare Tunnel e:
 
 **`.env`**:
 ```bash
-# ComfyUI Image Generation
-# Production-ready endpoint via Cloudflare Tunnel (works for dev and prod)
-# Local endpoint: http://localhost:8188 (if running ComfyUI locally)
-# Tunnel endpoint: https://comfyui.charhub.app (recommended)
+# ComfyUI Middleware endpoint via Cloudflare Tunnel
 COMFYUI_URL=https://comfyui.charhub.app
-COMFYUI_SERVICE_TOKEN=
+
+# Required: Authentication token for middleware
+# Must match the token configured in the middleware server
+COMFYUI_SERVICE_TOKEN=afa7b173c465ba2d84beb3a874d03d3f659d47cd01404c49b256a5dab4cb69ad
+
+# Timeout for image generation (5 minutes)
 COMFYUI_TIMEOUT=300000
 ```
+
+> **⚠️ IMPORTANTE**: O `COMFYUI_SERVICE_TOKEN` é **obrigatório** e deve corresponder ao token configurado no servidor middleware.
 
 ### Opções de Configuração
 
@@ -86,19 +105,32 @@ COMFYUI_TIMEOUT=300000
 
 ## Como Funciona
 
-### 1. ComfyUI (Windows)
+### 1. ComfyUI (Windows Native)
 - Roda em `http://localhost:8188`
 - Acesso direto à GPU RTX 3060 TI
 - Processamento de workflows para geração de imagens
+- **Não exposto diretamente** - apenas acessível localmente
 
-### 2. Cloudflare Tunnel (Windows)
-- Conecta `localhost:8188` → `https://comfyui.charhub.app`
-- Fornece SSL/TLS
-- Torna o ComfyUI acessível pela internet de forma segura
+### 2. ComfyUI Middleware (Node.js)
+- Roda em `http://localhost:5001`
+- **Camada de autenticação**: Valida Bearer Token em todas as requisições
+- **Proxy transparente**: Encaminha requisições para ComfyUI com prefixo `/comfyui/`
+  - `/comfyui/prompt` → ComfyUI `/prompt`
+  - `/comfyui/history/{id}` → ComfyUI `/history/{id}`
+  - `/comfyui/view` → ComfyUI `/view`
+  - `/comfyui/upload/image` → ComfyUI `/upload/image`
+  - `/comfyui/system_stats` → ComfyUI `/system_stats`
+- **Batch support**: Endpoint `/middleware/generate` para workflows com múltiplas imagens
 
-### 3. Backend (Docker/WSL ou Servidor)
+### 3. Cloudflare Tunnel (Windows)
+- Conecta `localhost:5001` → `https://comfyui.charhub.app`
+- Fornece SSL/TLS automático
+- Torna o middleware acessível pela internet de forma segura
+
+### 4. CharHub Backend (Docker/WSL ou Servidor)
 - Acessa `https://comfyui.charhub.app` via HTTPS
-- Envia workflows de geração de imagens
+- Envia header `Authorization: Bearer <token>` em todas as requisições
+- Usa endpoints proxy: `/comfyui/prompt`, `/comfyui/history`, etc.
 - Recebe imagens geradas
 
 ## Fluxo de Geração de Imagem
@@ -108,6 +140,7 @@ sequenceDiagram
     participant U as User
     participant B as Backend
     participant CF as Cloudflare
+    participant M as Middleware
     participant C as ComfyUI
 
     U->>B: Upload image for character
@@ -117,20 +150,29 @@ sequenceDiagram
 
     Note over B: Worker processes job
 
-    B->>CF: POST /prompt (via HTTPS)
-    CF->>C: Forward to localhost:8188
+    B->>CF: POST /comfyui/prompt (HTTPS + Bearer Token)
+    CF->>M: Forward to localhost:5001
+    M->>M: Validate token
+    M->>C: Forward to localhost:8188 /prompt
     C->>C: Generate image with CUDA
-    C-->>CF: Image ready
-    CF-->>B: Prompt ID
+    C-->>M: Image ready
+    M-->>CF: Prompt ID
+    CF-->>B: Return prompt ID
 
-    B->>CF: GET /history/{promptId}
-    CF->>C: Forward request
-    C-->>CF: History with filename
+    B->>CF: GET /comfyui/history/{promptId} (+ Token)
+    CF->>M: Forward request
+    M->>M: Validate token
+    M->>C: Forward to /history/{promptId}
+    C-->>M: History with filename
+    M-->>CF: Return history
     CF-->>B: Return history
 
-    B->>CF: GET /view?filename=...
-    CF->>C: Forward request
-    C-->>CF: Image bytes
+    B->>CF: GET /comfyui/view?filename=... (+ Token)
+    CF->>M: Forward request
+    M->>M: Validate token
+    M->>C: Forward to /view
+    C-->>M: Image bytes
+    M-->>CF: Return image
     CF-->>B: Return image
 
     B->>B: Convert to WebP
@@ -148,7 +190,7 @@ sequenceDiagram
 - Mínimo 12GB VRAM (recomendado para modelos SDXL)
 
 ### Software
-- **Windows**: ComfyUI + cloudflared + CUDA drivers
+- **Windows**: ComfyUI + ComfyUI Middleware (Node.js) + cloudflared + CUDA drivers
 - **Backend**: Docker + WSL2 (ou servidor Linux remoto)
 
 ## Troubleshooting
@@ -220,27 +262,45 @@ COMFYUI_URL=https://comfyui.charhub.app  # Mesmo endpoint!
 
 ## Segurança
 
-### Autenticação (Opcional)
+### Autenticação (Obrigatória)
 
-Para adicionar autenticação por token:
+O middleware implementa autenticação obrigatória via Bearer Token:
 
-1. **Gerar token secreto**:
+1. **Token já configurado**: `afa7b173c465ba2d84beb3a874d03d3f659d47cd01404c49b256a5dab4cb69ad`
+
+2. **Configuração no Backend**:
+   ```bash
+   # .env e .env.production
+   COMFYUI_SERVICE_TOKEN=afa7b173c465ba2d84beb3a874d03d3f659d47cd01404c49b256a5dab4cb69ad
+   ```
+
+3. **Configuração no Middleware**: O mesmo token deve estar configurado no arquivo `.env` do middleware server
+
+4. **Como funciona**:
+   - O backend adiciona automaticamente o header `Authorization: Bearer <token>` em todas as requisições
+   - O middleware valida o token antes de encaminhar para o ComfyUI
+   - Requisições sem token ou com token inválido são rejeitadas com HTTP 401
+
+### Rotação de Token
+
+Para trocar o token de autenticação:
+
+1. **Gerar novo token**:
    ```bash
    openssl rand -hex 32
    ```
 
-2. **Configurar no .env**:
-   ```bash
-   COMFYUI_SERVICE_TOKEN=seu_token_aqui
-   ```
+2. **Atualizar no middleware** (servidor Windows):
+   - Editar `.env` no servidor middleware
+   - Reiniciar o middleware
 
-3. **O backend já está preparado**: O `ComfyUIService` automaticamente adiciona header `Authorization: Bearer <token>` se o token estiver configurado.
-
-> **Nota**: ComfyUI vanilla não suporta autenticação nativa. Para usar tokens, você precisaria adicionar um middleware customizado ou usar um proxy reverso com autenticação (Nginx, Caddy, etc).
+3. **Atualizar no backend** (CharHub):
+   - Editar `.env` e `.env.production`
+   - Reiniciar o backend: `docker compose restart backend`
 
 ### Cloudflare Access (Avançado)
 
-Para proteção adicional, pode-se configurar Cloudflare Access para exigir autenticação adicional no túnel.
+Para proteção adicional em camadas, pode-se configurar Cloudflare Access para exigir autenticação adicional no túnel.
 
 ## Monitoramento
 
@@ -248,11 +308,24 @@ Para proteção adicional, pode-se configurar Cloudflare Access para exigir aute
 ```bash
 # Ver logs de geração de imagem
 docker compose logs backend | grep -E "ComfyUI|avatar_generation|image_generation"
+
+# Verificar se o token está configurado
+docker compose logs backend | grep "ComfyUI Service Token configured"
+```
+
+### Logs do Middleware
+```powershell
+# Windows PowerShell (na pasta do middleware)
+# Se rodando via script start-all-services.ps1, já abre janela com logs
+# Ou verificar diretamente:
+cd comfyui-middleware
+npm run dev
 ```
 
 ### Logs do ComfyUI
 - Interface web: `http://localhost:8188` (no Windows)
 - Console do processo Python
+- Verificar geração de imagens em tempo real
 
 ### Logs do Cloudflare Tunnel
 ```powershell
@@ -263,5 +336,6 @@ cloudflared tunnel --config <config> run --loglevel info
 ## Referências
 
 - [ComfyUI GitHub](https://github.com/comfyanonymous/ComfyUI)
+- [ComfyUI Middleware](https://github.com/leandro-br-dev/charhub-comfyui) - Repositório do middleware
 - [Cloudflare Tunnel Docs](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/)
 - [CUDA 12.8 Release Notes](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/)

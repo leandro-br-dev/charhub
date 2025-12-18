@@ -28,6 +28,7 @@ The backend is a TypeScript Express application that authenticates users, proxie
 | `services/translationService.ts` | Loads translation JSON from `../translations`. |
 | `services/userService.ts` | User persistence helpers (backed by Prisma). |
 | `services/llm/*` | Provider-specific adapters (Gemini, OpenAI, Grok). |
+| `services/comfyui/*` | ComfyUI integration for AI-powered image generation via middleware. |
 | `scripts/buildTranslations.ts` | CLI tool to hydrate translations from source strings. |
 
 ## Environment Variables
@@ -43,6 +44,9 @@ Backend container reads `backend/.env`. Important keys:
 - `GEMINI_API_KEY`, `OPENAI_API_KEY`, `GROK_API_KEY` – LLM provider keys.
 - `PUBLIC_HOSTNAME` / `PUBLIC_FACING_URL` – canonical hostname, surfaced to frontend via env propagation.
 - `R2_*` (bucket, keys, endpoint) – Cloudflare R2 storage credentials consumidos pelo `r2Service`.
+- `COMFYUI_URL` – ComfyUI middleware endpoint (e.g., `https://comfyui.charhub.app`).
+- `COMFYUI_SERVICE_TOKEN` – Authentication token for ComfyUI middleware (required).
+- `COMFYUI_TIMEOUT` – Timeout for image generation operations (default: 300000ms / 5 minutes).
 - `DEV_TRANSLATION_MODE` (development only) – controls translation bootstrapping (`auto`, `offline`, or `skip`).
 
 ## Commands
@@ -339,5 +343,6 @@ For implementation details, see `backend/src/agents/style-guides/README.md`.
 - **[LLM Providers](../api/llm-providers.md)** - Full API documentation for AI providers (Gemini, OpenAI, Grok)
 - **[LLM Tool-Calling](../api/llm-tools.md)** - Web search and tool integration for LLMs
 - **[Translation System](translation-system.md)** - Complete translation workflow
+- **[ComfyUI Setup](../../02-guides/operations/comfyui-setup.md)** - ComfyUI middleware configuration and deployment
 - **Style Guides**: `backend/src/agents/style-guides/README.md` - AI response customization
 - **[Development Operations](../../02-guides/development/dev-operations.md)** - Environment setup and deployment

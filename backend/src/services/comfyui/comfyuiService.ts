@@ -57,8 +57,8 @@ export class ComfyUIService {
    */
   async queuePrompt(workflow: ComfyWorkflow): Promise<ComfyQueueResponse> {
     try {
-      logger.debug('Queueing prompt to ComfyUI');
-      const response = await this.client.post<ComfyQueueResponse>('/prompt', {
+      logger.debug('Queueing prompt to ComfyUI via middleware');
+      const response = await this.client.post<ComfyQueueResponse>('/comfyui/prompt', {
         prompt: workflow,
       });
 
@@ -75,7 +75,7 @@ export class ComfyUIService {
    */
   async getHistory(promptId: string): Promise<ComfyHistoryResponse | null> {
     try {
-      const response = await this.client.get<ComfyHistoryResponse>(`/history/${promptId}`);
+      const response = await this.client.get<ComfyHistoryResponse>(`/comfyui/history/${promptId}`);
       return response.data;
     } catch (error) {
       logger.error({ err: error, promptId }, 'Failed to get history from ComfyUI');
@@ -88,9 +88,9 @@ export class ComfyUIService {
    */
   async getImage(filename: string, subfolder: string, type: string): Promise<Buffer | null> {
     try {
-      logger.debug({ filename, subfolder, type }, 'Fetching image from ComfyUI');
+      logger.debug({ filename, subfolder, type }, 'Fetching image from ComfyUI via middleware');
 
-      const response = await this.client.get('/view', {
+      const response = await this.client.get('/comfyui/view', {
         params: { filename, subfolder, type },
         responseType: 'arraybuffer',
       });
@@ -108,8 +108,8 @@ export class ComfyUIService {
    */
   async freeMemory(): Promise<boolean> {
     try {
-      logger.info('Requesting ComfyUI to free memory');
-      await this.client.post('/free', {
+      logger.info('Requesting ComfyUI to free memory via middleware');
+      await this.client.post('/comfyui/free', {
         unload_models: true,
         free_memory: true,
       });
@@ -118,7 +118,7 @@ export class ComfyUIService {
     } catch (error: any) {
       // 404 is acceptable (endpoint might not exist in some versions)
       if (error?.response?.status === 404) {
-        logger.warn('ComfyUI /free endpoint not found (404) - skipping');
+        logger.warn('ComfyUI /comfyui/free endpoint not found (404) - skipping');
         return true;
       }
       logger.error({ err: error }, 'Failed to free ComfyUI memory');
@@ -271,8 +271,8 @@ export class ComfyUIService {
       formData.append('type', 'input');
       formData.append('overwrite', overwrite.toString());
 
-      // Upload to ComfyUI
-      const response = await this.client.post('/upload/image', formData, {
+      // Upload to ComfyUI via middleware
+      const response = await this.client.post('/comfyui/upload/image', formData, {
         headers: formData.getHeaders(),
       });
 
@@ -288,11 +288,11 @@ export class ComfyUIService {
   }
 
   /**
-   * Health check - verify ComfyUI is accessible
+   * Health check - verify ComfyUI middleware is accessible
    */
   async healthCheck(): Promise<boolean> {
     try {
-      await this.client.get('/system_stats', { timeout: 5000 });
+      await this.client.get('/comfyui/system_stats', { timeout: 5000 });
       return true;
     } catch (error) {
       logger.error({ err: error }, 'ComfyUI health check failed');
