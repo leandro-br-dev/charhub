@@ -5,13 +5,11 @@
  * Uses PaymentProviderFactory to support multiple payment providers
  */
 
-import { PrismaClient } from '../generated/prisma';
+import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import { grantMonthlyCredits } from './creditService';
 import { PaymentProviderFactory } from './payments/PaymentProviderFactory';
 import { WebhookResult } from './payments/IPaymentProvider';
-
-const prisma = new PrismaClient();
 
 /**
  * Subscribe user to a plan

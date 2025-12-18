@@ -5,7 +5,7 @@
  */
 
 import Stripe from 'stripe';
-import { PrismaClient } from '../../generated/prisma';
+import { prisma } from '../../config/database';
 import { logger } from '../../config/logger';
 import {
   IPaymentProvider,
@@ -13,8 +13,6 @@ import {
   WebhookResult,
   SubscriptionStatus,
 } from './IPaymentProvider';
-
-const prisma = new PrismaClient();
 
 export class StripeProvider implements IPaymentProvider {
   private stripe: Stripe;
@@ -27,7 +25,7 @@ export class StripeProvider implements IPaymentProvider {
     }
 
     this.stripe = new Stripe(apiKey, {
-      apiVersion: '2025-12-15.clover',
+      apiVersion: '2025-02-24.acacia',
     });
   }
 
@@ -73,7 +71,7 @@ export class StripeProvider implements IPaymentProvider {
     // 4. Manually create a PaymentIntent for the invoice
     // This ensures we have a client_secret to return
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: (invoice as any).amount_due,
+      amount: invoice.amount_due || 0,
       currency: 'usd',
       customer: customer.id,
       payment_method_types: ['card'],
@@ -82,7 +80,7 @@ export class StripeProvider implements IPaymentProvider {
         userId,
         planId,
         subscriptionId: subscription.id,
-        invoiceId: (invoice as any).id,
+        invoiceId: invoice.id,
         charhubEnvironment: process.env.NODE_ENV || 'development',
       },
     });
@@ -97,7 +95,7 @@ export class StripeProvider implements IPaymentProvider {
         userId,
         planId,
         subscriptionId: subscription.id,
-        invoiceId: (invoice as any).id,
+        invoiceId: invoice.id,
         paymentIntentId: paymentIntent.id,
         amount: paymentIntent.amount,
       },
@@ -159,9 +157,9 @@ export class StripeProvider implements IPaymentProvider {
 
     return {
       status: subscription.status,
-      currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
-      currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
-      cancelAtPeriodEnd: (subscription as any).cancel_at_period_end || false,
+      currentPeriodStart: new Date(subscription.current_period_start * 1000),
+      currentPeriodEnd: new Date(subscription.current_period_end * 1000),
+      cancelAtPeriodEnd: subscription.cancel_at_period_end || false,
     };
   }
 
@@ -188,6 +186,10 @@ export class StripeProvider implements IPaymentProvider {
     switch (event.type) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
+        if (!subscription.metadata?.userId) {
+          logger.error({ subscriptionId: subscription.id }, 'Missing userId in subscription metadata');
+          throw new Error('Invalid webhook: missing userId in metadata');
+        }
         return {
           eventType: event.type,
           subscriptionId: subscription.id,
@@ -197,6 +199,10 @@ export class StripeProvider implements IPaymentProvider {
         };
 
       case 'customer.subscription.deleted':
+        if (!subscription.metadata?.userId) {
+          logger.error({ subscriptionId: subscription.id }, 'Missing userId in subscription metadata');
+          throw new Error('Invalid webhook: missing userId in metadata');
+        }
         return {
           eventType: event.type,
           subscriptionId: subscription.id,
@@ -204,13 +210,14 @@ export class StripeProvider implements IPaymentProvider {
           action: 'CANCELLED',
         };
 
-      case 'invoice.payment_failed':
+      case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice;
         return {
           eventType: event.type,
-          subscriptionId: (invoice as any).subscription as string,
+          subscriptionId: typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription?.id || '',
           action: 'PAYMENT_FAILED',
         };
+      }
 
       default:
         return {

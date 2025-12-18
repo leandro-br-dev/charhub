@@ -1,7 +1,6 @@
-import { PrismaClient, CreditTransactionType } from '../generated/prisma';
+import { CreditTransactionType } from '../generated/prisma';
+import { prisma } from '../config/database';
 import { startOfDay, startOfMonth, endOfMonth } from 'date-fns';
-
-const prisma = new PrismaClient();
 
 // Credits configuration
 const DAILY_REWARD_CREDITS = 50;

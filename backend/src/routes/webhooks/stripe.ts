@@ -31,7 +31,7 @@ router.post(
 
     try {
       // Get raw body (should be string or buffer)
-      const rawBody = (req as any).rawBody || req.body;
+      const rawBody = (req as Record<string, any>).rawBody || req.body;
 
       if (!rawBody) {
         logger.error('Missing raw body for Stripe webhook');

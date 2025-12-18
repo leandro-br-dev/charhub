@@ -5,13 +5,12 @@
  */
 
 import Stripe from 'stripe';
-import { PrismaClient } from '../generated/prisma';
+import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import { grantMonthlyCredits } from './creditService';
 
-const prisma = new PrismaClient();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2025-12-15.clover',
+  apiVersion: '2025-02-24.acacia',
 });
 
 export async function activateStripeSubscription(

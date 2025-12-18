@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier, VisualStyle } from '../generated/prisma';
 import { seedAllTags } from './seedTags';
+import { seedStripePlans } from './seeds/seedStripePlans';
 
 const prisma = new PrismaClient();
 
@@ -19,6 +20,7 @@ interface SeedStats {
   characters: { created: number; skipped: number };
   tags: { created: number; updated: number; unchanged: number };
   plans: { created: number; skipped: number };
+  stripePlans: { configured: number; skipped: number };
   serviceCosts: { created: number; skipped: number };
   errors: string[];
 }
@@ -453,6 +455,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     characters: { created: 0, skipped: 0 },
     tags: { created: 0, updated: 0, unchanged: 0 },
     plans: { created: 0, skipped: 0 },
+    stripePlans: { configured: 0, skipped: 0 },
     serviceCosts: { created: 0, skipped: 0 },
     errors: [],
   };
@@ -483,7 +486,15 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     // 4. Seed subscription plans
     stats.plans = await seedPlans(options);
 
-    // 5. Seed service credit costs
+    // 5. Configure Stripe plans (products and prices)
+    console.log('\n💳 Configuring Stripe payment plans...');
+    stats.stripePlans = await seedStripePlans({
+      verbose: options.verbose,
+      dryRun: options.dryRun,
+      prisma,
+    });
+
+    // 6. Seed service credit costs
     stats.serviceCosts = await seedServiceCosts(options);
 
   } catch (error) {
@@ -500,6 +511,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
   console.log(`Users:         ${stats.users.created} created, ${stats.users.skipped} skipped`);
   console.log(`Characters:    ${stats.characters.created} created, ${stats.characters.skipped} skipped`);
   console.log(`Plans:         ${stats.plans.created} created, ${stats.plans.skipped} skipped`);
+  console.log(`Stripe Plans:  ${stats.stripePlans.configured} configured, ${stats.stripePlans.skipped} skipped`);
   console.log(`Service Costs: ${stats.serviceCosts.created} created, ${stats.serviceCosts.skipped} skipped`);
   console.log(`Duration:      ${duration}s`);
 
