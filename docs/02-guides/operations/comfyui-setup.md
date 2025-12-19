@@ -1,5 +1,9 @@
 # ComfyUI Setup com Middleware e Cloudflare Tunnel
 
+> **📌 Middleware Version**: v2.0 (Dezembro 2024)
+>
+> Este guia documenta a integração com **ComfyUI Middleware v2.0**, que usa rotas limpas sem prefixo `/comfyui/` e adiciona suporte completo para upload de imagens de referência.
+
 Este documento descreve a configuração do ComfyUI para geração de imagens no CharHub, utilizando um Middleware Node.js para segurança e Cloudflare Tunnel para exposição pública.
 
 ## Arquitetura
@@ -111,16 +115,20 @@ COMFYUI_TIMEOUT=300000
 - Processamento de workflows para geração de imagens
 - **Não exposto diretamente** - apenas acessível localmente
 
-### 2. ComfyUI Middleware (Node.js)
+### 2. ComfyUI Middleware (Node.js) - v2.0
 - Roda em `http://localhost:5001`
 - **Camada de autenticação**: Valida Bearer Token em todas as requisições
-- **Proxy transparente**: Encaminha requisições para ComfyUI com prefixo `/comfyui/`
-  - `/comfyui/prompt` → ComfyUI `/prompt`
-  - `/comfyui/history/{id}` → ComfyUI `/history/{id}`
-  - `/comfyui/view` → ComfyUI `/view`
-  - `/comfyui/upload/image` → ComfyUI `/upload/image`
-  - `/comfyui/system_stats` → ComfyUI `/system_stats`
-- **Batch support**: Endpoint `/middleware/generate` para workflows com múltiplas imagens
+- **API de Alto Nível** (`/api/*`): Endpoints inteligentes com download de imagens e injeção de workflows
+  - `/api/generate` → Geração completa com imagens de referência
+  - `/api/prepare` → Preparar imagens de referência
+  - `/api/cleanup` → Limpar arquivos temporários
+- **Proxy Direto** (ComfyUI nativo): Encaminha requisições sem prefixo adicional
+  - `/prompt` → ComfyUI `/prompt`
+  - `/upload/image` → ComfyUI `/upload/image` (**NOVO em v2.0!**)
+  - `/history/{id}` → ComfyUI `/history/{id}`
+  - `/view` → ComfyUI `/view`
+  - `/system_stats` → ComfyUI `/system_stats`
+  - `/free` → ComfyUI `/free`
 
 ### 3. Cloudflare Tunnel (Windows)
 - Conecta `localhost:5001` → `https://comfyui.charhub.app`
@@ -130,7 +138,7 @@ COMFYUI_TIMEOUT=300000
 ### 4. CharHub Backend (Docker/WSL ou Servidor)
 - Acessa `https://comfyui.charhub.app` via HTTPS
 - Envia header `Authorization: Bearer <token>` em todas as requisições
-- Usa endpoints proxy: `/comfyui/prompt`, `/comfyui/history`, etc.
+- Usa endpoints proxy diretos: `/prompt`, `/upload/image`, `/history/{id}`, etc.
 - Recebe imagens geradas
 
 ## Fluxo de Geração de Imagem
@@ -150,16 +158,25 @@ sequenceDiagram
 
     Note over B: Worker processes job
 
-    B->>CF: POST /comfyui/prompt (HTTPS + Bearer Token)
+    Note over B: Upload reference image (if provided)
+    B->>CF: POST /upload/image (HTTPS + Bearer Token + multipart/form-data)
+    CF->>M: Forward to localhost:5001
+    M->>M: Validate token
+    M->>C: Forward to localhost:8188 /upload/image
+    C-->>M: Image uploaded
+    M-->>CF: Image filename
+    CF-->>B: Return filename
+
+    B->>CF: POST /prompt (HTTPS + Bearer Token)
     CF->>M: Forward to localhost:5001
     M->>M: Validate token
     M->>C: Forward to localhost:8188 /prompt
-    C->>C: Generate image with CUDA
+    C->>C: Generate image with CUDA (using uploaded reference via IP-Adapter)
     C-->>M: Image ready
     M-->>CF: Prompt ID
     CF-->>B: Return prompt ID
 
-    B->>CF: GET /comfyui/history/{promptId} (+ Token)
+    B->>CF: GET /history/{promptId} (+ Token)
     CF->>M: Forward request
     M->>M: Validate token
     M->>C: Forward to /history/{promptId}
@@ -167,7 +184,7 @@ sequenceDiagram
     M-->>CF: Return history
     CF-->>B: Return history
 
-    B->>CF: GET /comfyui/view?filename=... (+ Token)
+    B->>CF: GET /view?filename=... (+ Token)
     CF->>M: Forward request
     M->>M: Validate token
     M->>C: Forward to /view
