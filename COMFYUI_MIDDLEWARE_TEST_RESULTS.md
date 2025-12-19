@@ -1,14 +1,17 @@
 # ComfyUI Middleware Integration - Test Results
 
 **Branch**: `feature/comfyui-middleware`
-**Date**: 2025-12-18
+**Date**: 2024-12-18 (Updated: 2024-12-19 for v2.0)
 **Tested By**: Agent Coder
+**Middleware Version**: v2.0
 
 ---
 
 ## ✅ Test Summary
 
-All tests passed successfully! The ComfyUI middleware integration is working correctly with proper authentication and endpoint proxying.
+All tests passed successfully! The ComfyUI middleware v2.0 integration is working correctly with proper authentication and direct proxy endpoints (without `/comfyui/` prefix).
+
+> **Note**: This document was updated to reflect the migration from middleware v1.0 to v2.0, which changed all routes to remove the `/comfyui/` prefix and added the critical `/upload/image` endpoint.
 
 ---
 
@@ -50,7 +53,7 @@ baseUrl: "https://comfyui.charhub.app"
 **Request**:
 ```bash
 curl -H "Authorization: Bearer afa7b173...cb69ad" \
-  https://comfyui.charhub.app/comfyui/system_stats
+  https://comfyui.charhub.app/system_stats
 ```
 
 **Response**:
@@ -86,7 +89,7 @@ HTTP Status: 200
 
 **Request**:
 ```bash
-curl https://comfyui.charhub.app/comfyui/system_stats
+curl https://comfyui.charhub.app/system_stats
 ```
 
 **Response**:
@@ -106,7 +109,7 @@ HTTP Status: 401
 **Request**:
 ```bash
 curl -H "Authorization: Bearer wrong_token_here" \
-  https://comfyui.charhub.app/comfyui/system_stats
+  https://comfyui.charhub.app/system_stats
 ```
 
 **Response**:
@@ -124,18 +127,18 @@ HTTP Status: 401
 **Test**: Verify backend code correctly uses middleware endpoints
 
 **Files Checked**:
-- ✅ `backend/src/services/comfyui/comfyuiService.ts` - All endpoints use `/comfyui/*` prefix
+- ✅ `backend/src/services/comfyui/comfyuiService.ts` - All endpoints use direct proxy routes (no prefix)
 - ✅ `backend/src/queues/workers/imageGenerationWorker.ts` - Uses comfyuiService correctly
 - ✅ `backend/src/routes/v1/image-generation.ts` - API routes configured
 
-**Endpoint Mappings Verified**:
+**Endpoint Mappings Verified (v2.0)**:
 ```typescript
-POST /comfyui/prompt          → ComfyUI /prompt
-GET  /comfyui/history/{id}    → ComfyUI /history/{id}
-GET  /comfyui/view            → ComfyUI /view
-POST /comfyui/upload/image    → ComfyUI /upload/image
-POST /comfyui/free            → ComfyUI /free
-GET  /comfyui/system_stats    → ComfyUI /system_stats
+POST /prompt             → ComfyUI /prompt
+POST /upload/image       → ComfyUI /upload/image (NEW in v2.0!)
+GET  /history/{id}       → ComfyUI /history/{id}
+GET  /view               → ComfyUI /view
+POST /free               → ComfyUI /free
+GET  /system_stats       → ComfyUI /system_stats
 ```
 
 **Result**: ✅ **PASSED** - All endpoints correctly prefixed for middleware proxy
@@ -151,7 +154,7 @@ GET  /comfyui/system_stats    → ComfyUI /system_stats
 | Valid Token Auth | ✅ PASSED | 200 OK with system data |
 | No Token Auth | ✅ PASSED | 401 Unauthorized |
 | Invalid Token Auth | ✅ PASSED | 401 Unauthorized |
-| Code Integration | ✅ PASSED | All endpoints use `/comfyui/*` prefix |
+| Code Integration | ✅ PASSED | All endpoints use direct routes (v2.0) |
 
 **Overall Result**: ✅ **ALL TESTS PASSED**
 
@@ -169,12 +172,13 @@ GET  /comfyui/system_stats    → ComfyUI /system_stats
 
 ## 📝 Documentation Updates
 
-All documentation has been updated to reflect the middleware architecture:
+All documentation has been updated to reflect the middleware v2.0 architecture:
 
-1. ✅ `docs/02-guides/operations/comfyui-setup.md` - Complete middleware documentation
+1. ✅ `docs/02-guides/operations/comfyui-setup.md` - Complete v2.0 middleware documentation with new routes
 2. ✅ `docs/03-reference/backend/README.md` - Added ComfyUI env variables and service reference
 3. ✅ `.env.example` - Updated with middleware configuration
-4. ✅ `backend/src/services/comfyui/comfyuiService.ts` - Updated all endpoints
+4. ✅ `backend/src/services/comfyui/comfyuiService.ts` - Migrated to v2.0 routes
+5. ✅ `MIDDLEWARE_V2_MIGRATION_COMPLETE.md` - Complete migration summary
 
 ---
 
