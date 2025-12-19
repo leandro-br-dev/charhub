@@ -33,6 +33,7 @@
 | Checklist | When to Use | Critical Level |
 |-----------|-------------|----------------|
 | [Environment Validation](checklists/env-validation.md) | Before EVERY deploy | 🔴 MANDATORY |
+| [Environment Sync](checklists/env-sync.md) | Before EVERY deploy (after validation) | 🔴 MANDATORY |
 | [Rollback](checklists/rollback.md) | Deployment failure or critical bug | 🔴 EMERGENCY |
 
 ---
@@ -57,6 +58,11 @@
          ▼
 ┌─────────────────┐
 │  Env Validation │ ← checklists/env-validation.md (CRITICAL)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Env Sync       │ ← checklists/env-sync.md (CRITICAL)
 └────────┬────────┘
          │
          ▼
@@ -138,7 +144,6 @@
 **Key checks**:
 - Compare `.env.example` with `.env.production`
 - Validate production values (not dev values)
-- Sync `.env.production` to production server
 - Verify new environment variables documented
 
 **Common issues prevented**:
@@ -147,7 +152,38 @@
 - Wrong R2 credentials (images not loading)
 - OAuth issues (wrong client ID/secret)
 
-**Next step**: If validated → Pre-Deploy
+**Next step**: If validated → Environment Sync
+
+---
+
+### 3.5. Environment Sync (`env-sync.md`)
+
+**Purpose**: Sync `.env.production` files to production server before deployment
+
+**⚠️ CRITICAL**: Must be executed after env-validation before every deploy
+
+**Files synchronized**:
+- `.env.production` → Backend/root environment
+- `frontend/.env.production` → Frontend environment
+
+**Key steps**:
+- Preview changes with dry-run mode
+- Automated backup creation on production server
+- Sync both `.env.production` files to server using script
+- MD5 verification of successful sync
+- Restart services if needed
+
+**Script**: `scripts/ops/sync-production-env.sh`
+
+**Golden Rule**: `.env.production` files are the source of truth. NEVER edit `.env` files directly on production server.
+
+**Common issues prevented**:
+- Production using outdated configuration
+- Configuration drift between local and remote
+- Manual SSH errors
+- Missing environment variables in production
+
+**Next step**: If synced successfully → Pre-Deploy
 
 ---
 
@@ -278,7 +314,8 @@ docs/agents/reviewer/
 └── checklists/                    # Operational checklists
     ├── pr-review.md              # Step 1: Code review
     ├── local-testing.md          # Step 2: Test locally
-    ├── env-validation.md         # Step 2.5: CRITICAL env check
+    ├── env-validation.md         # Step 2.5: CRITICAL env validation
+    ├── env-sync.md               # Step 2.6: CRITICAL env sync
     ├── pre-deploy.md             # Step 3: Pre-deploy checks
     ├── deploy-monitoring.md      # Step 4: Watch deployment
     ├── post-deploy.md            # Step 5: Verify production
@@ -296,6 +333,7 @@ docs/agents/reviewer/
 | Review a PR | [pr-review.md](checklists/pr-review.md) |
 | Test a feature locally | [local-testing.md](checklists/local-testing.md) |
 | Check environment variables | [env-validation.md](checklists/env-validation.md) |
+| Sync .env to production | [env-sync.md](checklists/env-sync.md) |
 | Prepare for deployment | [pre-deploy.md](checklists/pre-deploy.md) |
 | Watch a deployment | [deploy-monitoring.md](checklists/deploy-monitoring.md) |
 | Verify production works | [post-deploy.md](checklists/post-deploy.md) |
@@ -306,6 +344,8 @@ docs/agents/reviewer/
 | Problem | Likely cause | Check this |
 |---------|--------------|------------|
 | Backend won't start | Missing env var | [env-validation.md](checklists/env-validation.md) |
+| Production has old config | .env not synced | [env-sync.md](checklists/env-sync.md) |
+| Config drift detected | Manual edits on server | [env-sync.md](checklists/env-sync.md) |
 | Tests fail locally | Code issue | [local-testing.md](checklists/local-testing.md) |
 | Deployment fails | Build error | [deploy-monitoring.md](checklists/deploy-monitoring.md) |
 | Production broken | Bad deploy | [rollback.md](checklists/rollback.md) |

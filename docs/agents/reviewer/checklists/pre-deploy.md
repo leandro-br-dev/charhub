@@ -38,25 +38,32 @@ git diff main...HEAD
 
 ---
 
-## Step 2: Environment Variables Validation
+## Step 2: Environment Variables Validation and Sync
 
-**⚠️ CRITICAL**: Execute `env-validation.md` checklist
+**⚠️ CRITICAL**: Execute both checklists in order:
+
+1. **`env-validation.md`** - Validate `.env.production` locally
+2. **`env-sync.md`** - Sync `.env.production` to production server
 
 ```bash
 # Quick verification
 cat docs/agents/reviewer/checklists/env-validation.md
+cat docs/agents/reviewer/checklists/env-sync.md
 ```
 
 **Checklist:**
 - [ ] ✅ Completed `env-validation.md` checklist
+- [ ] ✅ Completed `env-sync.md` checklist
 - [ ] All new env vars added to `.env.example`
 - [ ] All new env vars added to `.env.production`
 - [ ] Production values are correct (not dev values)
-- [ ] `.env.production` synced to server (if changed)
+- [ ] `.env.production` synced to server using script
+- [ ] Sync verification passed (MD5 checksum matched)
 
 **If you skipped this:**
 → 🛑 STOP NOW
-→ Go execute `env-validation.md`
+→ Go execute `env-validation.md` first
+→ Then execute `env-sync.md`
 → Come back here after
 
 ---
@@ -340,6 +347,12 @@ git reset --hard origin/main
 **Forgot to sync .env.production:**
 → Backend will use old environment variables
 → New features may crash or behave incorrectly
+→ **FIX**: Always run `./scripts/ops/sync-production-env.sh` before deploy
+
+**Edited .env directly on production server:**
+→ Changes lost on next deployment
+→ Configuration drift between local and remote
+→ **FIX**: Always update `.env.production` locally and sync with script
 
 **Didn't test database migration:**
 → Migration fails in production
@@ -361,7 +374,8 @@ git reset --hard origin/main
 
 ## See Also
 
-- `env-validation.md` - Environment variables checklist (CRITICAL)
+- `env-validation.md` - Environment variables validation (CRITICAL)
+- `env-sync.md` - Sync .env.production to production server (CRITICAL)
 - `deploy-monitoring.md` - How to monitor deployment
 - `rollback.md` - Emergency rollback procedure
 - `../../02-guides/deployment/cd-deploy-guide.md` - Deployment details

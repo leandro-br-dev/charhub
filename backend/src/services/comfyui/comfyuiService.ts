@@ -57,7 +57,7 @@ export class ComfyUIService {
    */
   async queuePrompt(workflow: ComfyWorkflow): Promise<ComfyQueueResponse> {
     try {
-      logger.debug('Queueing prompt to ComfyUI');
+      logger.debug('Queueing prompt to ComfyUI via middleware');
       const response = await this.client.post<ComfyQueueResponse>('/prompt', {
         prompt: workflow,
       });
@@ -88,7 +88,7 @@ export class ComfyUIService {
    */
   async getImage(filename: string, subfolder: string, type: string): Promise<Buffer | null> {
     try {
-      logger.debug({ filename, subfolder, type }, 'Fetching image from ComfyUI');
+      logger.debug({ filename, subfolder, type }, 'Fetching image from ComfyUI via middleware');
 
       const response = await this.client.get('/view', {
         params: { filename, subfolder, type },
@@ -108,7 +108,7 @@ export class ComfyUIService {
    */
   async freeMemory(): Promise<boolean> {
     try {
-      logger.info('Requesting ComfyUI to free memory');
+      logger.info('Requesting ComfyUI to free memory via middleware');
       await this.client.post('/free', {
         unload_models: true,
         free_memory: true,
@@ -271,7 +271,7 @@ export class ComfyUIService {
       formData.append('type', 'input');
       formData.append('overwrite', overwrite.toString());
 
-      // Upload to ComfyUI
+      // Upload to ComfyUI via middleware v2.0
       const response = await this.client.post('/upload/image', formData, {
         headers: formData.getHeaders(),
       });
@@ -288,7 +288,7 @@ export class ComfyUIService {
   }
 
   /**
-   * Health check - verify ComfyUI is accessible
+   * Health check - verify ComfyUI middleware is accessible
    */
   async healthCheck(): Promise<boolean> {
     try {
