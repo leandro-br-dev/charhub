@@ -132,9 +132,14 @@ describe('CreditService', () => {
 
     it('should grant higher daily reward for premium user', async () => {
       const user = await createTestUser();
+      const prisma = getTestDb();
+
+      // Find Premium plan by tier
+      const premiumPlan = await prisma.plan.findFirst({ where: { tier: 'PREMIUM' } });
+      if (!premiumPlan) throw new Error('Premium plan not found');
 
       // Assign Premium plan
-      await createTestUserPlan(user.id, 'plan_premium', {
+      await createTestUserPlan(user.id, premiumPlan.id, {
         status: 'ACTIVE',
         currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days later
       });
@@ -340,8 +345,13 @@ describe('CreditService', () => {
 
     it('should return active plan', async () => {
       const user = await createTestUser();
+      const prisma = getTestDb();
 
-      await createTestUserPlan(user.id, 'plan_plus', {
+      // Find Plus plan by tier
+      const plusPlan = await prisma.plan.findFirst({ where: { tier: 'PLUS' } });
+      if (!plusPlan) throw new Error('Plus plan not found');
+
+      await createTestUserPlan(user.id, plusPlan.id, {
         status: 'ACTIVE',
         currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       });
@@ -354,8 +364,13 @@ describe('CreditService', () => {
 
     it('should not return expired plan', async () => {
       const user = await createTestUser();
+      const prisma = getTestDb();
 
-      await createTestUserPlan(user.id, 'plan_plus', {
+      // Find Plus plan by tier
+      const plusPlan = await prisma.plan.findFirst({ where: { tier: 'PLUS' } });
+      if (!plusPlan) throw new Error('Plus plan not found');
+
+      await createTestUserPlan(user.id, plusPlan.id, {
         status: 'ACTIVE',
         currentPeriodEnd: new Date(Date.now() - 1000), // Expired
       });
