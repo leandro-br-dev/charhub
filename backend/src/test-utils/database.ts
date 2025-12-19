@@ -62,46 +62,55 @@ export async function teardownTestDatabase(): Promise<void> {
 
 /**
  * Seed basic test data (plans)
+ * Uses upsert on tier (unique field) to ensure plans exist and are safe for parallel test execution
  */
 export async function seedTestPlans(): Promise<void> {
   const db = getTestDb();
 
-  // Delete existing test plans to ensure clean state in CI
-  await db.plan.deleteMany({
-    where: {
-      id: { in: ['plan_free', 'plan_plus', 'plan_premium'] },
+  const tiers = ['FREE', 'PLUS', 'PREMIUM'] as const;
+  const planConfigs = {
+    FREE: {
+      tier: 'FREE' as const,
+      name: 'Free Plan',
+      description: 'Basic free plan',
+      priceMonthly: 0,
+      creditsPerMonth: 200,
+      isActive: true,
     },
-  });
+    PLUS: {
+      tier: 'PLUS' as const,
+      name: 'Plus Plan',
+      description: 'Plus plan with more credits',
+      priceMonthly: 9.99,
+      creditsPerMonth: 500,
+      isActive: true,
+    },
+    PREMIUM: {
+      tier: 'PREMIUM' as const,
+      name: 'Premium Plan',
+      description: 'Premium plan with unlimited credits',
+      priceMonthly: 29.99,
+      creditsPerMonth: 5000,
+      isActive: true,
+    },
+  };
 
-  await db.plan.createMany({
-    data: [
-      {
-        id: 'plan_free',
-        tier: 'FREE',
-        name: 'Free Plan',
-        description: 'Basic free plan',
-        priceMonthly: 0,
-        creditsPerMonth: 200,
-        isActive: true,
-      },
-      {
-        id: 'plan_plus',
-        tier: 'PLUS',
-        name: 'Plus Plan',
-        description: 'Plus plan with more credits',
-        priceMonthly: 9.99,
-        creditsPerMonth: 500,
-        isActive: true,
-      },
-      {
-        id: 'plan_premium',
-        tier: 'PREMIUM',
-        name: 'Premium Plan',
-        description: 'Premium plan with unlimited credits',
-        priceMonthly: 29.99,
-        creditsPerMonth: 5000,
-        isActive: true,
-      },
-    ],
-  });
+  // Use upsert on tier (unique constraint) for atomic operations
+  // Handle unique constraint errors gracefully - they just mean another parallel test already created the plan
+  for (const tier of tiers) {
+    try {
+      await db.plan.upsert({
+        where: { tier },
+        update: {},
+        create: planConfigs[tier],
+      });
+    } catch (error: any) {
+      // Ignore unique constraint errors (P2002) - plan already exists from parallel test
+      // Prisma error codes: https://www.prisma.io/docs/reference/api-reference/error-reference
+      if (error?.code !== 'P2002') {
+        throw error;
+      }
+      // If P2002 (unique constraint violation), silently continue - plan exists
+    }
+  }
 }
