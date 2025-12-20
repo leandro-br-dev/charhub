@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { WelcomeFormData } from '../types';
 
 interface AgeRatingStepProps {
@@ -5,18 +6,20 @@ interface AgeRatingStepProps {
   onUpdate: (data: Partial<WelcomeFormData>) => void;
 }
 
-const AGE_RATING_OPTIONS = [
-  { value: 'L', label: 'All Ages (L)', minAge: 0, description: 'Suitable for everyone' },
-  { value: 'TEN', label: '10+', minAge: 10, description: 'Mild themes' },
-  { value: 'TWELVE', label: '12+', minAge: 12, description: 'Moderate themes' },
-  { value: 'FOURTEEN', label: '14+ (Teen)', minAge: 14, description: 'More mature themes' },
-  { value: 'SIXTEEN', label: '16+ (Mature)', minAge: 16, description: 'Strong themes' },
-  { value: 'EIGHTEEN', label: '18+ (Adult)', minAge: 18, description: 'Adult content' },
-];
-
 export function AgeRatingStep({ data, onUpdate }: AgeRatingStepProps) {
+  const { t } = useTranslation('welcome');
+
   // Calculate user's age if birthdate is provided
   const userAge = data.birthDate ? calculateAge(new Date(data.birthDate)) : null;
+
+  const AGE_RATING_OPTIONS = [
+    { value: 'L', label: t('ageRating.options.L', 'All Ages (L)'), minAge: 0, description: t('ageRating.optionDescriptions.L', 'Suitable for everyone') },
+    { value: 'TEN', label: t('ageRating.options.TEN', '10+'), minAge: 10, description: t('ageRating.optionDescriptions.TEN', 'Mild themes') },
+    { value: 'TWELVE', label: t('ageRating.options.TWELVE', '12+'), minAge: 12, description: t('ageRating.optionDescriptions.TWELVE', 'Moderate themes') },
+    { value: 'FOURTEEN', label: t('ageRating.options.FOURTEEN', '14+ (Teen)'), minAge: 14, description: t('ageRating.optionDescriptions.FOURTEEN', 'More mature themes') },
+    { value: 'SIXTEEN', label: t('ageRating.options.SIXTEEN', '16+ (Mature)'), minAge: 16, description: t('ageRating.optionDescriptions.SIXTEEN', 'Strong themes') },
+    { value: 'EIGHTEEN', label: t('ageRating.options.EIGHTEEN', '18+ (Adult)'), minAge: 18, description: t('ageRating.optionDescriptions.EIGHTEEN', 'Adult content') },
+  ];
 
   // Determine which ratings are available based on age
   const isRatingAvailable = (minAge: number) => {
@@ -27,10 +30,10 @@ export function AgeRatingStep({ data, onUpdate }: AgeRatingStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h3 className="text-2xl font-bold">Content Rating Preference 🎯</h3>
-        <p className="text-muted-foreground">
-          Choose the maximum age rating you want to see.
-          {userAge !== null && ` Based on your age (${userAge}), you can access:`}
+        <h3 className="text-2xl font-bold">{t('ageRating.title', 'Content Rating Preference')}</h3>
+        <p className="text-base text-muted-foreground">
+          {t('ageRating.subtitle', 'Choose the maximum age rating you want to see')}
+          {userAge !== null && ` ${t('ageRating.agePrefix', 'Based on your age')} (${userAge}), ${t('ageRating.youCanAccess', 'you can access:')}`}
         </p>
       </div>
 
@@ -45,7 +48,7 @@ export function AgeRatingStep({ data, onUpdate }: AgeRatingStepProps) {
               type="button"
               onClick={() => isAvailable && onUpdate({ maxAgeRating: option.value })}
               disabled={!isAvailable}
-              className={`w-full rounded-lg border-2 p-4 text-left transition-all ${
+              className={`w-full rounded-lg border-2 p-2.5 text-left transition-all ${
                 isSelected
                   ? 'border-primary bg-primary/10'
                   : isAvailable
@@ -53,13 +56,13 @@ export function AgeRatingStep({ data, onUpdate }: AgeRatingStepProps) {
                   : 'cursor-not-allowed border-border/50 opacity-50'
               }`}
             >
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="font-medium">{option.label}</div>
-                  <div className="text-sm text-muted-foreground">{option.description}</div>
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex-1">
+                  <div className="text-sm font-medium">{option.label}</div>
+                  <div className="text-xs text-muted-foreground">{option.description}</div>
                 </div>
-                {isSelected && <span className="text-primary">✓</span>}
-                {!isAvailable && <span className="text-muted-foreground">🔒</span>}
+                {isSelected && <span className="text-lg text-primary">✓</span>}
+                {!isAvailable && <span className="text-lg text-muted-foreground">🔒</span>}
               </div>
             </button>
           );
@@ -68,9 +71,13 @@ export function AgeRatingStep({ data, onUpdate }: AgeRatingStepProps) {
 
       {userAge === null && (
         <div className="rounded-lg bg-yellow-50 p-3 text-sm text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-200">
-          ⚠️ Set your birthdate to unlock more content ratings
+          ⚠️ {t('ageRating.noAge', 'Set your birthdate to unlock more content ratings')}
         </div>
       )}
+
+      <p className="text-center text-sm text-muted-foreground">
+        {t('ageRating.description', 'Select which content ratings you want to see. Higher ratings are unlocked based on your age.')}
+      </p>
     </div>
   );
 }
