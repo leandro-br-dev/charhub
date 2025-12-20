@@ -20,6 +20,7 @@ export function WelcomeModal() {
     formData,
     isLoading,
     error,
+    success,
     updateFormData,
     goToNextStep,
     goToPreviousStep,
@@ -81,34 +82,49 @@ export function WelcomeModal() {
           </div>
         )}
 
+        {/* Success Message */}
+        {success && (
+          <div className="rounded-lg bg-green-50 p-4 text-center dark:bg-green-900/20">
+            <div className="mb-2 text-4xl">✅</div>
+            <h4 className="text-lg font-semibold text-green-800 dark:text-green-200">
+              {t('modal.successTitle', 'Welcome Complete!')}
+            </h4>
+            <p className="text-sm text-green-700 dark:text-green-300">
+              {t('modal.successMessage', 'Your profile has been set up successfully. Enjoy CharHub!')}
+            </p>
+          </div>
+        )}
+
         {/* Step Content */}
-        <div className="min-h-[300px]">{renderStep()}</div>
+        {!success && <div className="min-h-[300px]">{renderStep()}</div>}
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
-          <Button
-            variant="light"
-            onClick={goToPreviousStep}
-            disabled={currentStepIndex === 0 || isLoading}
-          >
-            ← {t('modal.back', 'Back')}
-          </Button>
+        {!success && (
+          <div className="flex items-center justify-between gap-4 border-t border-border pt-4">
+            <Button
+              variant="light"
+              onClick={goToPreviousStep}
+              disabled={currentStepIndex === 0 || isLoading}
+            >
+              ← {t('modal.back', 'Back')}
+            </Button>
 
-          <Button
-            variant="light"
-            onClick={skipWelcome}
-            disabled={isLoading}
-          >
-            {t('modal.skip', 'Skip')}
-          </Button>
+            <Button
+              variant="light"
+              onClick={skipWelcome}
+              disabled={isLoading}
+            >
+              {t('modal.skip', 'Skip')}
+            </Button>
 
-          <Button
-            onClick={goToNextStep}
-            disabled={isLoading}
-          >
-            {isLoading ? t('modal.saving', 'Saving...') : currentStepIndex === totalSteps - 1 ? t('modal.finish', 'Finish') : `${t('modal.next', 'Next')} →`}
-          </Button>
-        </div>
+            <Button
+              onClick={goToNextStep}
+              disabled={isLoading}
+            >
+              {isLoading ? t('modal.saving', 'Saving...') : currentStepIndex === totalSteps - 1 ? t('modal.finish', 'Finish') : `${t('modal.next', 'Next')} →`}
+            </Button>
+          </div>
+        )}
       </div>
     </Modal>
   );

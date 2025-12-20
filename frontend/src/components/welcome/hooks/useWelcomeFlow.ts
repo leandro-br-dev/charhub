@@ -22,6 +22,7 @@ export function useWelcomeFlow() {
   const [formData, setFormData] = useState<WelcomeFormData>({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   // Open modal if user hasn't completed welcome
   useEffect(() => {
@@ -90,7 +91,13 @@ export function useWelcomeFlow() {
     try {
       await api.post('/api/v1/users/me/complete-welcome');
       await refreshUser();
-      setIsOpen(false);
+
+      // Show success message for 2 seconds before closing
+      setSuccess(true);
+      setTimeout(() => {
+        setIsOpen(false);
+        setSuccess(false);
+      }, 2000);
     } catch (err: any) {
       const errorMessage = err.response?.data?.error || 'Failed to complete welcome';
       setError(errorMessage);
@@ -114,6 +121,7 @@ export function useWelcomeFlow() {
     formData,
     isLoading,
     error,
+    success,
     updateFormData,
     goToNextStep,
     goToPreviousStep,
