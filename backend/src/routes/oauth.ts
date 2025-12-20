@@ -211,6 +211,12 @@ router.get(
       return;
     }
 
+    // Store preferredLanguage in request for passport to access
+    (req as any).oauthState = {
+      preferredLanguage: stateData.preferredLanguage,
+      redirectUri: stateData.redirectUri,
+    };
+
     passport.authenticate(
       'google',
       { session: false },
@@ -248,6 +254,12 @@ router.get(
       });
       return;
     }
+
+    // Store preferredLanguage in request for passport to access
+    (req as any).oauthState = {
+      preferredLanguage: stateData.preferredLanguage,
+      redirectUri: stateData.redirectUri,
+    };
 
     passport.authenticate(
       'facebook',

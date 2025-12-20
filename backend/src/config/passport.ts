@@ -13,16 +13,21 @@ const defaultFacebookCallback = `${API_VERSION}/oauth/facebook/callback`;
 
 async function handleStrategyCallback(
   provider: OAuthProvider,
+  req: any,
   profile: any,
   done: (error: any, user?: any) => void
 ) {
   try {
+    // Extract preferredLanguage from request (set by oauth.ts callback)
+    const preferredLanguage = req.oauthState?.preferredLanguage;
+
     const authUser = await syncOAuthUser({
       provider,
       providerAccountId: profile.id,
       email: profile.emails?.[0]?.value,
       displayName: profile.displayName ?? profile._json?.name,
       photo: profile.photos?.[0]?.value,
+      preferredLanguage,
     });
 
     done(null, authUser);
@@ -41,9 +46,10 @@ export function configurePassport(): void {
           callbackURL: process.env.GOOGLE_CALLBACK_PATH || defaultGoogleCallback,
           scope: ['profile', 'email'],
           proxy: true, // Trust X-Forwarded-* headers from nginx
+          passReqToCallback: true, // Enable request access in callback
         },
-        async (_accessToken, _refreshToken, profile, done) => {
-          await handleStrategyCallback('google', profile, done);
+        async (req, _accessToken, _refreshToken, profile, done) => {
+          await handleStrategyCallback('google', req, profile, done);
         }
       )
     );
@@ -58,9 +64,10 @@ export function configurePassport(): void {
           callbackURL: process.env.FACEBOOK_CALLBACK_PATH || defaultFacebookCallback,
           profileFields: ['id', 'displayName', 'email', 'photos'],
           proxy: true, // Trust X-Forwarded-* headers from nginx
+          passReqToCallback: true, // Enable request access in callback
         },
-        async (_accessToken, _refreshToken, profile, done) => {
-          await handleStrategyCallback('facebook', profile, done);
+        async (req, _accessToken, _refreshToken, profile, done) => {
+          await handleStrategyCallback('facebook', req, profile, done);
         }
       )
     );
