@@ -25,7 +25,7 @@ export function useWelcomeFlow() {
 
   // Open modal if user hasn't completed welcome
   useEffect(() => {
-    if (user && user.hasCompletedWelcome === false) {
+    if (user && !user.hasCompletedWelcome) {
       setIsOpen(true);
 
       // Pre-populate form with existing data
@@ -51,7 +51,7 @@ export function useWelcomeFlow() {
     setError(null);
 
     try {
-      await api.patch('/users/me/welcome-progress', formData);
+      await api.patch('/api/v1/users/me/welcome-progress', formData);
       await refreshUser(); // Refresh user data from backend
       return true;
     } catch (err: any) {
@@ -88,7 +88,7 @@ export function useWelcomeFlow() {
     setError(null);
 
     try {
-      await api.post('/users/me/complete-welcome');
+      await api.post('/api/v1/users/me/complete-welcome');
       await refreshUser();
       setIsOpen(false);
     } catch (err: any) {
