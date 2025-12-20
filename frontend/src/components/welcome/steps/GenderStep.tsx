@@ -1,4 +1,4 @@
-import { Button } from '../../ui/Button';
+import { useTranslation } from 'react-i18next';
 import type { WelcomeFormData } from '../types';
 
 interface GenderStepProps {
@@ -6,20 +6,23 @@ interface GenderStepProps {
   onUpdate: (data: Partial<WelcomeFormData>) => void;
 }
 
-const GENDER_OPTIONS = [
-  { value: 'male', label: 'Male', icon: '♂️' },
-  { value: 'female', label: 'Female', icon: '♀️' },
-  { value: 'non-binary', label: 'Non-binary', icon: '⚧️' },
-  { value: 'prefer_not_to_say', label: 'Prefer not to say', icon: '🤐' },
-];
-
 export function GenderStep({ data, onUpdate }: GenderStepProps) {
+  const { t } = useTranslation('welcome');
+
+  // Backend expects: 'feminine', 'masculine', 'non-binary', 'unspecified'
+  const GENDER_OPTIONS = [
+    { value: 'masculine', label: t('gender.masculine', 'Masculine'), icon: '♂️' },
+    { value: 'feminine', label: t('gender.feminine', 'Feminine'), icon: '♀️' },
+    { value: 'non-binary', label: t('gender.nonBinary', 'Non-binary'), icon: '⚧️' },
+    { value: 'unspecified', label: t('gender.preferNotToSay', 'Prefer not to say'), icon: '🤐' },
+  ];
+
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h3 className="text-2xl font-bold">How Do You Identify?</h3>
-        <p className="text-muted-foreground">
-          This helps AI agents personalize their language. This is optional.
+        <h3 className="text-2xl font-bold">{t('gender.title', 'Gender')}</h3>
+        <p className="text-base text-muted-foreground">
+          {t('gender.subtitle', 'Optional - helps agents personalize conversations')}
         </p>
       </div>
 
@@ -41,8 +44,8 @@ export function GenderStep({ data, onUpdate }: GenderStepProps) {
         ))}
       </div>
 
-      <p className="text-center text-xs text-muted-foreground">
-        You can always change this later in your profile settings.
+      <p className="text-center text-sm text-muted-foreground">
+        {t('gender.description', 'This helps AI agents use appropriate pronouns and language')}
       </p>
     </div>
   );

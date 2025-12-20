@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Input } from '../../ui/Input';
 import type { WelcomeFormData } from '../types';
 
@@ -7,29 +8,31 @@ interface DisplayNameStepProps {
 }
 
 export function DisplayNameStep({ data, onUpdate }: DisplayNameStepProps) {
+  const { t } = useTranslation('welcome');
+
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h3 className="text-2xl font-bold">Welcome to CharHub! 👋</h3>
-        <p className="text-muted-foreground">
-          Let's personalize your experience. How would you like AI agents to address you?
+        <h3 className="text-2xl font-bold">{t('displayName.title', 'Welcome to CharHub!')}</h3>
+        <p className="text-base text-muted-foreground">
+          {t('displayName.subtitle', 'How would you like AI agents to address you?')}
         </p>
       </div>
 
       <div className="space-y-4">
         <div className="space-y-2">
           <label htmlFor="displayName" className="block text-sm font-medium">
-            Display Name
+            {t('displayName.label', 'Display Name')}
           </label>
           <Input
             id="displayName"
-            placeholder="e.g., John Smith"
+            placeholder={t('displayName.placeholder', 'e.g., John Silva')}
             value={data.displayName || ''}
             onChange={(e) => onUpdate({ displayName: e.target.value })}
             autoFocus
           />
-          <p className="text-xs text-muted-foreground">
-            This is the name that will appear in conversations with AI agents.
+          <p className="text-sm text-muted-foreground">
+            {t('displayName.description', 'This is the name that will appear in conversations with agents.')}
           </p>
         </div>
       </div>

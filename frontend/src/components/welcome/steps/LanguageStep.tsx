@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Select } from '../../ui/Select';
 import type { WelcomeFormData } from '../types';
 
@@ -7,7 +8,7 @@ interface LanguageStepProps {
 }
 
 const LANGUAGE_OPTIONS = [
-  { value: 'en', label: 'English' },
+  { value: 'en-US', label: 'English' },
   { value: 'pt-BR', label: 'Português (Brasil)' },
   { value: 'es-ES', label: 'Español' },
   { value: 'fr-FR', label: 'Français' },
@@ -22,25 +23,27 @@ const LANGUAGE_OPTIONS = [
 ];
 
 export function LanguageStep({ data, onUpdate }: LanguageStepProps) {
+  const { t } = useTranslation('welcome');
+
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h3 className="text-2xl font-bold">Preferred Language 🌍</h3>
-        <p className="text-muted-foreground">
-          Choose your preferred language for AI responses and interface.
+        <h3 className="text-2xl font-bold">{t('language.title', 'Preferred Language')}</h3>
+        <p className="text-base text-muted-foreground">
+          {t('language.subtitle', 'Choose your preferred language for AI responses and interface')}
         </p>
       </div>
 
       <div className="space-y-4">
         <div className="space-y-2">
           <Select
-            label="Language"
+            label={t('language.label', 'Language')}
             options={LANGUAGE_OPTIONS}
-            value={data.preferredLanguage || 'en'}
+            value={data.preferredLanguage || 'en-US'}
             onChange={(value) => onUpdate({ preferredLanguage: value })}
           />
-          <p className="text-xs text-muted-foreground">
-            This determines the language for AI conversations and user interface.
+          <p className="text-sm text-muted-foreground">
+            {t('language.description', 'This determines the language for AI conversations and user interface')}
           </p>
         </div>
       </div>
