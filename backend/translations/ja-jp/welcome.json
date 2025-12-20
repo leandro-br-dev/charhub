@@ -1,0 +1,109 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "スキップ",
+      "back": "戻る",
+      "next": "次へ",
+      "finish": "完了",
+      "progress": "{{total}}ステップ中 {{current}}"
+    },
+    "displayName": {
+      "title": "CharHubへようこそ！",
+      "subtitle": "AIエージェントにどのように呼ばれたいですか？",
+      "label": "表示名",
+      "placeholder": "例：ジョン・シルバ",
+      "description": "これはエージェントとの会話に表示される名前です。"
+    },
+    "username": {
+      "title": "ユーザー名を選択してください",
+      "subtitle": "他のユーザーはこれであなたを見つけます",
+      "label": "ユーザー名",
+      "placeholder": "例：@johnsilva",
+      "description": "@で始まり、文字、数字、アンダースコアのみを含める必要があります",
+      "checking": "利用可能性を確認中...",
+      "available": "ユーザー名が利用可能です！",
+      "unavailable": "ユーザー名は既に使用されています",
+      "invalid": "無効なユーザー名形式です"
+    },
+    "birthDate": {
+      "title": "生年月日",
+      "subtitle": "年齢に応じたコンテンツフィルタリングに必要です",
+      "label": "生年月日",
+      "description": "お客様に年齢に応じたコンテンツのみを表示するためにこれを使用します。CharHubを利用するには13歳以上である必要があります。",
+      "note": "生年月日は非公開であり、公開されることはありません"
+    },
+    "gender": {
+      "title": "性別",
+      "subtitle": "任意 - エージェントが会話をパーソナライズするのに役立ちます",
+      "feminine": "女性",
+      "masculine": "男性",
+      "nonBinary": "ノンバイナリー",
+      "preferNotToSay": "回答しない",
+      "description": "これはAIエージェントが適切な代名詞と言語を使用するのに役立ちます"
+    },
+    "language": {
+      "title": "希望言語",
+      "subtitle": "AIの応答とインターフェースの希望言語を選択してください",
+      "label": "言語",
+      "description": "これはAI会話とユーザーインターフェースの言語を決定します"
+    },
+    "ageRating": {
+      "title": "コンテンツレーティング設定",
+      "subtitle": "表示したい最大年齢レーティングを選択してください",
+      "agePrefix": "あなたの年齢に基づき",
+      "youCanAccess": "アクセス可能なコンテンツ：",
+      "description": "表示したいコンテンツレーティングを選択してください。高いレーティングはあなたの年齢に基づいて解除されます。",
+      "options": {
+        "L": "全年齢（L）",
+        "TEN": "10歳以上",
+        "TWELVE": "12歳以上",
+        "FOURTEEN": "14歳以上（ティーン）",
+        "SIXTEEN": "16歳以上（成人向け）",
+        "EIGHTEEN": "18歳以上（アダルト）"
+      },
+      "optionDescriptions": {
+        "L": "誰にでも適しています",
+        "TEN": "軽いテーマ",
+        "TWELVE": "中程度のテーマ",
+        "FOURTEEN": "より大人向けのテーマ",
+        "SIXTEEN": "強いテーマ",
+        "EIGHTEEN": "アダルトコンテンツ"
+      },
+      "noAge": "生年月日を設定して、より多くのコンテンツレーティングを解除してください"
+    },
+    "contentFilters": {
+      "title": "コンテンツフィルター",
+      "subtitle": "見たくない特定のコンテンツテーマをブロックします（任意）",
+      "tip": "ヒント：これをスキップして、プロフィール設定でいつでもコンテンツフィルターを調整できます。",
+      "tags": {
+        "VIOLENCE": "暴力",
+        "GORE": "ゴア",
+        "SEXUAL": "性的コンテンツ",
+        "NUDITY": "ヌード",
+        "LANGUAGE": "過激な言葉",
+        "DRUGS": "薬物",
+        "ALCOHOL": "アルコール",
+        "HORROR": "ホラー",
+        "PSYCHOLOGICAL": "心理的",
+        "DISCRIMINATION": "差別",
+        "CRIME": "犯罪",
+        "GAMBLING": "ギャンブル"
+      },
+      "tagDescriptions": {
+        "VIOLENCE": "身体的暴力、喧嘩",
+        "GORE": "露骨な暴力、流血",
+        "SEXUAL": "性的なテーマ",
+        "NUDITY": "ヌードまたは部分的なヌード",
+        "LANGUAGE": "冒涜的な言葉",
+        "DRUGS": "薬物使用または言及",
+        "ALCOHOL": "アルコール摂取",
+        "HORROR": "ホラーテーマ、不穏なコンテンツ",
+        "PSYCHOLOGICAL": "心理的なテーマ",
+        "DISCRIMINATION": "差別的なコンテンツ",
+        "CRIME": "犯罪行為",
+        "GAMBLING": "ギャンブルのテーマ"
+      }
+    }
+  }
+}

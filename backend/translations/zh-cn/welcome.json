@@ -1,0 +1,109 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "跳过",
+      "back": "返回",
+      "next": "下一步",
+      "finish": "完成",
+      "progress": "第 {{current}} 步，共 {{total}} 步"
+    },
+    "displayName": {
+      "title": "欢迎来到 CharHub！",
+      "subtitle": "您希望 AI 代理如何称呼您？",
+      "label": "显示名称",
+      "placeholder": "例如：John Silva",
+      "description": "这是您与代理对话时显示的名称。"
+    },
+    "username": {
+      "title": "选择您的用户名",
+      "subtitle": "其他用户将通过此名称找到您",
+      "label": "用户名",
+      "placeholder": "例如：@johnsilva",
+      "description": "必须以 @ 开头，且只包含字母、数字和下划线",
+      "checking": "正在检查可用性...",
+      "available": "用户名可用！",
+      "unavailable": "用户名已被占用",
+      "invalid": "用户名格式无效"
+    },
+    "birthDate": {
+      "title": "您的出生日期",
+      "subtitle": "根据年龄过滤内容的必要信息",
+      "label": "出生日期",
+      "description": "我们用此信息仅向您显示适合您年龄的内容。使用 CharHub 必须年满 13 岁。",
+      "note": "您的出生日期是私密的，不会公开分享"
+    },
+    "gender": {
+      "title": "性别",
+      "subtitle": "可选 - 帮助代理个性化对话",
+      "feminine": "女性",
+      "masculine": "男性",
+      "nonBinary": "非二元性别",
+      "preferNotToSay": "不愿透露",
+      "description": "这有助于 AI 代理使用适当的代词和语言"
+    },
+    "language": {
+      "title": "首选语言",
+      "subtitle": "选择您偏好的 AI 回复语言和界面语言",
+      "label": "语言",
+      "description": "这决定了 AI 对话和用户界面的语言"
+    },
+    "ageRating": {
+      "title": "内容分级偏好",
+      "subtitle": "选择您希望看到的最大年龄分级",
+      "agePrefix": "根据您的年龄",
+      "youCanAccess": "您可以访问：",
+      "description": "选择您想看到的内容分级。更高级别的分级会根据您的年龄解锁。",
+      "options": {
+        "L": "所有年龄 (L)",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+ (青少年)",
+        "SIXTEEN": "16+ (成熟)",
+        "EIGHTEEN": "18+ (成人)"
+      },
+      "optionDescriptions": {
+        "L": "适合所有人",
+        "TEN": "温和主题",
+        "TWELVE": "适度主题",
+        "FOURTEEN": "更成熟主题",
+        "SIXTEEN": "强烈主题",
+        "EIGHTEEN": "成人内容"
+      },
+      "noAge": "设置您的出生日期以解锁更多内容分级"
+    },
+    "contentFilters": {
+      "title": "内容过滤器",
+      "subtitle": "屏蔽您不想看到的特定内容主题（可选）",
+      "tip": "提示：您可以跳过此步骤，随时在您的个人资料设置中调整内容过滤器。",
+      "tags": {
+        "VIOLENCE": "暴力",
+        "GORE": "血腥",
+        "SEXUAL": "性内容",
+        "NUDITY": "裸露",
+        "LANGUAGE": "粗俗语言",
+        "DRUGS": "毒品",
+        "ALCOHOL": "酒精",
+        "HORROR": "恐怖",
+        "PSYCHOLOGICAL": "心理",
+        "DISCRIMINATION": "歧视",
+        "CRIME": "犯罪",
+        "GAMBLING": "赌博"
+      },
+      "tagDescriptions": {
+        "VIOLENCE": "肢体暴力、打斗",
+        "GORE": "露骨暴力、血液",
+        "SEXUAL": "性主题",
+        "NUDITY": "裸露或部分裸露",
+        "LANGUAGE": "脏话",
+        "DRUGS": "吸毒或相关内容",
+        "ALCOHOL": "饮酒",
+        "HORROR": "恐怖主题、令人不安的内容",
+        "PSYCHOLOGICAL": "心理主题",
+        "DISCRIMINATION": "歧视性内容",
+        "CRIME": "犯罪活动",
+        "GAMBLING": "赌博主题"
+      }
+    }
+  }
+}

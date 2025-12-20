@@ -1,0 +1,109 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "Skip",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish",
+      "progress": "Step {{current}} of {{total}}"
+    },
+    "displayName": {
+      "title": "Welcome to CharHub!",
+      "subtitle": "How would you like AI agents to address you?",
+      "label": "Display Name",
+      "placeholder": "e.g., John Silva",
+      "description": "This is the name that will appear in conversations with agents."
+    },
+    "username": {
+      "title": "Choose Your Username",
+      "subtitle": "This is how other users will find you",
+      "label": "Username",
+      "placeholder": "e.g., @johnsilva",
+      "description": "Must start with @ and contain only letters, numbers, and underscores",
+      "checking": "Checking availability...",
+      "available": "Username available!",
+      "unavailable": "Username already taken",
+      "invalid": "Invalid username format"
+    },
+    "birthDate": {
+      "title": "Your Birthdate",
+      "subtitle": "Required for age-appropriate content filtering",
+      "label": "Birthdate",
+      "description": "We use this to show you age-appropriate content only. You must be 13+ to use CharHub.",
+      "note": "Your birthdate is private and won't be shared publicly"
+    },
+    "gender": {
+      "title": "Gender",
+      "subtitle": "Optional - helps agents personalize conversations",
+      "feminine": "Feminine",
+      "masculine": "Masculine",
+      "nonBinary": "Non-binary",
+      "preferNotToSay": "Prefer not to say",
+      "description": "This helps AI agents use appropriate pronouns and language"
+    },
+    "language": {
+      "title": "Preferred Language",
+      "subtitle": "Choose your preferred language for AI responses and interface",
+      "label": "Language",
+      "description": "This determines the language for AI conversations and user interface"
+    },
+    "ageRating": {
+      "title": "Content Rating Preference",
+      "subtitle": "Choose the maximum age rating you want to see",
+      "agePrefix": "Based on your age",
+      "youCanAccess": "you can access:",
+      "description": "Select which content ratings you want to see. Higher ratings are unlocked based on your age.",
+      "options": {
+        "L": "All Ages (L)",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+ (Teen)",
+        "SIXTEEN": "16+ (Mature)",
+        "EIGHTEEN": "18+ (Adult)"
+      },
+      "optionDescriptions": {
+        "L": "Suitable for everyone",
+        "TEN": "Mild themes",
+        "TWELVE": "Moderate themes",
+        "FOURTEEN": "More mature themes",
+        "SIXTEEN": "Strong themes",
+        "EIGHTEEN": "Adult content"
+      },
+      "noAge": "Set your birthdate to unlock more content ratings"
+    },
+    "contentFilters": {
+      "title": "Content Filters",
+      "subtitle": "Block specific content themes you don't want to see (Optional)",
+      "tip": "Tip: You can skip this and adjust content filters anytime in your profile settings.",
+      "tags": {
+        "VIOLENCE": "Violence",
+        "GORE": "Gore",
+        "SEXUAL": "Sexual Content",
+        "NUDITY": "Nudity",
+        "LANGUAGE": "Strong Language",
+        "DRUGS": "Drugs",
+        "ALCOHOL": "Alcohol",
+        "HORROR": "Horror",
+        "PSYCHOLOGICAL": "Psychological",
+        "DISCRIMINATION": "Discrimination",
+        "CRIME": "Crime",
+        "GAMBLING": "Gambling"
+      },
+      "tagDescriptions": {
+        "VIOLENCE": "Physical violence, fighting",
+        "GORE": "Explicit violence, blood",
+        "SEXUAL": "Sexual themes",
+        "NUDITY": "Nudity or partial nudity",
+        "LANGUAGE": "Profanity",
+        "DRUGS": "Drug use or references",
+        "ALCOHOL": "Alcohol consumption",
+        "HORROR": "Horror themes, disturbing content",
+        "PSYCHOLOGICAL": "Psychological themes",
+        "DISCRIMINATION": "Discriminatory content",
+        "CRIME": "Criminal activities",
+        "GAMBLING": "Gambling themes"
+      }
+    }
+  }
+}

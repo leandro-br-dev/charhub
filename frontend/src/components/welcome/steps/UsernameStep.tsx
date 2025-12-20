@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAuth } from '../../../hooks/useAuth';
 import { Input } from '../../ui/Input';
 import type { WelcomeFormData } from '../types';
 import api from '../../../lib/api';
@@ -9,8 +11,17 @@ interface UsernameStepProps {
 }
 
 export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
+  const { t } = useTranslation('welcome');
+  const { user } = useAuth();
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
+
+  // Pre-fill with current username
+  useEffect(() => {
+    if (user?.username && !data.username) {
+      onUpdate({ username: user.username });
+    }
+  }, [user, data.username, onUpdate]);
 
   const checkUsername = async (username: string) => {
     if (!username || username.length < 2) {
@@ -23,7 +34,7 @@ export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
 
     setIsChecking(true);
     try {
-      const response = await api.get(`/users/check-username/${formattedUsername}`);
+      const response = await api.get(`/api/v1/users/check-username/${formattedUsername}`);
       setIsAvailable(response.data.available);
     } catch (error) {
       console.error('Error checking username:', error);
@@ -53,21 +64,21 @@ export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h3 className="text-2xl font-bold">Choose Your Username</h3>
-        <p className="text-muted-foreground">
-          This is how other users will find and mention you.
+        <h3 className="text-2xl font-bold">{t('username.title', 'Choose Your Username')}</h3>
+        <p className="text-base text-muted-foreground">
+          {t('username.subtitle', 'This is how other users will find you')}
         </p>
       </div>
 
       <div className="space-y-4">
         <div className="space-y-2">
           <label htmlFor="username" className="block text-sm font-medium">
-            Username
+            {t('username.label', 'Username')}
           </label>
           <div className="relative">
             <Input
               id="username"
-              placeholder="username"
+              placeholder={t('username.placeholder', 'e.g., @johnsilva')}
               value={data.username?.replace('@', '') || ''}
               onChange={(e) => handleUsernameChange(e.target.value)}
               className="pl-8"
@@ -78,19 +89,19 @@ export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
           </div>
 
           {isChecking && (
-            <p className="text-xs text-muted-foreground">Checking availability...</p>
+            <p className="text-sm text-muted-foreground">{t('username.checking', 'Checking availability...')}</p>
           )}
 
           {!isChecking && isAvailable === true && (
-            <p className="text-xs text-green-600">✓ Username is available</p>
+            <p className="text-sm text-green-600">✓ {t('username.available', 'Username available!')}</p>
           )}
 
           {!isChecking && isAvailable === false && (
-            <p className="text-xs text-red-600">✗ Username is already taken</p>
+            <p className="text-sm text-red-600">✗ {t('username.unavailable', 'Username already taken')}</p>
           )}
 
-          <p className="text-xs text-muted-foreground">
-            Choose a unique username. You can skip this step and set it later.
+          <p className="text-sm text-muted-foreground">
+            {t('username.description', 'Must start with @ and contain only letters, numbers, and underscores')}
           </p>
         </div>
       </div>

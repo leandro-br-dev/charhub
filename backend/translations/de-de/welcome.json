@@ -1,0 +1,109 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "Überspringen",
+      "back": "Zurück",
+      "next": "Weiter",
+      "finish": "Fertig",
+      "progress": "Schritt {{current}} von {{total}}"
+    },
+    "displayName": {
+      "title": "Willkommen bei CharHub!",
+      "subtitle": "Wie sollen KI-Agenten Sie ansprechen?",
+      "label": "Anzeigename",
+      "placeholder": "z.B. John Silva",
+      "description": "Dies ist der Name, der in Unterhaltungen mit Agenten angezeigt wird."
+    },
+    "username": {
+      "title": "Wählen Sie Ihren Benutzernamen",
+      "subtitle": "So werden andere Benutzer Sie finden",
+      "label": "Benutzername",
+      "placeholder": "z.B. @johnsilva",
+      "description": "Muss mit @ beginnen und darf nur Buchstaben, Zahlen und Unterstriche enthalten",
+      "checking": "Verfügbarkeit wird geprüft...",
+      "available": "Benutzername verfügbar!",
+      "unavailable": "Benutzername bereits vergeben",
+      "invalid": "Ungültiges Benutzernamenformat"
+    },
+    "birthDate": {
+      "title": "Ihr Geburtsdatum",
+      "subtitle": "Erforderlich für altersgerechte Inhaltsfilterung",
+      "label": "Geburtsdatum",
+      "description": "Wir verwenden dies, um Ihnen nur altersgerechte Inhalte anzuzeigen. Sie müssen mindestens 13 Jahre alt sein, um CharHub zu nutzen.",
+      "note": "Ihr Geburtsdatum ist privat und wird nicht öffentlich geteilt"
+    },
+    "gender": {
+      "title": "Geschlecht",
+      "subtitle": "Optional – hilft Agenten, Unterhaltungen zu personalisieren",
+      "feminine": "Weiblich",
+      "masculine": "Männlich",
+      "nonBinary": "Nicht-binär",
+      "preferNotToSay": "Möchte ich nicht angeben",
+      "description": "Dies hilft KI-Agenten, die richtigen Pronomen und die passende Sprache zu verwenden"
+    },
+    "language": {
+      "title": "Bevorzugte Sprache",
+      "subtitle": "Wählen Sie Ihre bevorzugte Sprache für KI-Antworten und die Benutzeroberfläche",
+      "label": "Sprache",
+      "description": "Dies bestimmt die Sprache für KI-Unterhaltungen und die Benutzeroberfläche"
+    },
+    "ageRating": {
+      "title": "Präferenz für Inhaltsbewertung",
+      "subtitle": "Wählen Sie die maximale Altersfreigabe, die Sie sehen möchten",
+      "agePrefix": "Basierend auf Ihrem Alter",
+      "youCanAccess": "können Sie zugreifen auf:",
+      "description": "Wählen Sie aus, welche Inhaltsbewertungen Sie sehen möchten. Höhere Bewertungen werden basierend auf Ihrem Alter freigeschaltet.",
+      "options": {
+        "L": "Für alle Altersgruppen (L)",
+        "TEN": "Ab 10 Jahren",
+        "TWELVE": "Ab 12 Jahren",
+        "FOURTEEN": "Ab 14 Jahren (Teenager)",
+        "SIXTEEN": "Ab 16 Jahren (Reif)",
+        "EIGHTEEN": "Ab 18 Jahren (Erwachsen)"
+      },
+      "optionDescriptions": {
+        "L": "Für jeden geeignet",
+        "TEN": "Milde Themen",
+        "TWELVE": "Moderate Themen",
+        "FOURTEEN": "Reifere Themen",
+        "SIXTEEN": "Starke Themen",
+        "EIGHTEEN": "Inhalte für Erwachsene"
+      },
+      "noAge": "Legen Sie Ihr Geburtsdatum fest, um weitere Inhaltsbewertungen freizuschalten"
+    },
+    "contentFilters": {
+      "title": "Inhaltsfilter",
+      "subtitle": "Blockieren Sie bestimmte Inhaltsthemen, die Sie nicht sehen möchten (Optional)",
+      "tip": "Tipp: Sie können diesen Schritt überspringen und Inhaltsfilter jederzeit in Ihren Profileinstellungen anpassen.",
+      "tags": {
+        "VIOLENCE": "Gewalt",
+        "GORE": "Brutalität",
+        "SEXUAL": "Sexuelle Inhalte",
+        "NUDITY": "Nacktheit",
+        "LANGUAGE": "Kraftausdrücke",
+        "DRUGS": "Drogen",
+        "ALCOHOL": "Alkohol",
+        "HORROR": "Horror",
+        "PSYCHOLOGICAL": "Psychologisch",
+        "DISCRIMINATION": "Diskriminierung",
+        "CRIME": "Kriminalität",
+        "GAMBLING": "Glücksspiel"
+      },
+      "tagDescriptions": {
+        "VIOLENCE": "Physische Gewalt, Kämpfe",
+        "GORE": "Explizite Gewalt, Blut",
+        "SEXUAL": "Sexuelle Themen",
+        "NUDITY": "Nacktheit oder teilweise Nacktheit",
+        "LANGUAGE": "Obszöne Sprache",
+        "DRUGS": "Drogenkonsum oder -bezüge",
+        "ALCOHOL": "Alkoholkonsum",
+        "HORROR": "Horror-Themen, verstörende Inhalte",
+        "PSYCHOLOGICAL": "Psychologische Themen",
+        "DISCRIMINATION": "Diskriminierende Inhalte",
+        "CRIME": "Kriminelle Aktivitäten",
+        "GAMBLING": "Glücksspiel-Themen"
+      }
+    }
+  }
+}

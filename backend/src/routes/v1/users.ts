@@ -159,7 +159,9 @@ router.patch('/me/welcome-progress', requireAuth, async (req, res) => {
   }
 
   try {
-    const updated = await updateWelcomeProgress(req.auth.user.id, req.body);
+    // Validate with Zod schema first
+    const payload = updateUserProfileSchema.parse(req.body);
+    const updated = await updateWelcomeProgress(req.auth.user.id, payload);
 
     if (req.auth) {
       req.auth.user = updated;
@@ -167,6 +169,11 @@ router.patch('/me/welcome-progress', requireAuth, async (req, res) => {
 
     res.json({ success: true, data: updated });
   } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ success: false, error: 'Validation error', details: error.flatten() });
+      return;
+    }
+
     if (error instanceof Error) {
       if (error.message === 'Invalid birthdate' || error.message === 'Age rating exceeds user\'s age') {
         res.status(400).json({ success: false, error: error.message });

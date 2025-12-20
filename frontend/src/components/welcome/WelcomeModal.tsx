@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { useWelcomeFlow } from './hooks/useWelcomeFlow';
@@ -10,6 +11,7 @@ import { AgeRatingStep } from './steps/AgeRatingStep';
 import { ContentFiltersStep } from './steps/ContentFiltersStep';
 
 export function WelcomeModal() {
+  const { t } = useTranslation('welcome');
   const {
     isOpen,
     currentStep,
@@ -55,7 +57,7 @@ export function WelcomeModal() {
     <Modal
       isOpen={isOpen}
       onClose={skipWelcome}
-      title="Welcome to CharHub!"
+      title={t('displayName.title', 'Welcome to CharHub!')}
       size="lg"
     >
       <div className="space-y-6">
@@ -67,8 +69,8 @@ export function WelcomeModal() {
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-center text-xs text-muted-foreground">
-            Step {currentStepIndex + 1} of {totalSteps}
+          <p className="text-center text-sm text-muted-foreground">
+            {t('modal.progress', 'Step {{current}} of {{total}}', { current: currentStepIndex + 1, total: totalSteps })}
           </p>
         </div>
 
@@ -89,7 +91,7 @@ export function WelcomeModal() {
             onClick={goToPreviousStep}
             disabled={currentStepIndex === 0 || isLoading}
           >
-            ← Back
+            ← {t('modal.back', 'Back')}
           </Button>
 
           <Button
@@ -97,14 +99,14 @@ export function WelcomeModal() {
             onClick={skipWelcome}
             disabled={isLoading}
           >
-            Skip
+            {t('modal.skip', 'Skip')}
           </Button>
 
           <Button
             onClick={goToNextStep}
             disabled={isLoading}
           >
-            {isLoading ? 'Saving...' : currentStepIndex === totalSteps - 1 ? 'Complete' : 'Next →'}
+            {isLoading ? t('modal.saving', 'Saving...') : currentStepIndex === totalSteps - 1 ? t('modal.finish', 'Finish') : `${t('modal.next', 'Next')} →`}
           </Button>
         </div>
       </div>
