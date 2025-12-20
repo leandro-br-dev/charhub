@@ -1,11 +1,9 @@
 # Integração com Stripe para Pagamentos
 
 **Data**: 2025-12-14
-**Status**: 🚧 In Progress - Fase 4 (Testes e Deploy)
+**Status**: 📋 Backlog
 **Prioridade**: Alta
 **Estimativa**: 2-3 semanas
-**Branch**: `feature/stripe-integration`
-**Última Atualização**: 2025-12-15
 
 ---
 
@@ -1013,7 +1011,7 @@ describe('Stripe Webhooks', () => {
 
 ## Roadmap de Implementação
 
-### Fase 1: Setup e Abstração (Semana 1) ✅ CONCLUÍDA
+### Fase 1: Setup e Abstração (Semana 1)
 
 **Objetivo**: Criar arquitetura multi-provider sem quebrar código existente
 
@@ -1038,129 +1036,51 @@ describe('Stripe Webhooks', () => {
   - Implementar factory pattern
   - Testes unitários
 
-**Entregável**: ✅ Código PayPal funcionando via nova arquitetura, zero breaking changes
+**Entregável**: Código PayPal funcionando via nova arquitetura, zero breaking changes
 
 ---
 
-## 📊 Progress Tracking
-
-**Última atualização**: 2025-12-15 03:30
-
-### Completed
-- [x] Branch `feature/stripe-integration` criada
-- [x] Documentação técnica lida
-- [x] TODO list criado com 5 fases
-- [x] **Fase 1 COMPLETA**: Setup e Abstração
-  - [x] Schema atualizado com PaymentProvider enum
-  - [x] Migration criada e aplicada
-  - [x] IPaymentProvider interface implementada
-  - [x] PayPalProvider criado (código existente refatorado)
-  - [x] PaymentProviderFactory implementada
-  - [x] subscriptionService refatorado para usar factory
-  - [x] Webhook PayPal atualizado para nova arquitetura
-  - [x] Build TypeScript bem-sucedido
-  - [x] Backend reiniciado sem erros
-- [x] **Fase 2 COMPLETA**: Implementação Stripe
-  - [x] Stripe SDK instalado (npm package)
-  - [x] StripeProvider completo implementado
-  - [x] Customer management (get or create)
-  - [x] Subscription lifecycle (create, cancel, reactivate, change)
-  - [x] Webhook endpoint `/api/v1/webhooks/stripe` criado
-  - [x] Signature verification implementada
-  - [x] Event handlers completos
-  - [x] Script de seed `seedStripePlans.ts` criado
-  - [x] Documentação de env vars criada
-  - [x] Factory atualizada para usar Stripe como padrão
-  - [x] Build TypeScript bem-sucedido
-  - [x] Backend reiniciado sem erros
-- [x] **Fase 3 COMPLETA**: Frontend Integration
-  - [x] Stripe SDKs instalados (@stripe/stripe-js, @stripe/react-stripe-js)
-  - [x] Componente StripeCheckout criado com Stripe Elements
-  - [x] PlansPage atualizada para suportar multi-provider
-  - [x] SubscribeResponse interface estendida (provider, clientSecret)
-  - [x] Fluxo condicional implementado (Stripe inline vs PayPal redirect)
-  - [x] Success/Error handlers para Stripe
-  - [x] Back button para retornar aos planos
-  - [x] Build TypeScript bem-sucedido
-  - [x] STRIPE_SETUP.md documentação criada
-
-### In Progress
-- [ ] Fase 4 - Testes e Deploy
-
-### Blocked
-- Nenhum bloqueio identificado
-
-### Notes
-- ✅ Arquitetura multi-provider implementada com sucesso
-- ✅ Código PayPal continua funcionando (backward compatible)
-- ✅ **Stripe completamente funcional no backend!**
-- ✅ **Frontend com checkout Stripe embarcado funcionando!**
-- ✅ Stripe configurado como provider padrão
-- 📁 Arquivos criados (Fase 1):
-  - `backend/src/services/payments/IPaymentProvider.ts`
-  - `backend/src/services/payments/PayPalProvider.ts`
-  - `backend/src/services/payments/PaymentProviderFactory.ts`
-  - `backend/prisma/migrations/20251214220500_add_stripe_payment_support/`
-- 📁 Arquivos criados (Fase 2):
-  - `backend/src/services/payments/StripeProvider.ts`
-  - `backend/src/routes/webhooks/stripe.ts`
-  - `backend/src/scripts/seeds/seedStripePlans.ts`
-  - `backend/STRIPE_ENV_VARS.md`
-- 📁 Arquivos criados (Fase 3):
-  - `frontend/src/components/payments/StripeCheckout.tsx`
-  - `STRIPE_SETUP.md`
-- 📝 Arquivos modificados (Fase 2):
-  - `backend/src/services/payments/PaymentProviderFactory.ts` (Stripe como default)
-  - `backend/src/routes/webhooks/index.ts` (rota Stripe registrada)
-  - `backend/package.json` (dependência stripe adicionada)
-- 📝 Arquivos modificados (Fase 3):
-  - `frontend/src/pages/plans/index.tsx` (multi-provider checkout)
-  - `frontend/src/services/subscriptionService.ts` (SubscribeResponse interface)
-  - `frontend/package.json` (dependências Stripe adicionadas)
-
----
-
-### Fase 2: Implementação Stripe (Semana 2) ✅ CONCLUÍDA
+### Fase 2: Implementação Stripe (Semana 2)
 
 **Objetivo**: Integração completa do Stripe
 
-- [x] **Stripe SDK Setup** (2h)
-  - Instalar dependências (`stripe`)
+- [ ] **Stripe SDK Setup** (2h)
+  - Instalar dependências (`stripe`, `@stripe/stripe-js`, `@stripe/react-stripe-js`)
   - Configurar variáveis de ambiente
   - Criar Stripe client
 
-- [x] **Stripe Provider** (10h)
+- [ ] **Stripe Provider** (10h)
   - Implementar `StripeProvider`
   - Métodos: create, cancel, reactivate, change, getStatus
   - Customer management
   - Error handling
 
-- [x] **Stripe Webhooks** (6h)
+- [ ] **Stripe Webhooks** (6h)
   - Criar endpoint `/webhooks/stripe`
   - Implementar `processWebhook()`
   - Signature verification
   - Event handlers (subscription.created, updated, deleted, payment_failed)
 
-- [x] **Seed Stripe Plans** (4h)
+- [ ] **Seed Stripe Plans** (4h)
   - Script para criar Products/Prices no Stripe Dashboard
   - Atualizar Plans no DB com `stripePriceId`
   - Documentar processo de configuração
 
-**Entregável**: ✅ Backend completo com Stripe funcionando
+**Entregável**: Backend completo com Stripe funcionando
 
 ---
 
-### Fase 3: Frontend Integration (Semana 2-3) ✅ CONCLUÍDA
+### Fase 3: Frontend Integration (Semana 2-3)
 
 **Objetivo**: UI para assinatura via Stripe
 
-- [x] **Stripe Elements** (8h)
+- [ ] **Stripe Elements** (8h)
   - Componente `StripeCheckout`
   - Integração com `PaymentElement`
   - Loading states
   - Error handling
 
-- [x] **Unified Subscription Flow** (6h)
+- [ ] **Unified Subscription Flow** (6h)
   - Atualizar `PlansPage` para suportar multi-provider
   - Lógica de decisão (Stripe inline vs PayPal redirect)
   - Success/Error handling
@@ -1171,7 +1091,7 @@ describe('Stripe Webhooks', () => {
   - Atualizar cartão (Stripe)
   - Trocar provider (futuro)
 
-**Entregável**: ✅ Frontend funcional com checkout Stripe embarcado
+**Entregável**: Frontend funcional com checkout Stripe embarcado
 
 ---
 
