@@ -13,6 +13,7 @@ interface AuthContextValue {
   loginWithFacebook: () => void;
   completeLogin: (payload: AuthUser) => void;
   updateUser: (updates: Partial<AuthUser>) => void;
+  refreshUser: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -162,6 +163,24 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     setIsPhotoCached(false);
   };
 
+  const refreshUser = async () => {
+    if (!user?.token) {
+      console.warn('[auth] cannot refresh user without token');
+      return;
+    }
+
+    try {
+      const response = await api.get(`${API_PREFIX}/users/me`);
+      const userData = response.data.data;
+
+      // Merge with existing user data (keep token and provider info)
+      setUser(prev => prev ? { ...prev, ...userData } : null);
+      console.debug('[auth] user refreshed from backend');
+    } catch (error) {
+      console.error('[auth] failed to refresh user', error);
+    }
+  };
+
   const logout = async () => {
     try {
       await api.post(`${API_PREFIX}/oauth/logout`);
@@ -185,9 +204,10 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
       loginWithFacebook,
       completeLogin,
       updateUser,
+      refreshUser,
       logout
     }),
-    [user, loginWithProvider, loginWithGoogle, loginWithFacebook, completeLogin, updateUser, logout]
+    [user, loginWithProvider, loginWithGoogle, loginWithFacebook, completeLogin, updateUser, refreshUser, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { NavigationRail, Sidebar } from "../components/layout";
 import { PageHeader } from "../components/ui";
 import { PageHeaderProvider, usePageHeader } from "../hooks/usePageHeader";
+import { WelcomeModal } from "../components/welcome";
 
 type NavigationSelection = {
   to: string;
@@ -171,7 +172,8 @@ function AuthenticatedLayoutInner({ children }: AuthenticatedLayoutProps): JSX.E
         </main>
       </div>
 
-
+      {/* Welcome Modal - appears for new users */}
+      <WelcomeModal />
     </div>
   );
 }
