@@ -5,14 +5,14 @@
     "language": "Idioma",
     "continueGoogle": "Continuar com o Google",
     "continueFacebook": "Continuar com o Facebook",
-    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza a CharHub a acessar suas informações básicas de perfil.",
+    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
     "logout": "Sair",
     "logoutLoading": "Saindo...",
     "authenticatedUser": "Usuário autenticado",
-    "tokenStored": "Armazenado em cookie HTTP-only",
+    "tokenStored": "Armazenado em cookie somente HTTP",
     "navDashboard": "Painel",
     "navCharacters": "Personagens",
-    "navTagline": "Demo segura de OAuth",
+    "navTagline": "Demonstração segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -28,36 +28,36 @@
     },
     "none": "Nenhum",
     "unknown": "Desconhecido",
-    "nameNotAvailable": "Nome não disponível",
+    "nameNotAvailable": "Nome indisponível",
     "cancel": "Cancelar",
     "save": "Salvar",
     "saving": "Salvando...",
     "delete": "Excluir",
     "deleting": "Excluindo...",
-    "enabled": "Habilitado",
-    "disabled": "Desabilitado",
-    "selectOption": "Selecione uma opção",
+    "enabled": "Ativado",
+    "disabled": "Desativado",
+    "selectOption": "Selecionar uma opção",
     "noResults": "Nenhuma opção encontrada.",
     "chat": {
       "with": "Conversar com"
     },
     "messages": {
       "linkCopied": "Link copiado para a área de transferência!",
-      "chatStarted": "Bate-papo iniciado com sucesso!",
+      "chatStarted": "Chat iniciado com sucesso!",
       "characterDeleted": "Personagem excluído com sucesso"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de conteúdo",
       "title": "Filtro de Conteúdo",
       "ageRating": "Classificação Indicativa",
-      "blurNsfw": "Desfocar Conteúdo Explícito",
+      "blurNsfw": "Borrar Conteúdo Explícito",
       "none": "Sem Filtro",
-      "blur": "Desfocar Conteúdo Sensível",
-      "hidden": "Ocultar Conteúdo Maduro",
+      "blur": "Borrar Conteúdo Sensível",
+      "hidden": "Ocultar Conteúdo Adulto",
       "descriptions": {
         "none": "Mostrar todo o conteúdo sem restrições",
-        "blur": "Aplicar desfoque ao conteúdo maduro",
-        "hidden": "Ocultar completamente o conteúdo maduro"
+        "blur": "Aplicar desfoque ao conteúdo adulto",
+        "hidden": "Ocultar completamente o conteúdo adulto"
       },
       "ageRatings": {
         "L": "Livre",
@@ -66,7 +66,11 @@
         "FOURTEEN": "14+",
         "SIXTEEN": "16+",
         "EIGHTEEN": "18+"
-      }
+      },
+      "noBirthdateWarning": "⚠️ Idade não registrada",
+      "noBirthdateDescription": "Para acessar conteúdo com restrição de idade, adicione sua data de nascimento nas configurações.",
+      "goToSettings": "Ir para Configurações",
+      "blocked": "(bloqueado)"
     },
     "errors": {
       "generic": "Ocorreu um erro. Por favor, tente novamente.",

@@ -5,7 +5,7 @@
     "language": "Langue",
     "continueGoogle": "Continuer avec Google",
     "continueFacebook": "Continuer avec Facebook",
-    "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder aux informations de base de votre profil.",
+    "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder à vos informations de profil de base.",
     "logout": "Se déconnecter",
     "logoutLoading": "Déconnexion en cours...",
     "authenticatedUser": "Utilisateur authentifié",
@@ -28,7 +28,7 @@
     },
     "none": "Aucun",
     "unknown": "Inconnu",
-    "nameNotAvailable": "Nom indisponible",
+    "nameNotAvailable": "Nom non disponible",
     "cancel": "Annuler",
     "save": "Enregistrer",
     "saving": "Enregistrement en cours...",
@@ -51,7 +51,7 @@
       "title": "Filtre de contenu",
       "ageRating": "Classification par âge",
       "blurNsfw": "Flouter le contenu explicite",
-      "none": "Pas de filtre",
+      "none": "Aucun filtre",
       "blur": "Flouter le contenu sensible",
       "hidden": "Masquer le contenu mature",
       "descriptions": {
@@ -61,12 +61,16 @@
       },
       "ageRatings": {
         "L": "Tout public",
-        "TEN": "10+",
-        "TWELVE": "12+",
-        "FOURTEEN": "14+",
-        "SIXTEEN": "16+",
-        "EIGHTEEN": "18+"
-      }
+        "TEN": "10 ans et plus",
+        "TWELVE": "12 ans et plus",
+        "FOURTEEN": "14 ans et plus",
+        "SIXTEEN": "16 ans et plus",
+        "EIGHTEEN": "18 ans et plus"
+      },
+      "noBirthdateWarning": "⚠️ Âge non enregistré",
+      "noBirthdateDescription": "Pour accéder au contenu soumis à des restrictions d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
+      "goToSettings": "Aller aux paramètres",
+      "blocked": "(bloqué)"
     },
     "errors": {
       "generic": "Une erreur est survenue. Veuillez réessayer.",

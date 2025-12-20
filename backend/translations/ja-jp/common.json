@@ -5,14 +5,14 @@
     "language": "言語",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubが基本プロフィール情報にアクセスすることを許可するものとします。",
-    "logout": "サインアウト",
-    "logoutLoading": "サインアウト中...",
+    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがお客様の基本プロフィール情報にアクセスすることを許可します。",
+    "logout": "ログアウト",
+    "logoutLoading": "ログアウト中...",
     "authenticatedUser": "認証済みユーザー",
-    "tokenStored": "HTTP-only Cookieに保存",
+    "tokenStored": "HTTP専用Cookieに保存済み",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
-    "navTagline": "セキュアOAuthデモ",
+    "navTagline": "安全なOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -28,7 +28,7 @@
     },
     "none": "なし",
     "unknown": "不明",
-    "nameNotAvailable": "名前が利用できません",
+    "nameNotAvailable": "名前は利用できません",
     "cancel": "キャンセル",
     "save": "保存",
     "saving": "保存中...",
@@ -37,36 +37,40 @@
     "enabled": "有効",
     "disabled": "無効",
     "selectOption": "オプションを選択",
-    "noResults": "オプションが見つかりませんでした。",
+    "noResults": "オプションが見つかりません。",
     "chat": {
       "with": "とチャット"
     },
     "messages": {
       "linkCopied": "リンクをクリップボードにコピーしました！",
-      "chatStarted": "チャットが正常に開始されました！",
-      "characterDeleted": "キャラクターは正常に削除されました"
+      "chatStarted": "チャットを開始しました！",
+      "characterDeleted": "キャラクターを削除しました"
     },
     "contentFilter": {
       "ariaLabel": "コンテンツフィルター",
       "title": "コンテンツフィルター",
-      "ageRating": "年齢制限",
-      "blurNsfw": "不適切なコンテンツをぼかす",
+      "ageRating": "年齢評価",
+      "blurNsfw": "露骨なコンテンツをぼかす",
       "none": "フィルターなし",
       "blur": "センシティブなコンテンツをぼかす",
-      "hidden": "成人向けコンテンツを隠す",
+      "hidden": "成人向けコンテンツを非表示",
       "descriptions": {
-        "none": "制限なしですべてのコンテンツを表示",
+        "none": "制限なしで全てのコンテンツを表示",
         "blur": "成人向けコンテンツにぼかしを適用",
         "hidden": "成人向けコンテンツを完全に非表示"
       },
       "ageRatings": {
         "L": "全年齢",
-        "TEN": "10+",
-        "TWELVE": "12+",
-        "FOURTEEN": "14+",
-        "SIXTEEN": "16+",
-        "EIGHTEEN": "18+"
-      }
+        "TEN": "10歳以上",
+        "TWELVE": "12歳以上",
+        "FOURTEEN": "14歳以上",
+        "SIXTEEN": "16歳以上",
+        "EIGHTEEN": "18歳以上"
+      },
+      "noBirthdateWarning": "⚠️ 年齢が未登録です",
+      "noBirthdateDescription": "年齢制限のあるコンテンツにアクセスするには、設定で生年月日を追加してください。",
+      "goToSettings": "設定へ移動",
+      "blocked": "(ブロック済み)"
     },
     "errors": {
       "generic": "エラーが発生しました。もう一度お試しください。",
