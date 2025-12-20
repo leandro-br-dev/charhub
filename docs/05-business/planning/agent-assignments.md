@@ -6,13 +6,13 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ---
 
-## 📊 Status Atual: 14 de Dezembro de 2025
+## 📊 Status Atual: 20 de Dezembro de 2025
 
 ### Tarefas em Progresso
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
-| T003 | **Integração Stripe** | Agent Coder | 🚀 Pronto para Iniciar | `feature/stripe-integration` (a criar) | 31/12/2025 | 14/12 - Spec aprovada e movida para active |
+| T004 | **Welcome Flow + Content Restrictions** | Agent Coder | 🚀 Pronto para Iniciar | `feature/welcome-flow-content-restrictions` (a criar) | 10/01/2026 | 20/12 - Spec criada e aprovada |
 
 ---
 
@@ -29,30 +29,68 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ## 🚀 Histórico Recente de Atribuições
 
+### Semana de 20-27 Dezembro
+
+| Tarefa | Agente | Status | Detalhes |
+|--------|--------|--------|----------|
+| **Welcome Flow + Content Restrictions** | Agent Coder | ✅ Atribuído | Spec completa em `active/welcome-flow-and-content-restrictions.md`. **PRIORIDADE MÁXIMA** - Iniciar imediatamente. |
+
+**Contexto da Tarefa Welcome Flow + Content Restrictions** (T004):
+- **Por que urgente**: Sistema atual permite menores acessarem conteúdo 18+, risco legal de compliance
+- **Objetivo Principal**: Implementar onboarding guiado + sistema robusto de restrições de conteúdo por idade
+- **Problemas Resolvidos**:
+  - ✅ Usuários novos não preenchem dados essenciais (displayName, birthdate, etc)
+  - ✅ languagePreference não é capturado no OAuth signup
+  - ✅ Age rating sem validação de idade real
+  - ✅ Menores podem selecionar conteúdo 18+
+- **Features Principais**:
+  1. Welcome Modal multi-step (7 steps) com salvamento progressivo
+  2. Auto-captura de idioma no OAuth (i18nextLng → languagePreference)
+  3. Age Rating Dropdown com validação inteligente
+  4. Auto-ativação de classificações inferiores
+  5. Bloqueio baseado em idade real do usuário
+- **Estimativa**: 2-3 semanas (8 fases detalhadas na spec)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/welcome-flow-and-content-restrictions.md`
+- **Branch sugerida**: `feature/welcome-flow-content-restrictions`
+
+**Instruções para Agent Coder**:
+1. ⚠️ **PRIORIDADE MÁXIMA** - Iniciar antes do Stripe (compliance legal)
+2. Criar branch `feature/welcome-flow-content-restrictions` a partir de `main`
+3. Ler spec completa (1000+ linhas com todos os detalhes técnicos)
+4. Seguir roadmap de implementação (8 fases):
+   - Fase 1: Backend Foundation (dias 1-3)
+   - Fase 2: Frontend Welcome Modal (dias 4-7)
+   - Fase 3: Age Rating Dropdown (dias 8-9)
+   - Fase 4: OAuth Language Capture (dia 10)
+   - Fase 5: Content Filtering API (dias 11-12)
+   - Fase 6: Refatoração (dia 13)
+   - Fase 7: Testing & QA (dia 14)
+   - Fase 8: Documentation (dia 15)
+5. **CRÍTICO**: Reutilizar componentes existentes do Profile (zero duplicação)
+6. Fazer commits incrementais por fase
+7. Abrir PR quando Fase 1-2 estiverem completas para review inicial
+8. Agent Reviewer testará localmente após cada fase major
+
+**Requisitos Técnicos Importantes**:
+- ✅ Migration Prisma com novos campos no User model
+- ✅ Validação de idade no backend (calculateAge, getMaxAllowedAgeRating)
+- ✅ 3 novos endpoints: welcome-progress, complete-welcome, age-rating-info
+- ✅ Modal não-bloqueante (usuário pode pular, mas dados são salvos)
+- ✅ Testes unitários + integração + E2E (coverage > 80%)
+- ✅ Componentes compartilhados entre WelcomeModal e Profile
+
 ### Semana de 14-20 Dezembro
 
 | Tarefa | Agente | Status | Detalhes |
 |--------|--------|--------|----------|
-| **Integração Stripe** | Agent Coder | ✅ Atribuído | Spec completa em `active/stripe-payment-integration.md`. Pronto para iniciar desenvolvimento. |
+| **Integração Stripe** | Agent Coder | ✅ Concluído | PR merged e deployed em produção. |
 
 **Contexto da Tarefa Stripe** (T003):
-- **Por que urgente**: PayPal exige CNPJ para produção, mas Stripe permite operar com CPF
-- **Objetivo**: Habilitar pagamentos reais em produção ASAP
-- **Abordagem**: Criar arquitetura multi-provider flexível (Payment Provider Adapter Pattern)
-- **Status PayPal**: Mantido como fallback, código existente não será quebrado
-- **Benefícios futuros**: Usuário poderá escolher forma de pagamento (Stripe, PayPal, futuramente PIX)
-- **Estimativa**: 2-3 semanas (5 fases detalhadas na spec)
-- **Arquivo de spec**: `docs/05-business/planning/features/active/stripe-payment-integration.md`
-- **Branch sugerida**: `feature/stripe-integration`
-
-**Instruções para Agent Coder**:
-1. Criar branch `feature/stripe-integration` a partir de `main`
-2. Ler spec completa em `docs/05-business/planning/features/active/stripe-payment-integration.md`
-3. Seguir roadmap de implementação (5 fases)
-4. Fazer commits incrementais por fase
-5. Abrir PR quando Fase 1 estiver completa para review inicial
-6. Continuar fases 2-4 após feedback
-7. Agent Reviewer testará e fará deploy da Fase 4
+- **Status**: ✅ **CONCLUÍDO E DEPLOYED**
+- **Objetivo**: Habilitar pagamentos reais em produção com Stripe
+- **Abordagem**: Payment Provider Adapter Pattern implementado
+- **Resultado**: Sistema de pagamentos ativo em produção
+- **Arquivo de spec**: `docs/05-business/planning/features/implemented/stripe-payment-integration.md` (movido para implemented)
 
 ### Semana de 23-29 Novembro
 
