@@ -31,6 +31,7 @@ export interface AuthenticatedUser {
   birthDate?: string;
   gender?: string;
   preferredLanguage?: string;
+  hasCompletedWelcome?: boolean;
   maxAgeRating?: AgeRating;
   blockedTags?: ContentTag[];
 }
