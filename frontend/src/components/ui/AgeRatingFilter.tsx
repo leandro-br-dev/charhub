@@ -41,6 +41,7 @@ export function AgeRatingFilter(): JSX.Element {
         return;
       }
 
+      setIsLoading(true);
       try {
         const response = await api.get('/api/v1/users/me/age-rating-info');
         setAgeRatingInfo(response.data.data);
@@ -59,7 +60,7 @@ export function AgeRatingFilter(): JSX.Element {
     };
 
     fetchAgeRatingInfo();
-  }, [user]);
+  }, [user?.token, user?.birthDate, user?.hasCompletedWelcome, user?.maxAgeRating]);
 
   const selectedLabels = useMemo(() => {
     if (!ageRatings || ageRatings.length === 0) return t('characters:hub.filters.noFilter', 'Any');
