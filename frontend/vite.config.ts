@@ -36,6 +36,9 @@ export default defineConfig(({ mode }) => {
       },
     },
     plugins: [react()],
+    esbuild: {
+      drop: mode === 'production' ? ['console', 'debugger'] : [],
+    },
     server: {
       port: 80, // O container do Vite roda internamente na porta 80
       host: '0.0.0.0',
@@ -60,7 +63,8 @@ export default defineConfig(({ mode }) => {
       host: '0.0.0.0'
     },
     build: {
-      outDir: 'dist'
+      outDir: 'dist',
+      minify: 'esbuild'
     }
   };
 });
