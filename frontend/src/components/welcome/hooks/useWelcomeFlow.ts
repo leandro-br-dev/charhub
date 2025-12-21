@@ -52,7 +52,12 @@ export function useWelcomeFlow() {
     setError(null);
 
     try {
-      await api.patch('/api/v1/users/me/welcome-progress', formData);
+      // Filter out undefined and null values to avoid validation errors
+      const cleanedData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value !== undefined && value !== null && value !== '')
+      );
+
+      await api.patch('/api/v1/users/me/welcome-progress', cleanedData);
       await refreshUser(); // Refresh user data from backend
       return true;
     } catch (err: any) {
