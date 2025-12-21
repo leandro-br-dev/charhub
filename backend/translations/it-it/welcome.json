@@ -6,21 +6,22 @@
       "back": "Indietro",
       "next": "Avanti",
       "finish": "Fine",
-      "progress": "Passo {{current}} di {{total}}"
+      "saving": "Salvataggio in corso...",
+      "progress": "Passaggio {{current}} di {{total}}",
+      "successTitle": "Benvenuto completato!",
+      "successMessage": "Il tuo profilo è stato configurato con successo. Goditi CharHub!"
     },
     "displayName": {
-      "title": "Benvenuto su CharHub!",
-      "subtitle": "Come desideri che gli agenti AI si rivolgano a te?",
+      "title": "Come vuoi essere chiamato?",
       "label": "Nome visualizzato",
-      "placeholder": "es. John Silva",
-      "description": "Questo è il nome che apparirà nelle conversazioni con gli agenti."
+      "placeholder": "es. John Silva"
     },
     "username": {
       "title": "Scegli il tuo nome utente",
       "subtitle": "È così che gli altri utenti ti troveranno",
       "label": "Nome utente",
-      "placeholder": "es. @johnsilva",
-      "description": "Deve iniziare con @ e contenere solo lettere, numeri e trattini bassi",
+      "placeholder": "es. johnsilva",
+      "description": "Solo lettere, numeri e trattini bassi",
       "checking": "Verifica disponibilità...",
       "available": "Nome utente disponibile!",
       "unavailable": "Nome utente già in uso",
@@ -30,7 +31,6 @@
       "title": "La tua data di nascita",
       "subtitle": "Obbligatorio per il filtro dei contenuti in base all'età",
       "label": "Data di nascita",
-      "description": "Lo utilizziamo per mostrarti solo contenuti appropriati alla tua età. Devi avere almeno 13 anni per usare CharHub.",
       "note": "La tua data di nascita è privata e non sarà condivisa pubblicamente"
     },
     "gender": {
@@ -38,22 +38,18 @@
       "subtitle": "Opzionale - aiuta gli agenti a personalizzare le conversazioni",
       "feminine": "Femminile",
       "masculine": "Maschile",
-      "nonBinary": "Non binario",
+      "nonBinary": "Non-binario",
       "preferNotToSay": "Preferisco non dirlo",
       "description": "Questo aiuta gli agenti AI a usare pronomi e linguaggio appropriati"
     },
     "language": {
       "title": "Lingua preferita",
       "subtitle": "Scegli la tua lingua preferita per le risposte AI e l'interfaccia",
-      "label": "Lingua",
-      "description": "Questo determina la lingua per le conversazioni AI e l'interfaccia utente"
+      "label": "Lingua"
     },
     "ageRating": {
-      "title": "Preferenza classificazione contenuti",
-      "subtitle": "Scegli la classificazione d'età massima che desideri visualizzare",
-      "agePrefix": "In base alla tua età",
-      "youCanAccess": "puoi accedere a:",
-      "description": "Seleziona quali classificazioni di contenuto desideri visualizzare. Le classificazioni più alte vengono sbloccate in base alla tua età.",
+      "title": "Preferenza di classificazione dei contenuti",
+      "subtitle": "Scegli la classificazione per età massima che desideri visualizzare",
       "options": {
         "L": "Tutte le età (L)",
         "TEN": "10+",
@@ -64,46 +60,16 @@
       },
       "optionDescriptions": {
         "L": "Adatto a tutti",
-        "TEN": "Temi leggeri",
-        "TWELVE": "Temi moderati",
-        "FOURTEEN": "Temi più maturi",
-        "SIXTEEN": "Temi forti",
+        "TEN": "Tematiche lievi",
+        "TWELVE": "Tematiche moderate",
+        "FOURTEEN": "Tematiche più mature",
+        "SIXTEEN": "Tematiche forti",
         "EIGHTEEN": "Contenuti per adulti"
-      },
-      "noAge": "Imposta la tua data di nascita per sbloccare più classificazioni di contenuto"
+      }
     },
     "contentFilters": {
-      "title": "Filtri contenuti",
-      "subtitle": "Blocca specifici temi di contenuto che non desideri visualizzare (Opzionale)",
-      "tip": "Suggerimento: Puoi saltare questo passaggio e regolare i filtri dei contenuti in qualsiasi momento nelle impostazioni del tuo profilo.",
-      "tags": {
-        "VIOLENCE": "Violenza",
-        "GORE": "Gore",
-        "SEXUAL": "Contenuti sessuali",
-        "NUDITY": "Nudità",
-        "LANGUAGE": "Linguaggio volgare",
-        "DRUGS": "Droga",
-        "ALCOHOL": "Alcol",
-        "HORROR": "Horror",
-        "PSYCHOLOGICAL": "Psicologico",
-        "DISCRIMINATION": "Discriminazione",
-        "CRIME": "Crimine",
-        "GAMBLING": "Gioco d'azzardo"
-      },
-      "tagDescriptions": {
-        "VIOLENCE": "Violenza fisica, combattimenti",
-        "GORE": "Violenza esplicita, sangue",
-        "SEXUAL": "Temi sessuali",
-        "NUDITY": "Nudità o nudità parziale",
-        "LANGUAGE": "Linguaggio volgare",
-        "DRUGS": "Uso o riferimenti a droghe",
-        "ALCOHOL": "Consumo di alcol",
-        "HORROR": "Temi horror, contenuti inquietanti",
-        "PSYCHOLOGICAL": "Temi psicologici",
-        "DISCRIMINATION": "Contenuti discriminatori",
-        "CRIME": "Attività criminali",
-        "GAMBLING": "Temi di gioco d'azzardo"
-      }
+      "title": "Preferenze sui contenuti",
+      "subtitle": "Seleziona i temi che desideri visualizzare"
     }
   }
 }

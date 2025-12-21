@@ -40,9 +40,6 @@ export function BirthdateStep({ data, onUpdate }: BirthdateStepProps) {
             max={new Date().toISOString().split('T')[0]}
           />
           <p className="text-sm text-muted-foreground">
-            {t('birthDate.description', 'We use this to show you age-appropriate content only. You must be 13+ to use CharHub.')}
-          </p>
-          <p className="text-sm text-muted-foreground">
             {t('birthDate.note', "Your birthdate is private and won't be shared publicly")}
           </p>
         </div>

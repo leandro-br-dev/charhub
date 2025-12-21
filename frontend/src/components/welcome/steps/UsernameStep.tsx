@@ -78,7 +78,7 @@ export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
           <div className="relative">
             <Input
               id="username"
-              placeholder={t('username.placeholder', 'e.g., @johnsilva')}
+              placeholder={t('username.placeholder', 'e.g., johnsilva')}
               value={data.username?.replace('@', '') || ''}
               onChange={(e) => handleUsernameChange(e.target.value)}
               className="pl-8"
@@ -101,7 +101,7 @@ export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
           )}
 
           <p className="text-sm text-muted-foreground">
-            {t('username.description', 'Must start with @ and contain only letters, numbers, and underscores')}
+            {t('username.description', 'Only letters, numbers, and underscores')}
           </p>
         </div>
       </div>

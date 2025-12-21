@@ -6,21 +6,22 @@
       "back": "Retour",
       "next": "Suivant",
       "finish": "Terminer",
-      "progress": "Étape {{current}} sur {{total}}"
+      "saving": "Enregistrement...",
+      "progress": "Étape {{current}} sur {{total}}",
+      "successTitle": "Bienvenue terminée !",
+      "successMessage": "Votre profil a été configuré avec succès. Profitez de CharHub !"
     },
     "displayName": {
-      "title": "Bienvenue sur CharHub !",
-      "subtitle": "Comment souhaitez-vous que les agents IA s'adressent à vous ?",
+      "title": "Comment souhaitez-vous être appelé(e) ?",
       "label": "Nom d'affichage",
-      "placeholder": "ex: Jean Dupont",
-      "description": "C'est le nom qui apparaîtra dans les conversations avec les agents."
+      "placeholder": "par ex. Jean Silva"
     },
     "username": {
       "title": "Choisissez votre nom d'utilisateur",
       "subtitle": "C'est ainsi que les autres utilisateurs vous trouveront",
       "label": "Nom d'utilisateur",
-      "placeholder": "ex: @jeandupont",
-      "description": "Doit commencer par @ et contenir uniquement des lettres, des chiffres et des underscores.",
+      "placeholder": "par ex. jeansilva",
+      "description": "Uniquement des lettres, des chiffres et des underscores",
       "checking": "Vérification de la disponibilité...",
       "available": "Nom d'utilisateur disponible !",
       "unavailable": "Nom d'utilisateur déjà pris",
@@ -28,34 +29,29 @@
     },
     "birthDate": {
       "title": "Votre date de naissance",
-      "subtitle": "Requis pour le filtrage de contenu adapté à l'âge",
+      "subtitle": "Obligatoire pour le filtrage de contenu adapté à l'âge",
       "label": "Date de naissance",
-      "description": "Nous l'utilisons pour vous montrer uniquement du contenu adapté à votre âge. Vous devez avoir 13 ans ou plus pour utiliser CharHub.",
       "note": "Votre date de naissance est privée et ne sera pas partagée publiquement"
     },
     "gender": {
       "title": "Genre",
-      "subtitle": "Optionnel - aide les agents à personnaliser les conversations",
+      "subtitle": "Facultatif - aide les agents à personnaliser les conversations",
       "feminine": "Féminin",
       "masculine": "Masculin",
       "nonBinary": "Non-binaire",
       "preferNotToSay": "Préfère ne pas dire",
-      "description": "Ceci aide les agents IA à utiliser les pronoms et le langage appropriés"
+      "description": "Cela aide les agents IA à utiliser les pronoms et le langage appropriés"
     },
     "language": {
       "title": "Langue préférée",
       "subtitle": "Choisissez votre langue préférée pour les réponses de l'IA et l'interface",
-      "label": "Langue",
-      "description": "Ceci détermine la langue des conversations IA et de l'interface utilisateur"
+      "label": "Langue"
     },
     "ageRating": {
       "title": "Préférence de classification du contenu",
       "subtitle": "Choisissez la classification d'âge maximale que vous souhaitez voir",
-      "agePrefix": "Basé sur votre âge",
-      "youCanAccess": "vous pouvez accéder à :",
-      "description": "Sélectionnez les classifications de contenu que vous souhaitez voir. Les classifications plus élevées sont débloquées en fonction de votre âge.",
       "options": {
-        "L": "Tout public (L)",
+        "L": "Tous publics (L)",
         "TEN": "10 ans et plus",
         "TWELVE": "12 ans et plus",
         "FOURTEEN": "14 ans et plus (Adolescent)",
@@ -63,47 +59,17 @@
         "EIGHTEEN": "18 ans et plus (Adulte)"
       },
       "optionDescriptions": {
-        "L": "Convient à tous",
+        "L": "Convient à tout le monde",
         "TEN": "Thèmes légers",
         "TWELVE": "Thèmes modérés",
         "FOURTEEN": "Thèmes plus matures",
         "SIXTEEN": "Thèmes forts",
         "EIGHTEEN": "Contenu adulte"
-      },
-      "noAge": "Définissez votre date de naissance pour débloquer plus de classifications de contenu"
+      }
     },
     "contentFilters": {
-      "title": "Filtres de contenu",
-      "subtitle": "Bloquez les thèmes de contenu spécifiques que vous ne souhaitez pas voir (Facultatif)",
-      "tip": "Astuce : Vous pouvez ignorer cette étape et ajuster les filtres de contenu à tout moment dans les paramètres de votre profil.",
-      "tags": {
-        "VIOLENCE": "Violence",
-        "GORE": "Gore",
-        "SEXUAL": "Contenu sexuel",
-        "NUDITY": "Nudité",
-        "LANGUAGE": "Langage grossier",
-        "DRUGS": "Drogues",
-        "ALCOHOL": "Alcool",
-        "HORROR": "Horreur",
-        "PSYCHOLOGICAL": "Psychologique",
-        "DISCRIMINATION": "Discrimination",
-        "CRIME": "Crime",
-        "GAMBLING": "Jeu d'argent"
-      },
-      "tagDescriptions": {
-        "VIOLENCE": "Violence physique, combats",
-        "GORE": "Violence explicite, sang",
-        "SEXUAL": "Thèmes sexuels",
-        "NUDITY": "Nudité ou nudité partielle",
-        "LANGUAGE": "Propos vulgaires",
-        "DRUGS": "Consommation ou références aux drogues",
-        "ALCOHOL": "Consommation d'alcool",
-        "HORROR": "Thèmes d'horreur, contenu dérangeant",
-        "PSYCHOLOGICAL": "Thèmes psychologiques",
-        "DISCRIMINATION": "Contenu discriminatoire",
-        "CRIME": "Activités criminelles",
-        "GAMBLING": "Thèmes de jeu d'argent"
-      }
+      "title": "Préférences de contenu",
+      "subtitle": "Sélectionnez les thèmes que vous souhaitez voir"
     }
   }
 }

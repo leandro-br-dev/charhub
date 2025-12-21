@@ -13,10 +13,7 @@ export function DisplayNameStep({ data, onUpdate }: DisplayNameStepProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-center">
-        <h3 className="text-2xl font-bold">{t('displayName.title', 'Welcome to CharHub!')}</h3>
-        <p className="text-base text-muted-foreground">
-          {t('displayName.subtitle', 'How would you like AI agents to address you?')}
-        </p>
+        <h3 className="text-2xl font-bold">{t('displayName.title', 'How would you like to be called?')}</h3>
       </div>
 
       <div className="space-y-4">
@@ -31,9 +28,6 @@ export function DisplayNameStep({ data, onUpdate }: DisplayNameStepProps) {
             onChange={(e) => onUpdate({ displayName: e.target.value })}
             autoFocus
           />
-          <p className="text-sm text-muted-foreground">
-            {t('displayName.description', 'This is the name that will appear in conversations with agents.')}
-          </p>
         </div>
       </div>
     </div>

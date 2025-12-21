@@ -33,7 +33,6 @@ export function AgeRatingStep({ data, onUpdate }: AgeRatingStepProps) {
         <h3 className="text-2xl font-bold">{t('ageRating.title', 'Content Rating Preference')}</h3>
         <p className="text-base text-muted-foreground">
           {t('ageRating.subtitle', 'Choose the maximum age rating you want to see')}
-          {userAge !== null && ` ${t('ageRating.agePrefix', 'Based on your age')} (${userAge}), ${t('ageRating.youCanAccess', 'you can access:')}`}
         </p>
       </div>
 
@@ -68,16 +67,6 @@ export function AgeRatingStep({ data, onUpdate }: AgeRatingStepProps) {
           );
         })}
       </div>
-
-      {userAge === null && (
-        <div className="rounded-lg bg-yellow-50 p-3 text-sm text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-200">
-          ⚠️ {t('ageRating.noAge', 'Set your birthdate to unlock more content ratings')}
-        </div>
-      )}
-
-      <p className="text-center text-sm text-muted-foreground">
-        {t('ageRating.description', 'Select which content ratings you want to see. Higher ratings are unlocked based on your age.')}
-      </p>
     </div>
   );
 }

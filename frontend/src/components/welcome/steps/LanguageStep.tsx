@@ -42,9 +42,6 @@ export function LanguageStep({ data, onUpdate }: LanguageStepProps) {
             value={data.preferredLanguage || 'en-US'}
             onChange={(value) => onUpdate({ preferredLanguage: value })}
           />
-          <p className="text-sm text-muted-foreground">
-            {t('language.description', 'This determines the language for AI conversations and user interface')}
-          </p>
         </div>
       </div>
     </div>
