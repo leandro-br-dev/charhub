@@ -20,7 +20,7 @@ const AGE_RATING_MIN_AGE: Record<AgeRating, number> = {
 };
 
 interface AgeRatingInfo {
-  hasBirthdate: boolean;
+  hasBirthDate: boolean;  // Fixed: was hasBirthdate (lowercase d)
   age: number | null;
   maxAllowedRating: AgeRating;
   currentMaxRating: AgeRating;
@@ -33,11 +33,23 @@ export function AgeRatingFilter(): JSX.Element {
   const [ageRatingInfo, setAgeRatingInfo] = useState<AgeRatingInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Memoize user data to trigger effect only when these specific fields change
+  const userDataKey = useMemo(() => {
+    if (!user) return 'no-user';
+    return `${user.id}-${user.birthDate || 'no-birth'}-${user.hasCompletedWelcome}-${user.maxAgeRating}`;
+  }, [user?.id, user?.birthDate, user?.hasCompletedWelcome, user?.maxAgeRating]);
+
   // Fetch age rating info from backend
   useEffect(() => {
     const fetchAgeRatingInfo = async () => {
       if (!user?.token) {
         setIsLoading(false);
+        setAgeRatingInfo({
+          hasBirthDate: false,
+          age: null,
+          maxAllowedRating: 'L',
+          currentMaxRating: 'L',
+        });
         return;
       }
 
@@ -46,10 +58,10 @@ export function AgeRatingFilter(): JSX.Element {
         const response = await api.get('/api/v1/users/me/age-rating-info');
         setAgeRatingInfo(response.data.data);
       } catch (error) {
-        console.error('Error fetching age rating info:', error);
+        console.error('[AgeRatingFilter] Error fetching age rating info:', error);
         // Default to safe values if API fails
         setAgeRatingInfo({
-          hasBirthdate: false,
+          hasBirthDate: false,
           age: null,
           maxAllowedRating: 'L',
           currentMaxRating: 'L',
@@ -60,7 +72,7 @@ export function AgeRatingFilter(): JSX.Element {
     };
 
     fetchAgeRatingInfo();
-  }, [user?.token, user?.birthDate, user?.hasCompletedWelcome, user?.maxAgeRating]);
+  }, [userDataKey, user?.token]);
 
   const selectedLabels = useMemo(() => {
     if (!ageRatings || ageRatings.length === 0) return t('characters:hub.filters.noFilter', 'Any');
@@ -76,7 +88,7 @@ export function AgeRatingFilter(): JSX.Element {
     if (isLoading || !ageRatingInfo) return code !== 'L';
 
     // If no birthdate, only L is allowed
-    if (!ageRatingInfo.hasBirthdate) return code !== 'L';
+    if (!ageRatingInfo.hasBirthDate) return code !== 'L';
 
     // Check if rating exceeds max allowed based on age
     const ratingMinAge = AGE_RATING_MIN_AGE[code];
@@ -116,7 +128,7 @@ export function AgeRatingFilter(): JSX.Element {
   };
 
   // Icon based on birthdate status
-  const buttonIcon = ageRatingInfo?.hasBirthdate ? 'verified' : 'lock';
+  const buttonIcon = ageRatingInfo?.hasBirthDate ? 'verified' : 'lock';
 
   return (
     <SmartDropdown
@@ -141,7 +153,7 @@ export function AgeRatingFilter(): JSX.Element {
         </div>
 
         {/* Warning for users without birthdate */}
-        {!isLoading && ageRatingInfo && !ageRatingInfo.hasBirthdate && (
+        {!isLoading && ageRatingInfo && !ageRatingInfo.hasBirthDate && (
           <>
             <div className="mx-2 mb-2 rounded-lg bg-yellow-50 p-3 text-sm dark:bg-yellow-900/20">
               <p className="font-medium text-yellow-800 dark:text-yellow-200">

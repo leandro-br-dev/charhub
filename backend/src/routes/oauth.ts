@@ -129,10 +129,27 @@ function buildRedirectUrl(
   url.searchParams.set('auth', 'success');
   url.searchParams.set('provider', provider);
   url.searchParams.set('token', token);
+
+  // Send ALL user fields to frontend, not just a subset
   url.searchParams.set(
     'user',
     Buffer.from(
-      JSON.stringify({ id: user.id, email: user.email, displayName: user.displayName, photo: user.photo, providerAccountId: user.providerAccountId, role: user.role })
+      JSON.stringify({
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName,
+        photo: user.photo,
+        providerAccountId: user.providerAccountId,
+        role: user.role,
+        username: user.username,
+        fullName: user.fullName,
+        birthDate: user.birthDate,
+        gender: user.gender,
+        preferredLanguage: user.preferredLanguage,
+        hasCompletedWelcome: user.hasCompletedWelcome,
+        maxAgeRating: user.maxAgeRating,
+        blockedTags: user.blockedTags,
+      })
     ).toString('base64')
   );
 
