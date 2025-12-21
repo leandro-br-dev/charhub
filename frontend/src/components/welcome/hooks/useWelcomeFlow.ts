@@ -30,10 +30,16 @@ export function useWelcomeFlow() {
       setIsOpen(true);
 
       // Pre-populate form with existing data
+      // Ensure birthDate is in YYYY-MM-DD format, not ISO string
+      let birthDate = user.birthDate;
+      if (birthDate && typeof birthDate === 'string' && birthDate.includes('T')) {
+        birthDate = birthDate.split('T')[0];
+      }
+
       setFormData({
         displayName: user.displayName,
         username: user.username,
-        birthDate: user.birthDate,
+        birthDate: birthDate,
         gender: user.gender,
         preferredLanguage: user.preferredLanguage,
         maxAgeRating: user.maxAgeRating,
@@ -56,6 +62,15 @@ export function useWelcomeFlow() {
       const cleanedData = Object.fromEntries(
         Object.entries(formData).filter(([_, value]) => value !== undefined && value !== null && value !== '')
       );
+
+      // Ensure birthDate is in YYYY-MM-DD format, not ISO string
+      if (cleanedData.birthDate) {
+        const dateValue = cleanedData.birthDate as string;
+        // If it's an ISO string, extract just the date part
+        if (dateValue.includes('T')) {
+          cleanedData.birthDate = dateValue.split('T')[0];
+        }
+      }
 
       await api.patch('/api/v1/users/me/welcome-progress', cleanedData);
       await refreshUser(); // Refresh user data from backend
