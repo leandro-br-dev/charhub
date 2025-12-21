@@ -133,6 +133,13 @@ export function useWelcomeFlow() {
     await completeWelcome();
   };
 
+  const closeModal = async () => {
+    // Just save progress and close, without marking as complete
+    // User can continue later
+    await saveProgress();
+    setIsOpen(false);
+  };
+
   return {
     isOpen,
     currentStep: STEP_ORDER[currentStepIndex],
@@ -146,5 +153,6 @@ export function useWelcomeFlow() {
     goToNextStep,
     goToPreviousStep,
     skipWelcome,
+    closeModal,
   };
 }

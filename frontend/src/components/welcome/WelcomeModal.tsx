@@ -25,6 +25,7 @@ export function WelcomeModal() {
     goToNextStep,
     goToPreviousStep,
     skipWelcome,
+    closeModal,
   } = useWelcomeFlow();
 
   if (!isOpen) {
@@ -57,7 +58,7 @@ export function WelcomeModal() {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={skipWelcome}
+      onClose={closeModal}
       title={t('displayName.title', 'Welcome to CharHub!')}
       size="lg"
     >

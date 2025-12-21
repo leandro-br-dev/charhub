@@ -469,6 +469,47 @@ export async function getAgeRatingInfo(userId: string): Promise<AgeRatingInfo> {
   };
 }
 
+/**
+ * Get allowed age ratings for a user based on their birthdate
+ * Returns all age ratings from L up to their maxAllowedRating
+ */
+export function getAllowedAgeRatingsForUser(birthDate: Date | null): import('../types').AgeRating[] {
+  const maxAllowed = getMaxAllowedAgeRating(birthDate);
+  const maxAge = AGE_RATING_MAP[maxAllowed];
+
+  // Return all ratings from L up to maxAllowed
+  const allRatings: import('../types').AgeRating[] = ['L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'EIGHTEEN'];
+  return allRatings.filter(rating => AGE_RATING_MAP[rating] <= maxAge);
+}
+
+/**
+ * Get content filtering options for a user
+ * Returns allowed age ratings and blocked content tags
+ */
+export interface UserContentFilters {
+  allowedAgeRatings: import('../types').AgeRating[];
+  blockedTags: import('../types').ContentTag[];
+}
+
+export async function getUserContentFilters(userId: string): Promise<UserContentFilters> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      birthDate: true,
+      blockedTags: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  return {
+    allowedAgeRatings: getAllowedAgeRatingsForUser(user.birthDate),
+    blockedTags: (user.blockedTags as import('../types').ContentTag[]) || [],
+  };
+}
+
 export async function deleteUserAccount(userId: string): Promise<void> {
   const systemUser = await prisma.user.findUnique({
     where: { username: '@system' },
