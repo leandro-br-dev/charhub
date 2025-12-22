@@ -1,6 +1,7 @@
 import { CreditTransactionType } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { startOfDay, startOfMonth, endOfMonth, differenceInDays } from 'date-fns';
+import { logger } from '../config/logger';
 
 // Credits configuration
 const DAILY_REWARD_CREDITS = 50;
@@ -436,6 +437,8 @@ export function getCurrentPeriod(userPlan: {
 export async function grantMonthlyCredits(userId: string, planId?: string): Promise<void> {
   const now = new Date();
 
+  logger.info({ userId, planId }, '[grantMonthlyCredits] Called');
+
   // Build query based on whether planId is specified
   const whereClause: any = {
     userId,
@@ -449,6 +452,8 @@ export async function grantMonthlyCredits(userId: string, planId?: string): Prom
     whereClause.planId = planId;
   }
 
+  logger.info({ whereClause }, '[grantMonthlyCredits] Query whereClause');
+
   // Get user's active plan
   const userPlan = await prisma.userPlan.findFirst({
     where: whereClause,
@@ -461,21 +466,41 @@ export async function grantMonthlyCredits(userId: string, planId?: string): Prom
   });
 
   if (!userPlan) {
+    logger.warn({ userId, planId }, '[grantMonthlyCredits] No active plan found');
     return; // No active plan
   }
+
+  logger.info(
+    {
+      userId,
+      planId: userPlan.planId,
+      planName: userPlan.plan.name,
+      tier: userPlan.plan.tier,
+      creditsPerMonth: userPlan.plan.creditsPerMonth,
+      lastCreditsGrantedAt: userPlan.lastCreditsGrantedAt,
+    },
+    '[grantMonthlyCredits] Found active plan'
+  );
 
   // Check if already eligible (prevent duplicate grants)
   // For FREE plans, this check will always return false (handled by login middleware)
   // For PREMIUM plans, this ensures we don't grant twice in same 30-day period
   if (userPlan.lastCreditsGrantedAt) {
+    logger.info({ lastCreditsGrantedAt: userPlan.lastCreditsGrantedAt }, '[grantMonthlyCredits] Checking eligibility');
     const eligible = isEligibleForMonthlyCredits(userPlan);
     if (!eligible) {
+      logger.info('[grantMonthlyCredits] Not eligible yet (< 30 days), skipping');
       // Not yet time for next grant
       return;
     }
+    logger.info('[grantMonthlyCredits] Eligible for credits (30+ days)');
+  } else {
+    logger.info('[grantMonthlyCredits] lastCreditsGrantedAt is null, proceeding to grant (first time)');
   }
 
   // Grant monthly credits in a transaction to ensure atomicity
+  logger.info({ credits: userPlan.plan.creditsPerMonth }, '[grantMonthlyCredits] Granting credits');
+
   await prisma.$transaction(async (tx) => {
     // Create credit transaction
     await tx.creditTransaction.create({
@@ -495,6 +520,8 @@ export async function grantMonthlyCredits(userId: string, planId?: string): Prom
       data: { lastCreditsGrantedAt: now },
     });
   });
+
+  logger.info({ userId, credits: userPlan.plan.creditsPerMonth }, '[grantMonthlyCredits] Credits granted successfully');
 }
 
 /**
