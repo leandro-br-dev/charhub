@@ -52,15 +52,55 @@ export async function subscribeToPlan(
       // Free plan -> Paid plan: Continue to create new subscription (don't use changePlan)
       // Fall through to normal subscription creation
     } else {
-      // Paid plan -> Another paid plan: Use changePlan
-      await changePlan(userId, planId);
+      // Paid plan -> Another paid plan: Check if Stripe subscription is actually complete
+      if (existingSubscription.stripeSubscriptionId) {
+        const provider = PaymentProviderFactory.getProvider('STRIPE');
+        try {
+          const stripeStatus = await provider.getSubscriptionStatus(existingSubscription.stripeSubscriptionId);
 
-      // Return a response indicating plan was changed
-      // Note: No clientSecret or approvalUrl needed since plan is being changed, not created
-      return {
-        subscriptionId: existingSubscription.stripeSubscriptionId || existingSubscription.paypalSubscriptionId || '',
-        provider: existingSubscription.paymentProvider,
-      };
+          // If subscription is incomplete, cancel it and create a new one
+          if (stripeStatus.status === 'incomplete' || stripeStatus.status === 'incomplete_expired') {
+            logger.warn(
+              {
+                userId,
+                subscriptionId: existingSubscription.stripeSubscriptionId,
+                status: stripeStatus.status
+              },
+              'Found incomplete Stripe subscription, canceling and creating new one'
+            );
+
+            // Cancel the incomplete subscription
+            await prisma.userPlan.update({
+              where: { id: existingSubscription.id },
+              data: {
+                status: 'CANCELLED',
+                canceledAt: new Date(),
+              },
+            });
+
+            // Fall through to create new subscription
+          } else {
+            // Subscription is complete, use changePlan
+            await changePlan(userId, planId);
+
+            return {
+              subscriptionId: existingSubscription.stripeSubscriptionId,
+              provider: existingSubscription.paymentProvider,
+            };
+          }
+        } catch (error) {
+          logger.error({ error, subscriptionId: existingSubscription.stripeSubscriptionId }, 'Error checking Stripe subscription status');
+          // Fall through to create new subscription if status check fails
+        }
+      } else {
+        // PayPal subscription - use changePlan
+        await changePlan(userId, planId);
+
+        return {
+          subscriptionId: existingSubscription.paypalSubscriptionId || '',
+          provider: existingSubscription.paymentProvider,
+        };
+      }
     }
   }
 
