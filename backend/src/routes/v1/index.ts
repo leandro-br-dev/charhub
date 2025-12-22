@@ -22,11 +22,17 @@ import creditsRoutes from './credits';
 import plansRoutes from './plans';
 import subscriptionsRoutes from './subscriptions';
 import imageGenerationRoutes from './image-generation';
+import { checkFreeMonthlyCredits } from '../../middleware/checkFreeMonthlyCredits';
 
 const router = Router();
 
 router.use('/oauth', oauthRoutes);
 router.use('/i18n', i18nRoutes);
+
+// Apply FREE monthly credits check globally to all authenticated routes
+// This runs after authentication middleware on individual routes
+// It silently grants credits to FREE users who are eligible (30+ days since last grant)
+router.use(checkFreeMonthlyCredits);
 router.use('/queues', queuesRoutes);
 router.use('/classification', classificationRoutes);
 router.use('/storage', storageRoutes);

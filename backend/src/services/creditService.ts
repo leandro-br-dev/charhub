@@ -1,6 +1,6 @@
 import { CreditTransactionType } from '../generated/prisma';
 import { prisma } from '../config/database';
-import { startOfDay, startOfMonth, endOfMonth } from 'date-fns';
+import { startOfDay, startOfMonth, endOfMonth, differenceInDays } from 'date-fns';
 
 // Credits configuration
 const DAILY_REWARD_CREDITS = 50;
@@ -346,6 +346,7 @@ export async function grantInitialCredits(userId: string): Promise<void> {
       status: 'ACTIVE',
       currentPeriodStart: now,
       currentPeriodEnd: periodEnd,
+      lastCreditsGrantedAt: now, // Mark initial grant to start 30-day cycle
     },
   });
 }
@@ -386,23 +387,76 @@ export async function createMonthlySnapshot(userId: string): Promise<void> {
 }
 
 /**
- * Grant monthly credits for user's plan
- * Called by background job at the start of each month
+ * Check if user plan is eligible for monthly credits
+ * Returns true if 30+ days have passed since last credits grant
  */
-export async function grantMonthlyCredits(userId: string): Promise<void> {
+export function isEligibleForMonthlyCredits(userPlan: {
+  lastCreditsGrantedAt: Date | null;
+  createdAt: Date;
+}): boolean {
   const now = new Date();
+
+  // If never received monthly credits, not eligible yet
+  // (initial credits are handled separately)
+  if (!userPlan.lastCreditsGrantedAt) {
+    return false;
+  }
+
+  // Calculate days since last grant
+  const daysSinceLastGrant = differenceInDays(now, userPlan.lastCreditsGrantedAt);
+
+  // Eligible if 30+ days have passed
+  return daysSinceLastGrant >= 30;
+}
+
+/**
+ * Calculate current period number based on 30-day cycles
+ * Period 1 = first 30 days, Period 2 = days 31-60, etc.
+ */
+export function getCurrentPeriod(userPlan: {
+  lastCreditsGrantedAt: Date | null;
+  createdAt: Date;
+}): number {
+  const now = new Date();
+  const referenceDate = userPlan.lastCreditsGrantedAt || userPlan.createdAt;
+
+  const daysSinceStart = differenceInDays(now, referenceDate);
+
+  // Period number = (days / 30) + 1
+  return Math.floor(daysSinceStart / 30) + 1;
+}
+
+/**
+ * Grant monthly credits for user's plan
+ * Now includes validation to prevent duplicate grants
+ *
+ * @param userId - User ID to grant credits to
+ * @param planId - Optional: specific plan ID to grant credits for (prevents wrong plan selection)
+ */
+export async function grantMonthlyCredits(userId: string, planId?: string): Promise<void> {
+  const now = new Date();
+
+  // Build query based on whether planId is specified
+  const whereClause: any = {
+    userId,
+    status: 'ACTIVE',
+    currentPeriodEnd: {
+      gt: now,
+    },
+  };
+
+  if (planId) {
+    whereClause.planId = planId;
+  }
 
   // Get user's active plan
   const userPlan = await prisma.userPlan.findFirst({
-    where: {
-      userId,
-      status: 'ACTIVE',
-      currentPeriodEnd: {
-        gt: now,
-      },
-    },
+    where: whereClause,
     include: {
       plan: true,
+    },
+    orderBy: {
+      createdAt: 'desc', // Get most recent plan if multiple active
     },
   });
 
@@ -410,15 +464,99 @@ export async function grantMonthlyCredits(userId: string): Promise<void> {
     return; // No active plan
   }
 
-  // Grant monthly credits
-  await createTransaction(
-    userId,
-    'GRANT_PLAN',
-    userPlan.plan.creditsPerMonth,
-    `Monthly credits for ${userPlan.plan.name} plan`,
-    undefined,
-    userPlan.plan.id
-  );
+  // Check if already eligible (prevent duplicate grants)
+  // For FREE plans, this check will always return false (handled by login middleware)
+  // For PREMIUM plans, this ensures we don't grant twice in same 30-day period
+  if (userPlan.lastCreditsGrantedAt) {
+    const eligible = isEligibleForMonthlyCredits(userPlan);
+    if (!eligible) {
+      // Not yet time for next grant
+      return;
+    }
+  }
+
+  // Grant monthly credits in a transaction to ensure atomicity
+  await prisma.$transaction(async (tx) => {
+    // Create credit transaction
+    await tx.creditTransaction.create({
+      data: {
+        userId,
+        transactionType: 'GRANT_PLAN',
+        amountCredits: userPlan.plan.creditsPerMonth,
+        balanceAfter: await getCurrentBalance(userId) + userPlan.plan.creditsPerMonth,
+        notes: `Monthly credits for ${userPlan.plan.name} plan`,
+        relatedPlanId: userPlan.plan.id,
+      },
+    });
+
+    // Update lastCreditsGrantedAt to prevent duplicate grants
+    await tx.userPlan.update({
+      where: { id: userPlan.id },
+      data: { lastCreditsGrantedAt: now },
+    });
+  });
+}
+
+/**
+ * Grant monthly credits for FREE plan users (login-based)
+ * Only grants if user is eligible (30+ days since last grant)
+ *
+ * @param userId - User ID to check and grant credits
+ * @returns true if credits were granted, false otherwise
+ */
+export async function grantFreeMonthlyCreditsOnLogin(userId: string): Promise<boolean> {
+  const now = new Date();
+
+  // Get user's FREE plan
+  const freePlan = await prisma.userPlan.findFirst({
+    where: {
+      userId,
+      status: 'ACTIVE',
+      currentPeriodEnd: {
+        gt: now,
+      },
+      plan: {
+        tier: 'FREE',
+      },
+    },
+    include: {
+      plan: true,
+    },
+  });
+
+  if (!freePlan) {
+    return false; // User doesn't have active FREE plan
+  }
+
+  // Check eligibility
+  const eligible = isEligibleForMonthlyCredits(freePlan);
+
+  if (!eligible) {
+    return false; // Not yet time for next grant
+  }
+
+  // Grant monthly credits in a transaction
+  await prisma.$transaction(async (tx) => {
+    // Create credit transaction
+    await tx.creditTransaction.create({
+      data: {
+        userId,
+        transactionType: 'GRANT_PLAN',
+        amountCredits: freePlan.plan.creditsPerMonth,
+        balanceAfter: await getCurrentBalance(userId) + freePlan.plan.creditsPerMonth,
+        notes: `Monthly credits for FREE plan (login-based)`,
+        relatedPlanId: freePlan.plan.id,
+      },
+    });
+
+    // Update lastCreditsGrantedAt
+    await tx.userPlan.update({
+      where: { id: freePlan.id },
+      data: { lastCreditsGrantedAt: now },
+    });
+  });
+
+  return true; // Credits granted
 }
 
 /**

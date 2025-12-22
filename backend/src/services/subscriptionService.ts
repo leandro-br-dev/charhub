@@ -301,6 +301,14 @@ export async function processSubscriptionWebhook(webhookResult: WebhookResult): 
       await processPaymentFailed(subscriptionId);
       break;
 
+    case 'PAYMENT_SUCCEEDED':
+      if (!subscriptionId || !userId || !planId) {
+        logger.error({ webhookResult }, 'Missing required fields for PAYMENT_SUCCEEDED webhook');
+        return;
+      }
+      await processPaymentSucceeded(subscriptionId, userId, planId);
+      break;
+
     case 'NONE':
     default:
       // No action needed
@@ -329,20 +337,23 @@ async function processSubscriptionActivated(
       ? { stripeSubscriptionId: subscriptionId }
       : { paypalSubscriptionId: subscriptionId };
 
+  const now = new Date();
+  const nextBillingTime = metadata?.billingInfo?.nextBillingTime
+    ? new Date(metadata.billingInfo.nextBillingTime)
+    : new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+
   await prisma.$transaction(async (tx) => {
-    // Cancel existing active subscriptions
+    // Deactivate all previous plans (including FREE)
     await tx.userPlan.updateMany({
       where: { userId, status: 'ACTIVE' },
-      data: { status: 'CANCELLED' },
+      data: {
+        status: 'CANCELLED',
+        canceledAt: now,
+      },
     });
 
-    const now = new Date();
-    const nextBillingTime = metadata?.billingInfo?.nextBillingTime
-      ? new Date(metadata.billingInfo.nextBillingTime)
-      : new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
-
     // Create new active subscription
-    await tx.userPlan.create({
+    const newUserPlan = await tx.userPlan.create({
       data: {
         userId,
         planId: plan.id,
@@ -351,15 +362,16 @@ async function processSubscriptionActivated(
         ...subscriptionData,
         currentPeriodStart: now,
         currentPeriodEnd: nextBillingTime,
-        lastCreditsGrantedAt: now,
+        // DON'T set lastCreditsGrantedAt yet - let grantMonthlyCredits set it
       },
     });
 
-    // Grant monthly credits
-    await grantMonthlyCredits(userId);
+    // Grant monthly credits for THIS specific plan (not any active plan)
+    // Pass planId to ensure we grant credits for the correct plan
+    await grantMonthlyCredits(userId, newUserPlan.planId);
   });
 
-  logger.info({ userId, planId, subscriptionId }, 'Subscription activated');
+  logger.info({ userId, planId, subscriptionId }, 'Subscription activated and credits granted');
 }
 
 /**
@@ -417,4 +429,48 @@ async function processPaymentFailed(subscriptionId: string): Promise<void> {
   });
 
   logger.warn({ subscriptionId, userId: userPlan.userId }, 'Payment failed for subscription');
+}
+
+/**
+ * Process successful payment (called by webhook for recurring payments)
+ * This is called when a monthly renewal payment succeeds
+ */
+async function processPaymentSucceeded(
+  subscriptionId: string,
+  userId: string,
+  planId: string
+): Promise<void> {
+  const userPlan = await prisma.userPlan.findFirst({
+    where: {
+      OR: [
+        { paypalSubscriptionId: subscriptionId },
+        { stripeSubscriptionId: subscriptionId },
+      ],
+    },
+    include: { plan: true },
+  });
+
+  if (!userPlan) {
+    logger.warn({ subscriptionId }, 'UserPlan not found for successful payment');
+    return;
+  }
+
+  // Grant monthly credits for this specific plan
+  // grantMonthlyCredits has built-in validation to prevent duplicate grants
+  await grantMonthlyCredits(userId, planId);
+
+  // Ensure subscription is active (in case it was suspended)
+  if (userPlan.status !== 'ACTIVE') {
+    await prisma.userPlan.update({
+      where: { id: userPlan.id },
+      data: {
+        status: 'ACTIVE',
+      },
+    });
+  }
+
+  logger.info(
+    { userId, subscriptionId, planId },
+    'Payment succeeded - monthly credits processed'
+  );
 }

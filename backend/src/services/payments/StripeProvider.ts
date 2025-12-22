@@ -214,6 +214,44 @@ export class StripeProvider implements IPaymentProvider {
           action: 'CANCELLED',
         };
 
+      case 'invoice.payment_succeeded': {
+        const invoice = event.data.object as Stripe.Invoice;
+        const subscriptionId = typeof invoice.subscription === 'string' ? invoice.subscription : invoice.subscription?.id || '';
+
+        // Only process if this is a subscription invoice (not one-time payment)
+        if (!subscriptionId) {
+          logger.info({ invoiceId: invoice.id }, 'Ignoring invoice.payment_succeeded - not a subscription');
+          return {
+            eventType: event.type,
+            action: 'NONE',
+          };
+        }
+
+        // Get subscription to access metadata
+        const subscription = await this.stripe.subscriptions.retrieve(subscriptionId);
+
+        if (!subscription.metadata?.userId) {
+          logger.warn({ subscriptionId }, 'Missing userId in subscription metadata for invoice.payment_succeeded');
+          return {
+            eventType: event.type,
+            action: 'NONE',
+          };
+        }
+
+        // Return PAYMENT_SUCCEEDED action so we can grant credits
+        return {
+          eventType: event.type,
+          subscriptionId,
+          userId: subscription.metadata.userId,
+          planId: subscription.metadata.planId,
+          action: 'PAYMENT_SUCCEEDED',
+          metadata: {
+            invoiceId: invoice.id,
+            amountPaid: invoice.amount_paid,
+          },
+        };
+      }
+
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice;
         return {

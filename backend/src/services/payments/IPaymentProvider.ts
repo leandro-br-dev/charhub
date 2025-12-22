@@ -17,7 +17,7 @@ export interface WebhookResult {
   subscriptionId?: string;
   userId?: string;
   planId?: string;
-  action: 'ACTIVATED' | 'CANCELLED' | 'UPDATED' | 'PAYMENT_FAILED' | 'NONE';
+  action: 'ACTIVATED' | 'CANCELLED' | 'UPDATED' | 'PAYMENT_FAILED' | 'PAYMENT_SUCCEEDED' | 'NONE';
   metadata?: Record<string, any>;
 }
 
