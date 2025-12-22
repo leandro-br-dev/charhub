@@ -50,13 +50,14 @@ export class StripeProvider implements IPaymentProvider {
     // 2. Get or create Stripe Customer
     const customer = await this.getOrCreateCustomer(userId, userEmail);
 
-    // 3. Create Stripe Subscription with manual invoice
+    // 3. Create Stripe Subscription with default_incomplete behavior
+    // This creates a subscription with an invoice that has a PaymentIntent attached
     const subscription = await this.stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: plan.stripePriceId }],
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
-      expand: ['latest_invoice'],
+      expand: ['latest_invoice.payment_intent'], // Expand to get payment intent details
       metadata: {
         userId,
         planId,
@@ -64,7 +65,7 @@ export class StripeProvider implements IPaymentProvider {
       },
     });
 
-    // Get the created invoice
+    // Get the created invoice with expanded payment_intent
     const invoice = subscription.latest_invoice as Stripe.Invoice;
 
     if (!invoice) {
@@ -72,26 +73,24 @@ export class StripeProvider implements IPaymentProvider {
       throw new Error('No invoice created by Stripe');
     }
 
-    // 4. Manually create a PaymentIntent for the invoice
-    // This ensures we have a client_secret to return
-    const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: invoice.amount_due || 0,
-      currency: 'usd',
-      customer: customer.id,
-      payment_method_types: ['card'],
-      setup_future_usage: 'off_session',
-      metadata: {
-        userId,
-        planId,
-        subscriptionId: subscription.id,
-        invoiceId: invoice.id,
-        charhubEnvironment: process.env.NODE_ENV || 'development',
-      },
-    });
+    // 4. Get the PaymentIntent that Stripe automatically created for the invoice
+    // When using payment_behavior: 'default_incomplete', Stripe creates a PaymentIntent
+    // and links it to the invoice automatically
+    const paymentIntent = invoice.payment_intent as Stripe.PaymentIntent;
 
-    if (!paymentIntent.client_secret) {
-      logger.error({ paymentIntentId: paymentIntent.id }, 'No client_secret in PaymentIntent');
-      throw new Error('Failed to create payment intent');
+    if (!paymentIntent) {
+      logger.error({ invoiceId: invoice.id }, 'No payment intent in invoice');
+      throw new Error('No payment intent created by Stripe');
+    }
+
+    // Need to retrieve full PaymentIntent to get client_secret
+    const fullPaymentIntent = await this.stripe.paymentIntents.retrieve(
+      typeof paymentIntent === 'string' ? paymentIntent : paymentIntent.id
+    );
+
+    if (!fullPaymentIntent.client_secret) {
+      logger.error({ paymentIntentId: fullPaymentIntent.id }, 'No client_secret in PaymentIntent');
+      throw new Error('Failed to get payment intent client secret');
     }
 
     logger.info(
@@ -100,15 +99,16 @@ export class StripeProvider implements IPaymentProvider {
         planId,
         subscriptionId: subscription.id,
         invoiceId: invoice.id,
-        paymentIntentId: paymentIntent.id,
-        amount: paymentIntent.amount,
+        paymentIntentId: fullPaymentIntent.id,
+        amount: fullPaymentIntent.amount,
+        status: fullPaymentIntent.status,
       },
-      'Stripe subscription and payment intent created'
+      'Stripe subscription created, returning payment intent client secret'
     );
 
     return {
       subscriptionId: subscription.id,
-      clientSecret: paymentIntent.client_secret,
+      clientSecret: fullPaymentIntent.client_secret,
       customerId: customer.id,
     };
   }
