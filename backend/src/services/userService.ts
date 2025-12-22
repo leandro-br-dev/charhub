@@ -49,6 +49,7 @@ function mapUser(record: User): AuthenticatedUser {
     birthDate: record.birthDate ? record.birthDate.toISOString() : undefined,
     gender: record.gender ?? undefined,
     preferredLanguage: record.preferredLanguage ?? undefined,
+    hasCompletedWelcome: record.hasCompletedWelcome,
     maxAgeRating: record.maxAgeRating as import('../types').AgeRating,
     blockedTags: record.blockedTags as import('../types').ContentTag[],
   };
@@ -332,6 +333,181 @@ export async function searchUsers(
   });
 
   return users;
+}
+
+// ============================================================================
+// WELCOME FLOW & AGE RATING FUNCTIONS
+// ============================================================================
+
+// Age rating requirements mapping (minimum age for each rating)
+const AGE_RATING_MAP: Record<import('../types').AgeRating, number> = {
+  L: 0,           // Livre (All ages)
+  TEN: 10,        // 10+
+  TWELVE: 12,     // 12+
+  FOURTEEN: 14,   // 14+
+  SIXTEEN: 16,    // 16+
+  EIGHTEEN: 18,   // 18+
+};
+
+/**
+ * Calculate user's age based on birthdate
+ */
+export function calculateAge(birthDate: Date): number {
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
+/**
+ * Get maximum allowed age rating based on user's age
+ */
+export function getMaxAllowedAgeRating(birthDate: Date | null): import('../types').AgeRating {
+  if (!birthDate) return 'L'; // No birthdate = only "Livre" content
+
+  const age = calculateAge(birthDate);
+
+  if (age >= 18) return 'EIGHTEEN';
+  if (age >= 16) return 'SIXTEEN';
+  if (age >= 14) return 'FOURTEEN';
+  if (age >= 12) return 'TWELVE';
+  if (age >= 10) return 'TEN';
+  return 'L';
+}
+
+/**
+ * Validate if requested age rating is allowed for user's age
+ */
+export function validateAgeRating(
+  requestedRating: import('../types').AgeRating,
+  birthDate: Date | null
+): boolean {
+  const maxAllowed = getMaxAllowedAgeRating(birthDate);
+  const requestedMinAge = AGE_RATING_MAP[requestedRating];
+  const maxAllowedMinAge = AGE_RATING_MAP[maxAllowed];
+
+  return requestedMinAge <= maxAllowedMinAge;
+}
+
+/**
+ * Update user's welcome flow progress
+ */
+export async function updateWelcomeProgress(
+  userId: string,
+  data: Partial<UpdateUserProfileParams>
+): Promise<AuthenticatedUser> {
+  // Validate birthDate if provided
+  if (data.birthDate) {
+    const age = calculateAge(data.birthDate);
+    if (age < 0 || age > 120) {
+      throw new Error('Invalid birthdate');
+    }
+  }
+
+  // Validate maxAgeRating if provided along with birthDate
+  if (data.maxAgeRating && data.birthDate) {
+    const isValid = validateAgeRating(data.maxAgeRating, data.birthDate);
+    if (!isValid) {
+      throw new Error('Age rating exceeds user\'s age');
+    }
+  }
+
+  // Use existing updateUserProfile function
+  return updateUserProfile(userId, data);
+}
+
+/**
+ * Mark welcome flow as completed
+ */
+export async function completeWelcome(userId: string): Promise<AuthenticatedUser> {
+  const user = await prisma.user.update({
+    where: { id: userId },
+    data: { hasCompletedWelcome: true },
+  });
+
+  return mapUser(user);
+}
+
+/**
+ * Get age rating information for user
+ */
+export interface AgeRatingInfo {
+  hasBirthDate: boolean;
+  age: number | null;
+  maxAllowedRating: import('../types').AgeRating;
+  currentMaxRating: import('../types').AgeRating;
+}
+
+export async function getAgeRatingInfo(userId: string): Promise<AgeRatingInfo> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      birthDate: true,
+      maxAgeRating: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const hasBirthDate = !!user.birthDate;
+  const age = user.birthDate ? calculateAge(user.birthDate) : null;
+  const maxAllowedRating = getMaxAllowedAgeRating(user.birthDate);
+  const currentMaxRating = user.maxAgeRating as import('../types').AgeRating;
+
+  return {
+    hasBirthDate,
+    age,
+    maxAllowedRating,
+    currentMaxRating,
+  };
+}
+
+/**
+ * Get allowed age ratings for a user based on their birthdate
+ * Returns all age ratings from L up to their maxAllowedRating
+ */
+export function getAllowedAgeRatingsForUser(birthDate: Date | null): import('../types').AgeRating[] {
+  const maxAllowed = getMaxAllowedAgeRating(birthDate);
+  const maxAge = AGE_RATING_MAP[maxAllowed];
+
+  // Return all ratings from L up to maxAllowed
+  const allRatings: import('../types').AgeRating[] = ['L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'EIGHTEEN'];
+  return allRatings.filter(rating => AGE_RATING_MAP[rating] <= maxAge);
+}
+
+/**
+ * Get content filtering options for a user
+ * Returns allowed age ratings and blocked content tags
+ */
+export interface UserContentFilters {
+  allowedAgeRatings: import('../types').AgeRating[];
+  blockedTags: import('../types').ContentTag[];
+}
+
+export async function getUserContentFilters(userId: string): Promise<UserContentFilters> {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      birthDate: true,
+      blockedTags: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  return {
+    allowedAgeRatings: getAllowedAgeRatingsForUser(user.birthDate),
+    blockedTags: (user.blockedTags as import('../types').ContentTag[]) || [],
+  };
 }
 
 export async function deleteUserAccount(userId: string): Promise<void> {

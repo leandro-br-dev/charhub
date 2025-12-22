@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState, useCallback, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
+import { useUsernameValidation, formatUsernameWithPrefix, removeUsernamePrefix, validateUsernameFormat } from '../../../hooks/useUsernameValidation';
 import { Button } from '../../../components/ui/Button';
 import { userService } from '../../../services/userService';
 import { useToast } from '../../../contexts/ToastContext';
@@ -13,8 +14,6 @@ type ProfileFormState = {
   gender: string;
 };
 
-type UsernameCheckState = 'idle' | 'checking' | 'available' | 'unavailable';
-
 export function ProfileTab() {
   const { user, updateUser } = useAuth();
   const { t } = useTranslation(['profile', 'common']);
@@ -23,14 +22,22 @@ export function ProfileTab() {
   const [formState, setFormState] = useState<ProfileFormState>(() => ({
     displayName: user?.displayName ?? '',
     fullName: user?.fullName ?? '',
-    username: user?.username ? user.username.replace('@', '') : '',
+    username: user?.username ? removeUsernamePrefix(user.username) : '',
     birthDate: user?.birthDate ? user.birthDate.slice(0, 10) : '',
     gender: user?.gender ?? 'unspecified'
   }));
 
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [usernameCheckState, setUsernameCheckState] = useState<UsernameCheckState>('idle');
+
+  // Use custom hook for username validation
+  const { state: usernameValidationState, isChecking, isAvailable } = useUsernameValidation(
+    formState.username,
+    {
+      currentUsername: user?.username,
+      minLength: 3,
+    }
+  );
 
   // Fetch user profile data on mount
   useEffect(() => {
@@ -51,7 +58,7 @@ export function ProfileTab() {
         setFormState({
           displayName: profile.displayName ?? '',
           fullName: profile.fullName ?? '',
-          username: profile.username ? profile.username.replace('@', '') : '',
+          username: profile.username ? removeUsernamePrefix(profile.username) : '',
           birthDate: profile.birthDate ? profile.birthDate.slice(0, 10) : '',
           gender: profile.gender ?? 'unspecified'
         });
@@ -76,48 +83,11 @@ export function ProfileTab() {
     setFormState({
       displayName: user?.displayName ?? '',
       fullName: user?.fullName ?? '',
-      username: user?.username ? user.username.replace('@', '') : '',
+      username: user?.username ? removeUsernamePrefix(user.username) : '',
       birthDate: user?.birthDate ? user.birthDate.slice(0, 10) : '',
       gender: user?.gender ?? 'unspecified'
     });
   }, [user]);
-
-  // Debounced username check
-  const checkUsername = useCallback(async (username: string) => {
-    if (!username || username.length < 3) {
-      setUsernameCheckState('idle');
-      return;
-    }
-
-    const fullUsername = `@${username}`;
-
-    // If it's the current user's username, don't check
-    if (user?.username === fullUsername) {
-      setUsernameCheckState('idle');
-      return;
-    }
-
-    setUsernameCheckState('checking');
-
-    try {
-      const response = await userService.checkUsernameAvailability(fullUsername);
-      setUsernameCheckState(response.available ? 'available' : 'unavailable');
-    } catch (error) {
-      console.error('[profile] failed to check username', error);
-      setUsernameCheckState('idle');
-    }
-  }, [user?.username]);
-
-  // Debounce username check
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (formState.username) {
-        checkUsername(formState.username);
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [formState.username, checkUsername]);
 
   const genders = useMemo(
     () => [
@@ -134,7 +104,7 @@ export function ProfileTab() {
 
     if (name === 'username') {
       // Remove @ if user tries to type it
-      const cleanValue = value.replace(/@/g, '');
+      const cleanValue = removeUsernamePrefix(value);
       setFormState(prev => ({ ...prev, [name]: cleanValue }));
     } else {
       setFormState(prev => ({ ...prev, [name]: value }));
@@ -151,17 +121,16 @@ export function ProfileTab() {
     }
 
     const trimmedUsername = formState.username.trim();
-    if (trimmedUsername && trimmedUsername.length < 3) {
-      addToast(t('profile:errors.usernameTooShort'), 'error');
+    if (trimmedUsername && !validateUsernameFormat(trimmedUsername, 3)) {
+      if (trimmedUsername.length < 3) {
+        addToast(t('profile:errors.usernameTooShort'), 'error');
+      } else {
+        addToast(t('profile:errors.usernameInvalid'), 'error');
+      }
       return;
     }
 
-    if (trimmedUsername && !/^[a-zA-Z0-9_]+$/.test(trimmedUsername)) {
-      addToast(t('profile:errors.usernameInvalid'), 'error');
-      return;
-    }
-
-    if (usernameCheckState === 'unavailable') {
+    if (usernameValidationState === 'unavailable') {
       addToast(t('profile:errors.usernameTaken'), 'error');
       return;
     }
@@ -171,7 +140,7 @@ export function ProfileTab() {
     try {
       const trimmedFullName = formState.fullName.trim();
       const payload = {
-        username: trimmedUsername ? `@${trimmedUsername}` : undefined,
+        username: trimmedUsername ? formatUsernameWithPrefix(trimmedUsername) : undefined,
         displayName: trimmedDisplayName,
         fullName: trimmedFullName || undefined,
         birthDate: formState.birthDate || undefined,
@@ -189,7 +158,7 @@ export function ProfileTab() {
 
       setFormState(prev => ({
         ...prev,
-        username: updated.username ? updated.username.replace('@', '') : trimmedUsername,
+        username: updated.username ? removeUsernamePrefix(updated.username) : trimmedUsername,
         displayName: updated.displayName ?? trimmedDisplayName,
         fullName: updated.fullName ?? '',
         birthDate: updated.birthDate ? updated.birthDate.slice(0, 10) : '',
@@ -197,7 +166,6 @@ export function ProfileTab() {
       }));
 
       addToast(t('profile:feedback.success'), 'success');
-      setUsernameCheckState('idle');
     } catch (error) {
       console.error('[profile] failed to update user profile', error);
       const apiError = (error as { response?: { data?: { error?: string; message?: string } } }).response?.data;
@@ -220,11 +188,10 @@ export function ProfileTab() {
     setFormState({
       displayName: user?.displayName ?? '',
       fullName: user?.fullName ?? '',
-      username: user?.username ? user.username.replace('@', '') : '',
+      username: user?.username ? removeUsernamePrefix(user.username) : '',
       birthDate: user?.birthDate ? user.birthDate.slice(0, 10) : '',
       gender: user?.gender ?? 'unspecified'
     });
-    setUsernameCheckState('idle');
   };
 
   return (
@@ -257,26 +224,26 @@ export function ProfileTab() {
               onChange={handleChange}
               placeholder={t('profile:fields.usernamePlaceholder')}
             />
-            {usernameCheckState === 'checking' && (
+            {isChecking && (
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted">
                 {t('profile:fields.usernameChecking')}
               </span>
             )}
-            {usernameCheckState === 'available' && (
+            {isAvailable === true && (
               <svg className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-success" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
             )}
-            {usernameCheckState === 'unavailable' && (
+            {isAvailable === false && (
               <svg className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-danger" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
             )}
           </div>
           <span className="text-xs text-muted">
-            {usernameCheckState === 'available' ? (
+            {isAvailable === true ? (
               <span className="text-success">{t('profile:fields.usernameAvailable')}</span>
-            ) : usernameCheckState === 'unavailable' ? (
+            ) : isAvailable === false ? (
               <span className="text-danger">{t('profile:fields.usernameUnavailable')}</span>
             ) : (
               t('profile:fields.usernameHint')

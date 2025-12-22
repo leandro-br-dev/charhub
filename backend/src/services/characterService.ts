@@ -209,12 +209,13 @@ export async function getCharactersByUserId(
     tags?: string[];
     gender?: string;
     ageRatings?: string[];
+    blockedTags?: string[];
     skip?: number;
     limit?: number;
   }
 ) {
   try {
-    const { search, tags, gender, ageRatings, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
     // Build where clause
     const where: Prisma.CharacterWhereInput = {
@@ -266,12 +267,23 @@ export async function getCharactersByUserId(
       take: limit,
     });
 
+    // Filter out characters with blocked content tags (post-query filtering)
+    let filteredCharacters = characters;
+    if (blockedTags && blockedTags.length > 0) {
+      filteredCharacters = characters.filter(char => {
+        // Check if character has any blocked tag
+        const charTags = char.contentTags as string[];
+        const hasBlockedTag = charTags.some(tag => blockedTags.includes(tag));
+        return !hasBlockedTag; // Keep only characters without blocked tags
+      });
+    }
+
     logger.debug(
-      { userId, filters: options, count: characters.length },
+      { userId, filters: options, count: filteredCharacters.length, blocked: characters.length - filteredCharacters.length },
       'Characters fetched for user'
     );
 
-    return enrichCharactersWithAvatar(characters);
+    return enrichCharactersWithAvatar(filteredCharacters);
   } catch (error) {
     logger.error({ error, userId, options }, 'Error getting characters by user');
     throw error;
@@ -286,11 +298,12 @@ export async function getPublicCharacters(options?: {
   tags?: string[];
   gender?: string;
   ageRatings?: string[];
+  blockedTags?: string[];
   skip?: number;
   limit?: number;
 }) {
   try {
-    const { search, tags, gender, ageRatings, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.CharacterWhereInput = {
       visibility: Visibility.PUBLIC,
@@ -342,12 +355,24 @@ export async function getPublicCharacters(options?: {
       take: limit,
     });
 
+    // Filter out characters with blocked content tags (post-query filtering)
+    // This is done in memory because Prisma doesn't support complex array intersection queries easily
+    let filteredCharacters = characters;
+    if (blockedTags && blockedTags.length > 0) {
+      filteredCharacters = characters.filter(char => {
+        // Check if character has any blocked tag
+        const charTags = char.contentTags as string[];
+        const hasBlockedTag = charTags.some(tag => blockedTags.includes(tag));
+        return !hasBlockedTag; // Keep only characters without blocked tags
+      });
+    }
+
     logger.debug(
-      { filters: options, count: characters.length },
+      { filters: options, count: filteredCharacters.length, blocked: characters.length - filteredCharacters.length },
       'Public characters fetched'
     );
 
-    return enrichCharactersWithAvatar(characters);
+    return enrichCharactersWithAvatar(filteredCharacters);
   } catch (error) {
     logger.error({ error, options }, 'Error getting public characters');
     throw error;
@@ -363,11 +388,12 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
   tags?: string[];
   gender?: string;
   ageRatings?: string[];
+  blockedTags?: string[];
   skip?: number;
   limit?: number;
 }) {
   try {
-    const { search, tags, gender, ageRatings, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.CharacterWhereInput = {
       isSystemCharacter: false,
@@ -429,12 +455,23 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
       take: limit,
     });
 
+    // Filter out characters with blocked content tags (post-query filtering)
+    let filteredCharacters = characters;
+    if (blockedTags && blockedTags.length > 0) {
+      filteredCharacters = characters.filter(char => {
+        // Check if character has any blocked tag
+        const charTags = char.contentTags as string[];
+        const hasBlockedTag = charTags.some(tag => blockedTags.includes(tag));
+        return !hasBlockedTag; // Keep only characters without blocked tags
+      });
+    }
+
     logger.debug(
-      { userId, filters: options, count: characters.length },
+      { userId, filters: options, count: filteredCharacters.length, blocked: characters.length - filteredCharacters.length },
       'Public and own characters fetched'
     );
 
-    return enrichCharactersWithAvatar(characters);
+    return enrichCharactersWithAvatar(filteredCharacters);
   } catch (error) {
     logger.error({ error, userId, options }, 'Error getting public and own characters');
     throw error;

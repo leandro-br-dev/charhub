@@ -5,9 +5,9 @@
     "language": "Sprache",
     "continueGoogle": "Mit Google fortfahren",
     "continueFacebook": "Mit Facebook fortfahren",
-    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzrichtlinie zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "privacy": "Durch die Fortsetzung stimmen Sie unserer Datenschutzerklärung zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
-    "logoutLoading": "Abmelden...",
+    "logoutLoading": "Melde ab...",
     "authenticatedUser": "Authentifizierter Benutzer",
     "tokenStored": "Gespeichert in HTTP-only Cookie",
     "navDashboard": "Dashboard",
@@ -36,10 +36,10 @@
     "deleting": "Lösche...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Wählen Sie eine Option",
+    "selectOption": "Option auswählen",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
-      "with": "Chat mit"
+      "with": "Chatten mit"
     },
     "messages": {
       "linkCopied": "Link in die Zwischenablage kopiert!",
@@ -56,24 +56,28 @@
       "hidden": "Reife Inhalte ausblenden",
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
-        "blur": "Schützen Sie reife Inhalte mit einem Weichzeichner",
-        "hidden": "Reife Inhalte vollständig ausblenden"
+        "blur": "Reife Inhalte unscharf darstellen",
+        "hidden": "Reife Inhalte komplett ausblenden"
       },
       "ageRatings": {
-        "L": "Freigegeben",
-        "TEN": "Ab 10",
-        "TWELVE": "Ab 12",
-        "FOURTEEN": "Ab 14",
-        "SIXTEEN": "Ab 16",
-        "EIGHTEEN": "Ab 18"
-      }
+        "L": "Frei",
+        "TEN": "Ab 10 Jahren",
+        "TWELVE": "Ab 12 Jahren",
+        "FOURTEEN": "Ab 14 Jahren",
+        "SIXTEEN": "Ab 16 Jahren",
+        "EIGHTEEN": "Ab 18 Jahren"
+      },
+      "noBirthdateWarning": "⚠️ Alter nicht registriert",
+      "noBirthdateDescription": "Um auf altersbeschränkte Inhalte zuzugreifen, fügen Sie bitte Ihr Geburtsdatum in den Einstellungen hinzu.",
+      "goToSettings": "Zu den Einstellungen",
+      "blocked": "(blockiert)"
     },
     "errors": {
       "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
       "failedToFetchData": "Daten konnten nicht abgerufen werden"
     },
     "character": "Charakter",
-    "seeMore": "Mehr sehen",
-    "seeMoreArrow": "Mehr sehen →"
+    "seeMore": "Mehr anzeigen",
+    "seeMoreArrow": "Mehr anzeigen →"
   }
 }

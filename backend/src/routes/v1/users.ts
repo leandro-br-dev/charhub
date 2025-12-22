@@ -3,7 +3,15 @@ import { ZodError } from 'zod';
 import multer from 'multer';
 import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
-import { updateUserProfile, checkUsernameAvailability, deleteUserAccount, searchUsers } from '../../services/userService';
+import {
+  updateUserProfile,
+  checkUsernameAvailability,
+  deleteUserAccount,
+  searchUsers,
+  updateWelcomeProgress,
+  completeWelcome,
+  getAgeRatingInfo
+} from '../../services/userService';
 import { r2Service } from '../../services/r2Service';
 import { updateUserProfileSchema } from '../../validators';
 
@@ -136,6 +144,82 @@ router.delete('/me', requireAuth, async (req, res) => {
   } catch (error) {
     logger.error({ error }, 'user_deletion_failed');
     res.status(500).json({ success: false, error: 'Failed to delete account' });
+  }
+});
+
+// ============================================================================
+// WELCOME FLOW ENDPOINTS
+// ============================================================================
+
+// Update welcome flow progress
+router.patch('/me/welcome-progress', requireAuth, async (req, res) => {
+  if (!req.auth?.user) {
+    res.status(401).json({ success: false, error: 'Authentication required' });
+    return;
+  }
+
+  try {
+    // Validate with Zod schema first
+    const payload = updateUserProfileSchema.parse(req.body);
+    const updated = await updateWelcomeProgress(req.auth.user.id, payload);
+
+    if (req.auth) {
+      req.auth.user = updated;
+    }
+
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    if (error instanceof ZodError) {
+      res.status(400).json({ success: false, error: 'Validation error', details: error.flatten() });
+      return;
+    }
+
+    if (error instanceof Error) {
+      if (error.message === 'Invalid birthdate' || error.message === 'Age rating exceeds user\'s age') {
+        res.status(400).json({ success: false, error: error.message });
+        return;
+      }
+    }
+
+    logger.error({ error }, 'welcome_progress_update_failed');
+    res.status(500).json({ success: false, error: 'Failed to update welcome progress' });
+  }
+});
+
+// Mark welcome flow as completed
+router.post('/me/complete-welcome', requireAuth, async (req, res) => {
+  if (!req.auth?.user) {
+    res.status(401).json({ success: false, error: 'Authentication required' });
+    return;
+  }
+
+  try {
+    const updated = await completeWelcome(req.auth.user.id);
+
+    if (req.auth) {
+      req.auth.user = updated;
+    }
+
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    logger.error({ error }, 'complete_welcome_failed');
+    res.status(500).json({ success: false, error: 'Failed to complete welcome flow' });
+  }
+});
+
+// Get age rating information
+router.get('/me/age-rating-info', requireAuth, async (req, res) => {
+  if (!req.auth?.user) {
+    res.status(401).json({ success: false, error: 'Authentication required' });
+    return;
+  }
+
+  try {
+    const info = await getAgeRatingInfo(req.auth.user.id);
+    res.json({ success: true, data: info });
+  } catch (error) {
+    logger.error({ error }, 'age_rating_info_failed');
+    res.status(500).json({ success: false, error: 'Failed to get age rating info' });
   }
 });
 

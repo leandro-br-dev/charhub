@@ -1,0 +1,75 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "تخطي",
+      "back": "رجوع",
+      "next": "التالي",
+      "finish": "إنهاء",
+      "saving": "جاري الحفظ...",
+      "progress": "الخطوة {{current}} من {{total}}",
+      "successTitle": "اكتمل الترحيب!",
+      "successMessage": "تم إعداد ملفك الشخصي بنجاح. استمتع بـ CharHub!"
+    },
+    "displayName": {
+      "title": "كيف تود أن تُدعى؟",
+      "label": "اسم العرض",
+      "placeholder": "مثال: جون سيلفا"
+    },
+    "username": {
+      "title": "اختر اسم المستخدم الخاص بك",
+      "subtitle": "هكذا سيجدك المستخدمون الآخرون",
+      "label": "اسم المستخدم",
+      "placeholder": "مثال: johnsilva",
+      "description": "أحرف وأرقام وشرطات سفلية فقط",
+      "checking": "جاري التحقق من التوفر...",
+      "available": "اسم المستخدم متاح!",
+      "unavailable": "اسم المستخدم مستخدم بالفعل",
+      "invalid": "صيغة اسم المستخدم غير صالحة"
+    },
+    "birthDate": {
+      "title": "تاريخ ميلادك",
+      "subtitle": "مطلوب لتصفية المحتوى المناسب للعمر",
+      "label": "تاريخ الميلاد",
+      "note": "تاريخ ميلادك خاص ولن تتم مشاركته علنًا"
+    },
+    "gender": {
+      "title": "النوع الاجتماعي",
+      "subtitle": "اختياري - يساعد الوكلاء على تخصيص المحادثات",
+      "feminine": "مؤنث",
+      "masculine": "مذكر",
+      "nonBinary": "غير ثنائي",
+      "preferNotToSay": "أفضل عدم الكشف",
+      "description": "يساعد هذا وكلاء الذكاء الاصطناعي على استخدام الضمائر واللغة المناسبة"
+    },
+    "language": {
+      "title": "اللغة المفضلة",
+      "subtitle": "اختر لغتك المفضلة لاستجابات الذكاء الاصطناعي والواجهة",
+      "label": "اللغة"
+    },
+    "ageRating": {
+      "title": "تفضيل تصنيف المحتوى",
+      "subtitle": "اختر أقصى تصنيف عمري ترغب في رؤيته",
+      "options": {
+        "L": "جميع الأعمار (L)",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+ (مراهق)",
+        "SIXTEEN": "16+ (ناضج)",
+        "EIGHTEEN": "18+ (بالغ)"
+      },
+      "optionDescriptions": {
+        "L": "مناسب للجميع",
+        "TEN": "مواضيع خفيفة",
+        "TWELVE": "مواضيع متوسطة",
+        "FOURTEEN": "مواضيع أكثر نضجًا",
+        "SIXTEEN": "مواضيع قوية",
+        "EIGHTEEN": "محتوى للبالغين"
+      }
+    },
+    "contentFilters": {
+      "title": "تفضيلات المحتوى",
+      "subtitle": "اختر المواضيع التي ترغب في رؤيتها"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "Pular",
+      "back": "Voltar",
+      "next": "Próximo",
+      "finish": "Concluir",
+      "saving": "Salvando...",
+      "progress": "Etapa {{current}} de {{total}}",
+      "successTitle": "Boas-vindas Concluídas!",
+      "successMessage": "Seu perfil foi configurado com sucesso. Aproveite o CharHub!"
+    },
+    "displayName": {
+      "title": "Como você gostaria de ser chamado(a)?",
+      "label": "Nome de Exibição",
+      "placeholder": "ex: João Silva"
+    },
+    "username": {
+      "title": "Escolha Seu Nome de Usuário",
+      "subtitle": "É assim que outros usuários vão te encontrar",
+      "label": "Nome de Usuário",
+      "placeholder": "ex: joaosilva",
+      "description": "Somente letras, números e underscores",
+      "checking": "Verificando disponibilidade...",
+      "available": "Nome de usuário disponível!",
+      "unavailable": "Nome de usuário já em uso",
+      "invalid": "Formato de nome de usuário inválido"
+    },
+    "birthDate": {
+      "title": "Sua Data de Nascimento",
+      "subtitle": "Necessário para filtrar conteúdo por faixa etária",
+      "label": "Data de Nascimento",
+      "note": "Sua data de nascimento é privada e não será compartilhada publicamente"
+    },
+    "gender": {
+      "title": "Gênero",
+      "subtitle": "Opcional - ajuda os agentes a personalizar conversas",
+      "feminine": "Feminino",
+      "masculine": "Masculino",
+      "nonBinary": "Não binário",
+      "preferNotToSay": "Prefiro não dizer",
+      "description": "Isso ajuda os agentes de IA a usar pronomes e linguagem apropriados"
+    },
+    "language": {
+      "title": "Idioma Preferencial",
+      "subtitle": "Escolha seu idioma preferencial para as respostas da IA e interface",
+      "label": "Idioma"
+    },
+    "ageRating": {
+      "title": "Preferência de Classificação de Conteúdo",
+      "subtitle": "Escolha a classificação etária máxima que você deseja ver",
+      "options": {
+        "L": "Livre para Todas as Idades (L)",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+ (Adolescente)",
+        "SIXTEEN": "16+ (Maduro)",
+        "EIGHTEEN": "18+ (Adulto)"
+      },
+      "optionDescriptions": {
+        "L": "Adequado para todos",
+        "TEN": "Temas leves",
+        "TWELVE": "Temas moderados",
+        "FOURTEEN": "Temas mais maduros",
+        "SIXTEEN": "Temas fortes",
+        "EIGHTEEN": "Conteúdo adulto"
+      }
+    },
+    "contentFilters": {
+      "title": "Preferências de Conteúdo",
+      "subtitle": "Selecione os temas que você deseja ver"
+    }
+  }
+}

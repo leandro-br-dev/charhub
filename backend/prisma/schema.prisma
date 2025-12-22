@@ -86,8 +86,11 @@ model User {
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
 
+  // Welcome flow
+  hasCompletedWelcome Boolean @default(false) // Flag to show welcome modal for new users
+
   // Content filtering preferences
-  maxAgeRating AgeRating    @default(EIGHTEEN) // Maximum age rating user wants to see
+  maxAgeRating AgeRating    @default(L) // Maximum age rating user wants to see (L = Livre/All ages by default)
   blockedTags  ContentTag[] // Content tags the user wants to block
 
   // Relations

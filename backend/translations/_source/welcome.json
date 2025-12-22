@@ -1,0 +1,75 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "Skip",
+      "back": "Back",
+      "next": "Next",
+      "finish": "Finish",
+      "saving": "Saving...",
+      "progress": "Step {{current}} of {{total}}",
+      "successTitle": "Welcome Complete!",
+      "successMessage": "Your profile has been set up successfully. Enjoy CharHub!"
+    },
+    "displayName": {
+      "title": "How would you like to be called?",
+      "label": "Display Name",
+      "placeholder": "e.g., John Silva"
+    },
+    "username": {
+      "title": "Choose Your Username",
+      "subtitle": "This is how other users will find you",
+      "label": "Username",
+      "placeholder": "e.g., johnsilva",
+      "description": "Only letters, numbers, and underscores",
+      "checking": "Checking availability...",
+      "available": "Username available!",
+      "unavailable": "Username already taken",
+      "invalid": "Invalid username format"
+    },
+    "birthDate": {
+      "title": "Your Birthdate",
+      "subtitle": "Required for age-appropriate content filtering",
+      "label": "Birthdate",
+      "note": "Your birthdate is private and won't be shared publicly"
+    },
+    "gender": {
+      "title": "Gender",
+      "subtitle": "Optional - helps agents personalize conversations",
+      "feminine": "Feminine",
+      "masculine": "Masculine",
+      "nonBinary": "Non-binary",
+      "preferNotToSay": "Prefer not to say",
+      "description": "This helps AI agents use appropriate pronouns and language"
+    },
+    "language": {
+      "title": "Preferred Language",
+      "subtitle": "Choose your preferred language for AI responses and interface",
+      "label": "Language"
+    },
+    "ageRating": {
+      "title": "Content Rating Preference",
+      "subtitle": "Choose the maximum age rating you want to see",
+      "options": {
+        "L": "All Ages (L)",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+ (Teen)",
+        "SIXTEEN": "16+ (Mature)",
+        "EIGHTEEN": "18+ (Adult)"
+      },
+      "optionDescriptions": {
+        "L": "Suitable for everyone",
+        "TEN": "Mild themes",
+        "TWELVE": "Moderate themes",
+        "FOURTEEN": "More mature themes",
+        "SIXTEEN": "Strong themes",
+        "EIGHTEEN": "Adult content"
+      }
+    },
+    "contentFilters": {
+      "title": "Content Preferences",
+      "subtitle": "Select the themes you want to see"
+    }
+  }
+}

@@ -28,6 +28,7 @@ function buildUserFromQuery(fallbackName: string, params: URLSearchParams, provi
     }
   }
 
+  // Extract ALL fields from decoded user, not just a subset
   return {
     id: decoded?.id ?? 'external-user',
     provider: decoded?.provider ?? provider,
@@ -36,6 +37,14 @@ function buildUserFromQuery(fallbackName: string, params: URLSearchParams, provi
     email: decoded?.email,
     photo: decoded?.photo,
     role: decoded?.role,
+    username: decoded?.username,
+    fullName: decoded?.fullName,
+    birthDate: decoded?.birthDate,
+    gender: decoded?.gender,
+    preferredLanguage: decoded?.preferredLanguage,
+    hasCompletedWelcome: decoded?.hasCompletedWelcome,
+    maxAgeRating: decoded?.maxAgeRating,
+    blockedTags: decoded?.blockedTags,
     token
   };
 }

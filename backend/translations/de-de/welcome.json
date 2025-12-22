@@ -1,0 +1,75 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "Überspringen",
+      "back": "Zurück",
+      "next": "Weiter",
+      "finish": "Abschließen",
+      "saving": "Speichern...",
+      "progress": "Schritt {{current}} von {{total}}",
+      "successTitle": "Willkommen abgeschlossen!",
+      "successMessage": "Ihr Profil wurde erfolgreich eingerichtet. Viel Spaß mit CharHub!"
+    },
+    "displayName": {
+      "title": "Wie möchten Sie genannt werden?",
+      "label": "Anzeigename",
+      "placeholder": "z.B. John Silva"
+    },
+    "username": {
+      "title": "Wählen Sie Ihren Benutzernamen",
+      "subtitle": "So werden andere Benutzer Sie finden",
+      "label": "Benutzername",
+      "placeholder": "z.B. johnsilva",
+      "description": "Nur Buchstaben, Zahlen und Unterstriche",
+      "checking": "Verfügbarkeit wird geprüft...",
+      "available": "Benutzername verfügbar!",
+      "unavailable": "Benutzername bereits vergeben",
+      "invalid": "Ungültiges Benutzernamenformat"
+    },
+    "birthDate": {
+      "title": "Ihr Geburtsdatum",
+      "subtitle": "Erforderlich für altersgerechte Inhaltsfilterung",
+      "label": "Geburtsdatum",
+      "note": "Ihr Geburtsdatum ist privat und wird nicht öffentlich geteilt"
+    },
+    "gender": {
+      "title": "Geschlecht",
+      "subtitle": "Optional – hilft Agenten, Gespräche zu personalisieren",
+      "feminine": "Weiblich",
+      "masculine": "Männlich",
+      "nonBinary": "Nicht-binär",
+      "preferNotToSay": "Möchte ich nicht angeben",
+      "description": "Dies hilft KI-Agenten, die passenden Pronomen und die richtige Sprache zu verwenden"
+    },
+    "language": {
+      "title": "Bevorzugte Sprache",
+      "subtitle": "Wählen Sie Ihre bevorzugte Sprache für KI-Antworten und die Benutzeroberfläche",
+      "label": "Sprache"
+    },
+    "ageRating": {
+      "title": "Präferenz für Inhaltsbewertung",
+      "subtitle": "Wählen Sie die maximale Altersfreigabe, die Sie sehen möchten",
+      "options": {
+        "L": "Alle Altersgruppen (L)",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+ (Jugendlich)",
+        "SIXTEEN": "16+ (Erwachsen)",
+        "EIGHTEEN": "18+ (Nur für Erwachsene)"
+      },
+      "optionDescriptions": {
+        "L": "Für jeden geeignet",
+        "TEN": "Milde Themen",
+        "TWELVE": "Moderate Themen",
+        "FOURTEEN": "Reifere Themen",
+        "SIXTEEN": "Starke Themen",
+        "EIGHTEEN": "Inhalte für Erwachsene"
+      }
+    },
+    "contentFilters": {
+      "title": "Inhaltspräferenzen",
+      "subtitle": "Wählen Sie die Themen aus, die Sie sehen möchten"
+    }
+  }
+}

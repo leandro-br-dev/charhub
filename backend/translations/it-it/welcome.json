@@ -1,0 +1,75 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "Salta",
+      "back": "Indietro",
+      "next": "Avanti",
+      "finish": "Fine",
+      "saving": "Salvataggio in corso...",
+      "progress": "Passaggio {{current}} di {{total}}",
+      "successTitle": "Benvenuto completato!",
+      "successMessage": "Il tuo profilo è stato configurato con successo. Goditi CharHub!"
+    },
+    "displayName": {
+      "title": "Come vuoi essere chiamato?",
+      "label": "Nome visualizzato",
+      "placeholder": "es. John Silva"
+    },
+    "username": {
+      "title": "Scegli il tuo nome utente",
+      "subtitle": "È così che gli altri utenti ti troveranno",
+      "label": "Nome utente",
+      "placeholder": "es. johnsilva",
+      "description": "Solo lettere, numeri e trattini bassi",
+      "checking": "Verifica disponibilità...",
+      "available": "Nome utente disponibile!",
+      "unavailable": "Nome utente già in uso",
+      "invalid": "Formato nome utente non valido"
+    },
+    "birthDate": {
+      "title": "La tua data di nascita",
+      "subtitle": "Obbligatorio per il filtro dei contenuti in base all'età",
+      "label": "Data di nascita",
+      "note": "La tua data di nascita è privata e non sarà condivisa pubblicamente"
+    },
+    "gender": {
+      "title": "Genere",
+      "subtitle": "Opzionale - aiuta gli agenti a personalizzare le conversazioni",
+      "feminine": "Femminile",
+      "masculine": "Maschile",
+      "nonBinary": "Non-binario",
+      "preferNotToSay": "Preferisco non dirlo",
+      "description": "Questo aiuta gli agenti AI a usare pronomi e linguaggio appropriati"
+    },
+    "language": {
+      "title": "Lingua preferita",
+      "subtitle": "Scegli la tua lingua preferita per le risposte AI e l'interfaccia",
+      "label": "Lingua"
+    },
+    "ageRating": {
+      "title": "Preferenza di classificazione dei contenuti",
+      "subtitle": "Scegli la classificazione per età massima che desideri visualizzare",
+      "options": {
+        "L": "Tutte le età (L)",
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+ (Adolescenti)",
+        "SIXTEEN": "16+ (Maturi)",
+        "EIGHTEEN": "18+ (Adulti)"
+      },
+      "optionDescriptions": {
+        "L": "Adatto a tutti",
+        "TEN": "Tematiche lievi",
+        "TWELVE": "Tematiche moderate",
+        "FOURTEEN": "Tematiche più mature",
+        "SIXTEEN": "Tematiche forti",
+        "EIGHTEEN": "Contenuti per adulti"
+      }
+    },
+    "contentFilters": {
+      "title": "Preferenze sui contenuti",
+      "subtitle": "Seleziona i temi che desideri visualizzare"
+    }
+  }
+}

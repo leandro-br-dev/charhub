@@ -7,6 +7,7 @@ import { asyncMulterHandler } from '../../middleware/multerErrorHandler';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 import * as characterService from '../../services/characterService';
+import * as userService from '../../services/userService';
 import { r2Service } from '../../services/r2Service';
 import { runCharacterAutocomplete, CharacterAutocompleteMode } from '../../agents/characterAutocompleteAgent';
 import { addCharacterImage } from '../../services/imageService';
@@ -495,6 +496,53 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
 
     let characters;
 
+    // CONTENT FILTERING: Apply automatic filters based on user's age and preferences
+    let effectiveAgeRatings: string[] | undefined;
+    let effectiveBlockedTags: string[] | undefined;
+
+    if (userId) {
+      try {
+        const userFilters = await userService.getUserContentFilters(userId);
+
+        // Apply age rating filters based on user's birthdate
+        // If user provided ageRatings in query, intersect with allowed ratings
+        // Otherwise, use all allowed ratings
+        const requestedRatings = Array.isArray(ageRatings)
+          ? ageRatings.map(String)
+          : typeof ageRatings === 'string'
+            ? ageRatings.split(',')
+            : undefined;
+
+        if (requestedRatings && requestedRatings.length > 0) {
+          // Intersect requested ratings with allowed ratings
+          effectiveAgeRatings = requestedRatings.filter(rating =>
+            userFilters.allowedAgeRatings.includes(rating as any)
+          );
+        } else {
+          // Use all allowed ratings
+          effectiveAgeRatings = userFilters.allowedAgeRatings;
+        }
+
+        // Apply blocked tags filter
+        effectiveBlockedTags = userFilters.blockedTags;
+      } catch (error) {
+        logger.error({ error, userId }, 'Error fetching user content filters');
+        // If error, fall back to manual ageRatings from query (no automatic filtering)
+        effectiveAgeRatings = Array.isArray(ageRatings)
+          ? ageRatings.map(String)
+          : typeof ageRatings === 'string'
+            ? ageRatings.split(',')
+            : undefined;
+      }
+    } else {
+      // Not authenticated: use ageRatings from query if provided, otherwise no filter
+      effectiveAgeRatings = Array.isArray(ageRatings)
+        ? ageRatings.map(String)
+        : typeof ageRatings === 'string'
+          ? ageRatings.split(',')
+          : undefined;
+    }
+
     const commonOptions = {
       search: typeof search === 'string' ? search : undefined,
       tags: Array.isArray(tags)
@@ -503,11 +551,8 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
           ? [tags]
           : undefined,
       gender: typeof gender === 'string' ? gender : undefined,
-      ageRatings: Array.isArray(ageRatings)
-        ? ageRatings.map(String)
-        : typeof ageRatings === 'string'
-          ? ageRatings.split(',')
-          : undefined,
+      ageRatings: effectiveAgeRatings,
+      blockedTags: effectiveBlockedTags,
       skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
       limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
     };

@@ -13,6 +13,7 @@ interface AuthContextValue {
   loginWithFacebook: () => void;
   completeLogin: (payload: AuthUser) => void;
   updateUser: (updates: Partial<AuthUser>) => void;
+  refreshUser: () => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -38,6 +39,7 @@ function consumeQueryParams(): AuthUser | null {
 
   const params = new URLSearchParams(window.location.search);
   const token = params.get('token');
+
   if (!token) {
     return null;
   }
@@ -68,6 +70,7 @@ function consumeQueryParams(): AuthUser | null {
   const newUrl = `${window.location.pathname}${newQuery ? `?${newQuery}` : ''}${window.location.hash ?? ''}`;
   window.history.replaceState(null, '', newUrl);
 
+  // Extract ALL fields from decodedUser
   return {
     id: decodedUser?.id ?? 'external-user',
     provider,
@@ -79,6 +82,11 @@ function consumeQueryParams(): AuthUser | null {
     birthDate: decodedUser?.birthDate,
     gender: decodedUser?.gender,
     role: decodedUser?.role as UserRole | undefined,
+    username: decodedUser?.username,
+    preferredLanguage: decodedUser?.preferredLanguage,
+    hasCompletedWelcome: decodedUser?.hasCompletedWelcome,
+    maxAgeRating: decodedUser?.maxAgeRating,
+    blockedTags: decodedUser?.blockedTags,
     token
   };
 }
@@ -131,7 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     }
   }, [user]);
 
-  const loginWithProvider = (provider: OAuthProvider) => {
+  const loginWithProvider = useCallback((provider: OAuthProvider) => {
     const baseUrl = resolveApiBaseUrl() ?? window.location.origin;
     const callbackUrl = `${window.location.origin}${CALLBACK_PATH}`;
 
@@ -151,18 +159,36 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     target.search = params.toString();
     console.debug('[auth] redirecting to provider', { provider, preferredLanguage, target: target.toString() });
     window.location.href = target.toString();
-  };
+  }, []);
 
-  const loginWithGoogle = () => loginWithProvider('google');
-  const loginWithFacebook = () => loginWithProvider('facebook');
+  const loginWithGoogle = useCallback(() => loginWithProvider('google'), [loginWithProvider]);
+  const loginWithFacebook = useCallback(() => loginWithProvider('facebook'), [loginWithProvider]);
 
-  const completeLogin = (payload: AuthUser) => {
+  const completeLogin = useCallback((payload: AuthUser) => {
     console.debug('[auth] completing login', { provider: payload.provider, id: payload.id });
     setUser(payload);
     setIsPhotoCached(false);
-  };
+  }, []);
 
-  const logout = async () => {
+  const refreshUser = useCallback(async () => {
+    if (!user?.token) {
+      console.warn('[auth] cannot refresh user without token');
+      return;
+    }
+
+    try {
+      const response = await api.get(`${API_PREFIX}/users/me`);
+      const userData = response.data.data;
+
+      // Merge with existing user data (keep token and provider info)
+      setUser(prev => prev ? { ...prev, ...userData } : null);
+      console.debug('[auth] user refreshed from backend');
+    } catch (error) {
+      console.error('[auth] failed to refresh user', error);
+    }
+  }, [user?.token]);
+
+  const logout = useCallback(async () => {
     try {
       await api.post(`${API_PREFIX}/oauth/logout`);
     } catch (error) {
@@ -170,7 +196,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     } finally {
       setUser(null);
     }
-  };
+  }, []);
 
   const updateUser = useCallback((updates: Partial<AuthUser>) => {
     setUser(prev => (prev ? { ...prev, ...updates } : prev));
@@ -185,9 +211,10 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
       loginWithFacebook,
       completeLogin,
       updateUser,
+      refreshUser,
       logout
     }),
-    [user, loginWithProvider, loginWithGoogle, loginWithFacebook, completeLogin, updateUser, logout]
+    [user, loginWithProvider, loginWithGoogle, loginWithFacebook, completeLogin, updateUser, refreshUser, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

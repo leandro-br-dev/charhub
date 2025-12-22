@@ -5,14 +5,14 @@
     "language": "Idioma",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
-    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información básica de perfil.",
+    "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información de perfil básica.",
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
-    "tokenStored": "Almacenado en cookie HTTP-only",
+    "tokenStored": "Almacenado en una cookie solo HTTP",
     "navDashboard": "Panel de control",
     "navCharacters": "Personajes",
-    "navTagline": "Demo segura de OAuth",
+    "navTagline": "Demostración de OAuth segura",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -43,20 +43,20 @@
     },
     "messages": {
       "linkCopied": "¡Enlace copiado al portapapeles!",
-      "chatStarted": "¡Chat iniciado con éxito!",
-      "characterDeleted": "Personaje eliminado con éxito"
+      "chatStarted": "¡Chat iniciado correctamente!",
+      "characterDeleted": "Personaje eliminado correctamente"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
       "title": "Filtro de Contenido",
-      "ageRating": "Clasificación por edad",
-      "blurNsfw": "Desenfocar contenido explícito",
-      "none": "Sin filtro",
-      "blur": "Desenfocar contenido sensible",
-      "hidden": "Ocultar contenido maduro",
+      "ageRating": "Clasificación por Edad",
+      "blurNsfw": "Difuminar Contenido Explícito",
+      "none": "Sin Filtro",
+      "blur": "Difuminar Sensible",
+      "hidden": "Ocultar Maduro",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar desenfoque al contenido maduro",
+        "blur": "Aplicar un desenfoque al contenido maduro",
         "hidden": "Ocultar completamente el contenido maduro"
       },
       "ageRatings": {
@@ -66,10 +66,14 @@
         "FOURTEEN": "14+",
         "SIXTEEN": "16+",
         "EIGHTEEN": "18+"
-      }
+      },
+      "noBirthdateWarning": "⚠️ Edad no registrada",
+      "noBirthdateDescription": "Para acceder a contenido restringido por edad, por favor añade tu fecha de nacimiento en la configuración.",
+      "goToSettings": "Ir a Configuración",
+      "blocked": "(bloqueado)"
     },
     "errors": {
-      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo.",
+      "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
       "failedToFetchData": "Error al obtener los datos"
     },
     "character": "Personaje",

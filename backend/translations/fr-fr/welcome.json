@@ -1,0 +1,75 @@
+{
+  "description": "Welcome flow modal translations for new user onboarding",
+  "resources": {
+    "modal": {
+      "skip": "Passer",
+      "back": "Retour",
+      "next": "Suivant",
+      "finish": "Terminer",
+      "saving": "Enregistrement...",
+      "progress": "Étape {{current}} sur {{total}}",
+      "successTitle": "Bienvenue terminée !",
+      "successMessage": "Votre profil a été configuré avec succès. Profitez de CharHub !"
+    },
+    "displayName": {
+      "title": "Comment souhaitez-vous être appelé(e) ?",
+      "label": "Nom d'affichage",
+      "placeholder": "par ex. Jean Silva"
+    },
+    "username": {
+      "title": "Choisissez votre nom d'utilisateur",
+      "subtitle": "C'est ainsi que les autres utilisateurs vous trouveront",
+      "label": "Nom d'utilisateur",
+      "placeholder": "par ex. jeansilva",
+      "description": "Uniquement des lettres, des chiffres et des underscores",
+      "checking": "Vérification de la disponibilité...",
+      "available": "Nom d'utilisateur disponible !",
+      "unavailable": "Nom d'utilisateur déjà pris",
+      "invalid": "Format de nom d'utilisateur invalide"
+    },
+    "birthDate": {
+      "title": "Votre date de naissance",
+      "subtitle": "Obligatoire pour le filtrage de contenu adapté à l'âge",
+      "label": "Date de naissance",
+      "note": "Votre date de naissance est privée et ne sera pas partagée publiquement"
+    },
+    "gender": {
+      "title": "Genre",
+      "subtitle": "Facultatif - aide les agents à personnaliser les conversations",
+      "feminine": "Féminin",
+      "masculine": "Masculin",
+      "nonBinary": "Non-binaire",
+      "preferNotToSay": "Préfère ne pas dire",
+      "description": "Cela aide les agents IA à utiliser les pronoms et le langage appropriés"
+    },
+    "language": {
+      "title": "Langue préférée",
+      "subtitle": "Choisissez votre langue préférée pour les réponses de l'IA et l'interface",
+      "label": "Langue"
+    },
+    "ageRating": {
+      "title": "Préférence de classification du contenu",
+      "subtitle": "Choisissez la classification d'âge maximale que vous souhaitez voir",
+      "options": {
+        "L": "Tous publics (L)",
+        "TEN": "10 ans et plus",
+        "TWELVE": "12 ans et plus",
+        "FOURTEEN": "14 ans et plus (Adolescent)",
+        "SIXTEEN": "16 ans et plus (Mature)",
+        "EIGHTEEN": "18 ans et plus (Adulte)"
+      },
+      "optionDescriptions": {
+        "L": "Convient à tout le monde",
+        "TEN": "Thèmes légers",
+        "TWELVE": "Thèmes modérés",
+        "FOURTEEN": "Thèmes plus matures",
+        "SIXTEEN": "Thèmes forts",
+        "EIGHTEEN": "Contenu adulte"
+      }
+    },
+    "contentFilters": {
+      "title": "Préférences de contenu",
+      "subtitle": "Sélectionnez les thèmes que vous souhaitez voir"
+    }
+  }
+}
