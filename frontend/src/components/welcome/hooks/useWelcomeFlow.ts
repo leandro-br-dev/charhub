@@ -53,7 +53,7 @@ export function useWelcomeFlow() {
     setError(null);
   }, []);
 
-  const saveProgress = async () => {
+  const saveProgress = async (shouldRefreshUser = true) => {
     setIsLoading(true);
     setError(null);
 
@@ -72,8 +72,21 @@ export function useWelcomeFlow() {
         }
       }
 
+      // Ensure username has @ prefix if present (backend requires it)
+      if (cleanedData.username) {
+        const usernameValue = cleanedData.username as string;
+        if (!usernameValue.startsWith('@')) {
+          cleanedData.username = `@${usernameValue}`;
+        }
+      }
+
       await api.patch('/api/v1/users/me/welcome-progress', cleanedData);
-      await refreshUser(); // Refresh user data from backend
+
+      // Only refresh user if requested (avoid reopening modal when just closing)
+      if (shouldRefreshUser) {
+        await refreshUser();
+      }
+
       return true;
     } catch (err: any) {
       const errorMessage = err.response?.data?.error || 'Failed to save progress';
@@ -127,16 +140,15 @@ export function useWelcomeFlow() {
     }
   };
 
-  const skipWelcome = async () => {
-    // Save any data already filled
-    await saveProgress();
-    await completeWelcome();
+  const skipWelcome = () => {
+    // Just close without saving or marking as complete
+    // Modal will reopen on next login until user completes welcome
+    setIsOpen(false);
   };
 
-  const closeModal = async () => {
-    // Just save progress and close, without marking as complete
-    // User can continue later
-    await saveProgress();
+  const closeModal = () => {
+    // Just close without saving or marking as complete
+    // Modal will reopen on next login until user completes welcome
     setIsOpen(false);
   };
 
