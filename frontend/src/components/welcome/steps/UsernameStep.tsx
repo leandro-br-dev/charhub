@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
+import { useUsernameValidation, formatUsernameWithPrefix, removeUsernamePrefix } from '../../../hooks/useUsernameValidation';
 import { Input } from '../../ui/Input';
 import type { WelcomeFormData } from '../types';
-import api from '../../../lib/api';
 
 interface UsernameStepProps {
   data: WelcomeFormData;
@@ -13,8 +13,15 @@ interface UsernameStepProps {
 export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
   const { t } = useTranslation('welcome');
   const { user } = useAuth();
-  const [isChecking, setIsChecking] = useState(false);
-  const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
+
+  // Extract username without @ prefix for validation
+  const usernameWithoutPrefix = data.username ? removeUsernamePrefix(data.username) : '';
+
+  // Use custom hook for validation
+  const { isChecking, isAvailable } = useUsernameValidation(usernameWithoutPrefix, {
+    currentUsername: user?.username,
+    minLength: 2,
+  });
 
   // Pre-fill with current username
   useEffect(() => {
@@ -23,42 +30,10 @@ export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
     }
   }, [user, data.username, onUpdate]);
 
-  const checkUsername = async (username: string) => {
-    if (!username || username.length < 2) {
-      setIsAvailable(null);
-      return;
-    }
-
-    // Add @ prefix if not present
-    const formattedUsername = username.startsWith('@') ? username : `@${username}`;
-
-    setIsChecking(true);
-    try {
-      const response = await api.get(`/api/v1/users/check-username/${formattedUsername}`);
-      setIsAvailable(response.data.available);
-    } catch (error) {
-      console.error('Error checking username:', error);
-      setIsAvailable(null);
-    } finally {
-      setIsChecking(false);
-    }
-  };
-
   const handleUsernameChange = (value: string) => {
-    // Remove @ if user types it
-    const cleanValue = value.replace('@', '');
-    const formattedUsername = cleanValue ? `@${cleanValue}` : '';
-
+    // Remove @ if user types it, then add it back
+    const formattedUsername = formatUsernameWithPrefix(value);
     onUpdate({ username: formattedUsername });
-
-    // Debounce username check
-    const timeoutId = setTimeout(() => {
-      if (formattedUsername) {
-        checkUsername(formattedUsername);
-      }
-    }, 500);
-
-    return () => clearTimeout(timeoutId);
   };
 
   return (
@@ -79,7 +54,7 @@ export function UsernameStep({ data, onUpdate }: UsernameStepProps) {
             <Input
               id="username"
               placeholder={t('username.placeholder', 'e.g., johnsilva')}
-              value={data.username?.replace('@', '') || ''}
+              value={usernameWithoutPrefix}
               onChange={(e) => handleUsernameChange(e.target.value)}
               className="pl-8"
             />

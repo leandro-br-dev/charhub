@@ -11,13 +11,20 @@ export async function createTestUser(overrides: any = {}) {
   const db = getTestDb();
 
   const timestamp = Date.now();
+
+  // Handle blockedTags: null by converting to empty array (Prisma doesn't accept null for arrays)
+  const cleanedOverrides = { ...overrides };
+  if (cleanedOverrides.blockedTags === null) {
+    delete cleanedOverrides.blockedTags; // Omit field, will use schema default (empty array)
+  }
+
   const defaultData = {
     email: `test-${timestamp}@example.com`,
     displayName: 'Test User',
     avatarUrl: 'https://example.com/avatar.jpg',
     provider: 'GOOGLE',
     providerAccountId: `account_${timestamp}`,
-    ...overrides,
+    ...cleanedOverrides,
   };
 
   return await db.user.create({
