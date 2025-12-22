@@ -1,10 +1,35 @@
 # Feature: Corrigir Lógica de Créditos de Assinatura
 
-**Status**: 🔴 Em Planejamento
+**Status**: ⚠️ Correção Crítica Implementada - Aguardando Testes
 **Prioridade**: 🔥 CRÍTICA
 **Agente**: Agent Coder
 **Data**: 2025-12-22
 **Branch**: `feature/fix-subscription-credits-logic`
+**Último Update**: 2025-12-22 23:10 UTC
+
+---
+
+## 🔥 CORREÇÃO CRÍTICA APLICADA
+
+### Bug Real Identificado
+Após investigação detalhada e análise de logs, o problema NÃO era no backend de credits, mas sim na **integração Stripe**:
+
+**Problema**: Backend criava um PaymentIntent MANUAL que NÃO estava vinculado ao Invoice da Subscription
+- Stripe cria PaymentIntent automaticamente quando usa `payment_behavior: 'default_incomplete'`
+- Código estava criando um SEGUNDO PaymentIntent manualmente
+- Frontend confirmava o PaymentIntent manual com sucesso ✅
+- MAS o Invoice da Subscription nunca era pago ❌
+- Subscription ficava em status `incomplete` indefinidamente
+- Webhook NUNCA era disparado (só dispara quando invoice é pago)
+- SEM webhook = SEM ativação = SEM créditos
+
+**Solução**: Usar o PaymentIntent que Stripe cria automaticamente para o Invoice
+- Removida criação manual de PaymentIntent
+- Agora usa `invoice.payment_intent` (já vinculado à subscription)
+- Quando frontend confirma, invoice é pago automaticamente
+- Subscription ativa, webhook dispara, créditos são concedidos
+
+**Commit**: `cdc8354` - fix(stripe): use existing PaymentIntent instead of creating duplicate
 
 ---
 
