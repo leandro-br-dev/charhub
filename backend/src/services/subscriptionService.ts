@@ -342,6 +342,7 @@ async function processSubscriptionActivated(
     ? new Date(metadata.billingInfo.nextBillingTime)
     : new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
+  // Create subscription in transaction
   await prisma.$transaction(async (tx) => {
     // Deactivate all previous plans (including FREE)
     await tx.userPlan.updateMany({
@@ -353,7 +354,7 @@ async function processSubscriptionActivated(
     });
 
     // Create new active subscription
-    const newUserPlan = await tx.userPlan.create({
+    await tx.userPlan.create({
       data: {
         userId,
         planId: plan.id,
@@ -365,11 +366,11 @@ async function processSubscriptionActivated(
         // DON'T set lastCreditsGrantedAt yet - let grantMonthlyCredits set it
       },
     });
-
-    // Grant monthly credits for THIS specific plan (not any active plan)
-    // Pass planId to ensure we grant credits for the correct plan
-    await grantMonthlyCredits(userId, newUserPlan.planId);
   });
+
+  // Grant monthly credits AFTER transaction completes
+  // This ensures the UserPlan is committed to DB before grantMonthlyCredits queries it
+  await grantMonthlyCredits(userId, planId);
 
   logger.info({ userId, planId, subscriptionId }, 'Subscription activated and credits granted');
 }
