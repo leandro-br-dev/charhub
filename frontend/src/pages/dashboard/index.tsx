@@ -13,12 +13,15 @@ import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
 import { usePageHeader } from '../../hooks/usePageHeader';
+import { useAuth } from '../../hooks/useAuth';
+import { PublicHeader } from '../../components/layout';
 
 export default function Dashboard(): JSX.Element {
   const { t } = useTranslation(['dashboard', 'common']);
   const navigate = useNavigate();
   const { setTitle } = usePageHeader();
   const { shouldHideContent } = useGlobalContentFilter();
+  const { isAuthenticated } = useAuth();
 
   // Age rating filter moved to PageHeader
 
@@ -49,6 +52,18 @@ export default function Dashboard(): JSX.Element {
     defaultBlurNsfw: false,
     persistToLocalStorage: true,
   });
+
+  // Ensure non-authenticated users always see "popular" views
+  useEffect(() => {
+    if (!isAuthenticated) {
+      if (discoverView === 'favorites') {
+        setDiscoverView('popular');
+      }
+      if (storyView === 'my') {
+        setStoryView('popular');
+      }
+    }
+  }, [isAuthenticated, discoverView, storyView]);
 
   // Fetch carousel highlights
   useEffect(() => {
@@ -214,13 +229,53 @@ export default function Dashboard(): JSX.Element {
   );
 
   // Filter lists based on global content filter "hidden" mode so layout reflows
-  const filteredPopularCharacters = popularCharacters.filter((c) => !shouldHideContent((c as any).ageRating, (c as any).contentTags || []));
-  const filteredFavoriteCharacters = favoriteCharacters.filter((c) => !shouldHideContent((c as any).ageRating, (c as any).contentTags || []));
-  const filteredPopularStories = popularStories.filter((s) => !shouldHideContent((s as any).ageRating, (s as any).contentTags || []));
-  const filteredMyStories = myStories.filter((s) => !shouldHideContent((s as any).ageRating, (s as any).contentTags || []));
+  // Additionally, if not authenticated, only show content with ageRating 'L' (Livre/Free)
+  const filteredPopularCharacters = popularCharacters.filter((c) => {
+    if (!shouldHideContent((c as any).ageRating, (c as any).contentTags || [])) {
+      // If not authenticated, only show 'L' rated content
+      if (!isAuthenticated) {
+        return c.ageRating === 'L';
+      }
+      return true;
+    }
+    return false;
+  });
+
+  const filteredFavoriteCharacters = favoriteCharacters.filter((c) => {
+    if (!shouldHideContent((c as any).ageRating, (c as any).contentTags || [])) {
+      if (!isAuthenticated) {
+        return c.ageRating === 'L';
+      }
+      return true;
+    }
+    return false;
+  });
+
+  const filteredPopularStories = popularStories.filter((s) => {
+    if (!shouldHideContent((s as any).ageRating, (s as any).contentTags || [])) {
+      if (!isAuthenticated) {
+        return (s as any).ageRating === 'L';
+      }
+      return true;
+    }
+    return false;
+  });
+
+  const filteredMyStories = myStories.filter((s) => {
+    if (!shouldHideContent((s as any).ageRating, (s as any).contentTags || [])) {
+      if (!isAuthenticated) {
+        return (s as any).ageRating === 'L';
+      }
+      return true;
+    }
+    return false;
+  });
 
   return (
     <div className="w-full bg-normal overflow-x-hidden">
+      {/* Public Header - shown only to non-authenticated users */}
+      {!isAuthenticated && <PublicHeader />}
+
       {/* Carousel Section */}
       <div className="mb-1 overflow-hidden">
         {isLoadingCarousel ? (
@@ -235,7 +290,8 @@ export default function Dashboard(): JSX.Element {
         <Tabs defaultTab="discover">
           <TabList>
             <Tab label="discover">{t('dashboard:tabs.discover')}</Tab>
-            <Tab label="chat">{t('dashboard:tabs.chat')}</Tab>
+            {/* Hide Chat tab for non-authenticated users */}
+            {isAuthenticated && <Tab label="chat">{t('dashboard:tabs.chat')}</Tab>}
             <Tab label="story">{t('dashboard:tabs.story')}</Tab>
           </TabList>
 
@@ -249,22 +305,25 @@ export default function Dashboard(): JSX.Element {
                       ? t('dashboard:sections.popularCharacters')
                       : t('dashboard:sections.favoriteCharacters')}
                   </h2>
-                  <div className="flex rounded-xl border border-border overflow-hidden">
-                    <button
-                      type="button"
-                      onClick={() => setDiscoverView('popular')}
-                      className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
-                    >
-                      {t('dashboard:sections.popular')}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setDiscoverView('favorites')}
-                      className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
-                    >
-                      {t('dashboard:sections.favorites')}
-                    </button>
-                  </div>
+                  {/* Hide favorites toggle for non-authenticated users */}
+                  {isAuthenticated && (
+                    <div className="flex rounded-xl border border-border overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setDiscoverView('popular')}
+                        className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
+                      >
+                        {t('dashboard:sections.popular')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDiscoverView('favorites')}
+                        className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
+                      >
+                        {t('dashboard:sections.favorites')}
+                      </button>
+                    </div>
+                  )}
                 </div>
                 {isLoadingCharacters ? (
                   <div className="h-64 bg-light animate-pulse rounded-lg" />
@@ -305,22 +364,25 @@ export default function Dashboard(): JSX.Element {
                       ? t('dashboard:sections.myStories')
                       : t('dashboard:sections.popularStories')}
                   </h2>
-                  <div className="flex rounded-xl border border-border overflow-hidden">
-                    <button
-                      type="button"
-                      onClick={() => setStoryView('my')}
-                      className={`px-3 py-1 text-sm ${storyView === 'my' ? 'bg-primary text-black' : 'text-content'}`}
-                    >
-                      {t('dashboard:sections.mine')}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setStoryView('popular')}
-                      className={`px-3 py-1 text-sm ${storyView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
-                    >
-                      {t('dashboard:sections.popular')}
-                    </button>
-                  </div>
+                  {/* Hide my stories toggle for non-authenticated users */}
+                  {isAuthenticated && (
+                    <div className="flex rounded-xl border border-border overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setStoryView('my')}
+                        className={`px-3 py-1 text-sm ${storyView === 'my' ? 'bg-primary text-black' : 'text-content'}`}
+                      >
+                        {t('dashboard:sections.mine')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setStoryView('popular')}
+                        className={`px-3 py-1 text-sm ${storyView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
+                      >
+                        {t('dashboard:sections.popular')}
+                      </button>
+                    </div>
+                  )}
                 </div>
                 {isLoadingStories ? (
                   <div className="h-64 bg-light animate-pulse rounded-lg" />

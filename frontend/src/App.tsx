@@ -47,6 +47,9 @@ export default function App(): JSX.Element {
         <Route path="*" element={<NotFound />} />
       </Route>
 
+      {/* Dashboard is public - can be accessed without authentication */}
+      <Route path="/dashboard" element={<Dashboard />} />
+
       <Route
         element={
           <ProtectedRoute>
@@ -54,7 +57,6 @@ export default function App(): JSX.Element {
           </ProtectedRoute>
         }
       >
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/discover" element={<DiscoverPage />} />
         <Route path="/characters" element={<CharacterHubPage />} />
         <Route path="/characters/create" element={<CharacterCreateMethodPage />} />

@@ -11,7 +11,8 @@ export function ProtectedRoute({ children }: ProtectedRouteProps): ReactElement 
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    // Save the original URL (pathname + search + hash) for redirect after login
+    return <Navigate to="/signup" state={{ from: location.pathname + location.search + location.hash }} replace />;
   }
 
   return children;

@@ -8,6 +8,57 @@
 
 ---
 
+## 📊 Status de Implementação
+
+### Progresso Geral
+- [x] Planning complete
+- [ ] Backend implementation (não necessário - API já suporta)
+- [ ] Frontend implementation (em progresso)
+- [ ] Testing
+- [ ] Documentation
+- [ ] Ready for PR
+
+### Implementação Completa
+- [x] Leitura da especificação da feature
+- [x] Leitura de documentação crítica (arquitetura, backend, frontend)
+- [x] Exploração do código frontend existente
+- [x] Criação do branch `feature/public-dashboard`
+
+### Em Progresso
+- [ ] Testes locais completos
+- [ ] Atualização de documentação
+
+### Pendente
+- [ ] Revisão final do código
+- [ ] Criação do Pull Request
+
+### Implementação Concluída ✅
+- [x] Atualização do spec com progresso
+- [x] Planejamento detalhado da implementação
+- [x] Criação do componente `PublicHeader` (`frontend/src/components/layout/PublicHeader.tsx`)
+- [x] Modificação do `App.tsx` (rota /dashboard removida de ProtectedRoute)
+- [x] Modificação do `Dashboard.tsx` (lógica condicional para conteúdo livre)
+  - Adicionado filtro para mostrar apenas `ageRating: 'L'` para não autenticados
+  - Renderização do PublicHeader quando não autenticado
+  - Esconder aba "Chat" para visitantes
+  - Esconder toggle "Favorites" e "My Stories" para visitantes
+- [x] Modificação do `ProtectedRoute.tsx` (redirecionar para /signup, salvar URL completa)
+- [x] Modificação do `useAuthRedirect.tsx` (suporte para redirect após login)
+  - Aceita formato string e objeto para backward compatibility
+  - Redireciona para URL original ou /dashboard por padrão
+- [x] Adição de traduções para novos textos (com fallbacks)
+
+### Bloqueios
+- Nenhum
+
+### Notas de Implementação
+- Backend não requer mudanças (API já filtra por accessLevel e suporta queries sem token)
+- Dashboard atual assume usuário autenticado (dentro de ProtectedRoute)
+- Sidebar renderiza conteúdo baseado em `activeView` mas não verifica autenticação
+- ProtectedRoute atual redireciona para `/` (home) - precisa mudar para `/signup`
+
+---
+
 ## Índice
 
 1. [Visão Geral](#visão-geral)

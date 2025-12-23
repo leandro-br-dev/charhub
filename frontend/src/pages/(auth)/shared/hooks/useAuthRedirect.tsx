@@ -9,7 +9,18 @@ export function useAuthRedirect(): void {
 
   useEffect(() => {
     if (isAuthenticated) {
-      const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
+      // Support both string and object formats for backward compatibility
+      const state = location.state as { from?: string | { pathname: string } };
+      let from = '/dashboard';
+
+      if (state?.from) {
+        if (typeof state.from === 'string') {
+          from = state.from;
+        } else if (state.from.pathname) {
+          from = state.from.pathname;
+        }
+      }
+
       navigate(from, { replace: true });
     }
   }, [isAuthenticated, navigate, location]);
