@@ -93,7 +93,7 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 if (isQueuesEnabled()) {
   initializeWorkers();
   // Schedule recurring jobs after workers are initialized
-  scheduleRecurringJobs().catch((error) => {
+  scheduleRecurringJobs().catch((error: unknown) => {
     logger.error({ error }, 'Failed to schedule recurring jobs');
   });
 }
