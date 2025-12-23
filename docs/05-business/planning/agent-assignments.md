@@ -6,13 +6,13 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ---
 
-## 📊 Status Atual: 20 de Dezembro de 2025
+## 📊 Status Atual: 23 de Dezembro de 2025
 
 ### Tarefas em Progresso
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
-| T004 | **Welcome Flow + Content Restrictions** | Agent Coder | 🚀 Pronto para Iniciar | `feature/welcome-flow-content-restrictions` (a criar) | 10/01/2026 | 20/12 - Spec criada e aprovada |
+| T005 | **Dashboard Público com Login/Signup** | Agent Coder | 🚀 Pronto para Iniciar | `feature/public-dashboard` (a criar) | 06/01/2026 | 23/12 - Spec criada - **PRIORIDADE MÁXIMA** |
 
 ---
 
@@ -29,55 +29,69 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ## 🚀 Histórico Recente de Atribuições
 
+### Semana de 23-30 Dezembro
+
+| Tarefa | Agente | Status | Detalhes |
+|--------|--------|--------|----------|
+| **Dashboard Público com Login/Signup** | Agent Coder | ✅ Atribuído | Spec completa em `active/public-dashboard.md`. **PRIORIDADE MÁXIMA** - Iniciar imediatamente. |
+
+**Contexto da Tarefa Dashboard Público** (T005):
+- **Por que urgente**: Dashboard é a área mais informativa do site mas está inacessível para visitantes
+- **Objetivo Principal**: Transformar dashboard em landing page pública, permitindo exploração de conteúdo "Livre" antes do signup
+- **Problemas Resolvidos**:
+  - ✅ Visitantes não conseguem ver funcionalidades do CharHub antes de fazer login
+  - ✅ Taxa de conversão baixa (sem "try before you buy")
+  - ✅ Conteúdo "Livre" não é aproveitado para atrair novos usuários
+  - ✅ Falta de call-to-action claro para signup
+- **Features Principais**:
+  1. Dashboard acessível sem login em `charhub.app`
+  2. Filtro automático: apenas conteúdo "Livre" para visitantes
+  3. Sidebar oculta quando não autenticado
+  4. Botão Login/Signup visível no topo
+  5. Proteção de rotas: redirect para signup ao tentar acessar áreas privadas
+  6. Redirect inteligente: retornar à URL original após login
+- **Estimativa**: 1-2 semanas (6 fases detalhadas na spec)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/public-dashboard.md`
+- **Branch sugerida**: `feature/public-dashboard`
+
+**Instruções para Agent Coder**:
+1. ⚠️ **PRIORIDADE MÁXIMA** - Feature crítica para aquisição de usuários
+2. Criar branch `feature/public-dashboard` a partir de `main`
+3. Ler spec completa (todos os detalhes técnicos e fluxos de usuário)
+4. Seguir roadmap de implementação (6 fases):
+   - Fase 1: Backend (se necessário) - 1 dia
+   - Fase 2: Frontend - Estrutura Base - 2 dias
+   - Fase 3: Proteção de Rotas - 1 dia
+   - Fase 4: UI/UX - 2 dias
+   - Fase 5: Testes - 2 dias
+   - Fase 6: Documentação & Deploy - 1 dia
+5. **CRÍTICO**: Manter segurança - não expor dados sensíveis
+6. Fazer commits incrementais por fase
+7. Abrir PR quando Fases 1-3 estiverem completas para review inicial
+8. Agent Reviewer testará localmente após cada fase major
+
+**Requisitos Técnicos Importantes**:
+- ✅ Remover ProtectedRoute da rota `/dashboard`
+- ✅ Implementar filtro de conteúdo por `accessLevel: "Livre"`
+- ✅ Criar componente PublicHeader com botões Login/Signup
+- ✅ Ocultar Sidebar para usuários não autenticados
+- ✅ Salvar URL original para redirect após login
+- ✅ Proteger todas as outras rotas (chat, profile, settings, etc.)
+- ✅ Testes de integração (coverage > 80%)
+- ✅ Responsividade mobile
+
 ### Semana de 20-27 Dezembro
 
 | Tarefa | Agente | Status | Detalhes |
 |--------|--------|--------|----------|
-| **Welcome Flow + Content Restrictions** | Agent Coder | ✅ Atribuído | Spec completa em `active/welcome-flow-and-content-restrictions.md`. **PRIORIDADE MÁXIMA** - Iniciar imediatamente. |
+| **Welcome Flow + Content Restrictions** | Agent Coder | ✅ Concluído | PR merged e deployed em produção. |
+| **Fix Subscription Credits Logic** | Agent Coder | ✅ Concluído | PR merged e deployed em produção. |
 
 **Contexto da Tarefa Welcome Flow + Content Restrictions** (T004):
-- **Por que urgente**: Sistema atual permite menores acessarem conteúdo 18+, risco legal de compliance
-- **Objetivo Principal**: Implementar onboarding guiado + sistema robusto de restrições de conteúdo por idade
-- **Problemas Resolvidos**:
-  - ✅ Usuários novos não preenchem dados essenciais (displayName, birthdate, etc)
-  - ✅ languagePreference não é capturado no OAuth signup
-  - ✅ Age rating sem validação de idade real
-  - ✅ Menores podem selecionar conteúdo 18+
-- **Features Principais**:
-  1. Welcome Modal multi-step (7 steps) com salvamento progressivo
-  2. Auto-captura de idioma no OAuth (i18nextLng → languagePreference)
-  3. Age Rating Dropdown com validação inteligente
-  4. Auto-ativação de classificações inferiores
-  5. Bloqueio baseado em idade real do usuário
-- **Estimativa**: 2-3 semanas (8 fases detalhadas na spec)
-- **Arquivo de spec**: `docs/05-business/planning/features/active/welcome-flow-and-content-restrictions.md`
-- **Branch sugerida**: `feature/welcome-flow-content-restrictions`
-
-**Instruções para Agent Coder**:
-1. ⚠️ **PRIORIDADE MÁXIMA** - Iniciar antes do Stripe (compliance legal)
-2. Criar branch `feature/welcome-flow-content-restrictions` a partir de `main`
-3. Ler spec completa (1000+ linhas com todos os detalhes técnicos)
-4. Seguir roadmap de implementação (8 fases):
-   - Fase 1: Backend Foundation (dias 1-3)
-   - Fase 2: Frontend Welcome Modal (dias 4-7)
-   - Fase 3: Age Rating Dropdown (dias 8-9)
-   - Fase 4: OAuth Language Capture (dia 10)
-   - Fase 5: Content Filtering API (dias 11-12)
-   - Fase 6: Refatoração (dia 13)
-   - Fase 7: Testing & QA (dia 14)
-   - Fase 8: Documentation (dia 15)
-5. **CRÍTICO**: Reutilizar componentes existentes do Profile (zero duplicação)
-6. Fazer commits incrementais por fase
-7. Abrir PR quando Fase 1-2 estiverem completas para review inicial
-8. Agent Reviewer testará localmente após cada fase major
-
-**Requisitos Técnicos Importantes**:
-- ✅ Migration Prisma com novos campos no User model
-- ✅ Validação de idade no backend (calculateAge, getMaxAllowedAgeRating)
-- ✅ 3 novos endpoints: welcome-progress, complete-welcome, age-rating-info
-- ✅ Modal não-bloqueante (usuário pode pular, mas dados são salvos)
-- ✅ Testes unitários + integração + E2E (coverage > 80%)
-- ✅ Componentes compartilhados entre WelcomeModal e Profile
+- **Status**: ✅ **CONCLUÍDO E DEPLOYED**
+- **Objetivo**: Implementar onboarding guiado + sistema robusto de restrições de conteúdo por idade
+- **Resultado**: Sistema de welcome flow ativo em produção com validação de idade
+- **Arquivo de spec**: `docs/05-business/planning/features/implemented/welcome-flow-and-content-restrictions.md` (movido para implemented)
 
 ### Semana de 14-20 Dezembro
 
