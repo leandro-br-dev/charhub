@@ -103,6 +103,7 @@ async function handleSubscriptionSuspended(subscription: any): Promise<void> {
 
 /**
  * Handle payment.sale.completed event
+ * Called when a recurring payment is successfully completed
  */
 async function handlePaymentCompleted(sale: any): Promise<void> {
   const billingAgreementId = sale.billing_agreement_id;
@@ -113,6 +114,7 @@ async function handlePaymentCompleted(sale: any): Promise<void> {
 
   const userPlan = await prisma.userPlan.findUnique({
     where: { paypalSubscriptionId: billingAgreementId },
+    include: { plan: true },
   });
 
   if (!userPlan) {
@@ -121,11 +123,13 @@ async function handlePaymentCompleted(sale: any): Promise<void> {
   }
 
   // Grant monthly credits on successful payment (renewal)
-  await grantMonthlyCredits(userPlan.userId);
+  // Pass planId to ensure correct plan credits are granted
+  // grantMonthlyCredits now has built-in validation to prevent duplicates
+  await grantMonthlyCredits(userPlan.userId, userPlan.planId);
 
   logger.info(
-    { userId: userPlan.userId, subscriptionId: billingAgreementId },
-    'Monthly credits granted after successful payment'
+    { userId: userPlan.userId, subscriptionId: billingAgreementId, planId: userPlan.planId },
+    'Monthly credits processed for successful payment'
   );
 
   // Ensure subscription is active

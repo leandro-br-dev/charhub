@@ -8,7 +8,7 @@ import pinoHttp from 'pino-http';
 import { logger } from './config/logger';
 import { configurePassport } from './config/passport';
 import { disconnectDatabase } from './config/database';
-import { initializeWorkers } from './queues/workers';
+import { initializeWorkers, scheduleRecurringJobs } from './queues/workers';
 import { isQueuesEnabled } from './config/features';
 import { queueManager } from './queues';
 import v1Routes from './routes/v1';
@@ -92,6 +92,10 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 // Initialize queue workers (guarded to avoid Redis errors in environments without Redis)
 if (isQueuesEnabled()) {
   initializeWorkers();
+  // Schedule recurring jobs after workers are initialized
+  scheduleRecurringJobs().catch((error: unknown) => {
+    logger.error({ error }, 'Failed to schedule recurring jobs');
+  });
 }
 
 const io = setupChatSocket(server);

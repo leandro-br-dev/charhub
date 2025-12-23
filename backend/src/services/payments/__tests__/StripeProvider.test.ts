@@ -21,6 +21,7 @@ describe('StripeProvider', () => {
   let mockSubscriptionsRetrieve: jest.Mock;
   let mockSubscriptionsUpdate: jest.Mock;
   let mockPaymentIntentsCreate: jest.Mock;
+  let mockPaymentIntentsRetrieve: jest.Mock;
   let mockProductsCreate: jest.Mock;
   let mockPricesCreate: jest.Mock;
   let mockWebhooksConstructEvent: jest.Mock;
@@ -46,6 +47,7 @@ describe('StripeProvider', () => {
     mockSubscriptionsRetrieve = jest.fn();
     mockSubscriptionsUpdate = jest.fn();
     mockPaymentIntentsCreate = jest.fn();
+    mockPaymentIntentsRetrieve = jest.fn();
     mockProductsCreate = jest.fn();
     mockPricesCreate = jest.fn();
     mockWebhooksConstructEvent = jest.fn();
@@ -63,6 +65,7 @@ describe('StripeProvider', () => {
       },
       paymentIntents: {
         create: mockPaymentIntentsCreate,
+        retrieve: mockPaymentIntentsRetrieve,
       },
       products: {
         create: mockProductsCreate,
@@ -124,21 +127,24 @@ describe('StripeProvider', () => {
         id: 'cus_test_123',
       } as Stripe.Customer);
 
-      // Mock subscription creation
+      // Mock subscription creation with payment intent in invoice
       mockSubscriptionsCreate.mockResolvedValue({
         id: 'sub_test_123',
         latest_invoice: {
           id: 'in_test_123',
           amount_due: 999,
+          payment_intent: 'pi_test_123', // Stripe creates this automatically
         } as Stripe.Invoice,
         status: 'incomplete',
+        customer: 'cus_test_123',
       } as Stripe.Subscription);
 
-      // Mock payment intent creation
-      mockPaymentIntentsCreate.mockResolvedValue({
+      // Mock payment intent retrieval (not creation)
+      mockPaymentIntentsRetrieve.mockResolvedValue({
         id: 'pi_test_123',
         client_secret: 'pi_test_123_secret',
         amount: 999,
+        status: 'requires_payment_method',
       } as Stripe.PaymentIntent);
 
       if (!user.email) throw new Error('Test user has no email');
@@ -164,7 +170,7 @@ describe('StripeProvider', () => {
         items: [{ price: 'price_test_123' }],
         payment_behavior: 'default_incomplete',
         payment_settings: { save_default_payment_method: 'on_subscription' },
-        expand: ['latest_invoice'],
+        expand: ['latest_invoice.payment_intent'], // Updated to expand payment_intent
         metadata: {
           userId: user.id,
           planId: plan.id,
@@ -172,18 +178,11 @@ describe('StripeProvider', () => {
         },
       });
 
-      expect(mockPaymentIntentsCreate).toHaveBeenCalledWith({
-        amount: 999,
-        currency: 'usd',
-        customer: 'cus_test_123',
-        payment_method_types: ['card'],
-        setup_future_usage: 'off_session',
-        metadata: expect.objectContaining({
-          userId: user.id,
-          planId: plan.id,
-          subscriptionId: 'sub_test_123',
-        }),
-      });
+      // Verify PaymentIntent was retrieved (not created)
+      expect(mockPaymentIntentsRetrieve).toHaveBeenCalledWith('pi_test_123');
+
+      // PaymentIntent should NOT be created manually anymore
+      expect(mockPaymentIntentsCreate).not.toHaveBeenCalled();
     });
 
     it('should throw error if plan not configured for Stripe', async () => {

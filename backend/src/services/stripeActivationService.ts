@@ -99,16 +99,17 @@ export async function activateStripeSubscription(
         stripeCustomerId: subscription.customer as string,
         currentPeriodStart: now,
         currentPeriodEnd: nextBillingTime,
-        lastCreditsGrantedAt: now,
+        // DON'T set lastCreditsGrantedAt yet - let grantMonthlyCredits set it
       },
     });
-
-    // Grant monthly credits
-    await grantMonthlyCredits(userId);
   });
+
+  // Grant monthly credits AFTER transaction completes
+  // This ensures the UserPlan is committed to DB before grantMonthlyCredits queries it
+  await grantMonthlyCredits(userId, planId);
 
   logger.info(
     { userId, planId, subscriptionId },
-    'Stripe subscription activated successfully'
+    'Stripe subscription activated and credits granted'
   );
 }
