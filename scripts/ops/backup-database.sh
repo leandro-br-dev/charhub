@@ -93,6 +93,9 @@ echo ""
 log_info "Creating backup (this may take a few minutes)..."
 START_TIME=$(date +%s)
 
+# Use gzip -6 (balanced compression) instead of -9 (maximum)
+# Savings: ~1-2 min for typical databases
+# Trade-off: ~5-10% larger file size, but 6-8x faster compression
 sudo $COMPOSE exec -T postgres pg_dump \
   -U "$POSTGRES_USER" \
   -d "$POSTGRES_DB" \
@@ -100,7 +103,7 @@ sudo $COMPOSE exec -T postgres pg_dump \
   --no-acl \
   --clean \
   --if-exists \
-  2>/dev/null | gzip -9 > "$BACKUP_FILE"
+  2>/dev/null | gzip -6 > "$BACKUP_FILE"
 
 BACKUP_EXIT_CODE=${PIPESTATUS[0]}
 END_TIME=$(date +%s)

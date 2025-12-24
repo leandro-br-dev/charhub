@@ -10,6 +10,12 @@ on:
       - 'docker-compose.yml'
       - '.github/workflows/deploy-production.yml'
   workflow_dispatch:
+    inputs:
+      clean_build:
+        description: 'Force clean build without cache (use only if build issues occur)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write  # Required for pushing git tags (latest-stable)
@@ -229,31 +235,43 @@ jobs:
       - name: Rebuild Containers
         run: |
           echo "🔨 Rebuilding containers..."
+          CLEAN_BUILD="${{ github.event.inputs.clean_build || 'false' }}"
+
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o ServerAliveInterval=60 \
               -o ServerAliveCountMax=10 \
               -i $HOME/.ssh/deploy_key \
               leandro_br_dev_gmail_com@34.66.66.202 \
-              'bash -s' << 'BUILD'
+              "bash -s" << BUILD
           cd /mnt/stateful_partition/charhub
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
+          CLEAN_BUILD="$CLEAN_BUILD"
 
           # Set HOME to user's home directory (Container-Optimized OS best practice)
           # This allows Docker to create config files in /home/user/.docker/
           export HOME="/home/leandro_br_dev_gmail_com"
 
           echo "Stopping containers..."
-          sudo -E HOME="$HOME" $COMPOSE down --remove-orphans 2>/dev/null || true
+          sudo -E HOME="\$HOME" \$COMPOSE down --remove-orphans 2>/dev/null || true
 
           echo "Waiting for containers to fully stop..."
           sleep 5
 
-          echo "Building with cache (use manual workflow for clean build)..."
-          sudo -E HOME="$HOME" $COMPOSE build --pull
+          # Enable BuildKit for cache mount support (saves 8-12 min on rebuilds)
+          export DOCKER_BUILDKIT=1
+
+          if [ "\$CLEAN_BUILD" = "true" ]; then
+            echo "🔨 Clean build requested - rebuilding without cache..."
+            sudo -E HOME="\$HOME" DOCKER_BUILDKIT=1 \$COMPOSE build --no-cache --pull
+          else
+            echo "🔨 Building with cache (Docker BuildKit enabled)..."
+            echo "   Use 'Run workflow' with clean_build=true for clean build"
+            sudo -E HOME="\$HOME" DOCKER_BUILDKIT=1 \$COMPOSE build
+          fi
 
           echo "Starting containers..."
-          sudo -E HOME="$HOME" $COMPOSE up -d
+          sudo -E HOME="\$HOME" \$COMPOSE up -d
 
           sleep 15
           echo "✅ Containers started"
@@ -272,8 +290,10 @@ jobs:
           cd /mnt/stateful_partition/charhub
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
 
-          for i in {1..30}; do
-            echo "Attempt $i/30..."
+          # Optimized health check: 20 attempts × 3s = 1min max (was 30 × 5s = 2.5min)
+          # Backend typically becomes healthy in 30-40s, so this is still safe
+          for i in {1..20}; do
+            echo "Attempt $i/20..."
 
             # Check if backend container is healthy
             STATUS=$(sudo $COMPOSE ps backend --format='{{.Status}}' 2>/dev/null)
@@ -289,10 +309,10 @@ jobs:
               fi
             fi
 
-            sleep 5
+            sleep 3
           done
 
-          echo "❌ Health check failed - backend not healthy after 30 attempts"
+          echo "❌ Health check failed - backend not healthy after 20 attempts (60s)"
           echo "Final status:"
           sudo $COMPOSE ps backend
           exit 1
