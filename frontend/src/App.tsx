@@ -1,4 +1,4 @@
-import { Outlet, Route, Routes } from 'react-router-dom';
+import { Outlet, Route, Routes, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from './components/layout';
 import { AuthenticatedLayout } from './layouts';
 import Home from './pages/home';
@@ -40,7 +40,8 @@ export default function App(): JSX.Element {
   return (
     <Routes>
       <Route element={<PublicShell />}>
-        <Route path="/" element={<Home />} />
+        {/* Redirect root to dashboard */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/auth/callback" element={<Callback />} />

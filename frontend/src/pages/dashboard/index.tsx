@@ -12,14 +12,27 @@ import { characterStatsService, type CharacterStats } from '../../services/chara
 import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
-import { usePageHeader } from '../../hooks/usePageHeader';
 import { useAuth } from '../../hooks/useAuth';
 import { PublicHeader } from '../../components/layout';
+import { AuthenticatedLayout } from '../../layouts/AuthenticatedLayout';
+import { usePageHeader } from '../../hooks/usePageHeader';
 
-export default function Dashboard(): JSX.Element {
+// Component for authenticated users (inside AuthenticatedLayout)
+function AuthenticatedDashboard(): JSX.Element {
+  const { setTitle } = usePageHeader();
+  const { t } = useTranslation(['dashboard', 'common']);
+
+  useEffect(() => {
+    setTitle(t('dashboard:title'));
+  }, [setTitle, t]);
+
+  return <DashboardContent />;
+}
+
+// Main dashboard content (shared by both authenticated and public)
+function DashboardContent(): JSX.Element {
   const { t } = useTranslation(['dashboard', 'common']);
   const navigate = useNavigate();
-  const { setTitle } = usePageHeader();
   const { shouldHideContent } = useGlobalContentFilter();
   const { isAuthenticated } = useAuth();
 
@@ -65,11 +78,15 @@ export default function Dashboard(): JSX.Element {
     }
   }, [isAuthenticated, discoverView, storyView]);
 
+  // Set document title for public dashboard (authenticated uses AuthenticatedDashboard)
+  useEffect(() => {
+    if (!isAuthenticated) {
+      document.title = 'CharHub - Dashboard';
+    }
+  }, [isAuthenticated]);
+
   // Fetch carousel highlights
   useEffect(() => {
-    // Ensure dashboard title is always "CharHub" when this page is active
-    setTitle(t('dashboard:title'));
-
     const fetchCarousel = async () => {
       setIsLoadingCarousel(true);
       try {
@@ -90,10 +107,15 @@ export default function Dashboard(): JSX.Element {
     const fetchCharacters = async () => {
       setIsLoadingCharacters(true);
       try {
-        const [popular, favorites] = await Promise.all([
-          characterService.getPopular({ limit: 8, ageRatings }),
-          characterService.getFavorites(8),
-        ]);
+        // Only fetch favorites if authenticated
+        const requests = [characterService.getPopular({ limit: 8, ageRatings })];
+        if (isAuthenticated) {
+          requests.push(characterService.getFavorites(8));
+        }
+
+        const results = await Promise.all(requests);
+        const [popular, favorites = []] = results;
+
         setPopularCharacters(popular);
         setFavoriteCharacters(favorites);
 
@@ -147,19 +169,24 @@ export default function Dashboard(): JSX.Element {
     };
 
     fetchCharacters();
-  }, [ageRatings]);
+  }, [ageRatings, isAuthenticated]);
 
   // Fetch popular stories and user's stories
   useEffect(() => {
     const fetchStories = async () => {
       setIsLoadingStories(true);
       try {
-        const [popular, myStoriesData] = await Promise.all([
-          storyService.getPopular(8),
-          storyService.getMyStories({ limit: 8 }),
-        ]);
+        // Fetch popular stories for everyone
+        const popular = await storyService.getPopular(8);
         setPopularStories(popular);
-        setMyStories(myStoriesData.items);
+
+        // Only fetch user's stories if authenticated
+        if (isAuthenticated) {
+          const myStoriesData = await storyService.getMyStories({ limit: 8 });
+          setMyStories(myStoriesData.items);
+        } else {
+          setMyStories([]);
+        }
       } catch (error) {
         console.error('[Dashboard] Failed to fetch stories:', error);
       } finally {
@@ -168,7 +195,7 @@ export default function Dashboard(): JSX.Element {
     };
 
     fetchStories();
-  }, []);
+  }, [isAuthenticated]);
 
   // Handlers
   // Age rating selection moved to header via PageHeader
@@ -413,5 +440,22 @@ export default function Dashboard(): JSX.Element {
       </div>
     </div>
   );
+}
+
+// Wrapper component that conditionally uses AuthenticatedLayout
+export default function Dashboard(): JSX.Element {
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    // Authenticated users get the full layout with sidebar, navigation rail, and header
+    return (
+      <AuthenticatedLayout>
+        <AuthenticatedDashboard />
+      </AuthenticatedLayout>
+    );
+  }
+
+  // Non-authenticated users get the public view without layout
+  return <DashboardContent />;
 }
 
