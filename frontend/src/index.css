@@ -109,3 +109,120 @@ button {
     left: 80px; /* Only rail */
   }
 }
+
+/* ========================================
+   ROLEPLAY MESSAGE FORMATTING STYLES
+   ======================================== */
+
+/* Base formatted message container */
+.formatted-message {
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+/* Base token style */
+.message-token {
+  display: inline;
+}
+
+/* Dialogue (normal speech) */
+.message-dialogue {
+  color: inherit; /* Use theme default */
+  font-style: normal;
+}
+
+/* Actions/Narration (*text*) */
+.message-action {
+  font-style: italic;
+  color: #FFA500; /* Orange/Yellow */
+}
+
+.dark .message-action {
+  color: #FFB84D; /* Lighter orange for dark mode */
+}
+
+/* Thoughts (<"text">) */
+.message-thought {
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  color: #9370DB; /* Medium purple */
+}
+
+.dark .message-thought {
+  color: #B19CD9; /* Lighter purple for dark mode */
+}
+
+/* Out of Character (OOC) ((text)) or (text) */
+.message-ooc {
+  font-size: 0.85em;
+  color: #888888;
+  background-color: #F5F5F5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border-left: 2px solid #CCCCCC;
+  display: inline-block;
+}
+
+.dark .message-ooc {
+  color: #AAAAAA;
+  background-color: #2A2A2A;
+  border-left-color: #555555;
+}
+
+/* Shout/Emphasis (>text<) or **TEXT** */
+.message-shout {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #DC143C; /* Crimson red */
+}
+
+.dark .message-shout {
+  color: #FF6B6B; /* Lighter red for dark mode */
+}
+
+/* Whisper (<text> without quotes) */
+.message-whisper {
+  font-style: italic;
+  font-size: 0.9em;
+  opacity: 0.7;
+}
+
+/* Description/Context ([text]) */
+.message-description {
+  font-style: italic;
+  color: #666666;
+  background-color: #F9F9F9;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.dark .message-description {
+  color: #999999;
+  background-color: #1E1E1E;
+}
+
+/* Accessibility: ensure WCAG AA compliance */
+@media (prefers-reduced-motion: reduce) {
+  .message-token {
+    transition: none !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .formatted-message {
+    font-size: 0.95em;
+  }
+
+  .message-ooc,
+  .message-description {
+    padding: 1px 4px;
+  }
+
+  .message-shout {
+    font-size: 1.05em;
+  }
+}
