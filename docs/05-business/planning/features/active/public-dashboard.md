@@ -12,50 +12,82 @@
 
 ### Progresso Geral
 - [x] Planning complete
-- [ ] Backend implementation (não necessário - API já suporta)
-- [ ] Frontend implementation (em progresso)
-- [ ] Testing
-- [ ] Documentation
-- [ ] Ready for PR
+- [x] Backend implementation (não necessário - API já suporta)
+- [x] Frontend implementation
+- [x] Testing
+- [x] Documentation
+- [x] Ready for PR
 
-### Implementação Completa
+### Implementação Concluída ✅
+
+#### Planejamento e Preparação
 - [x] Leitura da especificação da feature
 - [x] Leitura de documentação crítica (arquitetura, backend, frontend)
 - [x] Exploração do código frontend existente
 - [x] Criação do branch `feature/public-dashboard`
 
-### Em Progresso
-- [ ] Testes locais completos
-- [ ] Atualização de documentação
-
-### Pendente
-- [ ] Revisão final do código
-- [ ] Criação do Pull Request
-
-### Implementação Concluída ✅
-- [x] Atualização do spec com progresso
-- [x] Planejamento detalhado da implementação
+#### Componentes Criados
 - [x] Criação do componente `PublicHeader` (`frontend/src/components/layout/PublicHeader.tsx`)
-- [x] Modificação do `App.tsx` (rota /dashboard removida de ProtectedRoute)
-- [x] Modificação do `Dashboard.tsx` (lógica condicional para conteúdo livre)
-  - Adicionado filtro para mostrar apenas `ageRating: 'L'` para não autenticados
+  - Theme toggle integrado
+  - Language switcher integrado
+  - Botões de Login e Signup com ícones
+  - i18n configurado (namespaces: home, common)
+  - Altura consistente para todos os botões (h-12)
+
+#### Modificações nos Componentes Existentes
+- [x] Modificação do `App.tsx`
+  - Rota "/" redireciona para "/dashboard"
+  - Rota "/dashboard" removida de ProtectedRoute (agora pública)
+- [x] Modificação do `Dashboard/index.tsx`
+  - Refatorado em 3 componentes: DashboardContent, AuthenticatedDashboard, Dashboard
+  - Lógica condicional para autenticação
+  - Filtro para mostrar apenas `ageRating: 'L'` para não autenticados
   - Renderização do PublicHeader quando não autenticado
+  - Uso de AuthenticatedLayout quando autenticado
+  - Chamadas de API condicionais (favorites e user stories apenas para autenticados)
   - Esconder aba "Chat" para visitantes
-  - Esconder toggle "Favorites" e "My Stories" para visitantes
-- [x] Modificação do `ProtectedRoute.tsx` (redirecionar para /signup, salvar URL completa)
-- [x] Modificação do `useAuthRedirect.tsx` (suporte para redirect após login)
-  - Aceita formato string e objeto para backward compatibility
+  - Esconder toggles "Favorites" e "My Stories" para visitantes
+- [x] Modificação do `ProtectedRoute.tsx`
+  - Redirecionar para /signup ao invés de /
+  - Salvar URL completa (pathname + search + hash) para redirect pós-login
+- [x] Modificação do `useAuthRedirect.tsx`
+  - Suporte para formato string e objeto (backward compatibility)
   - Redireciona para URL original ou /dashboard por padrão
-- [x] Adição de traduções para novos textos (com fallbacks)
+
+#### Testes
+- [x] Testes locais completos e aprovados pelo usuário
+  - ✅ Dashboard público acessível sem login
+  - ✅ Conteúdo filtrado corretamente (apenas 'L' para visitantes)
+  - ✅ Sidebar oculta para visitantes
+  - ✅ PublicHeader visível com theme/language selectors
+  - ✅ Botões Login/Signup funcionais
+  - ✅ Redirect "/" → "/dashboard" funcionando
+  - ✅ Após login, sidebar e header aparecem corretamente
+  - ✅ AuthenticatedLayout aplicado corretamente
+  - ✅ Sem erros 401 para visitantes
+  - ✅ Sem erros no console
+
+#### Documentação e PR
+- [x] Atualização do spec com progresso final
+- [x] Pull Request #56 criado e atualizado
+- [x] Commits seguindo convenções
+- [x] Descrição detalhada do PR
 
 ### Bloqueios
 - Nenhum
 
 ### Notas de Implementação
 - Backend não requer mudanças (API já filtra por accessLevel e suporta queries sem token)
-- Dashboard atual assume usuário autenticado (dentro de ProtectedRoute)
-- Sidebar renderiza conteúdo baseado em `activeView` mas não verifica autenticação
-- ProtectedRoute atual redireciona para `/` (home) - precisa mudar para `/signup`
+- Solução de dual-mode rendering implementada com sucesso (3-component architecture)
+- PageHeaderProvider corretamente isolado para uso apenas em AuthenticatedLayout
+- i18n configurado com namespaces apropriados (home:accessButton, home:signupButton)
+- Todas as issues reportadas durante testes foram corrigidas
+
+### Pull Request
+- **Número**: #56
+- **Branch**: `feature/public-dashboard`
+- **Status**: Pronto para revisão do Agent Reviewer
+- **Link**: https://github.com/leandro-br-dev/charhub/pull/56
 
 ---
 
