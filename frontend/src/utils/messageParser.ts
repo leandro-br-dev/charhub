@@ -65,6 +65,8 @@ export function parseMessage(message: string): MessageToken[] {
     // OOC - must check before single parens
     { regex: /\(\((.*?)\)\)/gs, type: MessageTokenType.OOC },
     { regex: /\((.*?)\)/gs, type: MessageTokenType.OOC },
+    // Actions with parentheses (*text*) - check before regular actions
+    { regex: /\(\*(.*?)\*\)/gs, type: MessageTokenType.ACTION },
     // Thoughts - specifically <"text"> with quotes
     { regex: /<"(.*?)">/gs, type: MessageTokenType.THOUGHT },
     // Shout - >text<
