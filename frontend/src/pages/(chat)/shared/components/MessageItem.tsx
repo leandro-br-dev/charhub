@@ -15,7 +15,7 @@ import { Avatar } from '../../../../components/ui/Avatar';
 import { Button } from '../../../../components/ui/Button';
 import { Textarea } from '../../../../components/ui/Textarea';
 import { MessageBubble } from './MessageBubble';
-const formatMessage = (message: string) => [{ type: 'text', content: message }];
+import { FormattedMessage } from '../../../../components/ui/FormattedMessage';
 
 const isLikelyJson = (content: any) =>
   typeof content === "string" &&
@@ -311,10 +311,6 @@ const MessageItem = memo(
       ? "bg-gray-200/70 dark:bg-gray-700/70 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600"
       : "bg-gray-100/70 dark:bg-gray-800/70 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600";
     const metaColorClasses = isSent ? "text-blue-200" : "text-muted";
-    const formattedOriginalMessageParts = useMemo(
-      () => formatMessage(message),
-      [message]
-    );
 
     const isNarrator = senderType === 'SYSTEM';
 
@@ -326,26 +322,7 @@ const MessageItem = memo(
             <div className="flex flex-col items-center">
               <div className="bg-light/50 dark:bg-dark/50 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-md border border-border/30 text-center">
                 <div className="text-sm italic text-content/90 whitespace-pre-wrap leading-relaxed">
-                  {formattedOriginalMessageParts.map((part: any, index: number) => {
-                    if (part.type === "italic")
-                      return (
-                        <em key={index} className="text-current opacity-80 inline">
-                          {part.content}
-                        </em>
-                      );
-                    if (part.type === "quote")
-                      return (
-                        <blockquote key={index} className="border-l-4 border-gray-400 pl-2 italic my-1">
-                          {part.content}
-                        </blockquote>
-                      );
-                    return part.content.split("\n").map((line: string, i: number) => (
-                      <React.Fragment key={`${index}-${i}`}>
-                        {line}
-                        {i < part.content.split("\n").length - 1 && <br />}
-                      </React.Fragment>
-                    ));
-                  })}
+                  <FormattedMessage content={message} />
                 </div>
                 {timestamp && (
                   <div className="text-xs text-muted/70 mt-2">
@@ -527,32 +504,7 @@ const MessageItem = memo(
                   isSent ? "rounded-tr-none" : "rounded-tl-none"
                 } shadow-sm relative break-words w-full`}
               >
-                {formattedOriginalMessageParts.map((part: any, index: number) => {
-                  if (part.type === "italic")
-                    return (
-                      <em
-                        key={index}
-                        className="text-current opacity-80 inline"
-                      >
-                        {part.content}
-                      </em>
-                    );
-                  if (part.type === "quote")
-                    return (
-                      <blockquote
-                        key={index}
-                        className="border-l-4 border-gray-400 pl-2 italic my-1"
-                      >
-                        {part.content}
-                      </blockquote>
-                    );
-                  return part.content.split("\n").map((line: string, i: number) => (
-                    <React.Fragment key={`${index}-${i}`}>
-                      {line}
-                      {i < part.content.split("\n").length - 1 && <br />}
-                    </React.Fragment>
-                  ));
-                })}
+                <FormattedMessage content={message} />
                 {audioError && (
                   <p className="text-xs text-red-300 mt-1 opacity-80">
                     {audioError}
