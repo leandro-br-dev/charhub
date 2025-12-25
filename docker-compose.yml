@@ -72,7 +72,7 @@ services:
         target: /app/prisma
       - /app/node_modules
     expose:
-      - "3000"
+      - "${PORT:-3000}"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
@@ -82,7 +82,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:3000/api/v1/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1:${PORT:-3000}/api/v1/health"]
       interval: 30s
       timeout: 10s
       start_period: 40s
