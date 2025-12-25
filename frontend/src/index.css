@@ -133,75 +133,75 @@ button {
 
 /* Actions/Narration (*text*) */
 .message-action {
-  font-style: italic;
-  color: #FFA500; /* Orange/Yellow */
+  font-style: italic !important;
+  color: #FFA500 !important; /* Orange/Yellow */
 }
 
 .dark .message-action {
-  color: #FFB84D; /* Lighter orange for dark mode */
+  color: #FFB84D !important; /* Lighter orange for dark mode */
 }
 
 /* Thoughts (<"text">) */
 .message-thought {
-  font-style: italic;
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  color: #9370DB; /* Medium purple */
+  font-style: italic !important;
+  text-decoration: underline !important;
+  text-decoration-style: dotted !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 2px !important;
+  color: #9370DB !important; /* Medium purple */
 }
 
 .dark .message-thought {
-  color: #B19CD9; /* Lighter purple for dark mode */
+  color: #B19CD9 !important; /* Lighter purple for dark mode */
 }
 
 /* Out of Character (OOC) ((text)) or (text) */
 .message-ooc {
-  font-size: 0.85em;
-  color: #888888;
-  background-color: #F5F5F5;
-  padding: 2px 6px;
-  border-radius: 4px;
-  border-left: 2px solid #CCCCCC;
-  display: inline-block;
+  font-size: 0.85em !important;
+  color: #888888 !important;
+  background-color: #F5F5F5 !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  border-left: 2px solid #CCCCCC !important;
+  display: inline-block !important;
 }
 
 .dark .message-ooc {
-  color: #AAAAAA;
-  background-color: #2A2A2A;
-  border-left-color: #555555;
+  color: #AAAAAA !important;
+  background-color: #2A2A2A !important;
+  border-left-color: #555555 !important;
 }
 
 /* Shout/Emphasis (>text<) or **TEXT** */
 .message-shout {
-  font-weight: bold;
-  font-size: 1.1em;
-  color: #DC143C; /* Crimson red */
+  font-weight: bold !important;
+  font-size: 1.1em !important;
+  color: #DC143C !important; /* Crimson red */
 }
 
 .dark .message-shout {
-  color: #FF6B6B; /* Lighter red for dark mode */
+  color: #FF6B6B !important; /* Lighter red for dark mode */
 }
 
 /* Whisper (<text> without quotes) */
 .message-whisper {
-  font-style: italic;
-  font-size: 0.9em;
-  opacity: 0.7;
+  font-style: italic !important;
+  font-size: 0.9em !important;
+  opacity: 0.7 !important;
 }
 
 /* Description/Context ([text]) */
 .message-description {
-  font-style: italic;
-  color: #666666;
-  background-color: #F9F9F9;
-  padding: 2px 4px;
-  border-radius: 3px;
+  font-style: italic !important;
+  color: #666666 !important;
+  background-color: #F9F9F9 !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
 }
 
 .dark .message-description {
-  color: #999999;
-  background-color: #1E1E1E;
+  color: #999999 !important;
+  background-color: #1E1E1E !important;
 }
 
 /* Accessibility: ensure WCAG AA compliance */
