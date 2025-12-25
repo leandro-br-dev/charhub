@@ -1,77 +1,56 @@
-# 📑 Índice - Agent Coder
+# Agent Coder - Checklists Index
 
-> **Nota:** Este é um arquivo de referência. A documentação COMPLETA do Agent Coder está em seu workspace: `~/projects/charhub-coder/docs/coder/`
-
----
-
-## 🎯 Você É Agent Coder?
-
-Se sim, você trabalha em: `~/projects/charhub-coder` (WSL: Ubuntu-24.04-Coder)
+**Quick Navigation**: Jump directly to the checklist you need
 
 ---
 
-## 📚 Arquivos Importantes AQUI (charhub-reviewer)
+## 🎯 Quick Start
 
-Estes arquivos ajudam você a entender o que **Agent Reviewer** faz e quais são suas tarefas:
+**New to Agent Coder?** Read `CLAUDE.md` first for context and workflow overview.
 
-### **Tarefas & Comunicação**
-- [`docs/reviewer/user-notes.md`](../reviewer/user-notes.md) - ⭐ **LEIA ISSO!** Suas tarefas priorizadas
-- [`docs/reviewer/agent-assignments.md`](../reviewer/agent-assignments.md) - Status de tarefas e ETAs
-
-### **Documentação do Reviewer**
-- [`docs/reviewer/QUICK-START-REVIEWER.md`](../reviewer/QUICK-START-REVIEWER.md) - O que o Reviewer faz
-- [`docs/reviewer/AGENT-REVIEWER-README.md`](../reviewer/AGENT-REVIEWER-README.md) - Guia completo do Reviewer
-- [`docs/reviewer/CLAUDE.md`](../reviewer/CLAUDE.md) - Guia de trabalho do Reviewer
-
-### **Planos Detalhados**
-- [`docs/todo/`](../todo/) - Planos específicos de features que você deve implementar
-
-### **Histórico**
-- [`docs/reviewer/deploy/deploy-log.md`](../reviewer/deploy/deploy-log.md) - Histórico de deploys
+**Ready to code?** Use checklists below for step-by-step task execution.
 
 ---
 
-## 📖 Sua Documentação Completa
+## 📋 Operational Checklists
 
-Abra seu workspace e consulte:
-```bash
-cd ~/projects/charhub-coder
-cat docs/coder/CLAUDE.md
+| # | Checklist | When to Use |
+|---|-----------|-------------|
+| 1 | [Feature Implementation](checklists/feature-implementation.md) | Start implementing feature |
+| 2 | [Testing](checklists/testing.md) | Test before creating PR |
+| 3 | [PR Creation](checklists/pr-creation.md) | Create Pull Request |
+| 4 | [Code Quality](checklists/code-quality.md) | Reference for standards |
+
+---
+
+## 🔗 Workflow Diagram
+
+```
+Agent Planner assigns → Read spec → Create branch → Implement → Test → Create PR → Agent Reviewer reviews
 ```
 
-Aquele arquivo terá:
-- ✅ Setup completo
-- ✅ Responsabilidades detalhadas
-- ✅ Ciclo de trabalho
-- ✅ Comandos que você usa
-- ✅ Como abrir PRs
-- ✅ Troubleshooting
+---
+
+## 🤖 About Agent Coder
+
+**Role**: Feature Development & Implementation
+**Branch**: Always `feature/*` (never `main`)
+**Coordinates with**:
+- Agent Planner (receives feature specs)
+- Agent Reviewer (submits PRs for review)
+- Agent Designer (receives UI improvement requests)
+
+**Responsibilities**:
+- Implement features from specs
+- Write high-quality, tested code
+- Follow coding standards (i18n, TypeScript, patterns)
+- Create clear Pull Requests
+- Address review feedback
+
+**Mission**: Implement high-quality, well-tested features that match specifications
+
+**Mantra**: "Quality > Speed" - Take time to test and follow standards
 
 ---
 
-## 🔄 Fluxo de Trabalho (Resumido)
-
-1. **Segunda-feira:** Agent Reviewer atualiza `docs/reviewer/user-notes.md`
-2. **Você lê:** `docs/reviewer/user-notes.md` e `docs/reviewer/agent-assignments.md`
-3. **Você trabalha:** Cria branch `feature/xxx` e desenvolve
-4. **Você testa:** Localmente em `http://localhost:8080`
-5. **Você abre PR:** No GitHub
-6. **Agent Reviewer:** Testa, aprova e mergea
-7. **GitHub Actions:** Deploy automático
-8. **Próxima tarefa:** Volte ao passo 2
-
----
-
-## ⚡ Quick Links
-
-| Preciso | Abra |
-|--------|------|
-| Saber minha próxima tarefa | `docs/reviewer/user-notes.md` |
-| Ver status de tarefas | `docs/reviewer/agent-assignments.md` |
-| Entender o Reviewer | `docs/reviewer/AGENT-REVIEWER-README.md` |
-| Meu guia detalhado | `~/projects/charhub-coder/docs/coder/CLAUDE-coder.md` |
-| Histórico de deploys | `docs/reviewer/deploy/deploy-log.md` |
-
----
-
-**Próxima ação:** Leia `docs/reviewer/user-notes.md` para ver suas tarefas!
+**Remember**: Follow existing patterns. Read the docs. Test your code! 💻

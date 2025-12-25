@@ -271,7 +271,7 @@ docker compose ps
 # Expected output:
 # NAME       STATUS         PORTS
 # backend    Up (healthy)   0.0.0.0:3000->3000/tcp
-# frontend   Up (healthy)   0.0.0.0:8080->80/tcp
+# frontend   Up (healthy)   0.0.0.0:8081->80/tcp
 # postgres   Up (healthy)   5432/tcp
 ```
 
