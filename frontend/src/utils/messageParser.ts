@@ -126,9 +126,11 @@ export function parseMessage(message: string): MessageToken[] {
         .substring(lastIndex, index)
         .trim();
       if (dialogueText) {
+        // Remove surrounding quotes from dialogue if present
+        const cleanDialogue = dialogueText.replace(/^["'«»"']|["'«»"']$/g, '').trim();
         tokens.push({
           type: MessageTokenType.DIALOGUE,
-          content: dialogueText,
+          content: cleanDialogue || dialogueText,
         });
       }
     }
@@ -142,18 +144,22 @@ export function parseMessage(message: string): MessageToken[] {
   if (lastIndex < trimmedMessage.length) {
     const dialogueText = trimmedMessage.substring(lastIndex).trim();
     if (dialogueText) {
+      // Remove surrounding quotes from dialogue if present
+      const cleanDialogue = dialogueText.replace(/^["'«»"']|["'«»"']$/g, '').trim();
       tokens.push({
         type: MessageTokenType.DIALOGUE,
-        content: dialogueText,
+        content: cleanDialogue || dialogueText,
       });
     }
   }
 
   // If no tokens found, treat entire message as dialogue
   if (tokens.length === 0 && trimmedMessage) {
+    // Remove surrounding quotes from dialogue if present
+    const cleanDialogue = trimmedMessage.replace(/^["'«»"']|["'«»"']$/g, '').trim();
     tokens.push({
       type: MessageTokenType.DIALOGUE,
-      content: trimmedMessage,
+      content: cleanDialogue || trimmedMessage,
     });
   }
 

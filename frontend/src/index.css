@@ -134,7 +134,7 @@ button {
 /* Actions/Narration (*text*) */
 .message-action {
   font-style: italic !important;
-  color: #FFA500 !important; /* Orange/Yellow */
+  color: #E65100 !important; /* Dark orange/amber for light mode - better contrast */
 }
 
 .dark .message-action {
@@ -148,7 +148,7 @@ button {
   text-decoration-style: dotted !important;
   text-decoration-thickness: 1px !important;
   text-underline-offset: 2px !important;
-  color: #9370DB !important; /* Medium purple */
+  color: #7B1FA2 !important; /* Darker purple for light mode - better contrast */
 }
 
 .dark .message-thought {
@@ -158,25 +158,19 @@ button {
 /* Out of Character (OOC) ((text)) or (text) */
 .message-ooc {
   font-size: 0.85em !important;
-  color: #888888 !important;
-  background-color: #F5F5F5 !important;
-  padding: 2px 6px !important;
-  border-radius: 4px !important;
-  border-left: 2px solid #CCCCCC !important;
-  display: inline-block !important;
+  color: #757575 !important; /* Medium gray */
+  font-style: italic !important;
 }
 
 .dark .message-ooc {
-  color: #AAAAAA !important;
-  background-color: #2A2A2A !important;
-  border-left-color: #555555 !important;
+  color: #9E9E9E !important; /* Lighter gray for dark mode */
 }
 
 /* Shout/Emphasis (>text<) or **TEXT** */
 .message-shout {
   font-weight: bold !important;
   font-size: 1.1em !important;
-  color: #DC143C !important; /* Crimson red */
+  color: #C62828 !important; /* Darker red for light mode - better contrast */
 }
 
 .dark .message-shout {
@@ -193,15 +187,11 @@ button {
 /* Description/Context ([text]) */
 .message-description {
   font-style: italic !important;
-  color: #666666 !important;
-  background-color: #F9F9F9 !important;
-  padding: 2px 4px !important;
-  border-radius: 3px !important;
+  color: #616161 !important; /* Darker gray for light mode - better contrast */
 }
 
 .dark .message-description {
-  color: #999999 !important;
-  background-color: #1E1E1E !important;
+  color: #9E9E9E !important; /* Lighter gray for dark mode */
 }
 
 /* Accessibility: ensure WCAG AA compliance */
@@ -215,11 +205,6 @@ button {
 @media (max-width: 768px) {
   .formatted-message {
     font-size: 0.95em;
-  }
-
-  .message-ooc,
-  .message-description {
-    padding: 1px 4px;
   }
 
   .message-shout {
