@@ -15,7 +15,7 @@
 - [x] Research on roleplay formatting standards
 - [x] Backend implementation (prompt updates)
 - [x] Frontend implementation (message parser + styling)
-- [ ] Testing
+- [x] Testing
 - [x] Documentation
 - [ ] Ready for PR
 
@@ -27,14 +27,16 @@
 - [x] Create `backend/src/agents/style-guides/roleplayFormattingGuide.ts`
 - [x] Update `backend/src/agents/style-guides/index.ts` to include new guide
 - [x] Verify TypeScript compilation for both frontend and backend
-
-### In Progress
-- [ ] Write unit tests for message parser
-- [ ] Local testing with Docker
+- [x] Integrate FormattedMessage into MessageBubble and MessageItem
+- [x] Add formatting toolbar to MessageInput
+- [x] Fix parser to handle (*action*) format from AI
+- [x] Write 57 unit tests for message parser
+- [x] Local testing with Docker
 
 ### Pending
-- [ ] Integrate FormattedMessage into existing chat UI components
 - [ ] End-to-end testing with real conversations
+- [ ] Cross-browser testing
+- [ ] Mobile testing
 - [ ] Create pull request
 
 ### Bloqueios
