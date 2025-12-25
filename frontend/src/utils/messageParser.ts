@@ -62,21 +62,18 @@ export function parseMessage(message: string): MessageToken[] {
   // Regex patterns (order matters!)
   // Note: Each pattern captures the content inside the delimiters
   const patterns: Array<{ regex: RegExp; type: MessageTokenType }> = [
-    // OOC - must check before single parens
+    // OOC with double parentheses - highest priority for OOC
     { regex: /\(\((.*?)\)\)/gs, type: MessageTokenType.OOC },
-    { regex: /\((.*?)\)/gs, type: MessageTokenType.OOC },
-    // Actions with parentheses (*text*) - check before regular actions
+    // Actions with parentheses (*text*) - check BEFORE single paren OOC
     { regex: /\(\*(.*?)\*\)/gs, type: MessageTokenType.ACTION },
+    // OOC with single parentheses - check after (*action*) pattern
+    { regex: /\((.*?)\)/gs, type: MessageTokenType.OOC },
     // Thoughts - specifically <"text"> with quotes
     { regex: /<"(.*?)">/gs, type: MessageTokenType.THOUGHT },
-    // Shout - >text<
-    { regex: />(.*?)</gs, type: MessageTokenType.SHOUT },
-    // Whisper - <text> without quotes
-    // Note: This is checked after thoughts <"text"> to avoid conflicts
-    {
-      regex: /<([^"][^>]*)>/gs,
-      type: MessageTokenType.WHISPER,
-    },
+    // Shout - >text< (match > not preceded by < or " to avoid conflicts)
+    { regex: /(?<!["'<])\>([^<]+)\</gs, type: MessageTokenType.SHOUT },
+    // Whisper - <text> without quotes (must start with non-space, non-quote)
+    { regex: /<(\w[^>]*)>/gs, type: MessageTokenType.WHISPER },
     // Description
     { regex: /\[(.*?)\]/gs, type: MessageTokenType.DESCRIPTION },
     // Action - lowest priority
