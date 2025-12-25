@@ -8,6 +8,7 @@ import { Textarea } from '../../../../components/ui/Textarea';
 import { Button } from '../../../../components/ui/Button';
 import { Avatar } from '../../../../components/ui/Avatar';
 import { audioService } from '../../../../services/audioService';
+import { MessageFormattingToolbar } from './MessageFormattingToolbar';
 
 interface MessageInputProps {
   user: any;
@@ -101,6 +102,35 @@ const MessageInput = React.memo(
         setIsLoadingSuggestion(false);
       }
     }, [onRequestSuggestion, isLoadingSuggestion, disabled]);
+
+    const handleInsertFormatting = useCallback((prefix: string, suffix: string, placeholder: string) => {
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const text = message;
+
+      const before = text.substring(0, start);
+      const selection = text.substring(start, end);
+      const after = text.substring(end);
+
+      // If there's selected text, wrap it; otherwise use placeholder
+      const newText = selection
+        ? before + prefix + selection + suffix + after
+        : before + prefix + placeholder + suffix + after;
+
+      setMessage(newText);
+
+      // Set cursor position after the formatting
+      setTimeout(() => {
+        const newPosition = selection
+          ? start + prefix.length + selection.length + suffix.length
+          : start + prefix.length + placeholder.length + suffix.length;
+        textarea.setSelectionRange(newPosition, newPosition);
+        textarea.focus();
+      }, 0);
+    }, [message]);
 
     const startRecording = useCallback(async () => {
       if (isRecording) return;
@@ -262,6 +292,10 @@ const MessageInput = React.memo(
                   </Menu.Items>
                 </Transition>
               </Menu>
+              <MessageFormattingToolbar
+                onInsertFormatting={handleInsertFormatting}
+                disabled={isEffectivelyDisabled || isRecording}
+              />
               <Button variant="light" size="small" icon="mood" onClick={() => setShowEmojiPicker(!showEmojiPicker)} disabled={isEffectivelyDisabled || isRecording} className="text-muted hover:text-primary" />
             </div>
             
