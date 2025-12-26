@@ -42,6 +42,8 @@ export interface CivitaiSearchOptions {
   username?: string;
   modelId?: string;
   modelVersionId?: string;
+  // Filter for anime-style character images
+  animeStyle?: boolean;
 }
 
 export interface CivitaiImageResult {
@@ -127,8 +129,9 @@ export class CivitaiApiClient {
       const {
         limit = 100,
         period = 'Week',
-        sort = 'Trending',
+        sort = 'Most Reactions',
         nsfw = 'None',
+        animeStyle = false,
       } = options;
 
       const params: Record<string, any> = {
@@ -138,31 +141,56 @@ export class CivitaiApiClient {
         nsfw,
       };
 
-      // Add tags if provided
-      if (options.tags && options.tags.length > 0) {
-        params.tags = options.tags.join(',');
+      // Filter for anime-style character images
+      // Civitai uses numeric tag IDs, but we can use specific model types known for anime
+      if (animeStyle) {
+        // Filter for image type (still images only)
+        params.types = 'image';
+
+        // Use anime-related base models if configured
+        // These are popular anime model IDs on Civitai
+        const animeModelIds = process.env.CIVITAI_ANIME_MODEL_IDS?.split(',').map(id => id.trim()) || [];
+
+        // Add model filter if specific anime models are configured
+        if (animeModelIds.length > 0) {
+          // Civitai API doesn't support multiple modelIds in one request,
+          // so we'll use the first one and let post-filtering handle the rest
+          params.modelId = animeModelIds[0];
+        }
+
+        logger.info({ animeStyle, animeModelIds }, 'Filtering for anime-style images');
       }
+
+      // Note: Civitai API uses numeric tag IDs, not tag names
+      // Tag filtering can be added later if needed
 
       // Add user filter if provided
       if (options.username) {
         params.username = options.username;
       }
 
-      // Add model filter if provided
+      // Add model filter if provided (overrides animeStyle model filter)
       if (options.modelId) {
         params.modelId = options.modelId;
       }
 
-      const response = await this.client.get<CivitaiImage[]>('/images', { params });
+      const response = await this.client.get<{ items: CivitaiImage[], metadata: any }>('/images', { params });
       this.incrementCounter();
 
+      let images = response.data.items || [];
+
+      // Post-filter for anime-style character images if requested
+      if (animeStyle) {
+        images = this.filterAnimeCharacterImages(images);
+      }
+
       logger.info(
-        { count: response.data.length, period, sort, nsfw },
+        { count: images.length, period, sort, nsfw, animeStyle },
         'Fetched trending images from Civitai'
       );
 
       // Transform to our format
-      return this.transformImages(response.data);
+      return this.transformImages(images);
     } catch (error) {
       logger.error({ error, options }, 'Failed to fetch trending images from Civitai');
       throw error;
@@ -188,7 +216,7 @@ export class CivitaiApiClient {
    */
   private transformImages(images: CivitaiImage[]): CivitaiImageResult[] {
     return images.map((img) => ({
-      id: img.id,
+      id: String(img.id), // Convert number ID to string for our database
       url: img.url,
       sourceUrl: `https://civitai.com/images/${img.id}`,
       rating: img.stats?.rating,
@@ -198,6 +226,82 @@ export class CivitaiApiClient {
       width: img.width,
       height: img.height,
     }));
+  }
+
+  /**
+   * Post-filter images for anime-style character content
+   * This filters out images that don't appear to be character-focused
+   */
+  private filterAnimeCharacterImages(images: CivitaiImage[]): CivitaiImage[] {
+    return images.filter((img) => {
+      const meta = img.meta;
+
+      if (!meta) {
+        return false;
+      }
+
+      // Check for anime-related base models
+      // Common anime model names on Civitai
+      const animeModelKeywords = [
+        'anime',
+        'anything',
+        'counterfeit',
+        'dreamlike',
+        'pastel',
+        'meinamix',
+        'niji',
+        'cetus',
+        'fantasy',
+        'ghost',
+        'moxie',
+        '7th',
+        'f222',
+        'orangemix',
+        'someya',
+        'acertain',
+      ];
+
+      const samplers = [
+        'euler',
+        'euler a',
+        'ddim',
+        'plms',
+        'dpm++',
+        'dpmsolver',
+      ];
+
+      // Check model name for anime keywords
+      const modelName = (meta.Model || meta.sd_model_name || '').toLowerCase();
+      const hasAnimeModel = animeModelKeywords.some(keyword => modelName.includes(keyword));
+
+      // Check for character-focused indicators
+      // Character images typically have specific samplers and formats
+      const samplerName = (meta.Sampler || meta.sampler_name || '').toLowerCase();
+      const hasCharacterSampler = samplers.some(s => samplerName.includes(s));
+
+      // Check for standard image sizes (not too small/large for portraits)
+      const aspectRatio = img.width / img.height;
+      const isPortraitOrSquare = aspectRatio >= 0.5 && aspectRatio <= 2.0;
+      const reasonableResolution = img.width >= 512 && img.height >= 512;
+
+      // Check if image has positive prompt (character images typically have detailed prompts)
+      const hasPositivePrompt = meta.sd_prompt && meta.sd_prompt.length > 50;
+
+      // Filter for anime-style character images
+      // Must have at least anime model OR reasonable prompt, AND proper resolution
+      const isAnimeCharacter = hasAnimeModel && hasCharacterSampler && isPortraitOrSquare && reasonableResolution;
+
+      if (isAnimeCharacter) {
+        logger.debug({
+          imageId: img.id,
+          model: modelName,
+          sampler: samplerName,
+          hasPrompt: hasPositivePrompt,
+        }, 'Anime character image passed filter');
+      }
+
+      return isAnimeCharacter;
+    });
   }
 
   /**

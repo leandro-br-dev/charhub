@@ -8,7 +8,11 @@ import { registerCharacterPopulationWorker } from './characterPopulationWorkerRe
 import { queueManager } from '../QueueManager';
 import { QueueName } from '../config';
 import { CreditsMonthlyJobData } from '../jobs/creditsMonthlyJob';
-import type { FullPopulationJobData } from '../jobs/characterPopulationJob';
+import type {
+  CharacterPopulationJobData,
+  HourlyGenerationJobData,
+  DailyCurationJobData
+} from '../jobs/characterPopulationJob';
 
 /**
  * Initialize all queue workers
@@ -50,7 +54,7 @@ export async function scheduleRecurringJobs(): Promise<void> {
 
   try {
     const creditsQueue = queueManager.getQueue<CreditsMonthlyJobData>(QueueName.CREDITS_MONTHLY);
-    const populationQueue = queueManager.getQueue<FullPopulationJobData>(QueueName.CHARACTER_POPULATION);
+    const populationQueue = queueManager.getQueue<CharacterPopulationJobData>(QueueName.CHARACTER_POPULATION);
 
     // Schedule monthly credits job to run daily at 00:00 UTC
     await creditsQueue.add(
@@ -99,18 +103,19 @@ export async function scheduleRecurringJobs(): Promise<void> {
     // Schedule automated character population (if enabled)
     const batchGenerationEnabled = process.env.BATCH_GENERATION_ENABLED === 'true';
     if (batchGenerationEnabled) {
-      const cronSchedule = process.env.BATCH_SCHEDULE_CRON || '0 2 * * *'; // Default: 2 AM UTC
-      const batchSize = parseInt(process.env.BATCH_SIZE_PER_RUN || '20', 10);
+      const batchSize = parseInt(process.env.BATCH_SIZE_PER_RUN || '24', 10);
+      const dailyCurationHour = parseInt(process.env.DAILY_CURATION_HOUR || '3', 10); // Default: 3 AM UTC
 
+      // Schedule daily curation job (fetches and curates images once per day)
       await populationQueue.add(
-        'automated-character-population',
+        'daily-curation',
         {
-          targetCount: batchSize,
-          task: 'full_population',
-        } as FullPopulationJobData,
+          imageCount: batchSize * 2, // Fetch extra to account for filtering
+          task: 'daily_curation',
+        } as DailyCurationJobData,
         {
           repeat: {
-            pattern: cronSchedule,
+            pattern: `0 ${dailyCurationHour} * * *`, // Once per day at specified hour
           },
           removeOnComplete: {
             age: 7 * 24 * 60 * 60,
@@ -122,8 +127,33 @@ export async function scheduleRecurringJobs(): Promise<void> {
       );
 
       logger.info(
-        { cron: cronSchedule, batchSize },
-        'Automated character population job scheduled'
+        { hour: dailyCurationHour, imageCount: batchSize * 2 },
+        'Daily curation job scheduled (fetches anime-style images from Civitai)'
+      );
+
+      // Schedule hourly generation job (generates 1 character per hour, up to daily limit)
+      await populationQueue.add(
+        'hourly-generation',
+        {
+          dailyLimit: batchSize,
+          task: 'hourly_generation',
+        } as HourlyGenerationJobData,
+        {
+          repeat: {
+            pattern: '0 * * * *', // Every hour at minute 0
+          },
+          removeOnComplete: {
+            age: 7 * 24 * 60 * 60,
+          },
+          removeOnFail: {
+            age: 30 * 24 * 60 * 60,
+          },
+        }
+      );
+
+      logger.info(
+        { dailyLimit: batchSize },
+        'Hourly generation job scheduled (generates 1 character per hour, respecting daily limit)'
       );
     } else {
       logger.info('Automated character population is disabled (set BATCH_GENERATION_ENABLED=true to enable)');

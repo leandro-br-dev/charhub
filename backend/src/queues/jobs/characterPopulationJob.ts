@@ -33,3 +33,34 @@ export interface FullPopulationJobData {
   /** User ID (defaults to bot) */
   userId?: string;
 }
+
+/**
+ * Hourly generation job - generates at most 1 character per hour
+ * Checks daily limit before generating
+ */
+export interface HourlyGenerationJobData {
+  /** Maximum characters to generate per day */
+  dailyLimit?: number;
+  /** User ID to attribute characters to (defaults to bot) */
+  userId?: string;
+}
+
+/**
+ * Daily curation job - fetches and curates images once per day
+ */
+export interface DailyCurationJobData {
+  /** Number of images to fetch (default from BATCH_SIZE_PER_RUN) */
+  imageCount?: number;
+  /** Keywords to search for (optional) */
+  keywords?: string[];
+}
+
+/**
+ * Union type for all character population job data types
+ */
+export type CharacterPopulationJobData =
+  | TriggerCurationJobData
+  | BatchGenerationJobData
+  | FullPopulationJobData
+  | HourlyGenerationJobData
+  | DailyCurationJobData;

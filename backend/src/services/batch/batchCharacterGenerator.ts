@@ -1,13 +1,22 @@
 /**
  * Batch Character Generator
- * Orchestrates character generation from curated images
+ * Orchestrates character generation from curated images using existing AI pipeline
  */
 
 import { prisma } from '../../config/database';
-import { CurationStatus } from '../../generated/prisma';
+import { CurationStatus, Visibility } from '../../generated/prisma';
 import { logger } from '../../config/logger';
 import { diversificationAlgorithm } from './diversificationAlgorithm';
-import type { CreateCharacterInput } from '../../validators';
+import { queueManager } from '../../queues/QueueManager';
+import { QueueName } from '../../queues/config';
+import { ImageGenerationType } from '../../services/comfyui';
+import type { AvatarGenerationJobData } from '../../queues/jobs/imageGenerationJob';
+import { r2Service } from '../../services/r2Service';
+import { analyzeCharacterImage, type CharacterImageAnalysisResult } from '../../agents/characterImageAnalysisAgent';
+import { compileCharacterDataWithLLM } from '../../controllers/automatedCharacterGenerationController';
+import { createCharacter } from '../../services/characterService';
+import { generateStableDiffusionPrompt } from '../../controllers/automatedCharacterGenerationController';
+import type { ImageType } from '../../generated/prisma';
 
 /**
  * Generation result
@@ -25,7 +34,7 @@ export interface GenerationResult {
  */
 export interface BatchGenerationOptions {
   count: number;
-  userId: string;
+  userId?: string;
   maxRetries?: number;
   delayBetweenMs?: number;
 }
@@ -35,15 +44,15 @@ export interface BatchGenerationOptions {
  */
 export class BatchCharacterGenerator {
   private readonly maxRetries: number = 3;
-  private readonly delayBetweenMs: number = 30000; // 30 seconds
+  private readonly delayBetweenMs: number = 5000; // 5 seconds between generations
   private readonly botUserId: string;
 
   constructor() {
-    this.botUserId = process.env.OFFICIAL_BOT_USER_ID || 'bot_charhub_official';
+    this.botUserId = process.env.OFFICIAL_BOT_USER_ID || '00000000-0000-0000-0000-000000000001';
   }
 
   /**
-   * Generate characters from curated images
+   * Generate characters from curated images using existing AI pipeline
    */
   async generateBatch(options: BatchGenerationOptions): Promise<{
     results: GenerationResult[];
@@ -54,11 +63,21 @@ export class BatchCharacterGenerator {
     const startTime = Date.now();
     const { count, maxRetries = this.maxRetries, delayBetweenMs = this.delayBetweenMs } = options;
 
-    logger.info({ count }, 'Starting batch character generation');
+    logger.info({ count }, 'Starting batch character generation with AI pipeline');
 
-    // 1. Select diverse images
+    // 1. Select diverse images from approved curated images
     const selectedImageIds = await diversificationAlgorithm.selectImages({ count });
     logger.info({ selected: selectedImageIds.length }, 'Images selected for generation');
+
+    if (selectedImageIds.length === 0) {
+      logger.warn('No approved curated images available for generation');
+      return {
+        results: [],
+        successCount: 0,
+        failureCount: 0,
+        totalDuration: 0,
+      };
+    }
 
     // 2. Create batch log
     const batchLog = await prisma.batchGenerationLog.create({
@@ -70,16 +89,16 @@ export class BatchCharacterGenerator {
       },
     });
 
-    // 3. Generate characters sequentially
+    // 3. Generate characters sequentially using existing AI pipeline
     const results: GenerationResult[] = [];
     let successCount = 0;
     let failureCount = 0;
 
     for (let i = 0; i < selectedImageIds.length; i++) {
       const imageId = selectedImageIds[i];
-      logger.info({ imageId, progress: `${i + 1}/${selectedImageIds.length}` }, 'Generating character');
+      logger.info({ imageId, progress: `${i + 1}/${selectedImageIds.length}` }, 'Generating character with AI pipeline');
 
-      const result = await this.generateSingleCharacter(imageId, maxRetries);
+      const result = await this.generateSingleCharacterWithAI(imageId, maxRetries);
       results.push(result);
 
       if (result.success) {
@@ -127,9 +146,9 @@ export class BatchCharacterGenerator {
   }
 
   /**
-   * Generate a single character from curated image
+   * Generate a single character from curated image using existing AI pipeline
    */
-  private async generateSingleCharacter(
+  private async generateSingleCharacterWithAI(
     curatedImageId: string,
     maxRetries: number
   ): Promise<GenerationResult> {
@@ -167,8 +186,7 @@ export class BatchCharacterGenerator {
     let lastError: string | undefined;
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        // Call character generation service
-        const character = await this.callCharacterGeneration(curatedImage);
+        const character = await this.generateCharacterUsingExistingPipeline(curatedImage);
 
         const duration = Date.now() - startTime;
 
@@ -219,116 +237,146 @@ export class BatchCharacterGenerator {
   }
 
   /**
-   * Call character generation service
+   * Generate character using existing AI pipeline
+   * This reuses the same flow as automated character generation
    */
-  private async callCharacterGeneration(curatedImage: any): Promise<any> {
-    // Import character service to avoid circular dependency
-    const { createCharacter } = await import('../characterService');
+  private async generateCharacterUsingExistingPipeline(curatedImage: any): Promise<any> {
+    // Step 1: Download or fetch image from Civitai
+    const imageBuffer = await this.fetchImage(curatedImage.sourceUrl);
 
-    // Build character data from curated image analysis
-    const characterData: CreateCharacterInput = {
-      firstName: this.generateFirstName(),
-      lastName: this.generateLastName(),
-      age: this.estimateAge(curatedImage),
-      gender: this.estimateGender(curatedImage),
-      species: this.estimateSpecies(curatedImage),
-      style: this.estimateStyle(curatedImage) as any,
-      physicalCharacteristics: curatedImage.description || '',
-      personality: this.generatePersonality(curatedImage),
-      history: this.generateHistory(curatedImage),
-      visibility: 'PUBLIC' as const,
+    // Step 2: Upload to temp location for AI analysis
+    const tempFilename = `temp/civitai-${curatedImage.id}-${Date.now()}.webp`;
+    const uploadResult = await r2Service.uploadObject({
+      key: tempFilename,
+      body: imageBuffer,
+      contentType: 'image/webp',
+    });
+
+    const presignedImageUrl = await r2Service.getPresignedUrl(tempFilename, 3600);
+
+    logger.info({
+      curatedImageId: curatedImage.id,
+      imageUrl: uploadResult.publicUrl
+    }, 'Image uploaded for AI analysis');
+
+    // Step 3: Analyze image using existing AI agent
+    logger.info({ curatedImageId: curatedImage.id }, 'Analyzing image with AI...');
+    const imageAnalysis: CharacterImageAnalysisResult = await analyzeCharacterImage(presignedImageUrl);
+
+    // Step 4: Compile character data using LLM
+    logger.info({ curatedImageId: curatedImage.id }, 'Compiling character data with LLM...');
+    const characterData = await compileCharacterDataWithLLM(
+      (curatedImage.description || '') + ' Anime style character.', // Explicitly specify anime style
+      imageAnalysis,
+      null, // No text data for Civitai images
+      'en' // Default to English for bot-generated characters
+    );
+
+    // Step 5: Create character in database
+    logger.info({ curatedImageId: curatedImage.id }, 'Creating character in database...');
+    const character = await createCharacter({
+      userId: this.botUserId,
+      firstName: characterData.firstName,
+      lastName: characterData.lastName || null,
+      age: characterData.age || null,
+      gender: characterData.gender || null,
+      species: characterData.species || null,
+      style: characterData.style || 'ANIME',
+      physicalCharacteristics: characterData.physicalCharacteristics || null,
+      personality: characterData.personality || null,
+      history: characterData.history || null,
+      visibility: Visibility.PUBLIC,
       ageRating: curatedImage.ageRating,
       contentTags: curatedImage.contentTags || [],
-      userId: this.botUserId,
       attireIds: [],
       tagIds: [],
-    };
+    });
 
-    // Create character
-    const character = await createCharacter(characterData);
+    logger.info({
+      characterId: character.id,
+      firstName: character.firstName,
+      lastName: character.lastName,
+    }, 'Character created successfully');
 
-    // Generate avatar (if needed)
-    // TODO: Queue avatar generation job
+    // Step 6: Save Civitai image as reference image
+    try {
+      const { addCharacterImage } = await import('../imageService');
+
+      const characterImageKey = `characters/${character.id}/reference/civitai_${curatedImage.id}.webp`;
+
+      const characterImageUpload = await r2Service.uploadObject({
+        key: characterImageKey,
+        body: imageBuffer,
+        contentType: 'image/webp',
+      });
+
+      await addCharacterImage({
+        characterId: character.id,
+        url: characterImageUpload.publicUrl,
+        key: characterImageKey,
+        type: 'SAMPLE' as ImageType,
+        contentType: 'image/webp',
+        sizeBytes: imageBuffer.length,
+        runClassification: false, // Already classified during curation
+      });
+
+      logger.info({
+        characterId: character.id,
+        url: characterImageUpload.publicUrl,
+      }, 'Civitai image saved as reference');
+    } catch (error) {
+      logger.warn({ error, characterId: character.id }, 'Failed to save Civitai image as reference');
+      // Continue even if saving reference image fails
+    }
+
+    // Step 7: Generate avatar using ComfyUI with IP-Adapter
+    try {
+      logger.info({ characterId: character.id }, 'Queuing avatar generation with ComfyUI...');
+
+      // Generate Stable Diffusion prompt
+      const stableDiffusionPrompt = await generateStableDiffusionPrompt(characterData, imageAnalysis);
+
+      // Queue avatar generation job with reference image
+      const jobData: AvatarGenerationJobData = {
+        type: ImageGenerationType.AVATAR,
+        userId: this.botUserId,
+        characterId: character.id,
+        referenceImageUrl: uploadResult.publicUrl, // Use Civitai image as reference
+        prompt: stableDiffusionPrompt,
+      };
+
+      const job = await queueManager.addJob(
+        QueueName.IMAGE_GENERATION,
+        'generate-avatar',
+        jobData,
+        { priority: 5 }
+      );
+
+      logger.info({
+        jobId: job.id,
+        characterId: character.id,
+        hasReferenceImage: true,
+      }, 'Avatar generation queued with Civitai reference image');
+    } catch (error) {
+      logger.warn({ error, characterId: character.id }, 'Failed to queue avatar generation');
+      // Continue even if avatar generation fails
+    }
 
     return character;
   }
 
   /**
-   * Generate first name from image tags
+   * Fetch image from URL
    */
-  private generateFirstName(): string {
-    const names = [
-      'Aria', 'Luna', 'Nova', 'Zara', 'Kai', 'Leo', 'Mika', 'Ren',
-      'Sora', 'Yuki', 'Kira', 'Rio', 'Ace', 'Max', 'Sky', 'Storm',
-    ];
-    return names[Math.floor(Math.random() * names.length)];
-  }
+  private async fetchImage(url: string): Promise<Buffer> {
+    const axios = (await import('axios')).default;
 
-  /**
-   * Generate last name
-   */
-  private generateLastName(): string {
-    const names = [
-      'Storm', 'Light', 'Shadow', 'Frost', 'Blaze', 'Moon', 'Star', 'Cloud',
-      'Wright', 'Fox', 'Wolf', 'Hawk', 'Raven', 'Drake', 'Steel', 'Silver',
-    ];
-    return names[Math.floor(Math.random() * names.length)];
-  }
+    const response = await axios.get(url, {
+      responseType: 'arraybuffer',
+      timeout: 30000,
+    });
 
-  /**
-   * Estimate age from tags
-   */
-  private estimateAge(_curatedImage: any): number {
-    // TODO: Better age estimation from tags
-    return 25;
-  }
-
-  /**
-   * Estimate gender from tags
-   */
-  private estimateGender(curatedImage: any): string {
-    const tags = curatedImage.tags || [];
-    if (tags.some((t: string) => /girl|woman|female/i.test(t))) return 'female';
-    if (tags.some((t: string) => /boy|man|male/i.test(t))) return 'male';
-    return 'non-binary';
-  }
-
-  /**
-   * Estimate species from tags
-   */
-  private estimateSpecies(curatedImage: any): string {
-    const tags = curatedImage.tags || [];
-    if (tags.some((t: string) => /elf|fairy/i.test(t))) return 'elf';
-    if (tags.some((t: string) => /demon|devil/i.test(t))) return 'demon';
-    if (tags.some((t: string) => /android|robot|cyborg/i.test(t))) return 'android';
-    return 'human';
-  }
-
-  /**
-   * Estimate visual style
-   */
-  private estimateStyle(curatedImage: any): string {
-    const tags = curatedImage.tags || [];
-    if (tags.some((t: string) => /anime|manga/i.test(t))) return 'ANIME';
-    if (tags.some((t: string) => /realistic/i.test(t))) return 'REALISTIC';
-    return 'ANIME';
-  }
-
-  /**
-   * Generate personality from tags
-   */
-  private generatePersonality(curatedImage: any): string {
-    // Extract personality from tags or use defaults
-    const tags = curatedImage.tags || [];
-    const traits = tags.slice(0, 5).join(', ');
-    return traits || 'Mysterious and adventurous';
-  }
-
-  /**
-   * Generate history/background
-   */
-  private generateHistory(curatedImage: any): string {
-    return `A character discovered from ${curatedImage.sourcePlatform}.`;
+    return Buffer.from(response.data);
   }
 
   /**
