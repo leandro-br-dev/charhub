@@ -6,6 +6,8 @@
 import { classifyImageViaLLM, ImageClassificationResult } from '../../agents/imageClassificationAgent';
 import { analyzeCharacterImage, CharacterImageAnalysisResult } from '../../agents/characterImageAnalysisAgent';
 import { logger } from '../../config/logger';
+import { duplicateDetector } from './duplicateDetector';
+import { prisma } from '../../config/database';
 
 /**
  * Full content analysis result
@@ -60,10 +62,53 @@ export class ContentAnalyzer {
 
       // Check duplicates (if requested)
       let isDuplicate = false;
-      if (options?.checkDuplicates && options.existingImages) {
-        // TODO: Implement duplicate detection using image similarity
-        // For now, just check if URL is in existing list
-        isDuplicate = options.existingImages.includes(imageUrl);
+      if (options?.checkDuplicates) {
+        // Create signature for duplicate detection
+        const signature = {
+          id: imageUrl,
+          url: imageUrl,
+          tags: classification.contentTags,
+          style: characterAnalysis.visualStyle?.artStyle,
+          species: characterAnalysis.physicalCharacteristics?.species,
+          gender: characterAnalysis.physicalCharacteristics?.gender,
+        };
+
+        // Check against existing curated images in database
+        const existingImages = await prisma.curatedImage.findMany({
+          where: {
+            status: { in: ['APPROVED', 'COMPLETED'] },
+          },
+          select: {
+            id: true,
+            sourceUrl: true,
+            tags: true,
+          },
+        });
+
+        // Load existing signatures into detector
+        duplicateDetector.clearSignatures();
+        duplicateDetector.addSignatures(
+          existingImages.map(img => ({
+            id: img.id,
+            url: img.sourceUrl,
+            tags: img.tags || [],
+          }))
+        );
+
+        // Check for duplicates
+        const duplicateResult = await duplicateDetector.checkDuplicate(signature);
+        isDuplicate = duplicateResult.isDuplicate;
+
+        if (isDuplicate) {
+          logger.info(
+            {
+              imageUrl,
+              matchId: duplicateResult.matchId,
+              similarity: duplicateResult.similarity
+            },
+            'Duplicate image detected during analysis'
+          );
+        }
       }
 
       const result: ContentAnalysisResult = {

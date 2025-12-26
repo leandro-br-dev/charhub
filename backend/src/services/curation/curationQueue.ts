@@ -188,8 +188,10 @@ export class CurationQueue {
         data: { status: CurationStatus.PROCESSING },
       });
 
-      // Analyze content
-      const analysis = await contentAnalyzer.analyzeImage(item.sourceUrl);
+      // Analyze content with duplicate detection enabled
+      const analysis = await contentAnalyzer.analyzeImage(item.sourceUrl, {
+        checkDuplicates: true,
+      });
 
       // Validate age rating
       const ageClassification = ageRatingClassifier.validateClassification(

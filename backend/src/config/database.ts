@@ -7,11 +7,24 @@ const logger = pino({
 
 /**
  * Prisma Client singleton instance
- * In development, create a fresh instance to avoid cache issues
+ * Prevents multiple instances in production to avoid connection pool exhaustion
+ * In development with hot reload, uses global variable to maintain singleton
  */
-export const prisma = new PrismaClient({
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-});
+declare global {
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined;
+}
+
+export const prisma =
+  global.prisma ||
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  });
+
+// Prevent multiple instances in development (hot reload)
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma;
+}
 
 /**
  * Gracefully disconnect from database

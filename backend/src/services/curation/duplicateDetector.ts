@@ -18,7 +18,7 @@ export interface SimilarityResult {
 /**
  * Image signature for comparison
  */
-interface ImageSignature {
+export interface ImageSignature {
   id: string;
   url: string;
   tags: string[];
