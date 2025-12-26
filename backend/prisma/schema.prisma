@@ -12,12 +12,14 @@ datasource db {
 enum AuthProvider {
   GOOGLE
   FACEBOOK
+  SYSTEM
 }
 
 enum UserRole {
   BASIC
   PREMIUM
   ADMIN
+  BOT
 }
 
 // Age-based content rating system (similar to movie/anime ratings)

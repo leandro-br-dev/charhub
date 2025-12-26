@@ -29,10 +29,20 @@ interface UpdateUserProfileParams {
 const providerEnumMap: Record<OAuthProvider, $Enums.AuthProvider> = {
   google: $Enums.AuthProvider.GOOGLE,
   facebook: $Enums.AuthProvider.FACEBOOK,
+  system: $Enums.AuthProvider.SYSTEM,
 };
 
 function mapProvider(provider: $Enums.AuthProvider): OAuthProvider {
-  return provider === $Enums.AuthProvider.GOOGLE ? 'google' : 'facebook';
+  switch (provider) {
+    case $Enums.AuthProvider.GOOGLE:
+      return 'google';
+    case $Enums.AuthProvider.FACEBOOK:
+      return 'facebook';
+    case $Enums.AuthProvider.SYSTEM:
+      return 'system';
+    default:
+      return 'google';
+  }
 }
 
 function mapUser(record: User): AuthenticatedUser {

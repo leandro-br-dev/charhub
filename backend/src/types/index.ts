@@ -1,6 +1,6 @@
-export type OAuthProvider = 'google' | 'facebook';
+export type OAuthProvider = 'google' | 'facebook' | 'system';
 
-export type UserRole = 'BASIC' | 'PREMIUM' | 'ADMIN';
+export type UserRole = 'BASIC' | 'PREMIUM' | 'ADMIN' | 'BOT';
 
 export type AgeRating = 'L' | 'TEN' | 'TWELVE' | 'FOURTEEN' | 'SIXTEEN' | 'EIGHTEEN';
 

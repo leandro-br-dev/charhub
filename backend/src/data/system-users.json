@@ -12,8 +12,20 @@
       "fullName": "System Administrator",
       "preferredLanguage": "en",
       "maxAgeRating": "EIGHTEEN",
-      "blockedTags": [],
-      "isSystemUser": true
+      "blockedTags": []
+    },
+    {
+      "id": "bot_charhub_official",
+      "provider": "SYSTEM",
+      "providerAccountId": "bot-charhub-official",
+      "username": "CharHub Official",
+      "displayName": "CharHub Official Bot",
+      "email": "bot@charhub.internal",
+      "role": "BOT",
+      "fullName": "CharHub Official Bot",
+      "preferredLanguage": "en",
+      "maxAgeRating": "EIGHTEEN",
+      "blockedTags": []
     }
   ]
 }
