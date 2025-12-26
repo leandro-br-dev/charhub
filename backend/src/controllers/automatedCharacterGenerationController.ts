@@ -237,7 +237,7 @@ export async function enrichCharacterData(data: GeneratedCharacterData, preferre
  * Generate Stable Diffusion prompt from character data
  * Compiles all character information into an optimized prompt for image generation
  */
-async function generateStableDiffusionPrompt(
+export async function generateStableDiffusionPrompt(
   characterData: GeneratedCharacterData,
   imageAnalysis: CharacterImageAnalysisResult | null
 ): Promise<string> {
@@ -320,7 +320,7 @@ async function generateStableDiffusionPrompt(
  * Compile character data from user description and image analysis using LLM
  * This ensures all fields are coherent and in the user's preferred language
  */
-async function compileCharacterDataWithLLM(
+export async function compileCharacterDataWithLLM(
   userDescription: string | null,
   imageAnalysis: CharacterImageAnalysisResult | null,
   textData: GeneratedCharacterData | null,

@@ -12,12 +12,14 @@ datasource db {
 enum AuthProvider {
   GOOGLE
   FACEBOOK
+  SYSTEM
 }
 
 enum UserRole {
   BASIC
   PREMIUM
   ADMIN
+  BOT
 }
 
 // Age-based content rating system (similar to movie/anime ratings)
@@ -339,6 +341,7 @@ model Character {
   tags     Tag[]
   stickers CharacterSticker[]
   images   CharacterImage[]
+  curatedFrom CuratedImage? // Source curated image if auto-generated
 
   // Chat system relations
   assistantsUsingAsDefault   Assistant[]               @relation("AssistantDefaultCharacter")
@@ -938,4 +941,84 @@ enum SubscriptionStatus {
 enum PaymentProvider {
   STRIPE
   PAYPAL
+}
+
+// ============================================================================
+// AUTOMATED CHARACTER POPULATION SYSTEM
+// ============================================================================
+
+// Status of a curated image in the curation pipeline
+enum CurationStatus {
+  PENDING      // Awaiting classification
+  APPROVED     // Approved for generation
+  REJECTED     // Rejected (inappropriate content)
+  PROCESSING   // In generation
+  COMPLETED    // Character generated successfully
+  FAILED       // Generation failed
+}
+
+// Curated image from external sources (Civitai, etc.) for character generation
+model CuratedImage {
+  id              String   @id @default(uuid())
+  sourceUrl       String   @unique
+  sourceId        String?  // Civitai image ID
+  sourcePlatform  String   @default("civitai")
+
+  // Metadata from source
+  tags            String[] // Source tags (e.g., Civitai tags)
+  sourceRating    Float?   // Rating original (1-5)
+  author          String?  // Artist original
+  license         String?  // License info
+
+  // Curation
+  status          CurationStatus @default(PENDING)
+  ageRating       AgeRating?
+  qualityScore    Float?   // Quality assessment (0-5)
+  contentTags     ContentTag[] // AI-generated content tags
+  description     String?  @db.Text // AI-generated description
+
+  // Storage
+  localPath       String?  // Temp storage path
+  uploadedToR2    Boolean  @default(false)
+  r2Url           String?
+  r2Key           String?
+
+  // Processing
+  generatedCharId String?  @unique
+  generatedChar   Character? @relation(fields: [generatedCharId], references: [id], onDelete: SetNull)
+
+  // Audit
+  createdAt       DateTime @default(now())
+  processedAt     DateTime?
+  rejectedAt      DateTime?
+  rejectionReason String?
+
+  @@index([status, ageRating])
+  @@index([createdAt])
+  @@index([processedAt])
+}
+
+// Batch generation log for tracking automated character generation runs
+model BatchGenerationLog {
+  id                String   @id @default(uuid())
+  scheduledAt       DateTime
+  executedAt        DateTime @default(now())
+  completedAt       DateTime?
+
+  // Stats
+  targetCount       Int      // How many should be generated
+  successCount      Int      @default(0)
+  failureCount      Int      @default(0)
+
+  // Details
+  selectedImages    String[] // IDs of the curated images selected
+  generatedCharIds  String[] // IDs of the characters generated
+  errors            Json?    // Errors encountered
+
+  // Metrics
+  duration          Int?     // Seconds
+  costEstimate      Float?   // USD
+
+  @@index([scheduledAt])
+  @@index([executedAt])
 }

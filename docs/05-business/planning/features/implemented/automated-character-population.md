@@ -555,7 +555,7 @@ NSFW_FILTER_ENABLED=true
 NSFW_FILTER_STRICTNESS=medium # low | medium | high
 
 # Bot Account
-OFFICIAL_BOT_USER_ID=bot_charhub_official
+OFFICIAL_BOT_USER_ID=00000000-0000-0000-0000-000000000001
 
 # Monitoring
 SLACK_WEBHOOK_URL=https://hooks.slack.com/... # Alerts
