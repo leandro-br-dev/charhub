@@ -6,13 +6,13 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ---
 
-## 📊 Status Atual: 23 de Dezembro de 2025
+## 📊 Status Atual: 25 de Dezembro de 2025
 
 ### Tarefas em Progresso
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
-| T005 | **Dashboard Público com Login/Signup** | Agent Coder | 🚀 Pronto para Iniciar | `feature/public-dashboard` (a criar) | 06/01/2026 | 23/12 - Spec criada - **PRIORIDADE MÁXIMA** |
+| T006 | **Sistema de População Automática de Personagens (Civitai)** | Agent Coder | 🚀 Pronto para Iniciar | `feature/automated-character-population` (a criar) | 31/01/2026 | 25/12 - Spec criada e aprovada - **PRIORIDADE CRÍTICA** |
 
 ---
 
@@ -29,11 +29,83 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ## 🚀 Histórico Recente de Atribuições
 
+### Semana de 25-31 Dezembro
+
+| Tarefa | Agente | Status | Detalhes |
+|--------|--------|--------|----------|
+| **Sistema de População Automática de Personagens** | Agent Coder | ✅ Atribuído | Spec completa em `active/automated-character-population.md`. **PRIORIDADE CRÍTICA** - Iniciar imediatamente. |
+
+**Contexto da Tarefa População Automática** (T006):
+- **Por que crítico**: CharHub está funcional mas não pode ser divulgado sem conteúdo (chicken-and-egg problem)
+- **Objetivo Principal**: Popular catálogo com 100-200 personagens curados ANTES da divulgação pública
+- **Problemas Resolvidos**:
+  - ✅ Falta de personagens prontos e interessantes (problema #1 do produto)
+  - ✅ Dependência 100% de UGC inicial (usuários não criam sem ver exemplos)
+  - ✅ Impossibilidade de divulgar sem demonstrar valor do produto
+  - ✅ Alta taxa de abandono de novos usuários (nada para explorar)
+- **Features Principais**:
+  1. Integração com Civitai API (captura automática de imagens)
+  2. Curadoria automatizada (classificação etária, NSFW filter, quality score)
+  3. Geração em lote (20 personagens/dia usando sistema existente)
+  4. Scheduler diário (execução automática às 2 AM UTC)
+  5. Publicação automática (personagens públicos imediatamente)
+  6. Diversificação (balancear ratings, estilos, tags)
+- **Estimativa**: 3-4 semanas (5 fases detalhadas na spec)
+- **Custo Operacional**: ~$10/mês (muito baixo para o valor gerado)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/automated-character-population.md`
+- **Branch sugerida**: `feature/automated-character-population`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para início imediato
+- ✅ Dashboard Público já implementado (pode começar agora)
+- ✅ Civitai API key disponível (fornecida pelo PO)
+- ✅ Quota de 20 personagens/dia aprovada
+- ✅ Publicação automática sem revisão manual (não bloqueante)
+- ✅ Revisão humana é feature futura (admin dashboard opcional)
+
+**Instruções para Agent Coder**:
+1. ⚠️ **PRIORIDADE CRÍTICA** - Viabiliza divulgação pública do Beta
+2. Criar branch `feature/automated-character-population` a partir de `main`
+3. Ler spec completa (todos os detalhes técnicos e arquitetura)
+4. Seguir roadmap de implementação (5 fases):
+   - Fase 1: Civitai Integration (5-7 dias)
+   - Fase 2: Curadoria Automatizada (5-7 dias)
+   - Fase 3: Batch Generation (3-5 dias)
+   - Fase 4: Scheduler & Automação (3-5 dias)
+   - Fase 5: QA & Documentação (5-7 dias)
+5. **CRÍTICO**: Implementar filtros NSFW robustos (safety primeiro)
+6. **IMPORTANTE**: Usar sistema de geração existente (`/api/v1/characters/generate`)
+7. Fazer commits incrementais por fase
+8. Abrir PRs por fase major para review gradual
+9. Criar conta bot "CharHub Official" no seed
+
+**Requisitos Técnicos Importantes**:
+- ✅ Civitai API client com rate limiting
+- ✅ Schema Prisma: `CuratedImage` e `BatchGenerationLog`
+- ✅ Curadoria automática (age rating, NSFW, quality score)
+- ✅ Batch generator com diversification algorithm
+- ✅ BullMQ scheduler (cron job diário)
+- ✅ Auto-publishing (PUBLIC visibility + tag "curated")
+- ✅ Monitoring e alertas (Slack/email)
+- ✅ Env vars configuráveis (quota, schedule, keywords)
+- ✅ Testes (unit + integration, coverage >80%)
+
+**ROI Esperado**:
+- 600 personagens gerados por mês
+- Custo: $10/mês
+- Valor gerado: >$1,000 em UGC equivalente
+- Viabiliza divulgação com catálogo robusto
+- Aumento estimado de 40% em retenção D1
+- Aumento estimado de 30% em signup conversion
+
+---
+
 ### Semana de 23-30 Dezembro
 
 | Tarefa | Agente | Status | Detalhes |
 |--------|--------|--------|----------|
-| **Dashboard Público com Login/Signup** | Agent Coder | ✅ Atribuído | Spec completa em `active/public-dashboard.md`. **PRIORIDADE MÁXIMA** - Iniciar imediatamente. |
+| **Dashboard Público com Login/Signup** | Agent Coder | ✅ Concluído | Feature implementada e deployed. Movida para `implemented/`. |
+| **Roleplay Message Formatting** | Agent Coder | ✅ Concluído | Feature implementada e deployed. Movida para `implemented/`. |
 
 **Contexto da Tarefa Dashboard Público** (T005):
 - **Por que urgente**: Dashboard é a área mais informativa do site mas está inacessível para visitantes
