@@ -5,7 +5,9 @@ import HttpBackend from 'i18next-http-backend';
 import { resolveApiBaseUrl } from './lib/resolveApiBaseUrl';
 
 const resolvedBase = resolveApiBaseUrl();
-const loadPath = resolvedBase ? `${resolvedBase}/api/v1/i18n/{{lng}}/{{ns}}` : '/api/v1/i18n/{{lng}}/{{ns}}';
+const loadPath = resolvedBase
+  ? `${resolvedBase}/api/v1/i18n/{{lng}}/{{ns}}?v=${new Date().getTime()}`
+  : `/api/v1/i18n/{{lng}}/{{ns}}?v=${new Date().getTime()}`;
 
 const namespaces = ['common', 'home', 'login', 'signup', 'callback', 'dashboard', 'notFound', 'legal', 'characters', 'chat', 'imageGallery', 'story', 'navigation', 'profile', 'plans', 'welcome'];
 const supportedLngs = ['en-US', 'pt-BR', 'es-ES', 'fr-FR', 'de-DE', 'zh-CN', 'hi-IN', 'ar-SA', 'ru-RU', 'ja-JP', 'ko-KR', 'it-IT'];
