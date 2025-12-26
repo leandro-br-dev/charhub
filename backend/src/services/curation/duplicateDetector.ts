@@ -158,14 +158,14 @@ export class DuplicateDetector {
       }
     }
 
-    // Tag overlap
-    if (sig1.tags && sig2.tags) {
+    // Tag overlap (only if both have tags)
+    if (sig1.tags?.length && sig2.tags?.length) {
       factors += 3;
       const overlap = this.getTagOverlap(sig1.tags, sig2.tags);
       score += overlap * 3;
     }
 
-    // Author match
+    // Author match (only add to factors if both have author info)
     if (sig1.author && sig2.author) {
       factors += 1;
       if (sig1.author === sig2.author) {
@@ -173,7 +173,7 @@ export class DuplicateDetector {
       }
     }
 
-    // Style match
+    // Style match (only add to factors if both have style info)
     if (sig1.style && sig2.style) {
       factors += 1;
       if (sig1.style === sig2.style) {
@@ -181,7 +181,7 @@ export class DuplicateDetector {
       }
     }
 
-    // Species match
+    // Species match (only add to factors if both have species info)
     if (sig1.species && sig2.species) {
       factors += 1;
       if (sig1.species === sig2.species) {
@@ -189,7 +189,7 @@ export class DuplicateDetector {
       }
     }
 
-    // Gender match
+    // Gender match (only add to factors if both have gender info)
     if (sig1.gender && sig2.gender) {
       factors += 1;
       if (sig1.gender === sig2.gender) {
