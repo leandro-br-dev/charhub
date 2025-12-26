@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, Button, Textarea } from '../../../../components/ui';
+import { FormattedMessage } from '../../../../components/ui/FormattedMessage';
 import type { Message } from '../../../../types/chat';
 
 export interface MessageBubbleProps {
@@ -20,47 +21,13 @@ export interface MessageBubbleProps {
 }
 
 /**
- * Format message content with basic markdown-like parsing
- * Handles italics (*text*) and quotes (> text)
+ * Check if content is a JSON action confirmation request
  */
-const formatMessage = (content: string): Array<{ type: 'text' | 'italic' | 'quote'; content: string }> => {
-  const parts: Array<{ type: 'text' | 'italic' | 'quote'; content: string }> = [];
-  const lines = content.split('\n');
-
-  for (const line of lines) {
-    // Check for quote
-    if (line.trim().startsWith('>')) {
-      parts.push({ type: 'quote', content: line.replace(/^>\s*/, '') });
-      continue;
-    }
-
-    // Check for italics
-    const italicRegex = /\*([^*]+)\*/g;
-    let lastIndex = 0;
-    let match;
-
-    while ((match = italicRegex.exec(line)) !== null) {
-      // Add text before italic
-      if (match.index > lastIndex) {
-        parts.push({ type: 'text', content: line.substring(lastIndex, match.index) });
-      }
-      // Add italic text
-      parts.push({ type: 'italic', content: match[1] });
-      lastIndex = italicRegex.lastIndex;
-    }
-
-    // Add remaining text
-    if (lastIndex < line.length) {
-      parts.push({ type: 'text', content: line.substring(lastIndex) });
-    }
-
-    // Add newline for next line
-    if (lines.indexOf(line) < lines.length - 1) {
-      parts.push({ type: 'text', content: '\n' });
-    }
-  }
-
-  return parts;
+const isActionConfirmationRequest = (content: string): boolean => {
+  const trimmed = content.trim();
+  return trimmed.startsWith('{') && trimmed.endsWith('}') &&
+    (trimmed.includes('"action_confirmation_request"') ||
+     trimmed.includes('"action_confirmation_request_v2"'));
 };
 
 export const MessageBubble = ({
@@ -85,7 +52,7 @@ export const MessageBubble = ({
   const [isSaving, setIsSaving] = useState(false);
 
   const showActions = externalShowActions ?? internalShowActions;
-  const formattedParts = useMemo(() => formatMessage(content), [content]);
+  const shouldUseFormattedMessage = !children && !isActionConfirmationRequest(content);
 
   const handleDelete = () => {
     if (onDelete) {
@@ -255,29 +222,11 @@ export const MessageBubble = ({
             >
               {children ? (
                 children
+              ) : shouldUseFormattedMessage ? (
+                <FormattedMessage content={content} />
               ) : (
-                formattedParts.map((part, index) => {
-                  if (part.type === 'italic') {
-                    return (
-                      <em key={index} className="text-current opacity-80 inline">
-                        {part.content}
-                      </em>
-                    );
-                  }
-                  if (part.type === 'quote') {
-                    return (
-                      <blockquote key={index} className="border-l-4 border-muted pl-2 italic my-1">
-                        {part.content}
-                      </blockquote>
-                    );
-                  }
-                  return part.content.split('\n').map((line, i) => (
-                    <span key={`${index}-${i}`}>
-                      {line}
-                      {i < part.content.split('\n').length - 1 && <br />}
-                    </span>
-                  ));
-                })
+                // Fallback for action confirmation requests (display as plain text)
+                <pre className="whitespace-pre-wrap text-sm">{content}</pre>
               )}
             </div>
           )}

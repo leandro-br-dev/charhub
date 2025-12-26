@@ -11,20 +11,33 @@
 ## 📊 Status de Implementação
 
 ### Progresso Geral
-- [ ] Planning complete
-- [ ] Research on roleplay formatting standards
-- [ ] Backend implementation (prompt updates)
-- [ ] Frontend implementation (message parser + styling)
-- [ ] Testing
-- [ ] Documentation
+- [x] Planning complete
+- [x] Research on roleplay formatting standards
+- [x] Backend implementation (prompt updates)
+- [x] Frontend implementation (message parser + styling)
+- [x] Testing
+- [x] Documentation
 - [ ] Ready for PR
 
-### Próximos Passos
-- [ ] Pesquisar e documentar padrões de formatação roleplay
-- [ ] Criar parser de mensagens no frontend
-- [ ] Implementar estilos visuais para cada tipo de conteúdo
-- [ ] Atualizar prompts dos agentes de conversação
-- [ ] Criar testes automatizados
+### Completed
+- [x] Read architecture docs and existing codebase
+- [x] Create `frontend/src/utils/messageParser.ts` with roleplay parsing logic
+- [x] Create `frontend/src/components/ui/FormattedMessage.tsx` component
+- [x] Add CSS styles to `frontend/src/index.css` for all formatting types
+- [x] Create `backend/src/agents/style-guides/roleplayFormattingGuide.ts`
+- [x] Update `backend/src/agents/style-guides/index.ts` to include new guide
+- [x] Verify TypeScript compilation for both frontend and backend
+- [x] Integrate FormattedMessage into MessageBubble and MessageItem
+- [x] Add formatting toolbar to MessageInput
+- [x] Fix parser to handle (*action*) format from AI
+- [x] Write 57 unit tests for message parser
+- [x] Local testing with Docker
+
+### Pending
+- [ ] End-to-end testing with real conversations
+- [ ] Cross-browser testing
+- [ ] Mobile testing
+- [ ] Create pull request
 
 ### Bloqueios
 - Nenhum

@@ -109,3 +109,105 @@ button {
     left: 80px; /* Only rail */
   }
 }
+
+/* ========================================
+   ROLEPLAY MESSAGE FORMATTING STYLES
+   ======================================== */
+
+/* Base formatted message container */
+.formatted-message {
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+/* Base token style */
+.message-token {
+  display: inline;
+}
+
+/* Dialogue (normal speech) */
+.message-dialogue {
+  color: inherit; /* Use theme default */
+  font-style: normal;
+}
+
+/* Actions/Narration (*text*) */
+.message-action {
+  font-style: italic !important;
+  color: #E65100 !important; /* Dark orange/amber for light mode - better contrast */
+}
+
+.dark .message-action {
+  color: #FFB84D !important; /* Lighter orange for dark mode */
+}
+
+/* Thoughts (<"text">) */
+.message-thought {
+  font-style: italic !important;
+  text-decoration: underline !important;
+  text-decoration-style: dotted !important;
+  text-decoration-thickness: 1px !important;
+  text-underline-offset: 2px !important;
+  color: #7B1FA2 !important; /* Darker purple for light mode - better contrast */
+}
+
+.dark .message-thought {
+  color: #B19CD9 !important; /* Lighter purple for dark mode */
+}
+
+/* Out of Character (OOC) ((text)) or (text) */
+.message-ooc {
+  font-size: 0.85em !important;
+  color: #757575 !important; /* Medium gray */
+  font-style: italic !important;
+}
+
+.dark .message-ooc {
+  color: #9E9E9E !important; /* Lighter gray for dark mode */
+}
+
+/* Shout/Emphasis (>text<) or **TEXT** */
+.message-shout {
+  font-weight: bold !important;
+  font-size: 1.1em !important;
+  color: #C62828 !important; /* Darker red for light mode - better contrast */
+}
+
+.dark .message-shout {
+  color: #FF6B6B !important; /* Lighter red for dark mode */
+}
+
+/* Whisper (<text> without quotes) */
+.message-whisper {
+  font-style: italic !important;
+  font-size: 0.9em !important;
+  opacity: 0.7 !important;
+}
+
+/* Description/Context ([text]) */
+.message-description {
+  font-style: italic !important;
+  color: #616161 !important; /* Darker gray for light mode - better contrast */
+}
+
+.dark .message-description {
+  color: #9E9E9E !important; /* Lighter gray for dark mode */
+}
+
+/* Accessibility: ensure WCAG AA compliance */
+@media (prefers-reduced-motion: reduce) {
+  .message-token {
+    transition: none !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .formatted-message {
+    font-size: 0.95em;
+  }
+
+  .message-shout {
+    font-size: 1.05em;
+  }
+}
