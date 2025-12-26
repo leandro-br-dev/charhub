@@ -4,27 +4,49 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Découvrir",
-      "chat": "Chat",
+      "chat": "Discuter",
       "story": "Histoire"
     },
     "sections": {
-      "popularCharacters": "Personnages Populaires",
-      "favoriteCharacters": "Vos Favoris",
+      "popularCharacters": "Personnages populaires",
+      "favoriteCharacters": "Vos favoris",
       "popular": "Populaire",
       "favorites": "Favoris",
-      "myStories": "Mes Histoires",
-      "popularStories": "Histoires Populaires",
-      "mine": "Mon"
+      "myStories": "Mes histoires",
+      "popularStories": "Histoires populaires",
+      "mine": "Les miennes",
+      "noPopularCharacters": "Aucun personnage populaire trouvé.",
+      "noFavoriteCharacters": "Vous n'avez pas encore mis de personnages en favoris.",
+      "createCharacter": "Créer un personnage",
+      "browseCharacters": "Parcourir les personnages"
     },
     "noStories": "Pas encore d'histoires. Créez votre première histoire !",
     "createStory": "Créer une histoire",
-    "plusRequired": "Nécessite le plan Plus",
+    "plusRequired": "Nécessite le forfait Plus",
     "recentConversations": "Conversations récentes",
     "newConversation": "Nouvelle conversation",
     "carousel": {
       "alt": "Image du carrousel pour {{title}}",
       "goToSlide": "Aller à la diapositive {{slide}}",
-      "plus": "PLUS"
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Bienvenue sur CharHub",
+          "description": "Créez et discutez avec des personnages IA",
+          "action1": "Créer un personnage",
+          "action2": "Parcourir les personnages"
+        },
+        "stories": {
+          "title": "Découvrir des histoires",
+          "description": "Explorez la narration interactive",
+          "action": "Parcourir les histoires"
+        },
+        "community": {
+          "title": "Rejoignez la communauté",
+          "description": "Connectez-vous avec d'autres créateurs",
+          "action": "Explorer la communauté"
+        }
+      }
     },
     "storyCard": {
       "alt": "Image de couverture pour {{title}}",

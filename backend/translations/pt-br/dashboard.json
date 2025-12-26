@@ -4,7 +4,7 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Descobrir",
-      "chat": "Bate-papo",
+      "chat": "Chat",
       "story": "História"
     },
     "sections": {
@@ -14,9 +14,13 @@
       "favorites": "Favoritos",
       "myStories": "Minhas Histórias",
       "popularStories": "Histórias Populares",
-      "mine": "Minhas"
+      "mine": "Minhas",
+      "noPopularCharacters": "Nenhum personagem popular encontrado.",
+      "noFavoriteCharacters": "Você ainda não favoritou nenhum personagem.",
+      "createCharacter": "Criar Personagem",
+      "browseCharacters": "Explorar Personagens"
     },
-    "noStories": "Ainda não há histórias. Crie sua primeira história!",
+    "noStories": "Nenhuma história ainda. Crie sua primeira história!",
     "createStory": "Criar História",
     "plusRequired": "Requer Plano Plus",
     "recentConversations": "Conversas Recentes",
@@ -24,11 +28,29 @@
     "carousel": {
       "alt": "Imagem do carrossel para {{title}}",
       "goToSlide": "Ir para o slide {{slide}}",
-      "plus": "PLUS"
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Bem-vindo ao CharHub",
+          "description": "Crie e converse com personagens de IA",
+          "action1": "Criar Personagem",
+          "action2": "Explorar Personagens"
+        },
+        "stories": {
+          "title": "Descubra Histórias",
+          "description": "Explore a narrativa interativa",
+          "action": "Explorar Histórias"
+        },
+        "community": {
+          "title": "Junte-se à Comunidade",
+          "description": "Conecte-se com outros criadores",
+          "action": "Explorar Comunidade"
+        }
+      }
     },
     "storyCard": {
       "alt": "Imagem de capa para {{title}}",
-      "play": "Reproduzir"
+      "play": "Jogar"
     }
   }
 }

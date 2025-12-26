@@ -109,6 +109,7 @@ Your work follows this cycle:
 6. **Hardcode text** (always use i18n keys)
 7. **Deploy directly to production** (submit PRs like Agent Coder)
 8. **Change brand colors/fonts without approval**
+9. **Run npm/node commands directly on Windows** (always use WSL or Docker due to symlink issues)
 
 ### ✅ ALWAYS Do These
 

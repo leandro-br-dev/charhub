@@ -8,13 +8,17 @@
       "story": "ストーリー"
     },
     "sections": {
-      "popularCharacters": "人気キャラクター",
-      "favoriteCharacters": "お気に入りキャラクター",
+      "popularCharacters": "人気のキャラクター",
+      "favoriteCharacters": "お気に入り",
       "popular": "人気",
       "favorites": "お気に入り",
-      "myStories": "マイストーリー",
-      "popularStories": "人気ストーリー",
-      "mine": "マイ"
+      "myStories": "自分のストーリー",
+      "popularStories": "人気のストーリー",
+      "mine": "自分の",
+      "noPopularCharacters": "人気のキャラクターは見つかりませんでした。",
+      "noFavoriteCharacters": "まだお気に入りのキャラクターがいません。",
+      "createCharacter": "キャラクターを作成",
+      "browseCharacters": "キャラクターを探す"
     },
     "noStories": "まだストーリーがありません。最初のストーリーを作成しましょう！",
     "createStory": "ストーリーを作成",
@@ -22,13 +26,31 @@
     "recentConversations": "最近の会話",
     "newConversation": "新しい会話",
     "carousel": {
-      "alt": "{{title}} のカルーセル画像",
-      "goToSlide": "{{slide}} スライドに移動",
-      "plus": "PLUS"
+      "alt": "{{title}}のカルーセル画像",
+      "goToSlide": "スライド{{slide}}へ移動",
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "CharHubへようこそ",
+          "description": "AIキャラクターを作成してチャットしましょう",
+          "action1": "キャラクターを作成",
+          "action2": "キャラクターを探す"
+        },
+        "stories": {
+          "title": "ストーリーを見つける",
+          "description": "インタラクティブなストーリーテリングを探求する",
+          "action": "ストーリーを探す"
+        },
+        "community": {
+          "title": "コミュニティに参加する",
+          "description": "他のクリエイターと繋がる",
+          "action": "コミュニティを探す"
+        }
+      }
     },
     "storyCard": {
-      "alt": "{{title}} の表紙画像",
-      "play": "再生"
+      "alt": "{{title}}のカバー画像",
+      "play": "プレイ"
     }
   }
 }

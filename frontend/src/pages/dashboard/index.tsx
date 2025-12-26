@@ -369,6 +369,23 @@ function DashboardContent(): JSX.Element {
                         onFavoriteToggle={handleFavoriteToggle}
                       />
                     ))}
+                    {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).length === 0 && (
+                      <div className="w-full text-center py-12 bg-light/50 rounded-xl border border-dashed border-border">
+                        <p className="text-muted mb-4">
+                          {discoverView === 'popular'
+                            ? t('dashboard:sections.noPopularCharacters', { defaultValue: 'Nenhum personagem popular encontrado.' })
+                            : t('dashboard:sections.noFavoriteCharacters', { defaultValue: 'Você ainda não tem personagens favoritos.' })}
+                        </p>
+                        <button
+                          onClick={() => navigate('/characters/create')}
+                          className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
+                        >
+                          {discoverView === 'popular'
+                            ? t('dashboard:sections.createCharacter', { defaultValue: 'Criar Personagem' })
+                            : t('dashboard:sections.browseCharacters', { defaultValue: 'Explorar Personagens' })}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

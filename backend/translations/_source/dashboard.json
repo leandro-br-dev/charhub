@@ -14,7 +14,11 @@
       "favorites": "Favorites",
       "myStories": "My Stories",
       "popularStories": "Popular Stories",
-      "mine": "Mine"
+      "mine": "Mine",
+      "noPopularCharacters": "No popular characters found.",
+      "noFavoriteCharacters": "You haven't favorited any characters yet.",
+      "createCharacter": "Create Character",
+      "browseCharacters": "Browse Characters"
     },
     "noStories": "No stories yet. Create your first story!",
     "createStory": "Create Story",
@@ -24,7 +28,25 @@
     "carousel": {
       "alt": "Carousel image for {{title}}",
       "goToSlide": "Go to slide {{slide}}",
-      "plus": "PLUS"
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Welcome to CharHub",
+          "description": "Create and chat with AI characters",
+          "action1": "Create Character",
+          "action2": "Browse Characters"
+        },
+        "stories": {
+          "title": "Discover Stories",
+          "description": "Explore interactive storytelling",
+          "action": "Browse Stories"
+        },
+        "community": {
+          "title": "Join the Community",
+          "description": "Connect with other creators",
+          "action": "Explore Community"
+        }
+      }
     },
     "storyCard": {
       "alt": "Cover image for {{title}}",

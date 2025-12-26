@@ -24,15 +24,15 @@ interface DashboardCarouselProps {
 }
 
 function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }: CarouselCard) {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['dashboard']);
 
   return (
     <div className="relative w-full h-64 sm:h-80 md:h-full overflow-hidden group">
       {imageUrl && (
         <img
           src={imageUrl}
-          alt={t('dashboard:carousel.alt', { title })}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          alt={t('dashboard:carousel.alt', { title: t(title) })}
+          className="w-full h-full object-cover object-[center_25%] transition-transform duration-700 group-hover:scale-105"
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
@@ -46,13 +46,18 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
             {t('dashboard:carousel.plus')}
           </span>
         )}
-        <h3 className="text-2xl sm:text-3xl font-bold">{title}</h3>
-        <p className="text-sm sm:text-base mt-1 mb-4">{description}</p>
-        <div className="flex flex-wrap gap-2 items-stretch">
+        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight drop-shadow-lg">{t(title)}</h3>
+        <p className="text-sm sm:text-base lg:text-lg mt-2 mb-6 max-w-2xl drop-shadow-md opacity-90">{t(description)}</p>
+        <div className="flex flex-wrap gap-3 items-stretch">
           {buttons.map((btn, index) => (
-            <Link to={btn.to} key={index}>
-              <Button variant={btn.variant || 'primary'} size="extra-small" icon={btn.icon} className="h-full">
-                {btn.label}
+            <Link to={btn.to} key={index} className="flex-shrink-0">
+              <Button
+                variant={btn.variant || 'primary'}
+                size="small"
+                icon={btn.icon}
+                className="h-10 sm:h-12 px-4 sm:px-6 shadow-lg transform transition-transform hover:scale-105 active:scale-95"
+              >
+                {t(btn.label)}
               </Button>
             </Link>
           ))}
@@ -122,9 +127,9 @@ export function DashboardCarousel({
   const goToSlide = (slideIndex: number) => setCurrentIndex(slideIndex);
 
   if (loading) {
-  return (
-    <div className="relative h-64 sm:h-80 md:h-[336px] md:max-h-[336px] bg-light animate-pulse"></div>
-  );
+    return (
+      <div className="relative h-64 sm:h-80 md:h-[336px] md:max-h-[336px] bg-light animate-pulse"></div>
+    );
   }
 
   if (cards.length === 0) {
@@ -159,14 +164,13 @@ export function DashboardCarousel({
           <button
             key={index}
             onClick={() => goToSlide(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              currentIndex === index ? 'w-6 bg-primary' : 'w-2 bg-white/50 hover:bg-white'
-            }`}
+            className={`h-2 rounded-full transition-all duration-300 ${currentIndex === index ? 'w-6 bg-primary' : 'w-2 bg-white/50 hover:bg-white'
+              }`}
             aria-label={t('dashboard:carousel.goToSlide', { slide: index + 1 })}
           />
         ))}
       </div>
-      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-normal to-transparent pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-normal via-normal/40 to-transparent pointer-events-none"></div>
     </div>
   );
 }

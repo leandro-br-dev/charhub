@@ -5,30 +5,52 @@
     "tabs": {
       "discover": "Entdecken",
       "chat": "Chat",
-      "story": "Story"
+      "story": "Geschichte"
     },
     "sections": {
       "popularCharacters": "Beliebte Charaktere",
       "favoriteCharacters": "Deine Favoriten",
       "popular": "Beliebt",
       "favorites": "Favoriten",
-      "myStories": "Meine Stories",
-      "popularStories": "Beliebte Stories",
-      "mine": "Meine"
+      "myStories": "Meine Geschichten",
+      "popularStories": "Beliebte Geschichten",
+      "mine": "Meine",
+      "noPopularCharacters": "Keine beliebten Charaktere gefunden.",
+      "noFavoriteCharacters": "Du hast noch keine Charaktere favorisiert.",
+      "createCharacter": "Charakter erstellen",
+      "browseCharacters": "Charaktere durchsuchen"
     },
-    "noStories": "Noch keine Stories. Erstelle deine erste Story!",
-    "createStory": "Story erstellen",
-    "plusRequired": "Benötigt Plus-Abo",
-    "recentConversations": "Kürzliche Konversationen",
-    "newConversation": "Neue Konversation",
+    "noStories": "Noch keine Geschichten. Erstelle deine erste Geschichte!",
+    "createStory": "Geschichte erstellen",
+    "plusRequired": "Benötigt Plus-Plan",
+    "recentConversations": "Letzte Unterhaltungen",
+    "newConversation": "Neue Unterhaltung",
     "carousel": {
       "alt": "Karussellbild für {{title}}",
-      "goToSlide": "Zur Folie {{slide}} wechseln",
-      "plus": "PLUS"
+      "goToSlide": "Gehe zu Folie {{slide}}",
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Willkommen bei CharHub",
+          "description": "Erstelle und chatte mit KI-Charakteren",
+          "action1": "Charakter erstellen",
+          "action2": "Charaktere durchsuchen"
+        },
+        "stories": {
+          "title": "Geschichten entdecken",
+          "description": "Interaktives Storytelling erkunden",
+          "action": "Geschichten durchsuchen"
+        },
+        "community": {
+          "title": "Der Community beitreten",
+          "description": "Verbinde dich mit anderen Kreativen",
+          "action": "Community erkunden"
+        }
+      }
     },
     "storyCard": {
       "alt": "Coverbild für {{title}}",
-      "play": "Abspielen"
+      "play": "Spielen"
     }
   }
 }

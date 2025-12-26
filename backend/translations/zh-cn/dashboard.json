@@ -9,25 +9,47 @@
     },
     "sections": {
       "popularCharacters": "热门角色",
-      "favoriteCharacters": "你的收藏",
+      "favoriteCharacters": "我的收藏",
       "popular": "热门",
       "favorites": "收藏",
       "myStories": "我的故事",
       "popularStories": "热门故事",
-      "mine": "我的"
+      "mine": "我的",
+      "noPopularCharacters": "未找到热门角色。",
+      "noFavoriteCharacters": "您还没有收藏任何角色。",
+      "createCharacter": "创建角色",
+      "browseCharacters": "浏览角色"
     },
-    "noStories": "还没有故事。创建你的第一个故事！",
+    "noStories": "还没有故事。创建您的第一个故事吧！",
     "createStory": "创建故事",
-    "plusRequired": "需要 Plus 套餐",
-    "recentConversations": "最近的对话",
+    "plusRequired": "需要 Plus 会员计划",
+    "recentConversations": "最近对话",
     "newConversation": "新对话",
     "carousel": {
       "alt": "{{title}} 的轮播图",
-      "goToSlide": "前往第 {{slide}} 张幻灯片",
-      "plus": "PLUS"
+      "goToSlide": "前往幻灯片 {{slide}}",
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "欢迎来到 CharHub",
+          "description": "创建并与 AI 角色聊天",
+          "action1": "创建角色",
+          "action2": "浏览角色"
+        },
+        "stories": {
+          "title": "发现故事",
+          "description": "探索互动故事",
+          "action": "浏览故事"
+        },
+        "community": {
+          "title": "加入社区",
+          "description": "与其他创作者联系",
+          "action": "探索社区"
+        }
+      }
     },
     "storyCard": {
-      "alt": "{{title}} 的封面图",
+      "alt": "{{title}} 的封面图片",
       "play": "播放"
     }
   }
