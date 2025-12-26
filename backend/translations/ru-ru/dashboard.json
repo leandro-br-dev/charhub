@@ -10,12 +10,12 @@
     "sections": {
       "popularCharacters": "Популярные персонажи",
       "favoriteCharacters": "Ваши избранные",
-      "popular": "Популярные",
+      "popular": "Популярное",
       "favorites": "Избранное",
       "myStories": "Мои истории",
       "popularStories": "Популярные истории",
-      "mine": "Мои",
-      "noPopularCharacters": "Популярные персонажи не найдены.",
+      "mine": "Мое",
+      "noPopularCharacters": "Популярных персонажей не найдено.",
       "noFavoriteCharacters": "Вы еще не добавили ни одного персонажа в избранное.",
       "createCharacter": "Создать персонажа",
       "browseCharacters": "Просмотреть персонажей"
@@ -28,10 +28,28 @@
     "carousel": {
       "alt": "Изображение карусели для {{title}}",
       "goToSlide": "Перейти к слайду {{slide}}",
-      "plus": "PLUS"
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Добро пожаловать в CharHub",
+          "description": "Создавайте ИИ-персонажей и общайтесь с ними",
+          "action1": "Создать персонажа",
+          "action2": "Просмотреть персонажей"
+        },
+        "stories": {
+          "title": "Откройте для себя истории",
+          "description": "Исследуйте интерактивное повествование",
+          "action": "Просмотреть истории"
+        },
+        "community": {
+          "title": "Присоединяйтесь к сообществу",
+          "description": "Общайтесь с другими создателями",
+          "action": "Исследовать сообщество"
+        }
+      }
     },
     "storyCard": {
-      "alt": "Изображение обложки для {{title}}",
+      "alt": "Обложка для {{title}}",
       "play": "Играть"
     }
   }

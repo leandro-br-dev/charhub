@@ -14,7 +14,7 @@
       "favorites": "Favoris",
       "myStories": "Mes histoires",
       "popularStories": "Histoires populaires",
-      "mine": "Les miens",
+      "mine": "Les miennes",
       "noPopularCharacters": "Aucun personnage populaire trouvé.",
       "noFavoriteCharacters": "Vous n'avez pas encore mis de personnages en favoris.",
       "createCharacter": "Créer un personnage",
@@ -28,7 +28,25 @@
     "carousel": {
       "alt": "Image du carrousel pour {{title}}",
       "goToSlide": "Aller à la diapositive {{slide}}",
-      "plus": "PLUS"
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Bienvenue sur CharHub",
+          "description": "Créez et discutez avec des personnages IA",
+          "action1": "Créer un personnage",
+          "action2": "Parcourir les personnages"
+        },
+        "stories": {
+          "title": "Découvrir des histoires",
+          "description": "Explorez la narration interactive",
+          "action": "Parcourir les histoires"
+        },
+        "community": {
+          "title": "Rejoignez la communauté",
+          "description": "Connectez-vous avec d'autres créateurs",
+          "action": "Explorer la communauté"
+        }
+      }
     },
     "storyCard": {
       "alt": "Image de couverture pour {{title}}",

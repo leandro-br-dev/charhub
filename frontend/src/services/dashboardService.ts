@@ -45,19 +45,19 @@ export const dashboardService = {
       return [
         {
           id: '1',
-          title: 'Welcome to CharHub',
-          description: 'Create and chat with AI characters',
+          title: 'dashboard:carousel.slides.welcome.title',
+          description: 'dashboard:carousel.slides.welcome.description',
           imageUrl: '/covers/cover_landscape_1.webp',
           buttons: [
             {
               to: '/characters/create',
-              label: 'Create Character',
+              label: 'dashboard:carousel.slides.welcome.action1',
               variant: 'primary',
               icon: 'add',
             },
             {
               to: '/characters',
-              label: 'Browse Characters',
+              label: 'dashboard:carousel.slides.welcome.action2',
               variant: 'secondary',
               icon: 'search',
             },
@@ -66,13 +66,13 @@ export const dashboardService = {
         },
         {
           id: '2',
-          title: 'Discover Stories',
-          description: 'Explore interactive storytelling',
+          title: 'dashboard:carousel.slides.stories.title',
+          description: 'dashboard:carousel.slides.stories.description',
           imageUrl: '/covers/cover_landscape_2.webp',
           buttons: [
             {
               to: '/stories',
-              label: 'Browse Stories',
+              label: 'dashboard:carousel.slides.stories.action',
               variant: 'primary',
               icon: 'menu_book',
             },
@@ -82,13 +82,13 @@ export const dashboardService = {
         },
         {
           id: '3',
-          title: 'Join the Community',
-          description: 'Connect with other creators',
+          title: 'dashboard:carousel.slides.community.title',
+          description: 'dashboard:carousel.slides.community.description',
           imageUrl: '/covers/cover_landscape_3.webp',
           buttons: [
             {
               to: '/community',
-              label: 'Explore Community',
+              label: 'dashboard:carousel.slides.community.action',
               variant: 'primary',
               icon: 'groups',
             },

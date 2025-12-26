@@ -24,14 +24,14 @@ interface DashboardCarouselProps {
 }
 
 function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }: CarouselCard) {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['dashboard']);
 
   return (
     <div className="relative w-full h-64 sm:h-80 md:h-full overflow-hidden group">
       {imageUrl && (
         <img
           src={imageUrl}
-          alt={t('dashboard:carousel.alt', { title })}
+          alt={t('dashboard:carousel.alt', { title: t(title) })}
           className="w-full h-full object-cover object-[center_25%] transition-transform duration-700 group-hover:scale-105"
         />
       )}
@@ -46,8 +46,8 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
             {t('dashboard:carousel.plus')}
           </span>
         )}
-        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight drop-shadow-lg">{title}</h3>
-        <p className="text-sm sm:text-base lg:text-lg mt-2 mb-6 max-w-2xl drop-shadow-md opacity-90">{description}</p>
+        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight drop-shadow-lg">{t(title)}</h3>
+        <p className="text-sm sm:text-base lg:text-lg mt-2 mb-6 max-w-2xl drop-shadow-md opacity-90">{t(description)}</p>
         <div className="flex flex-wrap gap-3 items-stretch">
           {buttons.map((btn, index) => (
             <Link to={btn.to} key={index} className="flex-shrink-0">
@@ -57,7 +57,7 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
                 icon={btn.icon}
                 className="h-10 sm:h-12 px-4 sm:px-6 shadow-lg transform transition-transform hover:scale-105 active:scale-95"
               >
-                {btn.label}
+                {t(btn.label)}
               </Button>
             </Link>
           ))}

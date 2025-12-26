@@ -22,17 +22,35 @@
     },
     "noStories": "Noch keine Geschichten. Erstelle deine erste Geschichte!",
     "createStory": "Geschichte erstellen",
-    "plusRequired": "Erfordert Plus-Plan",
-    "recentConversations": "Neueste Unterhaltungen",
+    "plusRequired": "Benötigt Plus-Plan",
+    "recentConversations": "Letzte Unterhaltungen",
     "newConversation": "Neue Unterhaltung",
     "carousel": {
       "alt": "Karussellbild für {{title}}",
       "goToSlide": "Gehe zu Folie {{slide}}",
-      "plus": "PLUS"
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Willkommen bei CharHub",
+          "description": "Erstelle und chatte mit KI-Charakteren",
+          "action1": "Charakter erstellen",
+          "action2": "Charaktere durchsuchen"
+        },
+        "stories": {
+          "title": "Geschichten entdecken",
+          "description": "Interaktives Storytelling erkunden",
+          "action": "Geschichten durchsuchen"
+        },
+        "community": {
+          "title": "Der Community beitreten",
+          "description": "Verbinde dich mit anderen Kreativen",
+          "action": "Community erkunden"
+        }
+      }
     },
     "storyCard": {
-      "alt": "Titelbild für {{title}}",
-      "play": "Abspielen"
+      "alt": "Coverbild für {{title}}",
+      "play": "Spielen"
     }
   }
 }

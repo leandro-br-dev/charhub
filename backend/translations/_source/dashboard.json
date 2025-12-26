@@ -28,7 +28,25 @@
     "carousel": {
       "alt": "Carousel image for {{title}}",
       "goToSlide": "Go to slide {{slide}}",
-      "plus": "PLUS"
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Welcome to CharHub",
+          "description": "Create and chat with AI characters",
+          "action1": "Create Character",
+          "action2": "Browse Characters"
+        },
+        "stories": {
+          "title": "Discover Stories",
+          "description": "Explore interactive storytelling",
+          "action": "Browse Stories"
+        },
+        "community": {
+          "title": "Join the Community",
+          "description": "Connect with other creators",
+          "action": "Explore Community"
+        }
+      }
     },
     "storyCard": {
       "alt": "Cover image for {{title}}",

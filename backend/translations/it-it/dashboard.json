@@ -9,10 +9,10 @@
     },
     "sections": {
       "popularCharacters": "Personaggi Popolari",
-      "favoriteCharacters": "I Tuoi Preferiti",
+      "favoriteCharacters": "I tuoi Preferiti",
       "popular": "Popolari",
       "favorites": "Preferiti",
-      "myStories": "Le Mie Storie",
+      "myStories": "Le mie Storie",
       "popularStories": "Storie Popolari",
       "mine": "Mie",
       "noPopularCharacters": "Nessun personaggio popolare trovato.",
@@ -20,15 +20,33 @@
       "createCharacter": "Crea Personaggio",
       "browseCharacters": "Sfoglia Personaggi"
     },
-    "noStories": "Ancora nessuna storia. Crea la tua prima storia!",
+    "noStories": "Nessuna storia ancora. Crea la tua prima storia!",
     "createStory": "Crea Storia",
-    "plusRequired": "Richiede piano Plus",
+    "plusRequired": "Richiede il piano Plus",
     "recentConversations": "Conversazioni Recenti",
     "newConversation": "Nuova Conversazione",
     "carousel": {
       "alt": "Immagine del carosello per {{title}}",
-      "goToSlide": "Vai alla slide {{slide}}",
-      "plus": "PLUS"
+      "goToSlide": "Vai alla diapositiva {{slide}}",
+      "plus": "PLUS",
+      "slides": {
+        "welcome": {
+          "title": "Benvenuto su CharHub",
+          "description": "Crea e chatta con personaggi IA",
+          "action1": "Crea Personaggio",
+          "action2": "Sfoglia Personaggi"
+        },
+        "stories": {
+          "title": "Scopri le Storie",
+          "description": "Esplora la narrazione interattiva",
+          "action": "Sfoglia Storie"
+        },
+        "community": {
+          "title": "Unisciti alla Community",
+          "description": "Connettiti con altri creatori",
+          "action": "Esplora la Community"
+        }
+      }
     },
     "storyCard": {
       "alt": "Immagine di copertina per {{title}}",
