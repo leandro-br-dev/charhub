@@ -3,23 +3,27 @@
   "resources": {
     "title": "CharHub",
     "tabs": {
-      "discover": "اكتشف",
+      "discover": "استكشاف",
       "chat": "دردشة",
       "story": "قصة"
     },
     "sections": {
-      "popularCharacters": "شخصيات مشهورة",
+      "popularCharacters": "شخصيات شائعة",
       "favoriteCharacters": "شخصياتك المفضلة",
-      "popular": "مشهور",
+      "popular": "شائع",
       "favorites": "المفضلة",
       "myStories": "قصصي",
-      "popularStories": "قصص مشهورة",
-      "mine": "خاصتي"
+      "popularStories": "قصص شائعة",
+      "mine": "خاص بي",
+      "noPopularCharacters": "لم يتم العثور على شخصيات شائعة.",
+      "noFavoriteCharacters": "لم تقم بإضافة أي شخصيات إلى المفضلة بعد.",
+      "createCharacter": "إنشاء شخصية",
+      "browseCharacters": "تصفح الشخصيات"
     },
-    "noStories": "لا توجد قصص حتى الآن. أنشئ قصتك الأولى!",
+    "noStories": "لا توجد قصص بعد. أنشئ قصتك الأولى!",
     "createStory": "إنشاء قصة",
     "plusRequired": "يتطلب خطة Plus",
-    "recentConversations": "آخر المحادثات",
+    "recentConversations": "محادثات حديثة",
     "newConversation": "محادثة جديدة",
     "carousel": {
       "alt": "صورة دوارة لـ {{title}}",

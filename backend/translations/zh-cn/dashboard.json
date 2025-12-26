@@ -14,20 +14,24 @@
       "favorites": "收藏",
       "myStories": "我的故事",
       "popularStories": "热门故事",
-      "mine": "我的"
+      "mine": "我的",
+      "noPopularCharacters": "未找到热门角色。",
+      "noFavoriteCharacters": "你还没有收藏任何角色。",
+      "createCharacter": "创建角色",
+      "browseCharacters": "浏览角色"
     },
-    "noStories": "还没有故事。创建你的第一个故事！",
+    "noStories": "暂无故事。创建你的第一个故事吧！",
     "createStory": "创建故事",
-    "plusRequired": "需要 Plus 套餐",
-    "recentConversations": "最近的对话",
+    "plusRequired": "需要 Plus 会员",
+    "recentConversations": "最近对话",
     "newConversation": "新对话",
     "carousel": {
       "alt": "{{title}} 的轮播图",
-      "goToSlide": "前往第 {{slide}} 张幻灯片",
+      "goToSlide": "前往幻灯片 {{slide}}",
       "plus": "PLUS"
     },
     "storyCard": {
-      "alt": "{{title}} 的封面图",
+      "alt": "{{title}} 的封面图片",
       "play": "播放"
     }
   }

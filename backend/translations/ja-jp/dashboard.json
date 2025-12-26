@@ -14,20 +14,24 @@
       "favorites": "お気に入り",
       "myStories": "マイストーリー",
       "popularStories": "人気ストーリー",
-      "mine": "マイ"
+      "mine": "マイ",
+      "noPopularCharacters": "人気のキャラクターは見つかりませんでした。",
+      "noFavoriteCharacters": "まだお気に入りのキャラクターがいません。",
+      "createCharacter": "キャラクターを作成",
+      "browseCharacters": "キャラクターを探す"
     },
     "noStories": "まだストーリーがありません。最初のストーリーを作成しましょう！",
     "createStory": "ストーリーを作成",
-    "plusRequired": "Plusプランが必要です",
+    "plusRequired": "プラスプランが必要です",
     "recentConversations": "最近の会話",
     "newConversation": "新しい会話",
     "carousel": {
-      "alt": "{{title}} のカルーセル画像",
-      "goToSlide": "{{slide}} スライドに移動",
+      "alt": "{{title}}のカルーセル画像",
+      "goToSlide": "{{slide}}のスライドへ移動",
       "plus": "PLUS"
     },
     "storyCard": {
-      "alt": "{{title}} の表紙画像",
+      "alt": "{{title}}のカバー画像",
       "play": "再生"
     }
   }

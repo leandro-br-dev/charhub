@@ -14,15 +14,19 @@
       "favorites": "Favoritos",
       "myStories": "Mis Historias",
       "popularStories": "Historias Populares",
-      "mine": "Míos"
+      "mine": "Mías",
+      "noPopularCharacters": "No se encontraron personajes populares.",
+      "noFavoriteCharacters": "Todavía no tienes personajes favoritos.",
+      "createCharacter": "Crear Personaje",
+      "browseCharacters": "Explorar Personajes"
     },
-    "noStories": "Aún no hay historias. ¡Crea tu primera historia!",
+    "noStories": "Todavía no hay historias. ¡Crea tu primera historia!",
     "createStory": "Crear Historia",
     "plusRequired": "Requiere Plan Plus",
     "recentConversations": "Conversaciones Recientes",
     "newConversation": "Nueva Conversación",
     "carousel": {
-      "alt": "Imagen del carrusel para {{title}}",
+      "alt": "Imagen de carrusel para {{title}}",
       "goToSlide": "Ir a la diapositiva {{slide}}",
       "plus": "PLUS"
     },

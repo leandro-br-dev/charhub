@@ -5,21 +5,25 @@
     "tabs": {
       "discover": "Обзор",
       "chat": "Чат",
-      "story": "История"
+      "story": "Истории"
     },
     "sections": {
       "popularCharacters": "Популярные персонажи",
       "favoriteCharacters": "Ваши избранные",
-      "popular": "Популярное",
+      "popular": "Популярные",
       "favorites": "Избранное",
       "myStories": "Мои истории",
       "popularStories": "Популярные истории",
-      "mine": "Мои"
+      "mine": "Мои",
+      "noPopularCharacters": "Популярные персонажи не найдены.",
+      "noFavoriteCharacters": "Вы еще не добавили ни одного персонажа в избранное.",
+      "createCharacter": "Создать персонажа",
+      "browseCharacters": "Просмотреть персонажей"
     },
     "noStories": "Историй пока нет. Создайте свою первую историю!",
     "createStory": "Создать историю",
-    "plusRequired": "Требуется Плюс-подписка",
-    "recentConversations": "Последние беседы",
+    "plusRequired": "Требуется тариф Plus",
+    "recentConversations": "Недавние беседы",
     "newConversation": "Новая беседа",
     "carousel": {
       "alt": "Изображение карусели для {{title}}",
@@ -27,7 +31,7 @@
       "plus": "PLUS"
     },
     "storyCard": {
-      "alt": "Обложка для {{title}}",
+      "alt": "Изображение обложки для {{title}}",
       "play": "Играть"
     }
   }

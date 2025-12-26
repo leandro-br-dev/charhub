@@ -4,21 +4,25 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Découvrir",
-      "chat": "Chat",
+      "chat": "Discuter",
       "story": "Histoire"
     },
     "sections": {
-      "popularCharacters": "Personnages Populaires",
-      "favoriteCharacters": "Vos Favoris",
+      "popularCharacters": "Personnages populaires",
+      "favoriteCharacters": "Vos favoris",
       "popular": "Populaire",
       "favorites": "Favoris",
-      "myStories": "Mes Histoires",
-      "popularStories": "Histoires Populaires",
-      "mine": "Mon"
+      "myStories": "Mes histoires",
+      "popularStories": "Histoires populaires",
+      "mine": "Les miens",
+      "noPopularCharacters": "Aucun personnage populaire trouvé.",
+      "noFavoriteCharacters": "Vous n'avez pas encore mis de personnages en favoris.",
+      "createCharacter": "Créer un personnage",
+      "browseCharacters": "Parcourir les personnages"
     },
     "noStories": "Pas encore d'histoires. Créez votre première histoire !",
     "createStory": "Créer une histoire",
-    "plusRequired": "Nécessite le plan Plus",
+    "plusRequired": "Nécessite le forfait Plus",
     "recentConversations": "Conversations récentes",
     "newConversation": "Nouvelle conversation",
     "carousel": {

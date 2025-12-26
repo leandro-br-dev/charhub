@@ -14,7 +14,11 @@
       "favorites": "Favorites",
       "myStories": "My Stories",
       "popularStories": "Popular Stories",
-      "mine": "Mine"
+      "mine": "Mine",
+      "noPopularCharacters": "No popular characters found.",
+      "noFavoriteCharacters": "You haven't favorited any characters yet.",
+      "createCharacter": "Create Character",
+      "browseCharacters": "Browse Characters"
     },
     "noStories": "No stories yet. Create your first story!",
     "createStory": "Create Story",

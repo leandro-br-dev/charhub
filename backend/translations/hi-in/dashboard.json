@@ -8,17 +8,21 @@
       "story": "कहानी"
     },
     "sections": {
-      "popularCharacters": "लोकप्रिय कैरेक्टर",
+      "popularCharacters": "लोकप्रिय पात्र",
       "favoriteCharacters": "आपके पसंदीदा",
       "popular": "लोकप्रिय",
       "favorites": "पसंदीदा",
       "myStories": "मेरी कहानियाँ",
       "popularStories": "लोकप्रिय कहानियाँ",
-      "mine": "मेरी"
+      "mine": "मेरी",
+      "noPopularCharacters": "कोई लोकप्रिय पात्र नहीं मिला।",
+      "noFavoriteCharacters": "आपने अभी तक किसी पात्र को पसंदीदा नहीं बनाया है।",
+      "createCharacter": "पात्र बनाएँ",
+      "browseCharacters": "पात्र ब्राउज़ करें"
     },
-    "noStories": "अभी तक कोई कहानी नहीं है। अपनी पहली कहानी बनाएँ!",
+    "noStories": "अभी कोई कहानी नहीं है। अपनी पहली कहानी बनाएँ!",
     "createStory": "कहानी बनाएँ",
-    "plusRequired": "प्लस प्लान की आवश्यकता है",
+    "plusRequired": "प्लस प्लान आवश्यक है",
     "recentConversations": "हाल की बातचीत",
     "newConversation": "नई बातचीत",
     "carousel": {

@@ -14,7 +14,11 @@
       "favorites": "Favoritos",
       "myStories": "Minhas Histórias",
       "popularStories": "Histórias Populares",
-      "mine": "Minhas"
+      "mine": "Minhas",
+      "noPopularCharacters": "Nenhum personagem popular encontrado.",
+      "noFavoriteCharacters": "Você ainda não tem personagens favoritos.",
+      "createCharacter": "Criar Personagem",
+      "browseCharacters": "Explorar Personagens"
     },
     "noStories": "Ainda não há histórias. Crie sua primeira história!",
     "createStory": "Criar História",
