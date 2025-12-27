@@ -167,6 +167,9 @@ crashlytics-build.properties
 # But the root CLAUDE.md is local configuration and should NOT be tracked
 /CLAUDE.md
 
+# Gemini CLI
+GEMINI.md
+
 # Project Analyzer
 project_analyzer.py
 project_context.log

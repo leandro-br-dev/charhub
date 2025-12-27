@@ -1,6 +1,6 @@
 # Responsive Mobile Hamburger Menu - Feature Specification
 
-**Status**: 📋 Active (Planning)
+**Status**: 🏗️ In Progress (Implementation)
 **Version**: 1.0.0
 **Date Created**: 2025-12-27
 **Last Updated**: 2025-12-27
@@ -53,12 +53,12 @@ Implementação de menu hambúrguer responsivo para dispositivos móveis, resolv
 **Para que** eu tenha uma experiência visual agradável sem elementos sobrecarregados
 
 **Acceptance Criteria**:
-- [ ] Em viewports ≤768px, mostrar apenas logo + ícone de menu hambúrguer
-- [ ] Ocultar botões Login/Signup da barra principal
-- [ ] Ocultar theme toggle e language switcher da barra principal
-- [ ] Ícone de hambúrguer tem tamanho adequado (≥44x44px touch target)
-- [ ] Layout não quebra em 320px (menor viewport comum)
-- [ ] Sem scroll horizontal
+- [x] Em viewports ≤768px, mostrar apenas logo + ícone de menu hambúrguer
+- [x] Ocultar botões Login/Signup da barra principal
+- [x] Ocultar theme toggle e language switcher da barra principal
+- [x] Ícone de hambúrguer tem tamanho adequado (≥44x44px touch target)
+- [x] Layout não quebra em 320px (menor viewport comum)
+- [x] Sem scroll horizontal
 
 ### US-2: Menu Drawer Funcional
 **Como** usuário mobile
@@ -66,12 +66,12 @@ Implementação de menu hambúrguer responsivo para dispositivos móveis, resolv
 **Para que** eu acesse todos os controles de forma organizada
 
 **Acceptance Criteria**:
-- [ ] Clicar no hambúrguer abre drawer lateral (esquerda ou direita)
-- [ ] Drawer tem overlay escuro semi-transparente
-- [ ] Clicar fora do drawer fecha o menu
-- [ ] Botão X ou Close dentro do drawer
-- [ ] Animação suave de abertura/fechamento (300ms)
-- [ ] Body scroll desabilitado quando drawer aberto
+- [x] Clicar no hambúrguer abre drawer lateral (esquerda ou direita)
+- [x] Drawer tem overlay escuro semi-transparente
+- [x] Clicar fora do drawer fecha o menu
+- [x] Botão X ou Close dentro do drawer
+- [x] Animação suave de abertura/fechamento (300ms)
+- [x] Body scroll desabilitado quando drawer aberto
 
 ### US-3: Controles Organizados no Drawer
 **Como** usuário mobile com drawer aberto
@@ -79,21 +79,21 @@ Implementação de menu hambúrguer responsivo para dispositivos móveis, resolv
 **Para que** eu consiga acessar todas as funcionalidades facilmente
 
 **Acceptance Criteria**:
-- [ ] **Seção 1 - Links de navegação** (futura):
+- [x] **Seção 1 - Links de navegação** (futura):
   - Dashboard
   - Characters
   - Stories
   - (Placeholder para expansão futura)
-- [ ] **Divider/Separator**
-- [ ] **Seção 2 - Settings**:
+- [x] **Divider/Separator**
+- [x] **Seção 2 - Settings**:
   - Theme toggle (Dark/Light) - full width
   - Language selector - full width
-- [ ] **Divider/Separator**
-- [ ] **Seção 3 - Auth Actions**:
+- [x] **Divider/Separator**
+- [x] **Seção 3 - Auth Actions**:
   - Login button - full width, secondary style
   - Signup button - full width, primary style
-- [ ] Todos os touch targets ≥44x44px
-- [ ] Espaçamento adequado entre itens (16-24px)
+- [x] Todos os touch targets ≥44x44px
+- [x] Espaçamento adequado entre itens (16-24px)
 
 ### US-4: Desktop Não Afetado
 **Como** usuário acessando em desktop
@@ -101,10 +101,10 @@ Implementação de menu hambúrguer responsivo para dispositivos móveis, resolv
 **Para que** minha experiência desktop não seja prejudicada
 
 **Acceptance Criteria**:
-- [ ] Em viewports >768px, mostrar header atual (sem hambúrguer)
-- [ ] Todos os botões visíveis na barra principal
-- [ ] Drawer component não renderiza em desktop
-- [ ] Sem regressions no comportamento desktop
+- [x] Em viewports >768px, mostrar header atual (sem hambúrguer)
+- [x] Todos os botões visíveis na barra principal
+- [x] Drawer component não renderiza em desktop
+- [x] Sem regressions no comportamento desktop
 
 ---
 
