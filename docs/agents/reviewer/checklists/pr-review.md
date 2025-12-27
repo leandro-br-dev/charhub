@@ -6,14 +6,67 @@
 
 ---
 
+## ⚠️ CRITICAL FIRST STEP: Verify Branch is Up-to-Date
+
+**BEFORE reviewing anything else, you MUST verify the PR branch is synchronized with main.**
+
+### Why This is Critical
+
+When merging a PR, Git merges the **complete file state**, not just the changed files:
+- Files that exist in `main` but NOT in PR branch → **DELETED** on merge
+- This can accidentally remove entire features that were added to main after the PR branch was created
+
+### Verification Commands
+
+```bash
+# Fetch latest main
+git fetch origin
+
+# Checkout PR branch
+gh pr checkout <PR-number>
+
+# Check branch history - should show ONLY PR commits
+git log --oneline --graph main...HEAD
+
+# Check actual changes - use THREE dots, not two!
+git diff main...HEAD --name-status
+```
+
+**Checklist:**
+- [ ] `git log main...HEAD` shows ONLY commits from this PR
+- [ ] `git diff main...HEAD --name-status` shows ONLY intentional changes
+- [ ] No unexpected deletions in diff (check `grep "^D"`)
+- [ ] If many commits/deletions appear → Branch is OUTDATED!
+
+### If Branch is Outdated
+
+```bash
+# Update branch with latest main
+git merge main -m "chore: merge main to update branch"
+
+# Regenerate Prisma client if needed
+cd backend && npx prisma generate
+
+# Test builds still pass
+cd backend && npm run build
+cd frontend && npm run build
+
+# Push updated branch
+git push origin HEAD
+```
+
+**Then start the review from the beginning with the updated branch.**
+
+---
+
 ## Step 1: Initial PR Analysis
 
 ```bash
 # View PR details
 gh pr view <PR-number>
 
-# Check which files changed
-gh pr diff <PR-number> --name-only
+# Check which files changed (use THREE dots!)
+git diff main...HEAD --name-only
 ```
 
 **Checklist:**
@@ -22,6 +75,7 @@ gh pr diff <PR-number> --name-only
 - [ ] PR references related issue/feature spec (if applicable)
 - [ ] Changed files make sense for the feature
 - [ ] No unrelated changes included
+- [ ] ✅ **Branch is up-to-date with main** (verified above)
 
 ---
 

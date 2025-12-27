@@ -1,6 +1,6 @@
 # CLAUDE.md - Agent Reviewer
 
-**Last Updated**: 2025-12-13
+**Last Updated**: 2025-12-27
 **Role**: Operations, QA & Deployment
 **Branch**: `main` (NEVER `feature/*`)
 **Language**: English (code, docs, commits) | Portuguese (user communication if Brazilian)
@@ -121,6 +121,105 @@ Execute these **in order** for every PR/deployment:
 8. **Document all incidents**
 9. **Report quality issues to Agent Planner**
 10. **Ask user before pushing documentation changes**
+11. **VERIFY BRANCH IS UP-TO-DATE BEFORE REVIEWING** (see critical warning below)
+
+---
+
+## 🔴 CRITICAL WARNING: Outdated PR Branches
+
+### THE PROBLEM
+
+**When you review a PR, you're NOT just reviewing the changed files - you're reviewing the ENTIRE state of the codebase at merge time.**
+
+If a PR branch is based on an old commit:
+- Files that exist in `main` but NOT in the PR branch will be **DELETED** when merged
+- Recent fixes and features in `main` will be **LOST**
+- You might accidentally delete entire features without realizing it
+
+### REAL EXAMPLE THAT HAPPENED
+
+```
+main:     A---B---C---D---E (with new features)
+               \
+PR branch:      X---Y (created at B, missing C,D,E!)
+
+If merged: main becomes A---B---C---D---E---M
+                                           |
+                                    (deletes C,D,E changes!)
+```
+
+**Result**: Lost an entire feature system (11,000 lines of code) because PR was based on old commit.
+
+### MANDATORY VERIFICATION STEPS
+
+**BEFORE reviewing ANY PR, you MUST:**
+
+1. **Check branch base**:
+   ```bash
+   git fetch origin
+   git log --oneline --graph main...HEAD
+   ```
+   ☑️ Should show ONLY the PR's commits
+   ⚠️ If you see many commits, branch is outdated!
+
+2. **Compare with main properly**:
+   ```bash
+   # WRONG - shows all differences including missing files
+   git diff main --name-status
+
+   # CORRECT - shows only changes made IN THIS BRANCH
+   git diff main...HEAD --name-status
+   ```
+   ☑️ Only files actually modified in PR should appear
+   ⚠️ If you see many deletions, branch is outdated!
+
+3. **If branch is outdated**:
+   ```bash
+   # Update branch with latest main
+   git merge main -m "chore: merge main to update branch"
+
+   # Test builds still pass
+   cd backend && npm run build
+   cd frontend && npm run build
+
+   # Push updated branch
+   git push origin HEAD
+   ```
+
+4. **Verify no accidental deletions**:
+   ```bash
+   # After updating, check diff again
+   git diff main...HEAD --name-status | grep "^D"
+   ```
+   ☑️ Should only show files intentionally deleted
+   ⚠️ If you see critical files, STOP and investigate!
+
+### WHY THIS IS CRITICAL
+
+Git merges the **complete file state**, not just diffs:
+- ✅ Files in both branches → Uses newer version
+- ✅ Files only in PR branch → Added
+- ⚠️ **Files only in main → DELETED** ← THIS IS THE DANGER!
+
+### CHECKLIST BEFORE EVERY PR REVIEW
+
+- [ ] `git fetch origin` to get latest main
+- [ ] `git log --oneline --graph main...HEAD` shows only PR commits
+- [ ] `git diff main...HEAD --name-status` shows only PR changes
+- [ ] If outdated: `git merge main` and re-test
+- [ ] Verify no critical files in deletion list
+- [ ] **NEVER assume PR branch is up-to-date**
+
+### IF YOU FIND AN OUTDATED PR
+
+**DO NOT REVIEW YET!** First:
+1. Alert the user about the outdated branch
+2. Merge main into the PR branch
+3. Regenerate Prisma client if schema changed
+4. Re-run all tests
+5. THEN proceed with review
+
+**Remember**: An outdated PR is a ticking time bomb. Always verify before reviewing.
 
 ---
 
