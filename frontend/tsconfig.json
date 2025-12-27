@@ -7,6 +7,10 @@
       "DOM.Iterable",
       "ESNext"
     ],
+    "types": [
+      "vitest/globals",
+      "@types/node"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
