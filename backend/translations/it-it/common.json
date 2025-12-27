@@ -3,11 +3,18 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Lingua",
+    "menu": {
+      "title": "Menu",
+      "close": "Chiudi menu",
+      "open": "Apri menu"
+    },
+    "settings": "Impostazioni",
+    "account": "Account",
     "continueGoogle": "Continua con Google",
     "continueFacebook": "Continua con Facebook",
-    "privacy": "Continuando accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di profilo di base.",
+    "privacy": "Continuando, accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di profilo di base.",
     "logout": "Esci",
-    "logoutLoading": "Disconnessione in corso...",
+    "logoutLoading": "Uscita in corso...",
     "authenticatedUser": "Utente autenticato",
     "tokenStored": "Memorizzato in cookie HTTP-only",
     "navDashboard": "Dashboard",
@@ -49,18 +56,18 @@
     "contentFilter": {
       "ariaLabel": "Filtro contenuti",
       "title": "Filtro Contenuti",
-      "ageRating": "Fascia d'età",
-      "blurNsfw": "Sfoca Contenuti Espliciti",
-      "none": "Nessun Filtro",
-      "blur": "Sfoca Contenuti Sensibili",
-      "hidden": "Nascondi Contenuti Maturo",
+      "ageRating": "Classificazione per età",
+      "blurNsfw": "Sfoca contenuti espliciti",
+      "none": "Nessun filtro",
+      "blur": "Sfoca contenuti sensibili",
+      "hidden": "Nascondi contenuti maturi",
       "descriptions": {
         "none": "Mostra tutti i contenuti senza restrizioni",
-        "blur": "Applica la sfocatura ai contenuti maturi",
+        "blur": "Applica sfocatura ai contenuti maturi",
         "hidden": "Nascondi completamente i contenuti maturi"
       },
       "ageRatings": {
-        "L": "Liberi",
+        "L": "Libero",
         "TEN": "10+",
         "TWELVE": "12+",
         "FOURTEEN": "14+",
@@ -68,8 +75,8 @@
         "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ Età non registrata",
-      "noBirthdateDescription": "Per accedere ai contenuti con restrizioni d'età, aggiungi la tua data di nascita nelle impostazioni.",
-      "goToSettings": "Vai alle impostazioni",
+      "noBirthdateDescription": "Per accedere ai contenuti con restrizioni di età, aggiungi la tua data di nascita nelle impostazioni.",
+      "goToSettings": "Vai alle Impostazioni",
       "blocked": "(bloccato)"
     },
     "errors": {
