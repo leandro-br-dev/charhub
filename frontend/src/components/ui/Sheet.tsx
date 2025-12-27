@@ -55,12 +55,12 @@ export function SheetTrigger({
   if (asChild && isValidElement(children)) {
     const child = children as React.ReactElement;
     const childProps = child.props as { className?: string; onClick?: (e: React.MouseEvent) => void };
-    
+
     return cloneElement(child, {
       ...props,
       onClick: handleClick,
       className: `${childProps.className || ''} ${className}`.trim(),
-    });
+    } as any);
   }
 
   return (
