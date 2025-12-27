@@ -48,7 +48,7 @@ jobs:
           git log --oneline -5
 
   ci-gate:
-    name: Wait for CI Pipeline
+    name: Wait for CI Pipelines (Backend + Frontend)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -102,6 +102,57 @@ jobs:
           done
 
           echo "❌ Timeout waiting for Backend CI to complete (30 minutes)"
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for Frontend CI to complete
+        run: |
+          echo "🔄 Waiting for Frontend CI workflow to complete..."
+
+          # Get the current workflow run ID
+          CURRENT_RUN_ID="${{ github.run_id }}"
+
+          # Get the commit SHA
+          COMMIT_SHA="${{ github.sha }}"
+
+          # Poll for Frontend CI completion (max 30 retries = 30 minutes)
+          for i in {1..30}; do
+            echo "Attempt $i/30..."
+
+            # Get the latest Frontend CI run for this commit
+            FRONTEND_CI_RUN=$(gh run list \
+              --workflow=frontend-ci.yml \
+              --branch=main \
+              --json status,conclusion,databaseId \
+              --limit=1 \
+              --jq '.[] | {status, conclusion, id: .databaseId}' \
+              2>/dev/null)
+
+            if [ -z "$FRONTEND_CI_RUN" ]; then
+              echo "  ℹ️  Frontend CI not yet started, waiting..."
+              sleep 60
+              continue
+            fi
+
+            STATUS=$(echo "$FRONTEND_CI_RUN" | jq -r '.status')
+            CONCLUSION=$(echo "$FRONTEND_CI_RUN" | jq -r '.conclusion')
+
+            if [ "$STATUS" = "completed" ]; then
+              if [ "$CONCLUSION" = "success" ]; then
+                echo "✅ Frontend CI passed!"
+                exit 0
+              else
+                echo "❌ Frontend CI failed (conclusion: $CONCLUSION)"
+                exit 1
+              fi
+            else
+              echo "  ⏳ Frontend CI still running (status: $STATUS)"
+              sleep 60
+            fi
+          done
+
+          echo "❌ Timeout waiting for Frontend CI to complete (30 minutes)"
           exit 1
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
