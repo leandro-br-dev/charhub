@@ -16,7 +16,6 @@ import { setupChatSocket } from './websocket/chatHandler';
 import webhookRoutes from './routes/webhooks';
 
 const app = express();
-app.set('trust proxy', 1); // Trust first proxy (Nginx)
 const server = createServer(app);
 const PORT = Number(process.env.PORT) || 3000;
 
