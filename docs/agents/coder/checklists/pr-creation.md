@@ -37,6 +37,7 @@ cd frontend && npm run build && npm test
 - [ ] All tests pass locally (after merge!)
 - [ ] TypeScript compiles (backend + frontend)
 - [ ] Feature spec updated with "Ready for PR"
+- [ ] Move feature spec from `active/` to `implemented/`
 - [ ] Commit with proper format
 - [ ] Push to remote
 - [ ] Create PR with template

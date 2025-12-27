@@ -15,13 +15,40 @@ const themeOptions: ThemeOption[] = [
   { value: 'system', icon: 'desktop_windows' },
 ];
 
-export function ThemeToggle(): JSX.Element {
+interface ThemeToggleProps {
+  variant?: 'icon' | 'full-width';
+}
+
+export function ThemeToggle({ variant = 'icon' }: ThemeToggleProps): JSX.Element {
   const { theme, setTheme } = useTheme();
   const { t } = useTranslation('common');
 
   const currentTheme = themeOptions.find(option => option.value === theme) ?? themeOptions[2];
 
   const resolveLabel = (value: ThemeOption['value']) => t(`theme.option.${value}`);
+
+  if (variant === 'full-width') {
+    return (
+      <div className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-accent/5">
+        <span className="text-sm font-medium text-content">{t('theme.label')}</span>
+        <div className="flex gap-2">
+          {themeOptions.filter(opt => opt.value !== 'system').map((option) => (
+            <Button
+              key={option.value}
+              variant={theme === option.value ? 'primary' : 'light'}
+              size="extra-small"
+              onClick={() => setTheme(option.value)}
+              className="capitalize"
+              aria-label={resolveLabel(option.value)}
+            >
+              <span className="material-symbols-outlined text-lg mr-1">{option.icon}</span>
+              {resolveLabel(option.value)}
+            </Button>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <SmartDropdown

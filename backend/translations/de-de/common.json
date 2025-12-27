@@ -3,13 +3,20 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Sprache",
+    "menu": {
+      "title": "Menü",
+      "close": "Menü schließen",
+      "open": "Menü öffnen"
+    },
+    "settings": "Einstellungen",
+    "account": "Konto",
     "continueGoogle": "Mit Google fortfahren",
     "continueFacebook": "Mit Facebook fortfahren",
-    "privacy": "Durch die Fortsetzung stimmen Sie unserer Datenschutzerklärung zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzrichtlinie zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
     "logoutLoading": "Melde ab...",
-    "authenticatedUser": "Authentifizierter Benutzer",
-    "tokenStored": "Gespeichert in HTTP-only Cookie",
+    "authenticatedUser": "Authentifizierter Nutzer",
+    "tokenStored": "In HTTP-only Cookie gespeichert",
     "navDashboard": "Dashboard",
     "navCharacters": "Charaktere",
     "navTagline": "Sichere OAuth-Demo",
@@ -31,12 +38,12 @@
     "nameNotAvailable": "Name nicht verfügbar",
     "cancel": "Abbrechen",
     "save": "Speichern",
-    "saving": "Speichere...",
+    "saving": "Speichern...",
     "delete": "Löschen",
-    "deleting": "Lösche...",
+    "deleting": "Löschen...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Option auswählen",
+    "selectOption": "Wähle eine Option aus",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
       "with": "Chatten mit"
@@ -57,10 +64,10 @@
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
         "blur": "Reife Inhalte unscharf darstellen",
-        "hidden": "Reife Inhalte komplett ausblenden"
+        "hidden": "Reife Inhalte vollständig ausblenden"
       },
       "ageRatings": {
-        "L": "Frei",
+        "L": "Freigegeben",
         "TEN": "Ab 10 Jahren",
         "TWELVE": "Ab 12 Jahren",
         "FOURTEEN": "Ab 14 Jahren",
@@ -68,9 +75,9 @@
         "EIGHTEEN": "Ab 18 Jahren"
       },
       "noBirthdateWarning": "⚠️ Alter nicht registriert",
-      "noBirthdateDescription": "Um auf altersbeschränkte Inhalte zuzugreifen, fügen Sie bitte Ihr Geburtsdatum in den Einstellungen hinzu.",
+      "noBirthdateDescription": "Um auf altersbeschränkte Inhalte zugreifen zu können, fügen Sie bitte Ihr Geburtsdatum in den Einstellungen hinzu.",
       "goToSettings": "Zu den Einstellungen",
-      "blocked": "(blockiert)"
+      "blocked": "(gesperrt)"
     },
     "errors": {
       "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
