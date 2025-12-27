@@ -6,7 +6,6 @@
 import { civitaiApiClient } from '../services/civitai';
 import { curationQueue } from '../services/curation';
 import { prisma } from '../config/database';
-import { logger } from '../config/logger';
 
 async function testCurationWithVariation() {
   console.log('\n=== Curation with Search Variation Test ===\n');

@@ -5,7 +5,6 @@
 
 import { batchCharacterGenerator } from '../services/batch';
 import { prisma } from '../config/database';
-import { logger } from '../config/logger';
 
 async function testCharacterGeneration() {
   console.log('\n=== Character Generation from Curated Images Test ===\n');
@@ -43,7 +42,9 @@ async function testCharacterGeneration() {
     console.log(`   ✓ Success: ${result.successCount} characters`);
     console.log(`   ✗ Failures: ${result.failureCount}`);
     console.log(`   ⏱ Total duration: ${result.totalDuration}ms`);
-    console.log(`   ⏱ Average per character: ${result.averageDuration}ms`);
+    if (result.successCount > 0) {
+      console.log(`   ⏱ Average per character: ${Math.round(result.totalDuration / result.successCount)}ms`);
+    }
 
     // 4. Show generated characters
     if (result.successCount > 0) {
@@ -53,34 +54,36 @@ async function testCharacterGeneration() {
         take: result.successCount,
         select: {
           id: true,
-          name: true,
-          tagline: true,
+          firstName: true,
+          lastName: true,
+          age: true,
+          species: true,
           visibility: true,
           createdAt: true,
-          user: {
-            select: {
-              username: true,
-            },
-          },
         },
       });
 
       newCharacters.forEach((char, idx) => {
-        console.log(`\n   ${idx + 1}. ${char.name}`);
+        const fullName = `${char.firstName}${char.lastName ? ' ' + char.lastName : ''}`;
+        console.log(`\n   ${idx + 1}. ${fullName}`);
         console.log(`      ID: ${char.id}`);
-        console.log(`      Tagline: ${char.tagline}`);
+        console.log(`      Age: ${char.age || 'unknown'}`);
+        console.log(`      Species: ${char.species || 'unknown'}`);
         console.log(`      Visibility: ${char.visibility}`);
-        console.log(`      Created by: ${char.user.username}`);
         console.log(`      Created at: ${char.createdAt.toISOString()}`);
       });
     }
 
     // 5. Show failures if any
-    if (result.failures.length > 0) {
+    if (result.failureCount > 0) {
       console.log('\n6. Failures:');
-      result.failures.forEach((failure, idx) => {
-        console.log(`   ${idx + 1}. Error: ${failure.error}`);
-        console.log(`      Duration: ${failure.duration}ms`);
+      const failedResults = result.results.filter(r => !r.success);
+      failedResults.forEach((failure, idx) => {
+        console.log(`   ${idx + 1}. Error: ${failure.error || 'Unknown error'}`);
+        console.log(`      Image ID: ${failure.curatedImageId}`);
+        if (failure.duration) {
+          console.log(`      Duration: ${failure.duration}ms`);
+        }
       });
     }
 

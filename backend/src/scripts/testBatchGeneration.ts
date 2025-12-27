@@ -5,7 +5,6 @@
 import { queueManager } from '../queues/QueueManager';
 import { QueueName } from '../queues/config';
 import type { BatchGenerationJobData } from '../queues/jobs/characterPopulationJob';
-import { logger } from '../config/logger';
 
 async function main() {
   console.log('\n=== Batch Character Generation Test ===\n');

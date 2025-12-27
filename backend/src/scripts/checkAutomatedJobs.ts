@@ -39,8 +39,9 @@ async function checkAutomatedJobs() {
     } else {
       repeatableJobs.forEach((job, idx) => {
         console.log(`\n   ${idx + 1}. ${job.name}`);
-        console.log(`      Pattern: ${job.pattern} (cron)`);
-        console.log(`      Next run: ${new Date(job.next).toISOString()}`);
+        console.log(`      Pattern: ${job.pattern || 'N/A'} (cron)`);
+        const nextRun = job.next ? new Date(job.next).toISOString() : 'Not scheduled';
+        console.log(`      Next run: ${nextRun}`);
         console.log(`      Key: ${job.key}`);
       });
     }

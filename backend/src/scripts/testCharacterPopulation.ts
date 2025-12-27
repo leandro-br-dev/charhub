@@ -6,7 +6,6 @@
 import { queueManager } from '../queues/QueueManager';
 import { QueueName } from '../queues/config';
 import type { TriggerCurationJobData } from '../queues/jobs/characterPopulationJob';
-import { logger } from '../config/logger';
 
 async function main() {
   console.log('\n=== Character Population System Test ===\n');
