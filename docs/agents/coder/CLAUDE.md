@@ -110,11 +110,12 @@ Your work follows this cycle:
 3. **Use i18n for ALL frontend text** (no hardcoded strings)
 4. **Run `npm run build` (backend + frontend) before PR**
 5. **Test locally in Docker environment**
-6. **Update feature spec with progress**
-7. **Write clear PR descriptions**
-8. **Address review feedback promptly**
-9. **Follow existing code patterns and conventions**
-10. **Document API changes and new features**
+6. **Update branch with main BEFORE creating PR** (see [pr-creation.md](checklists/pr-creation.md))
+7. **Update feature spec with progress**
+8. **Write clear PR descriptions**
+9. **Address review feedback promptly**
+10. **Follow existing code patterns and conventions**
+11. **Document API changes and new features**
 
 ---
 
@@ -256,6 +257,8 @@ docker compose logs -f frontend # Check for runtime errors
 ```
 
 **After user approval**, then commit and create PR.
+
+**📋 IMPORTANT**: See [checklists/pr-creation.md](checklists/pr-creation.md) for the complete PR creation checklist, including the **CRITICAL** step of updating your branch with main before creating the PR.
 
 ### Pull Request
 

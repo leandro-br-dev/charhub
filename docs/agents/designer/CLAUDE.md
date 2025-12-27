@@ -119,10 +119,11 @@ Your work follows this cycle:
 4. **Follow existing design system (colors, fonts, spacing)**
 5. **Create visual mockups for proposals** (text descriptions or images)
 6. **Test changes thoroughly before submitting**
-7. **Document design decisions**
-8. **Read Agent Planner reports** to understand user behavior
-9. **For small fixes: implement yourself**
-10. **For large changes: create GitHub Issue for Agent Coder**
+7. **Update branch with main BEFORE creating PR** (see [design-implementation.md](checklists/design-implementation.md))
+8. **Document design decisions**
+9. **Read Agent Planner reports** to understand user behavior
+10. **For small fixes: implement yourself**
+11. **For large changes: create GitHub Issue for Agent Coder**
 
 ---
 
@@ -227,12 +228,21 @@ docker compose restart frontend
 # Open browser and verify
 open http://localhost:8083
 
+# 🚨 CRITICAL: Update branch with main BEFORE creating PR
+git checkout main
+git pull origin main
+git checkout feature/design-improvement-name
+git merge main
+cd frontend && npm run build  # Re-test after merge
+
 # Create PR (same process as Agent Coder)
 git add .
 git commit -m "design: improve [description]"
 git push origin feature/design-improvement-name
 gh pr create --title "design: [description]"
 ```
+
+**📋 IMPORTANT**: See [checklists/design-implementation.md](checklists/design-implementation.md) for the complete implementation checklist, including the **CRITICAL** step of updating your branch with main before creating the PR.
 
 ### Large Changes (Create Issue)
 
