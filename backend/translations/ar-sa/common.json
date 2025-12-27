@@ -3,30 +3,23 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "اللغة",
-    "menu": {
-      "title": "القائمة",
-      "close": "إغلاق القائمة",
-      "open": "فتح القائمة"
-    },
-    "settings": "الإعدادات",
-    "account": "الحساب",
     "continueGoogle": "المتابعة باستخدام Google",
     "continueFacebook": "المتابعة باستخدام Facebook",
-    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "privacy": "بالمتابعة، أنت توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
     "logoutLoading": "جارٍ تسجيل الخروج...",
     "authenticatedUser": "مستخدم موثق",
-    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
+    "tokenStored": "مخزن في ملف تعريف الارتباط (HTTP-only cookie)",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
     "navTagline": "عرض توضيحي آمن لـ OAuth",
     "providerLabel": {
-      "google": "جوجل",
-      "facebook": "فيسبوك"
+      "google": "Google",
+      "facebook": "Facebook"
     },
     "provider": "الموفر",
     "theme": {
-      "label": "السمة",
+      "label": "المظهر",
       "option": {
         "light": "فاتح",
         "dark": "داكن",
@@ -43,14 +36,14 @@
     "deleting": "جارٍ الحذف...",
     "enabled": "مفعل",
     "disabled": "معطل",
-    "selectOption": "اختر خيارًا",
+    "selectOption": "حدد خيارًا",
     "noResults": "لم يتم العثور على خيارات.",
     "chat": {
       "with": "الدردشة مع"
     },
     "messages": {
       "linkCopied": "تم نسخ الرابط إلى الحافظة!",
-      "chatStarted": "تم بدء الدردشة بنجاح!",
+      "chatStarted": "بدأت الدردشة بنجاح!",
       "characterDeleted": "تم حذف الشخصية بنجاح"
     },
     "contentFilter": {
@@ -58,11 +51,11 @@
       "title": "فلتر المحتوى",
       "ageRating": "التصنيف العمري",
       "blurNsfw": "تمويه المحتوى الصريح",
-      "none": "لا يوجد فلتر",
-      "blur": "تمويه الحساس",
+      "none": "بلا فلتر",
+      "blur": "تمويه المحتوى الحساس",
       "hidden": "إخفاء المحتوى الناضج",
       "descriptions": {
-        "none": "عرض كل المحتوى بدون قيود",
+        "none": "عرض جميع المحتويات بدون قيود",
         "blur": "تطبيق تمويه على المحتوى الناضج",
         "hidden": "إخفاء المحتوى الناضج بالكامل"
       },
@@ -75,13 +68,13 @@
         "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ العمر غير مسجل",
-      "noBirthdateDescription": "للوصول إلى المحتوى المقيد عمريًا، يرجى إضافة تاريخ ميلادك في الإعدادات.",
+      "noBirthdateDescription": "للوصول إلى المحتوى المقيد بالعمر، يرجى إضافة تاريخ ميلادك في الإعدادات.",
       "goToSettings": "الانتقال إلى الإعدادات",
       "blocked": "(محظور)"
     },
     "errors": {
       "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
-      "failedToFetchData": "فشل في جلب البيانات"
+      "failedToFetchData": "فشل جلب البيانات"
     },
     "character": "شخصية",
     "seeMore": "شاهد المزيد",

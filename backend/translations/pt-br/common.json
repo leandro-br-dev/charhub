@@ -3,13 +3,6 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Idioma",
-    "menu": {
-      "title": "Menu",
-      "close": "Fechar menu",
-      "open": "Abrir menu"
-    },
-    "settings": "Configurações",
-    "account": "Conta",
     "continueGoogle": "Continuar com o Google",
     "continueFacebook": "Continuar com o Facebook",
     "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
@@ -19,7 +12,7 @@
     "tokenStored": "Armazenado em cookie somente HTTP",
     "navDashboard": "Painel",
     "navCharacters": "Personagens",
-    "navTagline": "Demo de OAuth seguro",
+    "navTagline": "Demonstração segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -35,7 +28,7 @@
     },
     "none": "Nenhum",
     "unknown": "Desconhecido",
-    "nameNotAvailable": "Nome não disponível",
+    "nameNotAvailable": "Nome indisponível",
     "cancel": "Cancelar",
     "save": "Salvar",
     "saving": "Salvando...",
@@ -56,7 +49,7 @@
     "contentFilter": {
       "ariaLabel": "Filtro de conteúdo",
       "title": "Filtro de Conteúdo",
-      "ageRating": "Classificação Etária",
+      "ageRating": "Classificação Indicativa",
       "blurNsfw": "Borrar Conteúdo Explícito",
       "none": "Sem Filtro",
       "blur": "Borrar Conteúdo Sensível",

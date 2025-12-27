@@ -9,7 +9,6 @@
 - [ ] All tests pass locally
 - [ ] TypeScript compiles (backend + frontend)
 - [ ] Feature spec updated with "Ready for PR"
-- [ ] Move feature spec from `active/` to `implemented/`
 - [ ] Commit with proper format
 - [ ] Push to remote
 - [ ] Create PR with template

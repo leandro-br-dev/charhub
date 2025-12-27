@@ -41,11 +41,7 @@ const languages: LanguageOption[] = [
   { code: 'it-IT', name: 'Italiano (IT)', flag: IT }
 ];
 
-interface LanguageSwitcherProps {
-  variant?: 'compact' | 'full-width';
-}
-
-export function LanguageSwitcher({ variant = 'compact' }: LanguageSwitcherProps): JSX.Element {
+export function LanguageSwitcher(): JSX.Element {
   const { i18n, t } = useTranslation('common');
   const { user } = useAuth();
   const current = i18n.resolvedLanguage || i18n.language || languages[0].code;
@@ -72,39 +68,6 @@ export function LanguageSwitcher({ variant = 'compact' }: LanguageSwitcherProps)
       }
     }
   };
-
-  if (variant === 'full-width') {
-    return (
-      <div className="w-full p-3 rounded-lg hover:bg-accent/5">
-        <label className="text-sm font-medium mb-2 block text-content">{t('language')}</label>
-        <div className="grid grid-cols-2 gap-2">
-          {languages.map((lang) => {
-             const LangFlag = lang.flag;
-             const isSelected = resolved.code === lang.code;
-             
-             // Only show a few popular languages or all? 
-             // Showing all 12 might be too much for mobile menu.
-             // Let's show currently selected + top 3 or just use a select dropdown style
-             // For now, I'll use a simple list of buttons for better UX than a native select
-             return (
-               <button
-                 key={lang.code}
-                 onClick={() => handleChange(lang.code)}
-                 className={`flex items-center gap-2 px-3 py-2 rounded-md border text-sm transition-colors ${
-                   isSelected 
-                     ? 'bg-primary/10 border-primary text-primary' 
-                     : 'bg-card border-border text-content hover:bg-accent'
-                 }`}
-               >
-                 <LangFlag aria-label={lang.name} role="img" className="h-3 w-5 rounded-sm" />
-                 <span className="truncate">{lang.name.split(' ')[0]}</span>
-               </button>
-             );
-          })}
-        </div>
-      </div>
-    );
-  }
 
   return (
     <SmartDropdown

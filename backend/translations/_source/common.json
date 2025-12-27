@@ -3,13 +3,6 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Language",
-    "menu": {
-      "title": "Menu",
-      "close": "Close menu",
-      "open": "Open menu"
-    },
-    "settings": "Settings",
-    "account": "Account",
     "continueGoogle": "Continue with Google",
     "continueFacebook": "Continue with Facebook",
     "privacy": "By continuing you agree to our privacy policy and authorize CharHub to access your basic profile information.",
