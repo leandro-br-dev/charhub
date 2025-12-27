@@ -553,7 +553,7 @@ export class MembershipService {
     let payload: InviteToken;
     try {
       payload = jwt.verify(token, jwtSecret) as InviteToken;
-    } catch (error) {
+    } catch (_error) {
       throw new Error('Invalid or expired invite link');
     }
 

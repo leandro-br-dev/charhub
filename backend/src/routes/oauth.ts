@@ -81,7 +81,7 @@ function sanitizeRedirectUri(candidate?: string, req?: Request): string {
     if (allowedOrigins.includes(target.origin)) {
       return target.toString();
     }
-  } catch (error) {
+  } catch (_error) {
     // Fall back to default redirect when malformed
   }
 

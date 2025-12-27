@@ -68,7 +68,7 @@ router.get('/', async (req: Request, res: Response) => {
       const raw = fs.readFileSync(translationsPath, 'utf8');
       const json = JSON.parse(raw);
       resources = (json && json.resources) || null;
-    } catch (e) {
+    } catch (_e) {
       logger.warn({ translationsPath }, 'tags_translation_file_missing_or_invalid');
       resources = null;
     }

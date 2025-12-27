@@ -44,7 +44,7 @@ export type CharacterAutocompleteInput = Partial<{
 
 export type CharacterAutocompleteMode = 'ai' | 'web';
 
-export interface CharacterAutocompleteResult extends Partial<CharacterAutocompleteInput> {}
+export type CharacterAutocompleteResult = Partial<CharacterAutocompleteInput>;
 
 function buildSystemPrompt(mode: CharacterAutocompleteMode) {
   const webNote = mode === 'web'
@@ -194,7 +194,7 @@ function sanitizeAutocomplete(obj: Record<string, unknown>): CharacterAutocomple
           const filtered = value
             .map(v => (typeof v === 'string' ? v.toUpperCase().trim() : ''))
             .filter(v => allowedTags.has(v));
-          if (filtered.length > 0) out.contentTags = filtered as any;
+          if (filtered.length > 0) out.contentTags = filtered as ContentTag[];
         }
         break;
       }
