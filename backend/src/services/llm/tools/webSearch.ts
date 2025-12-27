@@ -115,7 +115,7 @@ export async function webSearch(query: string): Promise<WebSearchResponse> {
             };
 
             resolve(searchResponse);
-          } catch (error) {
+          } catch (_error) {
             reject(new Error('Failed to parse web search results'));
           }
         });

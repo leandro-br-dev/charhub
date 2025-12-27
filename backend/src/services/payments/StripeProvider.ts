@@ -286,7 +286,7 @@ export class StripeProvider implements IPaymentProvider {
         return (await this.stripe.customers.retrieve(
           userPlan.stripeCustomerId
         )) as Stripe.Customer;
-      } catch (error) {
+      } catch (_error) {
         logger.warn({ userId, customerId: userPlan.stripeCustomerId }, 'Failed to retrieve Stripe customer, creating new one');
       }
     }
