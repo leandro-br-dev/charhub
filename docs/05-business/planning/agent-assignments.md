@@ -6,13 +6,15 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ---
 
-## 📊 Status Atual: 25 de Dezembro de 2025
+## 📊 Status Atual: 27 de Dezembro de 2025
 
 ### Tarefas em Progresso
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
 | T006 | **Sistema de População Automática de Personagens (Civitai)** | Agent Coder | 🚀 Pronto para Iniciar | `feature/automated-character-population` (a criar) | 31/01/2026 | 25/12 - Spec criada e aprovada - **PRIORIDADE CRÍTICA** |
+| T007 | **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | 📋 Planejado | `feature/automated-story-generation` (a criar) | 28/02/2026 | 27/12 - Spec criada e ativa - **PRIORIDADE ALTA** |
+| T008 | **Mobile Hamburger Menu (Responsive)** | Agent Coder | 🚀 Pronto para Iniciar | `feature/mobile-hamburger-menu` (a criar) | 03/01/2026 | 27/12 - Spec criada - **CRÍTICO (Quick Win)** - Paralelo com T006 |
 
 ---
 
@@ -34,6 +36,8 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 | Tarefa | Agente | Status | Detalhes |
 |--------|--------|--------|----------|
 | **Sistema de População Automática de Personagens** | Agent Coder | ✅ Atribuído | Spec completa em `active/automated-character-population.md`. **PRIORIDADE CRÍTICA** - Iniciar imediatamente. |
+| **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | ✅ Atribuído | Spec completa em `active/automated-story-generation.md`. **PRIORIDADE ALTA** - Iniciar após população de personagens. |
+| **Mobile Hamburger Menu (Responsive)** | Agent Coder | ✅ Atribuído | Spec completa em `active/mobile-hamburger-menu.md`. **CRÍTICO** - Quick Win, pode trabalhar em paralelo. |
 
 **Contexto da Tarefa População Automática** (T006):
 - **Por que crítico**: CharHub está funcional mas não pode ser divulgado sem conteúdo (chicken-and-egg problem)
@@ -97,6 +101,184 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 - Viabiliza divulgação com catálogo robusto
 - Aumento estimado de 40% em retenção D1
 - Aumento estimado de 30% em signup conversion
+
+---
+
+**Contexto da Tarefa Sistema de Criação de Histórias** (T007):
+- **Por que importante**: Com geração automática de personagens implementada, usuários têm mais conteúdo para explorar, mas precisam de contextos (histórias) para engajar
+- **Objetivo Principal**: Criar sistema completo de criação de histórias com modo manual organizado + modo IA automático
+- **Problemas Resolvidos**:
+  - ✅ Interface atual de criação manual é desorganizada (formulário único longo)
+  - ✅ Não existe opção de geração automática de histórias
+  - ✅ Alta barreira de entrada para usuários testarem histórias rapidamente
+  - ✅ Falta de contexto/enredo para usar personagens gerados automaticamente
+- **Features Principais**:
+  1. **Criação Manual Refatorada**:
+     - Interface organizada em 5 abas (Story Details, Plot & Setting, Characters, Media, Visibility)
+     - Layout similar ao sistema de personagens (comprovadamente eficaz)
+     - Melhor UX e organização visual
+  2. **Geração Automática com IA**:
+     - Input: texto (descrição da história) e/ou imagem (cenário/inspiração)
+     - Classificação etária e tags de conteúdo
+     - Geração completa: título, sinopse, texto inicial, objetivos, imagem de capa
+     - Wizard com progresso em tempo real (8 etapas via WebSocket)
+     - Reveal dramático em 4 fases (similar a personagens)
+  3. **Sistema de Créditos**:
+     - 75 créditos (apenas texto) ou 100 créditos (com imagem)
+     - Nova fonte de monetização
+- **Estimativa**: 3-4 semanas (4 fases detalhadas na spec)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/automated-story-generation.md`
+- **Branch sugerida**: `feature/automated-story-generation`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento
+- ✅ Prioridade ALTA (após população de personagens)
+- ✅ Sistema de geração de personagens já implementado (pode reutilizar padrões)
+- ✅ Custos de IA aprovados (75-100 créditos por história)
+- ✅ Integração com sistema de créditos existente
+
+**Instruções para Agent Coder**:
+1. ⚠️ **PRIORIDADE ALTA** - Feature crítica para engajamento pós-geração de personagens
+2. **Sequência**: Iniciar APÓS conclusão da T006 (População de Personagens)
+3. Criar branch `feature/automated-story-generation` a partir de `main`
+4. Ler spec completa (todos os detalhes técnicos e arquitetura)
+5. Seguir roadmap de implementação (4 fases):
+   - Fase 1: Criação Manual Refatorada (1 semana)
+   - Fase 2: Backend IA (1 semana)
+   - Fase 3: Frontend IA (1-1.5 semanas)
+   - Fase 4: Polish & Launch (3-4 dias)
+6. **IMPORTANTE**: Reutilizar componentes e padrões de personagens
+7. **CRÍTICO**: Validar conteúdo gerado (age rating, content warnings)
+8. Fazer commits incrementais por fase
+9. Abrir PRs por fase major para review gradual
+
+**Requisitos Técnicos Importantes**:
+- ✅ Backend:
+  - Story Image Analysis Agent (Gemini Vision)
+  - Story LLM Compilation (Gemini 1.5 Pro)
+  - POST /api/v1/stories/generate endpoint
+  - WebSocket handler para progresso em tempo real
+  - Integração com ComfyUI para geração de capa
+  - Sistema de créditos (deduct upfront)
+- ✅ Frontend:
+  - Página seleção: /stories/create (Manual vs IA)
+  - Criação manual: /stories/new (5 abas)
+  - Geração IA: /stories/create-ai (wizard completo)
+  - Hooks: useStoryGenerationSocket, useStoryForm
+  - Componentes: LoadingAnimation, RevealScreen, FinalRevealScreen
+- ✅ Internacionalização:
+  - 11 idiomas (reutilizar estrutura existente)
+  - 50+ chaves de tradução novas
+- ✅ Testes:
+  - Unit tests (AI agents, hooks)
+  - Integration tests (API endpoints, WebSocket)
+  - E2E tests (fluxos completos)
+  - Coverage >80%
+
+**ROI Esperado**:
+- Aumento de 60% na criação de histórias
+- Redução de tempo: 15 minutos → 20 segundos (modo IA)
+- Nova fonte de receita: 75-100 créditos por história
+- Maior retenção de usuários (contexto para personagens gerados)
+- Sinergia com T006: personagens + histórias = ecossistema completo
+
+**Dependências**:
+- ✅ Sistema de geração de personagens (implementado)
+- ✅ Sistema de créditos (implementado)
+- ✅ ComfyUI (configurado)
+- ✅ WebSocket infrastructure (existente)
+- ⚠️ T006 (População de Personagens) deve ser concluída primeiro para maximizar impacto
+
+---
+
+**Contexto da Tarefa Mobile Hamburger Menu** (T008):
+- **Por que crítico**: Header sobrecarregado em mobile (320-375px) causa UX ruim e baixa conversão
+- **Objetivo Principal**: Implementar menu hambúrguer responsivo para melhorar experiência mobile
+- **Problemas Resolvidos**:
+  - ✅ Header overcrowded com múltiplos botões em uma linha
+  - ✅ Touch targets muito pequenos (< 44px - padrão WCAG)
+  - ✅ Possível scroll horizontal em telas pequenas
+  - ✅ Primeira impressão negativa em mobile (60-70% do tráfego)
+- **Features Principais**:
+  1. **Menu Hambúrguer**:
+     - Drawer/Sheet lateral com overlay
+     - Animação suave (300ms)
+     - Organização em seções (Settings, Auth, Navigation futura)
+  2. **Responsive Layout**:
+     - Mobile (≤768px): Logo + Hambúrguer
+     - Desktop (>768px): Header atual (sem mudanças)
+  3. **Acessibilidade**:
+     - Touch targets ≥44px (WCAG 2.1 AA)
+     - Keyboard navigation (Tab, Escape)
+     - Screen reader support (ARIA labels)
+     - Focus management
+- **Estimativa**: 1-2 dias (quick win!)
+- **GitHub Issue**: [#61](https://github.com/leandro-br-dev/charhub/issues/61)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/mobile-hamburger-menu.md`
+- **Branch sugerida**: `feature/mobile-hamburger-menu`
+
+**Por que Quick Win**:
+- ⚡ **Baixa complexidade**: Frontend only, sem backend
+- ⚡ **Alto impacto**: Melhora imediata na UX mobile
+- ⚡ **Tempo curto**: 1-2 dias de desenvolvimento
+- ⚡ **Sem riscos**: Não afeta desktop, mudança isolada
+- ⚡ **Pronto para produção**: Pode ser deployed independentemente
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento imediato
+- ✅ Prioridade CRÍTICA (UX mobile é crítico)
+- ✅ Pode trabalhar em PARALELO com T006 (não há conflitos)
+- ✅ Quick win = valor imediato ao usuário
+
+**Instruções para Agent Coder**:
+1. ⚠️ **QUICK WIN** - 1-2 dias, alto impacto, baixo risco
+2. **Pode trabalhar em PARALELO** com T006 (População de Personagens)
+3. Criar branch `feature/mobile-hamburger-menu` a partir de `main`
+4. Ler spec completa (detalhes técnicos, componentes, testes)
+5. Seguir roadmap de implementação (3 fases):
+   - Fase 1: Implementação (1-2 dias) - componentes e funcionalidade
+   - Fase 2: Polish & Acessibilidade (1 dia) - ARIA, keyboard nav
+   - Fase 3: Testing & Launch (0.5 dia) - testes e deploy
+6. **IMPORTANTE**: Não quebrar desktop (usar Tailwind responsive)
+7. **CRÍTICO**: Touch targets ≥44px (WCAG 2.1 AA)
+8. Testar em dispositivos reais (iPhone, Android)
+9. Abrir PR assim que implementação estiver completa
+
+**Requisitos Técnicos Importantes**:
+- ✅ Frontend:
+  - Modificar: `PublicHeader.tsx` (adicionar responsive mobile/desktop)
+  - Criar: `MobileMenuContent.tsx` (conteúdo do drawer)
+  - Modificar: `ThemeToggle.tsx` (variante full-width)
+  - Modificar: `LanguageSelector.tsx` (variante full-width)
+  - Componente: Sheet/Drawer (shadcn/ui ou custom)
+  - Breakpoint: 768px (mobile ≤768px, desktop >768px)
+- ✅ Acessibilidade:
+  - ARIA labels e roles
+  - Keyboard navigation (Tab, Escape)
+  - Focus management
+  - Screen reader support
+  - Touch targets ≥44px
+- ✅ Testing:
+  - Manual: 320px, 375px, 414px, 768px viewports
+  - Keyboard navigation
+  - Screen reader (VoiceOver/TalkBack)
+  - Cross-browser (Chrome, Safari, Firefox)
+  - Dark mode
+  - E2E tests (Playwright) - opcional
+
+**ROI Esperado**:
+- Redução de 40% na taxa de rejeição mobile
+- Melhoria de +15% na conversão de signup mobile
+- Conformidade WCAG 2.1 AA (acessibilidade)
+- Preparação para futuras features de navegação mobile
+
+**Dependências**:
+- ✅ UI library existente (shadcn/ui, Headless UI, ou custom)
+- ✅ Icons library (lucide-react ou similar)
+- ✅ Tailwind CSS (configurado)
+- ✅ React Router (navegação)
+- ✅ i18next (traduções)
+- ⚠️ SEM dependências com T006 ou T007 (pode trabalhar em paralelo)
 
 ---
 

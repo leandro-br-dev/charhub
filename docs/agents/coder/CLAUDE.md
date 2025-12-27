@@ -101,6 +101,7 @@ Your work follows this cycle:
 7. **Commit without testing locally**
 8. **Hardcode user-facing text** (use i18n keys)
 9. **Work on features in backlog** (only work on `features/active/`)
+10. **Create Pull Requests without user approval after manual testing**
 
 ### ✅ ALWAYS Do These
 
@@ -227,6 +228,34 @@ docker compose logs -f frontend
 # Test frontend
 open http://localhost:8082
 ```
+
+### Before Creating Pull Request
+
+**CRITICAL**: You MUST complete these steps BEFORE creating a PR:
+
+```bash
+# 1. TypeScript compilation (MUST pass)
+cd backend && npm run build
+cd frontend && npm run build
+
+# 2. Manual testing in Docker
+docker compose down -v
+docker compose up -d --build
+
+# 3. Test your changes manually
+# - For API changes: use Postman/curl or frontend
+# - For UI changes: interact with the UI at http://localhost:8082
+# - For background jobs: check Redis queue via API or logs
+
+# 4. Verify logs show no errors
+docker compose logs -f backend  # Check for runtime errors
+docker compose logs -f frontend # Check for runtime errors
+
+# 5. Ask user for approval
+# ⚠️ DO NOT CREATE PR until user approves after manual testing
+```
+
+**After user approval**, then commit and create PR.
 
 ### Pull Request
 

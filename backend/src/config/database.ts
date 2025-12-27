@@ -7,7 +7,8 @@ const logger = pino({
 
 /**
  * Prisma Client singleton instance
- * Prevents multiple instances in development (hot reload)
+ * Prevents multiple instances in production to avoid connection pool exhaustion
+ * In development with hot reload, uses global variable to maintain singleton
  */
 declare global {
   // eslint-disable-next-line no-var
@@ -20,7 +21,7 @@ export const prisma =
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 
-// Prevent multiple instances in development
+// Prevent multiple instances in development (hot reload)
 if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
