@@ -11,6 +11,7 @@ interface AuthContextValue {
   loginWithProvider: (provider: OAuthProvider) => void;
   loginWithGoogle: () => void;
   loginWithFacebook: () => void;
+  loginWithDevBypass: () => void;
   completeLogin: (payload: AuthUser) => void;
   updateUser: (updates: Partial<AuthUser>) => void;
   refreshUser: () => Promise<void>;
@@ -22,12 +23,14 @@ const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
 const CALLBACK_PATH = import.meta.env.VITE_AUTH_CALLBACK_PATH || '/auth/callback';
 const defaultProviderPaths: Record<OAuthProvider, string> = {
   google: `${API_PREFIX}/oauth/google`,
-  facebook: `${API_PREFIX}/oauth/facebook`
+  facebook: `${API_PREFIX}/oauth/facebook`,
+  dev: '#'
 };
 
 const providerPaths: Record<OAuthProvider, string> = {
   google: import.meta.env.VITE_GOOGLE_AUTH_PATH || defaultProviderPaths.google,
-  facebook: import.meta.env.VITE_FACEBOOK_AUTH_PATH || defaultProviderPaths.facebook
+  facebook: import.meta.env.VITE_FACEBOOK_AUTH_PATH || defaultProviderPaths.facebook,
+  dev: '#'
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -170,6 +173,21 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     setIsPhotoCached(false);
   }, []);
 
+  const loginWithDevBypass = useCallback(() => {
+    const devUser: AuthUser = {
+      id: '00000000-0000-0000-0000-000000000000',
+      provider: 'dev',
+      providerAccountId: 'dev-admin',
+      displayName: 'Dev Admin',
+      email: 'admin@charhub.dev',
+      role: 'ADMIN',
+      token: 'dev-bypass-token',
+      hasCompletedWelcome: true, // skip welcome screen
+      preferredLanguage: window.localStorage.getItem('i18nextLng') || 'pt-BR'
+    };
+    completeLogin(devUser);
+  }, [completeLogin]);
+
   const refreshUser = useCallback(async () => {
     if (!user?.token) {
       console.warn('[auth] cannot refresh user without token');
@@ -209,6 +227,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
       loginWithProvider,
       loginWithGoogle,
       loginWithFacebook,
+      loginWithDevBypass,
       completeLogin,
       updateUser,
       refreshUser,
