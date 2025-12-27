@@ -5,6 +5,7 @@
 
 import axios, { AxiosInstance } from 'axios';
 import { logger } from '../../config/logger';
+import { getVariedSearchParams } from './searchVariation';
 
 // Civitai API Types
 export interface CivitaiImage {
@@ -34,16 +35,19 @@ export interface CivitaiImage {
 
 export interface CivitaiSearchOptions {
   limit?: number;
-  period?: 'Day' | 'Week' | 'Month' | 'Year' | 'All';
+  period?: 'Day' | 'Week' | 'Month' | 'Year' | 'AllTime';
   sort?: 'Newest' | 'Most Reactions' | 'Most Comments' | 'Trending';
   nsfw?: string; // "None", "Soft", "Mature", "X"
-  tags?: string[];
+  tag?: string; // Single tag (e.g., "woman", "warrior", "elf")
+  tags?: string[]; // DEPRECATED: Use 'tag' instead (singular)
   userId?: string;
   username?: string;
   modelId?: string;
   modelVersionId?: string;
   // Filter for anime-style character images
   animeStyle?: boolean;
+  // Use search variation system to avoid repetition
+  useVariation?: boolean;
 }
 
 export interface CivitaiImageResult {
@@ -126,10 +130,22 @@ export class CivitaiApiClient {
     }
 
     try {
+      // Apply search variation if requested (default: true for automatic calls)
+      const useVariation = options.useVariation ?? true;
+      let period = options.period || 'Week';
+      let sort = options.sort || 'Most Reactions';
+      let tag = options.tag;
+
+      // Apply variation to avoid repetition
+      if (useVariation) {
+        const variation = getVariedSearchParams();
+        period = options.period || variation.period;
+        sort = options.sort || variation.sort;
+        tag = options.tag || variation.tag;
+      }
+
       const {
         limit = 100,
-        period = 'Week',
-        sort = 'Most Reactions',
         nsfw = 'None',
         animeStyle = false,
       } = options;
@@ -141,14 +157,18 @@ export class CivitaiApiClient {
         nsfw,
       };
 
+      // Add tag filter if provided (singular, not plural)
+      // Civitai API accepts tag names as strings (e.g., "woman", "warrior", "elf")
+      if (tag) {
+        params.tag = tag;
+      }
+
       // Filter for anime-style character images
-      // Civitai uses numeric tag IDs, but we can use specific model types known for anime
       if (animeStyle) {
         // Filter for image type (still images only)
         params.types = 'image';
 
         // Use anime-related base models if configured
-        // These are popular anime model IDs on Civitai
         const animeModelIds = process.env.CIVITAI_ANIME_MODEL_IDS?.split(',').map(id => id.trim()) || [];
 
         // Add model filter if specific anime models are configured
@@ -157,12 +177,7 @@ export class CivitaiApiClient {
           // so we'll use the first one and let post-filtering handle the rest
           params.modelId = animeModelIds[0];
         }
-
-        logger.info({ animeStyle, animeModelIds }, 'Filtering for anime-style images');
       }
-
-      // Note: Civitai API uses numeric tag IDs, not tag names
-      // Tag filtering can be added later if needed
 
       // Add user filter if provided
       if (options.username) {
@@ -174,19 +189,44 @@ export class CivitaiApiClient {
         params.modelId = options.modelId;
       }
 
+      // Log search parameters for debugging
+      logger.info(
+        {
+          period,
+          sort,
+          tag,
+          limit,
+          nsfw,
+          animeStyle,
+          useVariation,
+        },
+        'Fetching images from Civitai with parameters'
+      );
+
       const response = await this.client.get<{ items: CivitaiImage[], metadata: any }>('/images', { params });
       this.incrementCounter();
 
       let images = response.data.items || [];
 
+      logger.info(
+        { fetchedCount: images.length, period, sort, nsfw },
+        'Fetched images from Civitai API'
+      );
+
       // Post-filter for anime-style character images if requested
+      // Use baseModel filter instead of the overly restrictive metadata filter
       if (animeStyle) {
-        images = this.filterAnimeCharacterImages(images);
+        const beforeFilter = images.length;
+        images = this.filterByBaseModel(images);
+        logger.info(
+          { beforeFilter, afterFilter: images.length, animeStyle },
+          'Applied baseModel filter for anime-style images'
+        );
       }
 
       logger.info(
-        { count: images.length, period, sort, nsfw, animeStyle },
-        'Fetched trending images from Civitai'
+        { finalCount: images.length, period, sort, nsfw, animeStyle },
+        'Returning filtered images from Civitai'
       );
 
       // Transform to our format
@@ -229,80 +269,58 @@ export class CivitaiApiClient {
   }
 
   /**
-   * Post-filter images for anime-style character content
-   * This filters out images that don't appear to be character-focused
+   * Filter images by baseModel (more reliable than metadata filtering)
+   * This uses the baseModel field which is consistently provided by the API
    */
-  private filterAnimeCharacterImages(images: CivitaiImage[]): CivitaiImage[] {
+  private filterByBaseModel(images: CivitaiImage[]): CivitaiImage[] {
+    // Known anime/character-focused base models
+    const animeBaseModels = [
+      'illustrious',
+      'pony',
+      'noobai',
+      'nai',
+      'anything',
+      'counterfeit',
+      'dreamlike',
+      'pastel',
+      'meinamix',
+      'animagine',
+      'cetusmix',
+      'ghostmix',
+      'abyssorangemix',
+      'bluemix',
+      'aom3',
+    ];
+
     return images.filter((img) => {
-      const meta = img.meta;
+      // Check if image has baseModel field
+      const baseModel = (img as any).baseModel;
 
-      if (!meta) {
-        return false;
+      if (!baseModel) {
+        // If no baseModel, keep the image (don't be too restrictive)
+        return true;
       }
 
-      // Check for anime-related base models
-      // Common anime model names on Civitai
-      const animeModelKeywords = [
-        'anime',
-        'anything',
-        'counterfeit',
-        'dreamlike',
-        'pastel',
-        'meinamix',
-        'niji',
-        'cetus',
-        'fantasy',
-        'ghost',
-        'moxie',
-        '7th',
-        'f222',
-        'orangemix',
-        'someya',
-        'acertain',
-      ];
+      const baseModelLower = String(baseModel).toLowerCase();
 
-      const samplers = [
-        'euler',
-        'euler a',
-        'ddim',
-        'plms',
-        'dpm++',
-        'dpmsolver',
-      ];
+      // Check if baseModel contains any anime keywords
+      const isAnimeModel = animeBaseModels.some(keyword =>
+        baseModelLower.includes(keyword)
+      );
 
-      // Check model name for anime keywords
-      const modelName = (meta.Model || meta.sd_model_name || '').toLowerCase();
-      const hasAnimeModel = animeModelKeywords.some(keyword => modelName.includes(keyword));
+      // Also apply basic quality filters
+      const hasReasonableSize = img.width >= 512 && img.height >= 512;
+      const hasReasonableAspectRatio = (img.width / img.height) >= 0.3 && (img.width / img.height) <= 3.0;
 
-      // Check for character-focused indicators
-      // Character images typically have specific samplers and formats
-      const samplerName = (meta.Sampler || meta.sampler_name || '').toLowerCase();
-      const hasCharacterSampler = samplers.some(s => samplerName.includes(s));
-
-      // Check for standard image sizes (not too small/large for portraits)
-      const aspectRatio = img.width / img.height;
-      const isPortraitOrSquare = aspectRatio >= 0.5 && aspectRatio <= 2.0;
-      const reasonableResolution = img.width >= 512 && img.height >= 512;
-
-      // Check if image has positive prompt (character images typically have detailed prompts)
-      const hasPositivePrompt = meta.sd_prompt && meta.sd_prompt.length > 50;
-
-      // Filter for anime-style character images
-      // Must have at least anime model OR reasonable prompt, AND proper resolution
-      const isAnimeCharacter = hasAnimeModel && hasCharacterSampler && isPortraitOrSquare && reasonableResolution;
-
-      if (isAnimeCharacter) {
-        logger.debug({
-          imageId: img.id,
-          model: modelName,
-          sampler: samplerName,
-          hasPrompt: hasPositivePrompt,
-        }, 'Anime character image passed filter');
-      }
-
-      return isAnimeCharacter;
+      // Keep image if it's anime model OR has reasonable dimensions
+      // This is less restrictive than requiring ALL conditions
+      return isAnimeModel || (hasReasonableSize && hasReasonableAspectRatio);
     });
   }
+
+  // DEPRECATED: filterAnimeCharacterImages() method was removed
+  // It was too restrictive (0% pass rate in testing) and has been replaced by filterByBaseModel()
+  // which uses the more reliable baseModel field from the API response.
 
   /**
    * Get current rate limit status
