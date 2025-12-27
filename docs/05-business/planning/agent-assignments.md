@@ -12,9 +12,9 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
-| T006 | **Sistema de População Automática de Personagens (Civitai)** | Agent Coder | 🚀 Pronto para Iniciar | `feature/automated-character-population` (a criar) | 31/01/2026 | 25/12 - Spec criada e aprovada - **PRIORIDADE CRÍTICA** |
-| T007 | **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | 📋 Planejado | `feature/automated-story-generation` (a criar) | 28/02/2026 | 27/12 - Spec criada e ativa - **PRIORIDADE ALTA** |
-| T008 | **Mobile Hamburger Menu (Responsive)** | Agent Coder | 🚀 Pronto para Iniciar | `feature/mobile-hamburger-menu` (a criar) | 03/01/2026 | 27/12 - Spec criada - **CRÍTICO (Quick Win)** - Paralelo com T006 |
+| T007 | **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | 📋 Em Finalização | `feature/automated-story-generation` | 31/12/2025 | 27/12 - Spec ativa, Agent Coder trabalhando nas últimas etapas |
+| T009 | **TypeScript ESLint 8.x Migration** | Agent Coder | 🚀 Pronto para Iniciar | `feature/typescript-eslint-8-migration` (a criar) | 03/01/2026 | 27/12 - Spec criada - **PRIORIDADE MÉDIA** (Segurança + Qualidade) |
+| T010 | **Prisma 7.x Migration** | Agent Coder | 🚀 Pronto para Iniciar | `feature/prisma-7-migration` (a criar) | 05/01/2026 | 27/12 - Spec criada - **PRIORIDADE MÉDIA** (Performance + Segurança) |
 
 ---
 
@@ -35,9 +35,10 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 | Tarefa | Agente | Status | Detalhes |
 |--------|--------|--------|----------|
-| **Sistema de População Automática de Personagens** | Agent Coder | ✅ Atribuído | Spec completa em `active/automated-character-population.md`. **PRIORIDADE CRÍTICA** - Iniciar imediatamente. |
-| **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | ✅ Atribuído | Spec completa em `active/automated-story-generation.md`. **PRIORIDADE ALTA** - Iniciar após população de personagens. |
-| **Mobile Hamburger Menu (Responsive)** | Agent Coder | ✅ Atribuído | Spec completa em `active/mobile-hamburger-menu.md`. **CRÍTICO** - Quick Win, pode trabalhar em paralelo. |
+| **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | 📋 Em Finalização | Spec completa em `active/automated-story-generation.md`. **PRIORIDADE ALTA** - Agent Coder trabalhando nas etapas finais. |
+| **Mobile Hamburger Menu (Responsive)** | Agent Coder | ✅ Concluído | Spec em `implemented/mobile-hamburger-menu.md`. **CRÍTICO** - PR #63 merged e deployed. Quick Win! |
+| **TypeScript ESLint 8.x Migration** | Agent Coder | ✅ Atribuído | Spec completa em `active/typescript-eslint-8-migration.md`. **PRIORIDADE MÉDIA** - Segurança e qualidade do código. |
+| **Prisma 7.x Migration** | Agent Coder | ✅ Atribuído | Spec completa em `active/prisma-7-migration.md`. **PRIORIDADE MÉDIA** - Performance e segurança. |
 
 **Contexto da Tarefa População Automática** (T006):
 - **Por que crítico**: CharHub está funcional mas não pode ser divulgado sem conteúdo (chicken-and-egg problem)
@@ -279,6 +280,159 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 - ✅ React Router (navegação)
 - ✅ i18next (traduções)
 - ⚠️ SEM dependências com T006 ou T007 (pode trabalhar em paralelo)
+
+---
+
+**Contexto da Tarefa TypeScript ESLint 8.x Migration** (T009):
+- **Por que importante**: TypeScript ESLint 6.x está desatualizado, com vulnerabilidades e sem novas features
+- **Objetivo Principal**: Atualizar de TypeScript ESLint 6.15.0 para 8.49.0 para segurança e qualidade
+- **Problemas Resolvidos**:
+  - ✅ Vulnerabilidades de segurança em versões antigas
+  - ✅ Missing out em novas regras de linting e best practices
+  - ✅ Incompatibilidade futura com TypeScript 5.x
+  - ✅ Performance de build (ESLint 8 é mais rápido)
+- **Features Principais**:
+  1. **Atualização de Dependências**:
+     - `@typescript-eslint/eslint-plugin`: 6.15.0 → 8.49.0
+     - `@typescript-eslint/parser`: 6.15.0 → 8.49.0
+  2. **Configuração Atualizada**:
+     - Remover regras deprecated
+     - Adicionar novas regras recomendadas
+     - Atualizar parser options para ESLint 8
+  3. **Correção de Código**:
+     - Fixar erros de linting de novas regras
+     - Auto-fix onde possível
+     - Manual fix para casos complexos
+- **Estimativa**: 2-4 horas (migração simples, alguns ajustes de código)
+- **GitHub Issue**: [#42](https://github.com/leandro-br-dev/charhub/issues/42)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/typescript-eslint-8-migration.md`
+- **Branch sugerida**: `feature/typescript-eslint-8-migration`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento
+- ✅ Prioridade MÉDIA (não bloqueia features, mas importante para qualidade)
+- ✅ Migração deve ser testada em dev e staging antes de produção
+
+**Instruções para Agent Coder**:
+1. 🔧 **Tarefa de Manutenção** - Migração de dependências críticas
+2. Criar branch `feature/typescript-eslint-8-migration` a partir de `main`
+3. Ler spec completa (migration guide e breaking changes)
+4. Seguir roadmap de implementação (6 fases):
+   - Fase 1: Research & Planning (30 min) - ler migration guide
+   - Fase 2: Update Dependencies (15 min) - npm install
+   - Fase 3: Update ESLint Config (30-60 min) - .eslintrc.js
+   - Fase 4: Run Lint & Fix Issues (1-3 horas) - corrigir erros
+   - Fase 5: Testing (30-60 min) - rodar testes
+   - Fase 6: CI/CD Verification (15 min) - verificar CI
+5. **IMPORTANTE**: Ler migration guide antes de começar
+6. **CRÍTICO**: Rodar todos os testes após migração
+7. Fazer commits incrementais por fase
+8. Abrir PR quando todos os testes passarem
+
+**Requisitos Técnicos Importantes**:
+- ✅ Atualizar `package.json` com novas versões
+- ✅ Atualizar `.eslintrc.js` (ou `.eslintrc.json`)
+- ✅ Remover regras deprecated
+- ✅ Adicionar novas regras recomendadas
+- ✅ Corrigir todos os erros de linting
+- ✅ Rodar `npm run lint` sem erros
+- ✅ Rodar `npm test` com 100% pass
+- ✅ Verificar CI/CD pipeline
+
+**ROI Esperado**:
+- Eliminação de vulnerabilidades conhecidas
+- Melhoria na qualidade do código (novas regras)
+- Build mais rápido (performance ESLint 8)
+- Preparação para futuras atualizações do TypeScript
+- Melhor DX com mensagens de erro mais claras
+
+**Dependências**:
+- ✅ TypeScript 5.x (já instalado)
+- ✅ ESLint 8.x (verificar versão)
+- ⚠️ Coordenar com Agent Reviewer para deploy em produção
+
+---
+
+**Contexto da Tarefa Prisma 7.x Migration** (T010):
+- **Por que importante**: Prisma 6.x ficará legacy em breve, com performance inferior e sem novas features
+- **Objetivo Principal**: Atualizar de Prisma 6.x para 7.x para performance e segurança
+- **Problemas Resolvidos**:
+  - ✅ Performance de queries (até 40% mais rápidas no Prisma 7)
+  - ✅ Vulnerabilidades em dependências antigas
+  - ✅ Missing out em novas features (TypedSQL, improved relations)
+  - ✅ Compatibilidade futura com PostgreSQL e Node.js
+- **Features Principais**:
+  1. **Atualização de Dependências**:
+     - `@prisma/client`: 6.17.1 → 7.1.0
+     - `prisma`: 6.19.0 → 7.1.0
+  2. **Schema Validation**:
+     - Validar schema com Prisma 7
+     - Verificar migrações existentes
+     - Regenerar Prisma Client
+  3. **Performance Testing**:
+     - Benchmark queries antes/depois
+     - Verificar melhoria de performance
+     - Validar que não há regressions
+- **Estimativa**: 3-5 horas (backup de DB, migração, testes extensivos)
+- **GitHub Issue**: [#41](https://github.com/leandro-br-dev/charhub/issues/41)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/prisma-7-migration.md`
+- **Branch sugerida**: `feature/prisma-7-migration`
+
+**⚠️ CRÍTICO - Backup Obrigatório**:
+- **SEMPRE** fazer backup do banco de dados antes de migrar
+- Testar em dev primeiro, depois staging, por último produção
+- Ter plano de rollback pronto
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento
+- ✅ Prioridade MÉDIA (importante mas não urgente)
+- ✅ Coordenar com Agent Reviewer para migração em produção
+- ✅ Backup de banco de dados OBRIGATÓRIO
+
+**Instruções para Agent Coder**:
+1. 🔧 **Tarefa de Manutenção Crítica** - Migração de ORM e banco de dados
+2. **OBRIGATÓRIO**: Backup de banco de dados antes de qualquer coisa
+3. Criar branch `feature/prisma-7-migration` a partir de `main`
+4. Ler spec completa (migration guide e breaking changes)
+5. Seguir roadmap de implementação (10 fases):
+   - Fase 1: Research & Planning (45 min) - ler migration guide
+   - Fase 2: Backup & Safety (15 min) - **OBRIGATÓRIO** backup DB
+   - Fase 3: Update Dependencies (15 min) - npm install
+   - Fase 4: Regenerate Prisma Client (10 min) - prisma generate
+   - Fase 5: Schema Validation (20 min) - prisma validate
+   - Fase 6: Test Migrations (30-60 min) - prisma migrate
+   - Fase 7: Test Database Operations (1-2 horas) - rodar testes
+   - Fase 8: Performance Testing (30-60 min) - benchmarks
+   - Fase 9: Integration Testing (1 hora) - testar API endpoints
+   - Fase 10: Staging Deployment (1-2 horas) - deploy staging
+6. **CRÍTICO**: NUNCA migrar produção sem backup
+7. **IMPORTANTE**: Testar em dev e staging antes de produção
+8. Fazer commits incrementais por fase
+9. Abrir PR quando staging estiver validado
+
+**Requisitos Técnicos Importantes**:
+- ✅ Backup de banco de dados (dev, staging, produção)
+- ✅ Atualizar `package.json` com Prisma 7.x
+- ✅ Regenerar Prisma Client
+- ✅ Validar schema: `npx prisma validate`
+- ✅ Testar migrações: `npx prisma migrate deploy`
+- ✅ Rodar todos os testes de banco de dados
+- ✅ Benchmark de performance (antes/depois)
+- ✅ Verificar que não há regressions
+- ✅ Coordenar com Agent Reviewer para produção
+
+**ROI Esperado**:
+- Redução de 20-40% no tempo de resposta de queries
+- Eliminação de vulnerabilidades conhecidas
+- Preparação para TypedSQL e outras features
+- Melhor type safety no TypeScript
+- Melhoria na experiência de desenvolvimento
+
+**Dependências**:
+- ✅ PostgreSQL 12+ (verificar versão)
+- ✅ Node.js 18+ (verificar versão)
+- ✅ TypeScript 5.x (já instalado)
+- ⚠️ Coordenar com Agent Reviewer para produção (backup + migração)
 
 ---
 
