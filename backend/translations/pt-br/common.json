@@ -3,16 +3,23 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Idioma",
-    "continueGoogle": "Continuar com o Google",
-    "continueFacebook": "Continuar com o Facebook",
-    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
+    "menu": {
+      "title": "Menu",
+      "close": "Fechar menu",
+      "open": "Abrir menu"
+    },
+    "settings": "Configurações",
+    "account": "Conta",
+    "continueGoogle": "Continuar com Google",
+    "continueFacebook": "Continuar com Facebook",
+    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza CharHub a acessar suas informações básicas de perfil.",
     "logout": "Sair",
     "logoutLoading": "Saindo...",
     "authenticatedUser": "Usuário autenticado",
-    "tokenStored": "Armazenado em cookie HTTP-only",
-    "navDashboard": "Painel",
+    "tokenStored": "Armazenado em cookie somente HTTP",
+    "navDashboard": "Dashboard",
     "navCharacters": "Personagens",
-    "navTagline": "Demonstração de OAuth seguro",
+    "navTagline": "Demonstração segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -49,10 +56,10 @@
     "contentFilter": {
       "ariaLabel": "Filtro de conteúdo",
       "title": "Filtro de Conteúdo",
-      "ageRating": "Classificação etária",
-      "blurNsfw": "Desfocar Conteúdo Explícito",
+      "ageRating": "Classificação Etária",
+      "blurNsfw": "Borrar Conteúdo Explícito",
       "none": "Sem Filtro",
-      "blur": "Desfocar Conteúdo Sensível",
+      "blur": "Borrar Conteúdo Sensível",
       "hidden": "Ocultar Conteúdo Maduro",
       "descriptions": {
         "none": "Mostrar todo o conteúdo sem restrições",

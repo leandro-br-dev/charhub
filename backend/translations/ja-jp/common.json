@@ -3,16 +3,23 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "言語",
+    "menu": {
+      "title": "メニュー",
+      "close": "メニューを閉じる",
+      "open": "メニューを開く"
+    },
+    "settings": "設定",
+    "account": "アカウント",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行すると、プライバシーポリシーに同意し、CharHubがお客様の基本プロフィール情報にアクセスすることを許可します。",
-    "logout": "ログアウト",
-    "logoutLoading": "ログアウト中...",
+    "privacy": "続行することにより、お客様は当社のプライバシーポリシーに同意し、CharHubがお客様の基本プロフィール情報にアクセスすることを許可するものとします。",
+    "logout": "サインアウト",
+    "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
     "tokenStored": "HTTP-onlyクッキーに保存済み",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
-    "navTagline": "安全なOAuthデモ",
+    "navTagline": "セキュアなOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -28,7 +35,7 @@
     },
     "none": "なし",
     "unknown": "不明",
-    "nameNotAvailable": "名前が利用できません",
+    "nameNotAvailable": "名前は利用できません",
     "cancel": "キャンセル",
     "save": "保存",
     "saving": "保存中...",
@@ -37,13 +44,13 @@
     "enabled": "有効",
     "disabled": "無効",
     "selectOption": "オプションを選択",
-    "noResults": "オプションが見つかりませんでした。",
+    "noResults": "オプションは見つかりませんでした。",
     "chat": {
-      "with": "とチャット"
+      "with": "チャット"
     },
     "messages": {
       "linkCopied": "リンクをクリップボードにコピーしました！",
-      "chatStarted": "チャットが正常に開始されました！",
+      "chatStarted": "チャットを開始しました！",
       "characterDeleted": "キャラクターを正常に削除しました"
     },
     "contentFilter": {
@@ -52,12 +59,12 @@
       "ageRating": "年齢制限",
       "blurNsfw": "露骨なコンテンツをぼかす",
       "none": "フィルターなし",
-      "blur": "機密コンテンツをぼかす",
-      "hidden": "成人向けを非表示にする",
+      "blur": "センシティブなコンテンツをぼかす",
+      "hidden": "成熟したコンテンツを非表示",
       "descriptions": {
-        "none": "制限なくすべてのコンテンツを表示",
-        "blur": "成人向けコンテンツにぼかしを適用",
-        "hidden": "成人向けコンテンツを完全に非表示にする"
+        "none": "制限なしで全てのコンテンツを表示",
+        "blur": "成熟したコンテンツにぼかしを適用",
+        "hidden": "成熟したコンテンツを完全に非表示"
       },
       "ageRatings": {
         "L": "全年齢",
@@ -67,10 +74,10 @@
         "SIXTEEN": "16歳以上",
         "EIGHTEEN": "18歳以上"
       },
-      "noBirthdateWarning": "⚠️ 年齢が未登録です",
-      "noBirthdateDescription": "年齢制限のあるコンテンツにアクセスするには、設定で生年月日を追加してください。",
+      "noBirthdateWarning": "⚠️ 年齢が登録されていません",
+      "noBirthdateDescription": "年齢制限コンテンツにアクセスするには、設定で生年月日を追加してください。",
       "goToSettings": "設定へ移動",
-      "blocked": "(ブロック済み)"
+      "blocked": "（ブロック済み）"
     },
     "errors": {
       "generic": "エラーが発生しました。もう一度お試しください。",
@@ -82,6 +89,6 @@
     "back": "戻る",
     "loading": "読み込み中...",
     "credits": "クレジット",
-    "tryAgain": "再試行"
+    "tryAgain": "もう一度お試しください"
   }
 }

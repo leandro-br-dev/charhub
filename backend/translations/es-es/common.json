@@ -3,6 +3,13 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Idioma",
+    "menu": {
+      "title": "Menú",
+      "close": "Cerrar menú",
+      "open": "Abrir menú"
+    },
+    "settings": "Ajustes",
+    "account": "Cuenta",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
     "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información básica de perfil.",
@@ -12,7 +19,7 @@
     "tokenStored": "Almacenado en cookie solo HTTP",
     "navDashboard": "Panel de control",
     "navCharacters": "Personajes",
-    "navTagline": "Demo de OAuth seguro",
+    "navTagline": "Demostración segura de OAuth",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -34,9 +41,9 @@
     "saving": "Guardando...",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
-    "enabled": "Habilitado",
-    "disabled": "Deshabilitado",
-    "selectOption": "Seleccionar una opción",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "selectOption": "Selecciona una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
       "with": "Chatear con"
@@ -49,11 +56,11 @@
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
       "title": "Filtro de Contenido",
-      "ageRating": "Clasificación por Edad",
-      "blurNsfw": "Difuminar Contenido Explícito",
-      "none": "Sin Filtro",
-      "blur": "Difuminar Sensible",
-      "hidden": "Ocultar Contenido Maduro",
+      "ageRating": "Clasificación por edad",
+      "blurNsfw": "Difuminar contenido explícito",
+      "none": "Sin filtro",
+      "blur": "Difuminar sensible",
+      "hidden": "Ocultar contenido maduro",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
         "blur": "Aplicar difuminado al contenido maduro",
@@ -68,12 +75,12 @@
         "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ Edad no registrada",
-      "noBirthdateDescription": "Para acceder a contenido con restricción de edad, por favor, añade tu fecha de nacimiento en la configuración.",
-      "goToSettings": "Ir a Configuración",
+      "noBirthdateDescription": "Para acceder a contenido con restricción de edad, añade tu fecha de nacimiento en los ajustes.",
+      "goToSettings": "Ir a Ajustes",
       "blocked": "(bloqueado)"
     },
     "errors": {
-      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo.",
+      "generic": "Ha ocurrido un error. Inténtalo de nuevo.",
       "failedToFetchData": "No se pudieron obtener los datos"
     },
     "character": "Personaje",

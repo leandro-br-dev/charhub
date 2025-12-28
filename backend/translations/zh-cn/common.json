@@ -3,16 +3,23 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "语言",
-    "continueGoogle": "使用 Google 继续",
-    "continueFacebook": "使用 Facebook 继续",
+    "menu": {
+      "title": "菜单",
+      "close": "关闭菜单",
+      "open": "打开菜单"
+    },
+    "settings": "设置",
+    "account": "账户",
+    "continueGoogle": "继续使用 Google",
+    "continueFacebook": "继续使用 Facebook",
     "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
     "logout": "退出登录",
     "logoutLoading": "正在退出登录...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在 HTTP-only cookie 中",
+    "tokenStored": "存储在仅限 HTTP 的 Cookie 中",
     "navDashboard": "仪表盘",
     "navCharacters": "角色",
-    "navTagline": "安全的 OAuth 演示",
+    "navTagline": "安全 OAuth 演示",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -47,30 +54,30 @@
       "characterDeleted": "角色已成功删除"
     },
     "contentFilter": {
-      "ariaLabel": "内容过滤器",
-      "title": "内容过滤器",
+      "ariaLabel": "内容筛选器",
+      "title": "内容筛选器",
       "ageRating": "年龄分级",
-      "blurNsfw": "模糊露骨内容",
-      "none": "无过滤器",
+      "blurNsfw": "模糊成人内容",
+      "none": "无筛选器",
       "blur": "模糊敏感内容",
-      "hidden": "隐藏成人内容",
+      "hidden": "隐藏成熟内容",
       "descriptions": {
         "none": "显示所有内容，无限制",
-        "blur": "对成人内容应用模糊效果",
-        "hidden": "完全隐藏成人内容"
+        "blur": "对成熟内容应用模糊",
+        "hidden": "完全隐藏成熟内容"
       },
       "ageRatings": {
         "L": "免费",
-        "TEN": "10+",
-        "TWELVE": "12+",
-        "FOURTEEN": "14+",
-        "SIXTEEN": "16+",
-        "EIGHTEEN": "18+"
+        "TEN": "10岁以上",
+        "TWELVE": "12岁以上",
+        "FOURTEEN": "14岁以上",
+        "SIXTEEN": "16岁以上",
+        "EIGHTEEN": "18岁以上"
       },
-      "noBirthdateWarning": "⚠️ 年龄未注册",
+      "noBirthdateWarning": "⚠️ 未注册年龄",
       "noBirthdateDescription": "要访问受年龄限制的内容，请在设置中添加您的出生日期。",
       "goToSettings": "前往设置",
-      "blocked": "（已屏蔽）"
+      "blocked": "(已屏蔽)"
     },
     "errors": {
       "generic": "发生错误。请重试。",
