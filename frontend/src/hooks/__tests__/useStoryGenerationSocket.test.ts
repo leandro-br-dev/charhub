@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import { useStoryGenerationSocket, StoryGenerationStep } from '../useStoryGenerationSocket';
 import { useAuth } from '../useAuth';
 import { io, type Socket } from 'socket.io-client';
 
 // Mock dependencies
-jest.mock('socket.io-client');
-jest.mock('../useAuth');
-jest.mock('../lib/resolveApiBaseUrl', () => ({
-  resolveApiBaseUrl: jest.fn(() => 'http://localhost:8082'),
+vi.mock('socket.io-client');
+vi.mock('../useAuth');
+vi.mock('../lib/resolveApiBaseUrl', () => ({
+  resolveApiBaseUrl: vi.fn(() => 'http://localhost:8082'),
 }));
 
 describe('useStoryGenerationSocket - Unit Tests', () => {
@@ -21,31 +21,31 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
   const mockSocket: Partial<Socket> = {
     id: 'socket-456',
     connected: false,
-    connect: jest.fn(function(this: Partial<Socket>) {
+    connect: vi.fn(function(this: Partial<Socket>) {
       this.connected = true;
       return this;
     }),
-    on: jest.fn(),
-    off: jest.fn(),
-    emit: jest.fn(),
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn(),
     auth: {},
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock useAuth
-    (useAuth as jest.Mock).mockReturnValue({
+    (useAuth as vi.Mock).mockReturnValue({
       user: mockUser,
       isLoading: false,
     });
 
     // Mock socket.io-client
-    (io as jest.Mock).mockReturnValue(mockSocket as Socket);
+    (io as vi.Mock).mockReturnValue(mockSocket as Socket);
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   describe('Initialization', () => {
@@ -82,7 +82,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should not create socket when user is not authenticated', () => {
-      (useAuth as jest.Mock).mockReturnValue({
+      (useAuth as vi.Mock).mockReturnValue({
         user: null,
         isLoading: false,
       });
@@ -106,7 +106,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
       // Simulate connection
       await act(async () => {
-        const connectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const connectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connect'
         )?.[1];
 
@@ -128,7 +128,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const connectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const connectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connect'
         )?.[1];
 
@@ -148,7 +148,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const connectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const connectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connect'
         )?.[1];
 
@@ -169,7 +169,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
       // First connect
       await act(async () => {
-        const connectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const connectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connect'
         )?.[1];
 
@@ -182,7 +182,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
       // Then disconnect
       await act(async () => {
-        const disconnectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const disconnectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'disconnect'
         )?.[1];
 
@@ -203,7 +203,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const errorHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const errorHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connect_error'
         )?.[1];
 
@@ -232,7 +232,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle successful room join', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
 
       renderHook(() =>
         useStoryGenerationSocket({
@@ -242,7 +242,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       // Get the emit callback
-      const emitCall = (mockSocket.emit as jest.Mock).mock.calls.find(
+      const emitCall = (mockSocket.emit as vi.Mock).mock.calls.find(
         (call) => call[0] === 'join_story_generation'
       );
 
@@ -257,7 +257,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle failed room join', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
 
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
@@ -267,7 +267,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       // Get the emit callback
-      const emitCall = (mockSocket.emit as jest.Mock).mock.calls.find(
+      const emitCall = (mockSocket.emit as vi.Mock).mock.calls.find(
         (call) => call[0] === 'join_story_generation'
       );
 
@@ -290,7 +290,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       // Should not emit join event
-      const emitCalls = (mockSocket.emit as jest.Mock).mock.calls.filter(
+      const emitCalls = (mockSocket.emit as vi.Mock).mock.calls.filter(
         (call) => call[0] === 'join_story_generation'
       );
 
@@ -307,7 +307,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -328,7 +328,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should call onProgress callback', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
 
       renderHook(() =>
         useStoryGenerationSocket({
@@ -338,7 +338,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -359,7 +359,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should call onComplete callback when step is COMPLETED', async () => {
-      const onComplete = jest.fn();
+      const onComplete = vi.fn();
       const mockStory = { id: 'story-123', title: 'Test Story' };
 
       renderHook(() =>
@@ -370,7 +370,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -388,7 +388,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should call onError callback when step is ERROR', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
 
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
@@ -398,7 +398,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -419,7 +419,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
   describe('Progress Steps', () => {
     it('should handle UPLOADING_IMAGE step', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -428,7 +428,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -446,7 +446,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle ANALYZING_IMAGE step', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -455,7 +455,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -472,7 +472,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle EXTRACTING_DESCRIPTION step', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -481,7 +481,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -498,7 +498,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle GENERATING_PLOT step', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -507,7 +507,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -525,7 +525,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle WRITING_SCENE step', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -534,7 +534,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -552,7 +552,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle GENERATING_COVER step', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -561,7 +561,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -578,7 +578,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle CREATING_STORY step', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -587,7 +587,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -632,7 +632,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       // Clear previous calls
-      (mockSocket.off as jest.Mock).mockClear();
+      (mockSocket.off as vi.Mock).mockClear();
 
       // Change sessionId
       rerender({ sessionId: 'session-456' });
@@ -653,7 +653,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
       // Initial connection
       await act(async () => {
-        const connectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const connectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connect'
         )?.[1];
 
@@ -666,7 +666,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
       // Disconnect
       await act(async () => {
-        const disconnectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const disconnectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'disconnect'
         )?.[1];
 
@@ -679,7 +679,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
       // Reconnect
       await act(async () => {
-        const connectHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const connectHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connect'
         )?.[1];
 
@@ -694,7 +694,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
   describe('Multiple Progress Updates', () => {
     it('should handle multiple progress updates in sequence', async () => {
-      const onProgress = jest.fn();
+      const onProgress = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -710,7 +710,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       ];
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -740,7 +740,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
       for (const update of progressUpdates) {
         await act(async () => {
-          const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+          const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
             (call) => call[0] === 'story_generation_progress'
           )?.[1];
 
@@ -763,7 +763,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const establishedHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const establishedHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'connection_established'
         )?.[1];
 
@@ -785,7 +785,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const joinedHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const joinedHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_joined'
         )?.[1];
 
@@ -801,7 +801,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
 
   describe('Edge Cases', () => {
     it('should handle missing error data', async () => {
-      const onError = jest.fn();
+      const onError = vi.fn();
       const { result } = renderHook(() =>
         useStoryGenerationSocket({
           sessionId: 'session-123',
@@ -810,7 +810,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -828,7 +828,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
     });
 
     it('should handle completion without story data', async () => {
-      const onComplete = jest.fn();
+      const onComplete = vi.fn();
 
       renderHook(() =>
         useStoryGenerationSocket({
@@ -838,7 +838,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       );
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mock.calls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mock.calls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
@@ -895,7 +895,7 @@ describe('useStoryGenerationSocket - Unit Tests', () => {
       };
 
       await act(async () => {
-        const progressHandler = (mockSocket.on as jest.Mock).mockCalls.find(
+        const progressHandler = (mockSocket.on as vi.Mock).mockCalls.find(
           (call) => call[0] === 'story_generation_progress'
         )?.[1];
 
