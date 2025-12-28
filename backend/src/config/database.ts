@@ -1,4 +1,6 @@
 import { PrismaClient } from '../generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 import pino from 'pino';
 
 const logger = pino({
@@ -15,9 +17,15 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
+const connectionString = `${process.env.DATABASE_URL}`;
+
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+
 export const prisma =
   global.prisma ||
   new PrismaClient({
+    adapter,
     log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   });
 
@@ -31,5 +39,6 @@ if (process.env.NODE_ENV !== 'production') {
  */
 export async function disconnectDatabase(): Promise<void> {
   await prisma.$disconnect();
+  await pool.end();
   logger.info('Database disconnected');
 }
