@@ -191,6 +191,7 @@ export async function generateStoryCoverPrompt(input: StoryCoverPromptInput): Pr
     }
 
     // Final sanity check: ensure only ASCII characters
+    // eslint-disable-next-line no-control-regex
     let sanitizedPrompt = prompt.replace(/[^\x00-\x7F]+/g, '');
 
     // Enforce maximum length limit (700 chars to allow for detailed multi-character prompts)

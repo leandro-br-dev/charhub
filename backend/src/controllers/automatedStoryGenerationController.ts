@@ -5,7 +5,6 @@
  * Uses AI to analyze inputs and generate story details automatically.
  */
 
-/// <reference path="../types/express.d.ts" />
 import type { Request, Response } from 'express';
 import type { Server } from 'socket.io';
 import { logger } from '../config/logger';
@@ -560,7 +559,7 @@ async function generateCoverPrompt(
   }
 
   // Determine setting from story data or image analysis
-  let setting = storyData.setting || imageAnalysis?.setting;
+  const setting = storyData.setting || imageAnalysis?.setting;
 
   // Use LLM agent to generate detailed, attractive prompt
   const prompt = await generateStoryCoverPrompt({
