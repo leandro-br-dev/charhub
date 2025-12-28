@@ -16,6 +16,7 @@ import type {
   AvatarGenerationJobData,
   StickerGenerationJobData,
   BulkStickerGenerationJobData,
+  CoverGenerationJobData,
 } from '../jobs/imageGenerationJob';
 import { StickerStatus } from '../../generated/prisma';
 
@@ -41,6 +42,8 @@ export async function processImageGeneration(
         }
         return await processStickerGeneration(stickerData as StickerGenerationJobData);
       }
+      case 'cover':
+        return await processCoverGeneration(job.data as CoverGenerationJobData);
       default:
         throw new Error(`Unsupported generation type: ${type}`);
     }
@@ -362,5 +365,84 @@ async function processBulkStickerGeneration(
     imageUrls: results,
     characterId,
     error: errors.length > 0 ? errors.join('; ') : undefined,
+  };
+}
+
+/**
+ * Process story cover generation
+ */
+async function processCoverGeneration(
+  data: CoverGenerationJobData
+): Promise<ImageGenerationJobResult> {
+  const { storyId, referenceImageUrl, prompt } = data;
+
+  logger.info({ storyId, prompt }, 'Processing story cover generation');
+
+  // Get story data
+  const story = await prisma.story.findUnique({
+    where: { id: storyId },
+  });
+
+  if (!story) {
+    throw new Error(`Story ${storyId} not found`);
+  }
+
+  // Download and upload reference image to ComfyUI if provided (for IP-Adapter)
+  let referenceImageFilename: string | undefined;
+  if (referenceImageUrl) {
+    try {
+      const urlObj = new URL(referenceImageUrl);
+      const r2Key = urlObj.pathname.replace(/^\//, '');
+
+      const imageBuffer = await r2Service.downloadObject(r2Key);
+      logger.info({ r2Key, sizeBytes: imageBuffer.length }, 'Downloaded reference image from R2');
+
+      const tempFilename = `ref_${Date.now()}_${storyId}.png`;
+      referenceImageFilename = await comfyuiService.uploadImage(imageBuffer, tempFilename, true);
+
+      logger.info({ referenceImageFilename, originalUrl: referenceImageUrl }, 'Reference image uploaded to ComfyUI for IP-Adapter');
+    } catch (error) {
+      logger.warn({ error, referenceImageUrl }, 'Failed to upload reference image to ComfyUI, proceeding without IP-Adapter');
+    }
+  }
+
+  // Build prompt for cover generation
+  const coverPrompt: any = {
+    positive: prompt,
+    negative: 'text, words, letters, numbers, writing, book title, author name, logo, signature, watermark, username, low quality, bad anatomy, bad hands, error, missing fingers, extra digit, fewer digits, cropped, worst quality, normal quality, jpeg artifacts, blurry, censored, bar censor, mosaic censor',
+    referenceImagePath: referenceImageFilename,
+  };
+
+  logger.info({ storyId, prompt: coverPrompt.positive, hasReferenceImage: !!referenceImageFilename }, 'Cover prompt ready');
+
+  // Generate image with ComfyUI (using avatar generation as base)
+  const result = await comfyuiService.generateAvatar(coverPrompt);
+
+  // Convert to WebP
+  const webpBuffer = await convertToWebP(result.imageBytes, {
+    prompt: coverPrompt.positive,
+    character: story.title,
+    type: 'cover',
+  });
+
+  // Upload to R2
+  const objectKey = `stories/${storyId}/cover/cover_${Date.now()}.webp`;
+  const { publicUrl } = await r2Service.uploadObject({
+    key: objectKey,
+    body: webpBuffer,
+    contentType: 'image/webp',
+  });
+
+  // Update story with cover image
+  await prisma.story.update({
+    where: { id: storyId },
+    data: { coverImage: publicUrl },
+  });
+
+  logger.info({ storyId, url: publicUrl }, 'Story cover generated successfully');
+
+  return {
+    success: true,
+    imageUrl: publicUrl,
   };
 }

@@ -5,7 +5,9 @@ import { useAuth } from '../../../hooks/useAuth';
 import { Button, Avatar } from '../../../components/ui';
 import { Tag as UITag } from '../../../components/ui/Tag';
 import { CachedImage } from '../../../components/ui/CachedImage';
+import { FavoriteButton } from '../../../components/ui/FavoriteButton';
 import { storyService } from '../../../services/storyService';
+import { storyStatsService, type StoryStats } from '../../../services/storyStatsService';
 import { chatService } from '../../../services/chatService';
 import type { Story } from '../../../types/story';
 import type { CreateConversationPayload } from '../../../types/chat';
@@ -22,9 +24,23 @@ export function StoryDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<StoryStats | null>(null);
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
   const { setTitle } = usePageHeader();
 
   const isOwner = user?.id === story?.authorId;
+
+  // Format age rating for display (e.g., "SIXTEEN" -> "16+")
+  const formatAgeRating = (rating: string): string => {
+    const ageMap: Record<string, string> = {
+      'C': 'C+',
+      'L': 'L+',
+      'FO': '14+',
+      'SIXTEEN': '16+',
+      'EIGHTEEN': '18+',
+    };
+    return ageMap[rating] || rating;
+  };
 
   useEffect(() => {
     if (!storyId) return;
@@ -44,6 +60,22 @@ export function StoryDetailPage() {
 
     fetchStory();
   }, [storyId, t]);
+
+  // Load story stats
+  useEffect(() => {
+    if (storyId) {
+      setIsLoadingStats(true);
+      storyStatsService
+        .getStats(storyId)
+        .then(setStats)
+        .catch((error) => {
+          console.error('[StoryDetail] Failed to load stats', error);
+        })
+        .finally(() => {
+          setIsLoadingStats(false);
+        });
+    }
+  }, [storyId]);
 
   // Set page title
   useEffect(() => {
@@ -120,9 +152,19 @@ export function StoryDetailPage() {
   const handleShare = () => {
     if (!story) return;
     const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
+    if (navigator.share) {
+      navigator.share({
+        title: story.title,
+        text: story.synopsis || '',
+        url: url,
+      }).catch(() => {
+        navigator.clipboard.writeText(url);
+        addToast(t('common:messages.linkCopied'), 'success');
+      });
+    } else {
+      navigator.clipboard.writeText(url);
       addToast(t('common:messages.linkCopied'), 'success');
-    });
+    }
   };
 
   const buildStoryContext = (story: Story): string => {
@@ -186,7 +228,7 @@ export function StoryDetailPage() {
         <div className="grid gap-0 md:gap-6 lg:grid-cols-[420px_1fr]">
           {/* Left side - Cover image */}
           <div className="w-full space-y-4 md:w-full">
-            {/* Cover image */}
+            {/* Cover image with overlay stats */}
             <div className="relative overflow-hidden rounded-none bg-card shadow-lg md:rounded-2xl">
               <div className="relative h-[50vh] md:aspect-[2/3] md:h-auto">
                 {story.coverImage ? (
@@ -201,26 +243,49 @@ export function StoryDetailPage() {
                   </div>
                 )}
 
+                {/* Gradient fade overlay - darkens bottom */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+
+                {/* Favorite button - top right */}
+                <FavoriteButton
+                  storyId={story.id}
+                  initialIsFavorited={Boolean(stats?.isFavoritedByUser)}
+                  onToggle={(fav) => {
+                    setStats((prev) => prev ? {
+                      ...prev,
+                      isFavoritedByUser: fav,
+                      favoriteCount: prev.favoriteCount + (fav ? 1 : -1)
+                    } : prev);
+                  }}
+                  className="absolute top-4 right-4"
+                />
+
                 {/* Age rating badge - top left */}
                 <div className="absolute left-4 top-4 z-10">
                   <UITag
-                    label={story.ageRating}
+                    label={formatAgeRating(story.ageRating)}
                     icon={<span className="material-symbols-outlined text-sm">verified</span>}
                     tone="success"
                     selected
                     disabled
+                    className="h-8"
                   />
                 </div>
 
-                {/* Visibility badge - top right */}
-                <div className="absolute right-4 top-4 z-10">
-                  <UITag
-                    label={story.visibility ? t('story:list.public') : t('story:list.private')}
-                    icon={<span className="material-symbols-outlined text-sm">{story.visibility ? 'public' : 'lock'}</span>}
-                    tone={story.visibility ? 'info' : 'warning'}
-                    selected
-                    disabled
-                  />
+                {/* Stats overlay - bottom - Hidden on mobile */}
+                <div className="absolute bottom-4 left-4 right-4 z-10 hidden gap-3 md:flex">
+                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/20 px-4 py-3 backdrop-blur-sm">
+                    <span className="material-symbols-outlined text-xl text-content">chat</span>
+                    <span className="text-lg font-semibold text-content">
+                      {isLoadingStats ? '...' : storyStatsService.formatCount(stats?.conversationCount || 0)}
+                    </span>
+                  </div>
+                  <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/20 px-4 py-3 backdrop-blur-sm">
+                    <span className="material-symbols-outlined text-xl text-content">favorite</span>
+                    <span className="text-lg font-semibold text-content">
+                      {isLoadingStats ? '...' : storyStatsService.formatCount(stats?.favoriteCount || 0)}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -228,7 +293,7 @@ export function StoryDetailPage() {
 
           {/* Right side - Story info */}
           <div className="relative z-10 -mt-12 space-y-4 md:mt-0">
-            {/* Title and action buttons */}
+            {/* Title and stats */}
             <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
               <div className="mb-4 flex items-start justify-between gap-4">
                 <h1 className="text-3xl font-bold text-title lg:text-4xl">
@@ -263,6 +328,62 @@ export function StoryDetailPage() {
                 </div>
               </div>
 
+              {/* Tags */}
+              <div className="mb-6 flex flex-wrap gap-2">
+                {/* Age rating badge */}
+                <UITag
+                  label={formatAgeRating(story.ageRating)}
+                  icon={<span className="material-symbols-outlined text-sm">verified</span>}
+                  tone="success"
+                  selected
+                  disabled
+                  className="h-8"
+                />
+
+                {/* Content tags */}
+                {story.contentTags && story.contentTags.length > 0 && story.contentTags.map((tag) => {
+                  const isNsfw = tag === 'SEXUAL' || tag === 'NUDITY';
+                  return (
+                    <UITag
+                      key={tag}
+                      label={t(`characters:contentTags.${tag}`)}
+                      tone={isNsfw ? 'danger' : 'warning'}
+                      selected
+                      disabled
+                      className="h-8"
+                    />
+                  );
+                })}
+
+                {/* Story genre tags */}
+                {story.tags && story.tags.length > 0 && story.tags.map((tag) => (
+                  <UITag
+                    key={tag.id}
+                    label={tag.name}
+                    selected
+                    icon={<span className="material-symbols-outlined text-sm">sell</span>}
+                    disabled
+                    className="h-8"
+                  />
+                ))}
+              </div>
+
+              {/* Stats row */}
+              <div className="mb-6 grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-2xl font-bold text-content">
+                    {isLoadingStats ? '...' : (stats?.conversationCount || 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-muted">{t('story:stats.conversations', 'Conversations')}</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-content">
+                    {isLoadingStats ? '...' : (stats?.favoriteCount || 0).toLocaleString()}
+                  </div>
+                  <div className="text-sm text-muted">{t('story:stats.favorites', 'Favorites')}</div>
+                </div>
+              </div>
+
               {/* Start story button */}
               <Button
                 type="button"
@@ -278,34 +399,6 @@ export function StoryDetailPage() {
               </Button>
             </div>
 
-            {/* Author info */}
-            {story.author && (
-              <div className="mx-4 rounded-2xl bg-card/50 p-4 md:mx-0">
-                <div className="flex items-center gap-3">
-                  {story.author.avatarUrl ? (
-                    <CachedImage
-                      src={story.author.avatarUrl}
-                      alt={story.author.displayName || 'Author'}
-                      className="h-10 w-10 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
-                      <span className="text-sm font-semibold text-primary">
-                        {(story.author.displayName || 'U').charAt(0).toUpperCase()}
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <p className="text-sm text-muted">{t('story:detail.labels.createdBy', 'Created by')}</p>
-                    <p className="font-medium text-content">{story.author.displayName || t('common:anonymousUser', 'Anonymous')}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-muted">{new Date(story.createdAt).toLocaleDateString()}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* Synopsis */}
             {story.synopsis && (
               <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
@@ -316,13 +409,59 @@ export function StoryDetailPage() {
               </div>
             )}
 
-            {/* Initial Scene */}
-            {story.initialText && (
-              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
-                <h2 className="mb-4 text-xl font-semibold text-title">
-                  {t('story:detail.initialScene')}
+            {/* Characters */}
+            {story.characters && story.characters.length > 0 && (
+              <div className="mx-4 rounded-2xl bg-card p-4 shadow-lg md:mx-0">
+                <h2 className="mb-3 text-lg font-semibold text-title">
+                  {t('story:detail.characters')}
                 </h2>
-                <p className="whitespace-pre-wrap text-content">{story.initialText}</p>
+                <div className="flex flex-wrap gap-2">
+                  {story.characters
+                    .sort((a, b) => {
+                      // Main character first
+                      if (a.role === 'MAIN') return -1;
+                      if (b.role === 'MAIN') return 1;
+                      return 0;
+                    })
+                    .map(character => {
+                    const displayName = character.lastName
+                      ? `${character.firstName} ${character.lastName}`
+                      : character.firstName;
+                    const isMain = character.role === 'MAIN';
+
+                    return (
+                      <div
+                        key={character.id}
+                        onClick={() => navigate(`/characters/${character.id}`)}
+                        className={`group flex cursor-pointer items-center gap-2 rounded-full pl-1 pr-3 transition-colors hover:bg-input ${
+                          isMain
+                            ? 'bg-amber-50 dark:bg-amber-500/10'
+                            : 'bg-light'
+                        }`}
+                      >
+                        {isMain && (
+                          <span className="material-symbols-outlined text-amber-500 text-sm">star</span>
+                        )}
+                        {character.avatar ? (
+                          <CachedImage
+                            src={character.avatar}
+                            alt={displayName}
+                            className="h-8 w-8 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/20">
+                            <span className="text-xs font-semibold text-primary">
+                              {character.firstName[0]}
+                            </span>
+                          </div>
+                        )}
+                        <span className="text-sm font-medium text-content group-hover:text-primary">
+                          {displayName}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
 
@@ -345,87 +484,48 @@ export function StoryDetailPage() {
               </div>
             )}
 
-            {/* Characters */}
-            {story.characters && story.characters.length > 0 && (
+            {/* Author + Metadata (combined) */}
+            {story.author && (
               <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
-                <h2 className="mb-4 text-xl font-semibold text-title">
-                  {t('story:detail.characters')}
-                </h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {story.characters.map(character => {
-                    const displayName = character.lastName
-                      ? `${character.firstName} ${character.lastName}`
-                      : character.firstName;
-
-                    return (
-                      <div
-                        key={character.id}
-                        onClick={() => navigate(`/characters/${character.id}`)}
-                        className="flex cursor-pointer items-center gap-3 rounded-lg bg-light p-4 transition-colors hover:bg-input"
-                      >
-                        {character.avatar ? (
-                          <CachedImage
-                            src={character.avatar}
-                            alt={displayName}
-                            className="h-12 w-12 rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
-                            <span className="text-lg font-semibold text-primary">
-                              {character.firstName[0]}
-                            </span>
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium text-content truncate">
-                            {displayName}
-                          </p>
-                        </div>
-                        <span className="material-symbols-outlined text-muted">arrow_forward</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Content Tags */}
-            {story.contentTags && story.contentTags.length > 0 && (
-              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
-                <h2 className="mb-4 text-xl font-semibold text-title">
-                  {t('characters:detail.sections.contentTags', 'Content Warnings')}
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {story.contentTags.map((tag) => {
-                    const isNsfw = tag === 'SEXUAL' || tag === 'NUDITY';
-                    return (
-                      <UITag
-                        key={tag}
-                        label={t(`characters:contentTags.${tag}`)}
-                        tone={isNsfw ? 'danger' : 'warning'}
-                        disabled
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-start md:gap-8 md:divide-x md:divide-border">
+                  {/* Creator info */}
+                  <div className="flex items-center gap-3 md:pr-6 min-w-0">
+                    {story.author.avatarUrl ? (
+                      <CachedImage
+                        src={story.author.avatarUrl}
+                        alt={story.author.displayName || 'Author'}
+                        className="h-12 w-12 rounded-full object-cover"
                       />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+                    ) : (
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/20">
+                        <span className="text-base font-semibold text-primary">
+                          {(story.author.displayName || 'U').charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-muted">{t('story:detail.labels.createdBy', 'Created by')}</p>
+                      <p className="font-medium text-content truncate">{story.author.displayName || t('common:anonymousUser', 'Anonymous')}</p>
+                    </div>
+                  </div>
 
-            {/* Tags */}
-            {story.tags && story.tags.length > 0 && (
-              <div className="mx-4 rounded-2xl bg-card p-6 shadow-lg md:mx-0">
-                <h2 className="mb-4 text-xl font-semibold text-title">
-                  {t('common:tags', 'Tags')}
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {story.tags.map((tag) => (
-                    <UITag
-                      key={tag.id}
-                      label={tag.name}
-                      tone="info"
-                      disabled
-                    />
-                  ))}
+                  {/* Metadata (created/updated) */}
+                  <div className="min-w-0 md:pl-6">
+                    <div className="space-y-2 text-sm text-content">
+                      <div className="flex items-start gap-2">
+                        <span className="material-symbols-outlined text-base text-primary">event</span>
+                        <span>
+                          {t('characters:detail.labels.createdAt', 'Created')}: {new Date(story.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="material-symbols-outlined text-base text-primary">update</span>
+                        <span>
+                          {t('characters:detail.labels.updatedAt', 'Updated')}: {new Date(story.updatedAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

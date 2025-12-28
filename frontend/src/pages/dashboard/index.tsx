@@ -7,15 +7,17 @@ import { CharacterCard } from '../(characters)/shared/components';
 import { DashboardCarousel, RecentConversations, StoryCard } from './components';
 import { useContentFilter } from './hooks';
 import { useContentFilter as useGlobalContentFilter } from '../../contexts/ContentFilterContext';
-import { dashboardService, characterService, storyService } from '../../services';
+import { dashboardService, characterService, storyService, chatService } from '../../services';
 import { characterStatsService, type CharacterStats } from '../../services/characterStatsService';
 import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
+import type { CreateConversationPayload } from '../../types/chat';
 import { useAuth } from '../../hooks/useAuth';
 import { PublicHeader } from '../../components/layout';
 import { AuthenticatedLayout } from '../../layouts/AuthenticatedLayout';
 import { usePageHeader } from '../../hooks/usePageHeader';
+import { useToast } from '../../contexts/ToastContext';
 
 // Component for authenticated users (inside AuthenticatedLayout)
 function AuthenticatedDashboard(): JSX.Element {
@@ -35,6 +37,37 @@ function DashboardContent(): JSX.Element {
   const navigate = useNavigate();
   const { shouldHideContent } = useGlobalContentFilter();
   const { isAuthenticated } = useAuth();
+  const { addToast } = useToast();
+
+  // Helper function to build story context for chat
+  const buildStoryContext = (story: Story): string => {
+    let context = `STORY: ${story.title}\n\n`;
+
+    if (story.synopsis) {
+      context += `SYNOPSIS:\n${story.synopsis}\n\n`;
+    }
+
+    if (story.objectives && story.objectives.length > 0) {
+      context += `OBJECTIVES:\n`;
+      story.objectives.forEach((obj, index) => {
+        context += `${index + 1}. ${obj.description}\n`;
+      });
+      context += '\n';
+    }
+
+    if (story.initialText) {
+      context += `INITIAL SCENE:\n${story.initialText}\n\n`;
+    }
+
+    context += `CHARACTERS IN THIS STORY:\n`;
+    story.characters?.forEach(char => {
+      context += `- ${char.firstName} ${char.lastName || ''}\n`;
+    });
+
+    context += `\nIMPORTANT: You are participating in an interactive story. Stay in character and respond according to the story context and objectives above.`;
+
+    return context;
+  };
 
   // Age rating filter moved to PageHeader
 
@@ -242,17 +275,40 @@ function DashboardContent(): JSX.Element {
   const handleStoryPlay = useCallback(
     async (story: Story) => {
       try {
-        const result = await storyService.play(story.id);
-        if (result.success && result.sessionId) {
-          // TODO: Navigate to story session when implemented
-          console.log(`Starting story session: ${result.sessionId}`);
-          navigate(`/stories/${story.id}/play?session=${result.sessionId}`);
+        // Build story context for chat
+        const storyContext = buildStoryContext(story);
+
+        // Get character IDs from story
+        const characterIds = story.characters?.map(c => c.id) || [];
+
+        if (characterIds.length === 0) {
+          addToast(t('story:errors.noCharacters', 'This story has no characters'), 'error');
+          return;
         }
+
+        // Create conversation with story context
+        const payload: CreateConversationPayload = {
+          title: story.title,
+          participantIds: characterIds,
+          settings: {
+            storyId: story.id,
+            storyContext,
+            isStoryMode: true,
+            initialMessage: story.initialText || undefined,
+            objectives: story.objectives,
+          },
+        };
+
+        const conversation = await chatService.createConversation(payload);
+
+        // Navigate to chat
+        navigate(`/chat/${conversation.id}`);
       } catch (error) {
         console.error('[Dashboard] Failed to start story:', error);
+        addToast(t('story:errors.failedToStart', 'Failed to start story'), 'error');
       }
     },
-    [navigate]
+    [navigate, addToast, t]
   );
 
   // Filter lists based on global content filter "hidden" mode so layout reflows

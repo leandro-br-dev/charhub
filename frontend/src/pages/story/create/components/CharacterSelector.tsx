@@ -6,14 +6,17 @@ import type { Character } from '../../../../types/characters';
 
 interface CharacterSelectorProps {
   selectedIds: string[];
+  mainCharacterId?: string; // ID of the MAIN character
   onChange: (ids: string[]) => void;
+  onMainCharacterChange?: (id: string) => void; // Callback when MAIN character changes
 }
 
-export function CharacterSelector({ selectedIds, onChange }: CharacterSelectorProps) {
+export function CharacterSelector({ selectedIds, mainCharacterId, onChange, onMainCharacterChange }: CharacterSelectorProps) {
   const { t } = useTranslation('story');
   const [characters, setCharacters] = useState<Character[]>([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     loadCharacters();
@@ -42,8 +45,17 @@ export function CharacterSelector({ selectedIds, onChange }: CharacterSelectorPr
     }
   };
 
-  const selectedCharacters = characters.filter(c => selectedIds.includes(c.id));
+  const selectedCharacters = characters
+    .filter(c => selectedIds.includes(c.id))
+    .sort((a, b) => {
+      // Main character first
+      if (a.id === mainCharacterId) return -1;
+      if (b.id === mainCharacterId) return 1;
+      return 0;
+    });
   const availableCharacters = characters.filter(c => !selectedIds.includes(c.id));
+
+  const mainCharacter = selectedCharacters.find(c => c.id === mainCharacterId);
 
   return (
     <div className="space-y-3">
@@ -51,33 +63,128 @@ export function CharacterSelector({ selectedIds, onChange }: CharacterSelectorPr
         {t('form.characters')}
       </label>
 
-      {/* Selected Characters */}
+      {/* Main Character Selector Dropdown */}
       {selectedCharacters.length > 0 && (
         <div className="space-y-2">
-          <p className="text-xs text-muted">{t('form.selectedCharacters')}</p>
-          <div className="flex flex-wrap gap-2">
-            {selectedCharacters.map(character => (
-              <div
-                key={character.id}
-                className="flex items-center gap-2 px-3 py-2 bg-primary/10 border border-primary rounded-lg"
-              >
-                <Avatar
-                  src={character.avatar || undefined}
-                  alt={character.firstName}
-                  size="small"
-                />
-                <span className="text-sm font-medium text-content">
-                  {character.firstName} {character.lastName || ''}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => toggleCharacter(character.id)}
-                  className="ml-2 text-error hover:text-error/80"
-                >
-                  ×
-                </button>
+          <label className="block text-xs font-medium text-muted flex items-center gap-1">
+            <span className="material-symbols-outlined text-sm">star</span>
+            {t('form.mainCharacterLabel', 'Main Character (played by you)')}
+          </label>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full flex items-center justify-between px-3 py-2 bg-light border border-border rounded-lg hover:bg-border transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                {mainCharacter ? (
+                  <>
+                    <span className="material-symbols-outlined text-amber-500">star</span>
+                    <Avatar
+                      src={mainCharacter.avatar || undefined}
+                      alt={mainCharacter.firstName}
+                      size="small"
+                    />
+                    <span className="text-sm font-medium text-content">
+                      {mainCharacter.firstName} {mainCharacter.lastName || ''}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-sm text-muted">
+                    {t('form.selectMainCharacter', 'Select main character...')}
+                  </span>
+                )}
               </div>
-            ))}
+              <span className="material-symbols-outlined text-muted">
+                {isDropdownOpen ? 'expand_less' : 'expand_more'}
+              </span>
+            </button>
+
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setIsDropdownOpen(false)}
+                />
+                <div className="absolute z-20 w-full mt-1 bg-normal border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                  {selectedCharacters.map(character => {
+                    const isMain = character.id === mainCharacterId;
+                    return (
+                      <button
+                        key={character.id}
+                        type="button"
+                        onClick={() => {
+                          if (onMainCharacterChange) {
+                            onMainCharacterChange(character.id);
+                          }
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-2 px-3 py-2 hover:bg-light transition-colors ${
+                          isMain ? 'bg-light/50' : ''
+                        }`}
+                      >
+                        <Avatar
+                          src={character.avatar || undefined}
+                          alt={character.firstName}
+                          size="small"
+                        />
+                        <span className="text-sm flex-grow text-left">
+                          {character.firstName} {character.lastName || ''}
+                        </span>
+                        {isMain && (
+                          <span className="material-symbols-outlined text-amber-500 text-sm">check</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Selected Characters List */}
+      {selectedCharacters.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-xs text-muted">
+            {t('form.selectedCharacters')} ({selectedCharacters.length})
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {selectedCharacters.map(character => {
+              const isMain = character.id === mainCharacterId;
+              return (
+                <div
+                  key={character.id}
+                  className={`flex items-center gap-2 px-3 py-2 border rounded-lg transition-all ${
+                    isMain
+                      ? 'bg-amber-50 border-amber-200 dark:bg-amber-500/10 dark:border-amber-500/30'
+                      : 'bg-light border-border hover:bg-border'
+                  }`}
+                >
+                  {isMain && (
+                    <span className="material-symbols-outlined text-amber-500 text-sm">star</span>
+                  )}
+                  <Avatar
+                    src={character.avatar || undefined}
+                    alt={character.firstName}
+                    size="small"
+                  />
+                  <span className="text-sm font-medium text-content">
+                    {character.firstName} {character.lastName || ''}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => toggleCharacter(character.id)}
+                    className="ml-1 text-muted hover:text-error transition-colors"
+                    title={t('form.removeCharacter', 'Remove')}
+                  >
+                    <span className="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}

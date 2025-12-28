@@ -3,23 +3,16 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Idioma",
-    "menu": {
-      "title": "Menu",
-      "close": "Fechar menu",
-      "open": "Abrir menu"
-    },
-    "settings": "Configurações",
-    "account": "Conta",
     "continueGoogle": "Continuar com o Google",
     "continueFacebook": "Continuar com o Facebook",
     "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
     "logout": "Sair",
     "logoutLoading": "Saindo...",
     "authenticatedUser": "Usuário autenticado",
-    "tokenStored": "Armazenado em cookie somente HTTP",
+    "tokenStored": "Armazenado em cookie HTTP-only",
     "navDashboard": "Painel",
     "navCharacters": "Personagens",
-    "navTagline": "Demo de OAuth seguro",
+    "navTagline": "Demonstração de OAuth seguro",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -43,7 +36,7 @@
     "deleting": "Excluindo...",
     "enabled": "Ativado",
     "disabled": "Desativado",
-    "selectOption": "Selecionar uma opção",
+    "selectOption": "Selecione uma opção",
     "noResults": "Nenhuma opção encontrada.",
     "chat": {
       "with": "Conversar com"
@@ -56,15 +49,15 @@
     "contentFilter": {
       "ariaLabel": "Filtro de conteúdo",
       "title": "Filtro de Conteúdo",
-      "ageRating": "Classificação Etária",
-      "blurNsfw": "Borrar Conteúdo Explícito",
+      "ageRating": "Classificação etária",
+      "blurNsfw": "Desfocar Conteúdo Explícito",
       "none": "Sem Filtro",
-      "blur": "Borrar Conteúdo Sensível",
-      "hidden": "Ocultar Conteúdo Adulto",
+      "blur": "Desfocar Conteúdo Sensível",
+      "hidden": "Ocultar Conteúdo Maduro",
       "descriptions": {
         "none": "Mostrar todo o conteúdo sem restrições",
-        "blur": "Aplicar desfoque ao conteúdo adulto",
-        "hidden": "Ocultar completamente o conteúdo adulto"
+        "blur": "Aplicar desfoque ao conteúdo maduro",
+        "hidden": "Ocultar completamente o conteúdo maduro"
       },
       "ageRatings": {
         "L": "Livre",
@@ -85,6 +78,10 @@
     },
     "character": "Personagem",
     "seeMore": "Ver mais",
-    "seeMoreArrow": "Ver mais →"
+    "seeMoreArrow": "Ver mais →",
+    "back": "Voltar",
+    "loading": "Carregando...",
+    "credits": "créditos",
+    "tryAgain": "Tentar Novamente"
   }
 }

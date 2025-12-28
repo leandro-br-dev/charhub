@@ -19,6 +19,8 @@ import ConversationDetailPage from './pages/(chat)/[conversationId]';
 import NewConversationPage from './pages/(chat)/new';
 import JoinChatPage from './pages/(chat)/join';
 import StoryCreatePage from './pages/story/create';
+import StoryNewPage from './pages/story/new';
+import AutomatedStoryCreatePage from './pages/story/create-ai';
 import StoryEditPage from './pages/story/[storyId]/edit';
 import StoryHubPage from './pages/story/hub';
 import { StoryDetailPage } from './pages/story/[storyId]';
@@ -72,6 +74,8 @@ export default function App(): JSX.Element {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/stories" element={<StoryHubPage />} />
         <Route path="/stories/create" element={<StoryCreatePage />} />
+        <Route path="/stories/new" element={<StoryNewPage />} />
+        <Route path="/stories/create-ai" element={<AutomatedStoryCreatePage />} />
         <Route path="/stories/:storyId" element={<StoryDetailPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/tasks" element={<TasksPage />} />

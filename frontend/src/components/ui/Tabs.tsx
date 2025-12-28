@@ -35,7 +35,7 @@ interface TabListProps {
 
 export function TabList({ children }: TabListProps) {
   return (
-    <div className="flex flex-wrap gap-2 sm:gap-4 border-b border-border px-4 sm:px-6">
+    <div className="flex flex-wrap sm:flex-nowrap gap-1 sm:gap-2 border-b border-border px-3 sm:px-4 overflow-x-auto">
       {children}
     </div>
   );
@@ -54,7 +54,7 @@ export function Tab({ label, disabled = false, children }: TabProps) {
   return (
     <button
       type="button"
-      className={`whitespace-nowrap px-3 sm:px-4 py-2 text-sm sm:text-base font-medium transition-colors ${
+      className={`whitespace-nowrap px-2 sm:px-3 py-2 text-sm font-medium transition-colors ${
         isActive
           ? 'text-primary border-b-2 border-primary'
           : 'text-muted hover:text-content'

@@ -3,59 +3,173 @@
   "resources": {
     "create": {
       "title": "Crea Nuova Storia",
-      "subtitle": "Costruisci una storia interattiva con personaggi e obiettivi"
+      "subtitle": "Costruisci una storia interattiva con personaggi e obiettivi",
+      "chooseMethod": {
+        "title": "Come desideri creare la tua storia?",
+        "subtitle": "Scegli il metodo più adatto alle tue esigenze",
+        "manual": {
+          "title": "Creazione Manuale",
+          "description": "Crea la tua storia passo dopo passo con il controllo completo",
+          "features": [
+            "Personalizzazione completa",
+            "Organizzata in schede",
+            "Perfetto per storie dettagliate"
+          ],
+          "cost": "Gratuito",
+          "button": "Crea Manualmente"
+        },
+        "ai": {
+          "title": "Creazione Assistita da AI",
+          "description": "Lascia che l'AI generi la tua storia da una descrizione o un'immagine",
+          "features": [
+            "Generazione automatica",
+            "Carica immagine o descrivi",
+            "Veloce e creativo"
+          ],
+          "cost": "75-100 crediti",
+          "button": "Crea con AI"
+        }
+      }
+    },
+    "new": {
+      "title": "Crea Storia Manualmente",
+      "subtitle": "Compila i dettagli passo dopo passo"
+    },
+    "edit": {
+      "title": "Modifica Storia",
+      "subtitle": "Modifica i dettagli della tua storia"
+    },
+    "createAI": {
+      "title": "Generatore di Storie AI",
+      "subtitle": "Descrivi la tua idea di storia o carica un'immagine, e l'AI genererà i dettagli per te",
+      "descriptionLabel": "Descrizione della Storia",
+      "descriptionPlaceholder": "Descrivi la tua idea di storia... (es. \"Un giovane mago scopre un antico portale che conduce a un mondo di sogni\")",
+      "descriptionHint": "Più dettagliata è la tua descrizione, migliori saranno i risultati",
+      "imageLabel": "Immagine di Scena",
+      "uploadPrompt": "Clicca per caricare l'immagine della scena",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (max 10MB)",
+      "generating": "Generazione in corso...",
+      "generateButton": "Genera Storia",
+      "howItWorks": "Come funziona",
+      "step1": "Fornisci una descrizione testuale e/o carica un'immagine di scena",
+      "step2": "L'AI analizza il tuo input e genera i dettagli della storia",
+      "step3": "Rivedi e modifica la storia generata prima di salvarla",
+      "step4": "Un'immagine di copertina verrà generata automaticamente per te",
+      "pricing": "Costo in Crediti",
+      "textOnly": "Solo testo",
+      "withImage": "Con immagine",
+      "progress": {
+        "preparing": "Preparando la tua storia",
+        "uploadingImage": "Caricando la tua scena",
+        "analyzingImage": "Analizzando l'atmosfera",
+        "extractingDescription": "Leggendo la storia",
+        "generatingConcept": "Intrecciando la narrazione",
+        "generatingPlot": "Elaborando la trama",
+        "writingScene": "Scrivendo l'apertura",
+        "generatingCover": "Creando la copertina",
+        "creatingStory": "Dando vita alla storia",
+        "completed": "La tua storia ti aspetta",
+        "error": "Un colpo di scena inaspettato"
+      },
+      "reveal": {
+        "title": "Concetto della Storia Creato",
+        "conceptMessage": "Le fondamenta della tua storia sono state gettate...",
+        "plotTitle": "Trama Scritta",
+        "plotMessage": "Il percorso da seguire è stato tracciato...",
+        "sceneTitle": "Scena d'Apertura Scritta",
+        "sceneMessage": "Il racconto inizia a svelarsi...",
+        "storyTitle": "Storia Creata",
+        "storyMessage": "La tua storia ha preso vita!",
+        "continuing": "Continuando..."
+      },
+      "final": {
+        "title": "La Tua Storia È Stata Creata!",
+        "message": "La tua storia è stata generata ed è pronta per essere letta. Un'immagine di copertina viene generata in background.",
+        "createAnother": "Crea un'altra storia"
+      },
+      "generationStarted": "Generazione della storia avviata! Monitoraggio dei progressi...",
+      "generationFailed": "Generazione Fallita",
+      "weavingYourTale": "Intrecciando il tuo racconto..."
     },
     "form": {
       "title": "Titolo",
       "titlePlaceholder": "Inserisci il titolo della storia",
       "synopsis": "Sinossi",
-      "synopsisPlaceholder": "Descrivi brevemente la tua storia",
-      "coverImage": "Immagine di copertina",
+      "synopsisPlaceholder": "Breve riassunto della tua storia...",
+      "coverImage": "Immagine di Copertina",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "Anteprima copertina",
       "coverImageError": "Impossibile caricare l'immagine",
-      "coverImageHint": "Incolla un URL di immagine per la copertina della storia",
-      "initialText": "Testo iniziale",
-      "initialTextPlaceholder": "Scrivi l'apertura della tua storia...",
-      "initialTextHint": "Questo testo verrà mostrato all'inizio della storia",
-      "objectives": "Obiettivi",
+      "coverImageHint": "Carica un'immagine o incolla un URL per la copertina della storia",
+      "changeCoverImage": "Cambia immagine",
+      "uploadCoverImage": "Seleziona immagine",
+      "uploadFromDevice": "Carica dal dispositivo",
+      "useImageUrl": "Usa URL immagine",
+      "imageUrlModalTitle": "Usa immagine da URL",
+      "imageUrlLabel": "URL immagine",
+      "invalidImageUrl": "Inserisci un URL immagine valido (http/https).",
+      "preview": "Anteprima",
+      "uploading": "Elaborazione in corso...",
+      "loading": "Caricamento in corso...",
+      "initialText": "Scena Iniziale",
+      "initialTextPlaceholder": "La storia inizia...",
+      "initialTextHint": "Questa è la scena d'apertura che i giocatori vedranno all'inizio della storia.",
+      "objectives": "Obiettivi della Storia",
       "objectivePlaceholder": "Aggiungi un obiettivo della storia",
       "noObjectives": "Nessun obiettivo ancora. Aggiungine alcuni per guidare la narrazione.",
       "characters": "Personaggi",
       "selectedCharacters": "Personaggi selezionati",
       "searchCharacters": "Cerca personaggi",
       "noCharactersFound": "Nessun personaggio trovato",
-      "noCharactersAvailable": "Crea prima i personaggi",
-      "tags": "Tag",
+      "noCharactersAvailable": "Crea prima dei personaggi",
+      "mainCharacterLabel": "Personaggio Principale (interpretato da te)",
+      "selectMainCharacter": "Seleziona personaggio principale...",
+      "tags": "Tag di Genere",
       "selectedTags": "Tag selezionati",
       "searchTags": "Cerca tag",
       "noTagsFound": "Nessun tag trovato",
       "noTagsAvailable": "Nessun tag disponibile",
-      "ageRating": "Classificazione per età",
-      "contentTags": "Tag di contenuto",
-      "makePublic": "Rendi pubblica questa storia"
+      "incompatibleHint": "I tag evidenziati in rosso sono incompatibili con la classificazione d'età selezionata. Rimuovili per continuare.",
+      "ageRating": "Classificazione d'Età",
+      "ageRatingHint": "Questo filtra i tag di genere disponibili e blocca gli avvisi di contenuto inappropriato.",
+      "contentTags": "Avvisi Contenuto",
+      "contentTagDisabled": "Richiede età {age} o superiore",
+      "contentTagsDisabledHint": "Gli avvisi di contenuto disattivati richiedono una classificazione d'età superiore.",
+      "visibility": "Visibilità Storia",
+      "makePublic": "Rendi pubblica questa storia",
+      "tabs": {
+        "details": "Dettagli",
+        "plot": "Trama e Ambientazione",
+        "characters": "Personaggi",
+        "classification": "Classificazione",
+        "media": "Media"
+      }
     },
     "validation": {
       "titleRequired": "Il titolo è obbligatorio",
-      "titleTooLong": "Il titolo deve essere di massimo 100 caratteri",
-      "synopsisTooLong": "La sinossi deve essere di massimo 2000 caratteri",
-      "initialTextTooLong": "Il testo iniziale deve essere di massimo 5000 caratteri"
+      "titleTooLong": "Il titolo deve contenere 100 caratteri o meno",
+      "synopsisTooLong": "La sinossi deve contenere 2000 caratteri o meno",
+      "initialTextTooLong": "Il testo iniziale deve contenere 5000 caratteri o meno"
     },
     "errors": {
-      "createFailed": "Impossibile creare la storia",
-      "updateFailed": "Impossibile aggiornare la storia",
-      "deleteFailed": "Impossibile eliminare la storia",
+      "createFailed": "Creazione storia fallita",
+      "updateFailed": "Aggiornamento storia fallito",
+      "deleteFailed": "Eliminazione storia fallita",
       "failedToLoad": "Impossibile caricare le storie",
       "noCharacters": "Questa storia non ha personaggi",
       "failedToStart": "Impossibile avviare la storia",
-      "notFound": "Storia non trovata"
+      "notFound": "Storia non trovata",
+      "imageTooLarge": "L'immagine deve essere inferiore a 10MB",
+      "invalidImageType": "L'immagine deve essere PNG, JPEG, WEBP o GIF",
+      "descriptionOrImageRequired": "Fornisci una descrizione o un'immagine",
+      "generationFailed": "Generazione della storia fallita"
     },
     "sidebar": {
-      "myStories": "Le mie Storie",
+      "myStories": "Le Mie Storie",
       "noStories": "Nessuna storia ancora"
     },
     "list": {
-      "title": "Le mie Storie",
+      "title": "Le Mie Storie",
       "subtitle": "Gestisci le tue storie interattive",
       "public": "Pubblica",
       "private": "Privata",
@@ -68,15 +182,20 @@
     "detail": {
       "title": "Storia",
       "synopsis": "Sinossi",
-      "initialScene": "Scena iniziale",
-      "objectives": "Obiettivi della storia",
+      "initialScene": "Scena Iniziale",
+      "objectives": "Obiettivi della Storia",
       "characters": "Personaggi",
       "confirmDelete": "Sei sicuro di voler eliminare questa storia? Questa azione non può essere annullata.",
       "labels": {
         "createdBy": "Creata da"
       }
     },
+    "stats": {
+      "conversations": "Conversazioni",
+      "favorites": "Preferiti"
+    },
     "start": "Inizia Storia",
-    "starting": "Inizio..."
+    "starting": "Avvio in corso...",
+    "view": "Visualizza Storia"
   }
 }

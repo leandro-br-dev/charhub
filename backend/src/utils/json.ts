@@ -5,6 +5,7 @@ import { logger } from '../config/logger';
  * - Extracts content from ```json ... ``` or generic ``` ... ``` fences if present
  * - Falls back to the first JSON object/array found in the string
  * - Attempts to correct trailing commas before parsing
+ * - Handles truncated JSON by finding the last complete object/array
  */
 export function parseJsonSafe<T = unknown>(content: string): T {
   if (typeof content !== 'string' || !content.trim()) {
@@ -40,6 +41,10 @@ export function parseJsonSafe<T = unknown>(content: string): T {
     jsonStrToParse = content.slice(startIndex);
   }
 
+  // Handle truncated JSON: find the last complete object/array
+  // If JSON ends abruptly, try to close it properly
+  jsonStrToParse = fixTruncatedJson(jsonStrToParse);
+
   const tryParse = (text: string): T => JSON.parse(text) as T;
 
   try {
@@ -56,5 +61,77 @@ export function parseJsonSafe<T = unknown>(content: string): T {
       throw new Error(errorMessage);
     }
   }
+}
+
+/**
+ * Attempt to fix truncated JSON by finding the last complete closing brace/bracket
+ * and ensuring all open braces/brackets are closed
+ */
+function fixTruncatedJson(jsonStr: string): string {
+  let braceCount = 0;
+  let bracketCount = 0;
+  let inString = false;
+  let escapeNext = false;
+  let lastCompleteIndex = -1;
+
+  for (let i = 0; i < jsonStr.length; i++) {
+    const char = jsonStr[i];
+
+    if (escapeNext) {
+      escapeNext = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      escapeNext = true;
+      continue;
+    }
+
+    if (char === '"') {
+      inString = !inString;
+      continue;
+    }
+
+    if (!inString) {
+      if (char === '{') braceCount++;
+      else if (char === '}') {
+        braceCount--;
+        if (braceCount === 0) lastCompleteIndex = i;
+      } else if (char === '[') bracketCount++;
+      else if (char === ']') {
+        bracketCount--;
+        if (bracketCount === 0 && braceCount === 0) lastCompleteIndex = i;
+      }
+    }
+  }
+
+  // If we found a complete object, truncate to that point
+  if (lastCompleteIndex > 0 && lastCompleteIndex < jsonStr.length - 1) {
+    logger.debug({ lastCompleteIndex, originalLength: jsonStr.length }, 'Truncating to last complete JSON object');
+    return jsonStr.slice(0, lastCompleteIndex + 1);
+  }
+
+  // If JSON is incomplete (open braces/brackets), try to close them
+  if (braceCount > 0 || bracketCount > 0) {
+    let fixed = jsonStr;
+
+    // Remove trailing comma if present
+    fixed = fixed.replace(/,\s*$/, '');
+
+    // Close any open brackets/braces
+    while (bracketCount > 0) {
+      fixed += ']';
+      bracketCount--;
+    }
+    while (braceCount > 0) {
+      fixed += '}';
+      braceCount--;
+    }
+
+    logger.debug({ wasIncomplete: true }, 'Attempting to fix truncated JSON');
+    return fixed;
+  }
+
+  return jsonStr;
 }
 

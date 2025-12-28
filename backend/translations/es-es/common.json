@@ -3,20 +3,13 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Idioma",
-    "menu": {
-      "title": "Menú",
-      "close": "Cerrar menú",
-      "open": "Abrir menú"
-    },
-    "settings": "Ajustes",
-    "account": "Cuenta",
     "continueGoogle": "Continuar con Google",
     "continueFacebook": "Continuar con Facebook",
     "privacy": "Al continuar, aceptas nuestra política de privacidad y autorizas a CharHub a acceder a tu información básica de perfil.",
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
-    "tokenStored": "Almacenado en una cookie de solo HTTP",
+    "tokenStored": "Almacenado en cookie solo HTTP",
     "navDashboard": "Panel de control",
     "navCharacters": "Personajes",
     "navTagline": "Demo de OAuth seguro",
@@ -43,15 +36,15 @@
     "deleting": "Eliminando...",
     "enabled": "Habilitado",
     "disabled": "Deshabilitado",
-    "selectOption": "Selecciona una opción",
+    "selectOption": "Seleccionar una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
       "with": "Chatear con"
     },
     "messages": {
       "linkCopied": "¡Enlace copiado al portapapeles!",
-      "chatStarted": "¡Chat iniciado con éxito!",
-      "characterDeleted": "Personaje eliminado con éxito"
+      "chatStarted": "¡Chat iniciado correctamente!",
+      "characterDeleted": "Personaje eliminado correctamente"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
@@ -60,10 +53,10 @@
       "blurNsfw": "Difuminar Contenido Explícito",
       "none": "Sin Filtro",
       "blur": "Difuminar Sensible",
-      "hidden": "Ocultar Maduro",
+      "hidden": "Ocultar Contenido Maduro",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar desenfoque al contenido maduro",
+        "blur": "Aplicar difuminado al contenido maduro",
         "hidden": "Ocultar completamente el contenido maduro"
       },
       "ageRatings": {
@@ -75,16 +68,20 @@
         "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ Edad no registrada",
-      "noBirthdateDescription": "Para acceder a contenido con restricción de edad, por favor añade tu fecha de nacimiento en los ajustes.",
-      "goToSettings": "Ir a Ajustes",
+      "noBirthdateDescription": "Para acceder a contenido con restricción de edad, por favor, añade tu fecha de nacimiento en la configuración.",
+      "goToSettings": "Ir a Configuración",
       "blocked": "(bloqueado)"
     },
     "errors": {
-      "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo.",
       "failedToFetchData": "No se pudieron obtener los datos"
     },
     "character": "Personaje",
     "seeMore": "Ver más",
-    "seeMoreArrow": "Ver más →"
+    "seeMoreArrow": "Ver más →",
+    "back": "Volver",
+    "loading": "Cargando...",
+    "credits": "créditos",
+    "tryAgain": "Intentar de nuevo"
   }
 }

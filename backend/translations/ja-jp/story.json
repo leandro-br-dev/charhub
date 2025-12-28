@@ -2,81 +2,200 @@
   "description": "Story management and creation interface translations",
   "resources": {
     "create": {
-      "title": "新しいストーリーを作成",
-      "subtitle": "キャラクターと目標を設定して、インタラクティブなストーリーを構築しましょう"
+      "title": "新しい物語を作成",
+      "subtitle": "キャラクターと目的のあるインタラクティブな物語を構築",
+      "chooseMethod": {
+        "title": "どのように物語を作成しますか？",
+        "subtitle": "あなたのニーズに最適な方法を選択してください",
+        "manual": {
+          "title": "手動作成",
+          "description": "完全にコントロールしながら、物語を段階的に作成",
+          "features": [
+            "完全なカスタマイズ",
+            "タブで整理",
+            "詳細な物語に最適"
+          ],
+          "cost": "無料",
+          "button": "手動で作成"
+        },
+        "ai": {
+          "title": "AIによる作成",
+          "description": "AIに説明や画像から物語を生成させましょう",
+          "features": [
+            "自動生成",
+            "画像をアップロードまたは記述",
+            "高速で創造的"
+          ],
+          "cost": "75-100 credits",
+          "button": "AIで作成"
+        }
+      }
+    },
+    "new": {
+      "title": "物語を手動で作成",
+      "subtitle": "詳細を段階的に入力してください"
+    },
+    "edit": {
+      "title": "物語を編集",
+      "subtitle": "物語の詳細を編集"
+    },
+    "createAI": {
+      "title": "AI物語ジェネレーター",
+      "subtitle": "物語のアイデアを記述するか画像をアップロードすると、AIが詳細を生成します",
+      "descriptionLabel": "物語の説明",
+      "descriptionPlaceholder": "物語のアイデアを記述してください... (例：「若い魔法使いが夢の世界へと続く古代のポータルを発見する」)",
+      "descriptionHint": "説明が詳細であるほど、良い結果が得られます",
+      "imageLabel": "シーン画像",
+      "uploadPrompt": "クリックしてシーン画像をアップロード",
+      "uploadHint": "PNG、JPEG、WEBP、GIF (最大10MB)",
+      "generating": "生成中...",
+      "generateButton": "物語を生成",
+      "howItWorks": "仕組み",
+      "step1": "テキストの説明を提供し、またはシーン画像をアップロードしてください",
+      "step2": "AIがあなたの入力を分析し、物語の詳細を生成します",
+      "step3": "生成された物語を保存する前に確認および編集してください",
+      "step4": "カバー画像は自動的に生成されます",
+      "pricing": "クレジット費用",
+      "textOnly": "テキストのみ",
+      "withImage": "画像あり",
+      "progress": {
+        "preparing": "物語を準備中",
+        "uploadingImage": "シーンをアップロード中",
+        "analyzingImage": "雰囲気を分析中",
+        "extractingDescription": "物語を読み取り中",
+        "generatingConcept": "物語を紡いでいます",
+        "generatingPlot": "プロットを作成中",
+        "writingScene": "冒頭を執筆中",
+        "generatingCover": "カバーを作成中",
+        "creatingStory": "物語に命を吹き込んでいます",
+        "completed": "あなたの物語が待っています",
+        "error": "予期せぬひねり"
+      },
+      "reveal": {
+        "title": "物語のコンセプトが作成されました",
+        "conceptMessage": "あなたの物語の基盤が築かれました...",
+        "plotTitle": "プロットが作成されました",
+        "plotMessage": "これからの旅が描かれました...",
+        "sceneTitle": "オープニングシーンが執筆されました",
+        "sceneMessage": "物語が展開し始めます...",
+        "storyTitle": "物語が作成されました",
+        "storyMessage": "あなたの物語が生命を吹き込まれました！",
+        "continuing": "続行中..."
+      },
+      "final": {
+        "title": "あなたの物語が作成されました！",
+        "message": "物語が生成され、読む準備ができました。カバー画像はバックグラウンドで生成されています。",
+        "createAnother": "別の物語を作成"
+      },
+      "generationStarted": "物語の生成が開始されました！進捗状況を監視中...",
+      "generationFailed": "生成に失敗しました",
+      "weavingYourTale": "あなたの物語を紡いでいます..."
     },
     "form": {
       "title": "タイトル",
-      "titlePlaceholder": "ストーリーのタイトルを入力",
+      "titlePlaceholder": "物語のタイトルを入力",
       "synopsis": "あらすじ",
-      "synopsisPlaceholder": "ストーリーを簡潔に説明してください",
-      "coverImage": "表紙画像",
+      "synopsisPlaceholder": "物語の簡単な要約...",
+      "coverImage": "カバー画像",
       "coverImagePlaceholder": "https://example.com/image.jpg",
-      "coverImagePreview": "表紙プレビュー",
+      "coverImagePreview": "カバープレビュー",
       "coverImageError": "画像の読み込みに失敗しました",
-      "coverImageHint": "ストーリーの表紙にする画像のURLを貼り付けてください",
-      "initialText": "冒頭のテキスト",
-      "initialTextPlaceholder": "ストーリーの始まりを書いてください...",
-      "initialTextHint": "このテキストはストーリー開始時に表示されます",
-      "objectives": "目標",
-      "objectivePlaceholder": "ストーリーの目標を追加",
-      "noObjectives": "まだ目標がありません。物語を導くためにいくつか追加してください。",
+      "coverImageHint": "物語のカバー用に画像をアップロードするか、URLを貼り付けてください",
+      "changeCoverImage": "画像をS変更",
+      "uploadCoverImage": "画像を選択",
+      "uploadFromDevice": "デバイスからアップロード",
+      "useImageUrl": "画像URLを使用",
+      "imageUrlModalTitle": "URLから画像を使用",
+      "imageUrlLabel": "画像URL",
+      "invalidImageUrl": "有効な画像URL (http/https) を入力してください。",
+      "preview": "プレビュー",
+      "uploading": "処理中...",
+      "loading": "読み込み中...",
+      "initialText": "冒頭シーン",
+      "initialTextPlaceholder": "物語が始まります...",
+      "initialTextHint": "これは、プレイヤーが物語を開始したときに表示される冒頭シーンです。",
+      "objectives": "物語の目的",
+      "objectivePlaceholder": "物語の目的を追加",
+      "noObjectives": "まだ目的がありません。物語を導くためにいくつか追加してください。",
       "characters": "キャラクター",
       "selectedCharacters": "選択中のキャラクター",
       "searchCharacters": "キャラクターを検索",
-      "noCharactersFound": "キャラクターが見つかりませんでした",
+      "noCharactersFound": "キャラクターが見つかりません",
       "noCharactersAvailable": "まずキャラクターを作成してください",
-      "tags": "タグ",
+      "mainCharacterLabel": "メインキャラクター (あなた自身が演じる)",
+      "selectMainCharacter": "メインキャラクターを選択...",
+      "tags": "ジャンルタグ",
       "selectedTags": "選択中のタグ",
       "searchTags": "タグを検索",
-      "noTagsFound": "タグが見つかりませんでした",
-      "noTagsAvailable": "タグが利用できません",
+      "noTagsFound": "タグが見つかりません",
+      "noTagsAvailable": "利用可能なタグがありません",
+      "incompatibleHint": "赤くハイライトされたタグは、選択された年齢制限と互換性がありません。続行するにはそれらを削除してください。",
       "ageRating": "年齢制限",
-      "contentTags": "コンテンツタグ",
-      "makePublic": "このストーリーを公開する"
+      "ageRatingHint": "これは利用可能なジャンルタグをフィルタリングし、不適切なコンテンツ警告をブロックします。",
+      "contentTags": "コンテンツ警告",
+      "contentTagDisabled": "{{age}}歳以上が必要です",
+      "contentTagsDisabledHint": "グレー表示されたコンテンツ警告は、より高い年齢制限が必要です。",
+      "visibility": "物語の公開設定",
+      "makePublic": "この物語を公開する",
+      "tabs": {
+        "details": "詳細",
+        "plot": "プロットと設定",
+        "characters": "キャラクター",
+        "classification": "分類",
+        "media": "メディア"
+      }
     },
     "validation": {
       "titleRequired": "タイトルは必須です",
-      "titleTooLong": "タイトルは100文字以内である必要があります",
-      "synopsisTooLong": "あらすじは2000文字以内である必要があります",
-      "initialTextTooLong": "冒頭のテキストは5000文字以内である必要があります"
+      "titleTooLong": "タイトルは100文字以下である必要があります",
+      "synopsisTooLong": "あらすじは2000文字以下である必要があります",
+      "initialTextTooLong": "冒頭のテキストは5000文字以下である必要があります"
     },
     "errors": {
-      "createFailed": "ストーリーの作成に失敗しました",
-      "updateFailed": "ストーリーの更新に失敗しました",
-      "deleteFailed": "ストーリーの削除に失敗しました",
-      "failedToLoad": "ストーリーの読み込みに失敗しました",
-      "noCharacters": "このストーリーにはキャラクターがいません",
-      "failedToStart": "ストーリーの開始に失敗しました",
-      "notFound": "ストーリーが見つかりません"
+      "createFailed": "物語の作成に失敗しました",
+      "updateFailed": "物語の更新に失敗しました",
+      "deleteFailed": "物語の削除に失敗しました",
+      "failedToLoad": "物語の読み込みに失敗しました",
+      "noCharacters": "この物語にはキャラクターがいません",
+      "failedToStart": "物語の開始に失敗しました",
+      "notFound": "物語が見つかりません",
+      "imageTooLarge": "画像は10MBより小さい必要があります",
+      "invalidImageType": "画像はPNG、JPEG、WEBP、またはGIFである必要があります",
+      "descriptionOrImageRequired": "説明または画像のいずれかを提供してください",
+      "generationFailed": "物語の生成に失敗しました"
     },
     "sidebar": {
-      "myStories": "マイストーリー",
-      "noStories": "まだストーリーはありません"
+      "myStories": "マイ物語",
+      "noStories": "まだ物語がありません"
     },
     "list": {
-      "title": "マイストーリー",
-      "subtitle": "インタラクティブなストーリーを管理する",
+      "title": "マイ物語",
+      "subtitle": "インタラクティブな物語を管理",
       "public": "公開",
       "private": "非公開",
       "empty": {
-        "title": "まだストーリーがありません",
-        "description": "最初のインタラクティブストーリーを作成しましょう",
-        "action": "ストーリーを作成"
+        "title": "まだ物語がありません",
+        "description": "最初のインタラクティブな物語を作成しましょう",
+        "action": "物語を作成"
       }
     },
     "detail": {
-      "title": "ストーリー",
+      "title": "物語",
       "synopsis": "あらすじ",
       "initialScene": "冒頭シーン",
-      "objectives": "ストーリー目標",
+      "objectives": "物語の目的",
       "characters": "キャラクター",
-      "confirmDelete": "このストーリーを削除してもよろしいですか？この操作は元に戻せません。",
+      "confirmDelete": "この物語を削除してもよろしいですか？この操作は元に戻せません。",
       "labels": {
         "createdBy": "作成者"
       }
     },
-    "start": "ストーリーを開始",
-    "starting": "開始中..."
+    "stats": {
+      "conversations": "会話数",
+      "favorites": "お気に入り"
+    },
+    "start": "物語を開始",
+    "starting": "開始中...",
+    "view": "物語を見る"
   }
 }

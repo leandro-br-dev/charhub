@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { characterStatsService } from '../../services/characterStatsService';
+import { storyStatsService } from '../../services/storyStatsService';
+
+type FavoriteType = 'character' | 'story';
 
 interface FavoriteButtonProps {
-  characterId: string;
+  characterId?: string;
+  storyId?: string;
   initialIsFavorited?: boolean;
   onToggle?: (isFavorited: boolean) => void;
   size?: 'small' | 'medium' | 'large';
@@ -13,6 +17,7 @@ interface FavoriteButtonProps {
 
 export function FavoriteButton({
   characterId,
+  storyId,
   initialIsFavorited,
   onToggle,
   size = 'large',
@@ -23,14 +28,19 @@ export function FavoriteButton({
   const [isFavorited, setIsFavorited] = useState(initialIsFavorited || false);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const type: FavoriteType = characterId ? 'character' : 'story';
+  const id = characterId || storyId;
+
   useEffect(() => {
     let isMounted = true;
     if (typeof initialIsFavorited === 'boolean') {
       setIsFavorited(initialIsFavorited);
-    } else if (!readOnly) {
+    } else if (!readOnly && id) {
       const fetchFavoriteStatus = async () => {
         try {
-          const stats = await characterStatsService.getStats(characterId);
+          const stats = type === 'character'
+            ? await characterStatsService.getStats(id)
+            : await storyStatsService.getStats(id);
           if (isMounted) {
             setIsFavorited(stats.isFavoritedByUser);
           }
@@ -43,17 +53,21 @@ export function FavoriteButton({
     return () => {
       isMounted = false;
     };
-  }, [characterId, initialIsFavorited, readOnly]);
+  }, [id, type, initialIsFavorited, readOnly]);
 
   const handleToggleFavorite = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (readOnly || isProcessing) return;
+    if (readOnly || isProcessing || !id) return;
 
     setIsProcessing(true);
     try {
-      await characterStatsService.toggleFavorite(characterId, !isFavorited);
+      if (type === 'character') {
+        await characterStatsService.toggleFavorite(id, !isFavorited);
+      } else {
+        await storyStatsService.toggleFavorite(id, !isFavorited);
+      }
       const next = !isFavorited;
       setIsFavorited(next);
       onToggle?.(next);

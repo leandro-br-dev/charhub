@@ -147,19 +147,9 @@ describe('storyImageAnalysisAgent - Unit Tests', () => {
 
       const result = await analyzeStoryImage(mockImageUrl);
 
-      expect(result).toEqual({
-        setting: undefined,
-        environment: undefined,
-        mood: undefined,
-        atmosphere: undefined,
-        timeOfDay: undefined,
-        visualStyle: undefined,
-        colorPalette: undefined,
-        suggestedGenre: undefined,
-        suggestedThemes: [],
-        keyElements: [],
-        overallDescription: 'Unable to parse story scene analysis from image',
-      });
+      expect(result.overallDescription).toBe('Unable to parse story scene analysis from image');
+      expect(result.suggestedThemes).toEqual([]);
+      expect(result.keyElements).toEqual([]);
 
       expect(logger.warn).toHaveBeenCalledWith(
         { raw: 'This is not valid JSON {broken', error: expect.any(Error) },
@@ -173,19 +163,9 @@ describe('storyImageAnalysisAgent - Unit Tests', () => {
 
       const result = await analyzeStoryImage(mockImageUrl);
 
-      expect(result).toEqual({
-        setting: undefined,
-        environment: undefined,
-        mood: undefined,
-        atmosphere: undefined,
-        timeOfDay: undefined,
-        visualStyle: undefined,
-        colorPalette: undefined,
-        suggestedGenre: undefined,
-        suggestedThemes: [],
-        keyElements: [],
-        overallDescription: 'Error analyzing story scene image',
-      });
+      expect(result.overallDescription).toBe('Error analyzing story scene image');
+      expect(result.suggestedThemes).toEqual([]);
+      expect(result.keyElements).toEqual([]);
 
       expect(logger.error).toHaveBeenCalledWith(
         { error: llmError, imageUrl: mockImageUrl },

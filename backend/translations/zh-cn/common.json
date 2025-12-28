@@ -3,23 +3,16 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "语言",
-    "menu": {
-      "title": "菜单",
-      "close": "关闭菜单",
-      "open": "打开菜单"
-    },
-    "settings": "设置",
-    "account": "账户",
-    "continueGoogle": "继续使用 Google",
-    "continueFacebook": "继续使用 Facebook",
+    "continueGoogle": "使用 Google 继续",
+    "continueFacebook": "使用 Facebook 继续",
     "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
     "logout": "退出登录",
     "logoutLoading": "正在退出登录...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在仅限 HTTP 的 Cookie 中",
+    "tokenStored": "存储在 HTTP-only cookie 中",
     "navDashboard": "仪表盘",
     "navCharacters": "角色",
-    "navTagline": "安全 OAuth 演示",
+    "navTagline": "安全的 OAuth 演示",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -62,22 +55,22 @@
       "blur": "模糊敏感内容",
       "hidden": "隐藏成人内容",
       "descriptions": {
-        "none": "显示所有无限制内容",
-        "blur": "对成人内容应用模糊处理",
+        "none": "显示所有内容，无限制",
+        "blur": "对成人内容应用模糊效果",
         "hidden": "完全隐藏成人内容"
       },
       "ageRatings": {
         "L": "免费",
-        "TEN": "10岁以上",
-        "TWELVE": "12岁以上",
-        "FOURTEEN": "14岁以上",
-        "SIXTEEN": "16岁以上",
-        "EIGHTEEN": "18岁以上"
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+",
+        "SIXTEEN": "16+",
+        "EIGHTEEN": "18+"
       },
-      "noBirthdateWarning": "⚠️ 未登记年龄",
+      "noBirthdateWarning": "⚠️ 年龄未注册",
       "noBirthdateDescription": "要访问受年龄限制的内容，请在设置中添加您的出生日期。",
       "goToSettings": "前往设置",
-      "blocked": "（已阻止）"
+      "blocked": "（已屏蔽）"
     },
     "errors": {
       "generic": "发生错误。请重试。",
@@ -85,6 +78,10 @@
     },
     "character": "角色",
     "seeMore": "查看更多",
-    "seeMoreArrow": "查看更多 →"
+    "seeMoreArrow": "查看更多 →",
+    "back": "返回",
+    "loading": "正在加载...",
+    "credits": "积分",
+    "tryAgain": "重试"
   }
 }

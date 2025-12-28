@@ -85,6 +85,10 @@
     },
     "character": "Character",
     "seeMore": "See more",
-    "seeMoreArrow": "See more →"
+    "seeMoreArrow": "See more →",
+    "back": "Back",
+    "loading": "Loading...",
+    "credits": "credits",
+    "tryAgain": "Try Again"
   }
 }

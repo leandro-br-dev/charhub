@@ -3,22 +3,118 @@
   "resources": {
     "create": {
       "title": "Create New Story",
-      "subtitle": "Build an interactive story with characters and objectives"
+      "subtitle": "Build an interactive story with characters and objectives",
+      "chooseMethod": {
+        "title": "How would you like to create your story?",
+        "subtitle": "Choose the method that best suits your needs",
+        "manual": {
+          "title": "Manual Creation",
+          "description": "Create your story step by step with full control",
+          "features": [
+            "Complete customization",
+            "Organized in tabs",
+            "Perfect for detailed stories"
+          ],
+          "cost": "Free",
+          "button": "Create Manually"
+        },
+        "ai": {
+          "title": "AI-Powered Creation",
+          "description": "Let AI generate your story from a description or image",
+          "features": [
+            "Automatic generation",
+            "Upload image or describe",
+            "Fast and creative"
+          ],
+          "cost": "75-100 credits",
+          "button": "Create with AI"
+        }
+      }
+    },
+    "new": {
+      "title": "Create Story Manually",
+      "subtitle": "Fill in the details step by step"
+    },
+    "edit": {
+      "title": "Edit Story",
+      "subtitle": "Edit your story details"
+    },
+    "createAI": {
+      "title": "AI Story Generator",
+      "subtitle": "Describe your story idea or upload an image, and AI will generate the details for you",
+      "descriptionLabel": "Story Description",
+      "descriptionPlaceholder": "Describe your story idea... (e.g., \"A young wizard discovers an ancient portal that leads to a world of dreams\")",
+      "descriptionHint": "The more detailed your description, the better the results",
+      "imageLabel": "Scene Image",
+      "uploadPrompt": "Click to upload scene image",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (max 10MB)",
+      "generating": "Generating...",
+      "generateButton": "Generate Story",
+      "howItWorks": "How it works",
+      "step1": "Provide a text description and/or upload a scene image",
+      "step2": "AI analyzes your input and generates story details",
+      "step3": "Review and edit the generated story before saving",
+      "step4": "A cover image will be automatically generated for you",
+      "pricing": "Credits Cost",
+      "textOnly": "Text only",
+      "withImage": "With image",
+      "progress": {
+        "preparing": "Preparing your story",
+        "uploadingImage": "Uploading your scene",
+        "analyzingImage": "Analyzing the atmosphere",
+        "extractingDescription": "Reading the tale",
+        "generatingConcept": "Weaving the narrative",
+        "generatingPlot": "Crafting the plot",
+        "writingScene": "Writing the opening",
+        "generatingCover": "Creating the cover",
+        "creatingStory": "Bringing the story to life",
+        "completed": "Your story awaits",
+        "error": "An unexpected twist"
+      },
+      "reveal": {
+        "title": "Story Concept Created",
+        "conceptMessage": "The foundation of your story has been forged...",
+        "plotTitle": "Plot Written",
+        "plotMessage": "The journey ahead has been mapped...",
+        "sceneTitle": "Opening Scene Written",
+        "sceneMessage": "The tale begins to unfold...",
+        "storyTitle": "Story Created",
+        "storyMessage": "Your story has been brought to life!",
+        "continuing": "Continuing..."
+      },
+      "final": {
+        "title": "Your Story Has Been Created!",
+        "message": "Your story has been generated and is ready to read. A cover image is being generated in the background.",
+        "createAnother": "Create another story"
+      },
+      "generationStarted": "Story generation started! Watching progress...",
+      "generationFailed": "Generation Failed",
+      "weavingYourTale": "Weaving your tale..."
     },
     "form": {
       "title": "Title",
       "titlePlaceholder": "Enter story title",
       "synopsis": "Synopsis",
-      "synopsisPlaceholder": "Briefly describe your story",
+      "synopsisPlaceholder": "Brief summary of your story...",
       "coverImage": "Cover Image",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "Cover preview",
       "coverImageError": "Failed to load image",
-      "coverImageHint": "Paste an image URL for the story cover",
-      "initialText": "Initial Text",
-      "initialTextPlaceholder": "Write the opening of your story...",
-      "initialTextHint": "This text will be shown when the story begins",
-      "objectives": "Objectives",
+      "coverImageHint": "Upload an image or paste a URL for the story cover",
+      "changeCoverImage": "Change image",
+      "uploadCoverImage": "Select image",
+      "uploadFromDevice": "Upload from device",
+      "useImageUrl": "Use image URL",
+      "imageUrlModalTitle": "Use image from URL",
+      "imageUrlLabel": "Image URL",
+      "invalidImageUrl": "Enter a valid image URL (http/https).",
+      "preview": "Preview",
+      "uploading": "Processing...",
+      "loading": "Loading...",
+      "initialText": "Opening Scene",
+      "initialTextPlaceholder": "The story begins...",
+      "initialTextHint": "This is the opening scene that players will see when starting the story.",
+      "objectives": "Story Objectives",
       "objectivePlaceholder": "Add a story objective",
       "noObjectives": "No objectives yet. Add some to guide the narrative.",
       "characters": "Characters",
@@ -26,14 +122,28 @@
       "searchCharacters": "Search characters",
       "noCharactersFound": "No characters found",
       "noCharactersAvailable": "Create characters first",
-      "tags": "Tags",
+      "mainCharacterLabel": "Main Character (played by you)",
+      "selectMainCharacter": "Select main character...",
+      "tags": "Genre Tags",
       "selectedTags": "Selected tags",
       "searchTags": "Search tags",
       "noTagsFound": "No tags found",
       "noTagsAvailable": "No tags available",
+      "incompatibleHint": "Tags highlighted in red are incompatible with the selected age rating. Remove them to continue.",
       "ageRating": "Age Rating",
-      "contentTags": "Content Tags",
-      "makePublic": "Make this story public"
+      "ageRatingHint": "This filters available genre tags and blocks inappropriate content warnings.",
+      "contentTags": "Content Warnings",
+      "contentTagDisabled": "Requires age {age} or higher",
+      "contentTagsDisabledHint": "Grayed out content warnings require a higher age rating.",
+      "visibility": "Story Visibility",
+      "makePublic": "Make this story public",
+      "tabs": {
+        "details": "Details",
+        "plot": "Plot & Setting",
+        "characters": "Characters",
+        "classification": "Classification",
+        "media": "Media"
+      }
     },
     "validation": {
       "titleRequired": "Title is required",
@@ -48,7 +158,11 @@
       "failedToLoad": "Failed to load stories",
       "noCharacters": "This story has no characters",
       "failedToStart": "Failed to start story",
-      "notFound": "Story not found"
+      "notFound": "Story not found",
+      "imageTooLarge": "Image must be smaller than 10MB",
+      "invalidImageType": "Image must be PNG, JPEG, WEBP, or GIF",
+      "descriptionOrImageRequired": "Please provide either a description or an image",
+      "generationFailed": "Failed to generate story"
     },
     "sidebar": {
       "myStories": "My Stories",
@@ -76,7 +190,12 @@
         "createdBy": "Created by"
       }
     },
+    "stats": {
+      "conversations": "Conversations",
+      "favorites": "Favorites"
+    },
     "start": "Start Story",
-    "starting": "Starting..."
+    "starting": "Starting...",
+    "view": "View Story"
   }
 }

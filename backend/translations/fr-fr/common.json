@@ -16,7 +16,7 @@
     "logout": "Se déconnecter",
     "logoutLoading": "Déconnexion...",
     "authenticatedUser": "Utilisateur authentifié",
-    "tokenStored": "Stocké dans un cookie HTTP-only",
+    "tokenStored": "Stocké dans un cookie HTTP uniquement",
     "navDashboard": "Tableau de bord",
     "navCharacters": "Personnages",
     "navTagline": "Démo OAuth sécurisée",
@@ -50,7 +50,7 @@
     },
     "messages": {
       "linkCopied": "Lien copié dans le presse-papiers !",
-      "chatStarted": "Discussion démarrée avec succès !",
+      "chatStarted": "Chat démarré avec succès !",
       "characterDeleted": "Personnage supprimé avec succès"
     },
     "contentFilter": {
@@ -85,6 +85,10 @@
     },
     "character": "Personnage",
     "seeMore": "Voir plus",
-    "seeMoreArrow": "Voir plus →"
+    "seeMoreArrow": "Voir plus →",
+    "back": "Retour",
+    "loading": "Chargement...",
+    "credits": "crédits",
+    "tryAgain": "Réessayer"
   }
 }

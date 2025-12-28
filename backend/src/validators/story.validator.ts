@@ -8,6 +8,7 @@ export const createStorySchema = z.object({
   coverImage: z.string().url().optional().or(z.literal('')).transform(val => val === '' ? undefined : val),
   objectives: z.any().optional(),
   characterIds: z.array(z.string().uuid()).optional(),
+  mainCharacterId: z.string().uuid().optional(), // ID of the character the user will play as
   tagIds: z.array(z.string().uuid()).optional(),
   ageRating: z.enum(['L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'EIGHTEEN']).optional(),
   contentTags: z.array(z.enum(['VIOLENCE', 'GORE', 'SEXUAL', 'NUDITY', 'LANGUAGE', 'DRUGS', 'ALCOHOL', 'HORROR', 'PSYCHOLOGICAL', 'DISCRIMINATION', 'CRIME', 'GAMBLING'])).optional(),

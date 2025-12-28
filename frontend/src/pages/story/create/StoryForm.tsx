@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Input, Textarea, Button, Select } from '../../../components/ui';
@@ -45,11 +45,27 @@ export function StoryForm({ mode = 'create', storyId, initialData, onSubmit, onC
     coverImage: initialData?.coverImage || '',
     objectives: initialData?.objectives || [],
     characterIds: initialData?.characterIds || [],
+    mainCharacterId: initialData?.mainCharacterId,
     tagIds: initialData?.tagIds || [],
     ageRating: initialData?.ageRating || 'L',
     contentTags: initialData?.contentTags || [],
     visibility: initialData?.visibility ?? Visibility.PRIVATE,
   });
+
+  // Auto-set first character as MAIN if mainCharacterId is not set
+  useEffect(() => {
+    const characterIds = formData.characterIds || [];
+    if (characterIds.length > 0) {
+      // If mainCharacterId is not set or not in the current characterIds list
+      if (!formData.mainCharacterId || !characterIds.includes(formData.mainCharacterId)) {
+        // Set first character as MAIN
+        setFormData(prev => ({ ...prev, mainCharacterId: characterIds[0] }));
+      }
+    } else {
+      // Clear mainCharacterId if no characters selected
+      setFormData(prev => ({ ...prev, mainCharacterId: undefined }));
+    }
+  }, [formData.characterIds]);
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -172,7 +188,9 @@ export function StoryForm({ mode = 'create', storyId, initialData, onSubmit, onC
       <div>
         <CharacterSelector
           selectedIds={formData.characterIds || []}
+          mainCharacterId={formData.mainCharacterId}
           onChange={ids => handleChange('characterIds', ids)}
+          onMainCharacterChange={id => handleChange('mainCharacterId', id)}
         />
       </div>
 

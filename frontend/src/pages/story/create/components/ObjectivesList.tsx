@@ -31,28 +31,29 @@ export function ObjectivesList({ objectives, onChange }: ObjectivesListProps) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <label className="block text-sm font-medium text-content">
         {t('form.objectives')}
       </label>
 
       {/* Existing Objectives */}
       {objectives.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-1">
           {objectives.map((objective, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 p-3 bg-light border border-border rounded-lg"
+              className="flex items-center gap-1.5 px-1.5 py-0.5 bg-light border border-border rounded text-xs"
             >
-              <span className="flex-grow text-sm text-content">
+              <span className="flex-grow text-content truncate">
                 {objective.description}
               </span>
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
-                className="text-error hover:text-error/80 text-sm font-medium"
+                className="text-error hover:text-error/80 p-0.5 rounded hover:bg-error/10 transition-colors flex-shrink-0"
+                title={t('common:remove', 'Remove')}
               >
-                {t('common:remove')}
+                <span className="material-symbols-outlined text-sm leading-none">delete</span>
               </button>
             </div>
           ))}
@@ -60,26 +61,27 @@ export function ObjectivesList({ objectives, onChange }: ObjectivesListProps) {
       )}
 
       {/* Add New Objective */}
-      <div className="flex gap-2">
+      <div className="flex gap-1.5">
         <Input
           value={newObjective}
           onChange={e => setNewObjective(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder={t('form.objectivePlaceholder')}
-          className="flex-grow"
+          className="flex-grow text-xs"
         />
-        <Button
+        <button
           type="button"
           onClick={handleAdd}
-          variant="secondary"
           disabled={!newObjective.trim()}
+          className="px-2 py-1.5 bg-primary text-black rounded text-xs hover:bg-primary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
+          title={t('common:add', 'Add')}
         >
-          {t('common:add')}
-        </Button>
+          <span className="material-symbols-outlined text-sm leading-none">add</span>
+        </button>
       </div>
 
       {objectives.length === 0 && (
-        <p className="text-sm text-muted italic">
+        <p className="text-xs text-muted italic">
           {t('form.noObjectives')}
         </p>
       )}

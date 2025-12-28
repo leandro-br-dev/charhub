@@ -3,52 +3,166 @@
   "resources": {
     "create": {
       "title": "إنشاء قصة جديدة",
-      "subtitle": "قم ببناء قصة تفاعلية بشخصيات وأهداف"
+      "subtitle": "بناء قصة تفاعلية مع شخصيات وأهداف",
+      "chooseMethod": {
+        "title": "كيف تود إنشاء قصتك؟",
+        "subtitle": "اختر الطريقة التي تناسب احتياجاتك",
+        "manual": {
+          "title": "إنشاء يدوي",
+          "description": "أنشئ قصتك خطوة بخطوة مع تحكم كامل",
+          "features": [
+            "تخصيص كامل",
+            "منظمة في علامات تبويب",
+            "مثالية للقصص التفصيلية"
+          ],
+          "cost": "مجاني",
+          "button": "إنشاء يدويًا"
+        },
+        "ai": {
+          "title": "إنشاء مدعوم بالذكاء الاصطناعي",
+          "description": "دع الذكاء الاصطناعي يولد قصتك من وصف أو صورة",
+          "features": [
+            "توليد تلقائي",
+            "تحميل صورة أو وصف",
+            "سريع ومبتكر"
+          ],
+          "cost": "75-100 رصيد",
+          "button": "إنشاء بالذكاء الاصطناعي"
+        }
+      }
+    },
+    "new": {
+      "title": "إنشاء قصة يدويًا",
+      "subtitle": "املأ التفاصيل خطوة بخطوة"
+    },
+    "edit": {
+      "title": "تعديل القصة",
+      "subtitle": "تعديل تفاصيل قصتك"
+    },
+    "createAI": {
+      "title": "مولد القصص بالذكاء الاصطناعي",
+      "subtitle": "صف فكرة قصتك أو حمّل صورة، وسيقوم الذكاء الاصطناعي بتوليد التفاصيل لك",
+      "descriptionLabel": "وصف القصة",
+      "descriptionPlaceholder": "صف فكرة قصتك... (مثال: \"يكتشف ساحر شاب بوابة قديمة تقود إلى عالم من الأحلام\")",
+      "descriptionHint": "كلما كان وصفك أكثر تفصيلاً، كانت النتائج أفضل",
+      "imageLabel": "صورة المشهد",
+      "uploadPrompt": "انقر لتحميل صورة المشهد",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (الحد الأقصى 10 ميجابايت)",
+      "generating": "جارٍ الإنشاء...",
+      "generateButton": "إنشاء القصة",
+      "howItWorks": "كيف تعمل",
+      "step1": "قدم وصفًا نصيًا و/أو حمّل صورة مشهد",
+      "step2": "يحلل الذكاء الاصطناعي مدخلاتك ويولد تفاصيل القصة",
+      "step3": "راجع وعدّل القصة المولدة قبل الحفظ",
+      "step4": "سيتم إنشاء صورة غلاف لك تلقائيًا",
+      "pricing": "تكلفة الأرصدة",
+      "textOnly": "نص فقط",
+      "withImage": "مع صورة",
+      "progress": {
+        "preparing": "تحضير قصتك",
+        "uploadingImage": "تحميل مشهدك",
+        "analyzingImage": "تحليل الأجواء",
+        "extractingDescription": "قراءة الحكاية",
+        "generatingConcept": "نسج السرد",
+        "generatingPlot": "صياغة الحبكة",
+        "writingScene": "كتابة الافتتاحية",
+        "generatingCover": "إنشاء الغلاف",
+        "creatingStory": "إحياء القصة",
+        "completed": "قصتك بانتظارك",
+        "error": "مفاجأة غير متوقعة"
+      },
+      "reveal": {
+        "title": "تم إنشاء مفهوم القصة",
+        "conceptMessage": "لقد تم صياغة أساس قصتك...",
+        "plotTitle": "تمت كتابة الحبكة",
+        "plotMessage": "لقد تم تخطيط الرحلة القادمة...",
+        "sceneTitle": "تمت كتابة المشهد الافتتاحي",
+        "sceneMessage": "بدأت الحكاية تتكشف...",
+        "storyTitle": "تم إنشاء القصة",
+        "storyMessage": "لقد تم إحياء قصتك!",
+        "continuing": "متابعة..."
+      },
+      "final": {
+        "title": "لقد تم إنشاء قصتك!",
+        "message": "لقد تم توليد قصتك وهي جاهزة للقراءة. يتم إنشاء صورة الغلاف في الخلفية.",
+        "createAnother": "إنشاء قصة أخرى"
+      },
+      "generationStarted": "بدأ توليد القصة! متابعة التقدم...",
+      "generationFailed": "فشل التوليد",
+      "weavingYourTale": "نسج حكايتك..."
     },
     "form": {
       "title": "العنوان",
       "titlePlaceholder": "أدخل عنوان القصة",
       "synopsis": "الملخص",
-      "synopsisPlaceholder": "صف قصتك بإيجاز",
+      "synopsisPlaceholder": "ملخص موجز لقصتك...",
       "coverImage": "صورة الغلاف",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "معاينة الغلاف",
       "coverImageError": "فشل تحميل الصورة",
-      "coverImageHint": "الصق رابط صورة لغلاف القصة",
-      "initialText": "النص الأولي",
-      "initialTextPlaceholder": "اكتب بداية قصتك...",
-      "initialTextHint": "سيتم عرض هذا النص عند بدء القصة",
-      "objectives": "الأهداف",
+      "coverImageHint": "حمّل صورة أو الصق رابطًا لغلاف القصة",
+      "changeCoverImage": "تغيير الصورة",
+      "uploadCoverImage": "اختر صورة",
+      "uploadFromDevice": "التحميل من الجهاز",
+      "useImageUrl": "استخدام رابط الصورة",
+      "imageUrlModalTitle": "استخدام صورة من الرابط",
+      "imageUrlLabel": "رابط الصورة",
+      "invalidImageUrl": "أدخل رابط صورة صالحًا (http/https).",
+      "preview": "معاينة",
+      "uploading": "جارٍ المعالجة...",
+      "loading": "جارٍ التحميل...",
+      "initialText": "المشهد الافتتاحي",
+      "initialTextPlaceholder": "تبدأ القصة...",
+      "initialTextHint": "هذا هو المشهد الافتتاحي الذي سيراه اللاعبون عند بدء القصة.",
+      "objectives": "أهداف القصة",
       "objectivePlaceholder": "أضف هدفًا للقصة",
-      "noObjectives": "لا توجد أهداف بعد. أضف بعضًا لتوجيه السرد.",
+      "noObjectives": "لا توجد أهداف بعد. أضف بعضًا منها لتوجيه السرد.",
       "characters": "الشخصيات",
       "selectedCharacters": "الشخصيات المختارة",
-      "searchCharacters": "البحث عن شخصيات",
+      "searchCharacters": "البحث عن الشخصيات",
       "noCharactersFound": "لم يتم العثور على شخصيات",
-      "noCharactersAvailable": "قم بإنشاء شخصيات أولاً",
-      "tags": "الوسوم",
+      "noCharactersAvailable": "أنشئ شخصيات أولاً",
+      "mainCharacterLabel": "الشخصية الرئيسية (تلعبها أنت)",
+      "selectMainCharacter": "اختر الشخصية الرئيسية...",
+      "tags": "وسوم النوع",
       "selectedTags": "الوسوم المختارة",
-      "searchTags": "البحث عن وسوم",
+      "searchTags": "البحث عن الوسوم",
       "noTagsFound": "لم يتم العثور على وسوم",
-      "noTagsAvailable": "لا تتوفر وسوم",
-      "ageRating": "التصنيف العمري",
-      "contentTags": "وسوم المحتوى",
-      "makePublic": "اجعل هذه القصة عامة"
+      "noTagsAvailable": "لا توجد وسوم متاحة",
+      "incompatibleHint": "الوسوم المظللة بالأحمر غير متوافقة مع التصنيف العمري المحدد. قم بإزالتها للمتابعة.",
+      "ageRating": "التقييم العمري",
+      "ageRatingHint": "يقوم هذا بتصفية وسوم النوع المتاحة ويحظر تحذيرات المحتوى غير اللائق.",
+      "contentTags": "تحذيرات المحتوى",
+      "contentTagDisabled": "يتطلب عمر {age} أو أعلى",
+      "contentTagsDisabledHint": "تحذيرات المحتوى المعطلة تتطلب تقييمًا عمريًا أعلى.",
+      "visibility": "إمكانية رؤية القصة",
+      "makePublic": "اجعل هذه القصة عامة",
+      "tabs": {
+        "details": "التفاصيل",
+        "plot": "الحبكة والإعداد",
+        "characters": "الشخصيات",
+        "classification": "التصنيف",
+        "media": "الوسائط"
+      }
     },
     "validation": {
       "titleRequired": "العنوان مطلوب",
-      "titleTooLong": "يجب ألا يتجاوز العنوان 100 حرف",
-      "synopsisTooLong": "يجب ألا يتجاوز الملخص 2000 حرف",
-      "initialTextTooLong": "يجب ألا يتجاوز النص الأولي 5000 حرف"
+      "titleTooLong": "يجب أن يكون العنوان 100 حرف أو أقل",
+      "synopsisTooLong": "يجب أن يكون الملخص 2000 حرف أو أقل",
+      "initialTextTooLong": "يجب أن يكون النص الأولي 5000 حرف أو أقل"
     },
     "errors": {
       "createFailed": "فشل إنشاء القصة",
       "updateFailed": "فشل تحديث القصة",
       "deleteFailed": "فشل حذف القصة",
       "failedToLoad": "فشل تحميل القصص",
-      "noCharacters": "هذه القصة لا تحتوي على شخصيات",
+      "noCharacters": "لا تحتوي هذه القصة على شخصيات",
       "failedToStart": "فشل بدء القصة",
-      "notFound": "القصة غير موجودة"
+      "notFound": "القصة غير موجودة",
+      "imageTooLarge": "يجب أن تكون الصورة أصغر من 10 ميجابايت",
+      "invalidImageType": "يجب أن تكون الصورة بصيغة PNG أو JPEG أو WEBP أو GIF",
+      "descriptionOrImageRequired": "يرجى تقديم وصف أو صورة",
+      "generationFailed": "فشل توليد القصة"
     },
     "sidebar": {
       "myStories": "قصصي",
@@ -71,12 +185,17 @@
       "initialScene": "المشهد الافتتاحي",
       "objectives": "أهداف القصة",
       "characters": "الشخصيات",
-      "confirmDelete": "هل أنت متأكد أنك تريد حذف هذه القصة؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذه القصة؟ لا يمكن التراجع عن هذا الإجراء.",
       "labels": {
-        "createdBy": "تم الإنشاء بواسطة"
+        "createdBy": "أنشئت بواسطة"
       }
     },
+    "stats": {
+      "conversations": "المحادثات",
+      "favorites": "المفضلة"
+    },
     "start": "بدء القصة",
-    "starting": "جاري البدء..."
+    "starting": "جارٍ البدء...",
+    "view": "عرض القصة"
   }
 }

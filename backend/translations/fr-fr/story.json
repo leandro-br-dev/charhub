@@ -3,43 +3,153 @@
   "resources": {
     "create": {
       "title": "Créer une nouvelle histoire",
-      "subtitle": "Construisez une histoire interactive avec des personnages et des objectifs"
+      "subtitle": "Créez une histoire interactive avec des personnages et des objectifs",
+      "chooseMethod": {
+        "title": "Comment souhaitez-vous créer votre histoire ?",
+        "subtitle": "Choisissez la méthode qui correspond le mieux à vos besoins",
+        "manual": {
+          "title": "Création manuelle",
+          "description": "Créez votre histoire étape par étape avec un contrôle total",
+          "features": [
+            "Personnalisation complète",
+            "Organisé par onglets",
+            "Parfait pour les histoires détaillées"
+          ],
+          "cost": "Gratuit",
+          "button": "Créer manuellement"
+        },
+        "ai": {
+          "title": "Création assistée par IA",
+          "description": "Laissez l'IA générer votre histoire à partir d'une description ou d'une image",
+          "features": [
+            "Génération automatique",
+            "Télécharger une image ou décrire",
+            "Rapide et créatif"
+          ],
+          "cost": "75-100 crédits",
+          "button": "Créer avec l'IA"
+        }
+      }
+    },
+    "new": {
+      "title": "Créer une histoire manuellement",
+      "subtitle": "Remplissez les détails étape par étape"
+    },
+    "edit": {
+      "title": "Modifier l'histoire",
+      "subtitle": "Modifiez les détails de votre histoire"
+    },
+    "createAI": {
+      "title": "Générateur d'histoires par IA",
+      "subtitle": "Décrivez votre idée d'histoire ou téléchargez une image, et l'IA générera les détails pour vous",
+      "descriptionLabel": "Description de l'histoire",
+      "descriptionPlaceholder": "Décrivez votre idée d'histoire... (par exemple, \"Un jeune sorcier découvre un ancien portail qui mène à un monde de rêves\")",
+      "descriptionHint": "Plus votre description est détaillée, meilleurs seront les résultats",
+      "imageLabel": "Image de scène",
+      "uploadPrompt": "Cliquez pour télécharger l'image de la scène",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (max 10 Mo)",
+      "generating": "Génération en cours...",
+      "generateButton": "Générer l'histoire",
+      "howItWorks": "Comment ça marche",
+      "step1": "Fournissez une description textuelle et/ou téléchargez une image de scène",
+      "step2": "L'IA analyse votre saisie et génère les détails de l'histoire",
+      "step3": "Revoyez et modifiez l'histoire générée avant de l'enregistrer",
+      "step4": "Une image de couverture sera automatiquement générée pour vous",
+      "pricing": "Coût en crédits",
+      "textOnly": "Texte uniquement",
+      "withImage": "Avec image",
+      "progress": {
+        "preparing": "Préparation de votre histoire",
+        "uploadingImage": "Téléchargement de votre scène",
+        "analyzingImage": "Analyse de l'atmosphère",
+        "extractingDescription": "Lecture du récit",
+        "generatingConcept": "Tissage du récit",
+        "generatingPlot": "Élaboration de l'intrigue",
+        "writingScene": "Écriture de l'introduction",
+        "generatingCover": "Création de la couverture",
+        "creatingStory": "Donner vie à l'histoire",
+        "completed": "Votre histoire vous attend",
+        "error": "Un rebondissement inattendu"
+      },
+      "reveal": {
+        "title": "Concept d'histoire créé",
+        "conceptMessage": "Les fondations de votre histoire ont été forgées...",
+        "plotTitle": "Intrigue écrite",
+        "plotMessage": "Le chemin à parcourir a été tracé...",
+        "sceneTitle": "Scène d'ouverture écrite",
+        "sceneMessage": "Le récit commence à se dévoiler...",
+        "storyTitle": "Histoire créée",
+        "storyMessage": "Votre histoire a pris vie !",
+        "continuing": "Continuation..."
+      },
+      "final": {
+        "title": "Votre histoire a été créée !",
+        "message": "Votre histoire a été générée et est prête à être lue. Une image de couverture est en cours de génération en arrière-plan.",
+        "createAnother": "Créer une autre histoire"
+      },
+      "generationStarted": "Génération de l'histoire lancée ! Suivi de la progression...",
+      "generationFailed": "Échec de la génération",
+      "weavingYourTale": "Tissage de votre récit..."
     },
     "form": {
       "title": "Titre",
-      "titlePlaceholder": "Entrez le titre de l'histoire",
+      "titlePlaceholder": "Saisir le titre de l'histoire",
       "synopsis": "Synopsis",
-      "synopsisPlaceholder": "Décrivez brièvement votre histoire",
+      "synopsisPlaceholder": "Bref résumé de votre histoire...",
       "coverImage": "Image de couverture",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "Aperçu de la couverture",
       "coverImageError": "Échec du chargement de l'image",
-      "coverImageHint": "Collez une URL d'image pour la couverture de l'histoire",
-      "initialText": "Texte initial",
-      "initialTextPlaceholder": "Écrivez le début de votre histoire...",
-      "initialTextHint": "Ce texte sera affiché au début de l'histoire",
-      "objectives": "Objectifs",
+      "coverImageHint": "Téléchargez une image ou collez une URL pour la couverture de l'histoire",
+      "changeCoverImage": "Changer l'image",
+      "uploadCoverImage": "Sélectionner une image",
+      "uploadFromDevice": "Télécharger depuis l'appareil",
+      "useImageUrl": "Utiliser une URL d'image",
+      "imageUrlModalTitle": "Utiliser une image à partir d'une URL",
+      "imageUrlLabel": "URL de l'image",
+      "invalidImageUrl": "Saisissez une URL d'image valide (http/https).",
+      "preview": "Aperçu",
+      "uploading": "Traitement...",
+      "loading": "Chargement...",
+      "initialText": "Scène d'ouverture",
+      "initialTextPlaceholder": "L'histoire commence...",
+      "initialTextHint": "Ceci est la scène d'ouverture que les joueurs verront en commençant l'histoire.",
+      "objectives": "Objectifs de l'histoire",
       "objectivePlaceholder": "Ajouter un objectif d'histoire",
-      "noObjectives": "Pas encore d'objectifs. Ajoutez-en pour guider le récit.",
+      "noObjectives": "Aucun objectif pour l'instant. Ajoutez-en pour guider le récit.",
       "characters": "Personnages",
       "selectedCharacters": "Personnages sélectionnés",
       "searchCharacters": "Rechercher des personnages",
       "noCharactersFound": "Aucun personnage trouvé",
       "noCharactersAvailable": "Créez d'abord des personnages",
-      "tags": "Tags",
+      "mainCharacterLabel": "Personnage principal (joué par vous)",
+      "selectMainCharacter": "Sélectionner le personnage principal...",
+      "tags": "Tags de genre",
       "selectedTags": "Tags sélectionnés",
       "searchTags": "Rechercher des tags",
       "noTagsFound": "Aucun tag trouvé",
       "noTagsAvailable": "Aucun tag disponible",
-      "ageRating": "Classification par âge",
-      "contentTags": "Tags de contenu",
-      "makePublic": "Rendre cette histoire publique"
+      "incompatibleHint": "Les tags en rouge sont incompatibles avec la classification d'âge sélectionnée. Supprimez-les pour continuer.",
+      "ageRating": "Classification d'âge",
+      "ageRatingHint": "Ceci filtre les tags de genre disponibles et bloque les avertissements de contenu inapproprié.",
+      "contentTags": "Avertissements de contenu",
+      "contentTagDisabled": "Nécessite l'âge {age} ou plus",
+      "contentTagsDisabledHint": "Les avertissements de contenu grisés nécessitent une classification d'âge plus élevée.",
+      "visibility": "Visibilité de l'histoire",
+      "makePublic": "Rendre cette histoire publique",
+      "tabs": {
+        "details": "Détails",
+        "plot": "Intrigue et décor",
+        "characters": "Personnages",
+        "classification": "Classification",
+        "media": "Média"
+      }
     },
     "validation": {
       "titleRequired": "Le titre est requis",
-      "titleTooLong": "Le titre doit contenir 100 caractères maximum",
-      "synopsisTooLong": "Le synopsis doit contenir 2000 caractères maximum",
-      "initialTextTooLong": "Le texte initial doit contenir 5000 caractères maximum"
+      "titleTooLong": "Le titre doit contenir 100 caractères ou moins",
+      "synopsisTooLong": "Le synopsis doit contenir 2000 caractères ou moins",
+      "initialTextTooLong": "Le texte initial doit contenir 5000 caractères ou moins"
     },
     "errors": {
       "createFailed": "Échec de la création de l'histoire",
@@ -48,11 +158,15 @@
       "failedToLoad": "Échec du chargement des histoires",
       "noCharacters": "Cette histoire n'a pas de personnages",
       "failedToStart": "Échec du démarrage de l'histoire",
-      "notFound": "Histoire introuvable"
+      "notFound": "Histoire introuvable",
+      "imageTooLarge": "L'image doit être inférieure à 10 Mo",
+      "invalidImageType": "L'image doit être au format PNG, JPEG, WEBP ou GIF",
+      "descriptionOrImageRequired": "Veuillez fournir une description ou une image",
+      "generationFailed": "Échec de la génération de l'histoire"
     },
     "sidebar": {
       "myStories": "Mes histoires",
-      "noStories": "Pas encore d'histoires"
+      "noStories": "Aucune histoire pour l'instant"
     },
     "list": {
       "title": "Mes histoires",
@@ -60,7 +174,7 @@
       "public": "Public",
       "private": "Privé",
       "empty": {
-        "title": "Pas encore d'histoires",
+        "title": "Aucune histoire pour l'instant",
         "description": "Créez votre première histoire interactive",
         "action": "Créer une histoire"
       }
@@ -76,7 +190,12 @@
         "createdBy": "Créé par"
       }
     },
-    "start": "Démarrer l'histoire",
-    "starting": "Démarrage..."
+    "stats": {
+      "conversations": "Conversations",
+      "favorites": "Favoris"
+    },
+    "start": "Commencer l'histoire",
+    "starting": "Démarrage...",
+    "view": "Voir l'histoire"
   }
 }
