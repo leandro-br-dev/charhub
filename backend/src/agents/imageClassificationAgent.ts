@@ -56,7 +56,7 @@ export async function classifyImageViaLLM(imageUrl: string): Promise<ImageClassi
       : [];
     const description = typeof parsed.description === 'string' ? parsed.description : '';
     return { ageRating: age as any, contentTags: tags, description };
-  } catch (e) {
+  } catch (_e) {
     logger.warn({ raw }, 'image_classification_parse_failed');
     return { ageRating: 'L', contentTags: [], description: '' };
   }

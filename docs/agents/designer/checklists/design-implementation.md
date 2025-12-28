@@ -35,6 +35,32 @@
   git checkout -b feature/design-[description]
   ```
 
+### 🚨 CRITICAL: Update Branch with Main Before Creating PR
+
+**BEFORE creating the Pull Request (step 4), you MUST update your branch with latest main:**
+
+```bash
+# 1. Update main
+git checkout main
+git pull origin main
+
+# 2. Merge main into feature branch
+git checkout feature/design-[description]
+git merge main
+
+# 3. Resolve conflicts if any
+# 4. Re-run ALL tests after merge
+cd frontend && npm run build
+```
+
+**Why this is critical:**
+- Prevents accidental file deletions
+- Catches integration issues early
+- Ensures tests pass with latest code
+- Avoids wasting Agent Reviewer's time
+
+**When to do this:** Right before step 4 (Create PR)
+
 ### 2. Make Changes
 
 - [ ] **Edit frontend files**

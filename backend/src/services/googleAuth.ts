@@ -22,7 +22,7 @@ export function generateJWT(user: AuthenticatedUser): string {
 export function verifyJWT(token: string): JwtPayload {
   try {
     return jwt.verify(token, JWT_SECRET) as JwtPayload;
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Invalid or expired token');
   }
 }

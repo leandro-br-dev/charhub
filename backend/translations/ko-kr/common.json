@@ -3,13 +3,20 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "언어",
+    "menu": {
+      "title": "메뉴",
+      "close": "메뉴 닫기",
+      "open": "메뉴 열기"
+    },
+    "settings": "설정",
+    "account": "계정",
     "continueGoogle": "Google로 계속하기",
     "continueFacebook": "Facebook으로 계속하기",
-    "privacy": "계속 진행하면 개인정보처리방침에 동의하며 CharHub이 귀하의 기본 프로필 정보에 접근하는 것을 승인합니다.",
+    "privacy": "계속하면 CharHub의 개인정보처리방침에 동의하며 CharHub가 귀하의 기본 프로필 정보에 접근하는 것을 승인하는 것입니다.",
     "logout": "로그아웃",
     "logoutLoading": "로그아웃 중...",
     "authenticatedUser": "인증된 사용자",
-    "tokenStored": "HTTP 전용 쿠키에 저장됨",
+    "tokenStored": "HTTP-only 쿠키에 저장됨",
     "navDashboard": "대시보드",
     "navCharacters": "캐릭터",
     "navTagline": "보안 OAuth 데모",
@@ -23,12 +30,12 @@
       "option": {
         "light": "밝게",
         "dark": "어둡게",
-        "system": "시스템 설정"
+        "system": "시스템"
       }
     },
     "none": "없음",
     "unknown": "알 수 없음",
-    "nameNotAvailable": "이름을 사용할 수 없습니다",
+    "nameNotAvailable": "이름을 사용할 수 없음",
     "cancel": "취소",
     "save": "저장",
     "saving": "저장 중...",
@@ -36,28 +43,28 @@
     "deleting": "삭제 중...",
     "enabled": "활성화됨",
     "disabled": "비활성화됨",
-    "selectOption": "옵션 선택",
+    "selectOption": "옵션을 선택하세요",
     "noResults": "옵션을 찾을 수 없습니다.",
     "chat": {
-      "with": "~와 채팅하기"
+      "with": "~와 채팅"
     },
     "messages": {
-      "linkCopied": "링크가 클립보드에 복사되었습니다!",
+      "linkCopied": "클립보드에 링크가 복사되었습니다!",
       "chatStarted": "채팅이 성공적으로 시작되었습니다!",
-      "characterDeleted": "캐릭터가 성공적으로 삭제되었습니다."
+      "characterDeleted": "캐릭터가 성공적으로 삭제되었습니다"
     },
     "contentFilter": {
       "ariaLabel": "콘텐츠 필터",
       "title": "콘텐츠 필터",
       "ageRating": "연령 등급",
-      "blurNsfw": "노골적인 콘텐츠 흐리게 표시",
+      "blurNsfw": "노골적인 콘텐츠 흐리게 처리",
       "none": "필터 없음",
-      "blur": "민감한 내용 흐리게 표시",
-      "hidden": "성인용 숨기기",
+      "blur": "민감한 콘텐츠 흐리게 처리",
+      "hidden": "성인 콘텐츠 숨기기",
       "descriptions": {
         "none": "제한 없이 모든 콘텐츠 표시",
-        "blur": "성인용 콘텐츠에 흐림 효과 적용",
-        "hidden": "성인용 콘텐츠 완전히 숨기기"
+        "blur": "성인 콘텐츠에 흐림 효과 적용",
+        "hidden": "성인 콘텐츠를 완전히 숨기기"
       },
       "ageRatings": {
         "L": "전체 이용가",
@@ -73,8 +80,8 @@
       "blocked": "(차단됨)"
     },
     "errors": {
-      "generic": "오류가 발생했습니다. 다시 시도해 주세요.",
-      "failedToFetchData": "데이터를 불러오지 못했습니다."
+      "generic": "오류가 발생했습니다. 다시 시도해주세요.",
+      "failedToFetchData": "데이터를 가져오는 데 실패했습니다."
     },
     "character": "캐릭터",
     "seeMore": "더 보기",

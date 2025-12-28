@@ -123,6 +123,7 @@ describe('CivitaiApiClient', () => {
                 height: 1024,
                 nsfw: 'None',
                 nsfwLevel: 0,
+                baseModel: 'pony',  // Anime base model
                 meta: {
                   Model: 'AnythingV5',
                   Sampler: 'Euler a',
@@ -132,10 +133,11 @@ describe('CivitaiApiClient', () => {
               {
                 id: 2,
                 url: 'https://example.com/realistic.jpg',
-                width: 512,
-                height: 512,
+                width: 400,  // Below minimum size (512)
+                height: 300,  // Below minimum size (512)
                 nsfw: 'None',
                 nsfwLevel: 0,
+                baseModel: 'sdxl',  // Realistic base model
                 meta: {
                   Model: 'RealismEngine',
                   Sampler: 'DPM++',
@@ -150,8 +152,9 @@ describe('CivitaiApiClient', () => {
 
       const result = await client.getTrendingImages({ animeStyle: true });
 
-      // Should only return anime-style image
-      expect(result.length).toBeLessThanOrEqual(1);
+      // Should only return anime-style image (with anime baseModel)
+      expect(result.length).toBe(1);
+      expect(result[0].id).toBe('1');
     });
 
     it('should handle rate limit', async () => {

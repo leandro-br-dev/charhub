@@ -3,11 +3,18 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "Langue",
+    "menu": {
+      "title": "Menu",
+      "close": "Fermer le menu",
+      "open": "Ouvrir le menu"
+    },
+    "settings": "Paramètres",
+    "account": "Compte",
     "continueGoogle": "Continuer avec Google",
     "continueFacebook": "Continuer avec Facebook",
     "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder à vos informations de profil de base.",
     "logout": "Se déconnecter",
-    "logoutLoading": "Déconnexion en cours...",
+    "logoutLoading": "Déconnexion...",
     "authenticatedUser": "Utilisateur authentifié",
     "tokenStored": "Stocké dans un cookie HTTP-only",
     "navDashboard": "Tableau de bord",
@@ -31,9 +38,9 @@
     "nameNotAvailable": "Nom non disponible",
     "cancel": "Annuler",
     "save": "Enregistrer",
-    "saving": "Enregistrement en cours...",
+    "saving": "Enregistrement...",
     "delete": "Supprimer",
-    "deleting": "Suppression en cours...",
+    "deleting": "Suppression...",
     "enabled": "Activé",
     "disabled": "Désactivé",
     "selectOption": "Sélectionner une option",
@@ -48,7 +55,7 @@
     },
     "contentFilter": {
       "ariaLabel": "Filtre de contenu",
-      "title": "Filtre de contenu",
+      "title": "Filtre de Contenu",
       "ageRating": "Classification par âge",
       "blurNsfw": "Flouter le contenu explicite",
       "none": "Aucun filtre",
@@ -68,7 +75,7 @@
         "EIGHTEEN": "18 ans et plus"
       },
       "noBirthdateWarning": "⚠️ Âge non enregistré",
-      "noBirthdateDescription": "Pour accéder au contenu soumis à des restrictions d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
+      "noBirthdateDescription": "Pour accéder au contenu soumis à une restriction d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
       "goToSettings": "Aller aux paramètres",
       "blocked": "(bloqué)"
     },

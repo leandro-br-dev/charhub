@@ -1,6 +1,6 @@
 import type { AgeRating, ContentTag } from './characters';
 
-export type OAuthProvider = 'google' | 'facebook';
+export type OAuthProvider = 'google' | 'facebook' | 'dev';
 export type UserRole = 'BASIC' | 'PREMIUM' | 'ADMIN';
 
 export interface AuthUser {

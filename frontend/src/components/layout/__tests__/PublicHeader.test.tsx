@@ -48,20 +48,26 @@ describe('PublicHeader', () => {
 
   it('should render Sign In button with correct text', () => {
     renderWithProviders(<PublicHeader />);
-    expect(screen.getByText('Sign In')).toBeInTheDocument();
+    // Desktop view has the button visible, mobile has it in hamburger menu
+    // Both should be present in DOM (desktop shows on md+, mobile shows on <md)
+    const signInButtons = screen.getAllByText('Sign In');
+    expect(signInButtons.length).toBeGreaterThanOrEqual(1);
   });
 
   it('should render Sign Up button with correct text', () => {
     renderWithProviders(<PublicHeader />);
-    expect(screen.getByText('Sign Up')).toBeInTheDocument();
+    // Desktop view has the button visible, mobile has it in hamburger menu
+    const signUpButtons = screen.getAllByText('Sign Up');
+    expect(signUpButtons.length).toBeGreaterThanOrEqual(1);
   });
 
   it('should navigate to /login when Sign In button is clicked', async () => {
     const user = userEvent.setup();
     renderWithProviders(<PublicHeader />);
 
-    const signInButton = screen.getByText('Sign In');
-    await user.click(signInButton);
+    // Get the desktop Sign In button (first one in desktop view)
+    const signInButtons = screen.getAllByText('Sign In');
+    await user.click(signInButtons[0]);
 
     expect(mockNavigate).toHaveBeenCalledWith('/login');
   });
@@ -70,8 +76,9 @@ describe('PublicHeader', () => {
     const user = userEvent.setup();
     renderWithProviders(<PublicHeader />);
 
-    const signUpButton = screen.getByText('Sign Up');
-    await user.click(signUpButton);
+    // Get the desktop Sign Up button (first one in desktop view)
+    const signUpButtons = screen.getAllByText('Sign Up');
+    await user.click(signUpButtons[0]);
 
     expect(mockNavigate).toHaveBeenCalledWith('/signup');
   });

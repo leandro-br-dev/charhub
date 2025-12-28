@@ -8,12 +8,14 @@ import type { AuthResponse, AuthUser, OAuthProvider } from '../../../types/auth'
 const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
 const defaultCallbackPaths: Record<OAuthProvider, string> = {
   google: `${API_PREFIX}/oauth/google/callback`,
-  facebook: `${API_PREFIX}/oauth/facebook/callback`
+  facebook: `${API_PREFIX}/oauth/facebook/callback`,
+  dev: '#' // Dev bypass doesn't use backend callback
 };
 
 const callbackPaths: Record<OAuthProvider, string> = {
   google: import.meta.env.VITE_GOOGLE_CALLBACK_PATH || defaultCallbackPaths.google,
-  facebook: import.meta.env.VITE_FACEBOOK_CALLBACK_PATH || defaultCallbackPaths.facebook
+  facebook: import.meta.env.VITE_FACEBOOK_CALLBACK_PATH || defaultCallbackPaths.facebook,
+  dev: '#' // Dev bypass doesn't use backend callback
 };
 
 function buildUserFromQuery(fallbackName: string, params: URLSearchParams, provider: OAuthProvider, token: string): AuthUser {

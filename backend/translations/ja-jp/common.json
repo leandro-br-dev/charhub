@@ -3,16 +3,23 @@
   "resources": {
     "brand": "CharHub Auth",
     "language": "言語",
+    "menu": {
+      "title": "メニュー",
+      "close": "メニューを閉じる",
+      "open": "メニューを開く"
+    },
+    "settings": "設定",
+    "account": "アカウント",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、プライバシーポリシーに同意し、CharHubがお客様の基本プロフィール情報にアクセスすることを許可します。",
-    "logout": "ログアウト",
-    "logoutLoading": "ログアウト中...",
+    "privacy": "続行することにより、お客様は当社のプライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを承認します。",
+    "logout": "サインアウト",
+    "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
     "tokenStored": "HTTP専用Cookieに保存済み",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
-    "navTagline": "安全なOAuthデモ",
+    "navTagline": "セキュアなOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -37,25 +44,25 @@
     "enabled": "有効",
     "disabled": "無効",
     "selectOption": "オプションを選択",
-    "noResults": "オプションが見つかりません。",
+    "noResults": "オプションが見つかりませんでした。",
     "chat": {
-      "with": "とチャット"
+      "with": "チャット相手："
     },
     "messages": {
       "linkCopied": "リンクをクリップボードにコピーしました！",
       "chatStarted": "チャットを開始しました！",
-      "characterDeleted": "キャラクターを削除しました"
+      "characterDeleted": "キャラクターを正常に削除しました"
     },
     "contentFilter": {
       "ariaLabel": "コンテンツフィルター",
       "title": "コンテンツフィルター",
-      "ageRating": "年齢評価",
+      "ageRating": "年齢制限",
       "blurNsfw": "露骨なコンテンツをぼかす",
       "none": "フィルターなし",
-      "blur": "センシティブなコンテンツをぼかす",
-      "hidden": "成人向けコンテンツを非表示",
+      "blur": "センシティブな内容をぼかす",
+      "hidden": "成人向けを非表示",
       "descriptions": {
-        "none": "制限なしで全てのコンテンツを表示",
+        "none": "すべてのコンテンツを制限なしで表示",
         "blur": "成人向けコンテンツにぼかしを適用",
         "hidden": "成人向けコンテンツを完全に非表示"
       },
@@ -67,17 +74,17 @@
         "SIXTEEN": "16歳以上",
         "EIGHTEEN": "18歳以上"
       },
-      "noBirthdateWarning": "⚠️ 年齢が未登録です",
-      "noBirthdateDescription": "年齢制限のあるコンテンツにアクセスするには、設定で生年月日を追加してください。",
-      "goToSettings": "設定へ移動",
-      "blocked": "(ブロック済み)"
+      "noBirthdateWarning": "⚠️ 年齢が登録されていません",
+      "noBirthdateDescription": "年齢制限付きコンテンツにアクセスするには、設定で生年月日を追加してください。",
+      "goToSettings": "設定に移動",
+      "blocked": "（ブロック済み）"
     },
     "errors": {
       "generic": "エラーが発生しました。もう一度お試しください。",
       "failedToFetchData": "データの取得に失敗しました"
     },
     "character": "キャラクター",
-    "seeMore": "もっと見る",
-    "seeMoreArrow": "もっと見る →"
+    "seeMore": "さらに表示",
+    "seeMoreArrow": "さらに表示 →"
   }
 }

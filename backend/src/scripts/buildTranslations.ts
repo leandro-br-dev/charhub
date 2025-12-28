@@ -249,7 +249,7 @@ function parseModelResponse(text: string): Record<string, unknown> {
 
     try {
       return JSON.parse(fixed) as Record<string, unknown>;
-    } catch (retryError) {
+    } catch (_retryError) {
       console.error('Failed to parse JSON even after fixes:');
       console.error('Original error:', error);
       console.error('First 500 chars of response:', cleaned.substring(0, 500));
