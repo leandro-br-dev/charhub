@@ -13,6 +13,12 @@ import {
 const API_PREFIX = import.meta.env.VITE_API_VERSION || '/api/v1';
 const BASE_PATH = `${API_PREFIX}/characters`;
 
+export interface CharacterListResult {
+  characters: Character[];
+  total: number;
+  hasMore: boolean;
+}
+
 export const characterService = {
   async list(params?: CharacterListParams): Promise<CharacterListResponse> {
     const query: Record<string, unknown> = { ...(params || {}) };
@@ -20,13 +26,28 @@ export const characterService = {
       query.visibility = params.visibility;
     }
 
-    const response = await api.get<{ success: boolean; data: Character[]; count: number }>(BASE_PATH, { params: query });
+    const response = await api.get<{ success: boolean; data: Character[]; total: number; hasMore: boolean }>(BASE_PATH, { params: query });
 
     return {
       items: response.data.data || [],
-      total: response.data.count || 0,
+      total: response.data.total || 0,
       page: 1,
       pageSize: response.data.data?.length || 20
+    };
+  },
+
+  /**
+   * Get characters with pagination (for infinite scroll)
+   */
+  async listWithPagination(params?: { skip?: number; limit?: number; ageRatings?: AgeRating[] }): Promise<CharacterListResult> {
+    const query: Record<string, unknown> = { ...(params || {}) };
+
+    const response = await api.get<{ success: boolean; data: Character[]; total: number; hasMore: boolean }>(BASE_PATH, { params: query });
+
+    return {
+      characters: response.data.data || [],
+      total: response.data.total || 0,
+      hasMore: response.data.hasMore || false,
     };
   },
 
@@ -131,6 +152,19 @@ export const characterService = {
     } catch (error) {
       console.error('[characterService] getPopular failed:', error);
       return [];
+    }
+  },
+
+  /**
+   * Get popular characters with pagination (for infinite scroll)
+   */
+  async getPopularWithPagination(params: { skip?: number; limit?: number; ageRatings?: AgeRating[] } = {}): Promise<CharacterListResult> {
+    try {
+      const { skip = 0, limit = 20, ageRatings } = params;
+      return await this.listWithPagination({ skip, limit, ageRatings });
+    } catch (error) {
+      console.error('[characterService] getPopularWithPagination failed:', error);
+      return { characters: [], total: 0, hasMore: false };
     }
   },
 

@@ -4,23 +4,23 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Découvrir",
-      "chat": "Discuter",
+      "chat": "Chat",
       "story": "Histoire"
     },
     "sections": {
       "popularCharacters": "Personnages populaires",
       "favoriteCharacters": "Vos favoris",
-      "popular": "Populaire",
+      "popular": "Populaires",
       "favorites": "Favoris",
       "myStories": "Mes histoires",
       "popularStories": "Histoires populaires",
       "mine": "Les miennes",
       "noPopularCharacters": "Aucun personnage populaire trouvé.",
-      "noFavoriteCharacters": "Vous n'avez pas encore mis de personnages en favoris.",
+      "noFavoriteCharacters": "Vous n'avez pas encore ajouté de personnages à vos favoris.",
       "createCharacter": "Créer un personnage",
       "browseCharacters": "Parcourir les personnages"
     },
-    "noStories": "Pas encore d'histoires. Créez votre première histoire !",
+    "noStories": "Aucune histoire pour l'instant. Créez votre première histoire !",
     "createStory": "Créer une histoire",
     "plusRequired": "Nécessite le forfait Plus",
     "recentConversations": "Conversations récentes",
@@ -37,7 +37,7 @@
           "action2": "Parcourir les personnages"
         },
         "stories": {
-          "title": "Découvrir des histoires",
+          "title": "Découvrez des histoires",
           "description": "Explorez la narration interactive",
           "action": "Parcourir les histoires"
         },
@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "Image de couverture pour {{title}}",
       "play": "Jouer"
+    },
+    "infiniteScroll": {
+      "endOfList": "Tous les personnages ont été chargés"
     }
   }
 }

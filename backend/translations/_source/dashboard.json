@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "Cover image for {{title}}",
       "play": "Play"
+    },
+    "infiniteScroll": {
+      "endOfList": "All characters have been loaded"
     }
   }
 }

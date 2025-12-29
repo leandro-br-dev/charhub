@@ -45,6 +45,12 @@ export interface CharacterWithRelations {
   stickers?: unknown[];
 }
 
+export interface CharacterListResult {
+  characters: CharacterWithRelations[];
+  total: number;
+  hasMore: boolean;
+}
+
 // Include options for character queries
 const characterInclude = {
   creator: {
@@ -291,7 +297,7 @@ export async function getCharactersByUserId(
 }
 
 /**
- * Get public characters
+ * Get public characters with pagination
  */
 export async function getPublicCharacters(options?: {
   search?: string;
@@ -301,7 +307,7 @@ export async function getPublicCharacters(options?: {
   blockedTags?: string[];
   skip?: number;
   limit?: number;
-}) {
+}): Promise<CharacterListResult> {
   try {
     const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
@@ -347,6 +353,9 @@ export async function getPublicCharacters(options?: {
       } as any;
     }
 
+    // Get total count (for pagination)
+    const total = await prisma.character.count({ where });
+
     const characters = await prisma.character.findMany({
       where,
       include: characterInclude,
@@ -367,12 +376,20 @@ export async function getPublicCharacters(options?: {
       });
     }
 
+    // Calculate hasMore based on skip, limit, and total
+    // Note: This is approximate since we filter in memory
+    const hasMore = skip + (limit || 20) < total;
+
     logger.debug(
-      { filters: options, count: filteredCharacters.length, blocked: characters.length - filteredCharacters.length },
+      { filters: options, count: filteredCharacters.length, total, hasMore, blocked: characters.length - filteredCharacters.length },
       'Public characters fetched'
     );
 
-    return enrichCharactersWithAvatar(filteredCharacters);
+    return {
+      characters: enrichCharactersWithAvatar(filteredCharacters),
+      total,
+      hasMore,
+    };
   } catch (error) {
     logger.error({ error, options }, 'Error getting public characters');
     throw error;
@@ -380,7 +397,7 @@ export async function getPublicCharacters(options?: {
 }
 
 /**
- * Get public characters + user's own characters (all visibility levels)
+ * Get public characters + user's own characters (all visibility levels) with pagination
  * Used for dashboard when user is authenticated
  */
 export async function getPublicAndOwnCharacters(userId: string, options?: {
@@ -391,7 +408,7 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
   blockedTags?: string[];
   skip?: number;
   limit?: number;
-}) {
+}): Promise<CharacterListResult> {
   try {
     const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
@@ -447,6 +464,9 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
       } as any;
     }
 
+    // Get total count (for pagination)
+    const total = await prisma.character.count({ where });
+
     const characters = await prisma.character.findMany({
       where,
       include: characterInclude,
@@ -466,12 +486,20 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
       });
     }
 
+    // Calculate hasMore based on skip, limit, and total
+    // Note: This is approximate since we filter in memory
+    const hasMore = skip + (limit || 20) < total;
+
     logger.debug(
-      { userId, filters: options, count: filteredCharacters.length, blocked: characters.length - filteredCharacters.length },
+      { userId, filters: options, count: filteredCharacters.length, total, hasMore, blocked: characters.length - filteredCharacters.length },
       'Public and own characters fetched'
     );
 
-    return enrichCharactersWithAvatar(filteredCharacters);
+    return {
+      characters: enrichCharactersWithAvatar(filteredCharacters),
+      total,
+      hasMore,
+    };
   } catch (error) {
     logger.error({ error, userId, options }, 'Error getting public and own characters');
     throw error;

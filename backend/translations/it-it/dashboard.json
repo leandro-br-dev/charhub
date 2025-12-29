@@ -9,12 +9,12 @@
     },
     "sections": {
       "popularCharacters": "Personaggi Popolari",
-      "favoriteCharacters": "I tuoi Preferiti",
+      "favoriteCharacters": "I Tuoi Preferiti",
       "popular": "Popolari",
       "favorites": "Preferiti",
-      "myStories": "Le mie Storie",
+      "myStories": "Le Mie Storie",
       "popularStories": "Storie Popolari",
-      "mine": "Mie",
+      "mine": "I Miei",
       "noPopularCharacters": "Nessun personaggio popolare trovato.",
       "noFavoriteCharacters": "Non hai ancora aggiunto personaggi ai preferiti.",
       "createCharacter": "Crea Personaggio",
@@ -26,7 +26,7 @@
     "recentConversations": "Conversazioni Recenti",
     "newConversation": "Nuova Conversazione",
     "carousel": {
-      "alt": "Immagine del carosello per {{title}}",
+      "alt": "Immagine carosello per {{title}}",
       "goToSlide": "Vai alla diapositiva {{slide}}",
       "plus": "PLUS",
       "slides": {
@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "Immagine di copertina per {{title}}",
       "play": "Gioca"
+    },
+    "infiniteScroll": {
+      "endOfList": "Tutti i personaggi sono stati caricati"
     }
   }
 }
