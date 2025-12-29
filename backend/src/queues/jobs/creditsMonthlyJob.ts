@@ -1,9 +1,7 @@
 import { Job } from 'bullmq';
 import { logger } from '../../config/logger';
-import { PrismaClient } from '../../generated/prisma';
+import { prisma } from '../../config/database';
 import { grantMonthlyCredits, createMonthlySnapshot } from '../../services/creditService';
-
-const prisma = new PrismaClient();
 
 /**
  * Credits Monthly Job

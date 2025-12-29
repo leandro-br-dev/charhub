@@ -1,7 +1,5 @@
-import { PrismaClient } from '../generated/prisma';
+import { prisma } from '../config/database';
 import { createTransaction } from './creditService';
-
-const prisma = new PrismaClient();
 
 interface UsageMetrics {
   inputTokens?: number;

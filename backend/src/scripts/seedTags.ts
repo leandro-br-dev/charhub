@@ -1,11 +1,9 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { PrismaClient } from '../generated/prisma';
+import { prisma } from '../config/database';
 import type { TagSourceFile } from '../types/tags';
 import type { AgeRating, ContentTag, TagType } from '../generated/prisma';
-
-const prisma = new PrismaClient();
 
 // Data source for tag definitions (seed files)
 const TAGS_DATA_DIR = path.resolve(__dirname, '../data/tags');

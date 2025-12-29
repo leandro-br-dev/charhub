@@ -7,6 +7,7 @@
 
 import Stripe from 'stripe';
 import { PrismaClient } from '../../generated/prisma';
+import { prisma as dbPrisma } from '../../config/database';
 import { config } from 'dotenv';
 
 // Load environment variables
@@ -23,7 +24,7 @@ interface SeedOptions {
  * Returns stats: { configured: number, skipped: number }
  */
 export async function seedStripePlans(options: SeedOptions = {}): Promise<{ configured: number; skipped: number }> {
-  const prisma = options.prisma || new PrismaClient();
+  const prisma = options.prisma || dbPrisma;
   const stats = { configured: 0, skipped: 0 };
 
   const apiKey = process.env.STRIPE_SECRET_KEY;
@@ -143,11 +144,6 @@ export async function seedStripePlans(options: SeedOptions = {}): Promise<{ conf
   } catch (error: any) {
     console.error('❌ Error seeding Stripe plans:', error.message);
     throw error;
-  } finally {
-    // Only disconnect if we created our own Prisma instance
-    if (!options.prisma) {
-      await prisma.$disconnect();
-    }
   }
 }
 
@@ -159,10 +155,11 @@ if (require.main === module) {
       console.log(`   Configured: ${stats.configured}`);
       console.log(`   Skipped: ${stats.skipped}`);
       console.log('\n✅ Done!');
-      process.exit(0);
+      return dbPrisma.$disconnect();
     })
+    .then(() => process.exit(0))
     .catch((error) => {
       console.error('\n❌ Failed:', error);
-      process.exit(1);
+      return dbPrisma.$disconnect().then(() => process.exit(1));
     });
 }
