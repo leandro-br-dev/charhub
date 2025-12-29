@@ -2,21 +2,28 @@
  * Database utilities for tests
  */
 import { PrismaClient } from '../generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
 
 // Singleton test database instance
 let testDb: PrismaClient | null = null;
+let testPool: Pool | null = null;
 
 /**
  * Get test database instance
  */
 export function getTestDb(): PrismaClient {
   if (!testDb) {
+    const connectionString = `${process.env.DATABASE_URL_TEST || process.env.DATABASE_URL}`;
+    testPool = new Pool({
+      connectionString,
+      max: 1,
+      idleTimeoutMillis: 1000,
+    });
+    const adapter = new PrismaPg(testPool);
+
     testDb = new PrismaClient({
-      datasources: {
-        db: {
-          url: process.env.DATABASE_URL_TEST || process.env.DATABASE_URL,
-        },
-      },
+      adapter,
     });
   }
   return testDb;
@@ -57,6 +64,10 @@ export async function teardownTestDatabase(): Promise<void> {
   if (testDb) {
     await testDb.$disconnect();
     testDb = null;
+  }
+  if (testPool) {
+    await testPool.end();
+    testPool = null;
   }
 }
 
