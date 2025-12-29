@@ -6,26 +6,39 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ---
 
-## 📊 Status Atual: 27 de Dezembro de 2025
+## 📊 Status Atual: 28 de Dezembro de 2025
 
 ### Tarefas em Progresso
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
-| T007 | **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | 📋 Em Finalização | `feature/automated-story-generation` | 31/12/2025 | 27/12 - Spec ativa, Agent Coder trabalhando nas últimas etapas |
-| T009 | **TypeScript ESLint 8.x Migration** | Agent Coder | 🚀 Pronto para Iniciar | `feature/typescript-eslint-8-migration` (a criar) | 03/01/2026 | 27/12 - Spec criada - **PRIORIDADE MÉDIA** (Segurança + Qualidade) |
-| T010 | **Prisma 7.x Migration** | Agent Coder | 🚀 Pronto para Iniciar | `feature/prisma-7-migration` (a criar) | 05/01/2026 | 27/12 - Spec criada - **PRIORIDADE MÉDIA** (Performance + Segurança) |
+| T009 | **TypeScript ESLint 8.x Migration** | Agent Coder | ✅ Concluído | `feature/typescript-eslint-8-migration` | - | 28/12 - PR merged e movido para implemented |
+| T010 | **Prisma 7.x Migration** | Agent Coder | 📋 Em Revisão | `feature/prisma-7-migration` | 29/12/2025 | 28/12 - PR aberta aguardando review |
 
 ---
 
-### Tarefas Planejadas (Próximas na Fila)
+### Tarefas Planejadas (Próximas na Fila - ALTA PRIORIDADE)
+
+| Ordem | Tarefa | Prioridade | Estimado | Notas | Spec |
+|-------|--------|-----------|----------|-------|------|
+| 1️⃣ | **Dashboard Infinite Scroll** | 🔥 ALTA | 8-10 horas | Carregamento sob demanda de personagens | `active/dashboard-infinite-scroll.md` |
+| 2️⃣ | **Discovery Enhanced Filters** | 🔥 ALTA | 10 horas | Filtros de gênero e espécie | `active/discovery-enhanced-filters.md` |
+| 3️⃣ | **Automated Character Generation Improvements** | 🔥 ALTA | 10-12 horas | Corrigir qualidade, diversidade e censura Civit.ai | `active/automated-character-generation-improvements.md` |
+| 4️⃣ | **Character Image Generation Multi-Stage** | 🔥 ALTA | 12-16 horas* | Workflow progressivo de 4 estágios | `active/character-image-generation-multi-stage-workflow.md` |
+| 5️⃣ | **UI Improvements (Sidebar + Age Tags)** | 🟡 MÉDIA | 5-6 horas | Filtro sidebar + componente age rating unificado | `active/ui-improvements-sidebar-and-age-tags.md` |
+
+**⚠️ Nota sobre T013**: Requer verificação de capacidades da API ComfyUI (Phase 0) antes de iniciar implementação completa.
+
+---
+
+### Tarefas Planejadas (Backlog)
 
 | Ordem | Tarefa | Prioridade | Estimado | Notas |
 |-------|--------|-----------|----------|-------|
-| 1️⃣ | Sistema de Notificações | ALTA | 1-2 semanas | Impacto alto em retenção |
-| 2️⃣ | Fix Performance Galeria | ALTA | 3-5 dias | Investigação + otimização |
-| 3️⃣ | Sugestões Inteligentes | MÉDIA | 1 semana | Recomendações por tags |
-| 4️⃣ | Redesign Página Perfil | BAIXA | 3-4 dias | UI/UX improvement |
+| 6️⃣ | Sistema de Notificações | MÉDIA | 1-2 semanas | Impacto alto em retenção |
+| 7️⃣ | Fix Performance Galeria | MÉDIA | 3-5 dias | Investigação + otimização |
+| 8️⃣ | Sugestões Inteligentes | BAIXA | 1 semana | Recomendações por tags |
+| 9️⃣ | Redesign Página Perfil | BAIXA | 3-4 dias | UI/UX improvement |
 
 ---
 
@@ -433,6 +446,300 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 - ✅ Node.js 18+ (verificar versão)
 - ✅ TypeScript 5.x (já instalado)
 - ⚠️ Coordenar com Agent Reviewer para produção (backup + migração)
+
+---
+
+**Contexto da Tarefa Dashboard Infinite Scroll** (T011):
+- **Por que ALTA prioridade**: Dashboard mostra apenas 8 personagens, limitando descoberta de conteúdo
+- **Objetivo Principal**: Implementar scroll infinito com carregamento responsivo baseado em tamanho de tela
+- **Problemas Resolvidos**:
+  - ✅ Limite fixo de 8 personagens impede visualização de catálogo completo
+  - ✅ Experiência ruim em telas grandes (muito espaço vazio)
+  - ✅ Usuários não descobrem personagens além dos primeiros 8
+  - ✅ Performance pode ser otimizada com carregamento sob demanda
+- **Features Principais**:
+  1. **Cálculo Dinâmico de Cards por Fileira**:
+     - Mobile (< 640px): 1-2 cards
+     - Tablet (640-1024px): 3-4 cards
+     - Desktop (1024-1440px): 4-5 cards
+     - Large Desktop (> 1440px): 6+ cards
+  2. **Carregamento Inicial Inteligente**:
+     - 4 fileiras completas (16-24 personagens dependendo do dispositivo)
+     - Loading skeleton durante carregamento
+  3. **Infinite Scroll**:
+     - IntersectionObserver API
+     - Trigger em 90% do viewport
+     - Carrega 2 fileiras por vez
+     - Loading spinner e end-of-list message
+  4. **Backend API Enhancement**:
+     - Response com `{ characters, total, hasMore }`
+     - Support para `skip` e `limit` parameters
+- **Estimativa**: 8-10 horas
+- **Arquivo de spec**: `docs/05-business/planning/features/active/dashboard-infinite-scroll.md`
+- **Branch sugerida**: `feature/dashboard-infinite-scroll`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento
+- ✅ Prioridade ALTA (impacta diretamente discovery de conteúdo)
+- ✅ Performance mantida (< 2s initial load, < 500ms load more)
+
+**Instruções para Agent Coder**:
+1. 🔥 **ALTA PRIORIDADE** - Melhora significativa na descoberta de conteúdo
+2. Criar branch `feature/dashboard-infinite-scroll`
+3. Seguir fases da spec:
+   - Fase 1: Create useCardsPerRow hook (45 min)
+   - Fase 2: Create useInfiniteScroll hook (1.5 hours)
+   - Fase 3: Update Dashboard component (2 hours)
+   - Fase 4: Update Character Service (30 min)
+   - Fase 5: Backend API update if needed (30 min)
+   - Fase 6: Loading states UI (45 min)
+4. **IMPORTANTE**: Testar em diferentes tamanhos de tela (320px, 768px, 1440px, 2560px)
+5. **CRÍTICO**: Performance mantida (60fps scroll, sem jank)
+
+**ROI Esperado**:
+- Aumento de 300-400% em personagens visíveis
+- Melhora de 60% na taxa de descoberta
+- Experiência moderna e fluida
+- Performance otimizada
+
+---
+
+**Contexto da Tarefa Discovery Enhanced Filters** (T012):
+- **Por que ALTA prioridade**: Aba "Descobrir" tem apenas toggle Populares/Favoritos, sem filtros avançados
+- **Objetivo Principal**: Adicionar filtros de Gênero e Espécie para melhor descoberta de personagens
+- **Problemas Resolvidos**:
+  - ✅ Usuários não conseguem filtrar por características demográficas
+  - ✅ Dificulta encontrar personagens específicos em catálogo grande
+  - ✅ Rolagem infinita sem filtros pode ser frustrante
+  - ✅ Diversidade de personagens não é evidenciada
+- **Features Principais**:
+  1. **Filtro de Gênero**:
+     - Checkboxes múltiplos (Male, Female, Non-Binary, Other, Unknown)
+     - Contadores dinâmicos (ex: "Female (342)")
+     - Persistência em localStorage
+  2. **Filtro de Espécie**:
+     - Checkboxes múltiplos (Human, Elf, Robot, Furry, Demon, Angel, Vampire, Other)
+     - Contadores dinâmicos
+     - Persistência em localStorage
+  3. **UI Responsiva**:
+     - Desktop: Sidebar permanente com filtros
+     - Mobile: Bottom sheet/collapsible com ícone de filtro
+     - Badge mostrando número de filtros ativos
+  4. **Backend Enhancements**:
+     - GET /api/v1/characters/filter-options (retorna genders/species com counts)
+     - Update GET /api/v1/characters (aceita gender[] e species[] parameters)
+  5. **Integração com Filtros Existentes**:
+     - Funciona junto com Age Rating, Populares/Favoritos
+     - Botão "Limpar Filtros"
+- **Estimativa**: 10 horas
+- **Arquivo de spec**: `docs/05-business/planning/features/active/discovery-enhanced-filters.md`
+- **Branch sugerida**: `feature/discovery-enhanced-filters`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento
+- ✅ Prioridade ALTA (melhora significativa em content discovery)
+- ✅ Dados de gender/species já existem no banco (campos opcionais)
+
+**Instruções para Agent Coder**:
+1. 🔥 **ALTA PRIORIDADE** - Critical for content discovery
+2. Criar branch `feature/discovery-enhanced-filters`
+3. Seguir fases da spec:
+   - Backend (2 hours): filter-options endpoint + character list update
+   - Frontend hooks (1.5 hours): useCharacterFilters hook
+   - Frontend components (2-3 hours): GenderFilter, SpeciesFilter, FilterPanel
+   - Mobile UI (1 hour): MobileFilterSheet
+   - Integration (1.5 hours): Integrate into dashboard
+4. **IMPORTANTE**: Testar combinações de filtros (gender + species + age rating)
+5. **CRÍTICO**: Performance de queries (ensure DB indexes on gender/species)
+
+**ROI Esperado**:
+- Redução de 60-70% no tempo para encontrar personagens específicos
+- Aumento de 30-40% na taxa de interação
+- Melhor distribuição de visualizações
+
+---
+
+**Contexto da Tarefa Automated Character Generation Improvements** (T013):
+- **Por que ALTA prioridade**: Geração automática do Civit.ai tem 3 problemas críticos de qualidade
+- **Objetivo Principal**: Corrigir qualidade, diversidade e censura no fluxo de geração programática
+- **Problemas Resolvidos**:
+  - ✅ **FIX 1 - Sorting**: Imagens de baixa qualidade selecionadas (ordering parece invertido)
+  - ✅ **FIX 2 - Diversidade**: Muitas imagens da mesma referência (10/20 mesmo personagem)
+  - ✅ **FIX 3 - Censura**: Bloqueio excessivo de conteúdo adulto apropriado (decotes, roupas ajustadas)
+- **Features Principais**:
+  1. **FIX 1 - Correção de Sorting** (1-2 hours):
+     - Usar sort correto: "Most Reactions" ao invés de "Newest"
+     - Verificar ordem (descending - melhores primeiro)
+     - Adicionar threshold mínimo (50+ reactions)
+     - Quality verification
+  2. **FIX 2 - Diversidade Forçada** (3-4 hours):
+     - Adicionar colunas `gender` e `species` ao CuratedImage schema
+     - AI extrai metadata durante curation
+     - Enhanced diversification algorithm:
+       - Max 2-3 mesmo gender consecutivo
+       - Max 2 mesma species consecutiva
+       - Target distribution (50% female, 35% male, 15% other)
+     - Dashboard tracking de distribuição
+  3. **FIX 3 - Censura Inteligente** (2-3 hours):
+     - Civit.ai API: nsfw: 'Soft' ou 'Mature' (ao invés de 'None')
+     - Enhanced content analyzer:
+       - Approve: SFW, Soft NSFW (16+), Mature NSFW (18+)
+       - Reject: Explicit pornography, gore, minors in suggestive content
+     - Age rating classification melhorada
+- **Estimativa**: 10-12 horas (3 fixes independentes)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/automated-character-generation-improvements.md`
+- **Branch sugerida**: `feature/civitai-improvements`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento
+- ✅ Prioridade ALTA (qualidade de personagens gerados impacta todo produto)
+- ✅ Conteúdo adulto apropriado é parte do modelo de negócio
+
+**Instruções para Agent Coder**:
+1. 🔥 **ALTA PRIORIDADE** - Impacta qualidade de todo conteúdo gerado automaticamente
+2. Criar branch `feature/civitai-improvements`
+3. **Sequência recomendada**:
+   - Começar com FIX 1 (Sorting) - quick win, alto impacto (1-2 hours)
+   - Depois FIX 3 (Censura) - abre mais conteúdo (2-3 hours)
+   - Por fim FIX 2 (Diversidade) - mais complexo (3-4 hours)
+4. **CRÍTICO**: Testar sorting verificando reaction counts estão em ordem decrescente
+5. **IMPORTANTE**: Monitor quality metrics após cada fix em produção
+
+**ROI Esperado**:
+- Qualidade de imagens: +80-90% (avg reactions 20→100+)
+- Diversidade: Distribuição balanceada (50% F, 35% M, 15% Other)
+- Conteúdo adulto: 30-40% do catálogo (classificado apropriadamente)
+- User satisfaction: 2.5/5 → 4/5
+
+---
+
+**Contexto da Tarefa Character Image Generation Multi-Stage Workflow** (T014):
+- **Por que ALTA prioridade**: Imagens de personagens têm inconsistência visual entre gerações
+- **Objetivo Principal**: Criar dataset progressivo de 4 imagens (avatar → frente → lado → costas) usando cada como referência para próxima
+- **⚠️ ATENÇÃO**: Requer **Phase 0 - ComfyUI API Assessment** ANTES de iniciar implementação
+- **Problemas Resolvidos**:
+  - ✅ Inconsistência visual entre imagens do mesmo personagem
+  - ✅ Cada nova geração "esquece" características anteriores
+  - ✅ Falta de referência visual consistente
+  - ✅ Usuários precisam usar LoRAs externos ou refazer manualmente
+- **Features Principais**:
+  1. **Multi-Stage Generation Pipeline**:
+     - Stage 1: Avatar (face focus) com referências opcionais do usuário
+     - Stage 2: Front full body usando avatar como referência
+     - Stage 3: Side full body usando avatar + front
+     - Stage 4: Back full body usando avatar + front + side
+  2. **Temporary Folder Management**:
+     - Upload de imagens para pasta temporária no ComfyUI
+     - Cada estágio usa imagens anteriores como referência
+     - Cleanup automático após conclusão
+  3. **Reference Dataset Storage**:
+     - 4 imagens salvas no R2 com tipos especiais:
+       - REFERENCE_AVATAR
+       - REFERENCE_FRONT
+       - REFERENCE_SIDE
+       - REFERENCE_BACK
+     - Não aparecem em galeria por padrão
+     - Visíveis apenas no modo de edição
+     - Usadas em gerações futuras do mesmo personagem
+  4. **Progress Tracking UI**:
+     - Real-time progress (1/4, 2/4, 3/4, 4/4)
+     - Cada imagem aparece conforme gerada
+     - Estimativa de tempo (8-12 min total)
+- **⚠️ CRITICAL - Phase 0: ComfyUI API Assessment** (1-2 hours):
+  - **MUST VERIFY BEFORE IMPLEMENTING**:
+    1. Temporary folder creation API
+    2. Upload multiple images to folder API
+    3. Workflow with multiple IP-Adapter inputs
+    4. Cleanup temp folder API
+  - **If limitations found**: Document in `docs/technical/comfyui-api-limitations.md`
+  - **Action**: Create GitHub issues for ComfyUI team if needed
+- **Estimativa**: 12-16 hours (SE ComfyUI API suportar)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/character-image-generation-multi-stage-workflow.md`
+- **Branch sugerida**: `feature/multi-stage-image-generation`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada APÓS confirmação de capacidades da API ComfyUI
+- ✅ Prioridade ALTA (diferencial competitivo único)
+- ✅ Tempo de geração longo (8-12 min) é aceitável com feedback claro
+
+**Instruções para Agent Coder**:
+1. 🔥 **START WITH PHASE 0** - Verify ComfyUI API capabilities FIRST
+2. **DO NOT proceed with implementation until Phase 0 complete**
+3. Se limitations encontradas:
+   - Documentar em `docs/technical/comfyui-api-limitations.md`
+   - Criar issues para CharhubComfyUI team
+   - Aguardar API enhancements OU implementar versão simplificada
+4. Se capabilities existem:
+   - Criar branch `feature/multi-stage-image-generation`
+   - Seguir 6 fases da spec (12-16 hours total)
+5. **CRÍTICO**: Long-running job (8-12 min) - usar queue com polling
+6. **IMPORTANTE**: Clear progress feedback para usuário
+
+**ROI Esperado**:
+- Consistência visual: 80-90% entre imagens do mesmo personagem
+- Redução de 60% em retrabalho manual
+- Feature única vs concorrentes
+- Qualidade percebida aumenta significativamente
+
+**Dependências**:
+- ⚠️ **BLOCKER**: CharhubComfyUI API capabilities (Phase 0)
+- ✅ BullMQ queue (já implementado)
+- ✅ R2 storage (já implementado)
+- ✅ WebSocket infrastructure (já implementado)
+
+---
+
+**Contexto da Tarefa UI Improvements (Sidebar + Age Tags)** (T015):
+- **Por que MÉDIA prioridade**: Duas melhorias de qualidade de código e UX
+- **Objetivo Principal**: Corrigir filtro do sidebar + unificar componente de age rating badge
+- **Problemas Resolvidos**:
+  - ✅ **Sidebar**: Mostra todos personagens públicos ao invés de apenas próprios + favoritos
+  - ✅ **Age Rating**: Implementações duplicadas em múltiplos lugares (manutenção difícil)
+- **Features Principais**:
+  1. **Sidebar Characters Filter Fix** (1.5-2 hours):
+     - Fetch apenas personagens próprios do usuário + favoritos
+     - Ordenação: próprios primeiro, depois favoritos
+     - Deduplicação (se personagem é both own and favorite)
+     - Limit de 10-15 personagens
+     - Empty state com CTA para criar primeiro personagem
+  2. **Age Rating Component Unification** (2.5-3 hours):
+     - Criar `components/ui/AgeRatingBadge.tsx`
+     - Props: ageRating, size (sm/md/lg), variant (overlay/inline)
+     - Color system: L=green, 16+=orange, 18+=black
+     - Label formatado: "18+" ao invés de "EIGHTEEN"
+     - Replace all duplicate implementations:
+       - CharacterCard.tsx
+       - Character/Story description pages
+       - Other locations
+     - Remove old helper functions
+- **Estimativa**: 5-6 horas
+- **Arquivo de spec**: `docs/05-business/planning/features/active/ui-improvements-sidebar-and-age-tags.md`
+- **Branch sugerida**: `feature/ui-improvements-sidebar-age-tags`
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento
+- ✅ Prioridade MÉDIA (quality of life improvements)
+- ✅ Pode ser agrupada em uma única PR
+
+**Instruções para Agent Coder**:
+1. 🟡 **MÉDIA PRIORIDADE** - Quality improvements
+2. Criar branch `feature/ui-improvements-sidebar-age-tags`
+3. **Part 1 - Sidebar** (1.5-2 hours):
+   - Update CharacterListSidebar.tsx
+   - Fetch own + favorites characters
+   - Deduplicate and limit to 15
+4. **Part 2 - Age Rating Component** (2.5-3 hours):
+   - Create AgeRatingBadge.tsx component
+   - Replace in CharacterCard.tsx
+   - Find and replace all other implementations:
+     - `grep -r "ageRating" frontend/src --include="*.tsx"`
+5. **IMPORTANTE**: Visual regression testing (all badges look identical)
+6. **CRÍTICO**: Maintain exact visual appearance
+
+**ROI Esperado**:
+- Sidebar: Acesso rápido a personagens relevantes (own + favorites)
+- Age Rating: -100 lines de código duplicado, manutenção unificada
+- Code quality e consistency improvements
 
 ---
 
