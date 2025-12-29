@@ -1,7 +1,7 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { PrismaClient, Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier, VisualStyle } from '../generated/prisma';
+import { Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier, VisualStyle } from '../generated/prisma';
 import { seedAllTags } from './seedTags';
 import { seedStripePlans } from './seeds/seedStripePlans';
 import { prisma } from '../config/database';
