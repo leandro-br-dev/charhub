@@ -3,11 +3,14 @@
 // 2. Fallback to project root .env (for Docker compose)
 require('dotenv').config({ path: require('path').resolve(__dirname, '.env.local') });
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
-const { env } = require('prisma/config');
 
 module.exports = {
   schema: './prisma/schema.prisma',
   datasource: {
-    url: env('DATABASE_URL'),
+    // Use DATABASE_URL from environment, or placeholder if not set (for 'prisma generate' in CI)
+    // The placeholder allows 'npx prisma generate' to run without DATABASE_URL
+    // (generation doesn't connect to DB, it just reads schema and generates types)
+    // All actual DB operations (migrate, seed, runtime) will use real DATABASE_URL
+    url: process.env.DATABASE_URL || 'postgresql://placeholder',
   },
 };
