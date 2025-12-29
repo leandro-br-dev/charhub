@@ -4,7 +4,7 @@
  * Implementation of IPaymentProvider for PayPal subscriptions
  */
 
-import { PrismaClient } from '../../generated/prisma';
+import { prisma } from '../../config/database';
 import { requirePayPal } from '../../config/paypal';
 import { logger } from '../../config/logger';
 import {
@@ -18,8 +18,6 @@ import {
   ExperienceContextShippingPreference,
   ApplicationContextUserAction,
 } from '@paypal/paypal-server-sdk';
-
-const prisma = new PrismaClient();
 
 export class PayPalProvider implements IPaymentProvider {
   private controller: SubscriptionsController;
