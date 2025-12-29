@@ -54,17 +54,17 @@
       "characterDeleted": "角色已成功删除"
     },
     "contentFilter": {
-      "ariaLabel": "内容过滤器",
-      "title": "内容过滤器",
+      "ariaLabel": "内容筛选器",
+      "title": "内容筛选器",
       "ageRating": "年龄分级",
-      "blurNsfw": "模糊露骨内容",
-      "none": "无过滤器",
+      "blurNsfw": "模糊成人内容",
+      "none": "无筛选器",
       "blur": "模糊敏感内容",
-      "hidden": "隐藏成人内容",
+      "hidden": "隐藏成熟内容",
       "descriptions": {
-        "none": "显示所有无限制内容",
-        "blur": "对成人内容应用模糊处理",
-        "hidden": "完全隐藏成人内容"
+        "none": "显示所有内容，无限制",
+        "blur": "对成熟内容应用模糊",
+        "hidden": "完全隐藏成熟内容"
       },
       "ageRatings": {
         "L": "免费",
@@ -74,10 +74,10 @@
         "SIXTEEN": "16岁以上",
         "EIGHTEEN": "18岁以上"
       },
-      "noBirthdateWarning": "⚠️ 未登记年龄",
+      "noBirthdateWarning": "⚠️ 未注册年龄",
       "noBirthdateDescription": "要访问受年龄限制的内容，请在设置中添加您的出生日期。",
       "goToSettings": "前往设置",
-      "blocked": "（已阻止）"
+      "blocked": "(已屏蔽)"
     },
     "errors": {
       "generic": "发生错误。请重试。",
@@ -85,6 +85,10 @@
     },
     "character": "角色",
     "seeMore": "查看更多",
-    "seeMoreArrow": "查看更多 →"
+    "seeMoreArrow": "查看更多 →",
+    "back": "返回",
+    "loading": "正在加载...",
+    "credits": "积分",
+    "tryAgain": "重试"
   }
 }

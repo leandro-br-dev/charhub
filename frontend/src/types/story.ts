@@ -1,6 +1,22 @@
 import type { AgeRating, ContentTag } from './characters';
 import { Visibility } from './common';
 
+export type StoryCharacterRole = 'MAIN' | 'SECONDARY';
+
+export interface StoryCharacter {
+  id: string;
+  storyId: string;
+  characterId: string;
+  role: StoryCharacterRole;
+  order: number;
+  character: {
+    id: string;
+    firstName: string;
+    lastName?: string | null;
+    images?: Array<{ url: string }>;
+  };
+}
+
 export interface Story {
   id: string;
   title: string;
@@ -21,11 +37,15 @@ export interface Story {
     displayName: string | null;
     avatarUrl: string | null;
   };
+  // New structure with roles
+  storyCharacters?: StoryCharacter[];
+  // Legacy compatibility - computed from storyCharacters
   characters?: Array<{
     id: string;
     firstName: string;
     lastName?: string | null;
     avatar?: string | null;
+    role?: StoryCharacterRole; // Added role for display
   }>;
   tags?: Array<{
     id: string;
@@ -47,6 +67,7 @@ export interface StoryFormData {
   coverImage?: string;
   objectives?: StoryObjective[];
   characterIds?: string[];
+  mainCharacterId?: string; // ID of the MAIN character (played by user)
   tagIds?: string[];
   ageRating?: AgeRating;
   contentTags?: ContentTag[];
@@ -60,6 +81,7 @@ export interface CreateStoryPayload {
   coverImage?: string;
   objectives?: StoryObjective[];
   characterIds?: string[];
+  mainCharacterId?: string; // ID of the MAIN character (played by user)
   tagIds?: string[];
   ageRating?: AgeRating;
   contentTags?: ContentTag[];

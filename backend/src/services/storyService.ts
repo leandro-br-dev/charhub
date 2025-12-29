@@ -1,19 +1,27 @@
 import { prisma } from '../config/database';
 import { createStorySchema } from '../validators/story.validator';
-import type { Story, Prisma, Visibility } from '../generated/prisma';
+import type { Story, Prisma, Visibility, StoryCharacterRole } from '../generated/prisma';
+import { randomUUID } from 'crypto';
 
 export async function createStory(data: unknown, authorId: string): Promise<Story> {
   const validatedData = createStorySchema.parse(data);
 
-  const { characterIds, tagIds, ...storyData } = validatedData;
+  const { characterIds, tagIds, mainCharacterId, ...storyData } = validatedData;
 
   const story = await prisma.story.create({
     data: {
       ...storyData,
       authorId,
-      characters: {
-        connect: characterIds?.map((id: string) => ({ id })) || [],
-      },
+      storyCharacters: characterIds && characterIds.length > 0
+        ? {
+            create: characterIds.map((id: string, index: number) => ({
+              id: randomUUID(),
+              characterId: id,
+              role: (id === mainCharacterId ? 'MAIN' : 'SECONDARY') as StoryCharacterRole,
+              order: index,
+            })),
+          }
+        : undefined,
       tags: {
         connect: tagIds?.map((id: string) => ({ id })) || [],
       },
@@ -26,11 +34,18 @@ export async function createStory(data: unknown, authorId: string): Promise<Stor
           avatarUrl: true,
         },
       },
-      characters: {
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
+      storyCharacters: {
+        include: {
+          character: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+        orderBy: {
+          order: 'asc',
         },
       },
       tags: {
@@ -57,11 +72,31 @@ export async function getStoryById(id: string, userId?: string): Promise<Story |
           avatarUrl: true,
         },
       },
-      characters: {
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
+      storyCharacters: {
+        include: {
+          character: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              images: {
+                where: {
+                  type: 'AVATAR',
+                  isActive: true,
+                },
+                select: {
+                  url: true,
+                },
+                orderBy: {
+                  createdAt: 'desc',
+                },
+                take: 1,
+              },
+            },
+          },
+        },
+        orderBy: {
+          order: 'asc',
         },
       },
       tags: {
@@ -161,11 +196,18 @@ export async function listStories(params: {
             avatarUrl: true,
           },
         },
-        characters: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
+        storyCharacters: {
+          include: {
+            character: {
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+          orderBy: {
+            order: 'asc',
           },
         },
         tags: {
@@ -209,17 +251,33 @@ export async function updateStory(
   }
 
   const validatedData = createStorySchema.partial().parse(data);
-  const { characterIds, tagIds, ...storyData } = validatedData;
+  const { characterIds, tagIds, mainCharacterId, ...storyData } = validatedData;
+
+  // Handle character updates - need to delete and recreate StoryCharacter entries
+  if (characterIds !== undefined) {
+    // Delete existing story characters
+    await prisma.storyCharacter.deleteMany({
+      where: { storyId: id },
+    });
+
+    // Create new story characters with roles
+    if (characterIds.length > 0) {
+      await prisma.storyCharacter.createMany({
+        data: characterIds.map((characterId: string, index: number) => ({
+          id: randomUUID(),
+          storyId: id,
+          characterId,
+          role: (characterId === mainCharacterId ? 'MAIN' : 'SECONDARY') as StoryCharacterRole,
+          order: index,
+        })),
+      });
+    }
+  }
 
   const story = await prisma.story.update({
     where: { id },
     data: {
       ...storyData,
-      ...(characterIds !== undefined && {
-        characters: {
-          set: characterIds.map((id: string) => ({ id })),
-        },
-      }),
       ...(tagIds !== undefined && {
         tags: {
           set: tagIds.map((id: string) => ({ id })),
@@ -234,11 +292,18 @@ export async function updateStory(
           avatarUrl: true,
         },
       },
-      characters: {
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
+      storyCharacters: {
+        include: {
+          character: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+        orderBy: {
+          order: 'asc',
         },
       },
       tags: {

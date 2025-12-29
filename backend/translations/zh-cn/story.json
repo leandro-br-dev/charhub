@@ -3,43 +3,153 @@
   "resources": {
     "create": {
       "title": "创建新故事",
-      "subtitle": "用角色和目标构建一个互动故事"
+      "subtitle": "构建一个包含角色和目标互动故事",
+      "chooseMethod": {
+        "title": "您想如何创建故事？",
+        "subtitle": "选择最适合您需求的方法",
+        "manual": {
+          "title": "手动创建",
+          "description": "一步步创建您的故事，完全掌控",
+          "features": [
+            "完全自定义",
+            "通过选项卡组织",
+            "适合详细的故事"
+          ],
+          "cost": "免费",
+          "button": "手动创建"
+        },
+        "ai": {
+          "title": "AI 驱动创建",
+          "description": "让 AI 根据描述或图片生成您的故事",
+          "features": [
+            "自动生成",
+            "上传图片或描述",
+            "快速且富有创意"
+          ],
+          "cost": "75-100 积分",
+          "button": "使用 AI 创建"
+        }
+      }
+    },
+    "new": {
+      "title": "手动创建故事",
+      "subtitle": "一步步填写详细信息"
+    },
+    "edit": {
+      "title": "编辑故事",
+      "subtitle": "编辑您的故事详情"
+    },
+    "createAI": {
+      "title": "AI 故事生成器",
+      "subtitle": "描述您的故事想法或上传图片，AI 将为您生成详细内容",
+      "descriptionLabel": "故事描述",
+      "descriptionPlaceholder": "描述您的故事想法……（例如：“一位年轻巫师发现了一个通往梦境世界的古老传送门”）",
+      "descriptionHint": "您的描述越详细，结果越好",
+      "imageLabel": "场景图片",
+      "uploadPrompt": "点击上传场景图片",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (最大 10MB)",
+      "generating": "正在生成...",
+      "generateButton": "生成故事",
+      "howItWorks": "工作原理",
+      "step1": "提供文本描述和/或上传场景图片",
+      "step2": "AI 分析您的输入并生成故事详情",
+      "step3": "保存前查看和编辑生成的故事",
+      "step4": "将自动为您生成封面图片",
+      "pricing": "积分花费",
+      "textOnly": "仅文本",
+      "withImage": "包含图片",
+      "progress": {
+        "preparing": "正在准备您的故事",
+        "uploadingImage": "正在上传您的场景",
+        "analyzingImage": "正在分析氛围",
+        "extractingDescription": "正在解读故事",
+        "generatingConcept": "正在编织叙事",
+        "generatingPlot": "正在构思情节",
+        "writingScene": "正在撰写开场",
+        "generatingCover": "正在创建封面",
+        "creatingStory": "正在将故事变为现实",
+        "completed": "您的故事已就绪",
+        "error": "一个意想不到的转折"
+      },
+      "reveal": {
+        "title": "故事概念已创建",
+        "conceptMessage": "您的故事基础已铸就...",
+        "plotTitle": "情节已撰写",
+        "plotMessage": "前方的旅程已规划...",
+        "sceneTitle": "开场场景已撰写",
+        "sceneMessage": "故事开始展开...",
+        "storyTitle": "故事已创建",
+        "storyMessage": "您的故事已变为现实！",
+        "continuing": "正在继续..."
+      },
+      "final": {
+        "title": "您的故事已创建！",
+        "message": "您的故事已生成并可供阅读。封面图片正在后台生成中。",
+        "createAnother": "创建另一个故事"
+      },
+      "generationStarted": "故事生成已开始！正在查看进度...",
+      "generationFailed": "生成失败",
+      "weavingYourTale": "正在编织您的故事..."
     },
     "form": {
       "title": "标题",
       "titlePlaceholder": "输入故事标题",
-      "synopsis": "剧情梗概",
-      "synopsisPlaceholder": "简要描述你的故事",
-      "coverImage": "封面图",
+      "synopsis": "故事简介",
+      "synopsisPlaceholder": "您的故事简要概述...",
+      "coverImage": "封面图片",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "封面预览",
       "coverImageError": "图片加载失败",
-      "coverImageHint": "粘贴故事封面的图片 URL",
-      "initialText": "初始文本",
-      "initialTextPlaceholder": "写下你故事的开头...",
-      "initialTextHint": "故事开始时将显示此文本",
-      "objectives": "目标",
+      "coverImageHint": "上传图片或粘贴 URL 作为故事封面",
+      "changeCoverImage": "更改图片",
+      "uploadCoverImage": "选择图片",
+      "uploadFromDevice": "从设备上传",
+      "useImageUrl": "使用图片 URL",
+      "imageUrlModalTitle": "使用 URL 图片",
+      "imageUrlLabel": "图片 URL",
+      "invalidImageUrl": "请输入有效的图片 URL (http/https)。",
+      "preview": "预览",
+      "uploading": "正在处理...",
+      "loading": "正在加载...",
+      "initialText": "开场场景",
+      "initialTextPlaceholder": "故事开始...",
+      "initialTextHint": "这是玩家开始故事时会看到的开场场景。",
+      "objectives": "故事目标",
       "objectivePlaceholder": "添加一个故事目标",
-      "noObjectives": "还没有目标。添加一些来引导叙事。",
+      "noObjectives": "暂无目标。添加一些目标来引导叙事吧。",
       "characters": "角色",
       "selectedCharacters": "已选角色",
       "searchCharacters": "搜索角色",
       "noCharactersFound": "未找到角色",
       "noCharactersAvailable": "请先创建角色",
-      "tags": "标签",
+      "mainCharacterLabel": "主要角色（由您扮演）",
+      "selectMainCharacter": "选择主要角色...",
+      "tags": "类型标签",
       "selectedTags": "已选标签",
       "searchTags": "搜索标签",
       "noTagsFound": "未找到标签",
-      "noTagsAvailable": "没有可用标签",
+      "noTagsAvailable": "暂无可用标签",
+      "incompatibleHint": "标红的标签与所选年龄分级不兼容。请移除它们以继续。",
       "ageRating": "年龄分级",
-      "contentTags": "内容标签",
-      "makePublic": "将此故事设为公开"
+      "ageRatingHint": "这会过滤可用的类型标签并阻止不适宜内容警告。",
+      "contentTags": "内容警告",
+      "contentTagDisabled": "需要 {{age}} 岁或以上",
+      "contentTagsDisabledHint": "灰色显示的内容警告需要更高的年龄分级。",
+      "visibility": "故事可见性",
+      "makePublic": "将此故事设为公开",
+      "tabs": {
+        "details": "详情",
+        "plot": "情节与设定",
+        "characters": "角色",
+        "classification": "分类",
+        "media": "媒体"
+      }
     },
     "validation": {
-      "titleRequired": "标题是必填项",
-      "titleTooLong": "标题不得超过 100 个字符",
-      "synopsisTooLong": "剧情梗概不得超过 2000 个字符",
-      "initialTextTooLong": "初始文本不得超过 5000 个字符"
+      "titleRequired": "标题为必填项",
+      "titleTooLong": "标题必须少于 100 个字符",
+      "synopsisTooLong": "故事简介必须少于 2000 个字符",
+      "initialTextTooLong": "开场文本必须少于 5000 个字符"
     },
     "errors": {
       "createFailed": "创建故事失败",
@@ -48,35 +158,44 @@
       "failedToLoad": "加载故事失败",
       "noCharacters": "此故事没有角色",
       "failedToStart": "启动故事失败",
-      "notFound": "未找到故事"
+      "notFound": "故事未找到",
+      "imageTooLarge": "图片必须小于 10MB",
+      "invalidImageType": "图片必须是 PNG, JPEG, WEBP 或 GIF 格式",
+      "descriptionOrImageRequired": "请提供描述或图片",
+      "generationFailed": "生成故事失败"
     },
     "sidebar": {
       "myStories": "我的故事",
-      "noStories": "还没有故事"
+      "noStories": "暂无故事"
     },
     "list": {
       "title": "我的故事",
-      "subtitle": "管理你的互动故事",
+      "subtitle": "管理您的互动故事",
       "public": "公开",
-      "private": "私有",
+      "private": "私人",
       "empty": {
-        "title": "还没有故事",
-        "description": "创建你的第一个互动故事",
+        "title": "暂无故事",
+        "description": "创建您的第一个互动故事",
         "action": "创建故事"
       }
     },
     "detail": {
       "title": "故事",
-      "synopsis": "剧情梗概",
+      "synopsis": "故事简介",
       "initialScene": "开场场景",
       "objectives": "故事目标",
       "characters": "角色",
-      "confirmDelete": "你确定要删除这个故事吗？此操作无法撤销。",
+      "confirmDelete": "您确定要删除此故事吗？此操作无法撤销。",
       "labels": {
         "createdBy": "创建者"
       }
     },
+    "stats": {
+      "conversations": "对话次数",
+      "favorites": "收藏"
+    },
     "start": "开始故事",
-    "starting": "正在启动..."
+    "starting": "正在开始...",
+    "view": "查看故事"
   }
 }

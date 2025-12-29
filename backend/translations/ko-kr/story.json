@@ -2,53 +2,167 @@
   "description": "Story management and creation interface translations",
   "resources": {
     "create": {
-      "title": "새 이야기 만들기",
-      "subtitle": "캐릭터와 목표를 사용하여 인터랙티브 스토리 만들기"
+      "title": "새로운 이야기 만들기",
+      "subtitle": "캐릭터와 목표를 가지고 인터랙티브 스토리 만들기",
+      "chooseMethod": {
+        "title": "이야기를 어떻게 만드시겠습니까?",
+        "subtitle": "필요에 가장 적합한 방법을 선택하세요",
+        "manual": {
+          "title": "수동 생성",
+          "description": "완벽한 제어권을 가지고 이야기를 단계별로 만드세요",
+          "features": [
+            "완전한 맞춤 설정",
+            "탭으로 구성",
+            "상세한 이야기에 적합"
+          ],
+          "cost": "무료",
+          "button": "수동으로 만들기"
+        },
+        "ai": {
+          "title": "AI 기반 생성",
+          "description": "AI가 설명이나 이미지에서 이야기를 생성하도록 합니다",
+          "features": [
+            "자동 생성",
+            "이미지 업로드 또는 설명",
+            "빠르고 창의적"
+          ],
+          "cost": "75-100 크레딧",
+          "button": "AI로 만들기"
+        }
+      }
+    },
+    "new": {
+      "title": "이야기 수동 생성",
+      "subtitle": "세부 정보를 단계별로 채우세요"
+    },
+    "edit": {
+      "title": "이야기 편집",
+      "subtitle": "이야기 세부 정보를 편집하세요"
+    },
+    "createAI": {
+      "title": "AI 이야기 생성기",
+      "subtitle": "이야기 아이디어를 설명하거나 이미지를 업로드하면 AI가 세부 정보를 생성해 드립니다",
+      "descriptionLabel": "이야기 설명",
+      "descriptionPlaceholder": "이야기 아이디어를 설명하세요... (예: \"젊은 마법사가 꿈의 세계로 이어지는 고대 포털을 발견합니다\")",
+      "descriptionHint": "설명이 자세할수록 결과가 좋습니다",
+      "imageLabel": "장면 이미지",
+      "uploadPrompt": "장면 이미지를 업로드하려면 클릭하세요",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (최대 10MB)",
+      "generating": "생성 중...",
+      "generateButton": "이야기 생성",
+      "howItWorks": "작동 방식",
+      "step1": "텍스트 설명 및/또는 장면 이미지를 제공하세요",
+      "step2": "AI가 입력을 분석하고 이야기 세부 정보를 생성합니다",
+      "step3": "생성된 이야기를 저장하기 전에 검토하고 편집하세요",
+      "step4": "표지 이미지가 자동으로 생성됩니다",
+      "pricing": "크레딧 비용",
+      "textOnly": "텍스트만",
+      "withImage": "이미지와 함께",
+      "progress": {
+        "preparing": "이야기를 준비 중",
+        "uploadingImage": "장면을 업로드 중",
+        "analyzingImage": "분위기를 분석 중",
+        "extractingDescription": "이야기를 읽는 중",
+        "generatingConcept": "내러티브를 엮는 중",
+        "generatingPlot": "줄거리를 만드는 중",
+        "writingScene": "시작 장면을 작성 중",
+        "generatingCover": "표지를 만드는 중",
+        "creatingStory": "이야기를 생생하게 만드는 중",
+        "completed": "당신의 이야기가 기다립니다",
+        "error": "예상치 못한 반전"
+      },
+      "reveal": {
+        "title": "이야기 컨셉 생성됨",
+        "conceptMessage": "이야기의 토대가 구축되었습니다...",
+        "plotTitle": "줄거리 작성 완료",
+        "plotMessage": "앞으로의 여정이 계획되었습니다...",
+        "sceneTitle": "시작 장면 작성 완료",
+        "sceneMessage": "이야기가 펼쳐지기 시작합니다...",
+        "storyTitle": "이야기 생성됨",
+        "storyMessage": "당신의 이야기가 생생하게 탄생했습니다!",
+        "continuing": "계속 진행 중..."
+      },
+      "final": {
+        "title": "이야기가 생성되었습니다!",
+        "message": "이야기가 생성되었으며 읽을 준비가 되었습니다. 표지 이미지는 백그라운드에서 생성 중입니다.",
+        "createAnother": "다른 이야기 만들기"
+      },
+      "generationStarted": "이야기 생성이 시작되었습니다! 진행 상황을 확인 중...",
+      "generationFailed": "생성 실패",
+      "weavingYourTale": "당신의 이야기를 엮는 중..."
     },
     "form": {
       "title": "제목",
       "titlePlaceholder": "이야기 제목 입력",
       "synopsis": "시놉시스",
-      "synopsisPlaceholder": "이야기를 간략하게 설명해주세요",
+      "synopsisPlaceholder": "이야기의 간략한 요약...",
       "coverImage": "표지 이미지",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "표지 미리보기",
-      "coverImageError": "이미지를 불러오지 못했습니다",
-      "coverImageHint": "이야기 표지 이미지 URL을 붙여넣으세요",
-      "initialText": "시작 텍스트",
-      "initialTextPlaceholder": "이야기의 시작 부분을 작성하세요...",
-      "initialTextHint": "이 텍스트는 이야기가 시작될 때 표시됩니다",
-      "objectives": "목표",
+      "coverImageError": "이미지 로드 실패",
+      "coverImageHint": "이야기 표지를 위한 이미지를 업로드하거나 URL을 붙여넣으세요",
+      "changeCoverImage": "이미지 변경",
+      "uploadCoverImage": "이미지 선택",
+      "uploadFromDevice": "기기에서 업로드",
+      "useImageUrl": "이미지 URL 사용",
+      "imageUrlModalTitle": "URL에서 이미지 사용",
+      "imageUrlLabel": "이미지 URL",
+      "invalidImageUrl": "유효한 이미지 URL(http/https)을 입력하세요.",
+      "preview": "미리보기",
+      "uploading": "처리 중...",
+      "loading": "로드 중...",
+      "initialText": "시작 장면",
+      "initialTextPlaceholder": "이야기가 시작됩니다...",
+      "initialTextHint": "이것은 플레이어가 이야기를 시작할 때 보게 될 시작 장면입니다.",
+      "objectives": "이야기 목표",
       "objectivePlaceholder": "이야기 목표 추가",
-      "noObjectives": "아직 목표가 없습니다. 내러티브를 안내할 목표를 추가하세요.",
+      "noObjectives": "아직 목표가 없습니다. 내러티브를 이끌 목표를 추가하세요.",
       "characters": "캐릭터",
       "selectedCharacters": "선택된 캐릭터",
       "searchCharacters": "캐릭터 검색",
       "noCharactersFound": "캐릭터를 찾을 수 없습니다",
       "noCharactersAvailable": "먼저 캐릭터를 만드세요",
-      "tags": "태그",
+      "mainCharacterLabel": "주인공 (플레이어)",
+      "selectMainCharacter": "주인공 선택...",
+      "tags": "장르 태그",
       "selectedTags": "선택된 태그",
       "searchTags": "태그 검색",
       "noTagsFound": "태그를 찾을 수 없습니다",
       "noTagsAvailable": "사용 가능한 태그가 없습니다",
+      "incompatibleHint": "빨간색으로 강조 표시된 태그는 선택한 연령 등급과 호환되지 않습니다. 계속하려면 제거하세요.",
       "ageRating": "연령 등급",
-      "contentTags": "콘텐츠 태그",
-      "makePublic": "이 이야기를 공개로 설정"
+      "ageRatingHint": "이는 사용 가능한 장르 태그를 필터링하고 부적절한 콘텐츠 경고를 차단합니다.",
+      "contentTags": "콘텐츠 경고",
+      "contentTagDisabled": "만 {{age}}세 이상 필요",
+      "contentTagsDisabledHint": "회색으로 표시된 콘텐츠 경고는 더 높은 연령 등급이 필요합니다.",
+      "visibility": "이야기 공개 여부",
+      "makePublic": "이 이야기를 공개하기",
+      "tabs": {
+        "details": "세부 정보",
+        "plot": "줄거리 및 설정",
+        "characters": "캐릭터",
+        "classification": "분류",
+        "media": "미디어"
+      }
     },
     "validation": {
       "titleRequired": "제목은 필수입니다",
-      "titleTooLong": "제목은 100자 이하이어야 합니다",
-      "synopsisTooLong": "시놉시스는 2000자 이하이어야 합니다",
-      "initialTextTooLong": "시작 텍스트는 5000자 이하이어야 합니다"
+      "titleTooLong": "제목은 100자 이하여야 합니다",
+      "synopsisTooLong": "시놉시스는 2000자 이하여야 합니다",
+      "initialTextTooLong": "시작 텍스트는 5000자 이하여야 합니다"
     },
     "errors": {
-      "createFailed": "이야기를 생성하지 못했습니다",
-      "updateFailed": "이야기를 업데이트하지 못했습니다",
-      "deleteFailed": "이야기를 삭제하지 못했습니다",
-      "failedToLoad": "이야기를 불러오지 못했습니다",
+      "createFailed": "이야기 생성 실패",
+      "updateFailed": "이야기 업데이트 실패",
+      "deleteFailed": "이야기 삭제 실패",
+      "failedToLoad": "이야기 로드 실패",
       "noCharacters": "이 이야기에는 캐릭터가 없습니다",
-      "failedToStart": "이야기를 시작하지 못했습니다",
-      "notFound": "이야기를 찾을 수 없습니다"
+      "failedToStart": "이야기 시작 실패",
+      "notFound": "이야기를 찾을 수 없습니다",
+      "imageTooLarge": "이미지는 10MB보다 작아야 합니다",
+      "invalidImageType": "이미지는 PNG, JPEG, WEBP 또는 GIF 형식이어야 합니다",
+      "descriptionOrImageRequired": "설명 또는 이미지를 제공해 주세요",
+      "generationFailed": "이야기 생성 실패"
     },
     "sidebar": {
       "myStories": "내 이야기",
@@ -56,12 +170,12 @@
     },
     "list": {
       "title": "내 이야기",
-      "subtitle": "인터랙티브 이야기 관리",
+      "subtitle": "나의 인터랙티브 스토리를 관리하세요",
       "public": "공개",
       "private": "비공개",
       "empty": {
         "title": "아직 이야기가 없습니다",
-        "description": "첫 번째 인터랙티브 이야기를 만드세요",
+        "description": "첫 인터랙티브 스토리를 만들어보세요",
         "action": "이야기 만들기"
       }
     },
@@ -73,10 +187,15 @@
       "characters": "캐릭터",
       "confirmDelete": "이 이야기를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
       "labels": {
-        "createdBy": "생성자"
+        "createdBy": "만든 이"
       }
     },
+    "stats": {
+      "conversations": "대화",
+      "favorites": "즐겨찾기"
+    },
     "start": "이야기 시작",
-    "starting": "시작 중..."
+    "starting": "시작 중...",
+    "view": "이야기 보기"
   }
 }

@@ -14,17 +14,17 @@
     "continueFacebook": "المتابعة باستخدام Facebook",
     "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
-    "logoutLoading": "جارٍ تسجيل الخروج...",
+    "logoutLoading": "جاري تسجيل الخروج...",
     "authenticatedUser": "مستخدم موثق",
-    "tokenStored": "مخزن في ملف تعريف ارتباط HTTP-only",
+    "tokenStored": "مخزن في ملف تعريف الارتباط HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض توضيحي آمن لـ OAuth",
+    "navTagline": "عرض توضيحي لـ OAuth آمن",
     "providerLabel": {
-      "google": "جوجل",
-      "facebook": "فيسبوك"
+      "google": "Google",
+      "facebook": "Facebook"
     },
-    "provider": "الموفر",
+    "provider": "المزوّد",
     "theme": {
       "label": "السمة",
       "option": {
@@ -35,12 +35,12 @@
     },
     "none": "لا شيء",
     "unknown": "غير معروف",
-    "nameNotAvailable": "الاسم غير متاح",
+    "nameNotAvailable": "الاسم غير متوفر",
     "cancel": "إلغاء",
     "save": "حفظ",
-    "saving": "جارٍ الحفظ...",
+    "saving": "جاري الحفظ...",
     "delete": "حذف",
-    "deleting": "جارٍ الحذف...",
+    "deleting": "جاري الحذف...",
     "enabled": "مفعل",
     "disabled": "معطل",
     "selectOption": "اختر خيارًا",
@@ -56,13 +56,13 @@
     "contentFilter": {
       "ariaLabel": "فلتر المحتوى",
       "title": "فلتر المحتوى",
-      "ageRating": "التصنيف العمري",
+      "ageRating": "التقييم العمري",
       "blurNsfw": "تمويه المحتوى الصريح",
-      "none": "لا يوجد فلتر",
+      "none": "بدون فلتر",
       "blur": "تمويه الحساس",
       "hidden": "إخفاء المحتوى الناضج",
       "descriptions": {
-        "none": "عرض كل المحتوى بدون قيود",
+        "none": "عرض جميع المحتويات بدون قيود",
         "blur": "تطبيق تمويه على المحتوى الناضج",
         "hidden": "إخفاء المحتوى الناضج بالكامل"
       },
@@ -76,15 +76,19 @@
       },
       "noBirthdateWarning": "⚠️ العمر غير مسجل",
       "noBirthdateDescription": "للوصول إلى المحتوى المقيد عمريًا، يرجى إضافة تاريخ ميلادك في الإعدادات.",
-      "goToSettings": "الانتقال إلى الإعدادات",
+      "goToSettings": "اذهب إلى الإعدادات",
       "blocked": "(محظور)"
     },
     "errors": {
-      "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
-      "failedToFetchData": "فشل في جلب البيانات"
+      "generic": "حدث خطأ. الرجاء المحاولة مرة أخرى.",
+      "failedToFetchData": "فشل جلب البيانات"
     },
     "character": "شخصية",
     "seeMore": "شاهد المزيد",
-    "seeMoreArrow": "شاهد المزيد ←"
+    "seeMoreArrow": "شاهد المزيد ←",
+    "back": "رجوع",
+    "loading": "جاري التحميل...",
+    "credits": "اعتمادات",
+    "tryAgain": "حاول مجدداً"
   }
 }

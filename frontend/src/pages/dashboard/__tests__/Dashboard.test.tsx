@@ -4,6 +4,7 @@ import Dashboard from '../index';
 import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18n from 'i18next';
+import { ToastProvider } from '../../../contexts/ToastContext';
 
 // Create test i18n instance
 const testI18n = i18n.createInstance();
@@ -32,7 +33,9 @@ vi.mock('../../../hooks/useAuth', () => ({
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <BrowserRouter>
-      <I18nextProvider i18n={testI18n}>{component}</I18nextProvider>
+      <I18nextProvider i18n={testI18n}>
+        <ToastProvider>{component}</ToastProvider>
+      </I18nextProvider>
     </BrowserRouter>
   );
 };

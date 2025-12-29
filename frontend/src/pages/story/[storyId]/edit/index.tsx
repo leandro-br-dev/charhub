@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { StoryForm } from '../../create/StoryForm';
+import { StoryFormLayout } from '../../shared/components';
 import { storyService } from '../../../../services/storyService';
 import type { StoryFormData } from '../../../../types/story';
 import { usePageHeader } from '../../../../hooks/usePageHeader';
 import { useToast } from '../../../../contexts/ToastContext';
+import { Visibility } from '../../../../types/common';
+import type { AgeRating, ContentTag } from '../../../../types/characters';
 
 export default function StoryEditPage() {
   const { t } = useTranslation(['story', 'common']);
@@ -14,7 +16,20 @@ export default function StoryEditPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [initialData, setInitialData] = useState<StoryFormData | null>(null);
+  const [formData, setFormData] = useState<StoryFormData>({
+    title: '',
+    synopsis: '',
+    initialText: '',
+    coverImage: '',
+    objectives: [],
+    characterIds: [],
+    mainCharacterId: undefined,
+    tagIds: [],
+    ageRating: 'L' as AgeRating,
+    contentTags: [] as ContentTag[],
+    visibility: Visibility.PRIVATE,
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const { setTitle } = usePageHeader();
   const { addToast } = useToast();
 
@@ -33,20 +48,21 @@ export default function StoryEditPage() {
         }
 
         // Convert story to form data
-        const formData: StoryFormData = {
+        const data: StoryFormData = {
           title: story.title,
           synopsis: story.synopsis || '',
           initialText: story.initialText || '',
           coverImage: story.coverImage || '',
           objectives: story.objectives || [],
           characterIds: story.characters?.map(c => c.id) || [],
+          mainCharacterId: story.characters?.find(c => c.role === 'MAIN')?.id,
           tagIds: story.tags?.map(t => t.id) || [],
           ageRating: story.ageRating,
           contentTags: story.contentTags || [],
           visibility: story.visibility,
         };
 
-        setInitialData(formData);
+        setFormData(data);
         setTitle(t('story:edit.title', 'Edit Story'));
       } catch (err) {
         console.error('Error loading story:', err);
@@ -59,8 +75,46 @@ export default function StoryEditPage() {
     loadStory();
   }, [storyId, setTitle, t]);
 
-  const handleSubmit = async (formData: StoryFormData) => {
+  const handleFieldChange = (field: keyof StoryFormData, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error when field is modified
+    if (errors[field]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  const validate = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title || formData.title.trim().length === 0) {
+      newErrors.title = t('story:validation.titleRequired', 'Title is required');
+    } else if (formData.title.length > 100) {
+      newErrors.title = t('story:validation.titleTooLong', 'Title is too long (max 100 characters)');
+    }
+
+    if (formData.synopsis && formData.synopsis.length > 2000) {
+      newErrors.synopsis = t('story:validation.synopsisTooLong', 'Synopsis is too long (max 2000 characters)');
+    }
+
+    if (formData.initialText && formData.initialText.length > 5000) {
+      newErrors.initialText = t('story:validation.initialTextTooLong', 'Opening scene is too long (max 5000 characters)');
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!storyId) return;
+
+    if (!validate()) {
+      return;
+    }
 
     setIsSubmitting(true);
     setError(null);
@@ -72,11 +126,11 @@ export default function StoryEditPage() {
         addToast(t('story:edit.saved', 'Changes saved'), 'success');
         navigate(`/stories/${storyId}`);
       } else {
-        setError(result.message || t('story:errors.updateFailed'));
+        setError(result.message || t('story:errors.updateFailed', 'Failed to update story'));
       }
     } catch (err) {
       console.error('Error updating story:', err);
-      setError(t('story:errors.updateFailed'));
+      setError(t('story:errors.updateFailed', 'Failed to update story'));
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +153,7 @@ export default function StoryEditPage() {
     );
   }
 
-  if (error && !initialData) {
+  if (error && !formData.title) {
     return (
       <section className="flex h-[60vh] flex-col items-center justify-center gap-3">
         <span className="material-symbols-outlined text-6xl text-danger">error</span>
@@ -115,34 +169,17 @@ export default function StoryEditPage() {
   }
 
   return (
-    <section className="flex flex-col gap-8">
-      <header className="space-y-2">
-        <h1 className="text-3xl font-semibold text-title">
-          {t('story:edit.title', 'Edit Story')}
-        </h1>
-        <p className="max-w-2xl text-sm text-description">
-          {t('story:edit.subtitle', 'Update your story details')}
-        </p>
-      </header>
-
-      {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-200">
-          {error}
-        </div>
-      )}
-
-      {initialData && (
-        <div className="rounded-xl border border-border bg-normal p-6">
-          <StoryForm
-            mode="edit"
-            storyId={storyId}
-            initialData={initialData}
-            onSubmit={handleSubmit}
-            onCancel={handleCancel}
-            isSubmitting={isSubmitting}
-          />
-        </div>
-      )}
-    </section>
+    <StoryFormLayout
+      mode="edit"
+      storyId={storyId}
+      data={formData}
+      errors={errors}
+      isSubmitting={isSubmitting}
+      onFieldChange={handleFieldChange}
+      onSubmit={handleSubmit}
+      onCancel={handleCancel}
+      submitLabel={t('common:save', 'Save Changes')}
+      cancelLabel={t('common:cancel', 'Cancel')}
+    />
   );
 }

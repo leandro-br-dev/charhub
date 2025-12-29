@@ -32,6 +32,10 @@ const joinCharacterGenerationSchema = z.object({
   sessionId: z.string().min(1, 'sessionId is required'),
 });
 
+const joinStoryGenerationSchema = z.object({
+  sessionId: z.string().min(1, 'sessionId is required'),
+});
+
 // Removed assistantParticipantId - we'll determine which bots respond automatically
 
 function getRoomName(conversationId: string): string {
@@ -40,6 +44,10 @@ function getRoomName(conversationId: string): string {
 
 function getCharacterGenerationRoomName(userId: string, sessionId: string): string {
   return `character-generation:${userId}:${sessionId}`;
+}
+
+function getStoryGenerationRoomName(userId: string, sessionId: string): string {
+  return `story-generation:${userId}:${sessionId}`;
 }
 
 
@@ -196,6 +204,39 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         logger.warn(
           { error, userId: user.id },
           'join_character_generation_failed'
+        );
+
+        if (typeof callback === 'function') {
+          callback({
+            success: false,
+            error: error instanceof Error ? error.message : 'Invalid payload',
+          });
+        }
+      }
+    });
+
+    socket.on('join_story_generation', async (rawPayload, callback) => {
+      try {
+        const payload = joinStoryGenerationSchema.parse(rawPayload);
+        const room = getStoryGenerationRoomName(user.id, payload.sessionId);
+        await socket.join(room);
+
+        logger.debug(
+          { userId: user.id, sessionId: payload.sessionId, room },
+          'socket_joined_story_generation'
+        );
+
+        socket.emit('story_generation_joined', {
+          sessionId: payload.sessionId,
+        });
+
+        if (typeof callback === 'function') {
+          callback({ success: true, sessionId: payload.sessionId });
+        }
+      } catch (error) {
+        logger.warn(
+          { error, userId: user.id },
+          'join_story_generation_failed'
         );
 
         if (typeof callback === 'function') {

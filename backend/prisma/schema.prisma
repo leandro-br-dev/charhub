@@ -48,6 +48,12 @@ enum ContentTag {
   GAMBLING // Gambling themes
 }
 
+// Character role in a story
+enum StoryCharacterRole {
+  MAIN // Main character - played by the user
+  SECONDARY // Secondary character - played by AI
+}
+
 // Visibility levels for user-generated content
 enum Visibility {
   PRIVATE // Only owner can see
@@ -112,6 +118,7 @@ model User {
 
   // Favorites
   favoriteCharacters FavoriteCharacter[] @relation("UserFavoriteCharacters")
+  storyFavorites      StoryFavorite[]     @relation("UserStoryFavorites")
 
   // Credit and subscription relations
   creditTransactions CreditTransaction[] @relation("UserCreditTransactions")
@@ -336,11 +343,11 @@ model Character {
   updatedAt DateTime @updatedAt
 
   // Relations
-  stories  Story[]
-  attires  Attire[]           @relation("CharacterAttires")
-  tags     Tag[]
-  stickers CharacterSticker[]
-  images   CharacterImage[]
+  storyCharacters StoryCharacter[] @relation("StoryCharacters")
+  attires         Attire[]           @relation("CharacterAttires")
+  tags            Tag[]
+  stickers        CharacterSticker[]
+  images          CharacterImage[]
   curatedFrom CuratedImage? // Source curated image if auto-generated
 
   // Chat system relations
@@ -406,6 +413,25 @@ model CharacterImage {
   @@index([characterId, type, isActive])
 }
 
+// Story-Character join model with role distinction
+model StoryCharacter {
+  id         String             @id @default(uuid())
+  storyId    String
+  story      Story              @relation("StoryCharacters", fields: [storyId], references: [id], onDelete: Cascade)
+  characterId String
+  character  Character          @relation("StoryCharacters", fields: [characterId], references: [id], onDelete: Cascade)
+  role       StoryCharacterRole @default(SECONDARY) // MAIN = played by user, SECONDARY = played by AI
+  order      Int                @default(0) // For ordering characters in the story
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([storyId, characterId])
+  @@index([storyId])
+  @@index([characterId])
+  @@index([role])
+}
+
 model Story {
   id            String       @id @default(uuid())
   title         String
@@ -415,7 +441,8 @@ model Story {
   objectives    Json?
   authorId      String
   author        User         @relation("StoryAuthor", fields: [authorId], references: [id], onDelete: Cascade)
-  characters    Character[]
+  storyCharacters StoryCharacter[] @relation("StoryCharacters")
+  storyFavorites StoryFavorite[] @relation("StoryFavorites")
   tags          Tag[]
   ageRating     AgeRating    @default(L)
   contentTags   ContentTag[]
@@ -433,6 +460,20 @@ model Story {
 
   @@index([authorId])
   @@index([visibility])
+}
+
+model StoryFavorite {
+  id        String   @id @default(uuid())
+  userId    String
+  storyId   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation("UserStoryFavorites", fields: [userId], references: [id], onDelete: Cascade)
+  story     Story    @relation("StoryFavorites", fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, storyId])
+  @@index([userId])
+  @@index([storyId])
 }
 
 // ============================================================================

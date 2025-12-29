@@ -32,10 +32,18 @@ export interface BulkStickerGenerationJobData extends BaseImageJobData {
   customInstructions?: string;
 }
 
+export interface CoverGenerationJobData extends BaseImageJobData {
+  type: ImageGenerationType.COVER;
+  storyId: string;
+  referenceImageUrl?: string;
+  prompt: string;
+}
+
 export type ImageGenerationJobData =
   | AvatarGenerationJobData
   | StickerGenerationJobData
-  | BulkStickerGenerationJobData;
+  | BulkStickerGenerationJobData
+  | CoverGenerationJobData;
 
 export interface ImageGenerationJobResult {
   success: boolean;
