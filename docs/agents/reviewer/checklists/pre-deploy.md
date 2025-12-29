@@ -68,35 +68,48 @@ cat docs/agents/reviewer/checklists/env-sync.md
 
 ---
 
-## Step 3: Final Test Suite Run
+## Step 3: Final CI-Equivalent Validation
 
-**Run tests one final time on the feature branch:**
+**⚠️ CRITICAL: Run CI validation scripts to prevent GitHub Actions failures**
+
+**Run tests one final time using the EXACT same environment as GitHub Actions:**
 
 ```bash
-# Backend
+# Backend - Run CI-equivalent checks
 cd backend
-npm run build
-npm run lint
-npm test
+./scripts/ci-local.sh
 
-# Frontend
+# Frontend - Run CI-equivalent checks
 cd ../frontend
-npm run build
-npm run lint
+./scripts/ci-local.sh
 ```
 
-**Checklist:**
-- [ ] Backend TypeScript compiles
-- [ ] Backend tests pass
-- [ ] Frontend TypeScript + Vite build succeeds
-- [ ] No new linting errors
-- [ ] Test results match previous run
+**These scripts replicate GitHub Actions exactly:**
+- Uses `npm ci` (deterministic install)
+- Runs TypeScript type checking
+- Runs ESLint
+- Runs tests (with `CI=true` for frontend)
+- Builds production bundle
 
-**If any test fails:**
+**Checklist:**
+- [ ] Backend script shows "✓ ALL CHECKS PASSED"
+- [ ] Frontend script shows "✓ ALL CHECKS PASSED"
+- [ ] No errors in any validation step
+- [ ] Test results match previous local testing run
+- [ ] No new warnings or issues appeared
+
+**If any CI script fails:**
 → 🛑 DO NOT MERGE
-→ Fix issues first
-→ Re-run tests
-→ Restart this checklist
+→ Fix the failing step immediately
+→ Re-run `./scripts/ci-local.sh` until both pass
+→ This means GitHub Actions WILL fail - fix locally first
+→ Restart this checklist from Step 1
+
+**Why this is critical:**
+- Prevents "works locally but fails in CI" issues
+- GitHub Actions failures block deployment
+- Saves time by catching CI issues before pushing
+- `CI=true` in frontend tests is stricter than local tests
 
 ---
 

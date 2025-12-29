@@ -281,21 +281,19 @@ gh pr checkout <PR-number>
 cd backend && npm install
 cd frontend && npm install
 
-# Test backend
-cd backend
-npm run build    # TypeScript compilation (CRITICAL)
-npm run lint
-npm test
-
-# Test frontend
-cd frontend
-npm run build    # Catches missing i18n keys (CRITICAL)
-
 # Start local environment (clean state for testing)
 # NOTE: -v flag is OK for local testing, but NEVER use in production!
 docker compose down -v  # Resets local test database
 docker compose up -d --build
 docker compose ps
+
+# CRITICAL: Run CI-equivalent validation scripts
+# These replicate GitHub Actions EXACTLY and prevent CI failures
+cd backend
+./scripts/ci-local.sh    # Backend validation (build, lint, test, etc.)
+
+cd ../frontend
+./scripts/ci-local.sh    # Frontend validation (build, lint, CI=true tests, etc.)
 ```
 
 ### Deployment

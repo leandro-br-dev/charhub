@@ -68,65 +68,61 @@ docker compose ps
 
 ## Step 3: Backend Tests
 
-### 3.1 TypeScript Compilation
+**⚠️ CRITICAL: Use CI-equivalent validation scripts**
 
-**⚠️ CRITICAL**: This catches type errors before runtime
+### 3.1 Run CI Local Validation Script
+
+**This replicates EXACTLY the GitHub Actions CI environment:**
 
 ```bash
 cd backend
 
-# Compile TypeScript
-npm run build
+# Run the same checks as GitHub Actions
+./scripts/ci-local.sh
 ```
 
-**Checklist:**
-- [ ] TypeScript compilation succeeds
-- [ ] No type errors
-- [ ] No missing type declarations
-- [ ] Build output in `dist/` looks correct
+**This script runs in order:**
+1. `npm ci` (deterministic install like CI)
+2. ESLint
+3. TypeScript type checking (`tsc --noEmit`)
+4. Unit tests
+5. Production build
 
-**If compilation fails:**
+**Checklist:**
+- [ ] Script completes with "✓ ALL CHECKS PASSED"
+- [ ] No errors in any of the 5 steps
+- [ ] Test database is running (`docker compose up -d`)
+
+**If script fails:**
 → DO NOT PROCEED
-→ Request changes in PR
-→ Tag Agent Coder with specific error
+→ Fix the specific failing step
+→ Re-run `./scripts/ci-local.sh` until all pass
+→ Request changes in PR if issues persist
 
-### 3.2 Linting
+**Why use this script?**
+- Prevents "works locally but fails in CI" issues
+- Uses `npm ci` instead of `npm install` (same as CI)
+- Runs checks in same order as GitHub Actions
+- Catches issues before they block deployment
+
+### 3.2 Alternative: Run Individual Commands
+
+**Only if you need to debug a specific failure:**
 
 ```bash
 cd backend
 
-# Run ESLint
+# TypeScript compilation
+npm run build
+
+# Linting
 npm run lint
-```
 
-**Checklist:**
-- [ ] No linting errors
-- [ ] Warnings are acceptable (document if many)
-- [ ] Code follows style guide
-
-### 3.3 Unit Tests
-
-```bash
-cd backend
-
-# Run all tests
+# Tests
 npm test
-
-# Or run with coverage
-npm test -- --coverage
 ```
 
-**Checklist:**
-- [ ] All tests pass
-- [ ] No flaky tests (run twice if suspicious)
-- [ ] Coverage is reasonable (>70% for new code)
-- [ ] No skipped tests without explanation
-
-**If tests fail:**
-→ Read error messages carefully
-→ Check if test database is clean
-→ Verify test environment variables
-→ Request changes if legitimate failures
+**But ALWAYS run the full CI script before approving the PR.**
 
 ### 3.4 Database Migration (If Applicable)
 
@@ -157,41 +153,68 @@ npm run prisma:studio
 
 ## Step 4: Frontend Tests
 
-### 4.1 TypeScript + Vite Build
+**⚠️ CRITICAL: Use CI-equivalent validation script**
 
-**⚠️ CRITICAL**: This catches missing i18n keys and type errors
+### 4.1 Run CI Local Validation Script
+
+**This replicates EXACTLY the GitHub Actions CI environment:**
 
 ```bash
 cd frontend
 
-# Build production bundle
-npm run build
+# Run the same checks as GitHub Actions
+./scripts/ci-local.sh
 ```
 
+**This script runs in order:**
+1. `npm ci` (deterministic install like CI)
+2. ESLint (if configured)
+3. TypeScript type checking (`tsc --noEmit`)
+4. Unit tests with **`CI=true`** (stricter than local tests)
+5. Production build with production env vars
+
 **Checklist:**
-- [ ] Build succeeds
-- [ ] No TypeScript errors
-- [ ] No missing i18n translation keys
-- [ ] No import errors
-- [ ] Bundle size is reasonable
+- [ ] Script completes with "✓ ALL CHECKS PASSED"
+- [ ] No errors in any of the 5 steps
+- [ ] No missing i18n translation keys in build
+- [ ] Tests pass with `CI=true` (stricter mode)
+
+**If script fails:**
+→ DO NOT PROCEED
+→ Fix the specific failing step
+→ Re-run `./scripts/ci-local.sh` until all pass
+→ Request changes in PR if issues persist
+
+**Why use this script?**
+- **`CI=true`** makes tests stricter (same as GitHub Actions)
+- Prevents warnings from becoming errors in CI
+- Uses production environment variables for build
+- Catches missing i18n keys before deployment
 
 **Common build failures:**
 - Missing translation keys → Add to `backend/src/i18n/locales/`
 - Type errors → Fix TypeScript issues
 - Import errors → Check file paths
+- Tests pass locally but fail with `CI=true` → Fix console warnings
 
-### 4.2 Frontend Linting
+### 4.2 Alternative: Run Individual Commands
+
+**Only if you need to debug a specific failure:**
 
 ```bash
 cd frontend
 
-# Run ESLint
+# Build
+npm run build
+
+# Linting
 npm run lint
+
+# Tests (NOTE: Use CI=true to match GitHub Actions!)
+CI=true npm test
 ```
 
-**Checklist:**
-- [ ] No linting errors
-- [ ] Warnings are acceptable
+**But ALWAYS run the full CI script before approving the PR.**
 
 ---
 
