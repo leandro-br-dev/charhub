@@ -68,6 +68,7 @@ COPY package*.json ./
 # Copy all files from builder BEFORE npm install
 # This ensures prisma schema and source are available during npm install/prisma operations
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.js ./prisma.config.js
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/src ./src
 
