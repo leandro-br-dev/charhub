@@ -478,7 +478,7 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
 
 /**
  * GET /api/v1/characters
- * List characters (public or user's own)
+ * List characters (public or user's own) with pagination
  */
 router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
@@ -494,7 +494,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       ageRatings,
     } = req.query;
 
-    let characters;
+    let result;
 
     // CONTENT FILTERING: Apply automatic filters based on user's age and preferences
     let effectiveAgeRatings: string[] | undefined;
@@ -559,25 +559,28 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
 
     // If filtering by specific user ID (e.g., viewing someone's profile)
     if (filterUserId && typeof filterUserId === 'string') {
-      characters = await characterService.getCharactersByUserId(filterUserId, commonOptions);
+      const characters = await characterService.getCharactersByUserId(filterUserId, commonOptions);
+      result = { characters, total: characters.length, hasMore: false };
     }
     // If explicitly requesting ONLY user's own characters
     else if (userId && publicOnly === 'false') {
-      characters = await characterService.getCharactersByUserId(userId, commonOptions);
+      const characters = await characterService.getCharactersByUserId(userId, commonOptions);
+      result = { characters, total: characters.length, hasMore: false };
     }
     // If user is authenticated, show public characters + their own (all visibility)
     else if (userId) {
-      characters = await characterService.getPublicAndOwnCharacters(userId, commonOptions);
+      result = await characterService.getPublicAndOwnCharacters(userId, commonOptions);
     }
     // Not authenticated: show only public characters
     else {
-      characters = await characterService.getPublicCharacters(commonOptions);
+      result = await characterService.getPublicCharacters(commonOptions);
     }
 
     return res.json({
       success: true,
-      data: characters,
-      count: characters.length,
+      data: result.characters,
+      total: result.total,
+      hasMore: result.hasMore,
     });
   } catch (error) {
     logger.error({ error }, 'Error listing characters');

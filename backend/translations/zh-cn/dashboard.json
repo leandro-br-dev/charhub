@@ -16,18 +16,18 @@
       "popularStories": "热门故事",
       "mine": "我的",
       "noPopularCharacters": "未找到热门角色。",
-      "noFavoriteCharacters": "您还没有收藏任何角色。",
+      "noFavoriteCharacters": "你还没有收藏任何角色。",
       "createCharacter": "创建角色",
       "browseCharacters": "浏览角色"
     },
-    "noStories": "还没有故事。创建您的第一个故事吧！",
+    "noStories": "暂无故事。创建你的第一个故事吧！",
     "createStory": "创建故事",
     "plusRequired": "需要 Plus 会员计划",
     "recentConversations": "最近对话",
     "newConversation": "新对话",
     "carousel": {
       "alt": "{{title}} 的轮播图",
-      "goToSlide": "前往幻灯片 {{slide}}",
+      "goToSlide": "前往第 {{slide}} 张幻灯片",
       "plus": "PLUS",
       "slides": {
         "welcome": {
@@ -37,8 +37,8 @@
           "action2": "浏览角色"
         },
         "stories": {
-          "title": "发现故事",
-          "description": "探索互动故事",
+          "title": "探索故事",
+          "description": "探索互动故事叙述",
           "action": "浏览故事"
         },
         "community": {
@@ -50,7 +50,10 @@
     },
     "storyCard": {
       "alt": "{{title}} 的封面图片",
-      "play": "播放"
+      "play": "开始"
+    },
+    "infiniteScroll": {
+      "endOfList": "所有角色均已加载"
     }
   }
 }

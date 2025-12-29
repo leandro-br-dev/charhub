@@ -23,7 +23,7 @@
     "noStories": "Noch keine Geschichten. Erstelle deine erste Geschichte!",
     "createStory": "Geschichte erstellen",
     "plusRequired": "Benötigt Plus-Plan",
-    "recentConversations": "Letzte Unterhaltungen",
+    "recentConversations": "Aktuelle Unterhaltungen",
     "newConversation": "Neue Unterhaltung",
     "carousel": {
       "alt": "Karussellbild für {{title}}",
@@ -43,14 +43,17 @@
         },
         "community": {
           "title": "Der Community beitreten",
-          "description": "Verbinde dich mit anderen Kreativen",
+          "description": "Verbinde dich mit anderen Erstellern",
           "action": "Community erkunden"
         }
       }
     },
     "storyCard": {
-      "alt": "Coverbild für {{title}}",
+      "alt": "Titelbild für {{title}}",
       "play": "Spielen"
+    },
+    "infiniteScroll": {
+      "endOfList": "Alle Charaktere wurden geladen"
     }
   }
 }

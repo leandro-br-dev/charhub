@@ -11,10 +11,10 @@
       "popularCharacters": "شخصيات رائجة",
       "favoriteCharacters": "مفضلاتك",
       "popular": "رائج",
-      "favorites": "المفضلة",
+      "favorites": "مفضلة",
       "myStories": "قصصي",
       "popularStories": "قصص رائجة",
-      "mine": "لي",
+      "mine": "خاص بي",
       "noPopularCharacters": "لم يتم العثور على شخصيات رائجة.",
       "noFavoriteCharacters": "لم تقم بإضافة أي شخصيات إلى مفضلاتك بعد.",
       "createCharacter": "إنشاء شخصية",
@@ -22,7 +22,7 @@
     },
     "noStories": "لا توجد قصص بعد. أنشئ قصتك الأولى!",
     "createStory": "إنشاء قصة",
-    "plusRequired": "يتطلب باقة Plus",
+    "plusRequired": "يتطلب خطة Plus",
     "recentConversations": "محادثات حديثة",
     "newConversation": "محادثة جديدة",
     "carousel": {
@@ -32,13 +32,13 @@
       "slides": {
         "welcome": {
           "title": "مرحباً بك في CharHub",
-          "description": "أنشئ وتحدث مع شخصيات الذكاء الاصطناعي",
+          "description": "أنشئ شخصيات ذكاء اصطناعي وتحدث معها",
           "action1": "إنشاء شخصية",
           "action2": "تصفح الشخصيات"
         },
         "stories": {
           "title": "اكتشف القصص",
-          "description": "استكشف السرد التفاعلي للقصص",
+          "description": "استكشف السرد القصصي التفاعلي",
           "action": "تصفح القصص"
         },
         "community": {
@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "صورة الغلاف لـ {{title}}",
       "play": "تشغيل"
+    },
+    "infiniteScroll": {
+      "endOfList": "تم تحميل جميع الشخصيات"
     }
   }
 }
