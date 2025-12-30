@@ -13,7 +13,7 @@ import { FavoriteButton } from '../../../components/ui/FavoriteButton';
 import { useToast } from '../../../contexts/ToastContext';
 
 export default function CharacterDetailPage(): JSX.Element {
-  const { t } = useTranslation(['characters', 'common']);
+  const { t } = useTranslation(['characters', 'common', 'dashboard', 'species']);
   const navigate = useNavigate();
   const params = useParams<{ characterId: string }>();
   const characterId = params.characterId ?? '';
@@ -183,14 +183,15 @@ export default function CharacterDetailPage(): JSX.Element {
     return 'person';
   };
 
-  const resolveSpeciesIcon = (raw?: string | null): string => {
-    const s = (raw || '').trim().toLowerCase();
-    if (!s) return 'person';
-    if (s.includes('human') || s.includes('humano') || s.includes('humana')) return 'person';
+  const resolveSpeciesIcon = (raw?: string | null | { name?: string }): string => {
+    const s = typeof raw === 'string' ? raw : (raw?.name || '');
+    const clean = s.trim().toLowerCase();
+    if (!clean) return 'person';
+    if (clean.includes('human') || clean.includes('humano') || clean.includes('humana')) return 'person';
     const animalRegex = /(animal|beast|cat|dog|wolf|fox|lion|tiger|bear|bird|dragon|horse|rodent|bunny|rabbit|fox)/;
-    if (animalRegex.test(s)) return 'pets';
+    if (animalRegex.test(clean)) return 'pets';
     const hybridRegex = /(half|meio|demi|hybrid|meio\s+animal)/;
-    if (hybridRegex.test(s) && animalRegex.test(s)) return 'pets';
+    if (hybridRegex.test(clean) && animalRegex.test(clean)) return 'pets';
     return 'person';
   };
 
@@ -395,7 +396,7 @@ export default function CharacterDetailPage(): JSX.Element {
                 {/* Gender and species */}
                 {data.gender && (
                   <UITag
-                    label={t(`characters:genders.${data.gender.toLowerCase()}`, data.gender)}
+                    label={t(`filters.genders.${data.gender.toLowerCase()}`, data.gender)}
                     selected
                     icon={<span className="material-symbols-outlined text-sm">{resolveGenderIcon(data.gender)}</span>}
                     disabled
@@ -403,7 +404,9 @@ export default function CharacterDetailPage(): JSX.Element {
                 )}
                 {data.species && (
                   <UITag
-                    label={data.species}
+                    label={typeof data.species === 'object'
+                      ? t(`species:${data.species.name}.name`, data.species.name)
+                      : 'Unknown'}
                     selected
                     icon={<span className="material-symbols-outlined text-sm">{resolveSpeciesIcon(data.species)}</span>}
                     disabled

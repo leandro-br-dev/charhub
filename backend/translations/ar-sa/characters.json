@@ -2,91 +2,74 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "شخصية غير مسماة",
-      "updatedAt": "تم التحديث {{date}}",
+      "untitledCharacter": "شخصية بدون عنوان",
+      "updatedAt": "تم التحديث في {{date}}",
       "public": "عام",
       "private": "خاص",
-      "identifier": "معرف الشخصية: {{id}}",
+      "identifier": "معرّف الشخصية: {{id}}",
       "unsavedChanges": "تغييرات غير محفوظة",
-      "allSaved": "تم حفظ كافة التغييرات",
-      "submitting": "جاري الحفظ..."
+      "allSaved": "تم حفظ جميع التغييرات",
+      "submitting": "جارٍ الحفظ..."
     },
     "ageRatings": {
-      "L": "مجاني",
+      "L": "مجانًا",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
       "SIXTEEN": "16+",
       "EIGHTEEN": "18+"
     },
-    "genders": {
-      "male": "ذكر",
-      "female": "أنثى",
-      "non-binary": "غير ثنائي",
-      "unisex": "جنسين"
-    },
-    "species": {
-      "human": "إنسان",
-      "elf": "جني",
-      "android": "أندرويد",
-      "vampire": "مصاص دماء",
-      "demon": "شيطان",
-      "animal": "حيوان",
-      "hybrid": "هجين",
-      "robot": "روبوت",
-      "other": "آخر"
-    },
     "visualStyles": {
       "ANIME": "Anime",
       "REALISTIC": "واقعي",
       "SEMI_REALISTIC": "شبه واقعي",
-      "CARTOON": "رسوم متحركة",
+      "CARTOON": "كارتون",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
-      "COMIC": "قصص مصورة",
+      "COMIC": "كوميك",
       "CHIBI": "Chibi",
       "PIXEL_ART": "Pixel Art",
       "THREE_D": "ثلاثي الأبعاد"
     },
     "visualStyleDescriptions": {
-      "ANIME": "أسلوب أنمي ياباني",
-      "REALISTIC": "فن واقعي أو فوتوغرافي",
-      "SEMI_REALISTIC": "أسلوب فني شبه واقعي",
-      "CARTOON": "أسلوب رسوم متحركة غربي",
-      "MANGA": "أسلوب مانجا/قصص مصورة يابانية",
-      "MANHWA": "أسلوب مانهوا/ويب تون كوري",
-      "COMIC": "أسلوب القصص المصورة الغربية",
-      "CHIBI": "أسلوب مشوه للغاية / لطيف",
-      "PIXEL_ART": "أسلوب فن البكسل/ألعاب قديمة",
-      "THREE_D": "أسلوب معروض ثلاثي الأبعاد"
+      "ANIME": "نمط Anime ياباني",
+      "REALISTIC": "فن واقعي أو تصويري",
+      "SEMI_REALISTIC": "نمط فني شبه واقعي",
+      "CARTOON": "نمط الكارتون الغربي",
+      "MANGA": "نمط Manga/كوميك ياباني",
+      "MANHWA": "نمط Manhwa/الويب تون الكوري",
+      "COMIC": "نمط القصص المصورة الغربية",
+      "CHIBI": "نمط لطيف/مشوه للغاية",
+      "PIXEL_ART": "نمط Pixel Art/ألعاب ريترو",
+      "THREE_D": "نمط عرض ثلاثي الأبعاد"
     },
     "contentTags": {
       "VIOLENCE": "عنف",
       "GORE": "دماء",
-      "SEXUAL": "جنسي",
+      "SEXUAL": "محتوى جنسي",
       "NUDITY": "عري",
-      "LANGUAGE": "لغة",
+      "LANGUAGE": "لغة بذيئة",
       "DRUGS": "مخدرات",
       "ALCOHOL": "كحول",
       "HORROR": "رعب",
       "PSYCHOLOGICAL": "نفسي",
       "DISCRIMINATION": "تمييز",
       "CRIME": "جريمة",
-      "GAMBLING": "قمار"
+      "GAMBLING": "مقامرة"
     },
     "contentTagHints": {
-      "VIOLENCE": "قتال، اشتباكات أو صراع عدواني.",
-      "GORE": "إصابات مروعة وتفاصيل واضحة.",
-      "SEXUAL": "مواضيع للبالغين أو تلميحات.",
+      "VIOLENCE": "قتال، شجارات أو نزاعات عنيفة.",
+      "GORE": "إصابات دموية وتفاصيل صريحة.",
+      "SEXUAL": "مواضيع للكبار أو تلميحات جنسية.",
       "NUDITY": "عري جزئي أو كامل.",
       "LANGUAGE": "لغة صريحة أو قوية.",
-      "DRUGS": "استخدام مخدرات أو إشارات إليها.",
+      "DRUGS": "تعاطي المخدرات أو الإشارة إليها.",
       "ALCOHOL": "استهلاك الكحول.",
-      "HORROR": "صور مزعجة أو مرعبة.",
-      "PSYCHOLOGICAL": "صحة نفسية أو توتر نفسي.",
+      "HORROR": "صور مقلقة أو مرعبة.",
+      "PSYCHOLOGICAL": "صحة عقلية أو توتر نفسي.",
       "DISCRIMINATION": "خطاب كراهية أو تحيز.",
-      "CRIME": "مواضيع تتعلق بالنشاط الإجرامي.",
-      "GAMBLING": "إشارات إلى مراهنات أو قمار."
+      "CRIME": "مواضيع الأنشطة الإجرامية.",
+      "GAMBLING": "إشارات إلى الرهان أو المقامرة."
     },
     "accessibility": {
       "addToFavorites": "إضافة إلى المفضلة",
@@ -95,39 +78,39 @@
     "stats": {
       "conversations": "محادثات",
       "messages": "رسائل",
-      "favorites": "مفضلة",
+      "favorites": "المفضلة",
       "conversationsShort": "{{count}} ألف محادثة",
       "conversationsShort_plural": "{{count}} ألف محادثة",
       "favoritesShort": "{{count}} ألف مفضلة",
       "favoritesShort_plural": "{{count}} ألف مفضلة"
     },
     "hub": {
-      "title": "شخصيات",
-      "subtitle": "أنشئ، نظم وطوّر الشخصيات التي تدعم قصصك، وكلاء الدردشة وتجارب الذكاء الاصطناعي.",
+      "title": "الشخصيات",
+      "subtitle": "أنشئ، ونظّم، وطوّر طاقم الشخصيات التي تدعم قصصك، وكلاء الدردشة، وتجارب الذكاء الاصطناعي.",
       "actions": {
         "newCharacter": "شخصية جديدة",
         "createCharacter": "شخصية جديدة",
         "retry": "حاول مرة أخرى",
-        "blurSensitive": "إخفاء المحتوى الحساس",
+        "blurSensitive": "تعتيم المحتوى الحساس",
         "showSensitive": "إظهار المحتوى الحساس"
       },
       "tabs": {
         "myCharacters": "شخصياتي",
-        "publicGallery": "معرض عام"
+        "publicGallery": "المعرض العام"
       },
       "filters": {
-        "searchPlaceholder": "ابحث بالاسم أو الأسلوب",
-        "allAgeRatings": "كل التصنيفات العمرية",
+        "searchPlaceholder": "البحث بالاسم أو النمط",
+        "allAgeRatings": "جميع التقييمات العمرية",
         "noFilter": "أي"
       },
       "states": {
-        "loading": "جاري تحميل شخصياتك...",
-        "error": "لم نتمكن من تحميل الشخصيات. يرجى المحاولة مرة أخرى.",
+        "loading": "جارٍ تحميل شخصياتك...",
+        "error": "تعذر علينا تحميل الشخصيات. يرجى المحاولة مرة أخرى.",
         "empty": "لا توجد شخصيات متاحة بعد.",
         "empty_private": "لم تقم بإنشاء أي شخصيات بعد.",
-        "empty_public": "لا توجد شخصيات عامة تطابق فلاترك.",
-        "emptyHint": "ابدأ بصياغة ملف تعريف أو قم بتعديل فلاترك.",
-        "emptySearchHint": "اضبط فلاترك أو امسح البحث لرؤية المزيد من النتائج."
+        "empty_public": "لا توجد شخصيات عامة تطابق عوامل التصفية الخاصة بك.",
+        "emptyHint": "ابدأ بإنشاء ملف شخصي أو عدّل عوامل التصفية الخاصة بك.",
+        "emptySearchHint": "عدّل عوامل التصفية الخاصة بك أو امسح البحث لمشاهدة المزيد من النتائج."
       },
       "labels": {
         "total": "{{count}} شخصية متاحة",
@@ -140,90 +123,100 @@
       "cancel": "إلغاء",
       "sections": {
         "identity": "الهوية",
-        "identityHint": "حدد كيف يكتشف الناس هذه الشخصية ويحددونها بلمحة.",
+        "identityHint": "حدد كيف يكتشف الناس هذه الشخصية ويتعرفون عليها سريعًا.",
         "profile": "الملف السردي",
-        "profileHint": "صف الشخصية، السمات والخلفية لتوجيه الذكاء الاصطناعي.",
+        "profileHint": "صف الشخصية والسمات والخلفية لكي يسترشد بها الذكاء الاصطناعي.",
         "configuration": "التوفر والإشراف",
-        "configurationHint": "تحكم في كيفية ظهور الشخصية، من يمكنه الوصول إليها وأي الضمانات المعمول بها.",
+        "configurationHint": "تحكّم في كيفية ظهور الشخصية، ومن يمكنه الوصول إليها، وما هي الضمانات المطبقة.",
         "contentTagsHint": "ضع علامة على المواضيع التي قد تكون حساسة. يمكن للمستخدمين تصفيتها بناءً على تفضيلاتهم.",
-        "contentTagsCharacterHint": "تحدد هذه المواضيع ما تشعر الشخصية بالراحة في مناقشته عند التصنيف العمري المحدد.",
-        "contentTagsUserHint": "حدد المواضيع التي تريد تضمينها. كل ما لم يتم تحديده يبقى محظورًا لهذا التصنيف.",
-        "contentTagLocked": "مفتوح عند التصنيفات العمرية الأعلى."
+        "contentTagsCharacterHint": "تحدد هذه المواضيع ما يمكن للشخصية مناقشته بشكل مريح عند التقييم العمري المحدد.",
+        "contentTagsUserHint": "حدد المواضيع التي تريد تضمينها. أي شيء لم يتم تحديده يبقى محظورًا لهذا التقييم.",
+        "contentTagLocked": "غير مقفل عند التقييمات العمرية الأعلى."
       },
       "fields": {
         "firstName": "الاسم الأول",
-        "lastName": "الاسم الأخير",
+        "lastName": "اسم العائلة",
         "age": "العمر",
         "gender": "الجنس",
         "species": "النوع / الأصل",
         "style": "النمط البصري",
-        "reference": "مرجع / مصدر",
+        "reference": "المرجع / المصدر",
         "physicalCharacteristics": "الوصف الجسدي",
         "personality": "الشخصية",
-        "history": "الخلفية",
+        "history": "القصة الخلفية",
         "isPublic": "الرؤية",
-        "ageRating": "التصنيف العمري",
+        "ageRating": "التقييم العمري",
         "originalLanguageCode": "اللغة الأصلية",
         "contentTags": "تحذيرات المحتوى",
         "visibility": "الرؤية"
       },
       "placeholders": {
-        "gender": "مثال: ذكاء اصطناعي غير ثنائي، أندرويد، فارس",
-        "species": "مثال: إنسان، جني، اصطناعي",
-        "style": "اختر نمطًا بصريًا",
-        "reference": "مثال: ون بيس، مارفل كوميكس، أصلي",
-        "genderSelect": "حدد الجنس"
+        "style": "اختر النمط البصري",
+        "reference": "مثال: One Piece، Marvel Comics، أصلي",
+        "genderSelect": "اختر الجنس",
+        "speciesSelect": "اختر النوع"
       },
       "labels": {
         "unsavedChanges": "لديك تغييرات غير محفوظة",
         "allSaved": "تم حفظ التغييرات",
-        "submitting": "جاري الحفظ...",
+        "submitting": "جارٍ الحفظ...",
         "visibilityPublic": "عام",
         "visibilityPrivate": "خاص"
       },
       "avatar": {
         "upload": "تحميل صورة",
-        "change": "تغيير صورة",
+        "change": "تغيير الصورة",
         "remove": "إزالة",
-        "uploading": "جاري التحميل...",
-        "helperCreate": "اختر صورة رمزية الآن وسنحتفظ بها أثناء ملء بقية النموذج.",
-        "helperEdit": "قم بتحديث الصورة الرمزية كلما أردت. يتم تطبيق التغييرات بمجرد الحفظ.",
-        "error": "لم نتمكن من تحميل هذه الصورة. جرب ملفًا آخر.",
-        "previewAlt": "معاينة الصورة الرمزية للشخصية"
+        "uploading": "جارٍ الرفع...",
+        "helperCreate": "اختر صورة رمزية الآن وسنحتفظ بها بينما تكمل باقي النموذج.",
+        "helperEdit": "حدّث الصورة الرمزية وقتما تشاء. تسري التغييرات بمجرد الحفظ.",
+        "error": "تعذر علينا تحميل هذه الصورة. حاول بملف آخر.",
+        "previewAlt": "معاينة الصورة الرمزية للشخصية",
+        "invalidUrl": "أدخل عنوان URL صالحًا للصورة (http/https).",
+        "saveFirst": "يرجى حفظ الشخصية أولاً قبل إنشاء صورة رمزية",
+        "insufficientCredits": "نقاط غير كافية. تحتاج إلى {{required}} نقطة ولكن لديك {{current}}.",
+        "generationStarted": "بدأ إنشاء الصورة الرمزية! قد يستغرق هذا دقيقة. تحقق من علامة تبويب الصور للاطلاع على النتائج.",
+        "generationComplete": "تم إنشاء الصورة الرمزية بنجاح!",
+        "generationFailed": "فشل إنشاء الصورة الرمزية. يرجى المحاولة مرة أخرى.",
+        "generationError": "فشل بدء إنشاء الصورة الرمزية. يرجى المحاولة مرة أخرى."
       },
       "images": {
         "coverHeader": "غلاف الشخصية",
-        "coverDescription": "صورة موجهة عموديًا تستخدم كغلاف للشخصية.",
-        "upload": "تحميل الغلاف",
+        "coverDescription": "صورة ذات اتجاه عمودي تستخدم كغلاف للشخصية.",
+        "upload": "تحميل غلاف",
         "change": "تغيير الغلاف",
-        "uploading": "جاري التحميل...",
-        "urlModalTitle": "استخدام صورة من الرابط",
-        "urlLabel": "رابط الصورة",
+        "uploading": "جارٍ الرفع...",
+        "urlModalTitle": "استخدام صورة من عنوان URL",
+        "urlLabel": "عنوان URL للصورة",
         "previewAlt": "معاينة غلاف الشخصية"
       },
       "tags": {
-        "searchPlaceholder": "ابحث عن العلامات (مثال: VTuber، خادمة)",
-        "selected": "علامات محددة",
-        "none": "لم يتم تحديد علامات",
+        "searchPlaceholder": "البحث عن علامات (مثال: VTuber، خادمة)",
+        "selected": "العلامات المختارة",
+        "none": "لم يتم تحديد أي علامات",
         "suggestions": "اقتراحات",
-        "loading": "جاري التحميل...",
+        "loading": "جارٍ التحميل...",
         "noResults": "لا توجد نتائج",
-        "incompatibleToast": "بعض العلامات المحددة غير متوافقة مع التصنيف العمري الحالي. يرجى المراجعة.",
-        "incompatibleHint": "العلامات المميزة غير متوافقة مع التصنيف العمري المحدد. قم بإزالتها للمتابعة.",
-        "incompatibleChip": "غير متوافق مع التصنيف العمري الحالي"
+        "incompatibleToast": "بعض العلامات المختارة غير متوافقة مع التقييم العمري الحالي. يرجى المراجعة.",
+        "incompatibleHint": "العلامات المميزة غير متوافقة مع التقييم العمري المحدد. أزلها للمتابعة.",
+        "incompatibleChip": "غير متوافق مع التقييم العمري الحالي"
       },
       "tabs": {
         "identity": "الهوية",
         "profile": "الملف الشخصي",
-        "configuration": "الإعدادات",
-        "tags": "علامات",
-        "images": "صور",
+        "configuration": "التهيئة",
+        "tags": "العلامات",
+        "images": "الصور",
         "lockedHint": "املأ تفاصيل الهوية الأساسية لفتح الأقسام الأخرى."
       }
     },
     "create": {
       "title": "إنشاء شخصية جديدة",
-      "subtitle": "اجمع بين السياق السردي، والأسلوب البصري، وإعدادات الإشراف. يمكنك تحسين كل شيء لاحقًا.",
+      "subtitle": "اجمع بين السياق السردي والنمط البصري وإعدادات الإشراف. يمكنك تحسين كل شيء لاحقًا.",
+      "avatar": {
+        "header": "صورة الشخصية الرمزية",
+        "description": "تمثيل بصري لشخصيتك."
+      },
       "saveButton": "حفظ الشخصية",
       "cancelButton": "إلغاء والعودة",
       "chooseMethod": {
@@ -231,73 +224,77 @@
         "subtitle": "اختر الطريقة التي تناسب احتياجاتك",
         "manual": {
           "title": "إنشاء يدوي",
-          "description": "أنشئ شخصيتك خطوة بخطوة مع تحكم كامل في كل تفصيل",
+          "description": "أنشئ شخصيتك خطوة بخطوة مع تحكم كامل في كل التفاصيل",
           "features": [
             "تخصيص كامل",
             "املأ جميع الحقول يدويًا",
-            "مثالي للشخصيات التفصيلية"
+            "مثالي للشخصيات المفصلة"
           ],
           "button": "إنشاء يدويًا",
           "cost": "مجاني"
         },
         "ai": {
-          "title": "إنشاء مدعوم بالذكاء الاصطناعي",
-          "description": "دع الذكاء الاصطناعي يولد شخصيتك من وصف أو صورة",
+          "title": "إنشاء بواسطة الذكاء الاصطناعي",
+          "description": "دع الذكاء الاصطناعي ينشئ شخصيتك من وصف أو صورة",
           "features": [
             "توليد تلقائي",
             "تحميل صورة أو وصف",
-            "سريع وإبداعي"
+            "سريع ومبتكر"
           ],
           "button": "إنشاء بالذكاء الاصطناعي",
-          "cost": "{{credits}} رصيد",
-          "costWithoutImage": "{{credits}} رصيد (بدون صورة)",
+          "cost": "{{credits}} نقطة",
+          "costWithoutImage": "{{credits}} نقطة (بدون صورة)",
           "costBreakdown": {
-            "title": "تفصيل تكلفة الرصيد",
-            "imageAnalysis": "تحليل الصورة: {{credits}} رصيد (فقط إذا تم تحميل الصورة)",
-            "textAnalysis": "تحليل النص: {{credits}} رصيد",
-            "characterEnrichment": "إثراء الشخصية: {{credits}} رصيد",
-            "avatarGeneration": "توليد الصورة الرمزية: {{credits}} رصيد",
-            "total": "الإجمالي: {{credits}} رصيد"
+            "title": "تفاصيل تكلفة النقاط",
+            "imageAnalysis": "تحليل الصورة: {{credits}} نقطة (فقط إذا تم تحميل صورة)",
+            "textAnalysis": "تحليل النص: {{credits}} نقطة",
+            "characterEnrichment": "إثراء الشخصية: {{credits}} نقطة",
+            "avatarGeneration": "إنشاء الصورة الرمزية: {{credits}} نقطة",
+            "total": "المجموع: {{credits}} نقطة"
           }
         }
       }
     },
     "edit": {
-      "title": "تعديل شخصية",
-      "subtitle": "تحديث {{name}}",
+      "title": "تعديل الشخصية",
+      "subtitle": "جارٍ تحديث {{name}}",
+      "avatar": {
+        "header": "صورة الشخصية الرمزية",
+        "description": "تمثيل بصري لشخصيتك."
+      },
       "saveButton": "تحديث الشخصية",
       "cancelButton": "تجاهل التغييرات",
       "states": {
-        "loading": "جاري تحميل الشخصية..."
+        "loading": "جارٍ تحميل الشخصية..."
       }
     },
     "detail": {
       "states": {
-        "loading": "جاري تحميل تفاصيل الشخصية...",
+        "loading": "جارٍ تحميل تفاصيل الشخصية...",
         "notFound": "لم نتمكن من العثور على هذه الشخصية."
       },
       "actions": {
         "backToHub": "العودة إلى المركز",
         "edit": "تعديل",
         "delete": "حذف",
-        "deleting": "جاري الحذف...",
+        "deleting": "جارٍ الحذف...",
         "share": "مشاركة",
-        "startChat": "بدء المحادثة",
-        "startingChat": "جاري البدء..."
+        "startChat": "بدء محادثة",
+        "startingChat": "جارٍ البدء..."
       },
       "confirmDelete": {
         "title": "حذف الشخصية؟",
-        "message": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع البيانات المرتبطة بهذه الشخصية بشكل دائم.",
-        "confirm": "حذف بشكل دائم",
+        "message": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع البيانات المرتبطة بهذه الشخصية نهائيًا.",
+        "confirm": "حذف نهائيًا",
         "cancel": "إلغاء"
       },
       "labels": {
         "public": "عام",
         "private": "خاص",
-        "createdAt": "تم الإنشاء",
+        "createdAt": "تاريخ الإنشاء",
         "createdBy": "تم الإنشاء بواسطة",
         "updatedAt": "آخر تحديث",
-        "identifier": "معرف الشخصية: {{id}}",
+        "identifier": "معرّف الشخصية: {{id}}",
         "messageCount": "{{count}} رسالة",
         "messageCount_plural": "{{count}} رسائل",
         "favoriteCount": "{{count}} مفضلة",
@@ -308,78 +305,98 @@
       "sections": {
         "physicalCharacteristics": "المظهر",
         "personality": "الشخصية",
-        "history": "الخلفية",
+        "history": "القصة الخلفية",
         "contentTags": "تحذيرات المحتوى",
-        "metadata": "علامات",
+        "metadata": "العلامات",
         "introduction": "مقدمة",
         "updateNotes": "ملاحظات التحديث"
       }
     },
+    "images": {
+      "saveFirst": "احفظ الشخصية أولاً لإدارة الصور",
+      "gallery": "الصور المُنشأة",
+      "avatarHeader": "الصور الرمزية",
+      "avatarDescription": "صور رمزية تم إنشاؤها لهذه الشخصية",
+      "coverHeader": "غلاف الشخصية",
+      "coverDescription": "صورة ذات اتجاه عمودي تستخدم كغلاف للشخصية.",
+      "generateNew": "إنشاء {{type}} جديد",
+      "onlyAvatarSupported": "فقط إنشاء الصورة الرمزية مدعوم في الوقت الحالي",
+      "startingGeneration": "جارٍ بدء الإنشاء...",
+      "generatingImage": "جارٍ إنشاء الصورة... قد يستغرق هذا ما يصل إلى دقيقة واحدة",
+      "processing": "جارٍ معالجة الصورة بالذكاء الاصطناعي...",
+      "generationComplete": "اكتمل الإنشاء!",
+      "imageGeneratedSuccess": "تم إنشاء الصورة بنجاح!",
+      "preview": "معاينة",
+      "generationInfo": "حول إنشاء الصور",
+      "infoPrompt": "سيستخدم الذكاء الاصطناعي وصف شخصيتك لإنشاء الصورة",
+      "infoTime": "يستغرق الإنشاء حوالي 30-60 ثانية",
+      "infoActive": "يتم تعيين الصور الجديدة كنشطة تلقائيًا"
+    },
     "createAI": {
-      "title": "مولد شخصيات بالذكاء الاصطناعي",
-      "subtitle": "صف شخصيتك أو قم بتحميل صورة، وسيقوم الذكاء الاصطناعي بتوليد التفاصيل لك",
+      "title": "مولد الشخصيات بالذكاء الاصطناعي",
+      "subtitle": "صف شخصيتك أو حمّل صورة، وسيقوم الذكاء الاصطناعي بإنشاء التفاصيل لك",
       "descriptionLabel": "وصف الشخصية",
       "descriptionPlaceholder": "صف شخصيتك... (مثال: \"فارس شجاع بدرع فضي وقلب نبيل\")",
       "descriptionHint": "كلما كان وصفك أكثر تفصيلاً، كانت النتائج أفضل",
       "imageLabel": "صورة الشخصية",
-      "uploadPrompt": "انقر لتحميل صورة الشخصية",
+      "uploadPrompt": "انقر لرفع صورة الشخصية",
       "uploadHint": "PNG، JPEG، WEBP، GIF (بحد أقصى 10 ميجابايت)",
-      "generateButton": "توليد شخصية",
-      "generating": "جاري التوليد...",
+      "generateButton": "إنشاء شخصية",
+      "generating": "جارٍ الإنشاء...",
       "howItWorks": "كيف تعمل",
-      "step1": "قدم وصفًا نصيًا و/أو قم بتحميل صورة",
-      "step2": "يقوم الذكاء الاصطناعي بتحليل مدخلاتك وتوليد تفاصيل الشخصية",
-      "step3": "راجع الشخصية المولدة وقم بتعديلها قبل الحفظ",
-      "step4": "سيتم توليد صورة رمزية لك تلقائيًا",
+      "step1": "قدم وصفًا نصيًا و/أو حمّل صورة",
+      "step2": "يحلل الذكاء الاصطناعي مدخلاتك وينشئ تفاصيل الشخصية",
+      "step3": "راجع وعدّل الشخصية المُنشأة قبل الحفظ",
+      "step4": "سيتم إنشاء صورة رمزية لك تلقائيًا",
       "loading": {
-        "creatingCharacter": "جاري إنشاء شخصيتك",
-        "analyzingEssence": "جاري تحليل الجوهر...",
-        "threadsOfFate": "يتم نسج خيوط القدر...",
-        "gatheringMagic": "جاري جمع السحر القديم...",
-        "shapingDestiny": "جاري تشكيل مصيرها...",
-        "breathingLife": "جاري بث الحياة في الوجود..."
+        "creatingCharacter": "جارٍ إنشاء شخصيتك",
+        "analyzingEssence": "جارٍ تحليل الجوهر...",
+        "threadsOfFate": "تُنسج خيوط القدر...",
+        "gatheringMagic": "جارٍ جمع السحر القديم...",
+        "shapingDestiny": "جارٍ تشكيل مصيرهم...",
+        "breathingLife": "نفخ الحياة في الوجود..."
       },
       "progress": {
-        "uploadingImage": "جاري تحميل رؤيتك",
-        "analyzingImage": "جاري تحليل الجوهر",
-        "extractingDescription": "جاري قراءة الشخصية",
-        "generatingDetails": "جاري صياغة هويتها",
-        "generatingHistory": "جاري نسج قصتها",
-        "creatingCharacter": "جاري جلبها إلى الحياة",
-        "queuingAvatar": "جاري إعداد الصورة المرئية",
-        "generatingAvatar": "جاري رسم صورتها",
+        "uploadingImage": "جارٍ رفع رؤيتك",
+        "analyzingImage": "تحليل الجوهر",
+        "extractingDescription": "قراءة الشخصية",
+        "generatingDetails": "صياغة هويتهم",
+        "generatingHistory": "نسج حكايتهم",
+        "creatingCharacter": "إحياءهم",
+        "queuingAvatar": "تجهيز الصورة المرئية",
+        "generatingAvatar": "رسم لوحتهم",
         "completed": "بطلك في انتظارك",
-        "error": "منعطف غير متوقع",
-        "preparing": "جاري إعداد مغامرتك"
+        "error": "تطور غير متوقع",
+        "preparing": "تجهيز مغامرتك"
       },
       "reveal": {
-        "heroEmerges": "يظهر بطل",
+        "heroEmerges": "بطل يظهر",
         "personalityTitle": "الشخصية",
-        "backstoryTitle": "قصتها",
+        "backstoryTitle": "قصتهم",
         "successBanner": "تم إنشاء الشخصية بنجاح!"
       },
       "actions": {
         "editCharacter": "تعديل الشخصية",
         "viewProfile": "عرض الملف الشخصي",
         "discard": "تجاهل",
-        "discarding": "جاري التجاهل...",
+        "discarding": "جارٍ التجاهل...",
         "createAnother": "إنشاء شخصية أخرى"
       },
       "confirmDiscard": "هل أنت متأكد أنك تريد تجاهل هذه الشخصية؟ لا يمكن التراجع عن هذا الإجراء.",
       "characterDiscarded": "تم تجاهل الشخصية بنجاح",
       "discardFailed": "فشل تجاهل الشخصية",
-      "generationStarted": "بدأ توليد الشخصية! مشاهدة التقدم...",
-      "generationFailed": "فشل توليد الشخصية. يرجى المحاولة مرة أخرى."
+      "generationStarted": "بدأ إنشاء الشخصية! جارٍ متابعة التقدم...",
+      "generationFailed": "فشل إنشاء الشخصية. يرجى المحاولة مرة أخرى."
     },
     "errors": {
-      "createFailed": "لم نتمكن من إنشاء الشخصية. يرجى المحاولة مرة أخرى.",
-      "updateFailed": "لم نتمكن من تحديث الشخصية.",
-      "deleteFailed": "لم نتمكن من حذف الشخصية.",
-      "detailUnavailable": "تعذر تحميل تفاصيل الشخصية في الوقت الحالي.",
+      "createFailed": "تعذر علينا إنشاء الشخصية. يرجى المحاولة مرة أخرى.",
+      "updateFailed": "تعذر علينا تحديث الشخصية.",
+      "deleteFailed": "تعذر علينا حذف الشخصية.",
+      "detailUnavailable": "تعذر تحميل تفاصيل الشخصية حاليًا.",
       "descriptionOrImageRequired": "يرجى تقديم وصف أو صورة",
       "imageTooLarge": "يجب أن تكون الصورة أصغر من 10 ميجابايت",
-      "invalidImageType": "يجب أن تكون الصورة PNG أو JPEG أو WEBP أو GIF",
-      "generationFailed": "فشل توليد الشخصية"
+      "invalidImageType": "يجب أن تكون الصورة بصيغة PNG أو JPEG أو WEBP أو GIF",
+      "generationFailed": "فشل إنشاء الشخصية"
     }
   }
 }

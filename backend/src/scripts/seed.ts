@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier, VisualStyle } from '../generated/prisma';
 import { seedAllTags } from './seedTags';
+import { seedAllSpecies } from './seedSpecies';
 import { seedStripePlans } from './seeds/seedStripePlans';
 import { prisma } from '../config/database';
 
@@ -18,6 +19,7 @@ interface SeedStats {
   users: { created: number; skipped: number };
   characters: { created: number; skipped: number };
   tags: { created: number; updated: number; unchanged: number };
+  species: { created: number; updated: number; unchanged: number };
   plans: { created: number; skipped: number };
   stripePlans: { configured: number; skipped: number };
   serviceCosts: { created: number; skipped: number };
@@ -202,8 +204,8 @@ async function seedCharacters(options: SeedOptions): Promise<{ created: number; 
         firstName: charData.firstName,
         lastName: charData.lastName,
         age: charData.age,
-        gender: charData.gender,
-        species: charData.species,
+        gender: charData.gender as any,
+        speciesId: charData.species,
         style: charData.style as VisualStyle | null,
         physicalCharacteristics: charData.physicalCharacteristics,
         personality: charData.personality,
@@ -453,6 +455,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     users: { created: 0, skipped: 0 },
     characters: { created: 0, skipped: 0 },
     tags: { created: 0, updated: 0, unchanged: 0 },
+    species: { created: 0, updated: 0, unchanged: 0 },
     plans: { created: 0, skipped: 0 },
     stripePlans: { configured: 0, skipped: 0 },
     serviceCosts: { created: 0, skipped: 0 },
@@ -482,10 +485,23 @@ async function seed(options: SeedOptions = {}): Promise<void> {
 
     // Note: seedAllTags prints its own stats, so we don't duplicate them here
 
-    // 4. Seed subscription plans
+    // 4. Seed species
+    console.log('\n🧬 Seeding species...');
+
+    const speciesOptions = {
+      verbose: options.verbose,
+      dryRun: options.dryRun,
+    };
+
+    // Run species seeding (it prints its own output)
+    await seedAllSpecies(speciesOptions);
+
+    // Note: seedAllSpecies prints its own stats, so we don't duplicate them here
+
+    // 5. Seed subscription plans
     stats.plans = await seedPlans(options);
 
-    // 5. Configure Stripe plans (products and prices)
+    // 6. Configure Stripe plans (products and prices)
     console.log('\n💳 Configuring Stripe payment plans...');
     stats.stripePlans = await seedStripePlans({
       verbose: options.verbose,
@@ -493,7 +509,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
       prisma,
     });
 
-    // 6. Seed service credit costs
+    // 7. Seed service credit costs
     stats.serviceCosts = await seedServiceCosts(options);
 
   } catch (error) {

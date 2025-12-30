@@ -14,9 +14,9 @@
     "continueFacebook": "Continuer avec Facebook",
     "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder à vos informations de profil de base.",
     "logout": "Se déconnecter",
-    "logoutLoading": "Déconnexion...",
+    "logoutLoading": "Déconnexion en cours...",
     "authenticatedUser": "Utilisateur authentifié",
-    "tokenStored": "Stocké dans un cookie HTTP uniquement",
+    "tokenStored": "Stocké dans un cookie HTTP-only",
     "navDashboard": "Tableau de bord",
     "navCharacters": "Personnages",
     "navTagline": "Démo OAuth sécurisée",
@@ -29,7 +29,7 @@
       "label": "Thème",
       "option": {
         "light": "Clair",
-        "dark": "Sombre",
+        "dark": "Foncé",
         "system": "Système"
       }
     },
@@ -50,12 +50,12 @@
     },
     "messages": {
       "linkCopied": "Lien copié dans le presse-papiers !",
-      "chatStarted": "Chat démarré avec succès !",
+      "chatStarted": "Discussion démarrée avec succès !",
       "characterDeleted": "Personnage supprimé avec succès"
     },
     "contentFilter": {
       "ariaLabel": "Filtre de contenu",
-      "title": "Filtre de Contenu",
+      "title": "Filtre de contenu",
       "ageRating": "Classification par âge",
       "blurNsfw": "Flouter le contenu explicite",
       "none": "Aucun filtre",
@@ -68,11 +68,11 @@
       },
       "ageRatings": {
         "L": "Tout public",
-        "TEN": "10 ans et plus",
-        "TWELVE": "12 ans et plus",
-        "FOURTEEN": "14 ans et plus",
-        "SIXTEEN": "16 ans et plus",
-        "EIGHTEEN": "18 ans et plus"
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+",
+        "SIXTEEN": "16+",
+        "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ Âge non enregistré",
       "noBirthdateDescription": "Pour accéder au contenu soumis à une restriction d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
@@ -89,6 +89,9 @@
     "back": "Retour",
     "loading": "Chargement...",
     "credits": "crédits",
-    "tryAgain": "Réessayer"
+    "tryAgain": "Réessayer",
+    "generate": "Générer",
+    "generating": "Génération en cours...",
+    "use": "Utiliser"
   }
 }

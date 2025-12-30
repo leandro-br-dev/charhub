@@ -89,6 +89,9 @@
     "back": "Back",
     "loading": "Loading...",
     "credits": "credits",
-    "tryAgain": "Try Again"
+    "tryAgain": "Try Again",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "use": "Use"
   }
 }

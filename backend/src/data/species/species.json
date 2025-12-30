@@ -1,0 +1,813 @@
+{
+  "description": "Character species with diverse options from various cultures and mythologies. Used for filtering and categorizing characters.",
+  "species": [
+    {
+      "name": "Human",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Standard human being",
+      "weight": 10
+    },
+    {
+      "name": "Elf",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Pointy-eared humanoid with magical affinity",
+      "weight": 8
+    },
+    {
+      "name": "Dark Elf",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Dark-skinned elf with underground dwelling",
+      "weight": 5
+    },
+    {
+      "name": "Wood Elf",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Forest-dwelling elf with nature affinity",
+      "weight": 5
+    },
+    {
+      "name": "High Elf",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Noble elf with strong magical abilities",
+      "weight": 5
+    },
+    {
+      "name": "Dwarf",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Short, stout humanoid skilled in crafting",
+      "weight": 7
+    },
+    {
+      "name": "Halfling",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Small, peaceful humanoid with hairy feet",
+      "weight": 5
+    },
+    {
+      "name": "Gnome",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Small humanoid with inventiveness and illusion magic",
+      "weight": 5
+    },
+    {
+      "name": "Orc",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Aggressive humanoid with green skin and tusks",
+      "weight": 6
+    },
+    {
+      "name": "Half-Orc",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Human-orc hybrid with strength and cunning",
+      "weight": 5
+    },
+    {
+      "name": "Goblin",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Small, mischievous green humanoid",
+      "weight": 5
+    },
+    {
+      "name": "Tiefling",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Humanoid with fiendish ancestry, horns and tail",
+      "weight": 6
+    },
+    {
+      "name": "Dragonborn",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Draconic humanoid with scales and breath weapon",
+      "weight": 6
+    },
+    {
+      "name": "Half-Elf",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Human-elf hybrid with versatile abilities",
+      "weight": 5
+    },
+    {
+      "name": "Giant",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Large humanoid of immense strength",
+      "weight": 4
+    },
+    {
+      "name": "Troll",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Large, regenerating humanoid",
+      "weight": 4
+    },
+    {
+      "name": "Ogre",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Large, brutish humanoid",
+      "weight": 4
+    },
+    {
+      "name": "Kobold",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Small, reptilian humanoid with traps expertise",
+      "weight": 4
+    },
+    {
+      "name": "Fairy",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Small winged humanoid with magical dust",
+      "weight": 6
+    },
+    {
+      "name": "Pixie",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Tiny mischievous humanoid with insect wings",
+      "weight": 4
+    },
+    {
+      "name": "Nymph",
+      "category": "humanoid",
+      "ageRating": "FOURTEEN",
+      "contentTags": [],
+      "description": "Nature spirit bound to a location",
+      "weight": 5
+    },
+    {
+      "name": "Dryad",
+      "category": "humanoid",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Tree spirit with deep forest connection",
+      "weight": 5
+    },
+    {
+      "name": "Satyr",
+      "category": "humanoid",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Half-human, half-goat with musical talent",
+      "weight": 5
+    },
+    {
+      "name": "Centaur",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Half-human, half-horse from the waist down",
+      "weight": 6
+    },
+    {
+      "name": "Minotaur",
+      "category": "beast",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Half-human, half-bull with great strength",
+      "weight": 5
+    },
+    {
+      "name": "Naga",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Humanoid upper body with serpent tail",
+      "weight": 5
+    },
+    {
+      "name": "Lamia",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Female humanoid with snake lower body",
+      "weight": 5
+    },
+    {
+      "name": "Merfolk",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Half-human, half-fish water dweller",
+      "weight": 6
+    },
+    {
+      "name": "Mermaid",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Female merfolk with beautiful singing voice",
+      "weight": 6
+    },
+    {
+      "name": "Siren",
+      "category": "beast",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Dangerous singer who lures sailors to doom",
+      "weight": 4
+    },
+    {
+      "name": "Harpy",
+      "category": "beast",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Bird-woman hybrid with sharp talons",
+      "weight": 4
+    },
+    {
+      "name": "Werewolf",
+      "category": "beast",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "HORROR"],
+      "description": "Human who transforms into wolf under full moon",
+      "weight": 5
+    },
+    {
+      "name": "Vampire",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "HORROR"],
+      "description": "Undead being that feeds on blood",
+      "weight": 7
+    },
+    {
+      "name": "Zombie",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "HORROR"],
+      "description": "Reanimated corpse with hunger for brains",
+      "weight": 4
+    },
+    {
+      "name": "Lich",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Powerful undead spellcaster with a phylactery",
+      "weight": 4
+    },
+    {
+      "name": "Ghost",
+      "category": "undead",
+      "ageRating": "TWELVE",
+      "contentTags": ["HORROR"],
+      "description": "Spirit of a deceased person",
+      "weight": 5
+    },
+    {
+      "name": "Specter",
+      "category": "undead",
+      "ageRating": "TWELVE",
+      "contentTags": ["HORROR"],
+      "description": "Malevolent spirit with energy draining ability",
+      "weight": 4
+    },
+    {
+      "name": "Wraith",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["HORROR", "VIOLENCE"],
+      "description": "Vengeful spirit with life-draining touch",
+      "weight": 4
+    },
+    {
+      "name": "Skeleton",
+      "category": "undead",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Animated bones of a deceased creature",
+      "weight": 4
+    },
+    {
+      "name": "Mummy",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Preserved corpse from ancient tombs",
+      "weight": 4
+    },
+    {
+      "name": "Ghoul",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["HORROR", "VIOLENCE"],
+      "description": "Carrion-eating undead creature",
+      "weight": 4
+    },
+    {
+      "name": "Banshee",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Female spirit whose wail foretells death",
+      "weight": 4
+    },
+    {
+      "name": "Reaper",
+      "category": "undead",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Grim reaper, death personified",
+      "weight": 5
+    },
+    {
+      "name": "Dragon",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Large flying reptile with magical powers",
+      "weight": 8
+    },
+    {
+      "name": "Wyvern",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Two-legged dragon relative with poisonous tail",
+      "weight": 5
+    },
+    {
+      "name": "Drake",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Small, fire-breathing dragon without wings",
+      "weight": 5
+    },
+    {
+      "name": "Phoenix",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Immortal bird reborn from its own ashes",
+      "weight": 6
+    },
+    {
+      "name": "Griffin",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Lion-eagle hybrid noble creature",
+      "weight": 6
+    },
+    {
+      "name": "Hydra",
+      "category": "mythical",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "HORROR"],
+      "description": "Multi-headed serpent that grows two heads when one is cut",
+      "weight": 4
+    },
+    {
+      "name": "Chimera",
+      "category": "mythical",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE"],
+      "description": "Three-headed monster with lion, goat, and snake parts",
+      "weight": 4
+    },
+    {
+      "name": "Sphinx",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Lion with human head, keeper of riddles",
+      "weight": 5
+    },
+    {
+      "name": "Unicorn",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Pure white horse with a spiraling horn",
+      "weight": 6
+    },
+    {
+      "name": "Pegasus",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Winged horse of divine origin",
+      "weight": 6
+    },
+    {
+      "name": "Kirin",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese unicorn-like creature of good omens",
+      "weight": 5
+    },
+    {
+      "name": "Kitsune",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese fox spirit with multiple tails",
+      "weight": 7
+    },
+    {
+      "name": "Tanuki",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese raccoon dog with shapeshifting ability",
+      "weight": 5
+    },
+    {
+      "name": "Oni",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": ["VIOLENCE"],
+      "description": "Japanese demon with horns and club",
+      "weight": 5
+    },
+    {
+      "name": "Tengu",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Japanese bird-like humanoid or karasu-tengu",
+      "weight": 5
+    },
+    {
+      "name": "Kappa",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese water imp with dish-like head",
+      "weight": 4
+    },
+    {
+      "name": "Yokai",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Japanese spirit or demon of various forms",
+      "weight": 6
+    },
+    {
+      "name": "Yuki-onna",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Japanese snow woman spirit",
+      "weight": 5
+    },
+    {
+      "name": "Raiju",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Japanese thunder beast in form of wolf or cat",
+      "weight": 4
+    },
+    {
+      "name": "Slime",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Gelatinous creature with various abilities",
+      "weight": 5
+    },
+    {
+      "name": "Elemental",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Pure embodiment of a natural element",
+      "weight": 5
+    },
+    {
+      "name": "Fire Elemental",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Living flame with burning touch",
+      "weight": 5
+    },
+    {
+      "name": "Water Elemental",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Living water with flowing form",
+      "weight": 5
+    },
+    {
+      "name": "Earth Elemental",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Living stone and earth with crushing strength",
+      "weight": 5
+    },
+    {
+      "name": "Air Elemental",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Living wind with invisible form",
+      "weight": 5
+    },
+    {
+      "name": "Ice Elemental",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Living ice with freezing aura",
+      "weight": 5
+    },
+    {
+      "name": "Lightning Elemental",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Living electricity with shocking power",
+      "weight": 4
+    },
+    {
+      "name": "Golem",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Animated construct of clay, stone, or metal",
+      "weight": 5
+    },
+    {
+      "name": "Homunculus",
+      "category": "elemental",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Artificially created small humanoid",
+      "weight": 4
+    },
+    {
+      "name": "Robot",
+      "category": "robot",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Mechanical artificial being",
+      "weight": 6
+    },
+    {
+      "name": "Android",
+      "category": "robot",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Robot designed to look human",
+      "weight": 6
+    },
+    {
+      "name": "Cyborg",
+      "category": "robot",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Organic being with mechanical enhancements",
+      "weight": 6
+    },
+    {
+      "name": "Mecha",
+      "category": "robot",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Large piloted robot for combat",
+      "weight": 5
+    },
+    {
+      "name": "AI",
+      "category": "robot",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Artificial intelligence without physical form",
+      "weight": 5
+    },
+    {
+      "name": "Doll",
+      "category": "robot",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Living doll or puppet",
+      "weight": 5
+    },
+    {
+      "name": "Marionette",
+      "category": "robot",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Puppet brought to life",
+      "weight": 4
+    },
+    {
+      "name": "Catfolk",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Humanoid with cat features",
+      "weight": 6
+    },
+    {
+      "name": "Nekomimi",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Human with cat ears",
+      "weight": 6
+    },
+    {
+      "name": "Wolfkin",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Humanoid with wolf features",
+      "weight": 5
+    },
+    {
+      "name": "Foxkin",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Humanoid with fox features",
+      "weight": 5
+    },
+    {
+      "name": "Rabbitfolk",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Humanoid with rabbit features",
+      "weight": 5
+    },
+    {
+      "name": "Dragonkin",
+      "category": "beast",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Humanoid with dragon features",
+      "weight": 5
+    },
+    {
+      "name": "Demon",
+      "category": "mythical",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "HORROR"],
+      "description": "Fiendish creature from the lower planes",
+      "weight": 6
+    },
+    {
+      "name": "Angel",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Celestial being of divine origin",
+      "weight": 6
+    },
+    {
+      "name": "Fallen Angel",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": [],
+      "description": "Angel cast out from divine realm",
+      "weight": 5
+    },
+    {
+      "name": "Devil",
+      "category": "mythical",
+      "ageRating": "SIXTEEN",
+      "contentTags": ["VIOLENCE", "HORROR"],
+      "description": "Powerful fiend from the Nine Hells",
+      "weight": 5
+    },
+    {
+      "name": "Imp",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Small mischievous devil",
+      "weight": 4
+    },
+    {
+      "name": "Succubus",
+      "category": "mythical",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "HORROR"],
+      "description": "Seductive demon that feeds on life force",
+      "weight": 5
+    },
+    {
+      "name": "Incubus",
+      "category": "mythical",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["SEXUAL", "HORROR"],
+      "description": "Male demon that seduces in dreams",
+      "weight": 4
+    },
+    {
+      "name": "Familiar",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Magical servant in animal form",
+      "weight": 4
+    },
+    {
+      "name": "Doppelganger",
+      "category": "mythical",
+      "ageRating": "TWELVE",
+      "contentTags": ["HORROR"],
+      "description": "Shapeshifter that assumes others' forms",
+      "weight": 4
+    },
+    {
+      "name": "Changeling",
+      "category": "mythical",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Fairy child left in place of stolen human",
+      "weight": 4
+    },
+    {
+      "name": "Alien",
+      "category": "other",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Extraterrestrial being from another world",
+      "weight": 5
+    },
+    {
+      "name": "Eldritch",
+      "category": "other",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Cosmic horror beyond mortal comprehension",
+      "weight": 4
+    },
+    {
+      "name": "Lovecraftian",
+      "category": "other",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Creature from Lovecraft's mythos",
+      "weight": 4
+    },
+    {
+      "name": "Eldritch Tentacle",
+      "category": "other",
+      "ageRating": "EIGHTEEN",
+      "contentTags": ["HORROR"],
+      "description": "Tentacled cosmic horror entity",
+      "weight": 3
+    },
+    {
+      "name": "Other",
+      "category": "other",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Species not fitting any other category",
+      "weight": 1
+    },
+    {
+      "name": "Unknown",
+      "category": "other",
+      "ageRating": "L",
+      "contentTags": [],
+      "description": "Species of unknown origin",
+      "weight": 1
+    }
+  ]
+}

@@ -67,7 +67,7 @@ async function processAvatarGeneration(
   // Get character data
   const character = await prisma.character.findUnique({
     where: { id: characterId },
-    include: { lora: true, mainAttire: true },
+    include: { lora: true, mainAttire: true, species: true },
   });
 
   if (!character) {
@@ -116,7 +116,7 @@ async function processAvatarGeneration(
       style: character.style || undefined,
       age: character.age || undefined,
       gender: character.gender || undefined,
-      species: character.species || undefined,
+      species: character.species?.name || undefined,
       physicalCharacteristics: character.physicalCharacteristics || undefined,
       defaultAttire: character.mainAttire?.description || undefined,
       lora: character.lora
@@ -197,7 +197,7 @@ async function processStickerGeneration(
   // Get character data
   const character = await prisma.character.findUnique({
     where: { id: characterId },
-    include: { lora: true, mainAttire: true },
+    include: { lora: true, mainAttire: true, species: true },
   });
 
   if (!character) {
@@ -257,7 +257,7 @@ async function processStickerGeneration(
         style: character.style || undefined,
         age: character.age || undefined,
         gender: character.gender || undefined,
-        species: character.species || undefined,
+        species: character.species?.name || undefined,
         physicalCharacteristics: character.physicalCharacteristics || undefined,
         defaultAttire: customInstructions || character.mainAttire?.description || undefined,
         lora: character.lora

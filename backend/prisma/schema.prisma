@@ -74,6 +74,15 @@ enum VisualStyle {
   THREE_D      // 3D rendered style
 }
 
+// Character gender options (standardized in English)
+enum CharacterGender {
+  MALE
+  FEMALE
+  NON_BINARY
+  OTHER
+  UNKNOWN
+}
+
 model User {
   id                String       @id @default(uuid())
   provider          AuthProvider
@@ -297,6 +306,37 @@ model Tag {
   @@index([searchable])
 }
 
+// Species system for character classification
+model Species {
+  id   String  @id @default(uuid())
+  name String  @unique // Species name in English (used for search/filtering)
+
+  // Content classification (optional, for species that might be restricted)
+  ageRating AgeRating @default(L) // Minimum age rating required
+  contentTags ContentTag[] // Additional content warnings if needed
+
+  // Categorization for filtering
+  category String? // e.g., "humanoid", "beast", "elemental", "undead", "mythical", "robot"
+
+  // Translation and metadata
+  description String? @db.Text // Description of the species
+  originalLanguageCode String? // Language code if translated from another language
+  weight      Int     @default(1) // Priority/popularity weight
+
+  // Search optimization
+  searchable  Boolean @default(true) // Whether this species appears in searches
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  characters Character[]
+
+  @@index([category])
+  @@index([ageRating])
+  @@index([searchable])
+}
+
 // Character model (full implementation)
 model Character {
   id String @id @default(uuid())
@@ -305,8 +345,9 @@ model Character {
   firstName String
   lastName  String?
   age       Int?
-  gender    String? // "male", "female", "non-binary", etc.
-  species   String? // "human", "elf", "robot", etc.
+  gender    CharacterGender? @default(UNKNOWN) // Standardized gender enum
+  speciesId String? // Reference to Species table
+  species   Species? @relation(fields: [speciesId], references: [id], onDelete: SetNull)
   style     VisualStyle? @default(ANIME) // Visual art style preference
   reference String? // Source reference (e.g., "One Piece", "Marvel Comics")
 
@@ -360,6 +401,7 @@ model Character {
   @@index([ageRating])
   @@index([loraId])
   @@index([mainAttireId])
+  @@index([speciesId])
 }
 
 // Character stickers (emotion/action images)

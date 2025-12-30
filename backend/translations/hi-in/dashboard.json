@@ -20,13 +20,13 @@
       "createCharacter": "पात्र बनाएँ",
       "browseCharacters": "पात्र ब्राउज़ करें"
     },
-    "noStories": "अभी तक कोई कहानियाँ नहीं हैं। अपनी पहली कहानी बनाएँ!",
+    "noStories": "अभी तक कोई कहानी नहीं है। अपनी पहली कहानी बनाएँ!",
     "createStory": "कहानी बनाएँ",
-    "plusRequired": "प्लस प्लान आवश्यक है",
+    "plusRequired": "प्लस प्लान की आवश्यकता है",
     "recentConversations": "हाल की बातचीत",
     "newConversation": "नई बातचीत",
     "carousel": {
-      "alt": "{{title}} के लिए कैरोसेल छवि",
+      "alt": "{{title}} के लिए हिंडोला छवि",
       "goToSlide": "स्लाइड {{slide}} पर जाएँ",
       "plus": "PLUS",
       "slides": {
@@ -50,7 +50,22 @@
     },
     "storyCard": {
       "alt": "{{title}} के लिए कवर छवि",
-      "play": "चलाएँ"
+      "play": "खेलें"
+    },
+    "filters": {
+      "title": "फ़िल्टर",
+      "gender": "लिंग",
+      "species": "प्रजाति",
+      "selectGender": "लिंग चुनें...",
+      "selectSpecies": "प्रजाति चुनें...",
+      "clear": "साफ़ करें",
+      "genders": {
+        "male": "पुरुष",
+        "female": "महिला",
+        "nonBinary": "गैर-बाइनरी",
+        "other": "अन्य",
+        "unknown": "अज्ञात"
+      }
     }
   }
 }

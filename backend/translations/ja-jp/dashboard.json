@@ -3,22 +3,22 @@
   "resources": {
     "title": "CharHub",
     "tabs": {
-      "discover": "発見",
+      "discover": "探索",
       "chat": "チャット",
       "story": "ストーリー"
     },
     "sections": {
-      "popularCharacters": "人気のキャラクター",
-      "favoriteCharacters": "お気に入り",
+      "popularCharacters": "人気キャラクター",
+      "favoriteCharacters": "あなたのお気に入り",
       "popular": "人気",
       "favorites": "お気に入り",
-      "myStories": "自分のストーリー",
-      "popularStories": "人気のストーリー",
-      "mine": "自分の",
-      "noPopularCharacters": "人気のキャラクターは見つかりませんでした。",
-      "noFavoriteCharacters": "まだお気に入りのキャラクターがいません。",
+      "myStories": "マイストーリー",
+      "popularStories": "人気ストーリー",
+      "mine": "自分",
+      "noPopularCharacters": "人気キャラクターは見つかりませんでした。",
+      "noFavoriteCharacters": "まだキャラクターをお気に入りに追加していません。",
       "createCharacter": "キャラクターを作成",
-      "browseCharacters": "キャラクターを探す"
+      "browseCharacters": "キャラクターを閲覧"
     },
     "noStories": "まだストーリーがありません。最初のストーリーを作成しましょう！",
     "createStory": "ストーリーを作成",
@@ -26,7 +26,7 @@
     "recentConversations": "最近の会話",
     "newConversation": "新しい会話",
     "carousel": {
-      "alt": "{{title}}のカルーセル画像",
+      "alt": "「{{title}}」のカルーセル画像",
       "goToSlide": "スライド{{slide}}へ移動",
       "plus": "PLUS",
       "slides": {
@@ -34,23 +34,38 @@
           "title": "CharHubへようこそ",
           "description": "AIキャラクターを作成してチャットしましょう",
           "action1": "キャラクターを作成",
-          "action2": "キャラクターを探す"
+          "action2": "キャラクターを閲覧"
         },
         "stories": {
-          "title": "ストーリーを見つける",
-          "description": "インタラクティブなストーリーテリングを探求する",
-          "action": "ストーリーを探す"
+          "title": "ストーリーを発見",
+          "description": "インタラクティブなストーリーテリングを体験しましょう",
+          "action": "ストーリーを閲覧"
         },
         "community": {
-          "title": "コミュニティに参加する",
-          "description": "他のクリエイターと繋がる",
-          "action": "コミュニティを探す"
+          "title": "コミュニティに参加",
+          "description": "他のクリエイターと繋がりましょう",
+          "action": "コミュニティを探索"
         }
       }
     },
     "storyCard": {
-      "alt": "{{title}}のカバー画像",
-      "play": "プレイ"
+      "alt": "「{{title}}」のカバー画像",
+      "play": "再生"
+    },
+    "filters": {
+      "title": "フィルター",
+      "gender": "性別",
+      "species": "種族",
+      "selectGender": "性別を選択...",
+      "selectSpecies": "種族を選択...",
+      "clear": "クリア",
+      "genders": {
+        "male": "男性",
+        "female": "女性",
+        "nonBinary": "ノンバイナリー",
+        "other": "その他",
+        "unknown": "不明"
+      }
     }
   }
 }

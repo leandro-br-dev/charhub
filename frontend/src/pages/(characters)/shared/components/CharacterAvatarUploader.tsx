@@ -67,7 +67,8 @@ export function CharacterAvatarUploader({
     };
 
     fetchActiveAvatar();
-  }, [refreshTrigger, characterId, onAvatarChange]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshTrigger, characterId]);
 
   // Fetch service costs on mount
   useEffect(() => {

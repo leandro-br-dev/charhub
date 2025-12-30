@@ -4,7 +4,7 @@
     "title": "CharHub",
     "tabs": {
       "discover": "اكتشف",
-      "chat": "دردشة",
+      "chat": "المحادثة",
       "story": "قصة"
     },
     "sections": {
@@ -14,15 +14,15 @@
       "favorites": "المفضلة",
       "myStories": "قصصي",
       "popularStories": "قصص رائجة",
-      "mine": "لي",
+      "mine": "خاصتي",
       "noPopularCharacters": "لم يتم العثور على شخصيات رائجة.",
-      "noFavoriteCharacters": "لم تقم بإضافة أي شخصيات إلى مفضلاتك بعد.",
+      "noFavoriteCharacters": "لم تفضل أي شخصية بعد.",
       "createCharacter": "إنشاء شخصية",
       "browseCharacters": "تصفح الشخصيات"
     },
     "noStories": "لا توجد قصص بعد. أنشئ قصتك الأولى!",
     "createStory": "إنشاء قصة",
-    "plusRequired": "يتطلب باقة Plus",
+    "plusRequired": "يتطلب خطة Plus",
     "recentConversations": "محادثات حديثة",
     "newConversation": "محادثة جديدة",
     "carousel": {
@@ -32,18 +32,18 @@
       "slides": {
         "welcome": {
           "title": "مرحباً بك في CharHub",
-          "description": "أنشئ وتحدث مع شخصيات الذكاء الاصطناعي",
+          "description": "أنشئ شخصيات الذكاء الاصطناعي ودردش معها",
           "action1": "إنشاء شخصية",
           "action2": "تصفح الشخصيات"
         },
         "stories": {
           "title": "اكتشف القصص",
-          "description": "استكشف السرد التفاعلي للقصص",
+          "description": "استكشف السرد القصصي التفاعلي",
           "action": "تصفح القصص"
         },
         "community": {
           "title": "انضم إلى المجتمع",
-          "description": "تواصل مع منشئي المحتوى الآخرين",
+          "description": "تواصل مع المبدعين الآخرين",
           "action": "استكشف المجتمع"
         }
       }
@@ -51,6 +51,21 @@
     "storyCard": {
       "alt": "صورة الغلاف لـ {{title}}",
       "play": "تشغيل"
+    },
+    "filters": {
+      "title": "الفلاتر",
+      "gender": "الجنس",
+      "species": "النوع",
+      "selectGender": "اختر الأجناس...",
+      "selectSpecies": "اختر الأنواع...",
+      "clear": "مسح",
+      "genders": {
+        "male": "ذكر",
+        "female": "أنثى",
+        "nonBinary": "غير ثنائي",
+        "other": "أخرى",
+        "unknown": "غير معروف"
+      }
     }
   }
 }

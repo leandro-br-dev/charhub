@@ -9,6 +9,8 @@ backend/src/data/
 ├── README.md                    # Este arquivo
 ├── system-users.json            # Usuários do sistema (admin, etc.)
 ├── system-characters.json       # Personagens do sistema (Narrator, etc.)
+├── species/
+│   └── species.json             # Espécies para classificação de personagens
 └── tags/
     ├── tags-character.json      # Tags para classificação de personagens
     ├── tags-story.json          # Tags para classificação de histórias
@@ -70,6 +72,30 @@ Cada tag contém:
 }
 ```
 
+### Species (`species/species.json`)
+
+Sistema de classificação de espécies para personagens:
+
+- **100+ species** - Diversidade de espécies de várias culturas e mitologias
+- **Categorias**: humanoid, beast, mythical, elemental, undead, robot, other
+- **Idempotente**: Execuções múltiplas são seguras
+- **Tradução automática**: Gera arquivos de tradução em `translations/_source/species.json`
+
+#### Estrutura das Species
+
+Cada espécie contém:
+
+```json
+{
+  "name": "Human",
+  "category": "humanoid",
+  "ageRating": "L",
+  "contentTags": [],
+  "description": "Standard human being",
+  "weight": 10
+}
+```
+
 ## Como Usar
 
 ### Executar Seed Completo
@@ -98,6 +124,16 @@ docker compose exec backend npm run db:seed:tags
 docker compose exec backend npm run db:seed:tags:dry
 ```
 
+### Executar Seed Apenas de Species
+
+```bash
+# Seed de species apenas
+docker compose exec backend npm run db:seed:species
+
+# Dry run de species
+docker compose exec backend npm run db:seed:species:dry
+```
+
 ## Comportamento do Seed
 
 ### Usuários
@@ -117,6 +153,15 @@ docker compose exec backend npm run db:seed:tags:dry
   - Atualiza tags com mudanças (ageRating, contentTags)
   - Mantém tags sem mudanças
 - **Sempre seguro**: Nunca remove tags existentes
+
+### Species
+- **Primeira execução**: Cria todas as espécies (100+ total)
+- **Execuções subsequentes**:
+  - Adiciona novas espécies
+  - Atualiza espécies com mudanças (ageRating, category, weight)
+  - Mantém espécies sem mudanças
+- **Sempre seguro**: Nunca remove espécies existentes
+- **Tradução automática**: Gera arquivos de tradução a cada execução
 
 ## Produção
 
@@ -211,6 +256,7 @@ Os scripts de seed estão localizados em:
 
 - `backend/src/scripts/seed.ts` - Script principal de seed
 - `backend/src/scripts/seedTags.ts` - Script específico para tags
+- `backend/src/scripts/seedSpecies.ts` - Script específico para espécies
 
 ## Observações Importantes
 

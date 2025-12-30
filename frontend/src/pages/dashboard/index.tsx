@@ -9,6 +9,8 @@ import { useContentFilter } from './hooks';
 import { useContentFilter as useGlobalContentFilter } from '../../contexts/ContentFilterContext';
 import { dashboardService, characterService, storyService, chatService } from '../../services';
 import { characterStatsService, type CharacterStats } from '../../services/characterStatsService';
+import { useCharacterFilters } from '../../hooks/useCharacterFilters';
+import { FilterPanel } from '../../components/filters';
 import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
@@ -99,6 +101,14 @@ function DashboardContent(): JSX.Element {
     persistToLocalStorage: true,
   });
 
+  // Character filters hook (gender, species)
+  const {
+    filters: characterFilters,
+    updateFilter: updateCharacterFilter,
+    clearFilters: clearCharacterFilters,
+    activeFiltersCount,
+  } = useCharacterFilters();
+
   // Ensure non-authenticated users always see "popular" views
   useEffect(() => {
     if (!isAuthenticated) {
@@ -141,7 +151,14 @@ function DashboardContent(): JSX.Element {
       setIsLoadingCharacters(true);
       try {
         // Only fetch favorites if authenticated
-        const requests = [characterService.getPopular({ limit: 8, ageRatings })];
+        const requests = [
+          characterService.getPopular({
+            limit: 8,
+            ageRatings,
+            genders: characterFilters.genders,
+            species: characterFilters.species,
+          })
+        ];
         if (isAuthenticated) {
           requests.push(characterService.getFavorites(8));
         }
@@ -202,7 +219,7 @@ function DashboardContent(): JSX.Element {
     };
 
     fetchCharacters();
-  }, [ageRatings, isAuthenticated]);
+  }, [ageRatings, characterFilters, isAuthenticated]);
 
   // Fetch popular stories and user's stories
   useEffect(() => {
@@ -382,32 +399,47 @@ function DashboardContent(): JSX.Element {
             {/* Discover Tab */}
             <TabPanel label="discover">
               <div className="space-y-6 px-4 md:px-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-title">
-                    {discoverView === 'popular'
-                      ? t('dashboard:sections.popularCharacters')
-                      : t('dashboard:sections.favoriteCharacters')}
-                  </h2>
-                  {/* Hide favorites toggle for non-authenticated users */}
-                  {isAuthenticated && (
-                    <div className="flex rounded-xl border border-border overflow-hidden">
-                      <button
-                        type="button"
-                        onClick={() => setDiscoverView('popular')}
-                        className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
-                      >
-                        {t('dashboard:sections.popular')}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setDiscoverView('favorites')}
-                        className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
-                      >
-                        {t('dashboard:sections.favorites')}
-                      </button>
-                    </div>
+                {/* Header section with title, view toggle, and filters */}
+                <div className="space-y-3">
+                  {/* Title and view toggle */}
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-title">
+                      {discoverView === 'popular'
+                        ? t('dashboard:sections.popularCharacters')
+                        : t('dashboard:sections.favoriteCharacters')}
+                    </h2>
+                    {/* Hide favorites toggle for non-authenticated users */}
+                    {isAuthenticated && (
+                      <div className="flex rounded-xl border border-border overflow-hidden">
+                        <button
+                          type="button"
+                          onClick={() => setDiscoverView('popular')}
+                          className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
+                        >
+                          {t('dashboard:sections.popular')}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDiscoverView('favorites')}
+                          className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
+                        >
+                          {t('dashboard:sections.favorites')}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Filter Panel - only show for popular view, below toggle */}
+                  {discoverView === 'popular' && (
+                    <FilterPanel
+                      filters={characterFilters}
+                      onUpdateFilter={updateCharacterFilter}
+                      onClearFilters={clearCharacterFilters}
+                      activeFiltersCount={activeFiltersCount}
+                    />
                   )}
                 </div>
+
                 {isLoadingCharacters ? (
                   <div className="h-64 bg-light animate-pulse rounded-lg" />
                 ) : (

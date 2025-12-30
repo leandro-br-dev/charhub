@@ -53,8 +53,8 @@ const ParticipantConfigModal = ({
   onCloneAssistant,
   onPromoteCharacter,
 }: ParticipantConfigModalProps) => {
-  // Use namespaces: chat, common, and characters
-  const { t } = useTranslation(["chat", "common", "characters"]);
+  // Use namespaces: chat, common, characters, and dashboard
+  const { t } = useTranslation(["chat", "common", "characters", "dashboard"]);
   const { user: loggedInUser } = useAuth();
   const userId = loggedInUser?.id;
 
@@ -310,7 +310,7 @@ const ParticipantConfigModal = ({
                     : "transgender"
                 }
                 label={t("characters:form.fields.gender")}
-                value={t(`characters:genders.${rep.gender}`, rep.gender || "N/A")}
+                value={rep.gender ? t(`filters.genders.${rep.gender}`, rep.gender) : "N/A"}
               />
               {rep.age && (
                 <InfoItem

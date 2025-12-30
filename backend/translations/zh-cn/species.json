@@ -1,0 +1,409 @@
+{
+  "description": "Character species with diverse options from various cultures and mythologies. Used for filtering and categorizing characters.",
+  "resources": {
+    "Human": {
+      "name": "人类",
+      "description": "标准的人类个体"
+    },
+    "Elf": {
+      "name": "精灵",
+      "description": "尖耳人形生物，具有魔法亲和力"
+    },
+    "Dark Elf": {
+      "name": "黑暗精灵",
+      "description": "皮肤黝黑的精灵，居住在地下"
+    },
+    "Wood Elf": {
+      "name": "森林精灵",
+      "description": "栖息于森林的精灵，与自然亲近"
+    },
+    "High Elf": {
+      "name": "高等精灵",
+      "description": "拥有强大魔法能力的贵族精灵"
+    },
+    "Dwarf": {
+      "name": "矮人",
+      "description": "矮小粗壮的人形生物，擅长工艺"
+    },
+    "Halfling": {
+      "name": "半身人",
+      "description": "体型娇小、性情平和、脚生毛发的人形生物"
+    },
+    "Gnome": {
+      "name": "侏儒",
+      "description": "擅长发明和幻术魔法的小型人形生物"
+    },
+    "Orc": {
+      "name": "兽人",
+      "description": "皮肤呈绿色，长有獠牙的侵略性人形生物"
+    },
+    "Half-Orc": {
+      "name": "半兽人",
+      "description": "人类与兽人的混血，兼具力量与狡诈"
+    },
+    "Goblin": {
+      "name": "哥布林",
+      "description": "体型娇小、性情顽劣的绿色人形生物"
+    },
+    "Tiefling": {
+      "name": "提夫林",
+      "description": "具有魔族血统的人形生物，长有角和尾巴"
+    },
+    "Dragonborn": {
+      "name": "龙裔",
+      "description": "拥有鳞片和吐息能力的龙形人形生物"
+    },
+    "Half-Elf": {
+      "name": "半精灵",
+      "description": "人类与精灵的混血，能力多样"
+    },
+    "Giant": {
+      "name": "巨人",
+      "description": "体型巨大、力大无穷的人形生物"
+    },
+    "Troll": {
+      "name": "巨魔",
+      "description": "体型巨大，拥有再生能力的人形生物"
+    },
+    "Ogre": {
+      "name": "食人魔",
+      "description": "体型巨大、粗野的人形生物"
+    },
+    "Kobold": {
+      "name": "狗头人",
+      "description": "擅长设置陷阱的爬行动物型小型人形生物"
+    },
+    "Fairy": {
+      "name": "仙子",
+      "description": "长有翅膀、拥有魔法粉尘的小型人形生物"
+    },
+    "Pixie": {
+      "name": "小精灵",
+      "description": "长有昆虫翅膀的微小淘气人形生物"
+    },
+    "Nymph": {
+      "name": "宁芙",
+      "description": "与特定地点绑定的大自然精灵"
+    },
+    "Dryad": {
+      "name": "树妖",
+      "description": "与森林有着深厚联系的树木精灵"
+    },
+    "Satyr": {
+      "name": "萨特",
+      "description": "半人半羊，拥有音乐天赋"
+    },
+    "Centaur": {
+      "name": "半人马",
+      "description": "腰部以下为马身，腰部以上为人身"
+    },
+    "Minotaur": {
+      "name": "牛头人",
+      "description": "半人半牛，力大无穷"
+    },
+    "Naga": {
+      "name": "娜迦",
+      "description": "上半身为人形，下半身为蛇尾"
+    },
+    "Lamia": {
+      "name": "拉米亚",
+      "description": "下半身为蛇身的女性人形生物"
+    },
+    "Merfolk": {
+      "name": "人鱼",
+      "description": "半人半鱼的水生生物"
+    },
+    "Mermaid": {
+      "name": "美人鱼",
+      "description": "拥有美妙歌喉的女性人鱼"
+    },
+    "Siren": {
+      "name": "海妖",
+      "description": "用歌声引诱水手走向毁灭的危险歌者"
+    },
+    "Harpy": {
+      "name": "鹰身女妖",
+      "description": "鸟与女人的混合体，长有锋利爪子"
+    },
+    "Werewolf": {
+      "name": "狼人",
+      "description": "满月时变身成狼的人类"
+    },
+    "Vampire": {
+      "name": "吸血鬼",
+      "description": "以吸食血液为生的不死生物"
+    },
+    "Zombie": {
+      "name": "丧尸",
+      "description": "渴望大脑的复活尸体"
+    },
+    "Lich": {
+      "name": "巫妖",
+      "description": "拥有命匣的强大不死施法者"
+    },
+    "Ghost": {
+      "name": "幽灵",
+      "description": "已逝之人的灵魂"
+    },
+    "Specter": {
+      "name": "幽魂",
+      "description": "拥有吸取能量能力的邪恶意灵"
+    },
+    "Wraith": {
+      "name": "怨灵",
+      "description": "拥有吸取生命触感的复仇亡灵"
+    },
+    "Skeleton": {
+      "name": "骷髅",
+      "description": "已逝生物的活动骨骸"
+    },
+    "Mummy": {
+      "name": "木乃伊",
+      "description": "来自古老陵墓的防腐尸体"
+    },
+    "Ghoul": {
+      "name": "食尸鬼",
+      "description": "以腐肉为食的不死生物"
+    },
+    "Banshee": {
+      "name": "报丧女妖",
+      "description": "其哀嚎预示死亡的女性幽灵"
+    },
+    "Reaper": {
+      "name": "死神",
+      "description": "手持镰刀的死神，死亡的化身"
+    },
+    "Dragon": {
+      "name": "龙",
+      "description": "拥有魔法力量的巨型飞行爬行动物"
+    },
+    "Wyvern": {
+      "name": "飞龙",
+      "description": "长有两足，尾巴有毒的龙族近亲"
+    },
+    "Drake": {
+      "name": "小型喷火龙",
+      "description": "小型无翼喷火龙"
+    },
+    "Phoenix": {
+      "name": "凤凰",
+      "description": "从自身灰烬中重生的不朽之鸟"
+    },
+    "Griffin": {
+      "name": "狮鹫",
+      "description": "狮子与鹰的混合体，高贵的生物"
+    },
+    "Hydra": {
+      "name": "九头蛇",
+      "description": "多头蛇怪，斩掉一头会再生出两头"
+    },
+    "Chimera": {
+      "name": "奇美拉",
+      "description": "由狮子、山羊和蛇部分组成的三头怪物"
+    },
+    "Sphinx": {
+      "name": "斯芬克斯",
+      "description": "狮身人面，谜语的守护者"
+    },
+    "Unicorn": {
+      "name": "独角兽",
+      "description": "拥有螺旋状独角的纯白色骏马"
+    },
+    "Pegasus": {
+      "name": "飞马",
+      "description": "拥有神圣血统的有翼骏马"
+    },
+    "Kirin": {
+      "name": "麒麟",
+      "description": "预示吉祥的日本独角兽般生物"
+    },
+    "Kitsune": {
+      "name": "狐妖",
+      "description": "长有多条尾巴的日本狐妖"
+    },
+    "Tanuki": {
+      "name": "狸猫",
+      "description": "拥有变形能力的日本狸猫"
+    },
+    "Oni": {
+      "name": "鬼",
+      "description": "长有角并手持狼牙棒的日本恶鬼"
+    },
+    "Tengu": {
+      "name": "天狗",
+      "description": "日本鸟形人形生物或乌天狗"
+    },
+    "Kappa": {
+      "name": "河童",
+      "description": "头顶有盘状凹陷的日本水妖"
+    },
+    "Yokai": {
+      "name": "妖怪",
+      "description": "形态各异的日本精灵或恶魔"
+    },
+    "Yuki-onna": {
+      "name": "雪女",
+      "description": "日本雪女幽灵"
+    },
+    "Raiju": {
+      "name": "雷兽",
+      "description": "以狼或猫形态出现的日本雷兽"
+    },
+    "Slime": {
+      "name": "史莱姆",
+      "description": "具有各种能力的凝胶状生物"
+    },
+    "Elemental": {
+      "name": "元素生物",
+      "description": "自然元素的纯粹化身"
+    },
+    "Fire Elemental": {
+      "name": "火元素",
+      "description": "拥有灼热触感的活火焰"
+    },
+    "Water Elemental": {
+      "name": "水元素",
+      "description": "拥有流动形态的活水"
+    },
+    "Earth Elemental": {
+      "name": "土元素",
+      "description": "拥有压碎力量的活石和活土"
+    },
+    "Air Elemental": {
+      "name": "风元素",
+      "description": "拥有隐形形态的活风"
+    },
+    "Ice Elemental": {
+      "name": "冰元素",
+      "description": "拥有冰冻光环的活冰"
+    },
+    "Lightning Elemental": {
+      "name": "闪电元素",
+      "description": "拥有电击力量的活闪电"
+    },
+    "Golem": {
+      "name": "魔像",
+      "description": "由泥土、石头或金属构成的活动构装体"
+    },
+    "Homunculus": {
+      "name": "人造人",
+      "description": "人造小型人形生物"
+    },
+    "Robot": {
+      "name": "机器人",
+      "description": "机械人造生物"
+    },
+    "Android": {
+      "name": "仿生人",
+      "description": "设计成人类外观的机器人"
+    },
+    "Cyborg": {
+      "name": "赛博格",
+      "description": "具有机械增强的有机生物"
+    },
+    "Mecha": {
+      "name": "机甲",
+      "description": "用于作战的大型驾驶机器人"
+    },
+    "AI": {
+      "name": "人工智能",
+      "description": "没有物理形态的人工智能"
+    },
+    "Doll": {
+      "name": "活人偶",
+      "description": "活化的玩偶或木偶"
+    },
+    "Marionette": {
+      "name": "提线木偶",
+      "description": "被赋予生命的木偶"
+    },
+    "Catfolk": {
+      "name": "猫人",
+      "description": "具有猫科特征的人形生物"
+    },
+    "Nekomimi": {
+      "name": "猫耳娘",
+      "description": "长有猫耳的人类"
+    },
+    "Wolfkin": {
+      "name": "狼人",
+      "description": "具有狼科特征的人形生物"
+    },
+    "Foxkin": {
+      "name": "狐人",
+      "description": "具有狐科特征的人形生物"
+    },
+    "Rabbitfolk": {
+      "name": "兔人",
+      "description": "具有兔科特征的人形生物"
+    },
+    "Dragonkin": {
+      "name": "龙人",
+      "description": "具有龙族特征的人形生物"
+    },
+    "Demon": {
+      "name": "恶魔",
+      "description": "来自下位面的邪恶生物"
+    },
+    "Angel": {
+      "name": "天使",
+      "description": "具有神圣起源的天界生物"
+    },
+    "Fallen Angel": {
+      "name": "堕天使",
+      "description": "被逐出神圣领域的堕落天使"
+    },
+    "Devil": {
+      "name": "魔鬼",
+      "description": "来自九层地狱的强大恶魔"
+    },
+    "Imp": {
+      "name": "小鬼",
+      "description": "顽皮的小恶魔"
+    },
+    "Succubus": {
+      "name": "魅魔",
+      "description": "吸食生命力的魅惑恶魔"
+    },
+    "Incubus": {
+      "name": "梦魇",
+      "description": "在梦中诱惑的男性恶魔"
+    },
+    "Familiar": {
+      "name": "魔法使魔",
+      "description": "动物形态的魔法仆从"
+    },
+    "Doppelganger": {
+      "name": "变形怪",
+      "description": "能变幻成他人形态的变形者"
+    },
+    "Changeling": {
+      "name": "掉包妖精",
+      "description": "被仙子掉包的人类孩童"
+    },
+    "Alien": {
+      "name": "外星人",
+      "description": "来自异世界的外星生物"
+    },
+    "Eldritch": {
+      "name": "异界生物",
+      "description": "超越凡人理解的宇宙恐怖"
+    },
+    "Lovecraftian": {
+      "name": "克苏鲁生物",
+      "description": "来自洛夫克拉夫特神话的生物"
+    },
+    "Eldritch Tentacle": {
+      "name": "异界触手",
+      "description": "长有触手的宇宙恐怖实体"
+    },
+    "Other": {
+      "name": "其他",
+      "description": "不符合其他任何分类的物种"
+    },
+    "Unknown": {
+      "name": "未知",
+      "description": "来源未知的物种"
+    }
+  }
+}

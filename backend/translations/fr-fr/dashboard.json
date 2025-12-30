@@ -4,29 +4,29 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Découvrir",
-      "chat": "Discuter",
-      "story": "Histoire"
+      "chat": "Chat",
+      "story": "Histoires"
     },
     "sections": {
       "popularCharacters": "Personnages populaires",
       "favoriteCharacters": "Vos favoris",
-      "popular": "Populaire",
+      "popular": "Populaires",
       "favorites": "Favoris",
       "myStories": "Mes histoires",
       "popularStories": "Histoires populaires",
       "mine": "Les miennes",
       "noPopularCharacters": "Aucun personnage populaire trouvé.",
-      "noFavoriteCharacters": "Vous n'avez pas encore mis de personnages en favoris.",
+      "noFavoriteCharacters": "Vous n'avez pas encore ajouté de personnages à vos favoris.",
       "createCharacter": "Créer un personnage",
       "browseCharacters": "Parcourir les personnages"
     },
-    "noStories": "Pas encore d'histoires. Créez votre première histoire !",
+    "noStories": "Aucune histoire pour le moment. Créez votre première histoire !",
     "createStory": "Créer une histoire",
     "plusRequired": "Nécessite le forfait Plus",
     "recentConversations": "Conversations récentes",
     "newConversation": "Nouvelle conversation",
     "carousel": {
-      "alt": "Image du carrousel pour {{title}}",
+      "alt": "Image de carrousel pour {{title}}",
       "goToSlide": "Aller à la diapositive {{slide}}",
       "plus": "PLUS",
       "slides": {
@@ -37,7 +37,7 @@
           "action2": "Parcourir les personnages"
         },
         "stories": {
-          "title": "Découvrir des histoires",
+          "title": "Découvrez des histoires",
           "description": "Explorez la narration interactive",
           "action": "Parcourir les histoires"
         },
@@ -51,6 +51,21 @@
     "storyCard": {
       "alt": "Image de couverture pour {{title}}",
       "play": "Jouer"
+    },
+    "filters": {
+      "title": "Filtres",
+      "gender": "Genre",
+      "species": "Espèce",
+      "selectGender": "Sélectionner les genres...",
+      "selectSpecies": "Sélectionner les espèces...",
+      "clear": "Effacer",
+      "genders": {
+        "male": "Homme",
+        "female": "Femme",
+        "nonBinary": "Non-binaire",
+        "other": "Autre",
+        "unknown": "Inconnu"
+      }
     }
   }
 }

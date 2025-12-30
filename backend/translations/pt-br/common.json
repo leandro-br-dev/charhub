@@ -12,12 +12,12 @@
     "account": "Conta",
     "continueGoogle": "Continuar com Google",
     "continueFacebook": "Continuar com Facebook",
-    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza CharHub a acessar suas informações básicas de perfil.",
+    "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
     "logout": "Sair",
     "logoutLoading": "Saindo...",
     "authenticatedUser": "Usuário autenticado",
     "tokenStored": "Armazenado em cookie somente HTTP",
-    "navDashboard": "Dashboard",
+    "navDashboard": "Painel",
     "navCharacters": "Personagens",
     "navTagline": "Demonstração segura de OAuth",
     "providerLabel": {
@@ -59,8 +59,8 @@
       "ageRating": "Classificação Etária",
       "blurNsfw": "Borrar Conteúdo Explícito",
       "none": "Sem Filtro",
-      "blur": "Borrar Conteúdo Sensível",
-      "hidden": "Ocultar Conteúdo Maduro",
+      "blur": "Borrar Sensível",
+      "hidden": "Ocultar Maduro",
       "descriptions": {
         "none": "Mostrar todo o conteúdo sem restrições",
         "blur": "Aplicar desfoque ao conteúdo maduro",
@@ -89,6 +89,9 @@
     "back": "Voltar",
     "loading": "Carregando...",
     "credits": "créditos",
-    "tryAgain": "Tentar Novamente"
+    "tryAgain": "Tentar Novamente",
+    "generate": "Gerar",
+    "generating": "Gerando...",
+    "use": "Usar"
   }
 }

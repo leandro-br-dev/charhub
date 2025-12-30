@@ -19,23 +19,6 @@
       "SIXTEEN": "16+",
       "EIGHTEEN": "18+"
     },
-    "genders": {
-      "male": "Male",
-      "female": "Female",
-      "non-binary": "Non-binary",
-      "unisex": "Unisex"
-    },
-    "species": {
-      "human": "Human",
-      "elf": "Elf",
-      "android": "Android",
-      "vampire": "Vampire",
-      "demon": "Demon",
-      "animal": "Animal",
-      "hybrid": "Hybrid",
-      "robot": "Robot",
-      "other": "Other"
-    },
     "visualStyles": {
       "ANIME": "Anime",
       "REALISTIC": "Realistic",
@@ -168,11 +151,10 @@
         "visibility": "Visibility"
       },
       "placeholders": {
-        "gender": "Ex: non-binary AI, android, knight",
-        "species": "Ex: Human, Elf, Synthetic",
         "style": "Select visual style",
         "reference": "Ex: One Piece, Marvel Comics, Original",
-        "genderSelect": "Select gender"
+        "genderSelect": "Select gender",
+        "speciesSelect": "Select species"
       },
       "labels": {
         "unsavedChanges": "You have unsaved changes",
@@ -189,7 +171,14 @@
         "helperCreate": "Pick an avatar now and we will keep it while you fill out the rest of the form.",
         "helperEdit": "Update the avatar whenever you like. Changes apply as soon as you save.",
         "error": "We could not upload this image. Try another file.",
-        "previewAlt": "Character avatar preview"
+        "previewAlt": "Character avatar preview",
+        "invalidUrl": "Enter a valid image URL (http/https).",
+        "saveFirst": "Please save the character first before generating avatar",
+        "insufficientCredits": "Insufficient credits. You need {{required}} credits but have {{current}}.",
+        "generationStarted": "Avatar generation started! This may take a minute. Check the Images tab for results.",
+        "generationComplete": "Avatar generated successfully!",
+        "generationFailed": "Avatar generation failed. Please try again.",
+        "generationError": "Failed to start avatar generation. Please try again."
       },
       "images": {
         "coverHeader": "Character cover",
@@ -224,6 +213,10 @@
     "create": {
       "title": "Create a new character",
       "subtitle": "Combine narrative context, visual style and moderation settings. You can refine everything later.",
+      "avatar": {
+        "header": "Character avatar",
+        "description": "Visual representation of your character."
+      },
       "saveButton": "Save character",
       "cancelButton": "Cancel and go back",
       "chooseMethod": {
@@ -265,6 +258,10 @@
     "edit": {
       "title": "Edit character",
       "subtitle": "Updating {{name}}",
+      "avatar": {
+        "header": "Character avatar",
+        "description": "Visual representation of your character."
+      },
       "saveButton": "Update character",
       "cancelButton": "Discard changes",
       "states": {
@@ -314,6 +311,26 @@
         "introduction": "Introduction",
         "updateNotes": "Update Notes"
       }
+    },
+    "images": {
+      "saveFirst": "Save the character first to manage images",
+      "gallery": "Generated images",
+      "avatarHeader": "Avatars",
+      "avatarDescription": "Generated avatar images for this character",
+      "coverHeader": "Character cover",
+      "coverDescription": "Portrait-oriented image used as the character cover.",
+      "generateNew": "Generate new {{type}}",
+      "onlyAvatarSupported": "Only avatar generation is supported at the moment",
+      "startingGeneration": "Starting generation...",
+      "generatingImage": "Generating image... This may take up to 1 minute",
+      "processing": "Processing image with AI...",
+      "generationComplete": "Generation complete!",
+      "imageGeneratedSuccess": "Image generated successfully!",
+      "preview": "Preview",
+      "generationInfo": "About image generation",
+      "infoPrompt": "The AI will use your character description to create the image",
+      "infoTime": "Generation takes approximately 30-60 seconds",
+      "infoActive": "New images are automatically set as active"
     },
     "createAI": {
       "title": "AI Character Generator",

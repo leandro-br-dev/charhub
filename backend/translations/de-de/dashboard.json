@@ -5,7 +5,7 @@
     "tabs": {
       "discover": "Entdecken",
       "chat": "Chat",
-      "story": "Geschichte"
+      "story": "Story"
     },
     "sections": {
       "popularCharacters": "Beliebte Charaktere",
@@ -22,8 +22,8 @@
     },
     "noStories": "Noch keine Geschichten. Erstelle deine erste Geschichte!",
     "createStory": "Geschichte erstellen",
-    "plusRequired": "Benötigt Plus-Plan",
-    "recentConversations": "Letzte Unterhaltungen",
+    "plusRequired": "Erfordert Plus-Plan",
+    "recentConversations": "Aktuelle Unterhaltungen",
     "newConversation": "Neue Unterhaltung",
     "carousel": {
       "alt": "Karussellbild für {{title}}",
@@ -38,19 +38,34 @@
         },
         "stories": {
           "title": "Geschichten entdecken",
-          "description": "Interaktives Storytelling erkunden",
+          "description": "Erkunde interaktives Storytelling",
           "action": "Geschichten durchsuchen"
         },
         "community": {
-          "title": "Der Community beitreten",
-          "description": "Verbinde dich mit anderen Kreativen",
+          "title": "Werde Teil der Community",
+          "description": "Verbinde dich mit anderen Erstellern",
           "action": "Community erkunden"
         }
       }
     },
     "storyCard": {
-      "alt": "Coverbild für {{title}}",
+      "alt": "Titelbild für {{title}}",
       "play": "Spielen"
+    },
+    "filters": {
+      "title": "Filter",
+      "gender": "Geschlecht",
+      "species": "Spezies",
+      "selectGender": "Geschlechter auswählen...",
+      "selectSpecies": "Spezies auswählen...",
+      "clear": "Löschen",
+      "genders": {
+        "male": "Männlich",
+        "female": "Weiblich",
+        "nonBinary": "Non-Binär",
+        "other": "Andere",
+        "unknown": "Unbekannt"
+      }
     }
   }
 }
