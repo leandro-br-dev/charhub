@@ -9,8 +9,6 @@ import { useContentFilter } from './hooks';
 import { useContentFilter as useGlobalContentFilter } from '../../contexts/ContentFilterContext';
 import { dashboardService, characterService, storyService, chatService } from '../../services';
 import { characterStatsService, type CharacterStats } from '../../services/characterStatsService';
-import { useCharacterFilters } from '../../hooks/useCharacterFilters';
-import { FilterPanel } from '../../components/filters';
 import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
@@ -20,6 +18,13 @@ import { PublicHeader } from '../../components/layout';
 import { AuthenticatedLayout } from '../../layouts/AuthenticatedLayout';
 import { usePageHeader } from '../../hooks/usePageHeader';
 import { useToast } from '../../contexts/ToastContext';
+import { useCardsPerRow } from '../../hooks/useCardsPerRow';
+import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import { useCharacterFilters } from '../../hooks/useCharacterFilters';
+import { CharacterGridSkeleton } from '../../components/ui/CharacterCardSkeleton';
+import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
+import { EndOfListMessage } from '../../components/ui/EndOfListMessage';
+import { FilterPanel } from '../../components/filters';
 
 // Component for authenticated users (inside AuthenticatedLayout)
 function AuthenticatedDashboard(): JSX.Element {
@@ -88,6 +93,16 @@ function DashboardContent(): JSX.Element {
   const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
   const [isLoadingStories, setIsLoadingStories] = useState(true);
 
+  // Infinite scroll state
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  // Calculate cards per row for responsive initial batch
+  const cardsPerRow = useCardsPerRow();
+  const initialLimit = Math.max(cardsPerRow * 6, 12); // At least 12 cards or 6 rows
+  const batchSize = cardsPerRow * 2; // Load 2 rows at a time on scroll
+
   // Content filter hook
   const {
     ageRatings,
@@ -145,35 +160,37 @@ function DashboardContent(): JSX.Element {
     fetchCarousel();
   }, []);
 
-  // Fetch popular characters
+  // Fetch popular characters with infinite scroll
   useEffect(() => {
     const fetchCharacters = async () => {
-      setIsLoadingCharacters(true);
+      setInitialLoading(true);
       try {
-        // Only fetch favorites if authenticated
-        const requests = [
-          characterService.getPopular({
-            limit: 8,
-            ageRatings,
-            genders: characterFilters.genders,
-            species: characterFilters.species,
-          })
-        ];
+        // Fetch initial batch with dynamic limit based on screen size
+        const result = await characterService.getPopularWithPagination({
+          skip: 0,
+          limit: initialLimit,
+          ageRatings,
+          genders: characterFilters.genders,
+          species: characterFilters.species,
+        });
+
+        setPopularCharacters(result.characters);
+        setHasMore(result.hasMore);
+
+        // Fetch favorites if authenticated (for the favorite tab)
         if (isAuthenticated) {
-          requests.push(characterService.getFavorites(8));
+          try {
+            const favorites = await characterService.getFavorites(initialLimit);
+            setFavoriteCharacters(favorites);
+            const favoriteIds = new Set(favorites.map(char => char.id));
+            setFavoriteCharacterIds(favoriteIds);
+          } catch (error) {
+            console.warn('[Dashboard] Failed to fetch favorites:', error);
+          }
         }
 
-        const results = await Promise.all(requests);
-        const [popular, favorites = []] = results;
-
-        setPopularCharacters(popular);
-        setFavoriteCharacters(favorites);
-
-        // Build a set of favorited character IDs for quick lookup
-        const favoriteIds = new Set(favorites.map(char => char.id));
-        setFavoriteCharacterIds(favoriteIds);
-        // Fetch stats for these characters (deduped)
-        const ids = Array.from(new Set([...popular.map(c => c.id), ...favorites.map(c => c.id)]));
+        // Fetch stats and image counts for the loaded characters
+        const ids = result.characters.map(c => c.id);
         if (ids.length > 0) {
           try {
             const results = await Promise.all(
@@ -191,7 +208,7 @@ function DashboardContent(): JSX.Element {
               for (const [id, s] of results) next[id] = s;
               return next;
             });
-            // Fetch image counts in parallel (deduped)
+            // Fetch image counts in parallel
             const imgResults = await Promise.all(
               ids.map(async (id) => {
                 try {
@@ -214,12 +231,89 @@ function DashboardContent(): JSX.Element {
       } catch (error) {
         console.error('[Dashboard] Failed to fetch characters:', error);
       } finally {
+        setInitialLoading(false);
         setIsLoadingCharacters(false);
       }
     };
 
     fetchCharacters();
-  }, [ageRatings, characterFilters, isAuthenticated]);
+  }, [ageRatings, isAuthenticated, initialLimit, characterFilters.genders, characterFilters.species]);
+
+  // Load more characters when infinite scroll triggers
+  const loadMore = useCallback(async () => {
+    if (isLoadingMore || !hasMore) return;
+
+    setIsLoadingMore(true);
+    try {
+      const result = await characterService.getPopularWithPagination({
+        skip: popularCharacters.length,
+        limit: batchSize,
+        ageRatings,
+        genders: characterFilters.genders,
+        species: characterFilters.species,
+      });
+
+      setPopularCharacters(prev => [...prev, ...result.characters]);
+      setHasMore(result.hasMore);
+
+      // Fetch stats and image counts for the new characters
+      const newIds = result.characters.map(c => c.id);
+      if (newIds.length > 0) {
+        try {
+          const results = await Promise.all(
+            newIds.map(async (id) => {
+              try {
+                const s = await characterStatsService.getStats(id);
+                return [id, s] as const;
+              } catch (_err) {
+                return [id, undefined] as const;
+              }
+            })
+          );
+          setStatsById(prev => {
+            const next = { ...prev } as Record<string, CharacterStats | undefined>;
+            for (const [id, s] of results) next[id] = s;
+            return next;
+          });
+          // Fetch image counts in parallel
+          const imgResults = await Promise.all(
+            newIds.map(async (id) => {
+              try {
+                const count = await characterService.getImageCount(id);
+                return [id, count] as const;
+              } catch (_e) {
+                return [id, 0] as const;
+              }
+            })
+          );
+          setImagesById(prev => {
+            const next = { ...prev } as Record<string, number>;
+            for (const [id, count] of imgResults) next[id] = count;
+            return next;
+          });
+        } catch (e) {
+          console.warn('[Dashboard] Failed to fetch some character stats', e);
+        }
+      }
+    } catch (error) {
+      console.error('[Dashboard] Failed to load more characters:', error);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [isLoadingMore, hasMore, popularCharacters.length, batchSize, ageRatings]);
+
+  // Setup infinite scroll observer
+  const { loadMoreRef, isIntersecting } = useInfiniteScroll({
+    threshold: 0.0, // Trigger as soon as any part is visible
+    rootMargin: '400px' // Trigger 400px before element
+  });
+
+  // Trigger load more when observer fires (only for popular view)
+  useEffect(() => {
+    if (isIntersecting && !initialLoading && discoverView === 'popular' && hasMore) {
+      loadMore();
+    }
+  }, [isIntersecting, initialLoading, discoverView, hasMore, loadMore]);
 
   // Fetch popular stories and user's stories
   useEffect(() => {
@@ -399,64 +493,69 @@ function DashboardContent(): JSX.Element {
             {/* Discover Tab */}
             <TabPanel label="discover">
               <div className="space-y-6 px-4 md:px-6">
-                {/* Header section with title, view toggle, and filters */}
-                <div className="space-y-3">
-                  {/* Title and view toggle */}
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-title">
-                      {discoverView === 'popular'
-                        ? t('dashboard:sections.popularCharacters')
-                        : t('dashboard:sections.favoriteCharacters')}
-                    </h2>
-                    {/* Hide favorites toggle for non-authenticated users */}
-                    {isAuthenticated && (
-                      <div className="flex rounded-xl border border-border overflow-hidden">
-                        <button
-                          type="button"
-                          onClick={() => setDiscoverView('popular')}
-                          className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
-                        >
-                          {t('dashboard:sections.popular')}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setDiscoverView('favorites')}
-                          className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
-                        >
-                          {t('dashboard:sections.favorites')}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Filter Panel - only show for popular view, below toggle */}
-                  {discoverView === 'popular' && (
-                    <FilterPanel
-                      filters={characterFilters}
-                      onUpdateFilter={updateCharacterFilter}
-                      onClearFilters={clearCharacterFilters}
-                      activeFiltersCount={activeFiltersCount}
-                    />
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold text-title">
+                    {discoverView === 'popular'
+                      ? t('dashboard:sections.popularCharacters')
+                      : t('dashboard:sections.favoriteCharacters')}
+                  </h2>
+                  {/* Hide favorites toggle for non-authenticated users */}
+                  {isAuthenticated && (
+                    <div className="flex rounded-xl border border-border overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => setDiscoverView('popular')}
+                        className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
+                      >
+                        {t('dashboard:sections.popular')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDiscoverView('favorites')}
+                        className={`px-3 py-1 text-sm ${discoverView === 'favorites' ? 'bg-primary text-black' : 'text-content'}`}
+                      >
+                        {t('dashboard:sections.favorites')}
+                      </button>
+                    </div>
                   )}
                 </div>
 
-                {isLoadingCharacters ? (
-                  <div className="h-64 bg-light animate-pulse rounded-lg" />
+                {/* Filter Panel */}
+                {discoverView === 'popular' && (
+                  <FilterPanel
+                    filters={characterFilters}
+                    onFilterChange={updateCharacterFilter}
+                    onClearFilters={clearCharacterFilters}
+                    activeFiltersCount={activeFiltersCount}
+                  />
+                )}
+
+                {initialLoading ? (
+                  <CharacterGridSkeleton count={initialLimit} />
                 ) : (
-                  <div className="flex flex-wrap items-stretch gap-4">
-                    {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).map((character) => (
-                      <CharacterCard
-                        key={character.id}
-                        character={character}
-                        isFavorite={favoriteCharacterIds.has(character.id)}
-                        clickAction={discoverView === 'popular' ? 'view' : 'chat'}
-                        blurNsfw={blurNsfw}
-                        chatCount={statsById[character.id]?.conversationCount}
-                        favoriteCount={statsById[character.id]?.favoriteCount}
-                        imageCount={imagesById[character.id]}
-                        onFavoriteToggle={handleFavoriteToggle}
-                      />
-                    ))}
+                  <>
+                    <div className="flex flex-wrap items-stretch gap-4">
+                      {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).map((character) => (
+                        <CharacterCard
+                          key={character.id}
+                          character={character}
+                          isFavorite={favoriteCharacterIds.has(character.id)}
+                          clickAction={discoverView === 'popular' ? 'view' : 'chat'}
+                          blurNsfw={blurNsfw}
+                          chatCount={statsById[character.id]?.conversationCount}
+                          favoriteCount={statsById[character.id]?.favoriteCount}
+                          imageCount={imagesById[character.id]}
+                          onFavoriteToggle={handleFavoriteToggle}
+                        />
+                      ))}
+                    </div>
+                    {/* Infinite scroll trigger (only for popular view) */}
+                    {discoverView === 'popular' && (
+                      <div ref={loadMoreRef} className="min-h-[20px] w-full">
+                        {isLoadingMore && <LoadingSpinner />}
+                        {!hasMore && filteredPopularCharacters.length > 0 && <EndOfListMessage />}
+                      </div>
+                    )}
                     {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).length === 0 && (
                       <div className="w-full text-center py-12 bg-light/50 rounded-xl border border-dashed border-border">
                         <p className="text-muted mb-4">
@@ -474,7 +573,7 @@ function DashboardContent(): JSX.Element {
                         </button>
                       </div>
                     )}
-                  </div>
+                  </>
                 )}
               </div>
             </TabPanel>
