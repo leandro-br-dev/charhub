@@ -468,10 +468,23 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     // 1. Seed system users first (required for character ownership)
     stats.users = await seedUsers(options);
 
-    // 2. Seed system characters (narrator, etc)
+    // 2. Seed species BEFORE characters (required for Character.speciesId FK)
+    console.log('\n🧬 Seeding species...');
+
+    const speciesOptions = {
+      verbose: options.verbose,
+      dryRun: options.dryRun,
+    };
+
+    // Run species seeding (it prints its own output)
+    await seedAllSpecies(speciesOptions);
+
+    // Note: seedAllSpecies prints its own stats, so we don't duplicate them here
+
+    // 3. Seed system characters (narrator, etc) - depends on Species
     stats.characters = await seedCharacters(options);
 
-    // 3. Seed tags (character, story, asset tags)
+    // 4. Seed tags (character, story, asset tags)
     console.log('\n🏷️  Seeding tags...');
 
     // Capture tag seeding output
@@ -484,19 +497,6 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     await seedAllTags(tagOptions);
 
     // Note: seedAllTags prints its own stats, so we don't duplicate them here
-
-    // 4. Seed species
-    console.log('\n🧬 Seeding species...');
-
-    const speciesOptions = {
-      verbose: options.verbose,
-      dryRun: options.dryRun,
-    };
-
-    // Run species seeding (it prints its own output)
-    await seedAllSpecies(speciesOptions);
-
-    // Note: seedAllSpecies prints its own stats, so we don't duplicate them here
 
     // 5. Seed subscription plans
     stats.plans = await seedPlans(options);
