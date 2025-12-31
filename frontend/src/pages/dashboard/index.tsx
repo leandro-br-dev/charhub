@@ -524,7 +524,7 @@ function DashboardContent(): JSX.Element {
                 {discoverView === 'popular' && (
                   <FilterPanel
                     filters={characterFilters}
-                    onFilterChange={updateCharacterFilter}
+                    onUpdateFilter={updateCharacterFilter}
                     onClearFilters={clearCharacterFilters}
                     activeFiltersCount={activeFiltersCount}
                   />
