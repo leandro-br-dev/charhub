@@ -141,6 +141,54 @@ async function seedUsers(options: SeedOptions): Promise<{ created: number; skipp
 }
 
 /**
+ * Map old species names to new Species table names
+ * Used for migrating system characters that have legacy species names
+ */
+const SPECIES_NAME_MAP: Record<string, string> = {
+  'System Entity': 'AI',
+  'Advanced Android': 'Android',
+  'AI Construct': 'AI',
+  'Cybertronian': 'Robot',
+  'Transformer': 'Robot',
+  'Totoro-like creature': 'Unknown',
+  // Add more mappings as needed
+};
+
+/**
+ * Get species ID from legacy species name
+ */
+async function getSpeciesIdFromLegacyName(legacyName: string | null): Promise<string | null> {
+  if (!legacyName || legacyName.trim() === '') {
+    return null;
+  }
+
+  // First check if it's already a UUID (direct match)
+  if (legacyName.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)) {
+    const species = await prisma.species.findUnique({
+      where: { id: legacyName },
+      select: { id: true },
+    });
+    return species?.id || null;
+  }
+
+  // Map legacy name to new species name
+  const mappedName = SPECIES_NAME_MAP[legacyName] || legacyName;
+
+  // Look up species by name
+  const species = await prisma.species.findUnique({
+    where: { name: mappedName },
+    select: { id: true },
+  });
+
+  if (!species) {
+    console.warn(`  ⚠️  Species not found: "${legacyName}" (mapped to "${mappedName}")`);
+    return null;
+  }
+
+  return species.id;
+}
+
+/**
  * Seed system characters
  */
 async function seedCharacters(options: SeedOptions): Promise<{ created: number; skipped: number }> {
@@ -199,13 +247,16 @@ async function seedCharacters(options: SeedOptions): Promise<{ created: number; 
       }
 
       const now = new Date();
-      
+
+      // Map legacy species name to speciesId
+      const speciesId = await getSpeciesIdFromLegacyName(charData.species);
+
       const characterPayload = {
         firstName: charData.firstName,
         lastName: charData.lastName,
         age: charData.age,
         gender: charData.gender as any,
-        speciesId: charData.species,
+        speciesId,
         style: charData.style as VisualStyle | null,
         physicalCharacteristics: charData.physicalCharacteristics,
         personality: charData.personality,

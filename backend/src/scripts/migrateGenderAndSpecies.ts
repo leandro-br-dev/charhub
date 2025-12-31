@@ -72,7 +72,10 @@ const SPECIES_MAP: Record<string, string> = {
   // Anthropomorphic → kin variant
   'anthropomorphic fox': 'Foxkin',
   'anthropomorphic feline': 'Catfolk',
-  'anthropomorphic frog': 'Unknown', // No direct match
+  'anthropomorphic frog': 'Unknown',
+
+  // Bird-like creatures
+  'strigid': 'Unknown', // Owl-like species, map to Unknown // No direct match
 
   // Robot variants → Robot
   'transformer': 'Robot',
