@@ -5,7 +5,7 @@
 
 export interface SearchVariationConfig {
   period: 'Day' | 'Week' | 'Month' | 'Year' | 'AllTime';
-  sort: 'Newest' | 'Most Reactions' | 'Most Comments';
+  sort: 'Newest' | 'Most Reactions' | 'Most Comments' | 'Trending';
   tag?: string;
 }
 
@@ -82,11 +82,12 @@ const PERIOD_POOL: Array<{ value: SearchVariationConfig['period']; weight: numbe
 
 /**
  * Sort options with weights
+ * Prioritize quality (Most Reactions) over variety (Newest)
  */
 const SORT_POOL: Array<{ value: SearchVariationConfig['sort']; weight: number }> = [
-  { value: 'Newest', weight: 40 },           // 40% - Best for variety and avoiding repetition
-  { value: 'Most Reactions', weight: 35 },   // 35% - Good quality, popular images
-  { value: 'Most Comments', weight: 25 },    // 25% - Community-engaging content
+  { value: 'Most Reactions', weight: 60 },   // 60% - Prioritize high-quality, popular images
+  { value: 'Trending', weight: 25 },         // 25% - Trending content (good balance)
+  { value: 'Newest', weight: 15 },           // 15% - Some variety, but not primary
 ];
 
 /**
@@ -156,5 +157,8 @@ export function getAvailableTags(): string[] {
  * Validate if a tag exists in our pool
  */
 export function isValidTag(tag: string): boolean {
+  if (!tag || typeof tag !== 'string') {
+    return false;
+  }
   return CHARACTER_TAGS.includes(tag.toLowerCase());
 }

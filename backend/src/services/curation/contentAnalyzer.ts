@@ -180,6 +180,7 @@ export class ContentAnalyzer {
 
   /**
    * Calculate quality score (0-5)
+   * Updated to allow soft NSFW content with minimal penalty
    */
   private calculateQualityScore(
     classification: ImageClassificationResult,
@@ -187,11 +188,12 @@ export class ContentAnalyzer {
   ): number {
     let score = 3.0; // Base score
 
-    // Deduct for NSFW content (prefer SFW for curated content)
-    const nsfwTags = ['NUDITY', 'SEXUAL', 'GORE'];
-    const hasNsfw = classification.contentTags.some(tag => nsfwTags.includes(tag));
-    if (hasNsfw) {
-      score -= 2.0;
+    // Minor deduction for explicit content only (gore, extreme violence)
+    // Soft NSFW (nudity, revealing clothing) is allowed with minimal penalty
+    const explicitTags = ['GORE', 'EXTREME_VIOLENCE'];
+    const hasExplicit = classification.contentTags.some(tag => explicitTags.includes(tag));
+    if (hasExplicit) {
+      score -= 1.0; // Smaller penalty for mature content
     }
 
     // Boost for detailed analysis
@@ -222,49 +224,72 @@ export class ContentAnalyzer {
 
   /**
    * Check if content is NSFW
+   * Updated to track NSFW but not reject it automatically
    */
   private isNsfwContent(classification: ImageClassificationResult): boolean {
-    const nsfwTags = ['NUDITY', 'SEXUAL'];
+    const nsfwTags = ['NUDITY', 'SEXUAL', 'GORE'];
     return classification.contentTags.some(tag => nsfwTags.includes(tag));
   }
 
   /**
    * Determine if image should be auto-approved
+   * Updated to allow soft NSFW content (16+, 18+) if quality is good
    */
   shouldAutoApproved(result: ContentAnalysisResult, threshold: number = 4.0): boolean {
     // Auto-approve if:
     // - Quality score meets threshold
-    // - Not NSFW
     // - Not a duplicate
-    // - Age rating is not EIGHTEEN (conservative)
+    // - Not explicit pornography (we allow soft NSFW)
 
+    // Allow EIGHTEEN (soft NSFW) content now
     return (
       result.qualityScore >= threshold &&
-      !result.isNsfw &&
       !result.isDuplicate &&
-      result.ageRating !== 'EIGHTEEN'
+      !this.isExplicitContent(result)
     );
   }
 
   /**
+   * Check if content is explicit pornography (should be rejected)
+   * Differentiates between tasteful nudity and explicit content
+   */
+  private isExplicitContent(result: ContentAnalysisResult): boolean {
+    // This is a simplified check - in a real implementation, you'd use
+    // a more sophisticated AI classifier to distinguish between:
+    // - Soft NSFW: revealing clothing, swimwear, artistic nudity (ALLOW)
+    // - Explicit: sexual acts, genitalia, pornography (REJECT)
+
+    // For now, we'll be permissive and allow content unless it's clearly objectionable
+    // The AI classification agent should provide more nuanced tags
+
+    // If the description contains explicit keywords, reject
+    const explicitKeywords = [
+      'sexual intercourse',
+      'genitalia',
+      'explicit sexual act',
+      'hardcore pornography'
+    ];
+
+    const description = result.overallDescription.toLowerCase();
+    return explicitKeywords.some(keyword => description.includes(keyword));
+  }
+
+  /**
    * Determine if image should be rejected
+   * Updated to allow soft NSFW content while rejecting explicit content
    */
   shouldReject(result: ContentAnalysisResult): boolean {
     // Reject if:
-    // - NSFW (nudity, sexual content)
     // - Duplicate
     // - Quality too low (< 2.0)
     // - Analysis failed
-
-    const hasNudityOrSexual = result.contentTags.some(tag =>
-      ['NUDITY', 'SEXUAL'].includes(tag)
-    );
+    // - Explicit pornography (not soft NSFW)
 
     return (
-      hasNudityOrSexual ||
       result.isDuplicate ||
       result.qualityScore < 2.0 ||
-      result.overallDescription.includes('Unable to analyze')
+      result.overallDescription.includes('Unable to analyze') ||
+      this.isExplicitContent(result)
     );
   }
 }

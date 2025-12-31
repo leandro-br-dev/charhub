@@ -1017,6 +1017,10 @@ model CuratedImage {
   contentTags     ContentTag[] // AI-generated content tags
   description     String?  @db.Text // AI-generated description
 
+  // Diversity tracking (for improved character generation variety)
+  gender          String?  // "male", "female", "non-binary", "unknown"
+  species         String?  // "human", "elf", "robot", "furry", "demon", "angel", etc.
+
   // Storage
   localPath       String?  // Temp storage path
   uploadedToR2    Boolean  @default(false)
