@@ -37,6 +37,7 @@ jest.mock('../../../config/database', () => {
 });
 
 // Get the mock references
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { __mockExports } = require('../../../config/database');
 
 describe('DiversificationAlgorithm (Enhanced)', () => {
