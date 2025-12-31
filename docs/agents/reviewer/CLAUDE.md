@@ -1,6 +1,6 @@
 # CLAUDE.md - Agent Reviewer
 
-**Last Updated**: 2025-12-27
+**Last Updated**: 2025-12-29
 **Role**: Operations, QA & Deployment
 **Branch**: `main` (NEVER `feature/*`)
 **Language**: English (code, docs, commits) | Portuguese (user communication if Brazilian)
@@ -454,6 +454,97 @@ cat docs/06-operations/quality-dashboard.md
 
 ### "Deployment is taking too long"
 → See [checklists/deploy-monitoring.md](checklists/deploy-monitoring.md) - Timeline section
+
+---
+
+## 🎯 Lições Aprendidas de Incidentes Críticos
+
+### Incidente: Falha de Deploy e Rollback (2025-12-29)
+
+**Contexto**: Deploy falhou, rollback automático também falhou, site ficou 3h fora do ar.
+
+**Causa Raiz**: Incompatibilidade Prisma 6 vs Prisma 7 + Tag `latest-stable` desatualizada
+
+#### Lições Críticas
+
+**1. NUNCA use tag `latest-stable` para rollback**
+- ❌ Tag `latest-stable` pode estar **muito desatualizada**
+- ✅ Use sempre tags `stable-YYYYMMDD-HHMMSS` (formato atual)
+- ✅ Escolha a tag stable mais recente ANTES do commit quebrado
+
+**Como identificar versão stable correta:**
+```bash
+# Listar tags stable ordenadas (mais recente primeiro)
+git tag -l 'stable-*' --sort=-version:refname | head -10
+
+# Ver commit de cada tag
+git log --oneline <tag-name> -1
+
+# Escolher a tag stable mais recente que NÃO seja o commit quebrado
+```
+
+**2. Cuidado com migrações de banco de dados (Prisma, TypeORM, etc)**
+- ⚠️ Rollback para versão PRÉ-MIGRAÇÃO quebra o sistema
+- ⚠️ Banco de dados migrado para Prisma 7 **NÃO FUNCIONA** com código Prisma 6
+- ✅ Sempre verificar se rollback target é compatível com schema atual do banco
+- ✅ Em caso de migração, rollback deve ser para versão PÓS-MIGRAÇÃO estável
+
+**Exemplo prático (deste incidente):**
+```
+d07567c (latest-stable) → Prisma 6.19.0 ❌ INCOMPATÍVEL
+3646163 (stable-20251229-132243) → Prisma 7.1.0 ✅ COMPATÍVEL
+954ace0 (commit quebrado) → Prisma 7.1.0 (mas feature com bug)
+
+Rollback correto: 3646163 (versão stable mais recente com Prisma 7)
+```
+
+**3. VM e2-small (2GB RAM) trava durante builds**
+- ⚠️ SSH timeout é comum durante docker build em VM pequena
+- ⚠️ Não confundir "VM travada" com "deploy quebrado"
+- ✅ Aguardar build completar antes de diagnosticar (pode levar 10-15 min)
+- ✅ Considerar upgrade para e2-medium (4GB RAM) se problema recorrente
+
+**4. Rollback automático precisa ser melhorado**
+- ❌ Workflow atual usa `latest-stable` (desatualizado)
+- ✅ Atualizar workflow para usar tag `stable-*` mais recente
+- ✅ Adicionar validação de compatibilidade antes de rollback
+
+**5. Processo de recuperação de emergência**
+
+Se deploy falhou E rollback automático falhou:
+
+```bash
+# 1. Verificar status da VM
+gcloud compute instances list --filter="name=charhub-vm"
+
+# 2. Se SSH não responde, resetar VM
+gcloud compute instances reset charhub-vm --zone=us-central1-a
+
+# 3. Aguardar 40s e testar SSH
+sleep 40 && gcloud compute ssh charhub-vm --zone=us-central1-a --command="uptime"
+
+# 4. Identificar versão stable correta (pós-migração, pré-commit quebrado)
+cd /mnt/stateful_partition/charhub
+git tag -l 'stable-*' --sort=-version:refname | head -10
+git log --oneline <stable-tag> -1
+
+# 5. Rollback para versão correta
+git reset --hard <stable-tag-correto>
+
+# 6. Rebuild e restart
+COMPOSE="/var/lib/toolbox/bin/docker-compose"
+sudo -E HOME="/home/leandro_br_dev_gmail_com" $COMPOSE down --remove-orphans
+sudo -E HOME="/home/leandro_br_dev_gmail_com" DOCKER_BUILDKIT=1 $COMPOSE build
+sudo -E HOME="/home/leandro_br_dev_gmail_com" $COMPOSE up -d
+
+# 7. Verificar health
+sleep 30 && curl https://charhub.app/api/v1/health
+```
+
+**6. Atualização da tag latest-stable**
+- ✅ Sempre atualizar `latest-stable` após deploy bem-sucedido
+- ✅ NÃO deixar tag desatualizada por muito tempo
+- ✅ Workflow deveria fazer isso automaticamente (verificar se está funcionando)
 
 ---
 

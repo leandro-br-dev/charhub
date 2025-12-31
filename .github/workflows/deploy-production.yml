@@ -581,8 +581,8 @@ jobs:
             echo "Running Docker cleanup (disk usage: ${DISK_USAGE}%)..."
 
             if [ -f scripts/ops/cleanup-docker.sh ]; then
-              chmod +x scripts/ops/cleanup-docker.sh
-              ./scripts/ops/cleanup-docker.sh
+              # Execute script with sudo and explicit bash (fixes "Permission denied" error)
+              sudo bash scripts/ops/cleanup-docker.sh
             else
               echo "⚠️  Cleanup script not found, running manual cleanup..."
               # Remove dangling images and build cache

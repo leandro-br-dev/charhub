@@ -58,7 +58,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 configurePassport();
 
-// Health check
+// Health check endpoint - used by deployment monitoring and load balancers
 app.get('/api/v1/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',

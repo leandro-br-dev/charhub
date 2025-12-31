@@ -14,6 +14,7 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 |---|--------|--------|--------|--------|-----|---------------|
 | T009 | **TypeScript ESLint 8.x Migration** | Agent Coder | ✅ Concluído | `feature/typescript-eslint-8-migration` | - | 28/12 - PR merged e movido para implemented |
 | T010 | **Prisma 7.x Migration** | Agent Coder | 📋 Em Revisão | `feature/prisma-7-migration` | 29/12/2025 | 28/12 - PR aberta aguardando review |
+| T016 | **Content Translation & Image Cache Fixes** | Agent Coder | 🔥 Urgente | `feature/translation-image-cache-fixes` | 30/12/2025 | 30/12 - Spec criada, ready para implementação |
 
 ---
 
@@ -21,6 +22,7 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 | Ordem | Tarefa | Prioridade | Estimado | Notas | Spec |
 |-------|--------|-----------|----------|-------|------|
+| 0️⃣ | **Content Translation & Image Cache Fixes** | 🔴 URGENTE | 6-8 horas | **P0 Critical**: Tradução de histórias quebrada, tabela vazia | `active/content-translation-and-image-cache-fixes.md` |
 | 1️⃣ | **Dashboard Infinite Scroll** | 🔥 ALTA | 8-10 horas | Carregamento sob demanda de personagens | `active/dashboard-infinite-scroll.md` |
 | 2️⃣ | **Discovery Enhanced Filters** | 🔥 ALTA | 10 horas | Filtros de gênero e espécie | `active/discovery-enhanced-filters.md` |
 | 3️⃣ | **Automated Character Generation Improvements** | 🔥 ALTA | 10-12 horas | Corrigir qualidade, diversidade e censura Civit.ai | `active/automated-character-generation-improvements.md` |
@@ -48,10 +50,124 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 | Tarefa | Agente | Status | Detalhes |
 |--------|--------|--------|----------|
+| **Content Translation & Image Cache Fixes** | Agent Coder | 🔥 Atribuído | Spec completa em `active/content-translation-and-image-cache-fixes.md`. **P0 URGENTE** - Sistema de tradução quebrado. |
 | **Sistema de Criação de Histórias (Manual + IA)** | Agent Coder | 📋 Em Finalização | Spec completa em `active/automated-story-generation.md`. **PRIORIDADE ALTA** - Agent Coder trabalhando nas etapas finais. |
 | **Mobile Hamburger Menu (Responsive)** | Agent Coder | ✅ Concluído | Spec em `implemented/mobile-hamburger-menu.md`. **CRÍTICO** - PR #63 merged e deployed. Quick Win! |
-| **TypeScript ESLint 8.x Migration** | Agent Coder | ✅ Atribuído | Spec completa em `active/typescript-eslint-8-migration.md`. **PRIORIDADE MÉDIA** - Segurança e qualidade do código. |
-| **Prisma 7.x Migration** | Agent Coder | ✅ Atribuído | Spec completa em `active/prisma-7-migration.md`. **PRIORIDADE MÉDIA** - Performance e segurança. |
+| **TypeScript ESLint 8.x Migration** | Agent Coder | ✅ Concluído | Spec em `implemented/typescript-eslint-8-migration.md`. **PRIORIDADE MÉDIA** - PR merged. |
+| **Prisma 7.x Migration** | Agent Coder | 📋 Em Revisão | Spec completa em `active/prisma-7-migration.md`. **PRIORIDADE MÉDIA** - PR aberta aguardando review. |
+
+**Contexto da Tarefa Content Translation & Image Cache Fixes** (T016):
+- **Por que P0/URGENTE**: Sistema de tradução completamente quebrado para histórias, impactando experiência de usuários internacionais
+- **Objetivo Principal**: Corrigir tradução de conteúdo dinâmico (histórias) e auditar cache de imagens
+- **Problemas Identificados**:
+  - ✅ **CRÍTICO - Translation System Broken**:
+    - Story routes (GET /api/v1/story/:id, GET /api/v1/story) NÃO têm `translationMiddleware()` aplicado
+    - Tabela `ContentTranslation` está VAZIA (0 registros)
+    - Usuários veem histórias no idioma original do criador ao invés do idioma preferido
+    - Character translation funciona (middleware aplicado), mas Story translation não
+  - ✅ **MÉDIO - Image Cache Audit**:
+    - Componente `CachedImage.tsx` existe com cache blob (5min TTL)
+    - Principais componentes JÁ usam (CharacterCard, StoryCard)
+    - Precisa auditoria completa para confirmar 100% de adoção
+- **Features Principais**:
+  1. **Translation Fix (URGENTE - 3-4 horas)**:
+     - Adicionar `translationMiddleware()` às rotas de Story
+     - Validar campos `originalLanguageCode` e `contentVersion` no model Story
+     - Testar fluxo de tradução completo (Redis → Database → LLM)
+     - Verificar tabela `ContentTranslation` populando
+     - Garantir que Character translation continue funcionando (regression test)
+  2. **Image Cache Audit (MÉDIO - 2-3 horas)**:
+     - Buscar tags `<img>` em todos arquivos .tsx/.jsx
+     - Documentar componentes usando CachedImage vs raw img
+     - Criar plano de migração se necessário
+     - Priorizar componentes de alto tráfego
+- **Estimativa**: 6-8 horas total (Translation: 3-4h + Image Audit: 2-3h + Testing: 1h)
+- **Arquivo de spec**: `docs/05-business/planning/features/active/content-translation-and-image-cache-fixes.md`
+- **Branch sugerida**: `feature/translation-image-cache-fixes`
+
+**Impacto do Bug**:
+- 🚨 **Critical User Experience Issue**: Usuários internacionais não conseguem ler histórias em seu idioma
+- 🚨 **Zero Translations in Database**: Tabela `ContentTranslation` vazia indica falha total do sistema
+- 🚨 **Silent Failure**: Sistema não gera erro, apenas retorna conteúdo no idioma original
+- 📊 **Escopo**: Afeta TODAS as histórias do sistema (100% das stories)
+
+**Root Cause Analysis**:
+```
+GET /api/v1/story/:id
+  └─> NO translationMiddleware() ❌
+      └─> Response bypasses translation layer
+          └─> User receives story in original language
+              └─> No LLM call → No database entry → Empty ContentTranslation table
+
+GET /api/v1/characters/:id
+  └─> translationMiddleware() applied ✅
+      └─> Translation happens correctly
+          └─> ContentTranslation table populated (for characters only)
+```
+
+**Fix Verification**:
+1. ✅ Story routes have middleware: `router.get('/:id', optionalAuth, translationMiddleware(), ...)`
+2. ✅ ContentTranslation table has rows: `SELECT COUNT(*) FROM "ContentTranslation" WHERE "contentType" = 'Story'`
+3. ✅ Stories display in user's language: Create pt-BR story, view as en-US user → sees English
+4. ✅ Character translation still works: Regression test
+
+**Aprovações do Product Owner**:
+- ✅ Feature aprovada para desenvolvimento **IMEDIATO**
+- ✅ Prioridade **P0 (CRÍTICA)** - Bloqueia experiência de usuários internacionais
+- ✅ Quick fix esperado - apenas adicionar middleware + validar
+- ✅ Deploy em produção ASSIM QUE testado (não esperar próxima release)
+
+**Instruções para Agent Coder**:
+1. 🚨 **P0 URGENTE** - Fix IMEDIATO necessário
+2. Criar branch `feature/translation-image-cache-fixes` a partir de `main`
+3. Ler spec completa (arquitetura de tradução, fluxo de middleware, schema)
+4. **Phase 1: Translation Fix (PRIORITÁRIO)**:
+   - Import translationMiddleware em `backend/src/routes/v1/story.ts`
+   - Apply middleware a TODOS os GET routes (/:id, /, /my)
+   - Verificar Story model tem `originalLanguageCode` e `contentVersion`
+   - Testar localmente com diferentes idiomas
+   - Verificar `ContentTranslation` table populando
+5. **Phase 2: Image Cache Audit**:
+   - Grep por `<img` em frontend/src
+   - Documentar findings
+   - Criar tracking issue se necessário
+6. **Phase 3: Testing**:
+   - Unit tests para Story translation
+   - Integration tests (API + database)
+   - Manual QA com múltiplos idiomas
+   - Regression test para Character translation
+7. **CRÍTICO**: Testar em staging antes de produção
+8. **IMPORTANTE**: Monitorar logs após deploy (translation cache hits/misses)
+
+**Requisitos Técnicos Importantes**:
+- ✅ Backend:
+  - Modificar: `backend/src/routes/v1/story.ts` (add translationMiddleware)
+  - Validar: Story Prisma model tem `originalLanguageCode` e `contentVersion`
+  - Verificar: storyService popula originalLanguageCode ao criar story
+- ✅ Database:
+  - Verificar schema: ContentTranslation table existe e tem índices corretos
+  - Monitor: ContentTranslation table growth após deploy
+- ✅ Testing:
+  - Unit: Translation middleware intercepta Story responses
+  - Integration: End-to-end translation flow (LLM call → DB save → cached response)
+  - Regression: Character translation não quebra
+  - Manual: Create story em pt-BR, fetch as en-US user → sees English
+
+**ROI Esperado**:
+- 100% das histórias traduzidas automaticamente
+- Melhoria imediata na experiência de usuários internacionais
+- Database population (ContentTranslation table)
+- Cache system funcional (Redis + Database)
+- Redução de ~90% no tempo de tradução (após cache warm-up)
+
+**Métricas de Sucesso**:
+- ContentTranslation table > 0 registros (currently 0)
+- Story cards mostram conteúdo traduzido
+- Translation cache hit rate > 80% após 1 semana
+- Zero erros de tradução em logs
+- Performance < 2s para primeira tradução, < 100ms para cached
+
+---
 
 **Contexto da Tarefa População Automática** (T006):
 - **Por que crítico**: CharHub está funcional mas não pode ser divulgado sem conteúdo (chicken-and-egg problem)
