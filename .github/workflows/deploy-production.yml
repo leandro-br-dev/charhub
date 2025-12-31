@@ -29,6 +29,8 @@ jobs:
   pre-deploy-checks:
     name: Pre-Deploy Checks
     runs-on: ubuntu-latest
+    # Skip if commit message contains [skip ci] or [ci skip]
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -51,6 +53,8 @@ jobs:
     name: Wait for CI Pipelines (Backend + Frontend)
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Skip if commit message contains [skip ci] or [ci skip]
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -161,7 +165,8 @@ jobs:
     name: Deploy to Production
     runs-on: ubuntu-latest
     needs: [pre-deploy-checks, ci-gate]
-    if: success()
+    # Skip if commit message contains [skip ci] or [ci skip]
+    if: "success() && !contains(github.event.head_commit.message, '[skip ci]') && !contains(github.event.head_commit.message, '[ci skip]')"
     environment:
       name: production
       url: https://charhub.app

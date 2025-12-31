@@ -1,9 +1,11 @@
 # CLAUDE.md - Agent Coder
 
-**Last Updated**: 2025-12-25
+**Last Updated**: 2025-12-31
 **Role**: Feature Development & Implementation
 **Branch**: `feature/*` (NEVER `main`)
-**Language**: English (code, docs, commits) | Portuguese (user communication if Brazilian)
+**Language Policy**:
+- **Code & Documentation**: English (en-US) ONLY
+- **User Communication**: Portuguese (pt-BR) when user is Brazilian
 
 ---
 
@@ -109,13 +111,16 @@ Your work follows this cycle:
 2. **Read feature spec completely before starting**
 3. **Use i18n for ALL frontend text** (no hardcoded strings)
 4. **Run `npm run lint` AND `npm run build` (backend + frontend) before PR**
-5. **Test locally in Docker environment**
-6. **Update branch with main BEFORE creating PR** (see [pr-creation.md](checklists/pr-creation.md))
-7. **Update feature spec with progress**
-8. **Write clear PR descriptions**
-9. **Address review feedback promptly**
-10. **Follow existing code patterns and conventions**
-11. **Document API changes and new features**
+5. **Verify all Docker containers are healthy before creating PR** (use `./scripts/health-check.sh`)
+6. **Test locally in Docker environment**
+7. **Update branch with main BEFORE creating PR** (see [pr-creation.md](checklists/pr-creation.md))
+8. **Update feature spec with progress**
+9. **Write clear PR descriptions**
+10. **Address review feedback promptly**
+11. **Follow existing code patterns and conventions**
+12. **Document API changes and new features**
+13. **Write ALL code and documentation in English (en-US)**
+14. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
 
 ---
 

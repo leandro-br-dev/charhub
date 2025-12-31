@@ -129,6 +129,84 @@ docker compose up -d --build
 
 ---
 
+### Step 1.5: Verify All Docker Containers Are Healthy
+
+**⚠️ CRITICAL: Common mistake - Agent Coder creates PR without checking if backend is in restart loop!**
+
+**Why this step is mandatory:**
+- Backend may compile successfully but crash at runtime
+- Containers may be in restart loop due to runtime errors
+- Database connection issues may not show in build
+- **User cannot test if containers are not healthy!**
+
+```bash
+# Run health check script
+./scripts/health-check.sh --wait
+
+# This will verify:
+# ✓ PostgreSQL is running
+# ✓ Redis is running
+# ✓ Backend is healthy (NOT in restart loop!)
+# ✓ Frontend is running
+# ✓ No errors in backend logs
+```
+
+**Expected output:**
+```
+🏥 Docker Services Health Check
+
+  postgres: ✓ Healthy (Up 2 minutes)
+  redis:    ✓ Healthy (Up 2 minutes)
+  backend:  ✓ Healthy (Up 2 minutes (healthy))
+  frontend: ✓ Healthy (Up 2 minutes)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ All services are healthy
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Safe to proceed with:
+  ✓ Creating Pull Requests
+  ✓ Running tests
+  ✓ User acceptance testing
+```
+
+**⚠️ If health check fails:**
+```
+✗ Some services are not healthy
+
+  postgres: ✓ Healthy
+  redis:    ✓ Healthy
+  backend:  ✗ Not healthy (Restarting)  ← PROBLEM!
+  frontend: ✓ Healthy
+
+    ⚠️  Backend is in restart loop!
+    ⚠️  Errors found in backend logs
+```
+
+**DO NOT CREATE PR IF HEALTH CHECK FAILS!**
+
+**Actions required:**
+1. Check backend logs: `docker compose logs backend --tail=100`
+2. Find and fix the runtime error (common: missing env vars, connection issues)
+3. Restart containers: `docker compose restart backend`
+4. Re-run health check: `./scripts/health-check.sh --wait`
+5. Only proceed when all services are healthy
+
+**Common issues causing unhealthy containers:**
+- **Missing environment variables**: Check `.env` files
+- **Database connection errors**: Verify `DATABASE_URL` in `.env`
+- **Redis connection errors**: Check if Redis is running
+- **Code syntax/runtime errors**: Check backend logs for stack traces
+- **Port conflicts**: Another service using the same port
+
+**Checklist:**
+- [ ] Health check passed (all services healthy)
+- [ ] Backend is NOT in restart loop
+- [ ] No errors in backend logs
+- [ ] All containers responding correctly
+
+---
+
 ## 📝 Step 2: Move Feature Spec to Implemented
 
 **Why**: Signals to Agent Planner that feature is ready for review and deployment.
