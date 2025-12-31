@@ -39,7 +39,13 @@ export const characterService = {
   /**
    * Get characters with pagination (for infinite scroll)
    */
-  async listWithPagination(params?: { skip?: number; limit?: number; ageRatings?: AgeRating[] }): Promise<CharacterListResult> {
+  async listWithPagination(params?: {
+    skip?: number;
+    limit?: number;
+    ageRatings?: AgeRating[];
+    genders?: string[];
+    species?: string[];
+  }): Promise<CharacterListResult> {
     const query: Record<string, unknown> = { ...(params || {}) };
 
     const response = await api.get<{ success: boolean; data: Character[]; total: number; hasMore: boolean }>(BASE_PATH, { params: query });
@@ -168,10 +174,16 @@ export const characterService = {
   /**
    * Get popular characters with pagination (for infinite scroll)
    */
-  async getPopularWithPagination(params: { skip?: number; limit?: number; ageRatings?: AgeRating[] } = {}): Promise<CharacterListResult> {
+  async getPopularWithPagination(params: {
+    skip?: number;
+    limit?: number;
+    ageRatings?: AgeRating[];
+    genders?: string[];
+    species?: string[];
+  } = {}): Promise<CharacterListResult> {
     try {
-      const { skip = 0, limit = 20, ageRatings } = params;
-      return await this.listWithPagination({ skip, limit, ageRatings });
+      const { skip = 0, limit = 20, ageRatings, genders, species } = params;
+      return await this.listWithPagination({ skip, limit, ageRatings, genders, species });
     } catch (error) {
       console.error('[characterService] getPopularWithPagination failed:', error);
       return { characters: [], total: 0, hasMore: false };
