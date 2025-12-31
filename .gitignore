@@ -161,6 +161,7 @@ crashlytics-build.properties
 
 # Claude AI
 .claude
+.agentrc
 
 # Claude Code - Agent-specific guides (local only, not versioned)
 # Each agent has their own CLAUDE-[agent].md in docs/[agent]/ folder (those ARE versioned)
