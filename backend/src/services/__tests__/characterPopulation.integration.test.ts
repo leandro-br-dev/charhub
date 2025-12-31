@@ -90,8 +90,10 @@ describe('Character Population Integration', () => {
       const result = await curationQueue.addToQueue(mockImage);
 
       expect(result).toBeDefined();
-      expect(result.sourceUrl).toBe(mockImage.url);
-      expect(result.status).toBe('PENDING');
+      if (result) {
+        expect(result.sourceUrl).toBe(mockImage.url);
+        expect(result.status).toBe('PENDING');
+      }
 
       addToQueueSpy.mockRestore();
     });

@@ -11,6 +11,9 @@ import { ageRatingClassifier } from './ageRatingClassifier';
 import { qualityScorer } from './qualityScorer';
 import type { CivitaiImageResult } from '../civitai';
 
+// Minimum quality threshold for images from Civitai
+const MIN_CIVITAI_RATING = 3.0; // Minimum 3/5 rating (60% quality)
+
 /**
  * Curation queue item
  */
@@ -35,8 +38,18 @@ export class CurationQueue {
   /**
    * Add image to curation queue
    */
-  async addToQueue(image: CivitaiImageResult): Promise<CurationQueueItem> {
+  async addToQueue(image: CivitaiImageResult): Promise<CurationQueueItem | null> {
     try {
+      // Quality filter: Skip low-quality images from Civitai
+      // Images with rating below threshold are likely poor quality
+      if (image.rating !== undefined && image.rating < MIN_CIVITAI_RATING) {
+        logger.debug(
+          { sourceUrl: image.url, rating: image.rating, minRating: MIN_CIVITAI_RATING },
+          'Skipping low-quality image (below rating threshold)'
+        );
+        return null; // Return null to indicate image was skipped
+      }
+
       // Check if already exists
       const existing = await prisma.curatedImage.findUnique({
         where: { sourceUrl: image.url },
@@ -78,17 +91,22 @@ export class CurationQueue {
    */
   async addBatch(images: CivitaiImageResult[]): Promise<CurationQueueItem[]> {
     const results: CurationQueueItem[] = [];
+    let skipped = 0;
 
     for (const image of images) {
       try {
         const item = await this.addToQueue(image);
-        results.push(item);
+        if (item) {
+          results.push(item);
+        } else {
+          skipped++; // Image was filtered out (low quality, etc.)
+        }
       } catch (error) {
         logger.warn({ url: image.url, error }, 'Failed to add image to batch (continuing)');
       }
     }
 
-    logger.info({ total: images.length, added: results.length }, 'Batch add to queue completed');
+    logger.info({ total: images.length, added: results.length, skipped }, 'Batch add to queue completed');
     return results;
   }
 
@@ -224,6 +242,10 @@ export class CurationQueue {
         finalStatus = CurationStatus.APPROVED;
       }
 
+      // Extract gender and species for diversity tracking
+      const gender = analysis.physicalCharacteristics?.gender || 'unknown';
+      const species = analysis.physicalCharacteristics?.species || 'unknown';
+
       // Update database
       await prisma.curatedImage.update({
         where: { id: itemId },
@@ -233,6 +255,8 @@ export class CurationQueue {
           qualityScore: qualityResult.score,
           contentTags: analysis.contentTags,
           description: analysis.description,
+          gender, // NEW: Track gender for diversity
+          species, // NEW: Track species for diversity
           processedAt: new Date(),
           rejectedAt: finalStatus === CurationStatus.REJECTED ? new Date() : null,
           rejectionReason,

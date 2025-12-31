@@ -29,7 +29,7 @@ async function processTriggerCuration(job: Job<TriggerCurationJobData>): Promise
     // 1. Fetch images from Civitai
     const images = await civitaiApiClient.getTrendingImages({
       limit: imageCount,
-      nsfw: 'None',
+      nsfw: 'Soft', // Allow tasteful adult content (revealing clothing, mild nudity)
       tags: keywords,
       animeStyle: true, // Focus on anime-style character images
     });
@@ -106,7 +106,7 @@ async function processFullPopulation(job: Job<FullPopulationJobData>): Promise<v
     await job.updateProgress(10);
     const images = await civitaiApiClient.getTrendingImages({
       limit: targetCount * 2, // Fetch extra to account for rejects
-      nsfw: 'None',
+      nsfw: 'Soft', // Allow tasteful adult content (revealing clothing, mild nudity)
       tags: keywords,
       animeStyle: true, // Focus on anime-style character images
     });
@@ -233,7 +233,7 @@ async function processDailyCuration(job: Job<DailyCurationJobData>): Promise<voi
     logger.info('Fetching anime-style images from Civitai...');
     const images = await civitaiApiClient.getTrendingImages({
       limit: targetCount,
-      nsfw: 'None',
+      nsfw: 'Soft', // Allow tasteful adult content (revealing clothing, mild nudity)
       tags: keywords,
       animeStyle: true, // Focus on anime-style character images
     });

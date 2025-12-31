@@ -97,7 +97,7 @@ Your work follows this cycle:
 3. **Deploy to production** (Agent Reviewer handles deployment)
 4. **Modify production files via SSH**
 5. **Skip i18n** (frontend MUST use translations from the start)
-6. **Skip TypeScript compilation** before creating PR
+6. **Skip lint or TypeScript compilation** before creating PR
 7. **Commit without testing locally**
 8. **Hardcode user-facing text** (use i18n keys)
 9. **Work on features in backlog** (only work on `features/active/`)
@@ -108,7 +108,7 @@ Your work follows this cycle:
 1. **Work ONLY in `feature/*` branches**
 2. **Read feature spec completely before starting**
 3. **Use i18n for ALL frontend text** (no hardcoded strings)
-4. **Run `npm run build` (backend + frontend) before PR**
+4. **Run `npm run lint` AND `npm run build` (backend + frontend) before PR**
 5. **Test locally in Docker environment**
 6. **Update branch with main BEFORE creating PR** (see [pr-creation.md](checklists/pr-creation.md))
 7. **Update feature spec with progress**
@@ -183,11 +183,11 @@ vim docs/05-business/planning/features/active/feature-name.md
 ```bash
 cd backend
 
+# Linting (CRITICAL before PR - must pass with ZERO errors)
+npm run lint
+
 # TypeScript compilation (CRITICAL before PR)
 npm run build
-
-# Linting
-npm run lint
 
 # Unit tests
 npm test
@@ -205,11 +205,11 @@ npm run translations:compile
 ```bash
 cd frontend
 
+# Linting (CRITICAL before PR - must pass with ZERO errors)
+npm run lint
+
 # TypeScript + Vite build (CRITICAL before PR)
 npm run build  # Will fail if missing i18n keys or type errors
-
-# Linting
-npm run lint
 ```
 
 ### Local Testing
@@ -235,24 +235,28 @@ open http://localhost:8082
 **CRITICAL**: You MUST complete these steps BEFORE creating a PR:
 
 ```bash
-# 1. TypeScript compilation (MUST pass)
+# 1. Lint check (MUST pass - zero errors allowed)
+cd backend && npm run lint
+cd frontend && npm run lint
+
+# 2. TypeScript compilation (MUST pass)
 cd backend && npm run build
 cd frontend && npm run build
 
-# 2. Manual testing in Docker
+# 3. Manual testing in Docker
 docker compose down -v
 docker compose up -d --build
 
-# 3. Test your changes manually
+# 4. Test your changes manually
 # - For API changes: use Postman/curl or frontend
 # - For UI changes: interact with the UI at http://localhost:8082
 # - For background jobs: check Redis queue via API or logs
 
-# 4. Verify logs show no errors
+# 5. Verify logs show no errors
 docker compose logs -f backend  # Check for runtime errors
 docker compose logs -f frontend # Check for runtime errors
 
-# 5. Ask user for approval
+# 6. Ask user for approval
 # ⚠️ DO NOT CREATE PR until user approves after manual testing
 ```
 
