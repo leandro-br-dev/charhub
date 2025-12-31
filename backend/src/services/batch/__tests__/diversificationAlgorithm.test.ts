@@ -72,8 +72,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           qualityScore: 4.5,
           tags: ['anime', 'fantasy'],
           generatedCharId: null,
-          gender: 'female',
-          species: 'human',
+          gender: 'FEMALE',
+          species: 'Human',
         },
         {
           id: 'img2',
@@ -82,8 +82,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           qualityScore: 4.2,
           tags: ['anime', 'scifi'],
           generatedCharId: null,
-          gender: 'male',
-          species: 'human',
+          gender: 'MALE',
+          species: 'Human',
         },
         {
           id: 'img3',
@@ -92,8 +92,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           qualityScore: 4.0,
           tags: ['realistic', 'modern'],
           generatedCharId: null,
-          gender: 'female',
-          species: 'elf',
+          gender: 'FEMALE',
+          species: 'Elf',
         },
         {
           id: 'img4',
@@ -102,8 +102,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           qualityScore: 3.8,
           tags: ['anime', 'fantasy'],
           generatedCharId: null,
-          gender: 'male',
-          species: 'robot',
+          gender: 'MALE',
+          species: 'Robot',
         },
         {
           id: 'img5',
@@ -112,8 +112,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           qualityScore: 3.5,
           tags: ['realistic', 'scifi'],
           generatedCharId: null,
-          gender: 'non-binary',
-          species: 'human',
+          gender: 'NON_BINARY',
+          species: 'Human',
         },
       ]);
     });
@@ -149,11 +149,11 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
     it('should apply gender balance when enabled', async () => {
       // Mock recent characters with skewed gender distribution
       __mockExports.mockCharacterFindMany.mockResolvedValue([
-        { gender: 'female', species: 'human' },
-        { gender: 'female', species: 'human' },
-        { gender: 'female', species: 'human' },
-        { gender: 'female', species: 'human' },
-        { gender: 'male', species: 'human' },
+        { gender: 'FEMALE', species: 'Human' },
+        { gender: 'FEMALE', species: 'Human' },
+        { gender: 'FEMALE', species: 'Human' },
+        { gender: 'FEMALE', species: 'Human' },
+        { gender: 'MALE', species: 'Human' },
       ]);
 
       const result = await algorithm.selectImages({
@@ -169,11 +169,11 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
     it('should apply species diversity when enabled', async () => {
       // Mock recent characters with skewed species distribution
       __mockExports.mockCharacterFindMany.mockResolvedValue([
-        { gender: 'female', species: 'human' },
-        { gender: 'male', species: 'human' },
-        { gender: 'female', species: 'human' },
-        { gender: 'male', species: 'human' },
-        { gender: 'female', species: 'elf' },
+        { gender: 'FEMALE', species: 'Human' },
+        { gender: 'MALE', species: 'Human' },
+        { gender: 'FEMALE', species: 'Human' },
+        { gender: 'MALE', species: 'Human' },
+        { gender: 'FEMALE', species: 'Elf' },
       ]);
 
       const result = await algorithm.selectImages({
@@ -189,7 +189,7 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
     it('should enforce max consecutive same gender limit', async () => {
       // Mock that we have too many females recently
       __mockExports.mockCharacterFindMany.mockResolvedValue(
-        Array.from({ length: 50 }, () => ({ gender: 'female', species: 'human' }))
+        Array.from({ length: 50 }, () => ({ gender: 'FEMALE', species: 'Human' }))
       );
 
       const result = await algorithm.selectImages({
@@ -206,7 +206,7 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
     it('should enforce max consecutive same species limit', async () => {
       // Mock that we have too many humans recently
       __mockExports.mockCharacterFindMany.mockResolvedValue(
-        Array.from({ length: 50 }, () => ({ gender: 'female', species: 'human' }))
+        Array.from({ length: 50 }, () => ({ gender: 'FEMALE', species: 'Human' }))
       );
 
       const result = await algorithm.selectImages({
@@ -250,8 +250,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           qualityScore: 4.5,
           tags: ['anime'],
           generatedCharId: null,
-          gender: 'female',
-          species: 'human',
+          gender: 'FEMALE',
+          species: 'Human',
         },
       ]);
 
@@ -295,8 +295,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           status: 'APPROVED',
           ageRating: AgeRating.TEN,
           generatedCharId: null,
-          gender: 'female',
-          species: 'human',
+          gender: 'FEMALE',
+          species: 'Human',
         },
         {
           id: 'common2',
@@ -305,8 +305,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           status: 'APPROVED',
           ageRating: AgeRating.TEN,
           generatedCharId: null,
-          gender: 'female',
-          species: 'human',
+          gender: 'FEMALE',
+          species: 'Human',
         },
         {
           id: 'unique1',
@@ -315,8 +315,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           status: 'APPROVED',
           ageRating: AgeRating.TEN,
           generatedCharId: null,
-          gender: 'male',
-          species: 'robot',
+          gender: 'MALE',
+          species: 'Robot',
         },
         {
           id: 'unique2',
@@ -325,8 +325,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           status: 'APPROVED',
           ageRating: AgeRating.TEN,
           generatedCharId: null,
-          gender: 'non-binary',
-          species: 'elf',
+          gender: 'NON_BINARY',
+          species: 'Elf',
         },
       ]);
     });
@@ -334,7 +334,7 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
     it('should prefer diverse tags over quality when diversity enabled', async () => {
       // Mock recent characters with common tags
       __mockExports.mockCharacterFindMany.mockResolvedValue(
-        Array.from({ length: 50 }, () => ({ gender: 'female', species: 'human' }))
+        Array.from({ length: 50 }, () => ({ gender: 'FEMALE', species: 'Human' }))
       );
 
       const result = await algorithm.selectImages({
@@ -351,8 +351,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
 
     it('should prioritize underrepresented genders', async () => {
       // Mock recent characters with mostly females
-      const recentCharacters = Array.from({ length: 40 }, () => ({ gender: 'female', species: 'human' }))
-        .concat(Array.from({ length: 10 }, () => ({ gender: 'male', species: 'human' })));
+      const recentCharacters = Array.from({ length: 40 }, () => ({ gender: 'FEMALE', species: 'Human' }))
+        .concat(Array.from({ length: 10 }, () => ({ gender: 'MALE', species: 'Human' })));
 
       __mockExports.mockCharacterFindMany.mockResolvedValue(recentCharacters);
 
@@ -367,8 +367,8 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
 
     it('should prioritize underrepresented species', async () => {
       // Mock recent characters with mostly humans
-      const recentCharacters = Array.from({ length: 45 }, () => ({ gender: 'female', species: 'human' }))
-        .concat(Array.from({ length: 5 }, () => ({ gender: 'male', species: 'elf' })));
+      const recentCharacters = Array.from({ length: 45 }, () => ({ gender: 'FEMALE', species: 'Human' }))
+        .concat(Array.from({ length: 5 }, () => ({ gender: 'MALE', species: 'Elf' })));
 
       __mockExports.mockCharacterFindMany.mockResolvedValue(recentCharacters);
 
@@ -394,15 +394,15 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
         }
         if (args.by.includes('gender')) {
           return Promise.resolve([
-            { gender: 'female', _count: 8 },
-            { gender: 'male', _count: 6 },
+            { gender: 'FEMALE', _count: 8 },
+            { gender: 'MALE', _count: 6 },
             { gender: null, _count: 1 },
           ]);
         }
         if (args.by.includes('species')) {
           return Promise.resolve([
-            { species: 'human', _count: 10 },
-            { species: 'elf', _count: 3 },
+            { species: 'Human', _count: 10 },
+            { species: 'Elf', _count: 3 },
             { species: null, _count: 2 },
           ]);
         }
@@ -425,14 +425,12 @@ describe('DiversificationAlgorithm (Enhanced)', () => {
           'TWELVE': 5,
         },
         byGender: {
-          'female': 8,
-          'male': 6,
-          'unknown': 1,
+          'FEMALE': 8,
+          'MALE': 6,
         },
         bySpecies: {
-          'human': 10,
-          'elf': 3,
-          'unknown': 2,
+          'Human': 10,
+          'Elf': 3,
         },
         recentQuality: {
           avg: 4.2,

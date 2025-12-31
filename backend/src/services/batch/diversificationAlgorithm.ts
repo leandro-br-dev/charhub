@@ -169,10 +169,19 @@ export class DiversificationAlgorithm {
       where: { visibility: 'PUBLIC' },
       orderBy: { createdAt: 'desc' },
       take: limit,
-      select: { gender: true, species: true },
+      select: {
+        gender: true,
+        species: {
+          select: { name: true },
+        },
+      },
     });
 
-    return characters;
+    // Map to old format for compatibility
+    return characters.map(char => ({
+      gender: char.gender,
+      species: char.species?.name || null,
+    }));
   }
 
   /**
