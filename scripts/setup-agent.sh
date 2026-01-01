@@ -94,25 +94,25 @@ cat > docker-compose.override.yml <<EOF
 
 services:
   backend:
-    ports:
+    ports: !override
       - "${BACKEND_PORT}:3000"
     environment:
       - PORT=3000
 
   frontend:
-    ports:
-      - "${FRONTEND_PORT}:5173"
+    ports: !override
+      - "${FRONTEND_PORT}:80"
 
   postgres:
-    ports:
+    ports: !override
       - "${POSTGRES_PORT}:5432"
 
   redis:
-    ports:
+    ports: !override
       - "${REDIS_PORT}:6379"
 
   nginx:
-    ports:
+    ports: !override
       - "${NGINX_PORT}:80"
 EOF
 

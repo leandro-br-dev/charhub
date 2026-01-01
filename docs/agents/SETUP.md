@@ -49,8 +49,9 @@ docker compose up -d
 docker compose ps
 
 # Done! Access services at:
-# - Frontend: http://localhost:5101
-# - Backend: http://localhost:8001
+# - Frontend (Nginx): http://localhost:8401
+# - Frontend (Direct): http://localhost:5101
+# - Backend API: http://localhost:8001
 ```
 
 ---
@@ -139,22 +140,47 @@ cat .agentrc
 
 ### Step 6: Set Up Environment Variables
 
+#### Root .env (Required for OAuth and CORS)
+
+**CRITICAL**: Update the root `.env` file with your agent's ports:
+
 ```bash
-# Backend environment
+# Edit root .env file
+nano .env
+
+# Update these lines (example for Agent 03):
+BASE_URL=http://localhost:8403                    # Your nginx port
+FRONTEND_URL=http://localhost:8403                # Your nginx port
+
+# Add your ports to OAuth redirect URLs (keep existing ones!)
+FRONTEND_URLS=http://localhost:8403,http://localhost:5103,http://localhost:8003,http://localhost,https://dev.charhub.app
+
+# Add your ports to CORS allowed origins (keep existing ones!)
+ALLOWED_ORIGINS=http://localhost:8403,http://localhost:5103,http://localhost:8003,http://localhost,https://dev.charhub.app
+```
+
+**Why this matters**: OAuth callbacks (Google, Facebook) use these URLs. If not configured, login will redirect to wrong port and fail.
+
+#### Backend .env (Optional - auto-configured by script)
+
+```bash
 cd backend
 cp .env.example .env
 
-# Edit .env and update PORT
-nano .env
-# Set: PORT=8003 (or your backend port from .agentrc)
+# The setup script already updated PORT in backend/.env
+# Verify it matches your agent:
+grep "^PORT=" .env
+# Should show: PORT=8003
+```
 
-# Frontend environment
+#### Frontend .env (Uses defaults)
+
+```bash
 cd ../frontend
 cp .env.example .env
 
-# Edit .env and update API URL
-nano .env
-# Set: VITE_API_URL=http://localhost:8003 (your backend port)
+# Frontend uses relative API URLs by default (VITE_API_BASE_URL=)
+# No changes needed unless you want absolute URLs
 ```
 
 ### Step 7: Install Dependencies
@@ -189,9 +215,10 @@ Expected output:
 ```
 NAME                           STATUS              PORTS
 charhub-agent-03-backend-1     Up About a minute   0.0.0.0:8003->3000/tcp
-charhub-agent-03-frontend-1    Up About a minute   0.0.0.0:5103->5173/tcp
+charhub-agent-03-frontend-1    Up About a minute   0.0.0.0:5103->80/tcp
 charhub-agent-03-postgres-1    Up About a minute   0.0.0.0:5403->5432/tcp
 charhub-agent-03-redis-1       Up About a minute   0.0.0.0:6303->6379/tcp
+charhub-agent-03-nginx-1       Up About a minute   0.0.0.0:8403->80/tcp
 ```
 
 ### Step 9: Verify Application
@@ -202,7 +229,10 @@ curl http://localhost:8003/api/v1/health
 
 # Should return: {"status":"ok"}
 
-# Test frontend (in browser)
+# Test frontend (in browser via Nginx - recommended)
+open http://localhost:8403
+
+# Or test frontend directly
 open http://localhost:5103
 ```
 
@@ -352,6 +382,68 @@ sleep 10
 curl http://localhost:8003/api/v1/health
 ```
 
+### Issue 6: OAuth login redirects to wrong port
+
+**Cause**: Root `.env` file not updated with agent's ports
+
+**Solution**:
+```bash
+# Edit root .env
+nano .env
+
+# Update BASE_URL and FRONTEND_URL to your nginx port
+BASE_URL=http://localhost:8403
+FRONTEND_URL=http://localhost:8403
+
+# Add your ports to FRONTEND_URLS and ALLOWED_ORIGINS
+FRONTEND_URLS=http://localhost:8403,http://localhost:5103,http://localhost:8003,http://localhost,https://dev.charhub.app
+ALLOWED_ORIGINS=http://localhost:8403,http://localhost:5103,http://localhost:8003,http://localhost,https://dev.charhub.app
+
+# IMPORTANT: Must restart with down/up (NOT just restart!)
+docker compose down
+docker compose up -d
+
+# Verify backend picked up new variables
+docker compose exec backend printenv | grep FRONTEND_URL
+# Should show: FRONTEND_URL=http://localhost:8403
+```
+
+**Why `down/up` not `restart`**: Docker Compose only loads `.env` variables during `up`, not during `restart`. Using `restart` will keep old environment variables cached.
+
+### Issue 7: Duplicate ports showing in containers
+
+**Cause**: `docker-compose.override.yml` missing `!override` directive
+
+**Symptom**:
+```bash
+docker compose ps
+# Shows: 0.0.0.0:5103->80/tcp, 0.0.0.0:5173->80/tcp  ← Two ports!
+```
+
+**Solution**:
+```bash
+# Edit docker-compose.override.yml
+nano docker-compose.override.yml
+
+# Ensure all port mappings use !override:
+services:
+  frontend:
+    ports: !override
+      - "5103:80"
+
+  backend:
+    ports: !override
+      - "8003:3000"
+
+  # ... etc for all services
+
+# Restart to apply
+docker compose down
+docker compose up -d
+```
+
+**Note**: The `setup-agent.sh` script (v2025-12-31+) already includes `!override`. This issue only affects agents created with older script versions.
+
 ---
 
 ## Examples
@@ -386,7 +478,9 @@ docker compose up -d
 git checkout -b feature/user-authentication
 
 # Start coding!
-open http://localhost:5101
+open http://localhost:8401  # Nginx (recommended for OAuth)
+# or
+open http://localhost:5101  # Direct frontend
 ```
 
 ### Example 2: Set Up Agent 02 as Reviewer
@@ -421,7 +515,9 @@ docker compose up -d
 git checkout main
 
 # Ready to review PRs!
-open http://localhost:5102
+open http://localhost:8402  # Nginx (recommended)
+# or
+open http://localhost:5102  # Direct frontend
 ```
 
 ### Example 3: Set Up Multiple Agents Simultaneously
@@ -449,9 +545,9 @@ git clone https://github.com/leandro-br-dev/charhub.git .
 docker compose up -d
 
 # All three agents now running without conflicts!
-# Agent 01: http://localhost:5101
-# Agent 02: http://localhost:5102
-# Agent 03: http://localhost:5103
+# Agent 01: http://localhost:8401 (nginx) or http://localhost:5101 (direct)
+# Agent 02: http://localhost:8402 (nginx) or http://localhost:5102 (direct)
+# Agent 03: http://localhost:8403 (nginx) or http://localhost:5103 (direct)
 ```
 
 ---
