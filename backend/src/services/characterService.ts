@@ -67,6 +67,22 @@ async function findSpeciesIdByName(speciesName: string | null | undefined): Prom
   }
 }
 
+/**
+ * Map gender string from frontend (e.g., "Male") to Prisma enum (e.g., "MALE")
+ * Used in search/filter operations
+ */
+function mapGenderToEnum(gender: string): CharacterGender | null {
+  const genderMap: Record<string, CharacterGender | null> = {
+    'Male': 'MALE',
+    'Female': 'FEMALE',
+    'NonBinary': 'NON_BINARY',
+    'Other': 'OTHER',
+    'Unknown': null,
+    'unknown': null,
+  };
+  return genderMap[gender] ?? (gender as CharacterGender);
+}
+
 // Type definitions
 export interface CharacterWithRelations {
   id: string;
@@ -320,21 +336,21 @@ export async function getCharactersByUserId(
     // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
       const genderArray = Array.isArray(gender) ? gender : [gender];
-      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
       if (genderValues.length === 1) {
-        where.gender = genderValues[0] as any;
+        where.gender = genderValues[0];
       } else if (genderValues.length > 1) {
-        const hasNull = genderArray.includes('unknown');
-        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
         if (hasNull && nonNullValues.length > 0) {
           where.OR = [
             { gender: null },
-            { gender: { in: nonNullValues as any } }
+            { gender: { in: nonNullValues } }
           ];
         } else if (hasNull) {
-          where.gender = null as any;
+          where.gender = null;
         } else {
-          where.gender = { in: nonNullValues as any };
+          where.gender = { in: nonNullValues };
         }
       }
     }
@@ -451,21 +467,21 @@ export async function getPublicCharacters(options?: {
     // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
       const genderArray = Array.isArray(gender) ? gender : [gender];
-      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
       if (genderValues.length === 1) {
-        where.gender = genderValues[0] as any;
+        where.gender = genderValues[0];
       } else if (genderValues.length > 1) {
-        const hasNull = genderArray.includes('unknown');
-        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
         if (hasNull && nonNullValues.length > 0) {
           const existingOR = where.OR;
           where.OR = [
             ...(existingOR ? [typeof existingOR === 'boolean' ? {} : existingOR] as any : []),
             { gender: null },
-            { gender: { in: nonNullValues as any } }
+            { gender: { in: nonNullValues } }
           ];
         } else if (hasNull) {
-          where.gender = null as any;
+          where.gender = null;
         } else {
           where.gender = { in: nonNullValues as any };
         }
@@ -607,24 +623,24 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
     // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
       const genderArray = Array.isArray(gender) ? gender : [gender];
-      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
       if (genderValues.length === 1) {
-        where.gender = genderValues[0] as any;
+        where.gender = genderValues[0];
       } else if (genderValues.length > 1) {
-        const hasNull = genderArray.includes('unknown');
-        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
         if (hasNull && nonNullValues.length > 0) {
           where.AND = [
             ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
             { OR: [
-              { gender: null as any },
-              { gender: { in: nonNullValues as any } }
+              { gender: null },
+              { gender: { in: nonNullValues } }
             ]}
           ];
         } else if (hasNull) {
-          where.gender = null as any;
+          where.gender = null;
         } else {
-          where.gender = { in: nonNullValues as any };
+          where.gender = { in: nonNullValues };
         }
       }
     }

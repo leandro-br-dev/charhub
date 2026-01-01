@@ -487,7 +487,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
     const {
       search,
       tags,
-      gender,
+      genders,
       species,
       skip,
       limit,
@@ -552,10 +552,10 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
         : typeof tags === 'string'
           ? [tags]
           : undefined,
-      gender: Array.isArray(gender)
-        ? gender.map(String)
-        : typeof gender === 'string'
-          ? [gender]
+      gender: Array.isArray(genders)
+        ? genders.map(String)
+        : typeof genders === 'string'
+          ? [genders]
           : undefined,
       species: Array.isArray(species)
         ? species.map(String)

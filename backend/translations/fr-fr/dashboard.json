@@ -52,6 +52,9 @@
       "alt": "Image de couverture pour {{title}}",
       "play": "Jouer"
     },
+    "infiniteScroll": {
+      "endOfList": "Tous les personnages ont été chargés"
+    },
     "filters": {
       "title": "Filtres",
       "gender": "Genre",

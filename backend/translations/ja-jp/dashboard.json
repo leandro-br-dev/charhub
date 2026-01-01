@@ -22,7 +22,7 @@
     },
     "noStories": "まだストーリーがありません。最初のストーリーを作成しましょう！",
     "createStory": "ストーリーを作成",
-    "plusRequired": "Plusプランが必要です",
+    "plusRequired": "プラスプランが必要です",
     "recentConversations": "最近の会話",
     "newConversation": "新しい会話",
     "carousel": {
@@ -32,7 +32,7 @@
       "slides": {
         "welcome": {
           "title": "CharHubへようこそ",
-          "description": "AIキャラクターを作成してチャットしましょう",
+          "description": "AIキャラクターを作成してチャットしよう",
           "action1": "キャラクターを作成",
           "action2": "キャラクターを閲覧"
         },
@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "「{{title}}」のカバー画像",
       "play": "再生"
+    },
+    "infiniteScroll": {
+      "endOfList": "すべてのキャラクターが読み込まれました"
     },
     "filters": {
       "title": "フィルター",
