@@ -55,7 +55,6 @@ async function findSpeciesIdByName(speciesName: string | null | undefined): Prom
     });
 
     if (species) {
-      logger.debug(`Found species ID "${species.id}" for name "${speciesName}"`);
       return species.id;
     }
 
