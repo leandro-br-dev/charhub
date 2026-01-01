@@ -107,9 +107,9 @@ npm run build
 cd ../backend
 npm test
 
-# Docker environment (clean restart)
+# Docker environment restart (preserves database data)
 cd ..
-docker compose down -v
+docker compose down
 docker compose up -d --build
 
 # Manual testing at http://localhost:8082
