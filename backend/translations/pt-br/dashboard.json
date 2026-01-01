@@ -4,8 +4,8 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Descobrir",
-      "chat": "Chat",
-      "story": "História"
+      "chat": "Conversar",
+      "story": "Histórias"
     },
     "sections": {
       "popularCharacters": "Personagens Populares",
@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "Imagem de capa para {{title}}",
       "play": "Jogar"
+    },
+    "infiniteScroll": {
+      "endOfList": "Todos os personagens foram carregados."
     },
     "filters": {
       "title": "Filtros",

@@ -4,7 +4,7 @@
     "title": "CharHub",
     "tabs": {
       "discover": "खोजें",
-      "chat": "चैट",
+      "chat": "चैट करें",
       "story": "कहानी"
     },
     "sections": {
@@ -16,7 +16,7 @@
       "popularStories": "लोकप्रिय कहानियाँ",
       "mine": "मेरी",
       "noPopularCharacters": "कोई लोकप्रिय पात्र नहीं मिले।",
-      "noFavoriteCharacters": "आपने अभी तक कोई पात्र पसंदीदा नहीं किया है।",
+      "noFavoriteCharacters": "आपने अभी तक किसी पात्र को पसंदीदा नहीं बनाया है।",
       "createCharacter": "पात्र बनाएँ",
       "browseCharacters": "पात्र ब्राउज़ करें"
     },
@@ -32,13 +32,13 @@
       "slides": {
         "welcome": {
           "title": "CharHub में आपका स्वागत है",
-          "description": "एआई पात्रों के साथ बनाएँ और चैट करें",
+          "description": "AI पात्रों के साथ बनाएँ और चैट करें",
           "action1": "पात्र बनाएँ",
           "action2": "पात्र ब्राउज़ करें"
         },
         "stories": {
           "title": "कहानियाँ खोजें",
-          "description": "इंटरैक्टिव कहानी कहने का अन्वेषण करें",
+          "description": "संवादात्मक कहानी कहने का अन्वेषण करें",
           "action": "कहानियाँ ब्राउज़ करें"
         },
         "community": {
@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "{{title}} के लिए कवर छवि",
       "play": "खेलें"
+    },
+    "infiniteScroll": {
+      "endOfList": "सभी पात्र लोड कर दिए गए हैं"
     },
     "filters": {
       "title": "फ़िल्टर",
