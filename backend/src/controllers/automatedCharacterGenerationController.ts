@@ -377,55 +377,57 @@ export async function compileCharacterDataWithLLM(
       `Create a COMPLETE character profile with ALL fields filled.`,
       `ALL text fields MUST be written in language code: ${preferredLanguage}`,
       ``,
-      `Return a JSON object with these fields (ALL REQUIRED):`,
+      `Return a JSON object with these fields (ALL REQUIRED - NO EXCEPTIONS):`,
       `{`,
-      `  "firstName": "string - Generate an attractive, culturally appropriate name",`,
-      `  "lastName": "string - Generate a surname that matches the firstName's cultural origin",`,
-      `  "age": number - Infer from image/description (required),`,
-      `  "gender": "string - male/female/non-binary (required)",`,
-      `  "species": "string - human/elf/etc (default: human)",`,
-      `  "physicalCharacteristics": "string - ONE flowing paragraph in ${preferredLanguage} merging user description + image analysis naturally",`,
-      `  "personality": "string - Engaging 2-3 sentence personality description in ${preferredLanguage}",`,
-      `  "history": "string - SHORT backstory (MAX 2 paragraphs) in ${preferredLanguage} that brings the character to life"`,
+      `  "firstName": "string - MUST be a creative name, not 'Character'",`,
+      `  "lastName": "string - MUST be a surname, NEVER null or empty",`,
+      `  "age": number - MUST be a number between 18-100, not null",`,
+      `  "gender": "string - MUST be: MALE, FEMALE, NON_BINARY, OTHER, or UNKNOWN (uppercase)",`,
+      `  "species": "string - Species name in English (human, elf, robot, etc.)",`,
+      `  "physicalCharacteristics": "string - ONE paragraph describing appearance",`,
+      `  "personality": "string - 2-3 sentences describing personality, NEVER generic phrases like 'not specified'",`,
+      `  "history": "string - 1-2 paragraphs of backstory, NEVER generic phrases like 'not specified'"`,
       `}`,
       ``,
-      `CRITICAL REQUIREMENTS:`,
-      `1. ALL fields must be filled (no empty/null values)`,
-      `2. ALL text in ${preferredLanguage} (not English!)`,
-      `3. physicalCharacteristics: Write ONE natural paragraph, not a list`,
-      `4. personality: Make it interesting and unique`,
-      `5. history: Keep it SHORT (max 2 paragraphs), engaging, and consistent with the character`,
-      `6. Infer gender and age from image/description`,
+      `CRITICAL - NEVER USE THESE GENERIC PHRASES:`,
+      `- "A personalidade não foi especificada"`,
+      `- "A história não foi especificada"`,
+      `- "Character" as firstName`,
+      `- null or empty lastName`,
       ``,
-      `NAME GENERATION RULES (EXTREMELY IMPORTANT):`,
-      `- Analyze the visual style, clothing, and physical characteristics to determine cultural origin`,
-      `- For anime/manga style: Use Japanese names (e.g., Sakura Yamamoto, Kenji Takahashi, Yuki Nakamura)`,
-      `- For fantasy/medieval: Use fantasy-appropriate names (e.g., Elara Moonwhisper, Theron Blackwood)`,
-      `- For modern Western: Use common Western names (e.g., Emma Wilson, Jack Thompson)`,
-      `- For sci-fi: Use futuristic or unique names (e.g., Zara Nova, Kael Orion)`,
-      `- NEVER use physical characteristics as surnames (e.g., don't use "Coelho" for bunny costume, "Verde" for green eyes)`,
-      `- NEVER use clothing items as surnames (e.g., don't use "Hat", "Dress", "Suit")`,
-      `- firstName and lastName MUST match the same cultural origin (don't mix Japanese with Brazilian, etc.)`,
-      `- Names should sound natural, attractive, and fitting for the character's apparent background`,
-      `- If user provided a name, use it; otherwise generate culturally coherent names`,
+      `Instead, BE CREATIVE:`,
+      `- personality: "Ela é alegre e extrovertida, adora fazer novos amigos e sempre tem uma palavra de carinho para todos. Sua energia contagiante ilumina qualquer ambiente."`,
+      `- history: "Nascida em uma pequena cidade costeira, ela sempre sonhou em explorar o mundo. Aos 18 anos, mudou-se para a grande cidade em busca de novas oportunidades e aventuras."`,
+      ``,
+      `NAME GENERATION RULES:`,
+      `- Anime style: Japanese names (Sakura Yamamoto, Kenji Takahashi)`,
+      `- Fantasy: Fantasy names (Elara Moonwhisper, Theron Blackwood)`,
+      `- Modern Western: Western names (Emma Wilson, Jack Thompson)`,
+      `- NEVER mix cultural origins (Japanese firstName + Brazilian lastName)`,
       ``,
       `Return ONLY valid JSON, no markdown, no commentary.`,
     ].join('\n');
 
     const response = await callLLM({
       provider: 'gemini',
-      model: 'gemini-2.5-flash',
-      systemPrompt: 'You are a character data compilation assistant. Always output valid JSON.',
+      model: 'gemini-3-flash-preview', // Latest model with pro-level intelligence at flash speed
+      systemPrompt: 'You are a character data compilation assistant. Always output valid JSON with ALL required fields.',
       userPrompt: compilationPrompt,
       temperature: 0.7,
-      maxTokens: 1024,
+      maxTokens: 4096, // Increased to ensure complete JSON response with all creative fields
     } as any);
 
     const compiledData = parseJsonSafe<GeneratedCharacterData>(response.content.trim());
 
-    if (compiledData && compiledData.firstName) {
-      logger.info({ compiledData }, 'Successfully compiled character data with LLM');
+    // Validate all required fields are present
+    const requiredFields = ['firstName', 'lastName', 'age', 'gender', 'species', 'personality', 'history'];
+    const missingFields = requiredFields.filter(field => !compiledData || !(compiledData as any)[field]);
 
+    if (missingFields.length > 0) {
+      logger.warn({ missingFields }, 'LLM response missing required fields');
+    }
+
+    if (compiledData && compiledData.firstName) {
       // Preserve visual style from image analysis (map artStyle to VisualStyle enum)
       if (visualStyle.artStyle) {
         const styleMap: Record<string, string> = {

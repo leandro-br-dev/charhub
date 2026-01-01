@@ -12,7 +12,64 @@ import { translationService } from './translation/translationService';
  */
 
 /**
+ * Validates and normalizes gender string to CharacterGender enum
+ * - Converts to uppercase
+ * - Validates against enum values
+ * - Falls back to UNKNOWN if invalid
+ */
+function validateGender(gender: string | null | undefined): CharacterGender | null {
+  if (!gender) return null;
+
+  // Convert to uppercase and trim
+  const normalized = gender.toUpperCase().trim();
+
+  // Check if it's a valid CharacterGender enum value
+  const validValues = Object.values(CharacterGender);
+  if (validValues.includes(normalized as CharacterGender)) {
+    return normalized as CharacterGender;
+  }
+
+  // Invalid value - log warning and return UNKNOWN as fallback
+  logger.warn(`Invalid gender value: "${gender}", defaulting to UNKNOWN`);
+  return 'UNKNOWN';
+}
+
+/**
+ * Finds species ID by name (case-insensitive search)
+ * - Searches by name or description
+ * - Returns null if not found
+ */
+async function findSpeciesIdByName(speciesName: string | null | undefined): Promise<string | null> {
+  if (!speciesName || speciesName.trim() === '') return null;
+
+  try {
+    // Search for species by name (case-insensitive) or description
+    const species = await prisma.species.findFirst({
+      where: {
+        OR: [
+          { name: { equals: speciesName, mode: 'insensitive' } },
+          { description: { contains: speciesName, mode: 'insensitive' } },
+        ],
+      },
+      select: { id: true },
+    });
+
+    if (species) {
+      return species.id;
+    }
+
+    // Species not found - log info and return null
+    logger.info(`Species not found for name "${speciesName}", will be stored as null`);
+    return null;
+  } catch (error) {
+    logger.error({ error, speciesName }, 'Error searching for species');
+    return null;
+  }
+}
+
+/**
  * Map gender string from frontend (e.g., "Male") to Prisma enum (e.g., "MALE")
+ * Used in search/filter operations
  */
 function mapGenderToEnum(gender: string): CharacterGender | null {
   const genderMap: Record<string, CharacterGender | null> = {
@@ -160,14 +217,18 @@ export async function createCharacter(data: CreateCharacterInput) {
   try {
     const { attireIds, tagIds, contentTags, species, gender, ...characterData } = data;
 
+    // Validate gender and find species ID (async operation)
+    const validatedGender = validateGender(gender);
+    const speciesId = await findSpeciesIdByName(species);
+
     // Create character with relations
     const character = await prisma.character.create({
       data: {
         ...characterData,
-        // Convert gender to CharacterGender enum
-        gender: gender as any,
-        // Convert species to speciesId
-        ...(species ? { speciesId: species } : {}),
+        // Use validated gender enum value
+        gender: validatedGender,
+        // Use species ID from lookup (null if not found)
+        ...(speciesId ? { speciesId } : {}),
         contentTags: contentTags || [],
         // Connect attires if provided
         ...(attireIds && attireIds.length > 0
@@ -686,14 +747,16 @@ export async function updateCharacter(
     // Increment contentVersion if translatable content changed
     const finalUpdateData: any = { ...updateData };
 
-    // Convert gender to CharacterGender enum
+    // Validate gender enum value
     if (gender !== undefined) {
-      finalUpdateData.gender = gender as any;
+      finalUpdateData.gender = validateGender(gender);
     }
 
-    // Convert species to speciesId
+    // Find species ID by name (async operation)
+    let speciesId: string | null | undefined = undefined;
     if (species !== undefined) {
-      finalUpdateData.speciesId = species;
+      speciesId = await findSpeciesIdByName(species);
+      finalUpdateData.speciesId = speciesId;
     }
 
     if (hasTranslatableChanges) {
