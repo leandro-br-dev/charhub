@@ -12,72 +12,59 @@ import { translationService } from './translation/translationService';
  */
 
 /**
- * Maps gender string (in various languages) to CharacterGender enum
- * Supports English and Portuguese values
+ * Validates and normalizes gender string to CharacterGender enum
+ * - Converts to uppercase
+ * - Validates against enum values
+ * - Falls back to UNKNOWN if invalid
  */
-function mapStringToCharacterGender(gender: string | null | undefined): CharacterGender | null {
+function validateGender(gender: string | null | undefined): CharacterGender | null {
   if (!gender) return null;
 
-  // Normalize input: lowercase, trim, remove accents
-  const normalized = gender.toLowerCase().trim();
+  // Convert to uppercase and trim
+  const normalized = gender.toUpperCase().trim();
 
-  // Map to CharacterGender enum values
-  switch (normalized) {
-    // English
-    case 'male':
-    case 'm':
-      return 'MALE';
-    case 'female':
-    case 'f':
-      return 'FEMALE';
-    case 'non-binary':
-    case 'nonbinary':
-    case 'non binary':
-      return 'NON_BINARY';
-    case 'other':
-      return 'OTHER';
-    case 'unknown':
-    case 'u':
-      return 'UNKNOWN';
+  // Check if it's a valid CharacterGender enum value
+  const validValues = Object.values(CharacterGender);
+  if (validValues.includes(normalized as CharacterGender)) {
+    return normalized as CharacterGender;
+  }
 
-    // Portuguese
-    case 'masculino':
-    case 'macho':
-      return 'MALE';
-    case 'feminino':
-    case 'fêmea':
-    case 'femea':
-      return 'FEMALE';
-    case 'não binário':
-    case 'nao binario':
-    case 'nao-binário':
-    case 'nao-binario':
-    case 'não-binário':
-    case 'não-binario':
-      return 'NON_BINARY';
-    case 'outro':
-      return 'OTHER';
-    case 'desconhecido':
-      return 'UNKNOWN';
+  // Invalid value - log warning and return UNKNOWN as fallback
+  logger.warn(`Invalid gender value: "${gender}", defaulting to UNKNOWN`);
+  return 'UNKNOWN';
+}
 
-    // Direct enum values (already correct)
-    case 'male_case_insensitive':
-      return 'MALE';
-    case 'female_case_insensitive':
-      return 'FEMALE';
-    case 'non_binary_case_insensitive':
-      return 'NON_BINARY';
+/**
+ * Finds species ID by name (case-insensitive search)
+ * - Searches by name or description
+ * - Returns null if not found
+ */
+async function findSpeciesIdByName(speciesName: string | null | undefined): Promise<string | null> {
+  if (!speciesName || speciesName.trim() === '') return null;
 
-    default:
-      // If it matches an enum value exactly (case-insensitive), use it
-      const enumValue = Object.values(CharacterGender).find(
-        v => v.toLowerCase() === normalized
-      );
-      if (enumValue) return enumValue;
+  try {
+    // Search for species by name (case-insensitive) or description
+    const species = await prisma.species.findFirst({
+      where: {
+        OR: [
+          { name: { equals: speciesName, mode: 'insensitive' } },
+          { description: { contains: speciesName, mode: 'insensitive' } },
+        ],
+      },
+      select: { id: true },
+    });
 
-      // Log warning for unmapped gender values
-      logger.warn(`Unmapped gender value: "${gender}", defaulting to UNKNOWN`);
-      return 'UNKNOWN';
+    if (species) {
+      logger.debug(`Found species ID "${species.id}" for name "${speciesName}"`);
+      return species.id;
+    }
+
+    // Species not found - log info and return null
+    logger.info(`Species not found for name "${speciesName}", will be stored as null`);
+    return null;
+  } catch (error) {
+    logger.error({ error, speciesName }, 'Error searching for species');
+    return null;
   }
 }
 
@@ -215,14 +202,18 @@ export async function createCharacter(data: CreateCharacterInput) {
   try {
     const { attireIds, tagIds, contentTags, species, gender, ...characterData } = data;
 
+    // Validate gender and find species ID (async operation)
+    const validatedGender = validateGender(gender);
+    const speciesId = await findSpeciesIdByName(species);
+
     // Create character with relations
     const character = await prisma.character.create({
       data: {
         ...characterData,
-        // Map gender string to CharacterGender enum
-        gender: mapStringToCharacterGender(gender),
-        // Convert species to speciesId
-        ...(species ? { speciesId: species } : {}),
+        // Use validated gender enum value
+        gender: validatedGender,
+        // Use species ID from lookup (null if not found)
+        ...(speciesId ? { speciesId } : {}),
         contentTags: contentTags || [],
         // Connect attires if provided
         ...(attireIds && attireIds.length > 0
@@ -741,14 +732,16 @@ export async function updateCharacter(
     // Increment contentVersion if translatable content changed
     const finalUpdateData: any = { ...updateData };
 
-    // Map gender string to CharacterGender enum
+    // Validate gender enum value
     if (gender !== undefined) {
-      finalUpdateData.gender = mapStringToCharacterGender(gender);
+      finalUpdateData.gender = validateGender(gender);
     }
 
-    // Convert species to speciesId
+    // Find species ID by name (async operation)
+    let speciesId: string | null | undefined = undefined;
     if (species !== undefined) {
-      finalUpdateData.speciesId = species;
+      speciesId = await findSpeciesIdByName(species);
+      finalUpdateData.speciesId = speciesId;
     }
 
     if (hasTranslatableChanges) {
