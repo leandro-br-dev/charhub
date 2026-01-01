@@ -9,7 +9,7 @@
     },
     "sections": {
       "popularCharacters": "热门角色",
-      "favoriteCharacters": "我的收藏",
+      "favoriteCharacters": "你的收藏",
       "popular": "热门",
       "favorites": "收藏",
       "myStories": "我的故事",
@@ -20,7 +20,7 @@
       "createCharacter": "创建角色",
       "browseCharacters": "浏览角色"
     },
-    "noStories": "暂无故事。创建你的第一个故事吧！",
+    "noStories": "还没有故事。创建你的第一个故事吧！",
     "createStory": "创建故事",
     "plusRequired": "需要 Plus 会员计划",
     "recentConversations": "最近对话",
@@ -54,6 +54,21 @@
     },
     "infiniteScroll": {
       "endOfList": "所有角色均已加载"
+    },
+    "filters": {
+      "title": "筛选",
+      "gender": "性别",
+      "species": "物种",
+      "selectGender": "选择性别...",
+      "selectSpecies": "选择物种...",
+      "clear": "清除",
+      "genders": {
+        "male": "男性",
+        "female": "女性",
+        "nonBinary": "非二元性别",
+        "other": "其他",
+        "unknown": "未知"
+      }
     }
   }
 }

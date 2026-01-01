@@ -4,7 +4,7 @@
     "title": "CharHub",
     "tabs": {
       "discover": "اكتشف",
-      "chat": "دردشة",
+      "chat": "المحادثة",
       "story": "قصة"
     },
     "sections": {
@@ -14,9 +14,9 @@
       "favorites": "مفضلة",
       "myStories": "قصصي",
       "popularStories": "قصص رائجة",
-      "mine": "خاص بي",
+      "mine": "خاصتي",
       "noPopularCharacters": "لم يتم العثور على شخصيات رائجة.",
-      "noFavoriteCharacters": "لم تقم بإضافة أي شخصيات إلى مفضلاتك بعد.",
+      "noFavoriteCharacters": "لم تفضل أي شخصية بعد.",
       "createCharacter": "إنشاء شخصية",
       "browseCharacters": "تصفح الشخصيات"
     },
@@ -32,7 +32,7 @@
       "slides": {
         "welcome": {
           "title": "مرحباً بك في CharHub",
-          "description": "أنشئ شخصيات ذكاء اصطناعي وتحدث معها",
+          "description": "أنشئ شخصيات الذكاء الاصطناعي ودردش معها",
           "action1": "إنشاء شخصية",
           "action2": "تصفح الشخصيات"
         },
@@ -43,7 +43,7 @@
         },
         "community": {
           "title": "انضم إلى المجتمع",
-          "description": "تواصل مع منشئي المحتوى الآخرين",
+          "description": "تواصل مع المبدعين الآخرين",
           "action": "استكشف المجتمع"
         }
       }
@@ -54,6 +54,21 @@
     },
     "infiniteScroll": {
       "endOfList": "تم تحميل جميع الشخصيات"
+    },
+    "filters": {
+      "title": "الفلاتر",
+      "gender": "الجنس",
+      "species": "النوع",
+      "selectGender": "اختر الأجناس...",
+      "selectSpecies": "اختر الأنواع...",
+      "clear": "مسح",
+      "genders": {
+        "male": "ذكر",
+        "female": "أنثى",
+        "nonBinary": "غير ثنائي",
+        "other": "أخرى",
+        "unknown": "غير معروف"
+      }
     }
   }
 }

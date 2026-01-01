@@ -12,14 +12,14 @@
     "account": "アカウント",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、お客様は当社のプライバシーポリシーに同意し、CharHubがお客様の基本プロフィール情報にアクセスすることを許可するものとします。",
+    "privacy": "続行することで、弊社のプライバシーポリシーに同意し、CharHubがあなたの基本プロフィール情報にアクセスすることを許可します。",
     "logout": "サインアウト",
     "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
-    "tokenStored": "HTTP-onlyクッキーに保存済み",
+    "tokenStored": "HTTP-only cookieに保存済み",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
-    "navTagline": "セキュアなOAuthデモ",
+    "navTagline": "安全なOAuthデモ",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -46,12 +46,12 @@
     "selectOption": "オプションを選択",
     "noResults": "オプションは見つかりませんでした。",
     "chat": {
-      "with": "チャット"
+      "with": "とチャット"
     },
     "messages": {
       "linkCopied": "リンクをクリップボードにコピーしました！",
       "chatStarted": "チャットを開始しました！",
-      "characterDeleted": "キャラクターを正常に削除しました"
+      "characterDeleted": "キャラクターを削除しました"
     },
     "contentFilter": {
       "ariaLabel": "コンテンツフィルター",
@@ -60,14 +60,14 @@
       "blurNsfw": "露骨なコンテンツをぼかす",
       "none": "フィルターなし",
       "blur": "センシティブなコンテンツをぼかす",
-      "hidden": "成熟したコンテンツを非表示",
+      "hidden": "成人向けコンテンツを非表示にする",
       "descriptions": {
-        "none": "制限なしで全てのコンテンツを表示",
-        "blur": "成熟したコンテンツにぼかしを適用",
-        "hidden": "成熟したコンテンツを完全に非表示"
+        "none": "制限なくすべてのコンテンツを表示する",
+        "blur": "成人向けコンテンツにぼかしを適用する",
+        "hidden": "成人向けコンテンツを完全に非表示にする"
       },
       "ageRatings": {
-        "L": "全年齢",
+        "L": "全年齢対象",
         "TEN": "10歳以上",
         "TWELVE": "12歳以上",
         "FOURTEEN": "14歳以上",
@@ -77,7 +77,7 @@
       "noBirthdateWarning": "⚠️ 年齢が登録されていません",
       "noBirthdateDescription": "年齢制限コンテンツにアクセスするには、設定で生年月日を追加してください。",
       "goToSettings": "設定へ移動",
-      "blocked": "（ブロック済み）"
+      "blocked": "(ブロック済み)"
     },
     "errors": {
       "generic": "エラーが発生しました。もう一度お試しください。",
@@ -89,6 +89,9 @@
     "back": "戻る",
     "loading": "読み込み中...",
     "credits": "クレジット",
-    "tryAgain": "もう一度お試しください"
+    "tryAgain": "もう一度試す",
+    "generate": "生成",
+    "generating": "生成中...",
+    "use": "使用"
   }
 }

@@ -20,9 +20,9 @@
       "createCharacter": "Crea Personaggio",
       "browseCharacters": "Sfoglia Personaggi"
     },
-    "noStories": "Nessuna storia ancora. Crea la tua prima storia!",
+    "noStories": "Ancora nessuna storia. Crea la tua prima storia!",
     "createStory": "Crea Storia",
-    "plusRequired": "Richiede il piano Plus",
+    "plusRequired": "Richiede Piano Plus",
     "recentConversations": "Conversazioni Recenti",
     "newConversation": "Nuova Conversazione",
     "carousel": {
@@ -37,7 +37,7 @@
           "action2": "Sfoglia Personaggi"
         },
         "stories": {
-          "title": "Scopri le Storie",
+          "title": "Scopri Storie",
           "description": "Esplora la narrazione interattiva",
           "action": "Sfoglia Storie"
         },
@@ -54,6 +54,21 @@
     },
     "infiniteScroll": {
       "endOfList": "Tutti i personaggi sono stati caricati"
+    },
+    "filters": {
+      "title": "Filtri",
+      "gender": "Genere",
+      "species": "Specie",
+      "selectGender": "Seleziona generi...",
+      "selectSpecies": "Seleziona specie...",
+      "clear": "Cancella",
+      "genders": {
+        "male": "Uomo",
+        "female": "Donna",
+        "nonBinary": "Non binario",
+        "other": "Altro",
+        "unknown": "Sconosciuto"
+      }
     }
   }
 }

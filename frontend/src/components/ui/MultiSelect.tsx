@@ -11,6 +11,7 @@ type MultiSelectProps = {
   placeholder?: string;
   disabled?: boolean;
   className?: string;
+  compact?: boolean;
 };
 
 export function MultiSelect({
@@ -20,7 +21,8 @@ export function MultiSelect({
   onChange,
   placeholder = 'Select...',
   disabled = false,
-  className = ''
+  className = '',
+  compact = false
 }: MultiSelectProps): JSX.Element {
   const display = useMemo(() => {
     if (!values || values.length === 0) return placeholder;
@@ -31,6 +33,15 @@ export function MultiSelect({
     return `${labels.slice(0, 2).join(', ')} +${labels.length - 2}`;
   }, [values, options, placeholder]);
 
+  // Compact styling for filters
+  const buttonClass = compact
+    ? 'py-1.5 pl-2.5 pr-8 text-xs rounded-md'
+    : 'py-2 pl-3 pr-10 text-sm rounded-lg';
+
+  const optionsClass = compact
+    ? 'py-1 pl-7 pr-2 text-xs'
+    : 'py-2 pl-8 pr-3 text-sm';
+
   return (
     <div className={`relative w-full ${className}`}>
       {label ? (
@@ -39,9 +50,10 @@ export function MultiSelect({
       <Listbox value={values} onChange={onChange} multiple disabled={disabled}>        <div className="relative">
           <Listbox.Button
             className={`
-              relative w-full rounded-lg bg-light dark:bg-gray-800
+              relative w-full bg-light dark:bg-gray-800
               border border-gray-600 dark:border-gray-600
-              py-2 pl-3 pr-10 text-left text-sm
+              ${buttonClass}
+              text-left
               focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
               disabled:opacity-50 disabled:cursor-not-allowed
               text-content dark:text-content-dark
@@ -49,26 +61,26 @@ export function MultiSelect({
             `}
           >
             <span className="block truncate">{display}</span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <span className="material-symbols-outlined text-base text-muted">unfold_more</span>
+            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-1.5">
+              <span className={`material-symbols-outlined ${compact ? 'text-sm' : 'text-base'} text-muted`}>unfold_more</span>
             </span>
           </Listbox.Button>
           <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
             <Listbox.Options
-              className="
+              className={`
                 absolute z-50 mt-1 max-h-60 w-full overflow-auto
                 rounded-lg border border-gray-600
                 bg-light dark:bg-gray-800
-                py-1 text-sm shadow-lg
+                shadow-lg
                 focus:outline-none
-              "
+              `}
             >
               {options.map((option) => (
                 <Listbox.Option
                   key={option.value}
                   value={option.value}
                   className={({ active }) =>
-                    `relative cursor-pointer select-none py-2 pl-8 pr-3 ${
+                    `relative cursor-pointer select-none ${optionsClass} ${
                       active ? 'bg-primary text-black' : 'text-content dark:text-content-dark'
                     }`
                   }
@@ -79,7 +91,7 @@ export function MultiSelect({
                         {option.label}
                       </span>
                       {selected ? (
-                        <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-base">
+                        <span className={`material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 ${compact ? 'text-sm' : 'text-base'}`}>
                           check
                         </span>
                       ) : null}

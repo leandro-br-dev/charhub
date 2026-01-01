@@ -5,7 +5,7 @@
     "tabs": {
       "discover": "Découvrir",
       "chat": "Chat",
-      "story": "Histoire"
+      "story": "Histoires"
     },
     "sections": {
       "popularCharacters": "Personnages populaires",
@@ -20,13 +20,13 @@
       "createCharacter": "Créer un personnage",
       "browseCharacters": "Parcourir les personnages"
     },
-    "noStories": "Aucune histoire pour l'instant. Créez votre première histoire !",
+    "noStories": "Aucune histoire pour le moment. Créez votre première histoire !",
     "createStory": "Créer une histoire",
     "plusRequired": "Nécessite le forfait Plus",
     "recentConversations": "Conversations récentes",
     "newConversation": "Nouvelle conversation",
     "carousel": {
-      "alt": "Image du carrousel pour {{title}}",
+      "alt": "Image de carrousel pour {{title}}",
       "goToSlide": "Aller à la diapositive {{slide}}",
       "plus": "PLUS",
       "slides": {
@@ -54,6 +54,21 @@
     },
     "infiniteScroll": {
       "endOfList": "Tous les personnages ont été chargés"
+    },
+    "filters": {
+      "title": "Filtres",
+      "gender": "Genre",
+      "species": "Espèce",
+      "selectGender": "Sélectionner les genres...",
+      "selectSpecies": "Sélectionner les espèces...",
+      "clear": "Effacer",
+      "genders": {
+        "male": "Homme",
+        "female": "Femme",
+        "nonBinary": "Non-binaire",
+        "other": "Autre",
+        "unknown": "Inconnu"
+      }
     }
   }
 }

@@ -5,7 +5,7 @@
     "tabs": {
       "discover": "Entdecken",
       "chat": "Chat",
-      "story": "Geschichte"
+      "story": "Story"
     },
     "sections": {
       "popularCharacters": "Beliebte Charaktere",
@@ -22,7 +22,7 @@
     },
     "noStories": "Noch keine Geschichten. Erstelle deine erste Geschichte!",
     "createStory": "Geschichte erstellen",
-    "plusRequired": "Benötigt Plus-Plan",
+    "plusRequired": "Erfordert Plus-Plan",
     "recentConversations": "Aktuelle Unterhaltungen",
     "newConversation": "Neue Unterhaltung",
     "carousel": {
@@ -38,11 +38,11 @@
         },
         "stories": {
           "title": "Geschichten entdecken",
-          "description": "Interaktives Storytelling erkunden",
+          "description": "Erkunde interaktives Storytelling",
           "action": "Geschichten durchsuchen"
         },
         "community": {
-          "title": "Der Community beitreten",
+          "title": "Werde Teil der Community",
           "description": "Verbinde dich mit anderen Erstellern",
           "action": "Community erkunden"
         }
@@ -54,6 +54,21 @@
     },
     "infiniteScroll": {
       "endOfList": "Alle Charaktere wurden geladen"
+    },
+    "filters": {
+      "title": "Filter",
+      "gender": "Geschlecht",
+      "species": "Spezies",
+      "selectGender": "Geschlechter auswählen...",
+      "selectSpecies": "Spezies auswählen...",
+      "clear": "Löschen",
+      "genders": {
+        "male": "Männlich",
+        "female": "Weiblich",
+        "nonBinary": "Non-Binär",
+        "other": "Andere",
+        "unknown": "Unbekannt"
+      }
     }
   }
 }

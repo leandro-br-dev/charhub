@@ -58,19 +58,55 @@ sleep 30
 - [ ] Backend is healthy
 - [ ] Frontend is healthy (if in compose)
 
-**Verify container health:**
+**⚠️ CRITICAL: Verify all containers are healthy**
+
 ```bash
-docker compose ps
-# All should show "healthy" or "running"
+# Run health check script
+./scripts/health-check.sh --wait
+
+# This will:
+# - Check all containers are running
+# - Verify backend is not in restart loop
+# - Check for errors in logs
+# - Wait up to 2 minutes for services to become healthy
 ```
+
+**If health check fails:**
+→ DO NOT PROCEED with testing
+→ Check logs: `docker compose logs <service>`
+→ Fix issues before continuing
+→ Common issue: Backend in restart loop (check for code errors)
 
 ---
 
-## Step 3: Backend Tests
+## Step 3: Backend Tests (Clean Database)
 
-**⚠️ CRITICAL: Use CI-equivalent validation scripts**
+**⚠️ IMPORTANT: Tests require CLEAN database (empty, like CI)**
 
-### 3.1 Run CI Local Validation Script
+### 3.1 Switch to Clean Database Mode
+
+```bash
+# Switch to clean database (empty, CI-equivalent)
+./scripts/db-switch.sh clean
+
+# This will:
+# - Remove all data
+# - Reset database schema via migrations
+# - Provide same environment as GitHub Actions CI
+```
+
+**Checklist:**
+- [ ] Database switched to clean mode successfully
+- [ ] All containers restarted and healthy
+- [ ] No data in database (fresh schema only)
+
+**Why clean database for tests?**
+- GitHub Actions CI uses empty database
+- Tests should not depend on seed data
+- Prevents "works locally but fails in CI" issues
+- Ensures tests are deterministic
+
+### 3.2 Run CI Local Validation Script
 
 **This replicates EXACTLY the GitHub Actions CI environment:**
 
@@ -85,13 +121,13 @@ cd backend
 1. `npm ci` (deterministic install like CI)
 2. ESLint
 3. TypeScript type checking (`tsc --noEmit`)
-4. Unit tests
+4. Unit tests (with clean database)
 5. Production build
 
 **Checklist:**
 - [ ] Script completes with "✓ ALL CHECKS PASSED"
 - [ ] No errors in any of the 5 steps
-- [ ] Test database is running (`docker compose up -d`)
+- [ ] All tests pass with clean database
 
 **If script fails:**
 → DO NOT PROCEED
@@ -103,6 +139,7 @@ cd backend
 - Prevents "works locally but fails in CI" issues
 - Uses `npm ci` instead of `npm install` (same as CI)
 - Runs checks in same order as GitHub Actions
+- Uses clean database (same as CI)
 - Catches issues before they block deployment
 
 ### 3.2 Alternative: Run Individual Commands
@@ -249,7 +286,107 @@ docker compose logs backend --tail=50
 
 ---
 
-## Step 6: Manual Feature Testing
+## Step 6: Prepare Environment for User Testing
+
+**⚠️ CRITICAL: Switch to test database with seed data**
+
+### 6.1 Switch to Test Database Mode
+
+```bash
+# Return to root directory
+cd /path/to/project
+
+# Switch to test database (with seed data)
+./scripts/db-switch.sh test
+
+# This will:
+# - Reset database
+# - Run migrations
+# - Load seed data for realistic testing
+# - Restart all services
+```
+
+**Checklist:**
+- [ ] Database switched to test mode successfully
+- [ ] Seed data loaded (users, characters, etc.)
+- [ ] All containers restarted and healthy
+
+**Why test database for manual testing?**
+- Users need realistic data to test features properly
+- Can test with actual characters, users, conversations
+- Simulates production-like environment
+- Easier to verify features work end-to-end
+
+### 6.2 Verify All Services Are Healthy
+
+```bash
+# Run health check after database switch
+./scripts/health-check.sh --wait
+
+# Verify all services:
+# - PostgreSQL: Running
+# - Redis: Running
+# - Backend: Healthy (NOT in restart loop!)
+# - Frontend: Running
+```
+
+**Checklist:**
+- [ ] Health check passes (all green)
+- [ ] Backend is NOT in restart loop
+- [ ] No errors in logs
+- [ ] All services responding
+
+**⚠️ CRITICAL: If health check fails**
+→ DO NOT ask user to test yet
+→ Fix issues first (check logs)
+→ Common problem: Backend restart loop
+→ Re-run health check until all pass
+
+### 6.3 Inform User and Wait for Testing
+
+**⚠️ MANDATORY: User must test before deployment**
+
+**Message template to send to user:**
+
+```
+✅ Testes automáticos completados com sucesso!
+
+📋 Resultados:
+- Backend CI: ✅ PASS
+- Frontend CI: ✅ PASS
+- TypeScript: ✅ PASS
+- Linting: ✅ PASS
+- Unit Tests: ✅ PASS
+- Build: ✅ PASS
+
+🔄 Ambiente preparado para testes:
+- Banco de dados: Populado com dados de teste
+- Todos os containers: Saudáveis
+- Frontend: http://localhost:8081
+- Backend: http://localhost:8081/api/v1/health
+
+🧪 Por favor, teste a feature manualmente:
+1. Abra http://localhost:8081
+2. Teste o fluxo completo da feature
+3. Verifique se tudo funciona como esperado
+4. Confirme se posso prosseguir com o deploy
+
+⏸️ Aguardando sua aprovação para deploy...
+```
+
+**Checklist:**
+- [ ] Message sent to user with test URL
+- [ ] Environment confirmed healthy
+- [ ] Database has seed data
+- [ ] **WAIT for user response before proceeding**
+
+**⚠️ DO NOT PROCEED TO DEPLOYMENT WITHOUT USER APPROVAL**
+
+---
+
+## Step 7: Manual Feature Testing (User)
+
+**This step is performed by the USER, not the agent**
 
 **Open http://localhost:8081 in browser**
 

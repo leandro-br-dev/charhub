@@ -1,3 +1,4 @@
+console.log("[DEBUG] characters.ts loaded");
 import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import { randomUUID } from 'node:crypto';
@@ -487,6 +488,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       search,
       tags,
       gender,
+      species,
       skip,
       limit,
       userId: filterUserId,
@@ -550,7 +552,16 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
         : typeof tags === 'string'
           ? [tags]
           : undefined,
-      gender: typeof gender === 'string' ? gender : undefined,
+      gender: Array.isArray(gender)
+        ? gender.map(String)
+        : typeof gender === 'string'
+          ? [gender]
+          : undefined,
+      species: Array.isArray(species)
+        ? species.map(String)
+        : typeof species === 'string'
+          ? [species]
+          : undefined,
       ageRatings: effectiveAgeRatings,
       blockedTags: effectiveBlockedTags,
       skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,

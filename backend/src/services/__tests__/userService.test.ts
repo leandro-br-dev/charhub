@@ -238,7 +238,9 @@ describe('UserService - Content Filtering', () => {
     });
 
     it('should return filters for user with birthDate and blocked tags', async () => {
-      const birthDate = new Date('2010-01-01'); // ~14 years old
+      // Create birthDate for exactly 14 years old (relative to today)
+      const today = new Date();
+      const birthDate = new Date(today.getFullYear() - 14, today.getMonth(), today.getDate());
       const user = await createTestUser({
         birthDate,
         blockedTags: ['VIOLENCE', 'HORROR'],

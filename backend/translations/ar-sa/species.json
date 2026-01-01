@@ -1,0 +1,409 @@
+{
+  "description": "Character species with diverse options from various cultures and mythologies. Used for filtering and categorizing characters.",
+  "resources": {
+    "Human": {
+      "name": "بشري",
+      "description": "كائن بشري عادي"
+    },
+    "Elf": {
+      "name": "إلف",
+      "description": "كائن شبيه بالبشر ذو آذان مدببة وميل للسحر"
+    },
+    "Dark Elf": {
+      "name": "إلف الظلام",
+      "description": "إلف ذو بشرة داكنة يعيش تحت الأرض"
+    },
+    "Wood Elf": {
+      "name": "إلف الغابة",
+      "description": "إلف يعيش في الغابات ولديه تقارب مع الطبيعة"
+    },
+    "High Elf": {
+      "name": "إلف رفيع",
+      "description": "إلف نبيل ذو قدرات سحرية قوية"
+    },
+    "Dwarf": {
+      "name": "قزم",
+      "description": "كائن شبيه بالبشر قصير وممتلئ الجسم ماهر في الصناعة"
+    },
+    "Halfling": {
+      "name": "نصف قزم",
+      "description": "كائن شبيه بالبشر صغير ومسالم ذو أقدام مشعرة"
+    },
+    "Gnome": {
+      "name": "غنوم",
+      "description": "كائن شبيه بالبشر صغير يتميز بالابتكار وسحر الأوهام"
+    },
+    "Orc": {
+      "name": "أورك",
+      "description": "كائن شبيه بالبشر عدواني ذو بشرة خضراء وأنياب"
+    },
+    "Half-Orc": {
+      "name": "نصف أورك",
+      "description": "هجين بشري-أورك يتميز بالقوة والمكر"
+    },
+    "Goblin": {
+      "name": "غوبلن",
+      "description": "كائن شبيه بالبشر أخضر صغير ومخادع"
+    },
+    "Tiefling": {
+      "name": "تييفلنغ",
+      "description": "كائن شبيه بالبشر من سلالة شيطانية، له قرون وذيل"
+    },
+    "Dragonborn": {
+      "name": "دراغونبورن",
+      "description": "كائن شبيه بالبشر تنيني الشكل ذو حراشف وسلاح تنفس"
+    },
+    "Half-Elf": {
+      "name": "نصف إلف",
+      "description": "هجين بشري-إلف ذو قدرات متعددة"
+    },
+    "Giant": {
+      "name": "عملاق",
+      "description": "كائن شبيه بالبشر ضخم ذو قوة هائلة"
+    },
+    "Troll": {
+      "name": "ترول",
+      "description": "كائن شبيه بالبشر ضخم يتجدد جسمه"
+    },
+    "Ogre": {
+      "name": "أوغري",
+      "description": "كائن شبيه بالبشر ضخم ووحشي"
+    },
+    "Kobold": {
+      "name": "كوبولد",
+      "description": "كائن شبيه بالبشر زاحف صغير خبير في الفخاخ"
+    },
+    "Fairy": {
+      "name": "جنية",
+      "description": "كائن شبيه بالبشر مجنح صغير ذو غبار سحري"
+    },
+    "Pixie": {
+      "name": "بيكسي",
+      "description": "كائن شبيه بالبشر صغير جداً ومخادع ذو أجنحة حشرية"
+    },
+    "Nymph": {
+      "name": "حورية",
+      "description": "روح طبيعية مرتبطة بموقع معين"
+    },
+    "Dryad": {
+      "name": "درياد",
+      "description": "روح شجرة ذات اتصال عميق بالغابة"
+    },
+    "Satyr": {
+      "name": "ساتير",
+      "description": "نصف بشري، نصف ماعز، ذو موهبة موسيقية"
+    },
+    "Centaur": {
+      "name": "قنطور",
+      "description": "نصف بشري، نصف حصان من الخصر فما دون"
+    },
+    "Minotaur": {
+      "name": "مينوتور",
+      "description": "نصف بشري، نصف ثور ذو قوة عظيمة"
+    },
+    "Naga": {
+      "name": "ناغا",
+      "description": "جزء علوي بشري مع ذيل أفعى"
+    },
+    "Lamia": {
+      "name": "لاميا",
+      "description": "أنثى شبيهة بالبشر ذات جسم سفلي على شكل أفعى"
+    },
+    "Merfolk": {
+      "name": "شعب البحر",
+      "description": "ساكن مائي نصف بشري، نصف سمكة"
+    },
+    "Mermaid": {
+      "name": "حورية بحر",
+      "description": "أنثى من شعب البحر ذات صوت غنائي جميل"
+    },
+    "Siren": {
+      "name": "سايرن",
+      "description": "مغنية خطيرة تغري البحارة إلى حتفهم"
+    },
+    "Harpy": {
+      "name": "هاربي",
+      "description": "هجين امرأة-طائر ذو مخالب حادة"
+    },
+    "Werewolf": {
+      "name": "مستذئب",
+      "description": "بشري يتحول إلى ذئب تحت ضوء القمر الكامل"
+    },
+    "Vampire": {
+      "name": "مصاص دماء",
+      "description": "كائن غير ميت يتغذى على الدم"
+    },
+    "Zombie": {
+      "name": "زومبي",
+      "description": "جثة أعيد إحياؤها ولديها جوع للأدمغة"
+    },
+    "Lich": {
+      "name": "ليتش",
+      "description": "مستخدم سحر غير ميت وقوي يمتلك تميمة حفظ الروح"
+    },
+    "Ghost": {
+      "name": "شبح",
+      "description": "روح شخص متوفى"
+    },
+    "Specter": {
+      "name": "طيف",
+      "description": "روح خبيثة ذات قدرة على استنزاف الطاقة"
+    },
+    "Wraith": {
+      "name": "واريث",
+      "description": "روح منتقمة ذات لمسة تستنزف الحياة"
+    },
+    "Skeleton": {
+      "name": "هيكل عظمي",
+      "description": "عظام متحركة لكائن متوفى"
+    },
+    "Mummy": {
+      "name": "مومياء",
+      "description": "جثة محفوظة من المقابر القديمة"
+    },
+    "Ghoul": {
+      "name": "غول",
+      "description": "مخلوق غير ميت يتغذى على الجيف"
+    },
+    "Banshee": {
+      "name": "بانشي",
+      "description": "روح أنثى صراخها ينبئ بالموت"
+    },
+    "Reaper": {
+      "name": "حاصد الأرواح",
+      "description": "حاصد الأرواح، تجسيد الموت"
+    },
+    "Dragon": {
+      "name": "تنين",
+      "description": "زاحف طائر ضخم ذو قوى سحرية"
+    },
+    "Wyvern": {
+      "name": "ويفرن",
+      "description": "قريب التنين ذو قدمين وذيل سام"
+    },
+    "Drake": {
+      "name": "دريك",
+      "description": "تنين صغير ينفث النار بدون أجنحة"
+    },
+    "Phoenix": {
+      "name": "فينكس",
+      "description": "طائر خالد يبعث من رماده"
+    },
+    "Griffin": {
+      "name": "غريفين",
+      "description": "مخلوق نبيل هجين بين الأسد والنسر"
+    },
+    "Hydra": {
+      "name": "هيدرا",
+      "description": "أفعى متعددة الرؤوس ينمو رأسان عندما يُقطع رأس واحد"
+    },
+    "Chimera": {
+      "name": "كيميرا",
+      "description": "وحش ذو ثلاثة رؤوس بأجزاء أسد وماعز وأفعى"
+    },
+    "Sphinx": {
+      "name": "أبو الهول",
+      "description": "أسد برأس بشري، حارس الألغاز"
+    },
+    "Unicorn": {
+      "name": "وحيد القرن",
+      "description": "حصان أبيض نقي ذو قرن حلزوني"
+    },
+    "Pegasus": {
+      "name": "بيغاسوس",
+      "description": "حصان مجنح من أصل إلهي"
+    },
+    "Kirin": {
+      "name": "Kirin",
+      "description": "مخلوق ياباني شبيه باليونيكورن يجلب فأل الخير"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "روح ثعلب يابانية متعددة الأذيال"
+    },
+    "Tanuki": {
+      "name": "Tanuki",
+      "description": "كلب راكون ياباني لديه القدرة على تغيير شكله"
+    },
+    "Oni": {
+      "name": "Oni",
+      "description": "شيطان ياباني ذو قرون وهراوة"
+    },
+    "Tengu": {
+      "name": "Tengu",
+      "description": "كائن ياباني شبيه بالبشر والطائر أو كاراسو-تينغو"
+    },
+    "Kappa": {
+      "name": "Kappa",
+      "description": "عفريت مائي ياباني برأس يشبه الطبق"
+    },
+    "Yokai": {
+      "name": "Yokai",
+      "description": "روح أو شيطان ياباني بأشكال مختلفة"
+    },
+    "Yuki-onna": {
+      "name": "Yuki-onna",
+      "description": "روح امرأة الثلج اليابانية"
+    },
+    "Raiju": {
+      "name": "Raiju",
+      "description": "وحش الرعد الياباني على شكل ذئب أو قطة"
+    },
+    "Slime": {
+      "name": "سلايم",
+      "description": "مخلوق هلامي ذو قدرات متنوعة"
+    },
+    "Elemental": {
+      "name": "عنصري",
+      "description": "تجسيد خالص لعنصر طبيعي"
+    },
+    "Fire Elemental": {
+      "name": "عنصري النار",
+      "description": "لهب حي ذو لمسة حارقة"
+    },
+    "Water Elemental": {
+      "name": "عنصري الماء",
+      "description": "ماء حي ذو شكل متدفق"
+    },
+    "Earth Elemental": {
+      "name": "عنصري الأرض",
+      "description": "حجر وأرض حية ذات قوة ساحقة"
+    },
+    "Air Elemental": {
+      "name": "عنصري الهواء",
+      "description": "ريح حية ذات شكل غير مرئي"
+    },
+    "Ice Elemental": {
+      "name": "عنصري الجليد",
+      "description": "جليد حي ذو هالة متجمدة"
+    },
+    "Lightning Elemental": {
+      "name": "عنصري البرق",
+      "description": "كهرباء حية ذات قوة صاعقة"
+    },
+    "Golem": {
+      "name": "غولم",
+      "description": "مجسم متحرك مصنوع من الطين أو الحجر أو المعدن"
+    },
+    "Homunculus": {
+      "name": "هومنكولوس",
+      "description": "كائن بشري صغير مخلق اصطناعياً"
+    },
+    "Robot": {
+      "name": "روبوت",
+      "description": "كائن اصطناعي ميكانيكي"
+    },
+    "Android": {
+      "name": "أندرويد",
+      "description": "روبوت مصمم ليبدو بشرياً"
+    },
+    "Cyborg": {
+      "name": "سايبورغ",
+      "description": "كائن عضوي ذو تحسينات ميكانيكية"
+    },
+    "Mecha": {
+      "name": "ميكا",
+      "description": "روبوت كبير يتم التحكم به للقتال"
+    },
+    "AI": {
+      "name": "ذكاء اصطناعي",
+      "description": "ذكاء اصطناعي بدون شكل مادي"
+    },
+    "Doll": {
+      "name": "دمية",
+      "description": "دمية حية أو عروسة"
+    },
+    "Marionette": {
+      "name": "ماريونيت",
+      "description": "دمية تم إحياؤها"
+    },
+    "Catfolk": {
+      "name": "شعب القطط",
+      "description": "كائن شبيه بالبشر ذو ملامح قطة"
+    },
+    "Nekomimi": {
+      "name": "Nekomimi",
+      "description": "بشري ذو أذني قطة"
+    },
+    "Wolfkin": {
+      "name": "شعب الذئاب",
+      "description": "كائن شبيه بالبشر ذو ملامح ذئب"
+    },
+    "Foxkin": {
+      "name": "شعب الثعالب",
+      "description": "كائن شبيه بالبشر ذو ملامح ثعلب"
+    },
+    "Rabbitfolk": {
+      "name": "شعب الأرانب",
+      "description": "كائن شبيه بالبشر ذو ملامح أرنب"
+    },
+    "Dragonkin": {
+      "name": "شعب التنانين",
+      "description": "كائن شبيه بالبشر ذو ملامح تنين"
+    },
+    "Demon": {
+      "name": "شيطان",
+      "description": "مخلوق شيطاني من العوالم السفلى"
+    },
+    "Angel": {
+      "name": "ملاك",
+      "description": "كائن سماوي من أصل إلهي"
+    },
+    "Fallen Angel": {
+      "name": "ملاك ساقط",
+      "description": "ملاك طُرد من العالم الإلهي"
+    },
+    "Devil": {
+      "name": "شيطان",
+      "description": "شيطان قوي من الجحيم التسع"
+    },
+    "Imp": {
+      "name": "عفريت",
+      "description": "شيطان صغير مخادع"
+    },
+    "Succubus": {
+      "name": "ساكوبوس",
+      "description": "شيطانة فاتنة تتغذى على قوة الحياة"
+    },
+    "Incubus": {
+      "name": "إنكوبوس",
+      "description": "شيطان ذكر يغوي في الأحلام"
+    },
+    "Familiar": {
+      "name": "تابع سحري",
+      "description": "خادم سحري على شكل حيوان"
+    },
+    "Doppelganger": {
+      "name": "دوبلغانغر",
+      "description": "متغير الشكل يتخذ أشكال الآخرين"
+    },
+    "Changeling": {
+      "name": "تشانجلينغ",
+      "description": "طفل جنّي يُترك مكان بشري مسروق"
+    },
+    "Alien": {
+      "name": "كائن فضائي",
+      "description": "كائن خارج كوكب الأرض من عالم آخر"
+    },
+    "Eldritch": {
+      "name": "إلدريتش",
+      "description": "رعب كوني يفوق فهم البشر"
+    },
+    "Lovecraftian": {
+      "name": "لافكرافتي",
+      "description": "مخلوق من أساطير لافكرافت"
+    },
+    "Eldritch Tentacle": {
+      "name": "مجس إلدريتش",
+      "description": "كيان رعب كوني ذو مجسات"
+    },
+    "Other": {
+      "name": "أخرى",
+      "description": "أنواع لا تندرج تحت أي فئة أخرى"
+    },
+    "Unknown": {
+      "name": "غير معروف",
+      "description": "أنواع ذات أصل غير معروف"
+    }
+  }
+}

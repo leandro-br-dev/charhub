@@ -54,6 +54,21 @@
     },
     "infiniteScroll": {
       "endOfList": "All characters have been loaded"
+    },
+    "filters": {
+      "title": "Filters",
+      "gender": "Gender",
+      "species": "Species",
+      "selectGender": "Select genders...",
+      "selectSpecies": "Select species...",
+      "clear": "Clear",
+      "genders": {
+        "male": "Male",
+        "female": "Female",
+        "nonBinary": "Non-Binary",
+        "other": "Other",
+        "unknown": "Unknown"
+      }
     }
   }
 }

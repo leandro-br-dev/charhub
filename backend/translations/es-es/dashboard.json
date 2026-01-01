@@ -50,10 +50,25 @@
     },
     "storyCard": {
       "alt": "Imagen de portada para {{title}}",
-      "play": "Jugar"
+      "play": "Reproducir"
     },
     "infiniteScroll": {
       "endOfList": "Se han cargado todos los personajes"
+    },
+    "filters": {
+      "title": "Filtros",
+      "gender": "Género",
+      "species": "Especie",
+      "selectGender": "Seleccionar géneros...",
+      "selectSpecies": "Seleccionar especies...",
+      "clear": "Limpiar",
+      "genders": {
+        "male": "Masculino",
+        "female": "Femenino",
+        "nonBinary": "No binario",
+        "other": "Otro",
+        "unknown": "Desconocido"
+      }
     }
   }
 }

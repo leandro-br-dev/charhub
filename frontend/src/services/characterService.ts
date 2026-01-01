@@ -39,7 +39,13 @@ export const characterService = {
   /**
    * Get characters with pagination (for infinite scroll)
    */
-  async listWithPagination(params?: { skip?: number; limit?: number; ageRatings?: AgeRating[] }): Promise<CharacterListResult> {
+  async listWithPagination(params?: {
+    skip?: number;
+    limit?: number;
+    ageRatings?: AgeRating[];
+    genders?: string[];
+    species?: string[];
+  }): Promise<CharacterListResult> {
     const query: Record<string, unknown> = { ...(params || {}) };
 
     const response = await api.get<{ success: boolean; data: Character[]; total: number; hasMore: boolean }>(BASE_PATH, { params: query });
@@ -144,10 +150,20 @@ export const characterService = {
    * Get popular characters for dashboard
    * TODO: Implement backend endpoint for actual popularity metrics
    */
-  async getPopular(params: { limit?: number; ageRatings?: AgeRating[] } = {}): Promise<Character[]> {
+  async getPopular(params: {
+    limit?: number;
+    ageRatings?: AgeRating[];
+    genders?: string[];
+    species?: string[];
+  } = {}): Promise<Character[]> {
     try {
-      const { limit = 10, ageRatings } = params;
-      const response = await this.list({ ageRatings, limit });
+      const { limit = 10, ageRatings, genders, species } = params;
+      const response = await this.list({
+        ageRatings,
+        gender: genders,
+        species,
+        limit,
+      });
       return response.items;
     } catch (error) {
       console.error('[characterService] getPopular failed:', error);
@@ -158,10 +174,16 @@ export const characterService = {
   /**
    * Get popular characters with pagination (for infinite scroll)
    */
-  async getPopularWithPagination(params: { skip?: number; limit?: number; ageRatings?: AgeRating[] } = {}): Promise<CharacterListResult> {
+  async getPopularWithPagination(params: {
+    skip?: number;
+    limit?: number;
+    ageRatings?: AgeRating[];
+    genders?: string[];
+    species?: string[];
+  } = {}): Promise<CharacterListResult> {
     try {
-      const { skip = 0, limit = 20, ageRatings } = params;
-      return await this.listWithPagination({ skip, limit, ageRatings });
+      const { skip = 0, limit = 20, ageRatings, genders, species } = params;
+      return await this.listWithPagination({ skip, limit, ageRatings, genders, species });
     } catch (error) {
       console.error('[characterService] getPopularWithPagination failed:', error);
       return { characters: [], total: 0, hasMore: false };
@@ -242,6 +264,83 @@ export const characterService = {
       { params: type ? { type } : {} }
     );
     return response.data.data || [];
+  },
+
+  /**
+   * Get available filter options with counts
+   * Returns gender and species distributions for the current age rating filter
+   */
+  async getFilterOptions(params?: { ageRatings?: AgeRating[] }): Promise<{
+    genders: Array<{ value: string; label: string; count: number }>;
+    species: Array<{ value: string; label: string; count: number }>;
+  }> {
+    try {
+      const queryParams: Record<string, string> = {};
+      if (params?.ageRatings && params.ageRatings.length > 0) {
+        queryParams.ageRatings = params.ageRatings.join(',');
+      }
+
+      const response = await api.get<{
+        success: boolean;
+        data: {
+          genders: Array<{ value: string; count: number }>;
+          species: Array<{ value: string; name: string; count: number }>;
+        };
+      }>(`${API_PREFIX}/character-filters`, { params: queryParams });
+
+      const data = response.data.data || { genders: [], species: [] };
+      return {
+        genders: data.genders.map(g => ({ ...g, label: g.value })),
+        species: data.species.map(s => ({ value: s.value, label: s.name, count: s.count }))
+      };
+    } catch (error) {
+      console.error('[characterService] getFilterOptions failed:', error);
+      return { genders: [], species: [] };
+    }
+  },
+
+  /**
+   * Returns gender filter options only
+   */
+  async getGenderFilterOptions(params?: { ageRatings?: AgeRating[] }): Promise<Array<{ value: string; count: number }>> {
+    try {
+      const queryParams: Record<string, string> = { include: 'genders' };
+      if (params?.ageRatings && params.ageRatings.length > 0) {
+        queryParams.ageRatings = params.ageRatings.join(',');
+      }
+
+      const response = await api.get<{
+        success: boolean;
+        data: { genders: Array<{ value: string; count: number }> };
+      }>(`${API_PREFIX}/character-filters`, { params: queryParams });
+
+      return response.data.data?.genders || [];
+    } catch (error) {
+      console.error('[characterService] getGenderFilterOptions failed:', error);
+      return [];
+    }
+  },
+
+  /**
+   * Returns species filter options only
+   */
+  async getSpeciesFilterOptions(params?: { ageRatings?: AgeRating[] }): Promise<Array<{ value: string; name: string; count: number }>> {
+    try {
+      const queryParams: Record<string, string> = { include: 'species' };
+      if (params?.ageRatings && params.ageRatings.length > 0) {
+        queryParams.ageRatings = params.ageRatings.join(',');
+      }
+
+      const response = await api.get<{
+        success: boolean;
+        data: { species: Array<{ value: string; name: string; count: number }> };
+      }>(`${API_PREFIX}/character-filters`, { params: queryParams });
+
+      return response.data.data?.species || [];
+    } catch (error) {
+      console.error('[characterService] getSpeciesFilterOptions failed:', error);
+      return [];
+    }
   }
 };
 

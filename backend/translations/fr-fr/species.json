@@ -1,0 +1,409 @@
+{
+  "description": "Character species with diverse options from various cultures and mythologies. Used for filtering and categorizing characters.",
+  "resources": {
+    "Human": {
+      "name": "Humain",
+      "description": "Être humain standard"
+    },
+    "Elf": {
+      "name": "Elfe",
+      "description": "Humanoïde aux oreilles pointues avec une affinité magique"
+    },
+    "Dark Elf": {
+      "name": "Elfe Noir",
+      "description": "Elfe à la peau sombre vivant sous terre"
+    },
+    "Wood Elf": {
+      "name": "Elfe Sylvestre",
+      "description": "Elfe vivant en forêt avec une affinité pour la nature"
+    },
+    "High Elf": {
+      "name": "Haut Elfe",
+      "description": "Elfe noble doté de puissantes capacités magiques"
+    },
+    "Dwarf": {
+      "name": "Nain",
+      "description": "Humanoïde petit et robuste, habile en artisanat"
+    },
+    "Halfling": {
+      "name": "Halfelin",
+      "description": "Petit humanoïde paisible aux pieds poilus"
+    },
+    "Gnome": {
+      "name": "Gnome",
+      "description": "Petit humanoïde doté d'inventivité et de magie d'illusion"
+    },
+    "Orc": {
+      "name": "Orc",
+      "description": "Humanoïde agressif à la peau verte et aux défenses"
+    },
+    "Half-Orc": {
+      "name": "Demi-Orc",
+      "description": "Hybride humain-orc doté de force et de ruse"
+    },
+    "Goblin": {
+      "name": "Gobelin",
+      "description": "Petit humanoïde vert et espiègle"
+    },
+    "Tiefling": {
+      "name": "Tieffelin",
+      "description": "Humanoïde d'ascendance fiélonne, avec des cornes et une queue"
+    },
+    "Dragonborn": {
+      "name": "Draconide",
+      "description": "Humanoïde draconique avec des écailles et une arme de souffle"
+    },
+    "Half-Elf": {
+      "name": "Demi-Elfe",
+      "description": "Hybride humain-elfe doté de capacités polyvalentes"
+    },
+    "Giant": {
+      "name": "Géant",
+      "description": "Grand humanoïde d'une force immense"
+    },
+    "Troll": {
+      "name": "Troll",
+      "description": "Grand humanoïde régénérant"
+    },
+    "Ogre": {
+      "name": "Ogre",
+      "description": "Grand humanoïde brutal"
+    },
+    "Kobold": {
+      "name": "Kobold",
+      "description": "Petit humanoïde reptilien expert en pièges"
+    },
+    "Fairy": {
+      "name": "Fée",
+      "description": "Petit humanoïde ailé avec de la poussière magique"
+    },
+    "Pixie": {
+      "name": "Pixie",
+      "description": "Minuscule humanoïde espiègle avec des ailes d'insecte"
+    },
+    "Nymph": {
+      "name": "Nymphe",
+      "description": "Esprit de la nature lié à un lieu"
+    },
+    "Dryad": {
+      "name": "Dryade",
+      "description": "Esprit d'arbre avec une profonde connexion à la forêt"
+    },
+    "Satyr": {
+      "name": "Satyre",
+      "description": "Mi-humain, mi-chèvre avec un talent musical"
+    },
+    "Centaur": {
+      "name": "Centaure",
+      "description": "Mi-humain, mi-cheval à partir de la taille"
+    },
+    "Minotaur": {
+      "name": "Minotaure",
+      "description": "Mi-humain, mi-taureau avec une grande force"
+    },
+    "Naga": {
+      "name": "Naga",
+      "description": "Haut du corps humanoïde avec une queue de serpent"
+    },
+    "Lamia": {
+      "name": "Lamia",
+      "description": "Femme humanoïde avec le corps inférieur d'un serpent"
+    },
+    "Merfolk": {
+      "name": "Peuple Marin",
+      "description": "Habitant aquatique mi-humain, mi-poisson"
+    },
+    "Mermaid": {
+      "name": "Sirène",
+      "description": "Sirène avec une belle voix chantante"
+    },
+    "Siren": {
+      "name": "Sirène",
+      "description": "Chanteuse dangereuse qui attire les marins vers leur perte"
+    },
+    "Harpy": {
+      "name": "Harpyie",
+      "description": "Hybride femme-oiseau aux serres acérées"
+    },
+    "Werewolf": {
+      "name": "Loup-garou",
+      "description": "Humain qui se transforme en loup sous la pleine lune"
+    },
+    "Vampire": {
+      "name": "Vampire",
+      "description": "Être mort-vivant qui se nourrit de sang"
+    },
+    "Zombie": {
+      "name": "Zombie",
+      "description": "Cadre réanimé affamé de cerveaux"
+    },
+    "Lich": {
+      "name": "Liche",
+      "description": "Puissant lanceur de sorts mort-vivant avec un phylactère"
+    },
+    "Ghost": {
+      "name": "Fantôme",
+      "description": "Esprit d'une personne décédée"
+    },
+    "Specter": {
+      "name": "Spectre",
+      "description": "Esprit malveillant capable de drainer l'énergie"
+    },
+    "Wraith": {
+      "name": "Revenant",
+      "description": "Esprit vengeur au toucher qui draine la vie"
+    },
+    "Skeleton": {
+      "name": "Squelette",
+      "description": "Os animés d'une créature décédée"
+    },
+    "Mummy": {
+      "name": "Momie",
+      "description": "Cadre préservé des tombes antiques"
+    },
+    "Ghoul": {
+      "name": "Goule",
+      "description": "Créature mort-vivante mangeuse de charognes"
+    },
+    "Banshee": {
+      "name": "Banshee",
+      "description": "Esprit féminin dont le hurlement annonce la mort"
+    },
+    "Reaper": {
+      "name": "Faucheur",
+      "description": "Faucheur, la mort personnifiée"
+    },
+    "Dragon": {
+      "name": "Dragon",
+      "description": "Grand reptile volant doté de pouvoirs magiques"
+    },
+    "Wyvern": {
+      "name": "Wyverne",
+      "description": "Parent du dragon à deux pattes avec une queue venimeuse"
+    },
+    "Drake": {
+      "name": "Drake",
+      "description": "Petit dragon cracheur de feu sans ailes"
+    },
+    "Phoenix": {
+      "name": "Phénix",
+      "description": "Oiseau immortel renaissant de ses propres cendres"
+    },
+    "Griffin": {
+      "name": "Griffon",
+      "description": "Créature noble hybride lion-aigle"
+    },
+    "Hydra": {
+      "name": "Hydre",
+      "description": "Serpent à plusieurs têtes qui en fait repousser deux quand une est coupée"
+    },
+    "Chimera": {
+      "name": "Chimère",
+      "description": "Monstre à trois têtes avec des parties de lion, de chèvre et de serpent"
+    },
+    "Sphinx": {
+      "name": "Sphinx",
+      "description": "Lion à tête humaine, gardien des énigmes"
+    },
+    "Unicorn": {
+      "name": "Licorne",
+      "description": "Cheval d'un blanc pur avec une corne en spirale"
+    },
+    "Pegasus": {
+      "name": "Pégase",
+      "description": "Cheval ailé d'origine divine"
+    },
+    "Kirin": {
+      "name": "Kirin",
+      "description": "Créature japonaise ressemblant à une licorne, porteuse de bons présages"
+    },
+    "Kitsune": {
+      "name": "Kitsune",
+      "description": "Esprit renard japonais avec plusieurs queues"
+    },
+    "Tanuki": {
+      "name": "Tanuki",
+      "description": "Chien viverrin japonais doté de la capacité de métamorphose"
+    },
+    "Oni": {
+      "name": "Oni",
+      "description": "Démon japonais avec des cornes et une massue"
+    },
+    "Tengu": {
+      "name": "Tengu",
+      "description": "Humanoïde japonais ressemblant à un oiseau ou karasu-tengu"
+    },
+    "Kappa": {
+      "name": "Kappa",
+      "description": "Kobold aquatique japonais avec une tête en forme de plat"
+    },
+    "Yokai": {
+      "name": "Yokai",
+      "description": "Esprit ou démon japonais de diverses formes"
+    },
+    "Yuki-onna": {
+      "name": "Yuki-onna",
+      "description": "Esprit de la femme des neiges japonaise"
+    },
+    "Raiju": {
+      "name": "Raiju",
+      "description": "Bête de tonnerre japonaise sous forme de loup ou de chat"
+    },
+    "Slime": {
+      "name": "Slime",
+      "description": "Créature gélatineuse dotée de diverses capacités"
+    },
+    "Elemental": {
+      "name": "Élémentaire",
+      "description": "Incarnation pure d'un élément naturel"
+    },
+    "Fire Elemental": {
+      "name": "Élémentaire de Feu",
+      "description": "Flamme vivante au toucher brûlant"
+    },
+    "Water Elemental": {
+      "name": "Élémentaire d'Eau",
+      "description": "Eau vivante à la forme fluide"
+    },
+    "Earth Elemental": {
+      "name": "Élémentaire de Terre",
+      "description": "Pierre et terre vivantes à la force écrasante"
+    },
+    "Air Elemental": {
+      "name": "Élémentaire d'Air",
+      "description": "Vent vivant à la forme invisible"
+    },
+    "Ice Elemental": {
+      "name": "Élémentaire de Glace",
+      "description": "Glace vivante avec une aura gelée"
+    },
+    "Lightning Elemental": {
+      "name": "Élémentaire de Foudre",
+      "description": "Électricité vivante au pouvoir choquant"
+    },
+    "Golem": {
+      "name": "Golem",
+      "description": "Construction animée d'argile, de pierre ou de métal"
+    },
+    "Homunculus": {
+      "name": "Homunculus",
+      "description": "Petit humanoïde créé artificiellement"
+    },
+    "Robot": {
+      "name": "Robot",
+      "description": "Être artificiel mécanique"
+    },
+    "Android": {
+      "name": "Androïde",
+      "description": "Robot conçu pour ressembler à un humain"
+    },
+    "Cyborg": {
+      "name": "Cyborg",
+      "description": "Être organique avec des améliorations mécaniques"
+    },
+    "Mecha": {
+      "name": "Mecha",
+      "description": "Grand robot piloté pour le combat"
+    },
+    "AI": {
+      "name": "IA",
+      "description": "Intelligence artificielle sans forme physique"
+    },
+    "Doll": {
+      "name": "Poupée",
+      "description": "Poupée ou marionnette vivante"
+    },
+    "Marionette": {
+      "name": "Marionnette",
+      "description": "Marionnette animée"
+    },
+    "Catfolk": {
+      "name": "Félinoïde",
+      "description": "Humanoïde aux traits de chat"
+    },
+    "Nekomimi": {
+      "name": "Nekomimi",
+      "description": "Humain avec des oreilles de chat"
+    },
+    "Wolfkin": {
+      "name": "Lupin",
+      "description": "Humanoïde aux traits de loup"
+    },
+    "Foxkin": {
+      "name": "Vulpin",
+      "description": "Humanoïde aux traits de renard"
+    },
+    "Rabbitfolk": {
+      "name": "Lapinoïde",
+      "description": "Humanoïde aux traits de lapin"
+    },
+    "Dragonkin": {
+      "name": "Draconide",
+      "description": "Humanoïde aux traits de dragon"
+    },
+    "Demon": {
+      "name": "Démon",
+      "description": "Créature démoniaque des plans inférieurs"
+    },
+    "Angel": {
+      "name": "Ange",
+      "description": "Être céleste d'origine divine"
+    },
+    "Fallen Angel": {
+      "name": "Ange Déchu",
+      "description": "Ange chassé du royaume divin"
+    },
+    "Devil": {
+      "name": "Diable",
+      "description": "Puissant démon des Neuf Enfers"
+    },
+    "Imp": {
+      "name": "Diablotin",
+      "description": "Petit diable espiègle"
+    },
+    "Succubus": {
+      "name": "Succube",
+      "description": "Démonne séductrice qui se nourrit de force vitale"
+    },
+    "Incubus": {
+      "name": "Incube",
+      "description": "Démon mâle qui séduit dans les rêves"
+    },
+    "Familiar": {
+      "name": "Familier",
+      "description": "Serviteur magique sous forme animale"
+    },
+    "Doppelganger": {
+      "name": "Changeforme",
+      "description": "Changeforme qui prend l'apparence d'autrui"
+    },
+    "Changeling": {
+      "name": "Changelin",
+      "description": "Enfant fée laissé à la place d'un humain volé"
+    },
+    "Alien": {
+      "name": "Extraterrestre",
+      "description": "Être extraterrestre d'un autre monde"
+    },
+    "Eldritch": {
+      "name": "Abominable",
+      "description": "Horreur cosmique au-delà de la compréhension mortelle"
+    },
+    "Lovecraftian": {
+      "name": "Lovecraftien",
+      "description": "Créature issue du mythe de Lovecraft"
+    },
+    "Eldritch Tentacle": {
+      "name": "Tentacule Abominable",
+      "description": "Entité d'horreur cosmique tentaculaire"
+    },
+    "Other": {
+      "name": "Autre",
+      "description": "Espèce ne rentrant dans aucune autre catégorie"
+    },
+    "Unknown": {
+      "name": "Inconnu",
+      "description": "Espèce d'origine inconnue"
+    }
+  }
+}

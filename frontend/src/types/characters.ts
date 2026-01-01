@@ -108,7 +108,7 @@ export interface CharacterCore {
   lastName?: string | null;
   age?: number | null;
   gender?: string | null;
-  species?: string | null;
+  species?: string | { id: string; name: string } | null;
   style?: VisualStyle | null;
   reference?: string | null;
   avatar?: string | null;
@@ -168,7 +168,8 @@ export interface CharacterListParams {
   ageRatings?: AgeRating[];
   contentTags?: ContentTag[];
   visibility?: Visibility;
-  gender?: string;
+  gender?: string | string[];
+  species?: string | string[];
   sortBy?: 'createdAt' | 'updatedAt' | 'name';
   limit?: number;
   page?: number;

@@ -38,7 +38,7 @@
         },
         "stories": {
           "title": "Descobrir Histórias",
-          "description": "Explore narrativas interativas",
+          "description": "Explore a narrativa interativa",
           "action": "Explorar Histórias"
         },
         "community": {
@@ -54,6 +54,21 @@
     },
     "infiniteScroll": {
       "endOfList": "Todos os personagens foram carregados."
+    },
+    "filters": {
+      "title": "Filtros",
+      "gender": "Gênero",
+      "species": "Espécie",
+      "selectGender": "Selecionar gêneros...",
+      "selectSpecies": "Selecionar espécies...",
+      "clear": "Limpar",
+      "genders": {
+        "male": "Masculino",
+        "female": "Feminino",
+        "nonBinary": "Não Binário",
+        "other": "Outro",
+        "unknown": "Desconhecido"
+      }
     }
   }
 }

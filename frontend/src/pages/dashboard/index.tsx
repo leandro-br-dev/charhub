@@ -20,9 +20,11 @@ import { usePageHeader } from '../../hooks/usePageHeader';
 import { useToast } from '../../contexts/ToastContext';
 import { useCardsPerRow } from '../../hooks/useCardsPerRow';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import { useCharacterFilters } from '../../hooks/useCharacterFilters';
 import { CharacterGridSkeleton } from '../../components/ui/CharacterCardSkeleton';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { EndOfListMessage } from '../../components/ui/EndOfListMessage';
+import { FilterPanel } from '../../components/filters';
 
 // Component for authenticated users (inside AuthenticatedLayout)
 function AuthenticatedDashboard(): JSX.Element {
@@ -114,6 +116,14 @@ function DashboardContent(): JSX.Element {
     persistToLocalStorage: true,
   });
 
+  // Character filters hook (gender, species)
+  const {
+    filters: characterFilters,
+    updateFilter: updateCharacterFilter,
+    clearFilters: clearCharacterFilters,
+    activeFiltersCount,
+  } = useCharacterFilters();
+
   // Ensure non-authenticated users always see "popular" views
   useEffect(() => {
     if (!isAuthenticated) {
@@ -159,7 +169,9 @@ function DashboardContent(): JSX.Element {
         const result = await characterService.getPopularWithPagination({
           skip: 0,
           limit: initialLimit,
-          ageRatings
+          ageRatings,
+          genders: characterFilters.genders,
+          species: characterFilters.species,
         });
 
         setPopularCharacters(result.characters);
@@ -225,7 +237,7 @@ function DashboardContent(): JSX.Element {
     };
 
     fetchCharacters();
-  }, [ageRatings, isAuthenticated, initialLimit]);
+  }, [ageRatings, isAuthenticated, initialLimit, characterFilters.genders, characterFilters.species]);
 
   // Load more characters when infinite scroll triggers
   const loadMore = useCallback(async () => {
@@ -236,7 +248,9 @@ function DashboardContent(): JSX.Element {
       const result = await characterService.getPopularWithPagination({
         skip: popularCharacters.length,
         limit: batchSize,
-        ageRatings
+        ageRatings,
+        genders: characterFilters.genders,
+        species: characterFilters.species,
       });
 
       setPopularCharacters(prev => [...prev, ...result.characters]);
@@ -505,6 +519,17 @@ function DashboardContent(): JSX.Element {
                     </div>
                   )}
                 </div>
+
+                {/* Filter Panel */}
+                {discoverView === 'popular' && (
+                  <FilterPanel
+                    filters={characterFilters}
+                    onUpdateFilter={updateCharacterFilter}
+                    onClearFilters={clearCharacterFilters}
+                    activeFiltersCount={activeFiltersCount}
+                  />
+                )}
+
                 {initialLoading ? (
                   <CharacterGridSkeleton count={initialLimit} />
                 ) : (

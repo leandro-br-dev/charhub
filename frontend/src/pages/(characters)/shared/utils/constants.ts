@@ -30,5 +30,6 @@ export const VISUAL_STYLE_OPTIONS: VisualStyle[] = [
   'THREE_D'
 ];
 
-export const GENDER_OPTIONS = ['male', 'female', 'non-binary'] as const;
+// CharacterGender enum values from backend
+export const GENDER_OPTIONS = ['MALE', 'FEMALE', 'NON_BINARY', 'OTHER', 'UNKNOWN'] as const;
 export type GenderOption = (typeof GENDER_OPTIONS)[number];

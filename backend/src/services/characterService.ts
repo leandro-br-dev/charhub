@@ -1,4 +1,4 @@
-import { Prisma, AgeRating, ContentTag, Visibility } from '../generated/prisma';
+import { Prisma, AgeRating, ContentTag, Visibility, CharacterGender } from '../generated/prisma';
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import type { CreateCharacterInput, UpdateCharacterInput } from '../validators';
@@ -17,8 +17,8 @@ export interface CharacterWithRelations {
   firstName: string;
   lastName: string | null;
   age: number | null;
-  gender: string | null;
-  species: string | null;
+  gender: CharacterGender | null;
+  speciesId: string | null;
   style: string | null;
   physicalCharacteristics: string | null;
   personality: string | null;
@@ -38,6 +38,10 @@ export interface CharacterWithRelations {
     displayName: string | null;
     avatarUrl: string | null;
   };
+  species?: {
+    id: string;
+    name: string;
+  } | null;
   lora?: unknown | null;
   mainAttire?: unknown | null;
   attires?: unknown[];
@@ -59,6 +63,12 @@ const characterInclude = {
       username: true,
       displayName: true,
       avatarUrl: true,
+    },
+  },
+  species: {
+    select: {
+      id: true,
+      name: true,
     },
   },
   lora: true,
@@ -133,12 +143,16 @@ export function enrichCharactersWithAvatar<T extends Record<string, any>>(
  */
 export async function createCharacter(data: CreateCharacterInput) {
   try {
-    const { attireIds, tagIds, contentTags, ...characterData } = data;
+    const { attireIds, tagIds, contentTags, species, gender, ...characterData } = data;
 
     // Create character with relations
     const character = await prisma.character.create({
       data: {
         ...characterData,
+        // Convert gender to CharacterGender enum
+        gender: gender as any,
+        // Convert species to speciesId
+        ...(species ? { speciesId: species } : {}),
         contentTags: contentTags || [],
         // Connect attires if provided
         ...(attireIds && attireIds.length > 0
@@ -213,7 +227,8 @@ export async function getCharactersByUserId(
   options?: {
     search?: string;
     tags?: string[];
-    gender?: string;
+    gender?: string | string[];
+    species?: string | string[];
     ageRatings?: string[];
     blockedTags?: string[];
     skip?: number;
@@ -221,7 +236,7 @@ export async function getCharactersByUserId(
   }
 ) {
   try {
-    const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, species, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
     // Build where clause
     const where: Prisma.CharacterWhereInput = {
@@ -242,9 +257,51 @@ export async function getCharactersByUserId(
       ];
     }
 
-    // Add gender filter
+    // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
-      where.gender = gender;
+      const genderArray = Array.isArray(gender) ? gender : [gender];
+      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      if (genderValues.length === 1) {
+        where.gender = genderValues[0] as any;
+      } else if (genderValues.length > 1) {
+        const hasNull = genderArray.includes('unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          where.OR = [
+            { gender: null },
+            { gender: { in: nonNullValues as any } }
+          ];
+        } else if (hasNull) {
+          where.gender = null as any;
+        } else {
+          where.gender = { in: nonNullValues as any };
+        }
+      }
+    }
+
+    // Add species filter (support multiple values)
+    if (species) {
+      const speciesArray = Array.isArray(species) ? species : [species];
+      const speciesValues = speciesArray.map(s => s === 'unknown' ? null : s).filter(v => v !== undefined);
+      if (speciesValues.length === 1) {
+        where.speciesId = speciesValues[0];
+      } else if (speciesValues.length > 1) {
+        const hasNull = speciesArray.includes('unknown');
+        const nonNullValues = speciesValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          where.AND = [
+            ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
+            { OR: [
+              { speciesId: null },
+              { speciesId: { in: nonNullValues } }
+            ]}
+          ];
+        } else if (hasNull) {
+          where.speciesId = null;
+        } else {
+          where.speciesId = { in: nonNullValues };
+        }
+      }
     }
 
     // Add tags filter
@@ -302,14 +359,15 @@ export async function getCharactersByUserId(
 export async function getPublicCharacters(options?: {
   search?: string;
   tags?: string[];
-  gender?: string;
+  gender?: string | string[];
+  species?: string | string[];
   ageRatings?: string[];
   blockedTags?: string[];
   skip?: number;
   limit?: number;
 }): Promise<CharacterListResult> {
   try {
-    const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, species, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.CharacterWhereInput = {
       visibility: Visibility.PUBLIC,
@@ -330,9 +388,53 @@ export async function getPublicCharacters(options?: {
       ];
     }
 
-    // Add gender filter
+    // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
-      where.gender = gender;
+      const genderArray = Array.isArray(gender) ? gender : [gender];
+      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      if (genderValues.length === 1) {
+        where.gender = genderValues[0] as any;
+      } else if (genderValues.length > 1) {
+        const hasNull = genderArray.includes('unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          const existingOR = where.OR;
+          where.OR = [
+            ...(existingOR ? [typeof existingOR === 'boolean' ? {} : existingOR] as any : []),
+            { gender: null },
+            { gender: { in: nonNullValues as any } }
+          ];
+        } else if (hasNull) {
+          where.gender = null as any;
+        } else {
+          where.gender = { in: nonNullValues as any };
+        }
+      }
+    }
+
+    // Add species filter (support multiple values)
+    if (species) {
+      const speciesArray = Array.isArray(species) ? species : [species];
+      const speciesValues = speciesArray.map(s => s === 'unknown' ? null : s).filter(v => v !== undefined);
+      if (speciesValues.length === 1) {
+        where.speciesId = speciesValues[0];
+      } else if (speciesValues.length > 1) {
+        const hasNull = speciesArray.includes('unknown');
+        const nonNullValues = speciesValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          where.AND = [
+            ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
+            { OR: [
+              { speciesId: null },
+              { speciesId: { in: nonNullValues } }
+            ]}
+          ];
+        } else if (hasNull) {
+          where.speciesId = null;
+        } else {
+          where.speciesId = { in: nonNullValues };
+        }
+      }
     }
 
     // Add tags filter
@@ -403,14 +505,15 @@ export async function getPublicCharacters(options?: {
 export async function getPublicAndOwnCharacters(userId: string, options?: {
   search?: string;
   tags?: string[];
-  gender?: string;
+  gender?: string | string[];
+  species?: string | string[];
   ageRatings?: string[];
   blockedTags?: string[];
   skip?: number;
   limit?: number;
 }): Promise<CharacterListResult> {
   try {
-    const { search, tags, gender, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
+    const { search, tags, gender, species, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
 
     const where: Prisma.CharacterWhereInput = {
       isSystemCharacter: false,
@@ -441,9 +544,54 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
       delete where.OR;
     }
 
-    // Add gender filter
+    // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
-      where.gender = gender;
+      const genderArray = Array.isArray(gender) ? gender : [gender];
+      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      if (genderValues.length === 1) {
+        where.gender = genderValues[0] as any;
+      } else if (genderValues.length > 1) {
+        const hasNull = genderArray.includes('unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          where.AND = [
+            ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
+            { OR: [
+              { gender: null as any },
+              { gender: { in: nonNullValues as any } }
+            ]}
+          ];
+        } else if (hasNull) {
+          where.gender = null as any;
+        } else {
+          where.gender = { in: nonNullValues as any };
+        }
+      }
+    }
+
+    // Add species filter (support multiple values)
+    if (species) {
+      const speciesArray = Array.isArray(species) ? species : [species];
+      const speciesValues = speciesArray.map(s => s === 'unknown' ? null : s).filter(v => v !== undefined);
+      if (speciesValues.length === 1) {
+        where.speciesId = speciesValues[0];
+      } else if (speciesValues.length > 1) {
+        const hasNull = speciesArray.includes('unknown');
+        const nonNullValues = speciesValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          where.AND = [
+            ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
+            { OR: [
+              { speciesId: null },
+              { speciesId: { in: nonNullValues } }
+            ]}
+          ];
+        } else if (hasNull) {
+          where.speciesId = null;
+        } else {
+          where.speciesId = { in: nonNullValues };
+        }
+      }
     }
 
     // Add tags filter
@@ -514,7 +662,7 @@ export async function updateCharacter(
   data: UpdateCharacterInput
 ) {
   try {
-    const { attireIds, tagIds, contentTags, ...updateData } = data;
+    const { attireIds, tagIds, contentTags, species, gender, ...updateData } = data;
 
     // Check if translatable fields are being updated
     const translatableFields = ['personality', 'history', 'physicalCharacteristics'];
@@ -522,6 +670,17 @@ export async function updateCharacter(
 
     // Increment contentVersion if translatable content changed
     const finalUpdateData: any = { ...updateData };
+
+    // Convert gender to CharacterGender enum
+    if (gender !== undefined) {
+      finalUpdateData.gender = gender as any;
+    }
+
+    // Convert species to speciesId
+    if (species !== undefined) {
+      finalUpdateData.speciesId = species;
+    }
+
     if (hasTranslatableChanges) {
       finalUpdateData.contentVersion = { increment: 1 };
     }
@@ -836,7 +995,7 @@ export async function getFavoriteCharacters(
     });
 
     logger.debug({ userId, count: characters.length }, 'Favorite characters fetched');
-    return characters as CharacterWithRelations[];
+    return characters as any;
   } catch (error) {
     logger.error({ error, userId }, 'Error getting favorite characters');
     throw error;

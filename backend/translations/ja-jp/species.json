@@ -1,0 +1,409 @@
+{
+  "description": "Character species with diverse options from various cultures and mythologies. Used for filtering and categorizing characters.",
+  "resources": {
+    "Human": {
+      "name": "人間",
+      "description": "標準的な人間"
+    },
+    "Elf": {
+      "name": "エルフ",
+      "description": "尖った耳を持つ、魔法の親和性がある人型生物"
+    },
+    "Dark Elf": {
+      "name": "ダークエルフ",
+      "description": "地下に住む、肌の黒いエルフ"
+    },
+    "Wood Elf": {
+      "name": "ウッドエルフ",
+      "description": "森に住み、自然との親和性があるエルフ"
+    },
+    "High Elf": {
+      "name": "ハイエルフ",
+      "description": "強力な魔法能力を持つ高貴なエルフ"
+    },
+    "Dwarf": {
+      "name": "ドワーフ",
+      "description": "小柄で頑丈な、工芸に長けた人型生物"
+    },
+    "Halfling": {
+      "name": "ハーフリング",
+      "description": "毛深い足を持つ、小さく平和な人型生物"
+    },
+    "Gnome": {
+      "name": "ノーム",
+      "description": "発明と幻影魔法に長けた小柄な人型生物"
+    },
+    "Orc": {
+      "name": "オーク",
+      "description": "緑色の肌と牙を持つ、攻撃的な人型生物"
+    },
+    "Half-Orc": {
+      "name": "ハーフオーク",
+      "description": "強さと狡猾さを持つ人間とオークの混血"
+    },
+    "Goblin": {
+      "name": "ゴブリン",
+      "description": "小さくていたずら好きな緑色の人型生物"
+    },
+    "Tiefling": {
+      "name": "ティーフリング",
+      "description": "悪魔の血を引く、角と尻尾を持つ人型生物"
+    },
+    "Dragonborn": {
+      "name": "ドラゴンボーン",
+      "description": "鱗とブレス攻撃を持つドラゴンのような人型生物"
+    },
+    "Half-Elf": {
+      "name": "ハーフエルフ",
+      "description": "汎用的な能力を持つ人間とエルフの混血"
+    },
+    "Giant": {
+      "name": "巨人",
+      "description": "計り知れない力を持つ巨大な人型生物"
+    },
+    "Troll": {
+      "name": "トロル",
+      "description": "再生能力を持つ巨大な人型生物"
+    },
+    "Ogre": {
+      "name": "オーガ",
+      "description": "大きく、粗暴な人型生物"
+    },
+    "Kobold": {
+      "name": "コボルド",
+      "description": "罠の専門知識を持つ、小さな爬虫類の人型生物"
+    },
+    "Fairy": {
+      "name": "妖精",
+      "description": "魔法の粉を持つ、小さな翼のある人型生物"
+    },
+    "Pixie": {
+      "name": "ピクシー",
+      "description": "昆虫の羽を持つ、小さないたずら好きな人型生物"
+    },
+    "Nymph": {
+      "name": "ニンフ",
+      "description": "場所に縛られた自然の精霊"
+    },
+    "Dryad": {
+      "name": "ドライアド",
+      "description": "深い森とのつながりを持つ木の精霊"
+    },
+    "Satyr": {
+      "name": "サテュロス",
+      "description": "半分人間、半分ヤギで音楽の才能を持つ"
+    },
+    "Centaur": {
+      "name": "ケンタウロス",
+      "description": "腰から下が半分人間、半分馬"
+    },
+    "Minotaur": {
+      "name": "ミノタウロス",
+      "description": "半分人間、半分牛で巨大な力を持つ"
+    },
+    "Naga": {
+      "name": "ナーガ",
+      "description": "上半身は人間、下半身は蛇の尾"
+    },
+    "Lamia": {
+      "name": "ラミア",
+      "description": "下半身が蛇の女性の人型生物"
+    },
+    "Merfolk": {
+      "name": "マーフォーク",
+      "description": "半分人間、半分魚の水棲生物"
+    },
+    "Mermaid": {
+      "name": "人魚",
+      "description": "美しい歌声を持つ女性の人魚"
+    },
+    "Siren": {
+      "name": "セイレーン",
+      "description": "船乗りを破滅へと誘う危険な歌い手"
+    },
+    "Harpy": {
+      "name": "ハーピー",
+      "description": "鋭い爪を持つ鳥と人間の混血"
+    },
+    "Werewolf": {
+      "name": "狼男",
+      "description": "満月の夜に狼に変身する人間"
+    },
+    "Vampire": {
+      "name": "吸血鬼",
+      "description": "血を吸って生きる不死の存在"
+    },
+    "Zombie": {
+      "name": "ゾンビ",
+      "description": "脳を求める、蘇った死体"
+    },
+    "Lich": {
+      "name": "リッチ",
+      "description": "骨壺を持つ強力なアンデッドの魔術師"
+    },
+    "Ghost": {
+      "name": "幽霊",
+      "description": "亡くなった人の魂"
+    },
+    "Specter": {
+      "name": "スペクター",
+      "description": "エネルギーを吸収する能力を持つ悪意ある精霊"
+    },
+    "Wraith": {
+      "name": "レイス",
+      "description": "生命を吸い取る接触を持つ復讐の精霊"
+    },
+    "Skeleton": {
+      "name": "骸骨",
+      "description": "亡くなった生き物の動く骨"
+    },
+    "Mummy": {
+      "name": "ミイラ",
+      "description": "古代の墓から見つかる保存された死体"
+    },
+    "Ghoul": {
+      "name": "グール",
+      "description": "腐肉を食べるアンデッドのクリーチャー"
+    },
+    "Banshee": {
+      "name": "バンシー",
+      "description": "その叫びが死を予言する女性の精霊"
+    },
+    "Reaper": {
+      "name": "死神",
+      "description": "死を擬人化したグリムリーパー"
+    },
+    "Dragon": {
+      "name": "ドラゴン",
+      "description": "魔法の力を持つ巨大な飛ぶ爬虫類"
+    },
+    "Wyvern": {
+      "name": "ワイバーン",
+      "description": "毒のある尾を持つ二足歩行のドラゴンの一種"
+    },
+    "Drake": {
+      "name": "ドレイク",
+      "description": "翼を持たない、小さな火を噴くドラゴン"
+    },
+    "Phoenix": {
+      "name": "不死鳥",
+      "description": "自身の灰から蘇る不死の鳥"
+    },
+    "Griffin": {
+      "name": "グリフィン",
+      "description": "ライオンとワシの混血の気高い生物"
+    },
+    "Hydra": {
+      "name": "ヒュドラ",
+      "description": "首を一つ切ると二つ生えてくる多頭の蛇"
+    },
+    "Chimera": {
+      "name": "キメラ",
+      "description": "ライオン、ヤギ、蛇の部分を持つ三頭の怪物"
+    },
+    "Sphinx": {
+      "name": "スフィンクス",
+      "description": "人間の頭を持つライオン、謎を司る者"
+    },
+    "Unicorn": {
+      "name": "ユニコーン",
+      "description": "螺旋状の角を持つ純白の馬"
+    },
+    "Pegasus": {
+      "name": "ペガサス",
+      "description": "神聖な起源を持つ翼のある馬"
+    },
+    "Kirin": {
+      "name": "麒麟",
+      "description": "吉兆をもたらす日本のユニコーンのような生物"
+    },
+    "Kitsune": {
+      "name": "狐",
+      "description": "複数の尾を持つ日本の狐の精霊"
+    },
+    "Tanuki": {
+      "name": "狸",
+      "description": "変身能力を持つ日本のタヌキ"
+    },
+    "Oni": {
+      "name": "鬼",
+      "description": "角と金棒を持つ日本の鬼"
+    },
+    "Tengu": {
+      "name": "天狗",
+      "description": "日本の鳥のような人型生物、または烏天狗"
+    },
+    "Kappa": {
+      "name": "河童",
+      "description": "皿のような頭を持つ日本の水棲妖怪"
+    },
+    "Yokai": {
+      "name": "妖怪",
+      "description": "様々な形態を持つ日本の精霊や妖怪"
+    },
+    "Yuki-onna": {
+      "name": "雪女",
+      "description": "日本の雪の女の精霊"
+    },
+    "Raiju": {
+      "name": "雷獣",
+      "description": "狼や猫の姿をした日本の雷獣"
+    },
+    "Slime": {
+      "name": "スライム",
+      "description": "様々な能力を持つゼラチン状の生物"
+    },
+    "Elemental": {
+      "name": "エレメンタル",
+      "description": "自然元素の純粋な具現化"
+    },
+    "Fire Elemental": {
+      "name": "火のエレメンタル",
+      "description": "燃えるような触感を持つ生きた炎"
+    },
+    "Water Elemental": {
+      "name": "水のエレメンタル",
+      "description": "流れるような形を持つ生きた水"
+    },
+    "Earth Elemental": {
+      "name": "土のエレメンタル",
+      "description": "粉砕する力を持つ生きた石と土"
+    },
+    "Air Elemental": {
+      "name": "風のエレメンタル",
+      "description": "見えない形を持つ生きた風"
+    },
+    "Ice Elemental": {
+      "name": "氷のエレメンタル",
+      "description": "凍えるオーラを持つ生きた氷"
+    },
+    "Lightning Elemental": {
+      "name": "雷のエレメンタル",
+      "description": "衝撃的な力を持つ生きた電気"
+    },
+    "Golem": {
+      "name": "ゴーレム",
+      "description": "粘土、石、または金属でできた動く人造物"
+    },
+    "Homunculus": {
+      "name": "ホムンクルス",
+      "description": "人工的に作られた小さな人型生物"
+    },
+    "Robot": {
+      "name": "ロボット",
+      "description": "機械の人工生命体"
+    },
+    "Android": {
+      "name": "アンドロイド",
+      "description": "人間のように見えるように設計されたロボット"
+    },
+    "Cyborg": {
+      "name": "サイボーグ",
+      "description": "機械的な強化が施された有機生命体"
+    },
+    "Mecha": {
+      "name": "メカ",
+      "description": "戦闘用の大型操縦ロボット"
+    },
+    "AI": {
+      "name": "AI",
+      "description": "物理的な形を持たない人工知能"
+    },
+    "Doll": {
+      "name": "人形",
+      "description": "生きた人形または操り人形"
+    },
+    "Marionette": {
+      "name": "マリオネット",
+      "description": "命を吹き込まれた操り人形"
+    },
+    "Catfolk": {
+      "name": "猫人",
+      "description": "猫の特徴を持つ人型生物"
+    },
+    "Nekomimi": {
+      "name": "猫耳",
+      "description": "猫耳を持つ人間"
+    },
+    "Wolfkin": {
+      "name": "狼人",
+      "description": "狼の特徴を持つ人型生物"
+    },
+    "Foxkin": {
+      "name": "狐人",
+      "description": "狐の特徴を持つ人型生物"
+    },
+    "Rabbitfolk": {
+      "name": "兎人",
+      "description": "兎の特徴を持つ人型生物"
+    },
+    "Dragonkin": {
+      "name": "竜人",
+      "description": "ドラゴンの特徴を持つ人型生物"
+    },
+    "Demon": {
+      "name": "悪魔",
+      "description": "下位の次元からの悪魔的なクリーチャー"
+    },
+    "Angel": {
+      "name": "天使",
+      "description": "神聖な起源を持つ天上の存在"
+    },
+    "Fallen Angel": {
+      "name": "堕天使",
+      "description": "神聖な領域から追放された天使"
+    },
+    "Devil": {
+      "name": "デビル",
+      "description": "九層地獄からの強力な悪魔"
+    },
+    "Imp": {
+      "name": "インプ",
+      "description": "小さないたずら好きな悪魔"
+    },
+    "Succubus": {
+      "name": "サキュバス",
+      "description": "生命力を吸い取る魅惑的な悪魔"
+    },
+    "Incubus": {
+      "name": "インキュバス",
+      "description": "夢の中で誘惑する男性の悪魔"
+    },
+    "Familiar": {
+      "name": "使い魔",
+      "description": "動物の姿をした魔法のしもべ"
+    },
+    "Doppelganger": {
+      "name": "ドッペルゲンガー",
+      "description": "他者の姿を模倣する変身能力者"
+    },
+    "Changeling": {
+      "name": "チェンジリング",
+      "description": "盗まれた人間の代わりに残された妖精の子供"
+    },
+    "Alien": {
+      "name": "エイリアン",
+      "description": "異世界からの地球外生命体"
+    },
+    "Eldritch": {
+      "name": "エルドリッチ",
+      "description": "人間には理解できない宇宙的な恐怖"
+    },
+    "Lovecraftian": {
+      "name": "ラブクラフト",
+      "description": "ラブクラフトの神話に登場するクリーチャー"
+    },
+    "Eldritch Tentacle": {
+      "name": "エルドリッチ触手",
+      "description": "触手を持つ宇宙的な恐怖の存在"
+    },
+    "Other": {
+      "name": "その他",
+      "description": "他のどのカテゴリーにも当てはまらない種族"
+    },
+    "Unknown": {
+      "name": "不明",
+      "description": "起源不明の種族"
+    }
+  }
+}
