@@ -11,6 +11,76 @@ import { translationService } from './translation/translationService';
  * Based on old project with improvements for the new architecture.
  */
 
+/**
+ * Maps gender string (in various languages) to CharacterGender enum
+ * Supports English and Portuguese values
+ */
+function mapStringToCharacterGender(gender: string | null | undefined): CharacterGender | null {
+  if (!gender) return null;
+
+  // Normalize input: lowercase, trim, remove accents
+  const normalized = gender.toLowerCase().trim();
+
+  // Map to CharacterGender enum values
+  switch (normalized) {
+    // English
+    case 'male':
+    case 'm':
+      return 'MALE';
+    case 'female':
+    case 'f':
+      return 'FEMALE';
+    case 'non-binary':
+    case 'nonbinary':
+    case 'non binary':
+      return 'NON_BINARY';
+    case 'other':
+      return 'OTHER';
+    case 'unknown':
+    case 'u':
+      return 'UNKNOWN';
+
+    // Portuguese
+    case 'masculino':
+    case 'macho':
+      return 'MALE';
+    case 'feminino':
+    case 'fêmea':
+    case 'femea':
+      return 'FEMALE';
+    case 'não binário':
+    case 'nao binario':
+    case 'nao-binário':
+    case 'nao-binario':
+    case 'não-binário':
+    case 'não-binario':
+      return 'NON_BINARY';
+    case 'outro':
+      return 'OTHER';
+    case 'desconhecido':
+      return 'UNKNOWN';
+
+    // Direct enum values (already correct)
+    case 'male_case_insensitive':
+      return 'MALE';
+    case 'female_case_insensitive':
+      return 'FEMALE';
+    case 'non_binary_case_insensitive':
+      return 'NON_BINARY';
+
+    default:
+      // If it matches an enum value exactly (case-insensitive), use it
+      const enumValue = Object.values(CharacterGender).find(
+        v => v.toLowerCase() === normalized
+      );
+      if (enumValue) return enumValue;
+
+      // Log warning for unmapped gender values
+      logger.warn(`Unmapped gender value: "${gender}", defaulting to UNKNOWN`);
+      return 'UNKNOWN';
+  }
+}
+
 // Type definitions
 export interface CharacterWithRelations {
   id: string;
@@ -149,8 +219,8 @@ export async function createCharacter(data: CreateCharacterInput) {
     const character = await prisma.character.create({
       data: {
         ...characterData,
-        // Convert gender to CharacterGender enum
-        gender: gender as any,
+        // Map gender string to CharacterGender enum
+        gender: mapStringToCharacterGender(gender),
         // Convert species to speciesId
         ...(species ? { speciesId: species } : {}),
         contentTags: contentTags || [],
@@ -671,9 +741,9 @@ export async function updateCharacter(
     // Increment contentVersion if translatable content changed
     const finalUpdateData: any = { ...updateData };
 
-    // Convert gender to CharacterGender enum
+    // Map gender string to CharacterGender enum
     if (gender !== undefined) {
-      finalUpdateData.gender = gender as any;
+      finalUpdateData.gender = mapStringToCharacterGender(gender);
     }
 
     // Convert species to speciesId
