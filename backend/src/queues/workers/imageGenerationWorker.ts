@@ -10,6 +10,7 @@ import { logger } from '../../config/logger';
 import { comfyuiService, promptEngineering, ImageGenerationType } from '../../services/comfyui';
 import { r2Service } from '../../services/r2Service';
 import { convertToWebP, getContrastingChromaKey } from '../../utils/imageUtils';
+import { multiStageCharacterGenerator } from '../../services/image-generation/multiStageCharacterGenerator';
 import type {
   ImageGenerationJobData,
   ImageGenerationJobResult,
@@ -17,6 +18,8 @@ import type {
   StickerGenerationJobData,
   BulkStickerGenerationJobData,
   CoverGenerationJobData,
+  MultiStageDatasetGenerationJobData,
+  MultiStageGenerationResult,
 } from '../jobs/imageGenerationJob';
 import { StickerStatus } from '../../generated/prisma';
 
@@ -25,7 +28,7 @@ import { StickerStatus } from '../../generated/prisma';
  */
 export async function processImageGeneration(
   job: Job<ImageGenerationJobData>
-): Promise<ImageGenerationJobResult> {
+): Promise<ImageGenerationJobResult | MultiStageGenerationResult> {
   const { type, userId } = job.data;
 
   logger.info({ jobId: job.id, type, userId }, 'Processing image generation job');
@@ -44,6 +47,8 @@ export async function processImageGeneration(
       }
       case 'cover':
         return await processCoverGeneration(job.data as CoverGenerationJobData);
+      case 'multi-stage-dataset':
+        return await processMultiStageDatasetGeneration(job.data as MultiStageDatasetGenerationJobData, job);
       default:
         throw new Error(`Unsupported generation type: ${type}`);
     }
@@ -444,5 +449,41 @@ async function processCoverGeneration(
   return {
     success: true,
     imageUrl: publicUrl,
+  };
+}
+
+/**
+ * Process multi-stage character dataset generation
+ * Generates 4 reference images sequentially: avatar, front, side, back
+ */
+async function processMultiStageDatasetGeneration(
+  data: MultiStageDatasetGenerationJobData,
+  job: Job<ImageGenerationJobData>
+): Promise<MultiStageGenerationResult> {
+  const { characterId, userId, prompt, loras, referenceImages } = data;
+
+  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0 }, 'Processing multi-stage dataset generation');
+
+  // Update job progress
+  job.updateProgress({ stage: 0, total: 4, message: 'Starting multi-stage generation...' });
+
+  // Use the multi-stage character generator
+  await multiStageCharacterGenerator.generateCharacterDataset({
+    characterId,
+    prompt,
+    loras,
+    userSamples: referenceImages || [],
+    userId,
+    onProgress: (stage, total, message) => {
+      logger.info({ jobId: job.id, stage, total, message }, 'Multi-stage progress update');
+      job.updateProgress({ stage, total, message });
+    },
+  });
+
+  logger.info({ jobId: job.id, characterId }, 'Multi-stage dataset generation completed');
+
+  return {
+    success: true,
+    characterId,
   };
 }

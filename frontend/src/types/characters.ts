@@ -150,7 +150,7 @@ export interface CharacterSummary extends CharacterCore {
 export interface CharacterImage {
   id: string;
   characterId?: string;
-  type: 'AVATAR' | 'COVER' | 'SAMPLE' | 'STICKER' | 'OTHER';
+  type: 'AVATAR' | 'COVER' | 'SAMPLE' | 'STICKER' | 'OTHER' | 'REFERENCE';
   url: string;
   key?: string | null;
   width?: number | null;
@@ -160,6 +160,9 @@ export interface CharacterImage {
   ageRating: AgeRating;
   contentTags: ContentTag[];
   description?: string | null;
+  content?: string | null; // For REFERENCE type: 'avatar' | 'front' | 'side' | 'back'
+  isActive?: boolean;
+  createdAt?: string;
 }
 
 export interface CharacterListParams {
