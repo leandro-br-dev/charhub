@@ -4,6 +4,7 @@
  */
 
 import { ImageGenerationType } from '../../services/comfyui';
+import type { ReferenceImage } from '../../services/comfyui/types';
 
 export interface BaseImageJobData {
   userId: string;
@@ -39,16 +40,48 @@ export interface CoverGenerationJobData extends BaseImageJobData {
   prompt: string;
 }
 
+/**
+ * Multi-Stage Character Dataset Generation Job Data
+ * Generates 4 reference images sequentially: avatar, front, side, back
+ */
+export interface MultiStageDatasetGenerationJobData {
+  type: 'multi-stage-dataset';
+  userId: string;
+  characterId: string;
+  prompt: {
+    positive: string;
+    negative: string;
+  };
+  loras?: Array<{
+    name: string;
+    filepathRelative: string;
+    strength: number;
+  }>;
+  referenceImages?: ReferenceImage[]; // Optional initial user-provided references
+}
+
 export type ImageGenerationJobData =
   | AvatarGenerationJobData
   | StickerGenerationJobData
   | BulkStickerGenerationJobData
-  | CoverGenerationJobData;
+  | CoverGenerationJobData
+  | MultiStageDatasetGenerationJobData;
 
 export interface ImageGenerationJobResult {
   success: boolean;
   imageUrl?: string;
   imageUrls?: string[]; // For bulk operations
   characterId?: string;
+  error?: string;
+}
+
+/**
+ * Multi-stage generation result
+ * In the new flow, images are saved directly to the database during generation,
+ * so this result only indicates success/failure and the character ID.
+ */
+export interface MultiStageGenerationResult {
+  success: boolean;
+  characterId: string;
   error?: string;
 }

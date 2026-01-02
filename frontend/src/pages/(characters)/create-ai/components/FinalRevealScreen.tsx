@@ -144,7 +144,7 @@ export function FinalRevealScreen({ character }: FinalRevealScreenProps): JSX.El
                     <div className="px-3 py-1.5 bg-muted/50 rounded-full border border-border">
                       <span className="flex items-center gap-1.5 text-content text-xs font-medium">
                         <span className="material-symbols-outlined text-sm">person</span>
-                        <span className="capitalize">{character.species}</span>
+                        <span className="capitalize">{typeof character.species === 'object' ? character.species.name : character.species}</span>
                       </span>
                     </div>
                   )}
@@ -160,7 +160,7 @@ export function FinalRevealScreen({ character }: FinalRevealScreenProps): JSX.El
                     <div className="px-3 py-1.5 bg-muted/50 rounded-full border border-border">
                       <span className="flex items-center gap-1.5 text-content text-xs font-medium">
                         <span className="material-symbols-outlined text-sm">person</span>
-                        <span className="capitalize">{character.gender}</span>
+                        <span className="capitalize">{typeof character.gender === 'object' ? character.gender.name : character.gender}</span>
                       </span>
                     </div>
                   )}
