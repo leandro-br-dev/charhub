@@ -15,6 +15,10 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 | T009 | **TypeScript ESLint 8.x Migration** | Agent Coder | ✅ Concluído | `feature/typescript-eslint-8-migration` | - | 28/12 - PR merged e movido para implemented |
 | T010 | **Prisma 7.x Migration** | Agent Coder | 📋 Em Revisão | `feature/prisma-7-migration` | 29/12/2025 | 28/12 - PR aberta aguardando review |
 | T016 | **Content Translation & Image Cache Fixes** | Agent Coder | 🔥 Urgente | `feature/translation-image-cache-fixes` | 30/12/2025 | 30/12 - Spec criada, ready para implementação |
+| T017 | **Character Image Generation Fixes** | Agent Coder | 📋 Ativo | `feature/character-image-generation-fixes` | 04/01/2026 | 02/01 - Spec criada, ready para implementação |
+| T018 | **Dashboard UI/UX Improvements** | Agent Coder | 📋 Ativo | `feature/dashboard-ui-improvements` | 04/01/2026 | 02/01 - Spec criada, ready para implementação |
+| T019 | **Translation & i18n Fixes** | Agent Coder | 📋 Ativo | `feature/translation-i18n-fixes` | 04/01/2026 | 02/01 - Spec criada, ready para implementação |
+| T020 | **Admin Permissions (Official Characters)** | Agent Coder | 📋 Ativo | `feature/admin-permissions-official-characters` | 04/01/2026 | 02/01 - Spec criada, ready para implementação |
 
 ---
 
@@ -23,11 +27,15 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 | Ordem | Tarefa | Prioridade | Estimado | Notas | Spec |
 |-------|--------|-----------|----------|-------|------|
 | 0️⃣ | **Content Translation & Image Cache Fixes** | 🔴 URGENTE | 6-8 horas | **P0 Critical**: Tradução de histórias quebrada, tabela vazia | `active/content-translation-and-image-cache-fixes.md` |
-| 1️⃣ | **Dashboard Infinite Scroll** | 🔥 ALTA | 8-10 horas | Carregamento sob demanda de personagens | `active/dashboard-infinite-scroll.md` |
-| 2️⃣ | **Discovery Enhanced Filters** | 🔥 ALTA | 10 horas | Filtros de gênero e espécie | `active/discovery-enhanced-filters.md` |
-| 3️⃣ | **Automated Character Generation Improvements** | 🔥 ALTA | 10-12 horas | Corrigir qualidade, diversidade e censura Civit.ai | `active/automated-character-generation-improvements.md` |
-| 4️⃣ | **Character Image Generation Multi-Stage** | 🔥 ALTA | 12-16 horas* | Workflow progressivo de 4 estágios | `active/character-image-generation-multi-stage-workflow.md` |
-| 5️⃣ | **UI Improvements (Sidebar + Age Tags)** | 🟡 MÉDIA | 5-6 horas | Filtro sidebar + componente age rating unificado | `active/ui-improvements-sidebar-and-age-tags.md` |
+| 1️⃣ | **Character Image Generation Fixes** | 🔥 ALTA | 8-9 horas | Reference images error, credits, cover images, deletion | `active/character-image-generation-fixes.md` |
+| 2️⃣ | **Dashboard UI/UX Improvements** | 🔥 ALTA | 7-8 horas | Slides, mobile responsiveness, infinite scroll | `active/dashboard-ui-ux-improvements.md` |
+| 3️⃣ | **Translation & i18n Fixes** | 🟡 MÉDIA-ALTA | 6-7 horas | Gender tags, toasts hardcodeados | `active/translation-i18n-fixes.md` |
+| 4️⃣ | **Admin Permissions (Official Characters)** | 🟡 MÉDIA | 3.5-4 horas | ADMIN pode editar personagens CharHub Official | `active/admin-permissions-official-characters.md` |
+| 5️⃣ | **Dashboard Infinite Scroll** | 🔥 ALTA | 8-10 horas | Carregamento sob demanda de personagens | `active/dashboard-infinite-scroll.md` |
+| 6️⃣ | **Discovery Enhanced Filters** | 🔥 ALTA | 10 horas | Filtros de gênero e espécie | `active/discovery-enhanced-filters.md` |
+| 7️⃣ | **Automated Character Generation Improvements** | 🔥 ALTA | 10-12 horas | Corrigir qualidade, diversidade e censura Civit.ai | `active/automated-character-generation-improvements.md` |
+| 8️⃣ | **Character Image Generation Multi-Stage** | 🔥 ALTA | 12-16 horas* | Workflow progressivo de 4 estágios | `active/character-image-generation-multi-stage-workflow.md` |
+| 9️⃣ | **UI Improvements (Sidebar + Age Tags)** | 🟡 MÉDIA | 5-6 horas | Filtro sidebar + componente age rating unificado | `active/ui-improvements-sidebar-and-age-tags.md` |
 
 **⚠️ Nota sobre T013**: Requer verificação de capacidades da API ComfyUI (Phase 0) antes de iniciar implementação completa.
 
@@ -35,12 +43,12 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ### Tarefas Planejadas (Backlog)
 
-| Ordem | Tarefa | Prioridade | Estimado | Notas |
-|-------|--------|-----------|----------|-------|
-| 6️⃣ | Sistema de Notificações | MÉDIA | 1-2 semanas | Impacto alto em retenção |
-| 7️⃣ | Fix Performance Galeria | MÉDIA | 3-5 dias | Investigação + otimização |
-| 8️⃣ | Sugestões Inteligentes | BAIXA | 1 semana | Recomendações por tags |
-| 9️⃣ | Redesign Página Perfil | BAIXA | 3-4 dias | UI/UX improvement |
+| Ordem | Tarefa | Prioridade | Estimado | Notas | Spec |
+|-------|--------|-----------|----------|-------|------|
+| 6️⃣ | Sistema de Notificações | MÉDIA | 1-2 semanas | Impacto alto em retenção | TBD |
+| 7️⃣ | Fix Performance Galeria | MÉDIA | 3-5 dias | Investigação + otimização | TBD |
+| 8️⃣ | Sugestões Inteligentes | BAIXA | 1 semana | Recomendações por tags | TBD |
+| 9️⃣ | Redesign Página Perfil | BAIXA | 3-4 dias | UI/UX improvement | TBD |
 
 ---
 
