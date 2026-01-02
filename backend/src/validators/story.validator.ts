@@ -13,4 +13,5 @@ export const createStorySchema = z.object({
   ageRating: z.enum(['L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'EIGHTEEN']).optional(),
   contentTags: z.array(z.enum(['VIOLENCE', 'GORE', 'SEXUAL', 'NUDITY', 'LANGUAGE', 'DRUGS', 'ALCOHOL', 'HORROR', 'PSYCHOLOGICAL', 'DISCRIMINATION', 'CRIME', 'GAMBLING'])).optional(),
   visibility: z.nativeEnum(Visibility).optional(),
+  originalLanguageCode: z.string().optional(), // ISO 639-1 code of original language
 });

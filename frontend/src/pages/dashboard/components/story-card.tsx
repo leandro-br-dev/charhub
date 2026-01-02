@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/ui';
+import { CachedImage } from '../../../components/ui/CachedImage';
 import type { Story } from '../../../types/story';
 import { useContentFilter } from '../../../contexts/ContentFilterContext';
 
@@ -34,7 +35,7 @@ export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
     <div className="block bg-light rounded-lg shadow-md hover:shadow-xl transition-all min-h-[18rem] h-full flex flex-col group basis-[calc(50%-0.5rem)] sm:w-[180px] md:w-[192px] lg:w-[192px] max-w-[192px] overflow-hidden">
       <div className="relative h-48 overflow-hidden">
         {!imageLoaded && <div className="absolute inset-0 bg-gray-700 animate-pulse" />}
-        <img
+        <CachedImage
           src={story.coverImage || '/placeholder-story.png'}
           alt={t('dashboard:storyCard.alt', { title: story.title })}
           className={`w-full h-full object-cover rounded-t-lg transition-all duration-300 group-hover:scale-105 ${

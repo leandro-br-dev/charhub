@@ -14,6 +14,16 @@ const TRANSLATABLE_FIELDS: Record<string, string[]> = {
 };
 
 /**
+ * Configuration of nested translatable fields (arrays of objects)
+ * Format: { ContentType: { arrayField: ['field1', 'field2'] } }
+ */
+const NESTED_TRANSLATABLE_FIELDS: Record<string, Record<string, string[]>> = {
+  Story: {
+    objectives: ['description'],
+  },
+};
+
+/**
  * Extract user's preferred language from multiple sources
  * Priority: 1. Database (req.user.preferredLanguage)
  *          2. Custom header (X-User-Language from frontend)
@@ -149,19 +159,25 @@ async function translateResponseData(data: any, targetLanguage: string): Promise
  * Checks if content should be translated
  */
 function shouldTranslateContent(data: any, targetLanguage: string): boolean {
-  // Needs id and originalLanguageCode
-  if (!data.id || !data.originalLanguageCode) {
-    return false;
-  }
-
-  // Language is already the same
-  if (data.originalLanguageCode === targetLanguage) {
+  // Needs id
+  if (!data.id) {
     return false;
   }
 
   // Check if it's a supported content type
   const contentType = inferContentType(data);
   if (!contentType || !TRANSLATABLE_FIELDS[contentType]) {
+    return false;
+  }
+
+  // For legacy data without originalLanguageCode, ALWAYS translate
+  // to ensure users get content in their preferred language
+  if (!data.originalLanguageCode) {
+    return true;
+  }
+
+  // For content with originalLanguageCode, only translate if languages differ
+  if (data.originalLanguageCode === targetLanguage) {
     return false;
   }
 
@@ -210,6 +226,22 @@ async function translateContent(data: any, targetLanguage: string): Promise<any>
     return data;
   }
 
+  // For legacy data without originalLanguageCode, detect language from content
+  // to determine if translation is needed
+  let originalLanguageCode = data.originalLanguageCode;
+
+  // If no originalLanguageCode, try to detect it or use a default
+  // For now, we'll let the translation service handle language detection
+  if (!originalLanguageCode) {
+    // The translation service will auto-detect the source language
+    originalLanguageCode = 'auto';
+  }
+
+  // Skip if original and target languages are the same (and not 'auto')
+  if (originalLanguageCode !== 'auto' && originalLanguageCode === targetLanguage) {
+    return data;
+  }
+
   const fields = TRANSLATABLE_FIELDS[contentType] || [];
   const translated = { ...data };
 
@@ -235,7 +267,7 @@ async function translateContent(data: any, targetLanguage: string): Promise<any>
                 contentId: data.id,
                 fieldName: `${fieldName}[${index}]`,
                 originalText: item,
-                originalLanguageCode: data.originalLanguageCode,
+                originalLanguageCode: originalLanguageCode,
                 targetLanguageCode: targetLanguage,
                 context: buildContext(data, contentType),
                 sourceVersion: data.contentVersion,
@@ -259,7 +291,7 @@ async function translateContent(data: any, targetLanguage: string): Promise<any>
           contentId: data.id,
           fieldName,
           originalText: originalValue,
-          originalLanguageCode: data.originalLanguageCode,
+          originalLanguageCode: originalLanguageCode,
           targetLanguageCode: targetLanguage,
           context: buildContext(data, contentType),
           sourceVersion: data.contentVersion,
@@ -272,7 +304,7 @@ async function translateContent(data: any, targetLanguage: string): Promise<any>
           translated._translations = {};
         }
         translated._translations[fieldName] = {
-          from: data.originalLanguageCode,
+          from: originalLanguageCode,
           to: targetLanguage,
           cached: result.cached,
           provider: result.provider,
@@ -289,6 +321,62 @@ async function translateContent(data: any, targetLanguage: string): Promise<any>
       }
     })
   );
+
+  // Handle nested fields (arrays of objects)
+  const nestedFields = NESTED_TRANSLATABLE_FIELDS[contentType];
+  if (nestedFields) {
+    for (const [arrayField, subFields] of Object.entries(nestedFields)) {
+      const arrayValue = data[arrayField];
+      if (!Array.isArray(arrayValue)) {
+        continue;
+      }
+
+      // Translate each item in the array
+      translated[arrayField] = await Promise.all(
+        arrayValue.map(async (item: any, index: number) => {
+          if (!item || typeof item !== 'object') {
+            return item;
+          }
+
+          const translatedItem = { ...item };
+
+          // Translate each sub-field in the object
+          for (const subField of subFields) {
+            const originalText = item[subField];
+            if (!originalText || typeof originalText !== 'string') {
+              continue;
+            }
+
+            try {
+              const result = await translationService.translate({
+                contentType,
+                contentId: data.id,
+                fieldName: `${arrayField}[${index}].${subField}`,
+                originalText,
+                originalLanguageCode: originalLanguageCode,
+                targetLanguageCode: targetLanguage,
+                context: buildContext(data, contentType),
+                sourceVersion: data.contentVersion,
+              });
+
+              translatedItem[subField] = result.translatedText;
+            } catch (error) {
+              logger.error(
+                {
+                  error: error instanceof Error ? error.message : 'Unknown error',
+                  contentId: data.id,
+                },
+                `Failed to translate ${contentType}.${arrayField}[${index}].${subField}`
+              );
+              // Fallback: keep original text
+            }
+          }
+
+          return translatedItem;
+        })
+      );
+    }
+  }
 
   return translated;
 }

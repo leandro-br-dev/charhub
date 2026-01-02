@@ -43,8 +43,8 @@ export class TranslationService {
         throw new Error('Original text is empty');
       }
 
-      // Same language - return original
-      if (request.originalLanguageCode === request.targetLanguageCode) {
+      // Same language - return original (skip for 'auto' as we need to detect)
+      if (request.originalLanguageCode !== 'auto' && request.originalLanguageCode === request.targetLanguageCode) {
         return {
           translatedText: request.originalText,
           provider: 'none',
@@ -378,6 +378,7 @@ Return ONLY the translated text, nothing else.`;
       'ru-RU': 'Russian',
       'ar-SA': 'Arabic',
       'hi-IN': 'Hindi',
+      'auto': 'auto-detected language',
     };
 
     const fromLang = languageNames[request.originalLanguageCode] || request.originalLanguageCode;
@@ -403,6 +404,15 @@ Return ONLY the translated text, nothing else.`;
       if (contextParts.length > 0) {
         contextInfo = `\n\nContext: ${contextParts.join(', ')}`;
       }
+    }
+
+    // For auto-detection, ask LLM to detect and translate
+    if (request.originalLanguageCode === 'auto') {
+      return `Detect the language of the following text and translate it to ${toLang}:
+
+${request.originalText}${contextInfo}
+
+Translation:`;
     }
 
     return `Translate the following ${request.fieldName} from ${fromLang} to ${toLang}:

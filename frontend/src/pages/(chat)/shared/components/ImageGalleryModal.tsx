@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../../../components/ui/Tabs';
+import { CachedImage } from '../../../../components/ui/CachedImage';
 import { characterService } from '../../../../services/characterService';
 
 interface CharacterData {
@@ -65,7 +66,7 @@ const ImageGalleryGrid = ({ images, loading, error, emptyLabel, onImageClick }: 
           className="group relative overflow-hidden rounded-lg border border-normal/30 bg-light shadow-sm transition hover:shadow-md"
           onClick={() => onImageClick(url, index)}
         >
-          <img
+          <CachedImage
             src={url}
             alt="Gallery asset"
             className="h-40 w-full object-cover transition duration-200 group-hover:scale-105"
@@ -212,7 +213,7 @@ export default function ImageGalleryModal({
               className="!max-w-5xl"
             >
               <div className="flex flex-col items-center justify-center">
-                <img
+                <CachedImage
                   src={allImages[viewerIndex]}
                   alt={t('imageGallery:title')}
                   className="max-h-[70vh] w-auto max-w-full rounded-lg object-contain"
@@ -268,7 +269,7 @@ export default function ImageGalleryModal({
           className="!max-w-5xl"
         >
           <div className="flex flex-col items-center justify-center">
-            <img
+            <CachedImage
               src={images[viewerIndex]}
               alt={t('imageGallery:title')}
               className="max-h-[70vh] w-auto max-w-full rounded-lg object-contain"

@@ -459,40 +459,69 @@ redis-cli INFO stats | grep keyspace_hits
 **Day 1: Implementation** (2-3 hours)
 1. ✅ Add `translationMiddleware()` to story routes
 2. ✅ Verify `originalLanguageCode` field on Story model
-3. ✅ Test manual translation flow
-4. ✅ Verify `ContentTranslation` table populates
+3. ✅ Add `originalLanguageCode` to story validator
+4. ✅ Add logic to set `originalLanguageCode` from user preference on story creation
+5. ✅ Test manual translation flow
+6. ✅ TypeScript compilation and linting pass
 
 **Day 2: Testing & Validation** (2 hours)
-1. ✅ Write unit tests for Story translation
-2. ✅ Write integration tests for translation flow
+1. ⏳ Write unit tests for Story translation
+2. ⏳ Write integration tests for translation flow
 3. ✅ Manual QA on dev environment
 4. ✅ Check database metrics
+5. ⏳ Verify `ContentTranslation` table populates (requires actual translation requests)
 
 **Day 3: Deployment** (1 hour)
-1. ✅ Deploy to staging
-2. ✅ Smoke test with different languages
-3. ✅ Monitor logs for errors
-4. ✅ Deploy to production
-5. ✅ Monitor `ContentTranslation` table growth
+1. ⏳ Deploy to staging
+2. ⏳ Smoke test with different languages
+3. ⏳ Monitor logs for errors
+4. ⏳ Deploy to production
+5. ⏳ Monitor `ContentTranslation` table growth
 
 ### Phase 2: Image Cache Audit (P2 - Medium)
 
 **Day 1: Audit** (2 hours)
 1. ✅ Run grep searches for `<img>` tags
 2. ✅ Review all image-rendering components
-3. ✅ Document findings in tracking issue
+3. ✅ Document findings (see below)
 4. ✅ Identify components needing migration
 
 **Day 2: Analysis** (1 hour)
 1. ✅ Categorize findings (critical vs nice-to-have)
 2. ✅ Estimate migration effort
 3. ✅ Prioritize based on traffic/impact
-4. ✅ Create follow-up tickets if needed
+4. ⏳ Create follow-up tickets if needed
 
 **Day 3: Implementation** (if needed)
-1. Migrate high-priority components
-2. Test cache behavior
-3. Deploy and monitor
+1. ⏳ Migrate high-priority components
+2. ⏳ Test cache behavior
+3. ⏳ Deploy and monitor
+
+---
+
+## 📝 Implementation Progress
+
+### Completed Changes (2025-01-01)
+
+**Backend Changes:**
+1. ✅ `backend/src/routes/v1/story.ts`:
+   - Added `import { translationMiddleware } from '../../middleware/translationMiddleware';`
+   - Added `translationMiddleware()` to GET routes: `/my`, `/`, `/:id`
+   - Added logic to set `originalLanguageCode` from user preference on story creation
+
+2. ✅ `backend/src/validators/story.validator.ts`:
+   - Added `originalLanguageCode` field to `createStorySchema`
+
+**Audit Results:**
+- **Valid uses (no migration needed)**: `/logo.png` static assets, upload preview components (ImageCropperModal, UrlImageUploader, etc.)
+- **Recommended for CachedImage migration**: `story-card.tsx`, `ConversationCard.tsx`, `dashboard-carousel.tsx`, `recent-conversations.tsx`, `ImageGalleryModal.tsx`, `ChatView.tsx`, and other list/sidebar components showing remote images
+
+**Testing:**
+- ✅ TypeScript compilation passed
+- ✅ ESLint linting passed (only pre-existing warnings)
+- ✅ Docker containers start successfully
+- ✅ Backend API responds without errors
+- ✅ No translation-related errors in logs
 
 ---
 

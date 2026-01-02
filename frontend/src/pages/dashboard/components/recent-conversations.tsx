@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { HorizontalScroller, Avatar } from '../../../components/ui';
+import { HorizontalScroller, Avatar, CachedImage } from '../../../components/ui';
 import { useConversationListQuery } from '../../(chat)/shared/hooks/useConversations';
 import type { Conversation, ConversationParticipant } from '../../../types/chat';
 
@@ -62,7 +62,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
                 className="block bg-light rounded-lg shadow-md hover:shadow-xl transition-shadow min-h-[18rem] h-full flex flex-col group basis-[calc(50%-0.5rem)] sm:w-[180px] md:w-[192px] lg:w-[192px] max-w-[192px] overflow-hidden"
               >
                 <div className="relative h-40">
-                  <img
+                  <CachedImage
                     src={mainParticipant?.images?.[0]?.url || '/placeholder-character.png'}
                     alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character')}
                     className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
@@ -121,7 +121,7 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
             className="block bg-light rounded-lg shadow-md hover:shadow-xl transition-shadow h-full flex flex-col group w-[180px] max-w-[180px]"
           >
             <div className="relative h-40">
-              <img
+              <CachedImage
                 src={mainParticipant?.images?.[0]?.url || '/placeholder-character.png'}
                 alt={mainParticipant?.firstName || mainParticipant?.name || t('common:character')}
                 className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
