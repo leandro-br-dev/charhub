@@ -12,6 +12,7 @@ export enum CharacterGenerationStep {
   CREATING_CHARACTER = 'creating_character',
   QUEUING_AVATAR = 'queuing_avatar',
   GENERATING_AVATAR = 'generating_avatar',
+  QUEUING_MULTI_STAGE = 'queuing_multi_stage',
   COMPLETED = 'completed',
   ERROR = 'error',
 }

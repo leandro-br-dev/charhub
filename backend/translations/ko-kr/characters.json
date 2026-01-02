@@ -8,7 +8,7 @@
       "private": "비공개",
       "identifier": "캐릭터 ID: {{id}}",
       "unsavedChanges": "저장되지 않은 변경 사항",
-      "allSaved": "모든 변경 사항이 저장됨",
+      "allSaved": "모든 변경 사항 저장됨",
       "submitting": "저장 중..."
     },
     "ageRatings": {
@@ -33,7 +33,7 @@
     },
     "visualStyleDescriptions": {
       "ANIME": "일본 Anime 스타일",
-      "REALISTIC": "사진 같거나 사실적인 아트",
+      "REALISTIC": "사진처럼 사실적이거나 현실적인 아트",
       "SEMI_REALISTIC": "반사실적인 아트 스타일",
       "CARTOON": "서양 카툰 스타일",
       "MANGA": "일본 Manga/코믹 스타일",
@@ -45,13 +45,13 @@
     },
     "contentTags": {
       "VIOLENCE": "폭력성",
-      "GORE": "고어",
-      "SEXUAL": "성적 표현",
+      "GORE": "유혈",
+      "SEXUAL": "성적인 내용",
       "NUDITY": "노출",
-      "LANGUAGE": "언어",
+      "LANGUAGE": "욕설",
       "DRUGS": "약물",
-      "ALCOHOL": "음주",
-      "HORROR": "호러",
+      "ALCOHOL": "술",
+      "HORROR": "공포",
       "PSYCHOLOGICAL": "심리적",
       "DISCRIMINATION": "차별",
       "CRIME": "범죄",
@@ -59,17 +59,17 @@
     },
     "contentTagHints": {
       "VIOLENCE": "전투, 싸움 또는 공격적인 갈등.",
-      "GORE": "그래픽적인 부상 및 노골적인 묘사.",
+      "GORE": "적나라한 부상 및 노골적인 묘사.",
       "SEXUAL": "성인 테마 또는 암시.",
       "NUDITY": "부분 또는 전체 노출.",
-      "LANGUAGE": "노골적이거나 거친 언어.",
+      "LANGUAGE": "노골적이거나 강한 언어.",
       "DRUGS": "약물 사용 또는 언급.",
       "ALCOHOL": "음주.",
-      "HORROR": "불쾌하거나 호러적인 이미지.",
+      "HORROR": "불안감을 주거나 공포스러운 이미지.",
       "PSYCHOLOGICAL": "정신 건강 또는 심리적 긴장.",
       "DISCRIMINATION": "혐오 발언 또는 편견.",
       "CRIME": "범죄 활동 테마.",
-      "GAMBLING": "베팅 또는 도박 언급."
+      "GAMBLING": "내기 또는 도박 관련 언급."
     },
     "accessibility": {
       "addToFavorites": "즐겨찾기에 추가",
@@ -86,12 +86,12 @@
     },
     "hub": {
       "title": "캐릭터",
-      "subtitle": "스토리, 채팅 에이전트 및 AI 경험을 강화하는 등장인물을 만들고, 구성하고, 발전시키세요.",
+      "subtitle": "스토리, 채팅 에이전트, AI 경험을 뒷받침하는 캐릭터들을 만들고, 정리하고, 발전시키세요.",
       "actions": {
         "newCharacter": "새 캐릭터",
         "createCharacter": "새 캐릭터",
         "retry": "다시 시도",
-        "blurSensitive": "민감한 내용 가리기",
+        "blurSensitive": "민감한 내용 흐리게",
         "showSensitive": "민감한 내용 표시"
       },
       "tabs": {
@@ -108,13 +108,13 @@
         "error": "캐릭터를 로드할 수 없습니다. 다시 시도해주세요.",
         "empty": "아직 캐릭터가 없습니다.",
         "empty_private": "아직 캐릭터를 만들지 않았습니다.",
-        "empty_public": "필터와 일치하는 공개 캐릭터가 없습니다.",
+        "empty_public": "필터에 일치하는 공개 캐릭터가 없습니다.",
         "emptyHint": "프로필을 만들거나 필터를 조정하여 시작하세요.",
         "emptySearchHint": "필터를 조정하거나 검색을 초기화하여 더 많은 결과를 확인하세요."
       },
       "labels": {
-        "total": "사용 가능한 캐릭터 {{count}}개",
-        "total_plural": "사용 가능한 캐릭터 {{count}}개",
+        "total": "캐릭터 {{count}}개 사용 가능",
+        "total_plural": "캐릭터 {{count}}개 사용 가능",
         "quickCreateLink": "바로 생성하러 가기"
       }
     },
@@ -122,15 +122,15 @@
       "submit": "저장",
       "cancel": "취소",
       "sections": {
-        "identity": "정체성",
+        "identity": "신원",
         "identityHint": "사람들이 이 캐릭터를 한눈에 알아보고 식별하는 방법을 정의합니다.",
-        "profile": "내러티브 프로필",
-        "profileHint": "AI를 안내하기 위해 성격, 특징 및 배경 스토리를 설명합니다.",
-        "configuration": "가용성 및 조정",
-        "configurationHint": "캐릭터가 어떻게 표시되는지, 누가 액세스할 수 있는지, 어떤 안전 장치가 적용되는지 제어합니다.",
-        "contentTagsHint": "잠재적으로 민감한 테마를 표시합니다. 사용자는 자신의 선호도에 따라 이를 필터링할 수 있습니다.",
-        "contentTagsCharacterHint": "이러한 주제는 선택된 연령 등급에서 캐릭터가 편안하게 논의할 수 있는 내용을 정의합니다.",
-        "contentTagsUserHint": "포함할 테마를 선택하세요. 선택되지 않은 항목은 이 등급에서 계속 차단됩니다.",
+        "profile": "서사 프로필",
+        "profileHint": "AI를 안내하기 위해 성격, 특징, 배경 스토리를 설명하세요.",
+        "configuration": "이용 가능성 및 관리",
+        "configurationHint": "캐릭터가 어떻게 표시되는지, 누가 접근할 수 있는지, 어떤 안전 장치가 적용되는지 제어합니다.",
+        "contentTagsHint": "잠재적으로 민감한 테마를 표시하세요. 사용자는 선호도에 따라 이를 필터링할 수 있습니다.",
+        "contentTagsCharacterHint": "이러한 주제는 캐릭터가 선택된 연령 등급에서 편안하게 논의할 수 있는 내용을 정의합니다.",
+        "contentTagsUserHint": "포함하려는 테마를 선택하세요. 선택되지 않은 내용은 이 등급에서 차단된 상태로 유지됩니다.",
         "contentTagLocked": "더 높은 연령 등급에서 잠금 해제됩니다."
       },
       "fields": {
@@ -138,15 +138,15 @@
         "lastName": "성",
         "age": "나이",
         "gender": "성별",
-        "species": "종족 / 기원",
+        "species": "종족 / 출신",
         "style": "시각 스타일",
         "reference": "참조 / 출처",
-        "physicalCharacteristics": "외형 묘사",
+        "physicalCharacteristics": "신체적 특징",
         "personality": "성격",
         "history": "배경 스토리",
         "isPublic": "공개 여부",
         "ageRating": "연령 등급",
-        "originalLanguageCode": "원본 언어",
+        "originalLanguageCode": "원어",
         "contentTags": "콘텐츠 경고",
         "visibility": "공개 여부"
       },
@@ -168,14 +168,14 @@
         "change": "이미지 변경",
         "remove": "제거",
         "uploading": "업로드 중...",
-        "helperCreate": "지금 아바타를 선택하시면, 나머지 양식을 작성하는 동안 유지됩니다.",
-        "helperEdit": "언제든지 아바타를 업데이트할 수 있습니다. 변경 사항은 저장하는 즉시 적용됩니다.",
+        "helperCreate": "지금 아바타를 선택하시면, 나머지 양식을 작성하는 동안 해당 아바타가 유지됩니다.",
+        "helperEdit": "원하는 때에 아바타를 업데이트하세요. 변경 사항은 저장 즉시 적용됩니다.",
         "error": "이 이미지를 업로드할 수 없습니다. 다른 파일을 시도해주세요.",
         "previewAlt": "캐릭터 아바타 미리보기",
         "invalidUrl": "유효한 이미지 URL(http/https)을 입력하세요.",
-        "saveFirst": "아바타를 생성하기 전에 먼저 캐릭터를 저장해주세요",
+        "saveFirst": "아바타를 생성하기 전에 먼저 캐릭터를 저장하세요.",
         "insufficientCredits": "크레딧이 부족합니다. {{required}} 크레딧이 필요하지만 {{current}} 크레딧만 있습니다.",
-        "generationStarted": "아바타 생성이 시작되었습니다! 몇 분 정도 걸릴 수 있습니다. 이미지 탭에서 결과를 확인하세요.",
+        "generationStarted": "아바타 생성이 시작되었습니다! 몇 분 정도 걸릴 수 있습니다. 결과는 이미지 탭에서 확인하세요.",
         "generationComplete": "아바타가 성공적으로 생성되었습니다!",
         "generationFailed": "아바타 생성에 실패했습니다. 다시 시도해주세요.",
         "generationError": "아바타 생성을 시작하지 못했습니다. 다시 시도해주세요."
@@ -191,28 +191,28 @@
         "previewAlt": "캐릭터 커버 미리보기"
       },
       "tags": {
-        "searchPlaceholder": "태그 검색 (예: VTuber, Maid)",
+        "searchPlaceholder": "태그 검색 (예: VTuber, 메이드)",
         "selected": "선택된 태그",
         "none": "선택된 태그 없음",
         "suggestions": "추천",
         "loading": "로드 중...",
         "noResults": "결과 없음",
-        "incompatibleToast": "일부 선택된 태그가 현재 연령 등급과 호환되지 않습니다. 확인해주세요.",
-        "incompatibleHint": "강조 표시된 태그는 선택된 연령 등급과 호환되지 않습니다. 계속하려면 제거해주세요.",
+        "incompatibleToast": "일부 선택된 태그는 현재 연령 등급과 호환되지 않습니다. 확인해주세요.",
+        "incompatibleHint": "강조 표시된 태그는 선택된 연령 등급과 호환되지 않습니다. 계속하려면 제거하세요.",
         "incompatibleChip": "현재 연령 등급과 호환되지 않음"
       },
       "tabs": {
-        "identity": "정체성",
+        "identity": "신원",
         "profile": "프로필",
         "configuration": "설정",
         "tags": "태그",
         "images": "이미지",
-        "lockedHint": "다른 섹션을 잠금 해제하려면 기본 정체성 세부 정보를 작성해주세요."
+        "lockedHint": "다른 섹션을 잠금 해제하려면 기본 신원 정보를 입력하세요."
       }
     },
     "create": {
-      "title": "새 캐릭터 생성",
-      "subtitle": "내러티브 맥락, 시각 스타일 및 조정 설정을 결합하세요. 모든 것은 나중에 다듬을 수 있습니다.",
+      "title": "새 캐릭터 만들기",
+      "subtitle": "서사적 맥락, 시각 스타일, 관리 설정을 결합하세요. 모든 것은 나중에 수정할 수 있습니다.",
       "avatar": {
         "header": "캐릭터 아바타",
         "description": "캐릭터의 시각적 표현입니다."
@@ -220,22 +220,22 @@
       "saveButton": "캐릭터 저장",
       "cancelButton": "취소하고 돌아가기",
       "chooseMethod": {
-        "title": "캐릭터를 어떻게 생성하시겠습니까?",
-        "subtitle": "필요에 가장 적합한 방법을 선택하세요",
+        "title": "어떻게 캐릭터를 생성하시겠습니까?",
+        "subtitle": "가장 적합한 방법을 선택하세요",
         "manual": {
           "title": "수동 생성",
-          "description": "모든 세부 사항을 완벽하게 제어하며 단계별로 캐릭터를 만드세요",
+          "description": "모든 세부 사항을 완벽하게 제어하여 캐릭터를 단계별로 만드세요",
           "features": [
-            "완벽한 사용자 지정",
+            "완벽한 맞춤 설정",
             "모든 필드를 수동으로 채우기",
-            "상세한 캐릭터에 적합"
+            "자세한 캐릭터에 적합"
           ],
           "button": "수동으로 생성",
           "cost": "무료"
         },
         "ai": {
           "title": "AI 기반 생성",
-          "description": "설명 또는 이미지에서 AI가 캐릭터를 생성하도록 하세요",
+          "description": "AI가 설명 또는 이미지를 기반으로 캐릭터를 생성하게 하세요",
           "features": [
             "자동 생성",
             "이미지 업로드 또는 설명",
@@ -245,10 +245,10 @@
           "cost": "{{credits}} 크레딧",
           "costWithoutImage": "{{credits}} 크레딧 (이미지 없음)",
           "costBreakdown": {
-            "title": "크레딧 비용 상세 내역",
+            "title": "크레딧 비용 세부 내역",
             "imageAnalysis": "이미지 분석: {{credits}} 크레딧 (이미지 업로드 시에만 해당)",
             "textAnalysis": "텍스트 분석: {{credits}} 크레딧",
-            "characterEnrichment": "캐릭터 강화: {{credits}} 크레딧",
+            "characterEnrichment": "캐릭터 상세화: {{credits}} 크레딧",
             "avatarGeneration": "아바타 생성: {{credits}} 크레딧",
             "total": "총계: {{credits}} 크레딧"
           }
@@ -270,7 +270,7 @@
     },
     "detail": {
       "states": {
-        "loading": "캐릭터 상세 정보 로드 중...",
+        "loading": "캐릭터 세부 정보 로드 중...",
         "notFound": "이 캐릭터를 찾을 수 없습니다."
       },
       "actions": {
@@ -284,7 +284,7 @@
       },
       "confirmDelete": {
         "title": "캐릭터를 삭제하시겠습니까?",
-        "message": "이 작업은 되돌릴 수 없습니다. 이 캐릭터와 관련된 모든 데이터는 영구적으로 삭제됩니다.",
+        "message": "이 작업은 되돌릴 수 없습니다. 이 캐릭터와 관련된 모든 데이터가 영구적으로 삭제됩니다.",
         "confirm": "영구적으로 삭제",
         "cancel": "취소"
       },
@@ -293,7 +293,7 @@
         "private": "비공개",
         "createdAt": "생성일",
         "createdBy": "생성자",
-        "updatedAt": "최종 업데이트",
+        "updatedAt": "마지막 업데이트",
         "identifier": "캐릭터 ID: {{id}}",
         "messageCount": "메시지 {{count}}개",
         "messageCount_plural": "메시지 {{count}}개",
@@ -320,57 +320,99 @@
       "coverHeader": "캐릭터 커버",
       "coverDescription": "캐릭터 커버로 사용되는 세로 방향 이미지입니다.",
       "generateNew": "새 {{type}} 생성",
-      "onlyAvatarSupported": "현재는 아바타 생성만 지원됩니다",
+      "onlyAvatarSupported": "현재 아바타 생성만 지원됩니다",
       "startingGeneration": "생성 시작 중...",
-      "generatingImage": "이미지 생성 중... 최대 1분 정도 소요될 수 있습니다",
+      "generatingImage": "이미지 생성 중... 최대 1분 정도 걸릴 수 있습니다",
       "processing": "AI로 이미지 처리 중...",
       "generationComplete": "생성 완료!",
       "imageGeneratedSuccess": "이미지가 성공적으로 생성되었습니다!",
       "preview": "미리보기",
       "generationInfo": "이미지 생성 정보",
       "infoPrompt": "AI가 캐릭터 설명을 사용하여 이미지를 생성합니다",
-      "infoTime": "생성에는 약 30-60초가 소요됩니다",
-      "infoActive": "새 이미지는 자동으로 활성화됩니다"
+      "infoTime": "생성은 약 30-60초 정도 소요됩니다",
+      "infoActive": "새 이미지는 자동으로 활성 상태로 설정됩니다"
+    },
+    "imageGeneration": {
+      "multiStage": {
+        "title": "다단계 참조 데이터셋",
+        "description": "일관된 캐릭터 생성을 위해 4개의 참조 이미지 (아바타, 전면, 측면, 후면)를 생성합니다",
+        "stages": {
+          "avatar": "아바타 (얼굴)",
+          "front": "전면 몸",
+          "side": "측면 몸",
+          "back": "후면 몸"
+        },
+        "startButton": "데이터셋 생성",
+        "generating": "데이터셋 생성 중...",
+        "ready": "생성 준비 완료",
+        "waiting": "대기 중...",
+        "failed": "실패",
+        "estimatedTime": "예상 시간: 8-12분",
+        "errors": {
+          "startFailed": "생성 시작 실패",
+          "generationFailed": "생성 실패",
+          "pollFailed": "생성 상태 확인 실패"
+        },
+        "progress": {
+          "stage": "{{total}}단계 중 {{stage}}단계",
+          "message": "{{message}}"
+        }
+      },
+      "imagesTab": {
+        "dropdownLabel": "생성 또는 업로드...",
+        "generateAvatar": "아바타 생성",
+        "generateReferenceDataset": "참조 데이터셋 생성 (4가지 시점)",
+        "uploadCover": "커버 이미지 업로드",
+        "avatarsCount": "아바타 {{count}}개",
+        "avatarsCount_plural": "아바타 {{count}}개",
+        "referenceCount": "참조 이미지 {{count}}개",
+        "referenceCount_plural": "참조 이미지 {{count}}개",
+        "avatarsSection": "아바타",
+        "noAvatars": "아직 아바타 없음",
+        "noReferenceImages": "아직 참조 이미지 없음",
+        "active": "활성"
+      }
     },
     "createAI": {
       "title": "AI 캐릭터 생성기",
       "subtitle": "캐릭터를 설명하거나 이미지를 업로드하면 AI가 세부 정보를 생성해 드립니다",
       "descriptionLabel": "캐릭터 설명",
       "descriptionPlaceholder": "캐릭터를 설명하세요... (예: \"은색 갑옷을 입고 고귀한 마음을 가진 용감한 기사\")",
-      "descriptionHint": "설명이 자세할수록 결과가 더 좋습니다",
+      "descriptionHint": "설명이 자세할수록 더 나은 결과를 얻을 수 있습니다",
       "imageLabel": "캐릭터 이미지",
       "uploadPrompt": "클릭하여 캐릭터 이미지 업로드",
       "uploadHint": "PNG, JPEG, WEBP, GIF (최대 10MB)",
       "generateButton": "캐릭터 생성",
       "generating": "생성 중...",
       "howItWorks": "작동 방식",
-      "step1": "텍스트 설명을 제공하거나 이미지를 업로드하세요",
-      "step2": "AI가 입력을 분석하고 캐릭터 세부 정보를 생성합니다",
-      "step3": "생성된 캐릭터를 저장하기 전에 검토하고 편집하세요",
+      "step1": "텍스트 설명 제공 및/또는 이미지 업로드",
+      "step2": "AI가 입력을 분석하여 캐릭터 세부 정보 생성",
+      "step3": "생성된 캐릭터를 저장하기 전에 검토 및 편집",
       "step4": "아바타가 자동으로 생성됩니다",
       "loading": {
         "creatingCharacter": "캐릭터 생성 중",
         "analyzingEssence": "본질 분석 중...",
-        "threadsOfFate": "운명의 실타래가 엮어지고 있습니다...",
+        "threadsOfFate": "운명의 실타래가 엮이는 중...",
         "gatheringMagic": "고대 마법을 모으는 중...",
-        "shapingDestiny": "그들의 운명을 만들고 있습니다...",
+        "shapingDestiny": "운명을 빚어내는 중...",
         "breathingLife": "생명력을 불어넣는 중..."
       },
       "progress": {
         "uploadingImage": "당신의 비전 업로드 중",
         "analyzingImage": "본질 분석 중",
-        "extractingDescription": "캐릭터 읽는 중",
-        "generatingDetails": "그들의 정체성 구축 중",
+        "extractingDescription": "캐릭터 정보 읽는 중",
+        "generatingDetails": "정체성 형성 중",
         "generatingHistory": "그들의 이야기 엮는 중",
         "creatingCharacter": "생명을 불어넣는 중",
-        "queuingAvatar": "시각 자료 준비 중",
+        "queuingAvatar": "시각적 준비 중",
         "generatingAvatar": "그들의 초상화 그리는 중",
+        "queuingMultiStage": "참조 데이터셋 준비 중 (4가지 시점)",
         "completed": "당신의 영웅이 기다립니다",
         "error": "예상치 못한 반전",
         "preparing": "당신의 모험 준비 중"
       },
       "reveal": {
-        "heroEmerges": "영웅이 나타납니다",
+        "heroEmerges": "영웅의 등장",
         "personalityTitle": "성격",
         "backstoryTitle": "그들의 이야기",
         "successBanner": "캐릭터가 성공적으로 생성되었습니다!"
@@ -385,18 +427,18 @@
       "confirmDiscard": "이 캐릭터를 폐기하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
       "characterDiscarded": "캐릭터가 성공적으로 폐기되었습니다",
       "discardFailed": "캐릭터 폐기 실패",
-      "generationStarted": "캐릭터 생성이 시작되었습니다! 진행 상황을 지켜보고 있습니다...",
+      "generationStarted": "캐릭터 생성이 시작되었습니다! 진행 상황 확인 중...",
       "generationFailed": "캐릭터 생성에 실패했습니다. 다시 시도해주세요."
     },
     "errors": {
       "createFailed": "캐릭터를 생성할 수 없습니다. 다시 시도해주세요.",
       "updateFailed": "캐릭터를 업데이트할 수 없습니다.",
       "deleteFailed": "캐릭터를 삭제할 수 없습니다.",
-      "detailUnavailable": "현재 캐릭터 상세 정보를 로드할 수 없습니다.",
+      "detailUnavailable": "현재 캐릭터 세부 정보를 로드할 수 없습니다.",
       "descriptionOrImageRequired": "설명 또는 이미지를 제공해주세요",
       "imageTooLarge": "이미지는 10MB보다 작아야 합니다",
-      "invalidImageType": "이미지는 PNG, JPEG, WEBP 또는 GIF여야 합니다",
-      "generationFailed": "캐릭터 생성 실패"
+      "invalidImageType": "이미지는 PNG, JPEG, WEBP 또는 GIF 형식이어야 합니다",
+      "generationFailed": "캐릭터 생성에 실패했습니다"
     }
   }
 }

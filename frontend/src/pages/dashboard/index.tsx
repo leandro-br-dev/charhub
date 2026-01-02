@@ -443,6 +443,22 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
+  }).filter((c) => {
+    // Apply gender filter
+    if (characterFilters.genders.length > 0) {
+      const gender = (c as any).gender;
+      if (!gender || !characterFilters.genders.includes(gender)) {
+        return false;
+      }
+    }
+    // Apply species filter
+    if (characterFilters.species.length > 0) {
+      const species = (c as any).speciesId || (c as any).species?.id;
+      if (!species || !characterFilters.species.includes(species)) {
+        return false;
+      }
+    }
+    return true;
   });
 
   const filteredPopularStories = popularStories.filter((s) => {
@@ -520,15 +536,13 @@ function DashboardContent(): JSX.Element {
                   )}
                 </div>
 
-                {/* Filter Panel */}
-                {discoverView === 'popular' && (
-                  <FilterPanel
-                    filters={characterFilters}
-                    onUpdateFilter={updateCharacterFilter}
-                    onClearFilters={clearCharacterFilters}
-                    activeFiltersCount={activeFiltersCount}
-                  />
-                )}
+                {/* Filter Panel - show for both popular and favorites */}
+                <FilterPanel
+                  filters={characterFilters}
+                  onUpdateFilter={updateCharacterFilter}
+                  onClearFilters={clearCharacterFilters}
+                  activeFiltersCount={activeFiltersCount}
+                />
 
                 {initialLoading ? (
                   <CharacterGridSkeleton count={initialLimit} />

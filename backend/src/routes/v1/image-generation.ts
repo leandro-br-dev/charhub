@@ -297,6 +297,7 @@ router.get('/characters/:characterId/images', requireAuth, async (req, res) => {
         height: true,
         sizeBytes: true,
         isActive: true,
+        content: true,
         createdAt: true,
       },
     });
@@ -445,6 +446,143 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
   } catch (error) {
     logger.error({ err: error }, 'Failed to delete image');
     return res.status(500).json({ error: 'Failed to delete image' });
+  }
+});
+
+/**
+ * ============================================================================
+ * MULTI-STAGE CHARACTER GENERATION ENDPOINTS
+ * ============================================================================
+ */
+
+/**
+ * POST /api/v1/image-generation/character-dataset
+ * Generate complete 4-stage reference dataset for a character
+ * Long-running operation - returns job ID for polling
+ */
+router.post('/character-dataset', requireAuth, async (req, res) => {
+  try {
+    const { characterId, prompt, loras, referenceImages } = req.body;
+    const user = req.auth?.user;
+
+    if (!user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const userId = user.id;
+
+    if (!characterId || !prompt) {
+      return res.status(400).json({ error: 'characterId and prompt are required' });
+    }
+
+    if (!prompt.positive || !prompt.negative) {
+      return res.status(400).json({ error: 'prompt must contain positive and negative text' });
+    }
+
+    // Verify character ownership
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+    });
+
+    if (!character || character.userId !== userId) {
+      return res.status(403).json({ error: 'Character not found or unauthorized' });
+    }
+
+    // Prepare job data
+    const jobData = {
+      type: 'multi-stage-dataset' as const,
+      userId,
+      characterId,
+      prompt,
+      loras: loras || [],
+      referenceImages: referenceImages || [],
+    };
+
+    // Queue the job
+    const job = await queueManager.addJob(QueueName.IMAGE_GENERATION, 'multi-stage-dataset', jobData, {
+      priority: 5, // Normal priority
+    });
+
+    logger.info({
+      jobId: job.id,
+      characterId,
+      userId,
+      initialRefs: referenceImages?.length || 0,
+    }, 'Multi-stage character dataset generation job queued');
+
+    return res.json({
+      success: true,
+      jobId: job.id,
+      message: 'Multi-stage dataset generation started',
+      estimatedTime: '8-12 minutes', // ~30 seconds per stage * 4 stages
+      pollUrl: `/api/v1/image-generation/status/${job.id}`,
+      stages: ['Avatar (face)', 'Front (body)', 'Side (body)', 'Back (body)'],
+    });
+  } catch (error) {
+    logger.error({ err: error }, 'Failed to queue multi-stage dataset generation');
+    return res.status(500).json({ error: 'Failed to start dataset generation' });
+  }
+});
+
+/**
+ * GET /api/v1/image-generation/characters/:characterId/reference-dataset
+ * Get reference dataset images for a character
+ */
+router.get('/characters/:characterId/reference-dataset', requireAuth, async (req, res) => {
+  try {
+    const { characterId } = req.params;
+    const userId = req.auth?.user.id;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    // Verify character ownership or public visibility
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+      select: { userId: true, visibility: true },
+    });
+
+    if (!character) {
+      return res.status(404).json({ error: 'Character not found' });
+    }
+
+    if (character.userId !== userId && character.visibility !== 'PUBLIC') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Fetch reference images
+    const referenceImages = await prisma.characterImage.findMany({
+      where: {
+        characterId,
+        type: 'REFERENCE',
+      },
+      orderBy: { createdAt: 'asc' },
+      select: {
+        id: true,
+        type: true,
+        url: true,
+        width: true,
+        height: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+
+    // Check if dataset is complete (all 4 views: avatar, front, side, back)
+    const expectedViews = ['avatar', 'front', 'side', 'back'];
+    const hasAllStages = referenceImages.length === 4 &&
+      referenceImages.every(img => img.content && expectedViews.includes(img.content));
+
+    return res.json({
+      success: true,
+      data: referenceImages,
+      isComplete: hasAllStages,
+      stageCount: referenceImages.length,
+    });
+  } catch (error) {
+    logger.error({ err: error }, 'Failed to get reference dataset');
+    return res.status(500).json({ error: 'Failed to get reference dataset' });
   }
 });
 

@@ -332,6 +332,48 @@
       "infoTime": "Generation takes approximately 30-60 seconds",
       "infoActive": "New images are automatically set as active"
     },
+    "imageGeneration": {
+      "multiStage": {
+        "title": "Multi-Stage Reference Dataset",
+        "description": "Generate 4 reference images (avatar, front, side, back) for consistent character generation",
+        "stages": {
+          "avatar": "Avatar (Face)",
+          "front": "Front Body",
+          "side": "Side Body",
+          "back": "Back Body"
+        },
+        "startButton": "Generate Dataset",
+        "generating": "Generating...",
+        "ready": "Ready to generate",
+        "waiting": "Waiting...",
+        "failed": "Failed",
+        "estimatedTime": "Estimated time: 8-12 minutes",
+        "generating": "Generating dataset...",
+        "errors": {
+          "startFailed": "Failed to start generation",
+          "generationFailed": "Generation failed",
+          "pollFailed": "Failed to check generation status"
+        },
+        "progress": {
+          "stage": "Stage {{stage}} of {{total}}",
+          "message": "{{message}}"
+        }
+      },
+      "imagesTab": {
+        "dropdownLabel": "Generate or upload...",
+        "generateAvatar": "Generate Avatar",
+        "generateReferenceDataset": "Generate Reference Dataset (4 views)",
+        "uploadCover": "Upload Cover Image",
+        "avatarsCount": "{{count}} avatars",
+        "avatarsCount_plural": "{{count}} avatars",
+        "referenceCount": "{{count}} reference images",
+        "referenceCount_plural": "{{count}} reference images",
+        "avatarsSection": "Avatars",
+        "noAvatars": "No avatars yet",
+        "noReferenceImages": "No reference images yet",
+        "active": "Active"
+      }
+    },
     "createAI": {
       "title": "AI Character Generator",
       "subtitle": "Describe your character or upload an image, and AI will generate the details for you",
@@ -365,6 +407,7 @@
         "creatingCharacter": "Bringing them to life",
         "queuingAvatar": "Preparing the visual",
         "generatingAvatar": "Painting their portrait",
+        "queuingMultiStage": "Preparing reference dataset (4 views)",
         "completed": "Your hero awaits",
         "error": "An unexpected twist",
         "preparing": "Preparing your adventure"

@@ -104,6 +104,7 @@ Your work follows this cycle:
 8. **Hardcode user-facing text** (use i18n keys)
 9. **Work on features in backlog** (only work on `features/active/`)
 10. **Create Pull Requests without user approval after manual testing**
+11. **Delete database data** (NEVER use `docker compose down -v` without explicit user authorization)
 
 ### ✅ ALWAYS Do These
 
@@ -121,6 +122,7 @@ Your work follows this cycle:
 12. **Document API changes and new features**
 13. **Write ALL code and documentation in English (en-US)**
 14. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
+15. **Preserve database data** (use `docker compose down` WITHOUT `-v` flag for restarts)
 
 ---
 
@@ -220,8 +222,8 @@ npm run build  # Will fail if missing i18n keys or type errors
 ### Local Testing
 
 ```bash
-# Clean restart (recommended for testing)
-docker compose down -v
+# Restart containers (preserves database data)
+docker compose down
 docker compose up -d --build
 
 # Check status
@@ -234,6 +236,13 @@ docker compose logs -f frontend
 # Test frontend
 open http://localhost:8082
 ```
+
+**⚠️ IMPORTANT: Database Data Preservation**
+
+- **ALWAYS use**: `docker compose down` (without `-v`) for normal restarts
+- **NEVER use**: `docker compose down -v` unless explicitly authorized by user
+- **Why**: The `-v` flag deletes database volumes, losing ALL data
+- **Exception**: Only use `-v` when user explicitly requests database reset
 
 ### Before Creating Pull Request
 
@@ -248,8 +257,8 @@ cd frontend && npm run lint
 cd backend && npm run build
 cd frontend && npm run build
 
-# 3. Manual testing in Docker
-docker compose down -v
+# 3. Manual testing in Docker (preserves database data)
+docker compose down
 docker compose up -d --build
 
 # 4. Test your changes manually

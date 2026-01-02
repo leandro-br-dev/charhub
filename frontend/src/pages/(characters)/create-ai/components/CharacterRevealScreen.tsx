@@ -55,7 +55,7 @@ export function CharacterRevealScreen({ step, data }: CharacterRevealScreenProps
                 <p className="text-xs uppercase tracking-wide text-muted mb-1">
                   {t('characters:form.fields.species', 'Species')}
                 </p>
-                <p className="text-xl font-semibold capitalize">{data.species}</p>
+                <p className="text-xl font-semibold capitalize">{typeof data.species === 'object' ? data.species.name : data.species}</p>
               </div>
             )}
             {data.age && (
@@ -71,7 +71,7 @@ export function CharacterRevealScreen({ step, data }: CharacterRevealScreenProps
                 <p className="text-xs uppercase tracking-wide text-muted mb-1">
                   {t('characters:form.fields.gender', 'Gender')}
                 </p>
-                <p className="text-xl font-semibold capitalize">{data.gender}</p>
+                <p className="text-xl font-semibold capitalize">{typeof data.gender === 'object' ? data.gender.name : data.gender}</p>
               </div>
             )}
           </div>

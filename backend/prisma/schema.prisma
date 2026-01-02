@@ -177,11 +177,12 @@ enum StickerStatus {
 
 // Types of images associated with a character
 enum ImageType {
-  AVATAR
-  COVER
-  SAMPLE
-  STICKER
-  OTHER
+  AVATAR     // Profile picture (square) - primary character image
+  COVER      // Featured portrait image
+  SAMPLE     // User-provided reference image for generation
+  STICKER    // Expression images with transparent background
+  OTHER      // Miscellaneous images
+  REFERENCE  // AI-generated reference image (content field describes view: avatar, front, side, back)
 }
 
 // Tag type classification
@@ -436,6 +437,10 @@ model CharacterImage {
   height      Int?
   sizeBytes   Int?
   contentType String?
+
+  // Content field for REFERENCE type: describes the view (avatar, front, side, back)
+  // Can also be used for other types to store additional metadata
+  content     String?     @db.Text
 
   // Per-image classification
   ageRating   AgeRating    @default(L)

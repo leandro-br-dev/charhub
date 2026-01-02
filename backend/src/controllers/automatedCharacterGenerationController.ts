@@ -14,7 +14,7 @@ import { createCharacter } from '../services/characterService';
 import { queueManager } from '../queues/QueueManager';
 import { QueueName } from '../queues/config';
 import { ImageGenerationType } from '../services/comfyui';
-import type { AvatarGenerationJobData } from '../queues/jobs/imageGenerationJob';
+import type { AvatarGenerationJobData, MultiStageDatasetGenerationJobData } from '../queues/jobs/imageGenerationJob';
 import { r2Service } from '../services/r2Service';
 import { AgeRating, VisualStyle, Visibility } from '../generated/prisma';
 import type { ImageType } from '../generated/prisma';
@@ -326,12 +326,11 @@ export async function compileCharacterDataWithLLM(
   textData: GeneratedCharacterData | null,
   preferredLanguage: string = 'en'
 ): Promise<GeneratedCharacterData> {
-  // If no image analysis, return text data as-is
-  if (!imageAnalysis) {
-    return textData || { firstName: 'Character' };
-  }
-
-  const { physicalCharacteristics: imgPhys, visualStyle, clothing } = imageAnalysis;
+  const { physicalCharacteristics: imgPhys, visualStyle, clothing } = imageAnalysis || {
+    physicalCharacteristics: {} as any,
+    visualStyle: {} as any,
+    clothing: {} as any,
+  };
 
   // Build structured image analysis summary
   const imageAnalysisSummary: string[] = [];
@@ -353,6 +352,8 @@ export async function compileCharacterDataWithLLM(
 
   // Use LLM to compile everything into coherent character data
   try {
+    const hasImage = !!imageAnalysis;
+
     const compilationPrompt = [
       'You are a creative character profile generator. Create a complete, engaging character profile.',
       '',
@@ -360,7 +361,7 @@ export async function compileCharacterDataWithLLM(
       userDescription || '(No user description provided)',
       '',
       '=== IMAGE ANALYSIS RESULTS ===',
-      imageAnalysisSummary.join('\n') || '(No image provided)',
+      imageAnalysisSummary.join('\n') || '(No image provided - text-only mode)',
       '',
       '=== EXTRACTED DATA FROM TEXT ===',
       textData ? JSON.stringify({
@@ -374,40 +375,46 @@ export async function compileCharacterDataWithLLM(
       }, null, 2) : '(No text analysis data)',
       '',
       `=== TASK ===`,
-      `Create a COMPLETE character profile with ALL fields filled.`,
+      hasImage
+        ? 'Create a COMPLETE character profile with ALL fields filled, incorporating the visual details from the image analysis.'
+        : 'Create a COMPLETE character profile with ALL fields filled. Since there is no image, you MUST be EXTRA CREATIVE in expanding the user description into rich, detailed personality and backstory.',
       `ALL text fields MUST be written in language code: ${preferredLanguage}`,
       ``,
-      `Return a JSON object with these fields (ALL REQUIRED):`,
+      `Return a JSON object with these fields (ALL REQUIRED - NO EXCEPTIONS):`,
       `{`,
-      `  "firstName": "string - Generate an attractive, culturally appropriate name",`,
-      `  "lastName": "string - Generate a surname that matches the firstName's cultural origin",`,
-      `  "age": number - Infer from image/description (required),`,
-      `  "gender": "string - male/female/non-binary (required)",`,
-      `  "species": "string - human/elf/etc (default: human)",`,
-      `  "physicalCharacteristics": "string - ONE flowing paragraph in ${preferredLanguage} merging user description + image analysis naturally",`,
-      `  "personality": "string - Engaging 2-3 sentence personality description in ${preferredLanguage}",`,
-      `  "history": "string - SHORT backstory (MAX 2 paragraphs) in ${preferredLanguage} that brings the character to life"`,
+      `  "firstName": "string - MUST be a creative name, not 'Character'",`,
+      `  "lastName": "string - MUST be a surname, NEVER null or empty",`,
+      `  "age": number - MUST be a number between 18-100, not null",`,
+      `  "gender": "string - MUST be: MALE, FEMALE, NON_BINARY, OTHER, or UNKNOWN (uppercase)",`,
+      `  "species": "string - Species name in English (human, elf, robot, etc.)",`,
+      `  "physicalCharacteristics": "string - ONE paragraph describing appearance${hasImage ? ', based on image analysis' : ', BE CREATIVE - expand from user description with specific details like hair color, eye color, height, build, clothing style'}",`,
+      `  "personality": "string - 2-3 sentences describing personality, NEVER generic phrases",`,
+      `  "history": "string - 1-2 paragraphs of backstory, NEVER generic phrases",`,
       `}`,
       ``,
-      `CRITICAL REQUIREMENTS:`,
-      `1. ALL fields must be filled (no empty/null values)`,
-      `2. ALL text in ${preferredLanguage} (not English!)`,
-      `3. physicalCharacteristics: Write ONE natural paragraph, not a list`,
-      `4. personality: Make it interesting and unique`,
-      `5. history: Keep it SHORT (max 2 paragraphs), engaging, and consistent with the character`,
-      `6. Infer gender and age from image/description`,
+      `CRITICAL - NEVER USE THESE GENERIC PHRASES:`,
+      `- "A personalidade não foi especificada"`,
+      `- "A história não foi especificada"`,
+      `- "Personality: not specified"`,
+      `- "History: unknown"`,
+      `- "Character" as firstName`,
+      `- null or empty lastName`,
       ``,
-      `NAME GENERATION RULES (EXTREMELY IMPORTANT):`,
-      `- Analyze the visual style, clothing, and physical characteristics to determine cultural origin`,
-      `- For anime/manga style: Use Japanese names (e.g., Sakura Yamamoto, Kenji Takahashi, Yuki Nakamura)`,
-      `- For fantasy/medieval: Use fantasy-appropriate names (e.g., Elara Moonwhisper, Theron Blackwood)`,
-      `- For modern Western: Use common Western names (e.g., Emma Wilson, Jack Thompson)`,
-      `- For sci-fi: Use futuristic or unique names (e.g., Zara Nova, Kael Orion)`,
-      `- NEVER use physical characteristics as surnames (e.g., don't use "Coelho" for bunny costume, "Verde" for green eyes)`,
-      `- NEVER use clothing items as surnames (e.g., don't use "Hat", "Dress", "Suit")`,
-      `- firstName and lastName MUST match the same cultural origin (don't mix Japanese with Brazilian, etc.)`,
-      `- Names should sound natural, attractive, and fitting for the character's apparent background`,
-      `- If user provided a name, use it; otherwise generate culturally coherent names`,
+      hasImage
+        ? `Use the visual details from the image analysis to create a rich, coherent character.`
+        : `IMPORTANT: Since there's no image, you MUST INFER and CREATE details from the user's description. Be specific and creative!`,
+      ``,
+      `Instead, BE CREATIVE and SPECIFIC:`,
+      `- personality: "Ela é alegre e extrovertida, adora fazer novos amigos e sempre tem uma palavra de carinho para todos. Sua energia contagiante ilumina qualquer ambiente."`,
+      `- personality: "Ele é um estrategista calculista, mas com um coração generoso. Poucos conhecem seu lado gentil que ele revela apenas aos próximos. Lealdade é seu valor supremo."`,
+      `- history: "Nascida em uma pequena cidade costeira, ela sempre sonhou em explorar o mundo. Aos 18 anos, mudou-se para a grande cidade em busca de novas oportunidades e aventuras. Agora trabalha como exploradora, documentando ruínas antigas e culturas esquecidas."`,
+      `- history: "Órfão desde cedo, ele aprendeu a sobreviver nas ruas da capital. Suas habilidades de combate foram aperfeiçoadas ao longo de anos de lutas clandestinas. Hoje, ele usa seus talentos para proteger os que não podem se defender, embora seu passado ainda o persiga em pesadelos."`,
+      ``,
+      `NAME GENERATION RULES:`,
+      `- Anime style: Japanese names (Sakura Yamamoto, Kenji Takahashi)`,
+      `- Fantasy: Fantasy names (Elara Moonwhisper, Theron Blackwood)`,
+      `- Modern Western: Western names (Emma Wilson, Jack Thompson)`,
+      `- NEVER mix cultural origins (Japanese firstName + Brazilian lastName)`,
       ``,
       `Return ONLY valid JSON, no markdown, no commentary.`,
     ].join('\n');
@@ -415,17 +422,23 @@ export async function compileCharacterDataWithLLM(
     const response = await callLLM({
       provider: 'gemini',
       model: 'gemini-2.5-flash',
-      systemPrompt: 'You are a character data compilation assistant. Always output valid JSON.',
+      systemPrompt: 'You are a character data compilation assistant. Always output valid JSON with ALL required fields.',
       userPrompt: compilationPrompt,
       temperature: 0.7,
-      maxTokens: 1024,
+      maxTokens: 4096,
     } as any);
 
-    const compiledData = parseJsonSafe<GeneratedCharacterData>(response.content.trim());
+    const compiledData = parseJsonSafe<GeneratedCharacterData>((response.content || '').trim());
+
+    // Validate all required fields are present
+    const requiredFields = ['firstName', 'lastName', 'age', 'gender', 'species', 'personality', 'history'];
+    const missingFields = requiredFields.filter(field => !compiledData || !(compiledData as any)[field]);
+
+    if (missingFields.length > 0) {
+      logger.warn({ missingFields }, 'LLM response missing required fields');
+    }
 
     if (compiledData && compiledData.firstName) {
-      logger.info({ compiledData }, 'Successfully compiled character data with LLM');
-
       // Preserve visual style from image analysis (map artStyle to VisualStyle enum)
       if (visualStyle.artStyle) {
         const styleMap: Record<string, string> = {
@@ -448,19 +461,94 @@ export async function compileCharacterDataWithLLM(
   } catch (error) {
     logger.error({ error }, 'Failed to compile with LLM, falling back to simple merge');
     // Fallback to simple merge if LLM compilation fails
-    return simpleMergeAnalysisResults(imageAnalysis, textData);
+    return await simpleMergeAnalysisResults(imageAnalysis, textData, preferredLanguage);
   }
 }
 
 /**
  * Simple merge fallback (original logic)
  */
-function simpleMergeAnalysisResults(
+async function simpleMergeAnalysisResults(
   imageAnalysis: CharacterImageAnalysisResult | null,
-  textData: GeneratedCharacterData | null
-): GeneratedCharacterData {
+  textData: GeneratedCharacterData | null,
+  preferredLanguage: string = 'en'
+): Promise<GeneratedCharacterData> {
   // Start with text data as base
   const merged: GeneratedCharacterData = textData || { firstName: 'Character' };
+
+  // If no image analysis but text data is incomplete, try to enrich it
+  if (!imageAnalysis && (!merged.personality || !merged.history || !merged.lastName || !merged.age)) {
+    logger.info({ textData: merged }, 'text_data_incomplete_attempting_enrichment');
+
+    try {
+      // Try to generate missing fields using LLM
+      const enrichmentPrompt = [
+        'You are a character enrichment assistant. Given basic character information, generate the missing fields.',
+        '',
+        '=== INPUT CHARACTER DATA ===',
+        JSON.stringify(merged, null, 2),
+        '',
+        '=== TASK ===',
+        `Generate a COMPLETE character profile in language code: ${preferredLanguage}`,
+        '',
+        'Return a JSON object with these fields (ALL REQUIRED):',
+        '{',
+        '  "firstName": "string - existing or creative new name",',
+        '  "lastName": "string - MUST provide a surname",',
+        '  "age": "number - between 18-100",',
+        '  "gender": "MALE|FEMALE|NON_BINARY|OTHER|UNKNOWN",',
+        '  "species": "string - species name in English",',
+        '  "physicalCharacteristics": "string - detailed appearance description",',
+        '  "personality": "string - 2-3 sentences of personality traits",',
+        '  "history": "string - 1-2 paragraphs of backstory",',
+        '}',
+        '',
+        'CRITICAL RULES:',
+        '- NEVER leave lastName empty',
+        '- NEVER use "Character" as firstName',
+        '- ALWAYS provide a creative personality (2-3 sentences)',
+        '- ALWAYS provide a backstory (1-2 paragraphs)',
+        '- Be consistent with any existing data',
+        '',
+        'Return ONLY valid JSON, no markdown.',
+      ].join('\n');
+
+      const response = await callLLM({
+        provider: 'gemini',
+        model: 'gemini-2.5-flash',
+        systemPrompt: 'You are a character enrichment assistant. Always output valid JSON with ALL required fields.',
+        userPrompt: enrichmentPrompt,
+        temperature: 0.7,
+        maxTokens: 2048,
+      } as any);
+
+      const enriched = parseJsonSafe<GeneratedCharacterData>((response.content || '').trim());
+
+      // Validate and use enriched data if valid
+      if (enriched && enriched.firstName && enriched.firstName !== 'Character' && enriched.lastName) {
+        logger.info({ enriched }, 'text_data_enrichment_success');
+        return {
+          ...merged,
+          ...enriched,
+        };
+      }
+    } catch (error) {
+      logger.warn({ error }, 'text_data_enrichment_failed_using_defaults');
+    }
+
+    // Ultimate fallback with better defaults
+    return {
+      ...merged,
+      firstName: merged.firstName !== 'Character' ? merged.firstName : 'Alex',
+      lastName: merged.lastName || 'Mercer',
+      age: merged.age || (merged.age && merged.age < 18 ? 18 : merged.age) || 25,
+      gender: merged.gender || 'UNKNOWN',
+      species: merged.species || 'Human',
+      physicalCharacteristics: merged.physicalCharacteristics || 'A mysterious individual with an intriguing presence.',
+      personality: merged.personality || 'They possess a complex personality, full of contradictions and depth. Their actions reveal a character shaped by unique experiences and choices.',
+      history: merged.history || 'Born into circumstances that would shape their destiny, they embarked on a journey of self-discovery. Through trials and triumphs, they have grown into the person they are today, with dreams of what the future might hold.',
+    };
+  }
 
   if (!imageAnalysis) {
     return merged;
@@ -964,7 +1052,51 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
           // Continue even if avatar generation fails
         }
 
-        // Step 8: Completed
+        // Step 8: Queuing multi-stage reference dataset generation
+        emitCharacterGenerationProgress(
+          io,
+          user.id,
+          sessionId,
+          createProgressEvent(
+            CharacterGenerationStep.QUEUING_MULTI_STAGE,
+            95,
+            'Queuing multi-stage reference dataset generation...'
+          )
+        );
+
+        // Queue multi-stage dataset generation job
+        let multiStageJobId: string | undefined;
+        try {
+          const multiStageJobData: MultiStageDatasetGenerationJobData = {
+            type: 'multi-stage-dataset',
+            characterId: character.id,
+            userId: user.id,
+            prompt: {
+              positive: stableDiffusionPrompt,
+              negative: 'low quality, blurry, distorted, ugly, bad anatomy',
+            },
+            referenceImages: uploadedImageUrl ? [{ type: 'uploaded', url: uploadedImageUrl }] : [],
+          };
+
+          const multiStageJob = await queueManager.addJob(
+            QueueName.IMAGE_GENERATION,
+            'multi-stage-dataset',
+            multiStageJobData,
+            { priority: 3 } // Lower priority than avatar, but still important
+          );
+
+          multiStageJobId = multiStageJob.id;
+          logger.info({
+            jobId: multiStageJob.id,
+            characterId: character.id,
+            hasReferenceImages: !!uploadedImageUrl,
+          }, 'multi_stage_dataset_generation_queued');
+        } catch (error) {
+          logger.warn({ error, characterId: character.id }, 'multi_stage_dataset_queue_failed');
+          // Continue even if multi-stage generation fails
+        }
+
+        // Step 9: Completed
         emitCharacterGenerationProgress(
           io,
           user.id,
@@ -977,6 +1109,7 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
               characterId: character.id,
               character,
               avatarJobId,
+              multiStageJobId,
             }
           )
         );

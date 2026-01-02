@@ -10,6 +10,7 @@ import {
   getMyStories,
 } from '../../services/storyService';
 import { requireAuth, optionalAuth } from '../../middleware/auth';
+import { translationMiddleware } from '../../middleware/translationMiddleware';
 import { asyncMulterHandler } from '../../middleware/multerErrorHandler';
 import { generateAutomatedStory } from '../../controllers/automatedStoryGenerationController';
 import { r2Service } from '../../services/r2Service';
@@ -122,7 +123,15 @@ router.post('/', requireAuth, async (req: Request, res: Response, next: NextFunc
     if (!authorId) {
       return res.status(401).json({ message: 'Authentication required' });
     }
-    const story = await createStory(req.body, authorId);
+
+    // Force originalLanguageCode to user's preference if not provided
+    const storyData = { ...req.body };
+    const preferredLang = req.auth?.user?.preferredLanguage || undefined;
+    if (preferredLang && !storyData.originalLanguageCode) {
+      storyData.originalLanguageCode = preferredLang;
+    }
+
+    const story = await createStory(storyData, authorId);
     return res.status(201).json(story);
   } catch (error) {
     return next(error);
@@ -130,7 +139,7 @@ router.post('/', requireAuth, async (req: Request, res: Response, next: NextFunc
 });
 
 // Get my stories (authenticated)
-router.get('/my', requireAuth, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/my', requireAuth, translationMiddleware(), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
@@ -153,7 +162,7 @@ router.get('/my', requireAuth, async (req: Request, res: Response, next: NextFun
 });
 
 // List stories with filters (public + user's private stories)
-router.get('/', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/', translationMiddleware(), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {
       search,
@@ -188,7 +197,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get story by ID
-router.get('/:id', optionalAuth, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
     const userId = req.auth?.user?.id;

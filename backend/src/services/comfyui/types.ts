@@ -76,4 +76,47 @@ export enum ImageGenerationType {
   STICKER = 'sticker',
   COVER = 'cover',
   SCENE = 'scene',
+  OTHER = 'other',
+  // Multi-stage reference generation - single workflow for all views
+  REFERENCE = 'reference',
+}
+
+// Middleware v2.0 High-Level API types
+export interface ReferenceImage {
+  type: string;
+  url: string;
+}
+
+export interface PrepareReferencesRequest {
+  characterId: string;
+  referenceImages: ReferenceImage[];
+}
+
+export interface PrepareReferencesResponse {
+  referencePath: string;
+  imageCount: number;
+  status: string;
+}
+
+export interface GenerateWithReferencesRequest {
+  characterId: string;
+  workflow: ComfyWorkflow;
+  referenceImages: ReferenceImage[];
+  nodeOverrides?: Record<string, any>;
+}
+
+export interface GenerateWithReferencesResponse {
+  prompt_id: string;
+  referencePath: string;
+  status: string;
+  imageCount: number;
+}
+
+export interface CleanupRequest {
+  characterId: string;
+}
+
+export interface CleanupResponse {
+  success: boolean;
+  message: string;
 }

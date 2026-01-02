@@ -107,9 +107,9 @@ npm run build
 cd ../backend
 npm test
 
-# Docker environment (clean restart)
+# Docker environment restart (preserves database data)
 cd ..
-docker compose down -v
+docker compose down
 docker compose up -d --build
 
 # Manual testing at http://localhost:8082
@@ -126,6 +126,91 @@ docker compose up -d --build
 - **Test failures**: Business logic changed → Update your tests or implementation
 - **Schema conflicts**: Database schema changed → Regenerate Prisma client: `npm run prisma:generate`
 - **Dependency conflicts**: `package.json` changed → Re-run `npm install`
+
+---
+
+### Step 1.4.1: Verify Prisma Migrations Were Generated (If Schema Changed)
+
+**⚠️ CRITICAL: If you modified `backend/prisma/schema.prisma`, you MUST generate and commit the corresponding migration!**
+
+**Why this step is mandatory:**
+- Schema changes without migrations WILL BREAK production deployment
+- Database will not have the new columns/tables/enums
+- Application will crash with PostgreSQL errors at runtime
+- **This is the #1 cause of production deployment failures**
+
+**Check if you modified the schema:**
+```bash
+# Check if schema.prisma was modified in your branch
+git diff origin/main...HEAD --name-only | grep schema.prisma
+
+# If output shows "backend/prisma/schema.prisma", you MUST verify migrations!
+```
+
+**If schema was modified, verify migration exists:**
+```bash
+# Check if migration was created
+git diff origin/main...HEAD --name-only | grep "prisma/migrations"
+
+# Should show something like:
+# backend/prisma/migrations/20260102120000_your_migration_name/migration.sql
+```
+
+**⚠️ If schema changed but NO migration found:**
+
+**YOU FORGOT TO CREATE THE MIGRATION! Fix it now:**
+
+```bash
+cd backend
+
+# Option 1: Generate migration (if database is running)
+npx prisma migrate dev --name describe_your_changes
+
+# Option 2: Create migration manually (if database is down)
+# 1. Create migration folder
+mkdir -p prisma/migrations/$(date +%Y%m%d%H%M%S)_describe_your_changes
+
+# 2. Write migration SQL based on your schema changes
+# Example: Adding a new enum value and field
+vim prisma/migrations/$(date +%Y%m%d%H%M%S)_describe_your_changes/migration.sql
+
+# 3. Add migration to git
+git add prisma/migrations/
+git commit -m "chore(prisma): add migration for schema changes"
+git push origin HEAD
+```
+
+**Example migration scenarios:**
+
+**Adding a new enum value:**
+```sql
+-- AlterEnum: Add 'NEW_VALUE' to MyEnum enum
+ALTER TYPE "MyEnum" ADD VALUE 'NEW_VALUE';
+```
+
+**Adding a new field:**
+```sql
+-- AlterTable: Add 'myField' column to MyTable
+ALTER TABLE "MyTable" ADD COLUMN "myField" TEXT;
+```
+
+**Creating a new table:**
+```sql
+-- CreateTable
+CREATE TABLE "MyNewTable" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+**Checklist:**
+- [ ] Schema changes have corresponding migration
+- [ ] Migration file committed and pushed
+- [ ] Migration SQL is correct (matches schema changes)
+- [ ] Re-generated Prisma Client: `npm run prisma:generate`
+
+**If you skip this step, your PR WILL BE REJECTED by Agent Reviewer!**
 
 ---
 

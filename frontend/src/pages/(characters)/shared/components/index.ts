@@ -9,3 +9,4 @@ export { ConfigurationTab } from './ConfigurationTab';
 export { CharacterListSidebar } from './CharacterListSidebar';
 export { ImageGallery } from './ImageGallery';
 export { ImageGenerationPanel } from './ImageGenerationPanel';
+export { ImageGenerationModal } from './ImageGenerationModal';
