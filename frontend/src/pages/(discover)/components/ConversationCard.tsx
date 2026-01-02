@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Users, MessageCircle, Clock } from 'lucide-react';
+import { CachedImage } from '../../../components/ui/CachedImage';
 import type { PublicConversation } from '../services/discoverService';
 
 interface ConversationCardProps {
@@ -72,7 +73,7 @@ export function ConversationCard({ conversation, onWatch, onJoin }: Conversation
       {/* Character Avatar Section */}
       <div className="relative h-48 bg-gradient-to-b from-dark to-light">
         {characterAvatar ? (
-          <img
+          <CachedImage
             src={characterAvatar}
             alt={characterName}
             className="w-full h-full object-cover"

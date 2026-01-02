@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/ui';
+import { CachedImage } from '../../../components/ui/CachedImage';
 
 interface CarouselButton {
   to: string;
@@ -29,7 +30,7 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
   return (
     <div className="relative w-full h-64 sm:h-80 md:h-full overflow-hidden group">
       {imageUrl && (
-        <img
+        <CachedImage
           src={imageUrl}
           alt={t('dashboard:carousel.alt', { title: t(title) })}
           className="w-full h-full object-cover object-[center_25%] transition-transform duration-700 group-hover:scale-105"

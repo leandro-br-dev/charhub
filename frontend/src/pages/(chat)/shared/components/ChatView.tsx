@@ -2,6 +2,7 @@ import React, { useCallback, useState, useRef, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next";
 import { usePageHeader } from '../../../../hooks/usePageHeader';
 import { Button } from '../../../../components/ui/Button';
+import { CachedImage } from '../../../../components/ui/CachedImage';
 import DisplayAvatarParticipants from './DisplayAvatarParticipants';
 import MessageInput from './MessageInput';
 import MessageList from './MessageList';
@@ -230,7 +231,7 @@ const ChatView: React.FC<any> = ({
           <div
             className="fixed top-0 bottom-0 left-0 md:left-20 right-0 z-0 flex items-center justify-center pointer-events-none"
           >
-            <img
+            <CachedImage
               src={backgroundImage}
               alt="Chat background"
               className="h-full w-auto object-contain"
