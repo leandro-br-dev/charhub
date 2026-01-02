@@ -28,6 +28,7 @@ export function GenerationWizard({ sessionId }: GenerationWizardProps): JSX.Elem
       [CharacterGenerationStep.CREATING_CHARACTER]: t('characters:createAI.progress.creatingCharacter', 'Bringing them to life'),
       [CharacterGenerationStep.QUEUING_AVATAR]: t('characters:createAI.progress.queuingAvatar', 'Preparing the visual'),
       [CharacterGenerationStep.GENERATING_AVATAR]: t('characters:createAI.progress.generatingAvatar', 'Painting their portrait'),
+      [CharacterGenerationStep.QUEUING_MULTI_STAGE]: t('characters:createAI.progress.queuingMultiStage', 'Preparing reference dataset'),
       [CharacterGenerationStep.COMPLETED]: t('characters:createAI.progress.completed', 'Your hero awaits'),
       [CharacterGenerationStep.ERROR]: t('characters:createAI.progress.error', 'An unexpected twist'),
     };

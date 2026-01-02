@@ -4,6 +4,13 @@
       "name": "Google Gemini",
       "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
       "models": {
+        "gemini-3-flash-preview": {
+          "name": "Gemini 3 Flash Preview",
+          "performance": "high",
+          "contextWindow": 1000000,
+          "maxOutput": 8192,
+          "description": "Pro-level intelligence at Flash speed and pricing. Most powerful agentic and coding model with native multimodal capabilities."
+        },
         "gemini-2.5-flash-lite": {
           "name": "Gemini 2.5 Flash-Lite",
           "performance": "fast",

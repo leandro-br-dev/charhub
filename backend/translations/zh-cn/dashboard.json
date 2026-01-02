@@ -27,7 +27,7 @@
     "newConversation": "新对话",
     "carousel": {
       "alt": "{{title}} 的轮播图",
-      "goToSlide": "前往幻灯片 {{slide}}",
+      "goToSlide": "前往第 {{slide}} 张幻灯片",
       "plus": "PLUS",
       "slides": {
         "welcome": {
@@ -37,8 +37,8 @@
           "action2": "浏览角色"
         },
         "stories": {
-          "title": "发现故事",
-          "description": "探索互动故事",
+          "title": "探索故事",
+          "description": "探索互动故事叙述",
           "action": "浏览故事"
         },
         "community": {
@@ -51,6 +51,9 @@
     "storyCard": {
       "alt": "{{title}} 的封面图片",
       "play": "开始"
+    },
+    "infiniteScroll": {
+      "endOfList": "所有角色均已加载"
     },
     "filters": {
       "title": "筛选",

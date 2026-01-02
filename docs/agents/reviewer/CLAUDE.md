@@ -307,9 +307,9 @@ gh pr checkout <PR-number>
 cd backend && npm install
 cd frontend && npm install
 
-# Start local environment (clean state for testing)
-# NOTE: -v flag is OK for local testing, but NEVER use in production!
-docker compose down -v  # Resets local test database
+# Start local environment (preserves test data)
+# NOTE: DO NOT use -v flag - it deletes test data needed for proper testing!
+docker compose down  # Stops containers but preserves database volumes
 docker compose up -d --build
 docker compose ps
 

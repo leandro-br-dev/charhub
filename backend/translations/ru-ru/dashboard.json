@@ -52,6 +52,9 @@
       "alt": "Обложка для {{title}}",
       "play": "Играть"
     },
+    "infiniteScroll": {
+      "endOfList": "Все персонажи загружены"
+    },
     "filters": {
       "title": "Фильтры",
       "gender": "Пол",

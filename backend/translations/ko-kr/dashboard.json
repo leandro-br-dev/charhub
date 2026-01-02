@@ -52,6 +52,9 @@
       "alt": "{{title}}의 표지 이미지",
       "play": "플레이"
     },
+    "infiniteScroll": {
+      "endOfList": "모든 캐릭터를 불러왔습니다"
+    },
     "filters": {
       "title": "필터",
       "gender": "성별",

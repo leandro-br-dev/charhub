@@ -12,11 +12,20 @@ import type {
   ComfyHistoryResponse,
   ImageGenerationResult,
   SDPrompt,
+  ReferenceImage,
+  PrepareReferencesResponse,
+  GenerateWithReferencesRequest,
+  GenerateWithReferencesResponse,
+  CleanupResponse,
 } from './types';
 import { ImageGenerationType } from './types';
 import avatarWorkflow from './workflows/avatar.workflow.json';
 import avatarWithIPAdapterWorkflow from './workflows/avatar-with-ipadapter.workflow.json';
 import stickerWorkflow from './workflows/sticker.workflow.json';
+import multiRefFaceWorkflow from './workflows/multi-ref-face.workflow.json';
+import multiRefFrontWorkflow from './workflows/multi-ref-front.workflow.json';
+import multiRefSideWorkflow from './workflows/multi-ref-side.workflow.json';
+import multiRefBackWorkflow from './workflows/multi-ref-back.workflow.json';
 
 interface ComfyUIConfig {
   baseUrl: string;
@@ -286,6 +295,158 @@ export class ComfyUIService {
       throw new Error(`Failed to upload image to ComfyUI: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
+
+  /**
+   * ============================================================================
+   * MIDDLEWARE v2.0 HIGH-LEVEL API METHODS
+   * ============================================================================
+   */
+
+  /**
+   * Prepare reference images - download to temp folder without executing workflow
+   * Calls POST /api/prepare
+   */
+  async prepareReferences(characterId: string, referenceImages: ReferenceImage[]): Promise<PrepareReferencesResponse> {
+    try {
+      logger.info({ characterId, imageCount: referenceImages.length }, 'Preparing reference images via middleware');
+
+      const response = await this.client.post<PrepareReferencesResponse>('/api/prepare', {
+        characterId,
+        referenceImages,
+      });
+
+      logger.info({ referencePath: response.data.referencePath, imageCount: response.data.imageCount }, 'Reference images prepared');
+      return response.data;
+    } catch (error) {
+      logger.error({ err: error, characterId }, 'Failed to prepare reference images');
+      throw new Error(`Failed to prepare reference images: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Generate image with reference images using middleware high-level API
+   * Downloads references, injects paths, and queues workflow
+   * Calls POST /api/generate
+   */
+  async generateWithReferences(
+    characterId: string,
+    workflow: ComfyWorkflow,
+    referenceImages: ReferenceImage[],
+    nodeOverrides?: Record<string, any>
+  ): Promise<GenerateWithReferencesResponse> {
+    try {
+      logger.info({ characterId, imageCount: referenceImages.length }, 'Generating with references via middleware');
+
+      const request: GenerateWithReferencesRequest = {
+        characterId,
+        workflow,
+        referenceImages,
+        nodeOverrides,
+      };
+
+      const response = await this.client.post<GenerateWithReferencesResponse>('/api/generate', request);
+
+      logger.info({ promptId: response.data.prompt_id, referencePath: response.data.referencePath }, 'Generation queued with references');
+      return response.data;
+    } catch (error) {
+      logger.error({ err: error, characterId }, 'Failed to generate with references');
+      throw new Error(`Failed to generate with references: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Cleanup temporary reference images for a character
+   * Calls POST /api/cleanup
+   */
+  async cleanupReferences(characterId: string): Promise<CleanupResponse> {
+    try {
+      logger.info({ characterId }, 'Cleaning up reference images via middleware');
+
+      const response = await this.client.post<CleanupResponse>('/api/cleanup', {
+        characterId,
+      });
+
+      logger.info({ characterId, message: response.data.message }, 'Reference images cleaned up');
+      return response.data;
+    } catch (error) {
+      // Non-critical - log warning but don't throw
+      logger.warn({ err: error, characterId }, 'Failed to cleanup reference images (non-critical)');
+      return {
+        success: false,
+        message: `Cleanup failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      };
+    }
+  }
+
+  /**
+   * Generate multi-stage character image (face, front, side, or back)
+   * Uses workflows with LoadImagesFromDir for multiple reference support
+   */
+  async generateMultiRef(
+    viewType: 'face' | 'front' | 'side' | 'back',
+    referencePath: string,
+    prompt: SDPrompt
+  ): Promise<ImageGenerationResult> {
+    logger.info({ viewType, referencePath }, 'Starting multi-reference generation');
+
+    // Select appropriate workflow
+    let workflowTemplate: ComfyWorkflow;
+    switch (viewType) {
+      case 'face':
+        workflowTemplate = JSON.parse(JSON.stringify(multiRefFaceWorkflow));
+        break;
+      case 'front':
+        workflowTemplate = JSON.parse(JSON.stringify(multiRefFrontWorkflow));
+        break;
+      case 'side':
+        workflowTemplate = JSON.parse(JSON.stringify(multiRefSideWorkflow));
+        break;
+      case 'back':
+        workflowTemplate = JSON.parse(JSON.stringify(multiRefBackWorkflow));
+        break;
+      default:
+        throw new Error(`Invalid viewType: ${viewType}`);
+    }
+
+    // Set random seed for KSampler
+    const seed = Math.floor(Date.now() * 1000) % (2 ** 32);
+    workflowTemplate['3'].inputs.seed = seed;
+
+    // Set FaceDetailer seed for body views
+    if (viewType !== 'face' && workflowTemplate['14']) {
+      workflowTemplate['14'].inputs.seed = seed;
+    }
+
+    // Set prompts
+    workflowTemplate['6'].inputs.text = prompt.positive;
+    workflowTemplate['7'].inputs.text = prompt.negative;
+
+    // Set LoRAs if provided
+    if (prompt.loras && prompt.loras.length > 0) {
+      const loraNode = workflowTemplate['11'];
+      prompt.loras.slice(0, 4).forEach((lora, index) => {
+        const loraNum = (index + 1).toString().padStart(2, '0');
+        loraNode.inputs[`lora_${loraNum}`] = lora.filepathRelative.replace(/\//g, '\\');
+        loraNode.inputs[`strength_${loraNum}`] = lora.strength;
+      });
+    }
+
+    // Replace @REFERENCE_PATH@ placeholder with actual path
+    // The LoadImagesFromDir node expects a Windows-style path
+    if (workflowTemplate['43']) {
+      workflowTemplate['43'].inputs.directory = referencePath;
+      logger.debug({ referencePath }, 'Set reference directory in workflow');
+    }
+
+    // Execute the workflow
+    return this.executeWorkflow(workflowTemplate);
+  }
+
+  /**
+   * ============================================================================
+   * END MIDDLEWARE v2.0 HIGH-LEVEL API METHODS
+   * ============================================================================
+   */
 
   /**
    * Health check - verify ComfyUI middleware is accessible

@@ -52,6 +52,9 @@
       "alt": "Titelbild für {{title}}",
       "play": "Spielen"
     },
+    "infiniteScroll": {
+      "endOfList": "Alle Charaktere wurden geladen"
+    },
     "filters": {
       "title": "Filter",
       "gender": "Geschlecht",

@@ -128,10 +128,10 @@ npm test -- --verbose
 
 **Why**: Tests in production-like environment, catches environment-specific issues.
 
-**Clean restart** (recommended for thorough testing):
+**Restart containers** (preserves database data):
 ```bash
-# Stop and remove volumes (resets database)
-docker compose down -v
+# Stop containers (WITHOUT deleting database volumes)
+docker compose down
 
 # Rebuild and start
 docker compose up -d --build
@@ -139,6 +139,14 @@ docker compose up -d --build
 # Wait for services to be ready (20-30 seconds)
 sleep 30
 ```
+
+**⚠️ CRITICAL: Database Data Preservation**
+
+- **ALWAYS use**: `docker compose down` (without `-v`) for restarts
+- **NEVER use**: `docker compose down -v` without explicit user authorization
+- **Why**: The `-v` flag deletes ALL database data, making testing difficult
+- **Features need data**: Many features (infinite scroll, filters, etc.) only work properly with sufficient test data
+- **Exception**: Only use `-v` if user explicitly requests database reset
 
 **Check status**:
 ```bash
@@ -416,8 +424,8 @@ npm run build
 
 **Solution**:
 ```bash
-# Stop everything
-docker compose down -v
+# Stop everything (preserves database data)
+docker compose down
 
 # Check for port conflicts
 lsof -i :3001  # Backend port
@@ -428,9 +436,11 @@ lsof -i :6379  # Redis port
 # Kill conflicting processes if found
 kill -9 <PID>
 
-# Clean restart
+# Clean restart (preserves database data)
 docker compose up -d --build
 ```
+
+**⚠️ Note**: If you suspect database corruption (rare), ask user for permission to reset: `docker compose down -v`
 
 ---
 
@@ -440,15 +450,17 @@ docker compose up -d --build
 
 **Causes**:
 - Database not indexed (check query performance)
-- Too much data in local database (reset with `docker compose down -v`)
 - Resource-intensive background jobs
 - Large file uploads
+- Inefficient queries
 
 **Solution**:
 1. Profile slow queries (check backend logs)
 2. Add database indexes if needed
 3. Optimize expensive operations
 4. Consider pagination for large datasets
+
+**⚠️ Note**: DO NOT reset database to "fix" performance. Keep test data for realistic testing.
 
 ---
 

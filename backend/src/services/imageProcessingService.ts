@@ -53,6 +53,14 @@ export const IMAGE_PROCESSING_DEFAULTS = {
     quality: 70,
     format: 'webp' as const,
   },
+  // Reference images for multi-stage character generation
+  // Stored at higher quality for consistency in character generation
+  REFERENCE: {
+    maxWidth: 768,
+    maxHeight: 1152,  // Accommodates both square (768x768) and portrait (768x1152)
+    quality: 85,
+    format: 'webp' as const,
+  },
 };
 
 /**

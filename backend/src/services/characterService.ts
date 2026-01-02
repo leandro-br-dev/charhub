@@ -11,6 +11,78 @@ import { translationService } from './translation/translationService';
  * Based on old project with improvements for the new architecture.
  */
 
+/**
+ * Validates and normalizes gender string to CharacterGender enum
+ * - Converts to uppercase
+ * - Validates against enum values
+ * - Falls back to UNKNOWN if invalid
+ */
+function validateGender(gender: string | null | undefined): CharacterGender | null {
+  if (!gender) return null;
+
+  // Convert to uppercase and trim
+  const normalized = gender.toUpperCase().trim();
+
+  // Check if it's a valid CharacterGender enum value
+  const validValues = Object.values(CharacterGender);
+  if (validValues.includes(normalized as CharacterGender)) {
+    return normalized as CharacterGender;
+  }
+
+  // Invalid value - log warning and return UNKNOWN as fallback
+  logger.warn(`Invalid gender value: "${gender}", defaulting to UNKNOWN`);
+  return 'UNKNOWN';
+}
+
+/**
+ * Finds species ID by name (case-insensitive search)
+ * - Searches by name or description
+ * - Returns null if not found
+ */
+async function findSpeciesIdByName(speciesName: string | null | undefined): Promise<string | null> {
+  if (!speciesName || speciesName.trim() === '') return null;
+
+  try {
+    // Search for species by name (case-insensitive) or description
+    const species = await prisma.species.findFirst({
+      where: {
+        OR: [
+          { name: { equals: speciesName, mode: 'insensitive' } },
+          { description: { contains: speciesName, mode: 'insensitive' } },
+        ],
+      },
+      select: { id: true },
+    });
+
+    if (species) {
+      return species.id;
+    }
+
+    // Species not found - log info and return null
+    logger.info(`Species not found for name "${speciesName}", will be stored as null`);
+    return null;
+  } catch (error) {
+    logger.error({ error, speciesName }, 'Error searching for species');
+    return null;
+  }
+}
+
+/**
+ * Map gender string from frontend (e.g., "Male") to Prisma enum (e.g., "MALE")
+ * Used in search/filter operations
+ */
+function mapGenderToEnum(gender: string): CharacterGender | null {
+  const genderMap: Record<string, CharacterGender | null> = {
+    'Male': 'MALE',
+    'Female': 'FEMALE',
+    'NonBinary': 'NON_BINARY',
+    'Other': 'OTHER',
+    'Unknown': null,
+    'unknown': null,
+  };
+  return genderMap[gender] ?? (gender as CharacterGender);
+}
+
 // Type definitions
 export interface CharacterWithRelations {
   id: string;
@@ -145,14 +217,18 @@ export async function createCharacter(data: CreateCharacterInput) {
   try {
     const { attireIds, tagIds, contentTags, species, gender, ...characterData } = data;
 
+    // Validate gender and find species ID (async operation)
+    const validatedGender = validateGender(gender);
+    const speciesId = await findSpeciesIdByName(species);
+
     // Create character with relations
     const character = await prisma.character.create({
       data: {
         ...characterData,
-        // Convert gender to CharacterGender enum
-        gender: gender as any,
-        // Convert species to speciesId
-        ...(species ? { speciesId: species } : {}),
+        // Use validated gender enum value
+        gender: validatedGender,
+        // Use species ID from lookup (null if not found)
+        ...(speciesId ? { speciesId } : {}),
         contentTags: contentTags || [],
         // Connect attires if provided
         ...(attireIds && attireIds.length > 0
@@ -260,21 +336,21 @@ export async function getCharactersByUserId(
     // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
       const genderArray = Array.isArray(gender) ? gender : [gender];
-      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
       if (genderValues.length === 1) {
-        where.gender = genderValues[0] as any;
+        where.gender = genderValues[0];
       } else if (genderValues.length > 1) {
-        const hasNull = genderArray.includes('unknown');
-        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
         if (hasNull && nonNullValues.length > 0) {
           where.OR = [
             { gender: null },
-            { gender: { in: nonNullValues as any } }
+            { gender: { in: nonNullValues } }
           ];
         } else if (hasNull) {
-          where.gender = null as any;
+          where.gender = null;
         } else {
-          where.gender = { in: nonNullValues as any };
+          where.gender = { in: nonNullValues };
         }
       }
     }
@@ -391,21 +467,21 @@ export async function getPublicCharacters(options?: {
     // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
       const genderArray = Array.isArray(gender) ? gender : [gender];
-      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
       if (genderValues.length === 1) {
-        where.gender = genderValues[0] as any;
+        where.gender = genderValues[0];
       } else if (genderValues.length > 1) {
-        const hasNull = genderArray.includes('unknown');
-        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
         if (hasNull && nonNullValues.length > 0) {
           const existingOR = where.OR;
           where.OR = [
             ...(existingOR ? [typeof existingOR === 'boolean' ? {} : existingOR] as any : []),
             { gender: null },
-            { gender: { in: nonNullValues as any } }
+            { gender: { in: nonNullValues } }
           ];
         } else if (hasNull) {
-          where.gender = null as any;
+          where.gender = null;
         } else {
           where.gender = { in: nonNullValues as any };
         }
@@ -547,24 +623,24 @@ export async function getPublicAndOwnCharacters(userId: string, options?: {
     // Add gender filter (support multiple values)
     if (gender && gender !== 'all') {
       const genderArray = Array.isArray(gender) ? gender : [gender];
-      const genderValues = genderArray.map(g => g === 'unknown' ? null : g).filter(v => v !== undefined);
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
       if (genderValues.length === 1) {
-        where.gender = genderValues[0] as any;
+        where.gender = genderValues[0];
       } else if (genderValues.length > 1) {
-        const hasNull = genderArray.includes('unknown');
-        const nonNullValues = genderValues.filter(v => v !== null) as string[];
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
         if (hasNull && nonNullValues.length > 0) {
           where.AND = [
             ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
             { OR: [
-              { gender: null as any },
-              { gender: { in: nonNullValues as any } }
+              { gender: null },
+              { gender: { in: nonNullValues } }
             ]}
           ];
         } else if (hasNull) {
-          where.gender = null as any;
+          where.gender = null;
         } else {
-          where.gender = { in: nonNullValues as any };
+          where.gender = { in: nonNullValues };
         }
       }
     }
@@ -671,14 +747,16 @@ export async function updateCharacter(
     // Increment contentVersion if translatable content changed
     const finalUpdateData: any = { ...updateData };
 
-    // Convert gender to CharacterGender enum
+    // Validate gender enum value
     if (gender !== undefined) {
-      finalUpdateData.gender = gender as any;
+      finalUpdateData.gender = validateGender(gender);
     }
 
-    // Convert species to speciesId
+    // Find species ID by name (async operation)
+    let speciesId: string | null | undefined = undefined;
     if (species !== undefined) {
-      finalUpdateData.speciesId = species;
+      speciesId = await findSpeciesIdByName(species);
+      finalUpdateData.speciesId = speciesId;
     }
 
     if (hasTranslatableChanges) {

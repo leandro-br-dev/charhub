@@ -33,23 +33,32 @@ cd ..
 
 ---
 
-## Step 2: Clean Environment Setup
+## Step 2: Environment Setup
 
-**Stop and remove all containers:**
+**Stop and restart containers (preserves test data by default):**
 
 ```bash
-# Stop all containers and remove volumes
-docker compose down -v
+# Stop all containers (preserves database volumes)
+docker compose down
 
 # Remove dangling images (optional, saves disk space)
 docker image prune -f
 
-# Start fresh
+# Start containers
 docker compose up -d --build
 
 # Wait for containers to be healthy
 sleep 30
 ```
+
+**⚠️ Database Data Preservation:**
+
+- **Default**: Use `docker compose down` (preserves data) for most tests
+- **Reset only if needed**: Use `docker compose down -v` only when:
+  - Testing migration from scratch
+  - User explicitly requests database reset
+  - Testing features that REQUIRE empty database
+- **Why preserve data**: Many features (infinite scroll, filters, search) need test data to work properly
 
 **Checklist:**
 - [ ] All containers started successfully
