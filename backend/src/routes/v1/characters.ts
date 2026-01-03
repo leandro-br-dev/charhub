@@ -1,4 +1,3 @@
-console.log("[DEBUG] characters.ts loaded");
 import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import { randomUUID } from 'node:crypto';
