@@ -43,7 +43,7 @@ export default function CharacterHubPage(): JSX.Element {
   }, []);
 
   const filters = useMemo(() => {
-    const params: { search?: string; ageRatings?: AgeRating[]; public?: string } = {};
+    const params: { search?: string; ageRatings?: AgeRating[]; public?: boolean } = {};
     if (search.trim()) {
       params.search = search.trim();
     }
@@ -51,7 +51,7 @@ export default function CharacterHubPage(): JSX.Element {
       params.ageRatings = ageRatings as any;
     }
     if (viewMode === 'private') {
-      params.public = 'false'; // Request only user's own characters
+      params.public = false; // Request only user's own characters
     }
     // When viewMode is 'public', don't set any filter - backend will return public + own
     return params;

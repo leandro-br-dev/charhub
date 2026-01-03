@@ -6,6 +6,7 @@ import { CachedImage } from '../../../../components/ui/CachedImage';
 import { useContentFilter } from '../../../../contexts/ContentFilterContext';
 import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
 import { Tag as UITag } from '../../../../components/ui/Tag';
+import { AgeRatingBadge } from '../../../../components/ui/AgeRatingBadge';
 
 export interface CharacterCardProps {
   character: CharacterSummary | Character;
@@ -50,19 +51,6 @@ export function CharacterCard({
 
   const shouldBlur = shouldBlurContent(character.ageRating, character.contentTags) || blurSensitive || blurNsfw;
   const shouldHide = shouldHideContent(character.ageRating, character.contentTags);
-
-  const overlayAgeLabel = useMemo(() => {
-    return character?.ageRating ? t(`ageRatings.${character.ageRating}`, { ns: 'characters' }) : '';
-  }, [character?.ageRating, t]);
-
-  const getAgeRatingClass = (ageRating: string | undefined): string => {
-    if (!ageRating) return 'bg-success';
-    const ratingMap: Record<string, string> = {
-      SIXTEEN: 'bg-accent',
-      EIGHTEEN: 'bg-black',
-    };
-    return ratingMap[ageRating] || 'bg-success';
-  };
 
   const rowTags = useMemo(() => {
     const result: Array<{ label: string; tone: 'default' | 'secondary'; key: string }> = [];
@@ -171,15 +159,11 @@ export function CharacterCard({
             <span className="material-symbols-outlined text-6xl">person</span>
           </div>
         )}
-        {overlayAgeLabel ? (
-          <div
-            className={`absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white shadow ${getAgeRatingClass(
-              character.ageRating,
-            )}`}
-          >
-            {overlayAgeLabel}
-          </div>
-        ) : null}
+        <AgeRatingBadge
+          ageRating={character.ageRating}
+          variant="overlay"
+          size="sm"
+        />
         {isCreatingChat && (
           <div className="absolute inset-0 rounded-t-lg bg-black/70 backdrop-blur-sm">
             <div className="flex h-full items-center justify-center">

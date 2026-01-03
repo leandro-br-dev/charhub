@@ -176,6 +176,7 @@ export interface CharacterListParams {
   sortBy?: 'createdAt' | 'updatedAt' | 'name';
   limit?: number;
   page?: number;
+  public?: boolean; // When false, returns only user's own characters
 }
 
 export interface CharacterListResponse {

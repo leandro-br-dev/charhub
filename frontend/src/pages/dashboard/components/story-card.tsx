@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../../components/ui';
 import { CachedImage } from '../../../components/ui/CachedImage';
+import { AgeRatingBadge } from '../../../components/ui/AgeRatingBadge';
 import type { Story } from '../../../types/story';
 import { useContentFilter } from '../../../contexts/ContentFilterContext';
 
@@ -58,10 +59,14 @@ export function StoryCard({ story, onPlay, blurNsfw = false }: StoryCardProps) {
         </div>
 
         {/* Age rating badge */}
-        {story.ageRating && story.ageRating !== 'L' && (
-          <span className="absolute bottom-2 left-2 px-2 py-1 text-xs font-semibold bg-black/70 text-white rounded">
-            {story.ageRating}
-          </span>
+        {story.ageRating && (
+          <div className="absolute bottom-2 left-2 z-10">
+            <AgeRatingBadge
+              ageRating={story.ageRating}
+              variant="inline"
+              size="sm"
+            />
+          </div>
         )}
       </div>
 
