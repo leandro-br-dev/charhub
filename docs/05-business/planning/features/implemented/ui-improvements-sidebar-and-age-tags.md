@@ -1,9 +1,9 @@
 # UI Improvements: Sidebar Characters Filter & Age Rating Component - Feature Specification
 
-**Status**: 🏗️ Active (Ready for Implementation)
+**Status**: ✅ Implemented
 **Version**: 1.0.0
 **Date Created**: 2025-12-28
-**Last Updated**: 2025-12-28
+**Last Updated**: 2026-01-03
 **Priority**: Medium
 **Assigned To**: Agent Coder
 **GitHub Issue**: TBD
@@ -660,3 +660,44 @@ npm run dev
 **End of Specification**
 
 🎨 Ready for implementation - Focus on consistency and UX polish!
+
+---
+
+## Status Update
+
+**Status**: ✅ Implemented
+**PR Created**: 2026-01-03
+**Branch**: feature/ui-improvements-sidebar-age-tags
+**Agent**: Coder
+
+### Implementation Summary
+
+**Part 1: Sidebar Characters Filter Fix**
+- [x] Sidebar now shows only user's own characters + favorites
+- [x] Favorites appear first, then own characters
+- [x] Avatar extraction from images array for favorites
+- [x] i18n support for "My character" label
+- [x] Deduplication logic (no duplicates when character is both own and favorite)
+- [x] Limited to 15 characters total
+
+**Part 2: Age Rating Badge Component Unification**
+- [x] Created `components/ui/AgeRatingBadge.tsx` component
+- [x] Props: `ageRating`, `variant` (overlay/inline), `size` (sm/md/lg)
+- [x] Consistent color scheme (green for L-14+, orange for 16+, black for 18+)
+- [x] ARIA labels for accessibility
+- [x] Replaced in:
+  - CharacterCard.tsx
+  - Character detail page ([characterId]/index.tsx)
+  - Story detail page ([storyId]/index.tsx) - 2 locations
+  - StoryCard.tsx
+  - Dashboard story card (story-card.tsx)
+
+**Testing Completed:**
+- [x] TypeScript compilation (frontend)
+- [x] Frontend build successful
+- [x] Docker containers verified healthy
+- [x] Manual testing completed
+
+**PR**: https://github.com/leandro-br-dev/charhub/pull/90
+
+**Ready for Agent Reviewer** ✅
