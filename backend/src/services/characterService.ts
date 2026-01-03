@@ -2,7 +2,14 @@ import { Prisma, AgeRating, ContentTag, Visibility, CharacterGender } from '../g
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import type { CreateCharacterInput, UpdateCharacterInput } from '../validators';
+import type { UserRole } from '../types';
 import { translationService } from './translation/translationService';
+
+/**
+ * CharHub Official user ID (UUID constant)
+ * Characters owned by this user can only be edited by ADMINs
+ */
+export const CHARHUB_OFFICIAL_ID = '00000000-0000-0000-0000-000000000001';
 
 /**
  * Character Service
@@ -849,6 +856,29 @@ export async function isCharacterOwner(
     logger.error({ error, characterId, userId }, 'Error checking ownership');
     return false;
   }
+}
+
+/**
+ * Check if user can edit a character
+ * - User is owner, OR
+ * - User is ADMIN and character belongs to CharHub Official
+ */
+export function canEditCharacter(
+  userId: string,
+  userRole: UserRole | undefined,
+  characterUserId: string
+): boolean {
+  // User is owner
+  if (userId === characterUserId) {
+    return true;
+  }
+
+  // User is ADMIN and character is official
+  if (userRole === 'ADMIN' && characterUserId === CHARHUB_OFFICIAL_ID) {
+    return true;
+  }
+
+  return false;
 }
 
 /**
