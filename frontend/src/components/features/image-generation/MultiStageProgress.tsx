@@ -37,7 +37,7 @@ export function MultiStageProgress({
   const [hasEnoughCredits, setHasEnoughCredits] = useState(false);
 
   const [stages, setStages] = useState<Stage[]>([
-    { id: 1, name: t('characters:imageGeneration.multiStage.stages.avatar'), status: 'pending', viewType: 'face' },
+    { id: 1, name: t('characters:imageGeneration.multiStage.stages.face'), status: 'pending', viewType: 'face' },
     { id: 2, name: t('characters:imageGeneration.multiStage.stages.front'), status: 'pending', viewType: 'front' },
     { id: 3, name: t('characters:imageGeneration.multiStage.stages.side'), status: 'pending', viewType: 'side' },
     { id: 4, name: t('characters:imageGeneration.multiStage.stages.back'), status: 'pending', viewType: 'back' },
@@ -151,6 +151,30 @@ export function MultiStageProgress({
             }
             return stage;
           }));
+
+          // Fetch current images to show completed ones during generation
+          try {
+            const imagesResponse = await api.get<{ AVATAR?: any[]; REFERENCE?: any[] }>(
+              `/api/v1/characters/${characterId}/images`
+            );
+            const referenceImages = imagesResponse.data.REFERENCE || [];
+
+            // Update stages with actual image URLs
+            setStages(prev => prev.map(stage => {
+              const matchingImage = referenceImages.find((img: any) => img.content === stage.viewType);
+              if (matchingImage && stage.status !== 'completed') {
+                return {
+                  ...stage,
+                  status: stage.status === 'in_progress' ? 'in_progress' : 'completed',
+                  imageUrl: matchingImage.url,
+                };
+              }
+              return stage;
+            }));
+          } catch (err) {
+            // Silently fail - image fetch is not critical
+            console.error('Failed to fetch images during polling:', err);
+          }
         }
       } catch (err: any) {
         clearInterval(interval);

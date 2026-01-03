@@ -544,9 +544,9 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
       success: true,
       jobId: job.id,
       message: 'Multi-stage dataset generation started',
-      estimatedTime: '8-12 minutes', // ~30 seconds per stage * 4 stages
+      estimatedTime: '3-4 minutes', // ~45 seconds per stage * 4 stages
       pollUrl: `/api/v1/image-generation/status/${job.id}`,
-      stages: ['Avatar (face)', 'Front (body)', 'Side (body)', 'Back (body)'],
+      stages: ['Face (portrait)', 'Front (body)', 'Side (body)', 'Back (body)'],
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to queue multi-stage dataset generation');

@@ -188,10 +188,10 @@ function ImageSection({
   // Reference images mode
   if (referenceImages) {
     const views: Array<{
-      content: 'avatar' | 'front' | 'side' | 'back';
+      content: 'face' | 'front' | 'side' | 'back';
       labelKey: string;
     }> = [
-      { content: 'avatar', labelKey: t('characters:imageGeneration.multiStage.stages.avatar', 'Avatar (Face)') },
+      { content: 'face', labelKey: t('characters:imageGeneration.multiStage.stages.face', 'Face (Portrait)') },
       { content: 'front', labelKey: t('characters:imageGeneration.multiStage.stages.front', 'Front Body') },
       { content: 'side', labelKey: t('characters:imageGeneration.multiStage.stages.side', 'Side Body') },
       { content: 'back', labelKey: t('characters:imageGeneration.multiStage.stages.back', 'Back Body') },

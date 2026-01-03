@@ -13,7 +13,7 @@
  * 9. SAMPLEs can be discarded after reference pack is complete
  *
  * All REFERENCE images use the same ImageType.REFERENCE with `content` field
- * describing the view: "avatar", "front", "side", "back"
+ * describing the view: "face", "front", "side", "back"
  */
 
 import { comfyuiService } from '../comfyui/comfyuiService';
@@ -50,7 +50,7 @@ export interface MultiStageGenerationOptions {
 }
 
 export interface ReferenceView {
-  content: 'avatar' | 'front' | 'side' | 'back';
+  content: 'face' | 'front' | 'side' | 'back';
   width: number;
   height: number;
   promptPrefix: string;
@@ -59,7 +59,7 @@ export interface ReferenceView {
 
 const REFERENCE_VIEWS: ReferenceView[] = [
   {
-    content: 'avatar',
+    content: 'face',
     width: 768,
     height: 768,
     promptPrefix: 'portrait, headshot, face focus, detailed facial features,',
@@ -122,7 +122,7 @@ export class MultiStageCharacterGenerator {
       }
 
       // Step 1: Prepare temp folder with AVATAR + USER SAMPLES
-      onProgress?.(1, 4, 'Preparing reference folder...');
+      onProgress?.(0, 4, 'Preparing reference folder...');
 
       const referenceImages: ReferenceImage[] = [
         { type: 'AVATAR', url: existingAvatar.url },
@@ -137,7 +137,7 @@ export class MultiStageCharacterGenerator {
         const view = REFERENCE_VIEWS[i];
         const stageNumber = i + 1;
 
-        onProgress?.(stageNumber + 1, 4, `Generating reference ${view.content}...`);
+        onProgress?.(stageNumber, 4, `Generating reference ${view.content}...`);
 
         logger.info({ stage: stageNumber, view: view.content }, `Starting reference generation`);
 
@@ -180,7 +180,7 @@ export class MultiStageCharacterGenerator {
         // Upload this new reference to ComfyUI temp folder for next stages
         await this.addImageToTempFolder(prepareResponse.referencePath, result.imageBytes, `${view.content}.webp`);
 
-        onProgress?.(stageNumber + 1, 4, `Completed reference ${view.content}`);
+        onProgress?.(stageNumber, 4, `Completed reference ${view.content}`);
       }
 
       // Cleanup ComfyUI temp folder
@@ -216,7 +216,7 @@ export class MultiStageCharacterGenerator {
 
     // Select workflow based on view type
     let workflowTemplate: any;
-    if (view.content === 'avatar') {
+    if (view.content === 'face') {
       workflowTemplate = JSON.parse(JSON.stringify(multiRefFaceWorkflow));
     } else {
       // front, side, back all use FaceDetailer workflow
@@ -226,7 +226,7 @@ export class MultiStageCharacterGenerator {
     // Set random seed
     const seed = Math.floor(Date.now() * 1000) % (2 ** 32);
     if (workflowTemplate['3']) workflowTemplate['3'].inputs.seed = seed;
-    if (view.content !== 'avatar' && workflowTemplate['14']) {
+    if (view.content !== 'face' && workflowTemplate['14']) {
       workflowTemplate['14'].inputs.seed = seed;
     }
 
