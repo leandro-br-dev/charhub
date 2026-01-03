@@ -137,6 +137,29 @@ export class MultiStageCharacterGenerator {
         const view = REFERENCE_VIEWS[i];
         const stageNumber = i + 1;
 
+        // For stages after the first, re-prepare with the newly generated image
+        if (i > 0) {
+          onProgress?.(stageNumber, 4, `Adding previous reference to folder...`);
+
+          // Fetch the previously generated reference from R2
+          const previousView = REFERENCE_VIEWS[i - 1];
+          const previousImage = await prisma.characterImage.findFirst({
+            where: {
+              characterId,
+              type: ImageType.REFERENCE,
+              content: previousView.content,
+            },
+            orderBy: { createdAt: 'desc' },
+          });
+
+          if (previousImage) {
+            // Re-prepare references with the new image included
+            referenceImages.push({ type: 'REFERENCE', url: previousImage.url });
+            await comfyuiService.prepareReferences(characterId, referenceImages);
+            logger.info({ stage: stageNumber, previousView: previousView.content }, `Re-prepared references with ${previousView.content}`);
+          }
+        }
+
         onProgress?.(stageNumber, 4, `Generating reference ${view.content}...`);
 
         logger.info({ stage: stageNumber, view: view.content }, `Starting reference generation`);
@@ -176,9 +199,6 @@ export class MultiStageCharacterGenerator {
         });
 
         logger.info({ stage: stageNumber, view: view.content, imageUrl: publicUrl }, `Reference generation completed`);
-
-        // Upload this new reference to ComfyUI temp folder for next stages
-        await this.addImageToTempFolder(prepareResponse.referencePath, result.imageBytes, `${view.content}.webp`);
 
         onProgress?.(stageNumber, 4, `Completed reference ${view.content}`);
       }
@@ -252,18 +272,6 @@ export class MultiStageCharacterGenerator {
 
     // Execute workflow
     return comfyuiService.executeWorkflow(workflowTemplate);
-  }
-
-  /**
-   * Upload image to ComfyUI temp folder for next stage
-   * This uses the middleware API to add images to the reference folder
-   */
-  private async addImageToTempFolder(_referencePath: string, _imageBytes: Buffer, filename: string): Promise<void> {
-    // The middleware doesn't have a direct "add image" API
-    // Instead, we can use the prepare API again with the new image included
-    // Or we can skip this since the next stage will use all images from R2
-    // For simplicity, we'll skip this step and rely on R2
-    logger.debug({ filename }, 'Skipping temp folder upload - R2 will be used for next stage');
   }
 }
 

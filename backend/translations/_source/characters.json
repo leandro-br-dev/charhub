@@ -350,7 +350,7 @@
         "ready": "Ready to generate",
         "waiting": "Waiting...",
         "failed": "Failed",
-        "estimatedTime": "Estimated time: 8-12 minutes",
+        "estimatedTime": "Estimated time: 3-4 minutes",
         "generating": "Generating dataset...",
         "errors": {
           "startFailed": "Failed to start generation",

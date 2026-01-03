@@ -159,18 +159,23 @@ export function MultiStageProgress({
             );
             const referenceImages = imagesResponse.data.REFERENCE || [];
 
+            console.log('[MultiStageProgress] Polling - reference images found:', referenceImages.length, referenceImages.map((img: any) => ({ content: img.content, url: img.url })));
+
             // Update stages with actual image URLs
-            setStages(prev => prev.map(stage => {
-              const matchingImage = referenceImages.find((img: any) => img.content === stage.viewType);
-              if (matchingImage && stage.status !== 'completed') {
-                return {
-                  ...stage,
-                  status: stage.status === 'in_progress' ? 'in_progress' : 'completed',
-                  imageUrl: matchingImage.url,
-                };
-              }
-              return stage;
-            }));
+            setStages(prev => {
+              const updated = prev.map(stage => {
+                const matchingImage = referenceImages.find((img: any) => img.content === stage.viewType);
+                if (matchingImage && !stage.imageUrl) {
+                  console.log('[MultiStageProgress] Updating stage:', stage.viewType, 'with image:', matchingImage.url);
+                  return {
+                    ...stage,
+                    imageUrl: matchingImage.url,
+                  };
+                }
+                return stage;
+              });
+              return updated;
+            });
           } catch (err) {
             // Silently fail - image fetch is not critical
             console.error('Failed to fetch images during polling:', err);
