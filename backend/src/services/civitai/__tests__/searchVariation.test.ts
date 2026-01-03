@@ -127,13 +127,9 @@ describe('SearchVariation', () => {
     });
 
     it('should return varied configs for same tag', () => {
-      const results = [
-        getSearchParamsWithTag('elf'),
-        getSearchParamsWithTag('elf'),
-        getSearchParamsWithTag('elf'),
-        getSearchParamsWithTag('elf'),
-        getSearchParamsWithTag('elf'),
-      ];
+      const results = Array.from({ length: 20 }, () =>
+        getSearchParamsWithTag('elf')
+      );
 
       const sorts = new Set(results.map(r => r.sort));
       const periods = new Set(results.map(r => r.period));
