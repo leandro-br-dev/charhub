@@ -25,6 +25,10 @@ export const characterService = {
     if (params && Object.prototype.hasOwnProperty.call(params, 'visibility')) {
       query.visibility = params.visibility;
     }
+    // Convert public boolean to string for backend
+    if (params && Object.prototype.hasOwnProperty.call(params, 'public')) {
+      query.public = params.public ? 'true' : 'false';
+    }
 
     const response = await api.get<{ success: boolean; data: Character[]; total: number; hasMore: boolean }>(BASE_PATH, { params: query });
 

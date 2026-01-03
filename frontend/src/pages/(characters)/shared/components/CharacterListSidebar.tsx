@@ -4,6 +4,7 @@ import { CachedImage } from '../../../../components/ui/CachedImage';
 import { characterService } from '../../../../services/characterService';
 import type { CharacterSummary } from '../../../../types/characters';
 import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
+import { useAuth } from '../../../../hooks/useAuth';
 
 type CharacterListSidebarProps = {
   onLinkClick?: () => void;
@@ -11,32 +12,64 @@ type CharacterListSidebarProps = {
 
 interface CharacterWithFavorite extends CharacterSummary {
   isFavorite: boolean;
+  isOwn: boolean;
 }
 
 export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps) {
   const [characters, setCharacters] = useState<CharacterWithFavorite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchCharacters = async () => {
+      // Only load if user is authenticated
+      if (!user) {
+        setCharacters([]);
+        setIsLoading(false);
+        return;
+      }
+
       try {
         setIsLoading(true);
-        const [favoriteResponse, allResponse] = await Promise.all([
-          characterService.getFavorites(100), 
-          characterService.list({ limit: 10 }),
+
+        // Fetch user's own characters and favorites in parallel
+        const [ownResponse, favoriteResponse] = await Promise.all([
+          characterService.list({ public: false, limit: 10, sortBy: 'updatedAt' }),
+          characterService.getFavorites(15),
         ]);
+
         const favoriteIds = new Set(favoriteResponse.map(c => c.id));
-        const combined = allResponse.items.map(char => ({
-          ...char,
-          isFavorite: favoriteIds.has(char.id),
-        }));
-        combined.sort((a, b) => {
-          if (a.isFavorite && !b.isFavorite) return -1;
-          if (!a.isFavorite && b.isFavorite) return 1;
-          return 0;
-        });
-        setCharacters(combined);
+
+        // Combine and mark ownership/favorite status
+        const combined: CharacterWithFavorite[] = [];
+
+        // Add own characters first
+        for (const char of ownResponse.items) {
+          combined.push({
+            ...char,
+            isOwn: true,
+            isFavorite: favoriteIds.has(char.id),
+          });
+          // Remove from favorites set to avoid duplicates
+          favoriteIds.delete(char.id);
+        }
+
+        // Add remaining favorite characters (not owned by user)
+        for (const char of favoriteResponse) {
+          if (favoriteIds.has(char.id)) {
+            combined.push({
+              ...char,
+              isOwn: false,
+              isFavorite: true,
+            });
+          }
+        }
+
+        // Limit to 15 total
+        const limited = combined.slice(0, 15);
+
+        setCharacters(limited);
       } catch (err) {
         setError('Failed to load characters.');
         console.error(err);
@@ -45,7 +78,7 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
       }
     };
     fetchCharacters();
-  }, []);
+  }, [user]);
 
   if (isLoading) {
     return <div className="p-4 text-sm text-muted">Loading characters...</div>;
@@ -76,7 +109,14 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
                   ) : (
                     <img src="/logo.png" alt={fullName} className="h-8 w-8 rounded-full object-cover" />
                   )}
-                  <span className="text-sm font-medium text-content flex-grow">{fullName}</span>
+                  <div className="flex flex-col flex-grow min-w-0">
+                    <span className="text-sm font-medium text-content truncate">{fullName}</span>
+                    <div className="flex items-center gap-1">
+                      {character.isOwn && (
+                        <span className="text-xs text-muted">My character</span>
+                      )}
+                    </div>
+                  </div>
                   {character.isFavorite && (
                     <FavoriteButton
                       characterId={character.id}
