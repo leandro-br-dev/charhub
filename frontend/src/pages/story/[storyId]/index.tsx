@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../hooks/useAuth';
 import { Button, Avatar } from '../../../components/ui';
 import { Tag as UITag } from '../../../components/ui/Tag';
+import { AgeRatingBadge } from '../../../components/ui/AgeRatingBadge';
 import { CachedImage } from '../../../components/ui/CachedImage';
 import { FavoriteButton } from '../../../components/ui/FavoriteButton';
 import { storyService } from '../../../services/storyService';
@@ -262,13 +263,10 @@ export function StoryDetailPage() {
 
                 {/* Age rating badge - top left */}
                 <div className="absolute left-4 top-4 z-10">
-                  <UITag
-                    label={formatAgeRating(story.ageRating)}
-                    icon={<span className="material-symbols-outlined text-sm">verified</span>}
-                    tone="success"
-                    selected
-                    disabled
-                    className="h-8"
+                  <AgeRatingBadge
+                    ageRating={story.ageRating}
+                    variant="inline"
+                    size="md"
                   />
                 </div>
 
@@ -331,13 +329,10 @@ export function StoryDetailPage() {
               {/* Tags */}
               <div className="mb-6 flex flex-wrap gap-2">
                 {/* Age rating badge */}
-                <UITag
-                  label={formatAgeRating(story.ageRating)}
-                  icon={<span className="material-symbols-outlined text-sm">verified</span>}
-                  tone="success"
-                  selected
-                  disabled
-                  className="h-8"
+                <AgeRatingBadge
+                  ageRating={story.ageRating}
+                  variant="inline"
+                  size="md"
                 />
 
                 {/* Content tags */}
