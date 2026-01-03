@@ -5,7 +5,7 @@
     "tabs": {
       "discover": "Descobrir",
       "chat": "Conversar",
-      "story": "Histórias"
+      "story": "História"
     },
     "sections": {
       "popularCharacters": "Personagens Populares",
@@ -25,6 +25,20 @@
     "plusRequired": "Requer Plano Plus",
     "recentConversations": "Conversas Recentes",
     "newConversation": "Nova Conversa",
+    "noConversations": "Nenhuma conversa ainda. Comece a conversar agora!",
+    "startChat": "Iniciar Nova Conversa",
+    "endOfList": {
+      "characters": {
+        "message": "Você viu todos os personagens!",
+        "cta": "Crie seu próprio personagem",
+        "description": "Dê vida à sua imaginação e crie personagens de IA únicos"
+      },
+      "stories": {
+        "message": "Você viu todas as histórias!",
+        "cta": "Crie sua própria história",
+        "description": "Comece a criar histórias interativas com personagens de IA"
+      }
+    },
     "carousel": {
       "alt": "Imagem do carrossel para {{title}}",
       "goToSlide": "Ir para o slide {{slide}}",
@@ -32,19 +46,25 @@
       "slides": {
         "welcome": {
           "title": "Bem-vindo ao CharHub",
-          "description": "Crie e converse com personagens de IA",
-          "action1": "Criar Personagem",
-          "action2": "Explorar Personagens"
+          "description": "Crie personagens únicos e dê vida às suas histórias",
+          "action1": "Criar",
+          "action1Full": "Criar Personagem",
+          "action2": "Explorar",
+          "action2Full": "Explorar Personagens"
         },
         "stories": {
-          "title": "Descobrir Histórias",
-          "description": "Explore a narrativa interativa",
-          "action": "Explorar Histórias"
+          "title": "Descubra Histórias",
+          "description": "Experimente aventuras interativas imersivas",
+          "action": "Explorar",
+          "actionFull": "Explorar Histórias",
+          "create": "Criar",
+          "createFull": "Criar História"
         },
-        "community": {
-          "title": "Junte-se à Comunidade",
-          "description": "Conecte-se com outros criadores",
-          "action": "Explorar Comunidade"
+        "pricing": {
+          "title": "Desbloqueie o Premium",
+          "description": "Criações ilimitadas, recursos exclusivos e muito mais",
+          "action": "Ver Planos",
+          "actionFull": "Ver Planos"
         }
       }
     },
@@ -53,7 +73,7 @@
       "play": "Jogar"
     },
     "infiniteScroll": {
-      "endOfList": "Todos os personagens foram carregados."
+      "endOfList": "Todos os personagens foram carregados"
     },
     "filters": {
       "title": "Filtros",
@@ -65,7 +85,7 @@
       "genders": {
         "male": "Masculino",
         "female": "Feminino",
-        "nonBinary": "Não Binário",
+        "nonBinary": "Não-binário",
         "other": "Outro",
         "unknown": "Desconhecido"
       }

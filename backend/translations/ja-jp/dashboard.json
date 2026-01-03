@@ -3,13 +3,13 @@
   "resources": {
     "title": "CharHub",
     "tabs": {
-      "discover": "探索",
+      "discover": "発見",
       "chat": "チャット",
       "story": "ストーリー"
     },
     "sections": {
       "popularCharacters": "人気キャラクター",
-      "favoriteCharacters": "あなたのお気に入り",
+      "favoriteCharacters": "お気に入り",
       "popular": "人気",
       "favorites": "お気に入り",
       "myStories": "マイストーリー",
@@ -25,32 +25,52 @@
     "plusRequired": "プラスプランが必要です",
     "recentConversations": "最近の会話",
     "newConversation": "新しい会話",
+    "noConversations": "まだ会話がありません。今すぐチャットを始めましょう！",
+    "startChat": "新しいチャットを開始",
+    "endOfList": {
+      "characters": {
+        "message": "すべてのキャラクターを見ました！",
+        "cta": "自分だけのキャラクターを作成",
+        "description": "想像力を形にし、ユニークなAIキャラクターを作成しましょう"
+      },
+      "stories": {
+        "message": "すべてのストーリーを見ました！",
+        "cta": "自分だけのストーリーを作成",
+        "description": "AIキャラクターでインタラクティブなストーリーを作成しましょう"
+      }
+    },
     "carousel": {
-      "alt": "「{{title}}」のカルーセル画像",
+      "alt": "{{title}}のカルーセル画像",
       "goToSlide": "スライド{{slide}}へ移動",
       "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "CharHubへようこそ",
-          "description": "AIキャラクターを作成してチャットしよう",
-          "action1": "キャラクターを作成",
-          "action2": "キャラクターを閲覧"
+          "description": "ユニークなキャラクターを作成し、ストーリーを生き生きとさせましょう",
+          "action1": "作成",
+          "action1Full": "キャラクターを作成",
+          "action2": "閲覧",
+          "action2Full": "キャラクターを閲覧"
         },
         "stories": {
           "title": "ストーリーを発見",
-          "description": "インタラクティブなストーリーテリングを体験しましょう",
-          "action": "ストーリーを閲覧"
+          "description": "没入型インタラクティブアドベンチャーを体験しましょう",
+          "action": "閲覧",
+          "actionFull": "ストーリーを閲覧",
+          "create": "作成",
+          "createFull": "ストーリーを作成"
         },
-        "community": {
-          "title": "コミュニティに参加",
-          "description": "他のクリエイターと繋がりましょう",
-          "action": "コミュニティを探索"
+        "pricing": {
+          "title": "プレミアムをアンロック",
+          "description": "無制限の作成、限定機能など",
+          "action": "プランを見る",
+          "actionFull": "プランを見る"
         }
       }
     },
     "storyCard": {
-      "alt": "「{{title}}」のカバー画像",
-      "play": "再生"
+      "alt": "{{title}}のカバー画像",
+      "play": "プレイ"
     },
     "infiniteScroll": {
       "endOfList": "すべてのキャラクターが読み込まれました"

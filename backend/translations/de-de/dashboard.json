@@ -5,7 +5,7 @@
     "tabs": {
       "discover": "Entdecken",
       "chat": "Chat",
-      "story": "Story"
+      "story": "Geschichte"
     },
     "sections": {
       "popularCharacters": "Beliebte Charaktere",
@@ -23,8 +23,22 @@
     "noStories": "Noch keine Geschichten. Erstelle deine erste Geschichte!",
     "createStory": "Geschichte erstellen",
     "plusRequired": "Erfordert Plus-Plan",
-    "recentConversations": "Aktuelle Unterhaltungen",
+    "recentConversations": "Letzte Unterhaltungen",
     "newConversation": "Neue Unterhaltung",
+    "noConversations": "Noch keine Unterhaltungen. Starte jetzt einen Chat!",
+    "startChat": "Neuen Chat starten",
+    "endOfList": {
+      "characters": {
+        "message": "Du hast alle Charaktere gesehen!",
+        "cta": "Erstelle deinen eigenen Charakter",
+        "description": "Erwecke deine Fantasie zum Leben und erschaffe einzigartige KI-Charaktere"
+      },
+      "stories": {
+        "message": "Du hast alle Geschichten gesehen!",
+        "cta": "Erstelle deine eigene Geschichte",
+        "description": "Beginne, interaktive Geschichten mit KI-Charakteren zu erstellen"
+      }
+    },
     "carousel": {
       "alt": "Karussellbild für {{title}}",
       "goToSlide": "Gehe zu Folie {{slide}}",
@@ -32,19 +46,25 @@
       "slides": {
         "welcome": {
           "title": "Willkommen bei CharHub",
-          "description": "Erstelle und chatte mit KI-Charakteren",
-          "action1": "Charakter erstellen",
-          "action2": "Charaktere durchsuchen"
+          "description": "Erstelle einzigartige Charaktere und erwecke deine Geschichten zum Leben",
+          "action1": "Erstellen",
+          "action1Full": "Charakter erstellen",
+          "action2": "Durchsuchen",
+          "action2Full": "Charaktere durchsuchen"
         },
         "stories": {
           "title": "Geschichten entdecken",
-          "description": "Erkunde interaktives Storytelling",
-          "action": "Geschichten durchsuchen"
+          "description": "Erlebe fesselnde interaktive Abenteuer",
+          "action": "Durchsuchen",
+          "actionFull": "Geschichten durchsuchen",
+          "create": "Erstellen",
+          "createFull": "Geschichte erstellen"
         },
-        "community": {
-          "title": "Werde Teil der Community",
-          "description": "Verbinde dich mit anderen Erstellern",
-          "action": "Community erkunden"
+        "pricing": {
+          "title": "Premium freischalten",
+          "description": "Unbegrenzte Kreationen, exklusive Funktionen und mehr",
+          "action": "Pläne ansehen",
+          "actionFull": "Pläne ansehen"
         }
       }
     },
@@ -53,7 +73,7 @@
       "play": "Spielen"
     },
     "infiniteScroll": {
-      "endOfList": "Alle Charaktere wurden geladen"
+      "endOfList": "Alle Charaktere wurden geladen."
     },
     "filters": {
       "title": "Filter",
@@ -65,7 +85,7 @@
       "genders": {
         "male": "Männlich",
         "female": "Weiblich",
-        "nonBinary": "Non-Binär",
+        "nonBinary": "Nicht-binär",
         "other": "Andere",
         "unknown": "Unbekannt"
       }

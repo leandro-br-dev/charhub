@@ -23,7 +23,6 @@ import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { useCharacterFilters } from '../../hooks/useCharacterFilters';
 import { CharacterGridSkeleton } from '../../components/ui/CharacterCardSkeleton';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
-import { EndOfListMessage } from '../../components/ui/EndOfListMessage';
 import { FilterPanel } from '../../components/filters';
 
 // Component for authenticated users (inside AuthenticatedLayout)
@@ -509,15 +508,15 @@ function DashboardContent(): JSX.Element {
             {/* Discover Tab */}
             <TabPanel label="discover">
               <div className="space-y-6 px-4 md:px-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-title">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <h2 className="hidden sm:block text-lg font-semibold text-title">
                     {discoverView === 'popular'
                       ? t('dashboard:sections.popularCharacters')
                       : t('dashboard:sections.favoriteCharacters')}
                   </h2>
                   {/* Hide favorites toggle for non-authenticated users */}
                   {isAuthenticated && (
-                    <div className="flex rounded-xl border border-border overflow-hidden">
+                    <div className="ml-auto sm:ml-0 flex rounded-xl border border-border overflow-hidden">
                       <button
                         type="button"
                         onClick={() => setDiscoverView('popular')}
@@ -567,7 +566,22 @@ function DashboardContent(): JSX.Element {
                     {discoverView === 'popular' && (
                       <div ref={loadMoreRef} className="min-h-[20px] w-full">
                         {isLoadingMore && <LoadingSpinner />}
-                        {!hasMore && filteredPopularCharacters.length > 0 && <EndOfListMessage />}
+                        {!hasMore && filteredPopularCharacters.length > 0 && (
+                          <div className="text-center py-12">
+                            <p className="text-muted mb-2">
+                              {t('dashboard:endOfList.characters.message', 'You\'ve seen all characters!')}
+                            </p>
+                            <p className="text-sm text-muted mb-4">
+                              {t('dashboard:endOfList.characters.description', 'Bring your imagination to life and create unique AI characters')}
+                            </p>
+                            <button
+                              onClick={() => navigate('/characters/create')}
+                              className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
+                            >
+                              {t('dashboard:endOfList.characters.cta', 'Create your own character')}
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
                     {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).length === 0 && (
@@ -596,22 +610,22 @@ function DashboardContent(): JSX.Element {
             <TabPanel label="chat">
               <div className="space-y-6 px-4 md:px-6">
                 {/* Recent Conversations */}
-                <RecentConversations limit={12} wrap />
+                <RecentConversations limit={12} wrap showEmptyState />
               </div>
             </TabPanel>
 
             {/* Story Tab */}
             <TabPanel label="story">
               <div className="space-y-6 px-4 md:px-6">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold text-title">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <h2 className="hidden sm:block text-lg font-semibold text-title">
                     {storyView === 'my'
                       ? t('dashboard:sections.myStories')
                       : t('dashboard:sections.popularStories')}
                   </h2>
                   {/* Hide my stories toggle for non-authenticated users */}
                   {isAuthenticated && (
-                    <div className="flex rounded-xl border border-border overflow-hidden">
+                    <div className="ml-auto sm:ml-0 flex rounded-xl border border-border overflow-hidden">
                       <button
                         type="button"
                         onClick={() => setStoryView('my')}
@@ -632,11 +646,30 @@ function DashboardContent(): JSX.Element {
                 {isLoadingStories ? (
                   <div className="h-64 bg-light animate-pulse rounded-lg" />
                 ) : (
-                  <div className="flex flex-wrap items-stretch gap-4">
-                    {(storyView === 'my' ? filteredMyStories : filteredPopularStories).map((story) => (
-                      <StoryCard key={story.id} story={story} onPlay={handleStoryPlay} blurNsfw={blurNsfw} />
-                    ))}
-                  </div>
+                  <>
+                    <div className="flex flex-wrap items-stretch gap-4">
+                      {(storyView === 'my' ? filteredMyStories : filteredPopularStories).map((story) => (
+                        <StoryCard key={story.id} story={story} onPlay={handleStoryPlay} blurNsfw={blurNsfw} />
+                      ))}
+                    </div>
+                    {/* CTA at the end of stories list */}
+                    {!isLoadingStories && (storyView === 'my' ? filteredMyStories : filteredPopularStories).length > 0 && (
+                      <div className="text-center py-8">
+                        <p className="text-muted mb-2">
+                          {t('dashboard:endOfList.stories.message', 'Want more?')}
+                        </p>
+                        <p className="text-sm text-muted mb-4">
+                          {t('dashboard:endOfList.stories.description', 'Start creating interactive stories with AI characters')}
+                        </p>
+                        <button
+                          onClick={() => navigate('/stories/create')}
+                          className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
+                        >
+                          {t('dashboard:endOfList.stories.cta', 'Create your own story')}
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
                 {!isLoadingStories && filteredMyStories.length === 0 && filteredPopularStories.length === 0 && (
                   <div className="text-center py-12">

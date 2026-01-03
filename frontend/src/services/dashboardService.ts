@@ -11,6 +11,7 @@ export interface CarouselHighlight {
   buttons: Array<{
     to: string;
     label: string;
+    labelFull?: string;
     variant?: 'primary' | 'light' | 'secondary' | 'danger' | 'dark';
     icon?: string;
   }>;
@@ -52,12 +53,14 @@ export const dashboardService = {
             {
               to: '/characters/create',
               label: 'dashboard:carousel.slides.welcome.action1',
+              labelFull: 'dashboard:carousel.slides.welcome.action1Full',
               variant: 'primary',
               icon: 'add',
             },
             {
               to: '/characters',
               label: 'dashboard:carousel.slides.welcome.action2',
+              labelFull: 'dashboard:carousel.slides.welcome.action2Full',
               variant: 'secondary',
               icon: 'search',
             },
@@ -71,9 +74,17 @@ export const dashboardService = {
           imageUrl: '/covers/cover_landscape_2.webp',
           buttons: [
             {
+              to: '/stories/create',
+              label: 'dashboard:carousel.slides.stories.create',
+              labelFull: 'dashboard:carousel.slides.stories.createFull',
+              variant: 'primary',
+              icon: 'add',
+            },
+            {
               to: '/stories',
               label: 'dashboard:carousel.slides.stories.action',
-              variant: 'primary',
+              labelFull: 'dashboard:carousel.slides.stories.actionFull',
+              variant: 'secondary',
               icon: 'menu_book',
             },
           ],
@@ -82,17 +93,19 @@ export const dashboardService = {
         },
         {
           id: '3',
-          title: 'dashboard:carousel.slides.community.title',
-          description: 'dashboard:carousel.slides.community.description',
+          title: 'dashboard:carousel.slides.pricing.title',
+          description: 'dashboard:carousel.slides.pricing.description',
           imageUrl: '/covers/cover_landscape_3.webp',
           buttons: [
             {
-              to: '/community',
-              label: 'dashboard:carousel.slides.community.action',
+              to: '/plans',
+              label: 'dashboard:carousel.slides.pricing.action',
+              labelFull: 'dashboard:carousel.slides.pricing.actionFull',
               variant: 'primary',
-              icon: 'groups',
+              icon: 'diamond',
             },
           ],
+          isPlus: true,
           priority: 3,
         },
       ];

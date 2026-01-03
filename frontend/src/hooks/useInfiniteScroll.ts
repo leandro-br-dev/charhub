@@ -27,34 +27,42 @@ export function useInfiniteScroll(
   const { threshold = 0.1, rootMargin = '0px' } = options;
 
   const elementRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
 
   // Callback ref that triggers when element is mounted/unmounted
   const loadMoreRef = useCallback((node: HTMLDivElement | null) => {
     if (node !== elementRef.current) {
+      // Clean up previous observer if exists
+      if (observerRef.current && elementRef.current) {
+        observerRef.current.unobserve(elementRef.current);
+      }
+
       elementRef.current = node;
-      // Observer will be set up in the useEffect below
+
+      // Set up new observer when node is available
+      if (node) {
+        observerRef.current = new IntersectionObserver(
+          (entries) => {
+            const [entry] = entries;
+            setIsIntersecting(entry.isIntersecting);
+          },
+          { threshold, rootMargin }
+        );
+
+        observerRef.current.observe(node);
+      }
     }
-  }, []);
+  }, [threshold, rootMargin]);
 
+  // Clean up observer on unmount
   useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        setIsIntersecting(entry.isIntersecting);
-      },
-      { threshold, rootMargin }
-    );
-
-    observer.observe(element);
-
     return () => {
-      observer.disconnect();
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
     };
-  }, [threshold, rootMargin, elementRef.current]); // Re-run when elementRef.current changes
+  }, []);
 
   return { loadMoreRef, isIntersecting };
 }

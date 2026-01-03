@@ -7,6 +7,7 @@ import { CachedImage } from '../../../components/ui/CachedImage';
 interface CarouselButton {
   to: string;
   label: string;
+  labelFull?: string;
   variant?: 'primary' | 'light' | 'secondary' | 'danger' | 'dark';
   icon?: string;
 }
@@ -33,11 +34,11 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
         <CachedImage
           src={imageUrl}
           alt={t('dashboard:carousel.alt', { title: t(title) })}
-          className="w-full h-full object-cover object-[center_25%] transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover object-[center_55%] sm:object-[center_45%] md:object-[center_40%] lg:object-[center_35%] xl:object-[center_30%] 2xl:object-[center_25%] transition-transform duration-700 group-hover:scale-105"
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-      <div className="absolute inset-0 flex flex-col justify-center p-8 text-white top-1/2 -translate-y-1/4">
+      <div className="absolute inset-0 flex flex-col justify-center p-6 sm:p-8 text-white top-1/2 -translate-y-1/4">
         {isPlus && (
           <span
             className="absolute top-4 right-4 text-xs font-bold bg-yellow-500 text-black px-2 py-1 rounded-full flex items-center gap-1"
@@ -47,18 +48,18 @@ function CarouselCard({ title, description, buttons, imageUrl, isPlus = false }:
             {t('dashboard:carousel.plus')}
           </span>
         )}
-        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight drop-shadow-lg">{t(title)}</h3>
-        <p className="text-sm sm:text-base lg:text-lg mt-2 mb-6 max-w-2xl drop-shadow-md opacity-90">{t(description)}</p>
-        <div className="flex flex-wrap gap-3 items-stretch">
+        <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight drop-shadow-lg text-white">{t(title)}</h3>
+        <p className="text-xs sm:text-sm md:text-base lg:text-lg mt-1.5 sm:mt-2 mb-3 sm:mb-5 max-w-full sm:max-w-xl lg:max-w-2xl drop-shadow-md opacity-70 block">{t(description)}</p>
+        <div className="flex flex-nowrap gap-2 sm:gap-3 items-stretch justify-start">
           {buttons.map((btn, index) => (
-            <Link to={btn.to} key={index} className="flex-shrink-0">
+            <Link to={btn.to} key={index} className="flex-1 sm:flex-auto sm:max-w-[280px]">
               <Button
                 variant={btn.variant || 'primary'}
                 size="small"
                 icon={btn.icon}
-                className="h-10 sm:h-12 px-4 sm:px-6 shadow-lg transform transition-transform hover:scale-105 active:scale-95"
+                className="h-9 sm:h-9 md:h-10 px-3 sm:px-4 md:px-5 text-xs sm:text-sm shadow-lg transform transition-transform hover:scale-105 active:scale-95 w-full"
               >
-                {t(btn.label)}
+                {t(btn.labelFull || btn.label)}
               </Button>
             </Link>
           ))}

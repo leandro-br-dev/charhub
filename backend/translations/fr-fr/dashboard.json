@@ -4,8 +4,8 @@
     "title": "CharHub",
     "tabs": {
       "discover": "Découvrir",
-      "chat": "Chat",
-      "story": "Histoires"
+      "chat": "Discuter",
+      "story": "Histoire"
     },
     "sections": {
       "popularCharacters": "Personnages populaires",
@@ -16,35 +16,55 @@
       "popularStories": "Histoires populaires",
       "mine": "Les miennes",
       "noPopularCharacters": "Aucun personnage populaire trouvé.",
-      "noFavoriteCharacters": "Vous n'avez pas encore ajouté de personnages à vos favoris.",
+      "noFavoriteCharacters": "Vous n'avez pas encore de personnages favoris.",
       "createCharacter": "Créer un personnage",
       "browseCharacters": "Parcourir les personnages"
     },
-    "noStories": "Aucune histoire pour le moment. Créez votre première histoire !",
+    "noStories": "Aucune histoire pour l'instant. Créez votre première histoire !",
     "createStory": "Créer une histoire",
-    "plusRequired": "Nécessite le forfait Plus",
+    "plusRequired": "Plan Plus requis",
     "recentConversations": "Conversations récentes",
     "newConversation": "Nouvelle conversation",
+    "noConversations": "Aucune conversation pour l'instant. Commencez à discuter maintenant !",
+    "startChat": "Démarrer une nouvelle conversation",
+    "endOfList": {
+      "characters": {
+        "message": "Vous avez vu tous les personnages !",
+        "cta": "Créez votre propre personnage",
+        "description": "Donnez vie à votre imagination et créez des personnages IA uniques"
+      },
+      "stories": {
+        "message": "Vous avez vu toutes les histoires !",
+        "cta": "Créez votre propre histoire",
+        "description": "Commencez à créer des histoires interactives avec des personnages IA"
+      }
+    },
     "carousel": {
-      "alt": "Image de carrousel pour {{title}}",
+      "alt": "Image du carrousel pour {{title}}",
       "goToSlide": "Aller à la diapositive {{slide}}",
       "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "Bienvenue sur CharHub",
-          "description": "Créez et discutez avec des personnages IA",
-          "action1": "Créer un personnage",
-          "action2": "Parcourir les personnages"
+          "description": "Créez des personnages uniques et donnez vie à vos histoires",
+          "action1": "Créer",
+          "action1Full": "Créer un personnage",
+          "action2": "Parcourir",
+          "action2Full": "Parcourir les personnages"
         },
         "stories": {
-          "title": "Découvrez des histoires",
-          "description": "Explorez la narration interactive",
-          "action": "Parcourir les histoires"
+          "title": "Découvrez les histoires",
+          "description": "Vivez des aventures interactives immersives",
+          "action": "Parcourir",
+          "actionFull": "Parcourir les histoires",
+          "create": "Créer",
+          "createFull": "Créer une histoire"
         },
-        "community": {
-          "title": "Rejoignez la communauté",
-          "description": "Connectez-vous avec d'autres créateurs",
-          "action": "Explorer la communauté"
+        "pricing": {
+          "title": "Débloquez le Premium",
+          "description": "Créations illimitées, fonctionnalités exclusives et bien plus encore",
+          "action": "Voir les plans",
+          "actionFull": "Voir les plans"
         }
       }
     },
@@ -63,8 +83,8 @@
       "selectSpecies": "Sélectionner les espèces...",
       "clear": "Effacer",
       "genders": {
-        "male": "Homme",
-        "female": "Femme",
+        "male": "Masculin",
+        "female": "Féminin",
         "nonBinary": "Non-binaire",
         "other": "Autre",
         "unknown": "Inconnu"

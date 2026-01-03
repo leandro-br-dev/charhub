@@ -22,30 +22,33 @@ export function FilterPanel({
   const { t } = useTranslation('dashboard');
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      {/* Gender Filter - compact */}
-      <div className="flex-shrink-0 w-48">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+      {/* Gender Filter - responsive width */}
+      <div className="flex-1 min-w-[140px] sm:flex-shrink-0 sm:w-[200px] sm:max-w-[200px] md:w-[220px] md:max-w-[220px] lg:w-[240px] lg:max-w-[240px]">
         <GenderFilter
           selected={filters.genders}
           onChange={(genders) => onUpdateFilter('genders', genders)}
         />
       </div>
 
-      {/* Species Filter - compact */}
-      <div className="flex-shrink-0 w-48">
+      {/* Species Filter - responsive width */}
+      <div className="flex-1 min-w-[140px] sm:flex-shrink-0 sm:w-[200px] sm:max-w-[200px] md:w-[220px] md:max-w-[220px] lg:w-[240px] lg:max-w-[240px]">
         <SpeciesFilter
           selected={filters.species}
           onChange={(species) => onUpdateFilter('species', species)}
         />
       </div>
 
-      {/* Clear button - show when filters are active */}
+      {/* Clear button - icon on mobile, text on desktop */}
       {activeFiltersCount > 0 && (
         <button
           onClick={onClearFilters}
-          className="flex-shrink-0 px-3 py-1.5 text-xs font-medium text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
+          className="flex-shrink-0 px-2 sm:px-3 py-1.5 text-xs font-medium text-primary hover:text-primary/80 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
+          aria-label={t('filters.clear', 'Clear')}
         >
-          {t('filters.clear', 'Limpar')} ({activeFiltersCount})
+          <span className="hidden sm:inline">{t('filters.clear', 'Clear')}</span>
+          <span className="sm:hidden">✕</span>
+          <span className="sm:inline ml-1">({activeFiltersCount})</span>
         </button>
       )}
     </div>

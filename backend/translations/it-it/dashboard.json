@@ -9,12 +9,12 @@
     },
     "sections": {
       "popularCharacters": "Personaggi Popolari",
-      "favoriteCharacters": "I Tuoi Preferiti",
+      "favoriteCharacters": "I tuoi Preferiti",
       "popular": "Popolari",
       "favorites": "Preferiti",
-      "myStories": "Le Mie Storie",
+      "myStories": "Le mie Storie",
       "popularStories": "Storie Popolari",
-      "mine": "I Miei",
+      "mine": "Mie",
       "noPopularCharacters": "Nessun personaggio popolare trovato.",
       "noFavoriteCharacters": "Non hai ancora aggiunto personaggi ai preferiti.",
       "createCharacter": "Crea Personaggio",
@@ -22,29 +22,49 @@
     },
     "noStories": "Ancora nessuna storia. Crea la tua prima storia!",
     "createStory": "Crea Storia",
-    "plusRequired": "Richiede Piano Plus",
+    "plusRequired": "Richiede piano Plus",
     "recentConversations": "Conversazioni Recenti",
     "newConversation": "Nuova Conversazione",
+    "noConversations": "Ancora nessuna conversazione. Inizia a chattare ora!",
+    "startChat": "Inizia Nuova Chat",
+    "endOfList": {
+      "characters": {
+        "message": "Hai visto tutti i personaggi!",
+        "cta": "Crea il tuo personaggio",
+        "description": "Dai vita alla tua immaginazione e crea personaggi IA unici"
+      },
+      "stories": {
+        "message": "Hai visto tutte le storie!",
+        "cta": "Crea la tua storia",
+        "description": "Inizia a creare storie interattive con personaggi IA"
+      }
+    },
     "carousel": {
-      "alt": "Immagine carosello per {{title}}",
+      "alt": "Immagine del carosello per {{title}}",
       "goToSlide": "Vai alla diapositiva {{slide}}",
       "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "Benvenuto su CharHub",
-          "description": "Crea e chatta con personaggi IA",
-          "action1": "Crea Personaggio",
-          "action2": "Sfoglia Personaggi"
+          "description": "Crea personaggi unici e dai vita alle tue storie",
+          "action1": "Crea",
+          "action1Full": "Crea Personaggio",
+          "action2": "Sfoglia",
+          "action2Full": "Sfoglia Personaggi"
         },
         "stories": {
           "title": "Scopri Storie",
-          "description": "Esplora la narrazione interattiva",
-          "action": "Sfoglia Storie"
+          "description": "Vivi avventure interattive coinvolgenti",
+          "action": "Sfoglia",
+          "actionFull": "Sfoglia Storie",
+          "create": "Crea",
+          "createFull": "Crea Storia"
         },
-        "community": {
-          "title": "Unisciti alla Community",
-          "description": "Connettiti con altri creatori",
-          "action": "Esplora la Community"
+        "pricing": {
+          "title": "Sblocca Premium",
+          "description": "Creazioni illimitate, funzionalità esclusive e altro ancora",
+          "action": "Visualizza Piani",
+          "actionFull": "Visualizza Piani"
         }
       }
     },
@@ -63,8 +83,8 @@
       "selectSpecies": "Seleziona specie...",
       "clear": "Cancella",
       "genders": {
-        "male": "Uomo",
-        "female": "Donna",
+        "male": "Maschio",
+        "female": "Femmina",
         "nonBinary": "Non binario",
         "other": "Altro",
         "unknown": "Sconosciuto"

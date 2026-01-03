@@ -25,6 +25,20 @@
     "plusRequired": "Requires Plus Plan",
     "recentConversations": "Recent Conversations",
     "newConversation": "New Conversation",
+    "noConversations": "No conversations yet. Start chatting now!",
+    "startChat": "Start New Chat",
+    "endOfList": {
+      "characters": {
+        "message": "You've seen all characters!",
+        "cta": "Create your own character",
+        "description": "Bring your imagination to life and create unique AI characters"
+      },
+      "stories": {
+        "message": "You've seen all stories!",
+        "cta": "Create your own story",
+        "description": "Start creating interactive stories with AI characters"
+      }
+    },
     "carousel": {
       "alt": "Carousel image for {{title}}",
       "goToSlide": "Go to slide {{slide}}",
@@ -32,19 +46,25 @@
       "slides": {
         "welcome": {
           "title": "Welcome to CharHub",
-          "description": "Create and chat with AI characters",
-          "action1": "Create Character",
-          "action2": "Browse Characters"
+          "description": "Create unique characters and bring your stories to life",
+          "action1": "Create",
+          "action1Full": "Create Character",
+          "action2": "Browse",
+          "action2Full": "Browse Characters"
         },
         "stories": {
           "title": "Discover Stories",
-          "description": "Explore interactive storytelling",
-          "action": "Browse Stories"
+          "description": "Experience immersive interactive adventures",
+          "action": "Browse",
+          "actionFull": "Browse Stories",
+          "create": "Create",
+          "createFull": "Create Story"
         },
-        "community": {
-          "title": "Join the Community",
-          "description": "Connect with other creators",
-          "action": "Explore Community"
+        "pricing": {
+          "title": "Unlock Premium",
+          "description": "Unlimited creations, exclusive features, and more",
+          "action": "View Plans",
+          "actionFull": "View Plans"
         }
       }
     },

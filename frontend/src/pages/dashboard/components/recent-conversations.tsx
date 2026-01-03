@@ -8,9 +8,10 @@ import type { Conversation, ConversationParticipant } from '../../../types/chat'
 interface RecentConversationsProps {
   limit?: number;
   wrap?: boolean; // when true, render as wrapped grid instead of horizontal scroller
+  showEmptyState?: boolean; // when true, show empty state CTA
 }
 
-export function RecentConversations({ limit = 8, wrap = false }: RecentConversationsProps) {
+export function RecentConversations({ limit = 8, wrap = false, showEmptyState = false }: RecentConversationsProps) {
   const { t, i18n } = useTranslation(['common', 'dashboard']);
   const { data, isLoading } = useConversationListQuery({
     limit,
@@ -35,7 +36,23 @@ export function RecentConversations({ limit = 8, wrap = false }: RecentConversat
 
   if (isLoading) return null;
 
-  if (conversations.length === 0) return null;
+  if (conversations.length === 0) {
+    if (!showEmptyState) return null;
+
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted mb-4">
+          {t('dashboard:noConversations', 'No conversations yet. Start chatting now!')}
+        </p>
+        <Link
+          to="/chat/new"
+          className="inline-block px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
+        >
+          {t('dashboard:startChat', 'Start New Chat')}
+        </Link>
+      </div>
+    );
+  }
 
   if (wrap) {
     return (
