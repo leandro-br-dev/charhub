@@ -114,23 +114,33 @@ export function MultiStageProgress({
 
         const { state, progress, result, failedReason } = statusResponse.data;
 
-        if (state === 'completed' && result?.results) {
+        if (state === 'completed') {
           clearInterval(interval);
           setIsGenerating(false);
           setOverallProgress(100);
 
-          // Update stages with results
-          const updatedStages = stages.map(stage => {
-            const resultItem = result.results.find((r: { stage: number; type: string; viewType: string; imageUrl: string }) => r.viewType === stage.viewType);
-            return {
+          // Update stages with results if available
+          if (result?.results) {
+            const updatedStages = stages.map(stage => {
+              const resultItem = result.results.find((r: { stage: number; type: string; viewType: string; imageUrl: string }) => r.viewType === stage.viewType);
+              return {
+                ...stage,
+                status: 'completed' as const,
+                imageUrl: resultItem?.imageUrl,
+              };
+            });
+
+            setStages(updatedStages);
+            onComplete?.(updatedStages);
+          } else {
+            // No results but completed - mark all as completed
+            const updatedStages = stages.map(stage => ({
               ...stage,
               status: 'completed' as const,
-              imageUrl: resultItem?.imageUrl,
-            };
-          });
-
-          setStages(updatedStages);
-          onComplete?.(updatedStages);
+            }));
+            setStages(updatedStages);
+            onComplete?.(updatedStages);
+          }
         } else if (state === 'failed') {
           clearInterval(interval);
           setIsGenerating(false);
@@ -154,10 +164,10 @@ export function MultiStageProgress({
 
           // Fetch current images to show completed ones during generation
           try {
-            const imagesResponse = await api.get<{ AVATAR?: any[]; REFERENCE?: any[] }>(
-              `/api/v1/characters/${characterId}/images`
+            const imagesResponse = await api.get<{ success: boolean; data: { AVATAR?: any[]; REFERENCE?: any[]; [key: string]: any[] } }>(
+              `/api/v1/image-generation/characters/${characterId}/images`
             );
-            const referenceImages = imagesResponse.data.REFERENCE || [];
+            const referenceImages = imagesResponse.data.data.REFERENCE || [];
 
             console.log('[MultiStageProgress] Polling - reference images found:', referenceImages.length, referenceImages.map((img: any) => ({ content: img.content, url: img.url })));
 

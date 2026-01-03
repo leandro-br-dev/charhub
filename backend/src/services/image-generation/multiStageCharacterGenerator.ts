@@ -137,30 +137,36 @@ export class MultiStageCharacterGenerator {
         const view = REFERENCE_VIEWS[i];
         const stageNumber = i + 1;
 
-        // For stages after the first, re-prepare with the newly generated image
+        // For stages after the first, re-prepare with ALL previously generated images
         if (i > 0) {
-          onProgress?.(stageNumber, 4, `Adding previous reference to folder...`);
+          // Build fresh reference list: AVATAR + all previously generated REFERENCEs
+          const freshReferences: ReferenceImage[] = [
+            { type: 'AVATAR', url: existingAvatar.url },
+            ...userSamples.map(s => ({ type: 'SAMPLE', url: s.url })),
+          ];
 
-          // Fetch the previously generated reference from R2
-          const previousView = REFERENCE_VIEWS[i - 1];
-          const previousImage = await prisma.characterImage.findFirst({
-            where: {
-              characterId,
-              type: ImageType.REFERENCE,
-              content: previousView.content,
-            },
-            orderBy: { createdAt: 'desc' },
-          });
+          // Add all previously generated reference images
+          for (let j = 0; j < i; j++) {
+            const previousView = REFERENCE_VIEWS[j];
+            const previousImage = await prisma.characterImage.findFirst({
+              where: {
+                characterId,
+                type: ImageType.REFERENCE,
+                content: previousView.content,
+              },
+              orderBy: { createdAt: 'desc' },
+            });
 
-          if (previousImage) {
-            // Re-prepare references with the new image included
-            referenceImages.push({ type: 'REFERENCE', url: previousImage.url });
-            await comfyuiService.prepareReferences(characterId, referenceImages);
-            logger.info({ stage: stageNumber, previousView: previousView.content }, `Re-prepared references with ${previousView.content}`);
+            if (previousImage) {
+              freshReferences.push({ type: 'REFERENCE', url: previousImage.url });
+            }
           }
-        }
 
-        onProgress?.(stageNumber, 4, `Generating reference ${view.content}...`);
+          // Cleanup and re-prepare with fresh list (no duplicates)
+          await comfyuiService.cleanupReferences(characterId);
+          await comfyuiService.prepareReferences(characterId, freshReferences);
+          logger.info({ stage: stageNumber, imageCount: freshReferences.length }, `Re-prepared references with all previous images`);
+        }
 
         logger.info({ stage: stageNumber, view: view.content }, `Starting reference generation`);
 

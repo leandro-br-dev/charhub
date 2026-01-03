@@ -340,7 +340,7 @@
         "title": "Multi-Stage Reference Dataset",
         "description": "Generate 4 reference images (avatar, front, side, back) for consistent character generation",
         "stages": {
-          "avatar": "Avatar (Face)",
+          "face": "Face (Portrait)",
           "front": "Front Body",
           "side": "Side Body",
           "back": "Back Body"
