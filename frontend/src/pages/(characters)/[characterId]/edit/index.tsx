@@ -5,12 +5,23 @@ import { useCharacterMutations, useCharacterQuery } from '../../shared/hooks/use
 import { useCharacterForm } from '../../shared/hooks/useCharacterForm';
 import { characterToFormValues } from '../../shared';
 import { CharacterFormLayout } from '../../shared/components';
+import { useAuth } from '../../../../hooks/useAuth';
+import { useAdmin } from '../../../../hooks/useAdmin';
+import { Button } from '../../../../components/ui/Button';
+
+/**
+ * CharHub Official user ID (UUID constant)
+ * Characters owned by this user can only be edited by ADMINs
+ */
+const CHARHUB_OFFICIAL_ID = '00000000-0000-0000-0000-000000000001';
 
 export default function CharacterEditPage(): JSX.Element {
   const { t } = useTranslation(['characters']);
   const navigate = useNavigate();
   const params = useParams<{ characterId: string }>();
   const characterId = params.characterId ?? '';
+  const { user } = useAuth();
+  const { isAdmin } = useAdmin();
 
   const { data, isLoading, isError } = useCharacterQuery(characterId);
   const { updateMutation } = useCharacterMutations();
@@ -18,6 +29,13 @@ export default function CharacterEditPage(): JSX.Element {
 
   const initialValues = useMemo(() => data ? characterToFormValues(data) : undefined, [data]);
   const form = useCharacterForm({ initialValues });
+
+  // Check if user can edit this character
+  const canEdit = useMemo(() => {
+    if (!user || !data) return false;
+    // User is owner OR (user is ADMIN and character is official)
+    return user.id === data.userId || (isAdmin && data.userId === CHARHUB_OFFICIAL_ID);
+  }, [user, data, isAdmin]);
 
   // Note: We don't need this useEffect anymore because the hook now handles
   // initialValues changes internally. Removing it prevents infinite loops.
@@ -48,6 +66,22 @@ export default function CharacterEditPage(): JSX.Element {
       <section className="flex h-[60vh] flex-col items-center justify-center gap-3 text-muted">
         <span className="material-symbols-outlined animate-spin text-5xl">progress_activity</span>
         <p>{t('characters:edit.states.loading')}</p>
+      </section>
+    );
+  }
+
+  // Access denied - user cannot edit this character
+  if (!canEdit) {
+    return (
+      <section className="flex h-[60vh] flex-col items-center justify-center gap-4 text-muted">
+        <span className="material-symbols-outlined text-5xl text-danger">lock</span>
+        <h2 className="text-2xl font-bold text-title">{t('characters:edit.accessDenied.title')}</h2>
+        <p className="text-center text-content/80">
+          {t('characters:edit.accessDenied.message')}
+        </p>
+        <Button type="button" onClick={() => navigate(`/characters/${characterId}`)} icon="arrow_back">
+          {t('characters:edit.accessDenied.backButton')}
+        </Button>
       </section>
     );
   }
