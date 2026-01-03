@@ -4,6 +4,9 @@ import type { UseCharacterFormReturn } from '../hooks/useCharacterForm';
 import { ImageGenerationModal } from './ImageGenerationModal';
 import { imageGenerationService } from '../../../../services/imageGenerationService';
 import type { ImagesByType, GeneratedImage } from '../../../../services/imageGenerationService';
+import { useToast } from '../../../../contexts/ToastContext';
+import { Modal } from '../../../../components/ui/Modal';
+import { Button } from '../../../../components/ui/Button';
 
 interface ImagesTabProps {
   form: UseCharacterFormReturn;
@@ -15,6 +18,7 @@ type ModalMode = 'avatar' | 'multi-stage' | 'upload-cover' | null;
 
 export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabProps): JSX.Element {
   const { t } = useTranslation(['characters']);
+  const { addToast } = useToast();
   const [refreshKey, setRefreshKey] = useState(0);
   const [allImages, setAllImages] = useState<ImagesByType>({});
   const [modalMode, setModalMode] = useState<ModalMode>(null);
@@ -54,6 +58,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
 
   const avatarCount = allImages.AVATAR?.length || 0;
   const referenceCount = allImages.REFERENCE?.length || 0;
+  const coverCount = allImages.COVER?.length || 0;
 
   return (
     <div className="space-y-4">
@@ -82,12 +87,14 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
             <span>{t('characters:imageGeneration.imagesTab.avatarsCount', { count: avatarCount })}</span>
             <span className="mx-2">•</span>
             <span>{t('characters:imageGeneration.imagesTab.referenceCount', { count: referenceCount })}</span>
+            <span className="mx-2">•</span>
+            <span>{t('characters:imageGeneration.imagesTab.coverCount', { count: coverCount })}</span>
           </div>
         </div>
       </div>
 
       {/* Images Display - Compact Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Avatars Section */}
         <ImageSection
           title={t('characters:imageGeneration.imagesTab.avatarsSection', 'Avatars')}
@@ -95,6 +102,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
           emptyMessage={t('characters:imageGeneration.imagesTab.noAvatars', 'No avatars yet')}
           characterId={characterId}
           onImageActivated={handleImageUpdate}
+          onImageDeleted={handleImageUpdate}
           t={t}
         />
 
@@ -103,6 +111,17 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
           title={t('characters:imageGeneration.multiStage.title', 'Reference Dataset')}
           referenceImages={allImages}
           emptyMessage={t('characters:imageGeneration.imagesTab.noReferenceImages', 'No reference images yet')}
+          onImageDeleted={handleImageUpdate}
+          t={t}
+        />
+
+        {/* Cover Images Section */}
+        <ImageSection
+          title={t('characters:imageGeneration.imagesTab.coversSection', 'Cover Images')}
+          images={allImages.COVER || []}
+          emptyMessage={t('characters:imageGeneration.imagesTab.noCovers', 'No cover images yet')}
+          characterId={characterId}
+          onImageDeleted={handleImageUpdate}
           t={t}
         />
       </div>
@@ -131,6 +150,7 @@ interface ImageSectionProps {
   emptyMessage: string;
   characterId?: string;
   onImageActivated?: () => void;
+  onImageDeleted?: () => void;
   t: any;
 }
 
@@ -141,8 +161,30 @@ function ImageSection({
   emptyMessage,
   characterId,
   onImageActivated,
+  onImageDeleted,
   t
 }: ImageSectionProps): JSX.Element {
+  const { addToast } = useToast();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+
+  const handleDelete = async (imageId: string) => {
+    if (!characterId) return;
+    try {
+      setDeletingId(imageId);
+      await imageGenerationService.deleteImage(characterId, imageId);
+      addToast(t('characters:images.imageDeleted', 'Image deleted successfully'), 'success');
+      setDeleteConfirmId(null);
+      if (onImageDeleted) {
+        onImageDeleted();
+      }
+    } catch (error) {
+      console.error('Failed to delete image:', error);
+      addToast(t('characters:errors.failedToDeleteImage', 'Failed to delete image'), 'error');
+    } finally {
+      setDeletingId(null);
+    }
+  };
   // Reference images mode
   if (referenceImages) {
     const views: Array<{
@@ -198,7 +240,7 @@ function ImageSection({
     );
   }
 
-  // Standard images mode (avatar, etc)
+  // Standard images mode (avatar, cover, etc)
   if (!characterId) {
     return <div>Invalid section configuration</div>;
   }
@@ -232,9 +274,62 @@ function ImageSection({
                   {t('characters:imageGeneration.imagesTab.active', 'Active')}
                 </div>
               )}
+              {/* Delete button - visible on hover */}
+              <button
+                type="button"
+                onClick={() => setDeleteConfirmId(img.id)}
+                disabled={deletingId === img.id}
+                className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center disabled:opacity-50"
+                title={t('characters:images.delete', 'Delete image') ?? 'Delete image'}
+              >
+                {deletingId === img.id ? (
+                  <span className="material-symbols-outlined text-[10px] animate-spin">progress_activity</span>
+                ) : (
+                  <span className="material-symbols-outlined text-[10px]">delete</span>
+                )}
+              </button>
             </div>
           ))}
         </div>
+      )}
+
+      {/* Delete confirmation modal */}
+      {deleteConfirmId && (
+        <Modal
+          isOpen={true}
+          onClose={() => setDeleteConfirmId(null)}
+          title={t('characters:images.deleteConfirmTitle', 'Delete image?')}
+          size="sm"
+        >
+          <div className="space-y-4">
+            <p className="text-sm text-description">
+              {t('characters:images.deleteConfirmMessage', 'Are you sure you want to delete this image? This action cannot be undone.')}
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="light"
+                onClick={() => setDeleteConfirmId(null)}
+                disabled={deletingId === deleteConfirmId}
+              >
+                {t('common:cancel', 'Cancel')}
+              </Button>
+              <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleDelete(deleteConfirmId)}
+                disabled={deletingId === deleteConfirmId}
+                className="bg-red-500 hover:bg-red-600"
+              >
+                {deletingId === deleteConfirmId ? (
+                  <span className="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+                ) : (
+                  t('characters:images.delete', 'Delete')
+                )}
+              </Button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );

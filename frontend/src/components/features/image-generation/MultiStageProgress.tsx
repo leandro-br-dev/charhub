@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../../lib/api';
+import { IMAGE_GENERATION_COSTS } from '../../../config/credits';
+import { creditService } from '../../../services/creditService';
 
 export interface Stage {
   id: number;
@@ -29,6 +31,11 @@ export function MultiStageProgress({
   onError,
 }: MultiStageProgressProps) {
   const { t } = useTranslation(['characters', 'common']);
+
+  const cost = IMAGE_GENERATION_COSTS.REFERENCE_SET;
+  const [credits, setCredits] = useState<number | null>(null);
+  const [hasEnoughCredits, setHasEnoughCredits] = useState(false);
+
   const [stages, setStages] = useState<Stage[]>([
     { id: 1, name: t('characters:imageGeneration.multiStage.stages.avatar'), status: 'pending', viewType: 'face' },
     { id: 2, name: t('characters:imageGeneration.multiStage.stages.front'), status: 'pending', viewType: 'front' },
@@ -39,6 +46,22 @@ export function MultiStageProgress({
   const [overallProgress, setOverallProgress] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Load credits on mount
+  useEffect(() => {
+    const loadCredits = async () => {
+      try {
+        const balance = await creditService.getBalance();
+        setCredits(balance);
+        setHasEnoughCredits(balance >= cost);
+      } catch (error) {
+        console.error('Failed to load credits:', error);
+        setCredits(0);
+        setHasEnoughCredits(false);
+      }
+    };
+    loadCredits();
+  }, [cost]);
 
   // Start generation
   const startGeneration = async () => {
@@ -249,9 +272,17 @@ export function MultiStageProgress({
       {!isGenerating && !error && overallProgress === 0 && (
         <button
           onClick={startGeneration}
-          className="w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+          disabled={!hasEnoughCredits}
+          className={`w-full py-3 px-6 text-white rounded-lg font-semibold transition-opacity ${
+            hasEnoughCredits
+              ? 'bg-primary hover:opacity-90'
+              : 'bg-gray-400 cursor-not-allowed'
+          }`}
         >
-          {t('characters:imageGeneration.multiStage.startButton')}
+          {!hasEnoughCredits
+            ? `Insufficient credits (need ${cost})`
+            : `${t('characters:imageGeneration.multiStage.startButton')} (${cost} credits)`
+          }
         </button>
       )}
 
@@ -259,9 +290,17 @@ export function MultiStageProgress({
       {error && (
         <button
           onClick={startGeneration}
-          className="w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+          disabled={!hasEnoughCredits}
+          className={`w-full py-3 px-6 text-white rounded-lg font-semibold transition-opacity ${
+            hasEnoughCredits
+              ? 'bg-primary hover:opacity-90'
+              : 'bg-gray-400 cursor-not-allowed'
+          }`}
         >
-          {t('common:retry')}
+          {!hasEnoughCredits
+            ? `Insufficient credits (need ${cost})`
+            : t('common:retry')
+          }
         </button>
       )}
     </div>

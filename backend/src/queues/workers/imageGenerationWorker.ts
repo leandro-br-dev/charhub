@@ -11,6 +11,8 @@ import { comfyuiService, promptEngineering, ImageGenerationType } from '../../se
 import { r2Service } from '../../services/r2Service';
 import { convertToWebP, getContrastingChromaKey } from '../../utils/imageUtils';
 import { multiStageCharacterGenerator } from '../../services/image-generation/multiStageCharacterGenerator';
+import { createTransaction } from '../../services/creditService';
+import { getImageGenerationCost } from '../../config/credits';
 import type {
   ImageGenerationJobData,
   ImageGenerationJobResult,
@@ -22,6 +24,43 @@ import type {
   MultiStageGenerationResult,
 } from '../jobs/imageGenerationJob';
 import { StickerStatus } from '../../generated/prisma';
+
+/**
+ * Execute operation with credit management
+ * Deducts credits before operation, refunds if operation fails
+ */
+async function executeWithCredits<T>(
+  operation: () => Promise<T>,
+  userId: string,
+  cost: number,
+  reason: string
+): Promise<T> {
+  // Deduct credits upfront
+  const { transaction } = await createTransaction(
+    userId,
+    'CONSUMPTION',
+    -cost,
+    reason
+  );
+
+  logger.info({ userId, cost, transactionId: transaction.id }, 'Credits deducted for image generation');
+
+  try {
+    // Execute the operation
+    const result = await operation();
+    return result;
+  } catch (error) {
+    // Refund credits if operation fails
+    logger.warn({ userId, cost, originalTransactionId: transaction.id }, 'Image generation failed, refunding credits');
+    await createTransaction(
+      userId,
+      'REFUND',
+      cost,
+      `Refund for failed: ${reason}`
+    );
+    throw error;
+  }
+}
 
 /**
  * Process image generation job
@@ -67,128 +106,134 @@ export async function processImageGeneration(
 async function processAvatarGeneration(
   data: AvatarGenerationJobData
 ): Promise<ImageGenerationJobResult> {
-  const { characterId, referenceImageUrl, prompt: providedPrompt } = data;
+  const { characterId, userId, referenceImageUrl, prompt: providedPrompt } = data;
 
-  // Get character data
-  const character = await prisma.character.findUnique({
-    where: { id: characterId },
-    include: { lora: true, mainAttire: true, species: true },
-  });
+  // Calculate cost
+  const cost = getImageGenerationCost('avatar', { withReference: !!referenceImageUrl });
 
-  if (!character) {
-    throw new Error(`Character ${characterId} not found`);
-  }
-
-  // Download and upload reference image to ComfyUI if provided (for IP-Adapter)
-  let referenceImageFilename: string | undefined;
-  if (referenceImageUrl) {
-    try {
-      // Extract R2 key from URL
-      // URL format: https://pub-xxx.r2.dev/characters/xxx/reference/uploaded_xxx.webp
-      // or: https://media.charhub.app/characters/xxx/reference/uploaded_xxx.webp
-      const urlObj = new URL(referenceImageUrl);
-      const r2Key = urlObj.pathname.replace(/^\//, ''); // Remove leading slash
-
-      // Download image directly from R2 using SDK (more reliable than fetch with presigned URL)
-      const imageBuffer = await r2Service.downloadObject(r2Key);
-      logger.info({ r2Key, sizeBytes: imageBuffer.length }, 'Downloaded reference image from R2');
-
-      // Upload to ComfyUI server
-      const tempFilename = `ref_${Date.now()}_${characterId}.png`;
-      referenceImageFilename = await comfyuiService.uploadImage(imageBuffer, tempFilename, true);
-
-      logger.info({ referenceImageFilename, originalUrl: referenceImageUrl }, 'Reference image uploaded to ComfyUI for IP-Adapter');
-    } catch (error) {
-      logger.warn({ error, referenceImageUrl }, 'Failed to upload reference image to ComfyUI, proceeding without IP-Adapter');
-    }
-  }
-
-  // Use provided prompt if available, otherwise build from character data
-  let prompt: any;
-  if (providedPrompt && providedPrompt.trim().length > 0) {
-    // Use the pre-generated Stable Diffusion prompt
-    logger.info({ characterId, providedPrompt }, 'Using pre-generated Stable Diffusion prompt');
-    prompt = {
-      positive: providedPrompt,
-      negative: 'low quality, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry',
-      referenceImagePath: referenceImageFilename,
-    };
-  } else {
-    // Fallback: Build prompt using LLM-powered translation to SD tags
-    logger.info({ characterId }, 'No prompt provided, building from character data');
-    prompt = await promptEngineering.buildAvatarPrompt({
-      name: `${character.firstName} ${character.lastName || ''}`.trim(),
-      style: character.style || undefined,
-      age: character.age || undefined,
-      gender: character.gender || undefined,
-      species: character.species?.name || undefined,
-      physicalCharacteristics: character.physicalCharacteristics || undefined,
-      defaultAttire: character.mainAttire?.description || undefined,
-      lora: character.lora
-        ? {
-            name: character.lora.name,
-            filepathRelative: character.lora.filepathRelative || '',
-          }
-        : undefined,
+  // Execute with credit management
+  return executeWithCredits(async () => {
+    // Get character data
+    const character = await prisma.character.findUnique({
+      where: { id: characterId },
+      include: { lora: true, mainAttire: true, species: true },
     });
 
-    // Add reference image filename to prompt if available (for ComfyUI LoadImage node)
-    if (referenceImageFilename) {
-      prompt.referenceImagePath = referenceImageFilename;
+    if (!character) {
+      throw new Error(`Character ${characterId} not found`);
     }
-  }
 
-  logger.info({ characterId, prompt: prompt.positive, hasReferenceImage: !!referenceImageFilename, usedProvidedPrompt: !!providedPrompt }, 'Avatar prompt ready');
+    // Download and upload reference image to ComfyUI if provided (for IP-Adapter)
+    let referenceImageFilename: string | undefined;
+    if (referenceImageUrl) {
+      try {
+        // Extract R2 key from URL
+        // URL format: https://pub-xxx.r2.dev/characters/xxx/reference/uploaded_xxx.webp
+        // or: https://media.charhub.app/characters/xxx/reference/uploaded_xxx.webp
+        const urlObj = new URL(referenceImageUrl);
+        const r2Key = urlObj.pathname.replace(/^\//, ''); // Remove leading slash
 
-  // Generate image with ComfyUI
-  const result = await comfyuiService.generateAvatar(prompt);
+        // Download image directly from R2 using SDK (more reliable than fetch with presigned URL)
+        const imageBuffer = await r2Service.downloadObject(r2Key);
+        logger.info({ r2Key, sizeBytes: imageBuffer.length }, 'Downloaded reference image from R2');
 
-  // Convert to WebP
-  const webpBuffer = await convertToWebP(result.imageBytes, {
-    prompt: prompt.positive,
-    character: character.firstName,
-    type: 'avatar',
-  });
+        // Upload to ComfyUI server
+        const tempFilename = `ref_${Date.now()}_${characterId}.png`;
+        referenceImageFilename = await comfyuiService.uploadImage(imageBuffer, tempFilename, true);
 
-  // Upload to R2
-  const objectKey = `characters/${characterId}/avatar/avatar_${Date.now()}.webp`;
-  const { publicUrl } = await r2Service.uploadObject({
-    key: objectKey,
-    body: webpBuffer,
-    contentType: 'image/webp',
-  });
+        logger.info({ referenceImageFilename, originalUrl: referenceImageUrl }, 'Reference image uploaded to ComfyUI for IP-Adapter');
+      } catch (error) {
+        logger.warn({ error, referenceImageUrl }, 'Failed to upload reference image to ComfyUI, proceeding without IP-Adapter');
+      }
+    }
 
-  // Save to database - deactivate other avatars and set this as active
-  await prisma.$transaction([
-    // Deactivate all existing avatars for this character
-    prisma.characterImage.updateMany({
-      where: {
-        characterId,
-        type: 'AVATAR',
-      },
-      data: { isActive: false },
-    }),
-    // Create new avatar as active
-    prisma.characterImage.create({
-      data: {
-        characterId,
-        type: 'AVATAR',
-        url: publicUrl,
-        key: objectKey,
-        contentType: 'image/webp',
-        sizeBytes: webpBuffer.length,
-        isActive: true, // Set as active avatar automatically
-      },
-    }),
-  ]);
+    // Use provided prompt if available, otherwise build from character data
+    let prompt: any;
+    if (providedPrompt && providedPrompt.trim().length > 0) {
+      // Use the pre-generated Stable Diffusion prompt
+      logger.info({ characterId, providedPrompt }, 'Using pre-generated Stable Diffusion prompt');
+      prompt = {
+        positive: providedPrompt,
+        negative: 'low quality, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry',
+        referenceImagePath: referenceImageFilename,
+      };
+    } else {
+      // Fallback: Build prompt using LLM-powered translation to SD tags
+      logger.info({ characterId }, 'No prompt provided, building from character data');
+      prompt = await promptEngineering.buildAvatarPrompt({
+        name: `${character.firstName} ${character.lastName || ''}`.trim(),
+        style: character.style || undefined,
+        age: character.age || undefined,
+        gender: character.gender || undefined,
+        species: character.species?.name || undefined,
+        physicalCharacteristics: character.physicalCharacteristics || undefined,
+        defaultAttire: character.mainAttire?.description || undefined,
+        lora: character.lora
+          ? {
+              name: character.lora.name,
+              filepathRelative: character.lora.filepathRelative || '',
+            }
+          : undefined,
+      });
 
-  logger.info({ characterId, url: publicUrl }, 'Avatar generated successfully');
+      // Add reference image filename to prompt if available (for ComfyUI LoadImage node)
+      if (referenceImageFilename) {
+        prompt.referenceImagePath = referenceImageFilename;
+      }
+    }
 
-  return {
-    success: true,
-    imageUrl: publicUrl,
-    characterId,
-  };
+    logger.info({ characterId, prompt: prompt.positive, hasReferenceImage: !!referenceImageFilename, usedProvidedPrompt: !!providedPrompt }, 'Avatar prompt ready');
+
+    // Generate image with ComfyUI
+    const result = await comfyuiService.generateAvatar(prompt);
+
+    // Convert to WebP
+    const webpBuffer = await convertToWebP(result.imageBytes, {
+      prompt: prompt.positive,
+      character: character.firstName,
+      type: 'avatar',
+    });
+
+    // Upload to R2
+    const objectKey = `characters/${characterId}/avatar/avatar_${Date.now()}.webp`;
+    const { publicUrl } = await r2Service.uploadObject({
+      key: objectKey,
+      body: webpBuffer,
+      contentType: 'image/webp',
+    });
+
+    // Save to database - deactivate other avatars and set this as active
+    await prisma.$transaction([
+      // Deactivate all existing avatars for this character
+      prisma.characterImage.updateMany({
+        where: {
+          characterId,
+          type: 'AVATAR',
+        },
+        data: { isActive: false },
+      }),
+      // Create new avatar as active
+      prisma.characterImage.create({
+        data: {
+          characterId,
+          type: 'AVATAR',
+          url: publicUrl,
+          key: objectKey,
+          contentType: 'image/webp',
+          sizeBytes: webpBuffer.length,
+          isActive: true, // Set as active avatar automatically
+        },
+      }),
+    ]);
+
+    logger.info({ characterId, url: publicUrl }, 'Avatar generated successfully');
+
+    return {
+      success: true,
+      imageUrl: publicUrl,
+      characterId,
+    };
+  }, userId, cost, `Avatar generation for character ${characterId}`);
 }
 
 /**
@@ -462,25 +507,31 @@ async function processMultiStageDatasetGeneration(
 ): Promise<MultiStageGenerationResult> {
   const { characterId, userId, prompt, loras, referenceImages } = data;
 
-  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0 }, 'Processing multi-stage dataset generation');
+  // Calculate cost
+  const cost = getImageGenerationCost('multi-stage-dataset');
+
+  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost }, 'Processing multi-stage dataset generation');
 
   // Update job progress
   job.updateProgress({ stage: 0, total: 4, message: 'Starting multi-stage generation...' });
 
-  // Use the multi-stage character generator
-  await multiStageCharacterGenerator.generateCharacterDataset({
-    characterId,
-    prompt,
-    loras,
-    userSamples: referenceImages || [],
-    userId,
-    onProgress: (stage, total, message) => {
-      logger.info({ jobId: job.id, stage, total, message }, 'Multi-stage progress update');
-      job.updateProgress({ stage, total, message });
-    },
-  });
+  // Execute with credit management
+  await executeWithCredits(async () => {
+    // Use the multi-stage character generator
+    await multiStageCharacterGenerator.generateCharacterDataset({
+      characterId,
+      prompt,
+      loras,
+      userSamples: referenceImages || [],
+      userId,
+      onProgress: (stage, total, message) => {
+        logger.info({ jobId: job.id, stage, total, message }, 'Multi-stage progress update');
+        job.updateProgress({ stage, total, message });
+      },
+    });
 
-  logger.info({ jobId: job.id, characterId }, 'Multi-stage dataset generation completed');
+    logger.info({ jobId: job.id, characterId }, 'Multi-stage dataset generation completed');
+  }, userId, cost, `Multi-stage reference dataset for character ${characterId}`);
 
   return {
     success: true,
