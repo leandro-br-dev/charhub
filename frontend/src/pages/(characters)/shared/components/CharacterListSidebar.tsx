@@ -16,6 +16,22 @@ interface CharacterWithFavorite extends CharacterSummary {
   isOwn: boolean;
 }
 
+// Helper function to extract avatar URL from character
+const getAvatarUrl = (character: CharacterSummary): string | null => {
+  // First check if avatar field exists
+  if (character.avatar) {
+    return character.avatar;
+  }
+  // Otherwise, extract from images array
+  if ('images' in character && character.images && Array.isArray(character.images) && character.images.length > 0) {
+    const avatarImage = (character.images as any[]).find((img: any) => img.type === 'AVATAR' && img.isActive);
+    if (avatarImage) {
+      return avatarImage.url;
+    }
+  }
+  return null;
+};
+
 export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps) {
   const [characters, setCharacters] = useState<CharacterWithFavorite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,8 +64,16 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
         // Add favorite characters FIRST
         for (const char of favoriteResponse) {
           if (!addedIds.has(char.id)) {
+            // Normalize avatar URL from images array if needed
+            const normalizedChar = { ...char };
+            if (!char.avatar && 'images' in char && char.images && Array.isArray(char.images)) {
+              const avatarImage = (char.images as any[]).find((img: any) => img.type === 'AVATAR' && img.isActive);
+              if (avatarImage) {
+                (normalizedChar as any).avatar = avatarImage.url;
+              }
+            }
             combined.push({
-              ...char,
+              ...normalizedChar,
               isOwn: char.userId === user.id,
               isFavorite: true,
             });
@@ -100,6 +124,7 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
         <ul className="space-y-2">
           {characters.map(character => {
             const fullName = [character.firstName, character.lastName].filter(Boolean).join(' ');
+            const avatarUrl = getAvatarUrl(character);
             return (
               <li key={character.id}>
                 <Link
@@ -107,8 +132,8 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
                   onClick={onLinkClick}
                   className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 >
-                  {character.avatar ? (
-                    <CachedImage src={character.avatar} alt={fullName} className="h-8 w-8 rounded-full object-cover" />
+                  {avatarUrl ? (
+                    <CachedImage src={avatarUrl} alt={fullName} className="h-8 w-8 rounded-full object-cover" />
                   ) : (
                     <img src="/logo.png" alt={fullName} className="h-8 w-8 rounded-full object-cover" />
                   )}
