@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { characterService } from '../../../../services/characterService';
 import type { CharacterSummary } from '../../../../types/characters';
@@ -20,6 +21,7 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  const { t } = useTranslation('characters');
 
   useEffect(() => {
     const fetchCharacters = async () => {
@@ -35,34 +37,35 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
 
         // Fetch user's own characters and favorites in parallel
         const [ownResponse, favoriteResponse] = await Promise.all([
-          characterService.list({ public: false, limit: 10, sortBy: 'updatedAt' }),
+          characterService.list({ public: false, limit: 15, sortBy: 'updatedAt' }),
           characterService.getFavorites(15),
         ]);
 
-        const favoriteIds = new Set(favoriteResponse.map(c => c.id));
-
-        // Combine and mark ownership/favorite status
+        // Track which IDs are already added to avoid duplicates
+        const addedIds = new Set<string>();
         const combined: CharacterWithFavorite[] = [];
 
-        // Add own characters first
-        for (const char of ownResponse.items) {
-          combined.push({
-            ...char,
-            isOwn: true,
-            isFavorite: favoriteIds.has(char.id),
-          });
-          // Remove from favorites set to avoid duplicates
-          favoriteIds.delete(char.id);
-        }
-
-        // Add remaining favorite characters (not owned by user)
+        // Add favorite characters FIRST
         for (const char of favoriteResponse) {
-          if (favoriteIds.has(char.id)) {
+          if (!addedIds.has(char.id)) {
             combined.push({
               ...char,
-              isOwn: false,
+              isOwn: char.userId === user.id,
               isFavorite: true,
             });
+            addedIds.add(char.id);
+          }
+        }
+
+        // Add remaining own characters (not already in favorites)
+        for (const char of ownResponse.items) {
+          if (!addedIds.has(char.id)) {
+            combined.push({
+              ...char,
+              isOwn: true,
+              isFavorite: false,
+            });
+            addedIds.add(char.id);
           }
         }
 
@@ -113,7 +116,7 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
                     <span className="text-sm font-medium text-content truncate">{fullName}</span>
                     <div className="flex items-center gap-1">
                       {character.isOwn && (
-                        <span className="text-xs text-muted">My character</span>
+                        <span className="text-xs text-muted">{t('sidebar.myCharacter')}</span>
                       )}
                     </div>
                   </div>

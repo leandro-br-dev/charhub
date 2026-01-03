@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { Tag as UITag } from '../../../../components/ui/Tag';
+import { AgeRatingBadge } from '../../../../components/ui/AgeRatingBadge';
 import type { Story } from '../../../../types/story';
 
 export interface StoryCardProps {
@@ -53,12 +54,10 @@ export function StoryCard({ story, clickAction = 'view', blurNsfw = false }: Sto
         {/* Age Rating Badge - Top Left */}
         {story.ageRating && (
           <div className="absolute left-2 top-2 z-10">
-            <UITag
-              label={story.ageRating}
-              icon={<span className="material-symbols-outlined text-xs">verified</span>}
-              tone="success"
-              selected
-              disabled
+            <AgeRatingBadge
+              ageRating={story.ageRating}
+              variant="inline"
+              size="sm"
             />
           </div>
         )}

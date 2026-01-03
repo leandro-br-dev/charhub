@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { CachedImage } from '../../../components/ui/CachedImage';
 import { Tag as UITag, Dialog } from '../../../components/ui';
+import { AgeRatingBadge } from '../../../components/ui/AgeRatingBadge';
 import { useCharacterMutations, useCharacterQuery } from '../shared/hooks/useCharacterQueries';
 import { chatService } from '../../../services/chatService';
 import { useAuth } from '../../../hooks/useAuth';
@@ -374,12 +375,10 @@ export default function CharacterDetailPage(): JSX.Element {
               {/* Tags */}
               <div className="mb-4 flex flex-wrap gap-2">
                 {/* Age rating badge */}
-                <UITag
-                  label={t(`characters:ageRatings.${data.ageRating}`)}
-                  icon={<span className="material-symbols-outlined text-sm">verified</span>}
-                  tone="success"
-                  selected
-                  disabled
+                <AgeRatingBadge
+                  ageRating={data.ageRating}
+                  variant="inline"
+                  size="md"
                 />
 
                 {/* Content tags */}

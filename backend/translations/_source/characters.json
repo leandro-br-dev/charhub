@@ -118,6 +118,9 @@
         "quickCreateLink": "Jump straight into creation"
       }
     },
+    "sidebar": {
+      "myCharacter": "My character"
+    },
     "form": {
       "submit": "Save",
       "cancel": "Cancel",
