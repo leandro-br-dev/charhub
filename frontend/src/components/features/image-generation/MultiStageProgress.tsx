@@ -45,6 +45,7 @@ export function MultiStageProgress({
   const [jobId, setJobId] = useState<string | null>(null);
   const [overallProgress, setOverallProgress] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Load credits on mount
@@ -66,9 +67,16 @@ export function MultiStageProgress({
   // Start generation
   const startGeneration = async () => {
     setIsGenerating(true);
+    setIsComplete(false);
     setError(null);
     setOverallProgress(0);
-    setStages(prev => prev.map(s => ({ ...s, status: 'pending' as const, imageUrl: undefined })));
+
+    // Mark first stage as in_progress immediately
+    setStages(prev => prev.map((s, idx) => ({
+      ...s,
+      status: idx === 0 ? 'in_progress' as const : 'pending' as const,
+      imageUrl: undefined
+    })));
 
     try {
       const response = await api.post<{ jobId: string; message: string; estimatedTime: string; stages: string[] }>(
@@ -117,6 +125,7 @@ export function MultiStageProgress({
         if (state === 'completed') {
           clearInterval(interval);
           setIsGenerating(false);
+          setIsComplete(true);
           setOverallProgress(100);
 
           // Update stages with results if available
@@ -131,7 +140,6 @@ export function MultiStageProgress({
             });
 
             setStages(updatedStages);
-            onComplete?.(updatedStages);
           } else {
             // No results but completed - mark all as completed
             const updatedStages = stages.map(stage => ({
@@ -139,7 +147,6 @@ export function MultiStageProgress({
               status: 'completed' as const,
             }));
             setStages(updatedStages);
-            onComplete?.(updatedStages);
           }
         } else if (state === 'failed') {
           clearInterval(interval);
@@ -341,6 +348,26 @@ export function MultiStageProgress({
             : t('common:retry')
           }
         </button>
+      )}
+
+      {/* Completion Message & Done Button */}
+      {isComplete && !error && (
+        <div className="space-y-3">
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-500 rounded-lg text-center">
+            <p className="text-green-700 dark:text-green-300 font-semibold text-lg">
+              ✓ {t('characters:imageGeneration.multiStage.generationComplete', 'Generation Complete!')}
+            </p>
+            <p className="text-green-600 dark:text-green-400 text-sm mt-1">
+              {t('characters:imageGeneration.multiStage.allStagesCompleted', 'All 4 reference images have been generated.')}
+            </p>
+          </div>
+          <button
+            onClick={onComplete}
+            className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-opacity"
+          >
+            {t('common:done', 'Done')}
+          </button>
+        </div>
       )}
     </div>
   );

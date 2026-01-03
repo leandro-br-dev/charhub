@@ -352,6 +352,8 @@
         "failed": "Failed",
         "estimatedTime": "Estimated time: 3-4 minutes",
         "generating": "Generating dataset...",
+        "generationComplete": "Generation Complete!",
+        "allStagesCompleted": "All 4 reference images have been generated.",
         "errors": {
           "startFailed": "Failed to start generation",
           "generationFailed": "Generation failed",
