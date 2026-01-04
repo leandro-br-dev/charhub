@@ -6,7 +6,7 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 ---
 
-## 📊 Status Atual: 28 de Dezembro de 2025
+## 📊 Status Atual: 03 de Janeiro de 2026
 
 ### Tarefas em Progresso
 
@@ -19,6 +19,10 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 | T018 | **Dashboard UI/UX Improvements** | Agent Coder | 📋 Ativo | `feature/dashboard-ui-improvements` | 04/01/2026 | 02/01 - Spec criada, ready para implementação |
 | T019 | **Translation & i18n Fixes** | Agent Coder | 📋 Ativo | `feature/translation-i18n-fixes` | 04/01/2026 | 02/01 - Spec criada, ready para implementação |
 | T020 | **Admin Permissions (Official Characters)** | Agent Coder | 📋 Ativo | `feature/admin-permissions-official-characters` | 04/01/2026 | 02/01 - Spec criada, ready para implementação |
+| T021 | **Civit.ai Auto-Generation: Full References** | Agent Coder | 📋 Planejado | `feature/civitai-auto-generation-full-references` | 08/01/2026 | 03/01 - Spec criada, ready para implementação |
+| T022 | **Improved Image Generation Prompts** | Agent Coder | 📋 Planejado | `feature/improved-image-generation-prompts` | 10/01/2026 | 03/01 - Spec criada, ready para implementação |
+| T023 | **Visual Style Reference System** | Agent Coder | 📋 Planejado | `feature/visual-style-reference-system` | 12/01/2026 | 03/01 - Spec criada, ready para implementação |
+| T024 | **LLM Cost Tracking System** | Agent Planner + Agent Coder | 📋 Planejado | TBD | 15/01/2026 | 03/01 - Spec criada, Phase 1 (Planner) → Phase 2 (Coder) |
 
 ---
 
@@ -36,8 +40,14 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 | 7️⃣ | **Automated Character Generation Improvements** | 🔥 ALTA | 10-12 horas | Corrigir qualidade, diversidade e censura Civit.ai | `active/automated-character-generation-improvements.md` |
 | 8️⃣ | **Character Image Generation Multi-Stage** | 🔥 ALTA | 12-16 horas* | Workflow progressivo de 4 estágios | `active/character-image-generation-multi-stage-workflow.md` |
 | 9️⃣ | **UI Improvements (Sidebar + Age Tags)** | 🟡 MÉDIA | 5-6 horas | Filtro sidebar + componente age rating unificado | `active/ui-improvements-sidebar-and-age-tags.md` |
+| 🔟 | **Civit.ai Auto-Generation: Full References** | 🔥 ALTA | 4-5 horas | Fix rotina para gerar avatar + 4 refs (não só avatar) | `active/civitai-auto-generation-full-references.md` |
+| 1️⃣1️⃣ | **Improved Image Generation Prompts** | 🔥 ALTA | 6-7 horas | Prompts robustos estruturados para melhor qualidade | `active/improved-image-generation-prompts.md` |
+| 1️⃣2️⃣ | **Visual Style Reference System** | 🔥 ALTA | 8-9 horas | Database de Checkpoints/LoRAs por estilo visual | `active/visual-style-reference-system.md` |
+| 1️⃣3️⃣ | **LLM Cost Tracking System** | 🔴 CRÍTICA (BI) | 18-22 horas | **Phase 1: Planner (research)**, Phase 2: Coder (implementation) | `active/llm-cost-tracking-system.md` |
 
 **⚠️ Nota sobre T013**: Requer verificação de capacidades da API ComfyUI (Phase 0) antes de iniciar implementação completa.
+
+**⚠️ Nota sobre T024 (LLM Cost Tracking)**: Feature em 2 fases. **Phase 1 (Planner)**: Research de pricing, mapeamento de features, cálculo de custos, recomendações de pricing. **Phase 2 (Coder)**: Implementação do sistema de tracking e analytics. Phase 1 deve ser completada antes de iniciar Phase 2.
 
 ---
 
@@ -53,6 +63,61 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 ---
 
 ## 🚀 Histórico Recente de Atribuições
+
+### Semana de 01-07 Janeiro de 2026
+
+| Tarefa | Agente | Status | Detalhes |
+|--------|--------|--------|----------|
+| **Civit.ai Auto-Generation: Full References** | Agent Coder | 📋 Planejado | Spec completa em `active/civitai-auto-generation-full-references.md`. **PRIORIDADE ALTA** - Fix rotina diária para gerar dataset completo (avatar + 4 referências). |
+| **Improved Image Generation Prompts** | Agent Coder | 📋 Planejado | Spec completa em `active/improved-image-generation-prompts.md`. **PRIORIDADE ALTA** - Prompts estruturados para melhor qualidade de imagens. |
+| **Visual Style Reference System** | Agent Coder | 📋 Planejado | Spec completa em `active/visual-style-reference-system.md`. **PRIORIDADE ALTA** - Sistema de checkpoints/LoRAs por estilo visual. |
+| **LLM Cost Tracking System** | Agent Planner + Agent Coder | 📋 Planejado | Spec completa em `active/llm-cost-tracking-system.md`. **PRIORIDADE CRÍTICA (BI)** - Sistema de tracking e análise de custos LLM. Phase 1 (Planner) → Phase 2 (Coder). |
+
+**Contexto das Novas Features** (03/01/2026):
+
+**T021 - Civit.ai Auto-Generation: Full References**:
+- **Problema**: Rotina diária do Civit.ai gera apenas avatar, não as 4 imagens de referência
+- **Impacto**: Personagens auto-gerados têm dataset incompleto vs personagens manuais
+- **Solução**: Extrair lógica de geração de referências para serviço compartilhado, usar em ambos fluxos
+- **Estimativa**: 4-5 horas
+- **Branch sugerida**: `feature/civitai-auto-generation-full-references`
+
+**T022 - Improved Image Generation Prompts**:
+- **Problema**: Prompts muito simples resultam em qualidade inconsistente e baixa
+- **Impacto**: Alta taxa de regeneração (3-4x), insatisfação de usuários, desperdício de créditos
+- **Solução**: Sistema de prompts estruturados (quality + subject + style + composition + technical tags)
+- **Estimativa**: 6-7 horas
+- **ROI Esperado**: Redução de 30-50% na taxa de regeneração
+- **Branch sugerida**: `feature/improved-image-generation-prompts`
+
+**T023 - Visual Style Reference System**:
+- **Problema**: Não há sistema centralizado de estilos visuais, checkpoints hardcoded
+- **Impacto**: Inconsistência de estilo, difícil adicionar novos modelos, manutenção complexa
+- **Solução**: Database com checkpoints, LoRAs, e configurações por estilo (Anime, Realistic, Cartoon, etc)
+- **Estimativa**: 8-9 horas (schema + seed + service + integration)
+- **Branch sugerida**: `feature/visual-style-reference-system`
+
+**T024 - LLM Cost Tracking System**:
+- **Problema**: Zero visibility de custos reais de LLM, pricing arbitrário, risco de prejuízo
+- **Impacto**: Não sabemos se planos são lucrativos, quanto gastamos com usuários gratuitos
+- **Solução**: Sistema completo de tracking, analytics, e recomendações de pricing
+- **Estimativa**: 18-22 horas total
+  - **Phase 1 (Agent Planner - 8-10h)**: Research pricing LLM, mapear features, calcular custos, definir pricing ótimo
+  - **Phase 2 (Agent Coder - 10-12h)**: Implementar tracking, analytics service, API endpoints, dashboard
+- **Branch sugerida (Phase 2)**: `feature/llm-cost-tracking-system`
+
+**Sequência de Implementação Recomendada**:
+1. **T021** (Civit.ai Full Refs) - Quick win, complementa feature existente
+2. **T022** (Improved Prompts) - Melhoria imediata de qualidade
+3. **T023** (Visual Style System) - Fundação para qualidade consistente
+4. **T024 Phase 1** (LLM Cost Analysis) - Agent Planner faz research e análise
+5. **T024 Phase 2** (LLM Cost Implementation) - Agent Coder implementa após análise
+
+**Dependências**:
+- T022 e T023 podem beneficiar-se mutuamente (prompts + checkpoints = melhor qualidade)
+- T024 Phase 2 depende de T024 Phase 1 estar completo
+
+---
 
 ### Semana de 25-31 Dezembro
 
