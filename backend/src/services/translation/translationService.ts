@@ -2,6 +2,7 @@ import { prisma } from '../../config/database';
 import { redis } from '../../config/redis';
 import { logger } from '../../config/logger';
 import { callLLM, type LLMResponse } from '../llm';
+import { trackFromLLMResponse } from '../llm/llmUsageTracker';
 import { TranslationStatus } from '../../generated/prisma';
 import crypto from 'crypto';
 
@@ -67,6 +68,10 @@ export class TranslationService {
           'Translation cache hit (Redis)'
         );
 
+        // Track cached translation (Redis hit = 90% cost reduction)
+        const userId = this.extractUserIdFromContext(request);
+        this.trackCachedTranslation(cached, userId, request, 'redis');
+
         return {
           ...cached,
           translationTimeMs: Date.now() - startTime,
@@ -85,6 +90,10 @@ export class TranslationService {
           },
           'Translation cache hit (Database)'
         );
+
+        // Track cached translation (Database hit = 90% cost reduction)
+        const userId = this.extractUserIdFromContext(request);
+        this.trackCachedTranslation(dbResult, userId, request, 'database');
 
         // Save to Redis for next request
         await this.saveToRedis(request, dbResult);
@@ -209,13 +218,106 @@ export class TranslationService {
     const systemPrompt = this.buildSystemPrompt();
     const userPrompt = this.buildUserPrompt(request);
 
-    return await callLLM({
+    const response = await callLLM({
       provider: this.DEFAULT_PROVIDER,
       model: this.DEFAULT_MODEL,
       systemPrompt,
       userPrompt,
       temperature: 0.3,
       maxTokens: 2000,
+    });
+
+    // Track LLM usage for cost analysis
+    // Extract userId from context if available (for character/story translations)
+    const userId = this.extractUserIdFromContext(request);
+
+    trackFromLLMResponse(response, {
+      userId,
+      feature: 'CONTENT_TRANSLATION',
+      featureId: `${request.contentType}:${request.contentId}`,
+      operation: `translate_${request.fieldName}`,
+      cached: false, // Fresh translation
+      metadata: {
+        contentType: request.contentType,
+        contentId: request.contentId,
+        fieldName: request.fieldName,
+        fromLanguage: request.originalLanguageCode,
+        toLanguage: request.targetLanguageCode,
+        characterCount: request.originalText.length,
+      },
+    });
+
+    return response;
+  }
+
+  /**
+   * Extract userId from translation request context
+   * This is a helper to get userId for tracking when available
+   */
+  private extractUserIdFromContext(request: TranslationRequest): string | undefined {
+    // For Character translations, userId is in the context
+    if (request.context?.userId) {
+      return request.context.userId;
+    }
+    // For Story translations, userId is also in context
+    if (request.context?.authorId) {
+      return request.context.authorId;
+    }
+    return undefined;
+  }
+
+  /**
+   * Track cached translation usage
+   * This tracks translations served from cache (Redis or Database)
+   */
+  private trackCachedTranslation(
+    cached: any,
+    userId: string | undefined,
+    request: TranslationRequest,
+    cacheSource: 'redis' | 'database'
+  ): void {
+    // Track cached usage with estimated token count based on character count
+    // Rough estimate: 1 token ≈ 4 characters
+    const estimatedInputTokens = Math.ceil(request.originalText.length / 4);
+    const estimatedOutputTokens = Math.ceil((cached.translatedText?.length || request.originalText.length) / 4);
+
+    // Determine provider from cached translation or use default
+    const provider = cached.translationProvider || this.DEFAULT_PROVIDER;
+    const model = cached.translationModel || this.DEFAULT_MODEL;
+
+    // Map provider string to enum
+    const providerMap: Record<string, any> = {
+      gemini: 'GEMINI',
+      openai: 'OPENAI',
+      grok: 'GROK',
+    };
+
+    const providerEnum = providerMap[provider.toLowerCase()] || 'GEMINI';
+
+    // Track asynchronously (don't block the response)
+    const { trackLLMUsage } = require('../llm/llmUsageTracker');
+    trackLLMUsage({
+      userId,
+      feature: 'CONTENT_TRANSLATION',
+      featureId: `${request.contentType}:${request.contentId}`,
+      provider: providerEnum,
+      model,
+      inputTokens: estimatedInputTokens,
+      outputTokens: estimatedOutputTokens,
+      cached: true, // Mark as cached (cost = 10% of original)
+      operation: `translate_${request.fieldName}`,
+      metadata: {
+        contentType: request.contentType,
+        contentId: request.contentId,
+        fieldName: request.fieldName,
+        fromLanguage: request.originalLanguageCode,
+        toLanguage: request.targetLanguageCode,
+        cacheSource,
+        characterCount: request.originalText.length,
+        estimatedTokens: true, // Flag that tokens are estimated, not from API
+      },
+    }).catch((error: Error) => {
+      logger.debug({ error }, 'Failed to track cached translation');
     });
   }
 

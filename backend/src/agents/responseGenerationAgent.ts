@@ -1,5 +1,6 @@
 import { logger } from '../config/logger';
 import { callLLM, LLMRequest } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import {
   formatParticipantsForLLM,
 } from '../utils/conversationFormatter';
@@ -228,6 +229,23 @@ export class ResponseGenerationAgent {
 
     try {
       const llmResponse = await callLLM(llmRequest);
+
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(llmResponse, {
+        userId: user.id,
+        feature: 'CHAT_MESSAGE',
+        featureId: conversation.id,
+        operation: 'roleplay_response',
+        cached: false,
+        metadata: {
+          conversationId: conversation.id,
+          characterId: character.id,
+          participantId: respondingParticipant.id,
+          isMultiUser: allUsers && allUsers.size > 1,
+          messageCount: conversation.messages.length,
+        },
+      });
+
       // Post-process: Remove character name prefix if LLM still added it
       return this.removeNamePrefix(llmResponse.content, characterName);
     } catch (error) {
@@ -278,6 +296,21 @@ export class ResponseGenerationAgent {
 
     try {
       const llmResponse = await callLLM(llmRequest);
+
+      // Track LLM usage for cost analysis (assistant without character)
+      trackFromLLMResponse(llmResponse, {
+        userId: user.id,
+        feature: 'CHAT_MESSAGE',
+        featureId: lastMessage.conversationId,
+        operation: 'assistant_response',
+        cached: false,
+        metadata: {
+          conversationId: lastMessage.conversationId,
+          assistantName,
+          isAssistant: true,
+        },
+      });
+
       // Post-process: Remove assistant name prefix if LLM still added it
       return this.removeNamePrefix(llmResponse.content, assistantName);
     } catch (error) {

@@ -185,3 +185,6 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
     usage: response.usage,
   };
 }
+
+// Export LLM usage tracking functions
+export * from './llmUsageTracker';
