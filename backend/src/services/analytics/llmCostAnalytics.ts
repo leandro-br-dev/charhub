@@ -118,6 +118,7 @@ export async function getAverageCostByPlan(
   const toDate = dateRange?.to || new Date();
 
   // Raw SQL query to get costs by plan
+  // Users can have multiple UserPlan records, so we get the most recent active one
   const result = await prisma.$queryRaw<Array<{
     subscription_plan: string;
     avg_cost: number;
@@ -125,11 +126,21 @@ export async function getAverageCostByPlan(
     total_cost: number;
   }>>`
     SELECT
-      COALESCE(u."subscriptionPlan", 'FREE') as "subscription_plan",
+      COALESCE(active_plans.plan_tier, 'FREE') as "subscription_plan",
       COALESCE(AVG(cost_sum.total), 0) as "avg_cost",
       COUNT(DISTINCT u.id) as "user_count",
       COALESCE(SUM(cost_sum.total), 0) as "total_cost"
     FROM "User" u
+    LEFT JOIN (
+      -- Get the most recent active plan for each user
+      SELECT DISTINCT ON ("userId")
+        "userId",
+        p.tier as plan_tier
+      FROM "UserPlan" up
+      JOIN "Plan" p ON up."planId" = p.id
+      WHERE up.status = 'ACTIVE'
+      ORDER BY "userId", up."createdAt" DESC
+    ) active_plans ON u.id = active_plans."userId"
     LEFT JOIN (
       SELECT "userId", SUM("totalCost") as total
       FROM "LLMUsageLog"
@@ -137,7 +148,7 @@ export async function getAverageCostByPlan(
         AND "createdAt" <= ${toDate}
       GROUP BY "userId"
     ) cost_sum ON u.id = cost_sum."userId"
-    GROUP BY COALESCE(u."subscriptionPlan", 'FREE')
+    GROUP BY COALESCE(active_plans.plan_tier, 'FREE')
     ORDER BY "avg_cost" DESC
   `;
 

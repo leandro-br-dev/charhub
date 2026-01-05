@@ -1,12 +1,15 @@
 import { logger } from '../config/logger';
 import { callLLM, LLMRequest } from '../services/llm';
+import { modelRouter } from '../services/llm/modelRouter';
 import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
+import { contentClassificationService } from '../services/contentClassification';
 import {
   formatParticipantsForLLM,
 } from '../utils/conversationFormatter';
 import { Conversation, Message, User } from '../generated/prisma';
 import { StyleGuideService } from './style-guides';
 import { calculateAge, getLanguageName } from '../utils/agentUtils';
+import { decryptMessage, isEncrypted } from '../services/encryption';
 
 export class ResponseGenerationAgent {
   private styleGuideService = new StyleGuideService();
@@ -159,7 +162,7 @@ export class ResponseGenerationAgent {
       participantsContext || 'No participants context available.',
       '',
       'Conversation history:',
-      historyContext || 'No previous messages.',
+      historyContext && historyContext.trim().length > 0 ? historyContext : 'No previous messages.',
       storyContext,
     ].join('\n');
 
@@ -205,11 +208,53 @@ export class ResponseGenerationAgent {
 
     const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n${allUsersContext}\n\nAdditional Instructions for this Conversation (Override):\n${respondingParticipant.configOverride || ''}\n\nStyle Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. ${allUsers && allUsers.size > 1 ? `⚠️ CRITICAL - MULTI-USER CONVERSATION ⚠️\nThis conversation has MULTIPLE DIFFERENT PEOPLE. Each message in the history shows WHO sent it.\n- DO NOT assume all messages are from the same person\n- ALWAYS check the name before each message to know WHO is speaking\n- When responding, address the person who sent the LATEST message\n- Each user has their own profile information listed in "All Users in this Conversation" above` : `Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.`}\n4. You have access to information about ${allUsers && allUsers.size > 1 ? 'all users' : 'the user'} above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for other characters or users. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: The preferred language for this conversation is ${userLanguage}. You MUST respond in ${userLanguage} unless explicitly requested otherwise.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like "${characterName}:" or "Naruto:"). The UI already displays your name and avatar. Just write the response content directly.\n`;
 
+    const userPromptText = `${conversationContext}\n\n🎯 LATEST MESSAGE TO RESPOND TO:\nFrom: **${lastMessageSender}**\nMessage: "${lastMessage.content}"\n\n${allUsers && allUsers.size > 1 ? `⚠️ IMPORTANT: You are responding to ${lastMessageSender}, NOT to any other person in the conversation. Make sure to address ${lastMessageSender} directly in your response.\n\n` : ''}Respond now as ${characterName}. Remember: DO NOT include "${characterName}:" at the start of your response.`;
+
+    // CONTENT FILTERING: Classify user's message and validate user access
+    // Decrypt message first if encrypted (messages are stored encrypted in database)
+    const messageContentForClassification = isEncrypted(lastMessage.content)
+      ? decryptMessage(lastMessage.content)
+      : lastMessage.content;
+
+    // This uses Gemini 2.5 Flash-Lite to determine if content is appropriate for user's age
+    const classification = await contentClassificationService.classifyText(
+      messageContentForClassification,
+      {
+        characterTags: character.contentTags || undefined,
+        existingAgeRating: character.ageRating || undefined,
+      }
+    );
+
+    logger.info({
+      conversationId: conversation.id,
+      userId: user.id,
+      messageContent: messageContentForClassification.substring(0, 100),
+      classification,
+    }, 'content_classification_check');
+
+    // Validate user can access this content
+    contentClassificationService.validateUserAccess(
+      classification.ageRating,
+      user.birthDate ? calculateAge(new Date(user.birthDate)) : undefined,
+      user.birthDate || undefined
+    );
+
+    // Get model for chat (now simplified - Venice AI for all chat)
+    const modelSelection = await modelRouter.getModel({ feature: 'CHAT' });
+
+    logger.info({
+      conversationId: conversation.id,
+      characterId: character.id,
+      provider: modelSelection.provider,
+      model: modelSelection.model,
+      reasoning: modelSelection.reasoning,
+    }, 'Model selected for chat response');
+
     const llmRequest: LLMRequest = {
-      provider: 'gemini', // Or determine dynamically
-      model: 'gemini-2.5-flash-lite', // Or determine dynamically
+      provider: modelSelection.provider,
+      model: modelSelection.model,
       systemPrompt: `${systemPrompt}\n\nTOOL USAGE:\nYou have access to web_search tool. Use it when you need current information, real-time data, or facts that may have changed since your training. Examples: weather, news, current events, recent facts.`,
-      userPrompt: `${conversationContext}\n\n🎯 LATEST MESSAGE TO RESPOND TO:\nFrom: **${lastMessageSender}**\nMessage: "${lastMessage.content}"\n\n${allUsers && allUsers.size > 1 ? `⚠️ IMPORTANT: You are responding to ${lastMessageSender}, NOT to any other person in the conversation. Make sure to address ${lastMessageSender} directly in your response.\n\n` : ''}Respond now as ${characterName}. Remember: DO NOT include "${characterName}:" at the start of your response.`,
+      userPrompt: userPromptText,
       allowBrowsing: true,       // Enable web search
       autoExecuteTools: true,    // Auto-execute tools
       temperature: 0.8,          // Slightly creative for roleplay
@@ -277,18 +322,53 @@ export class ResponseGenerationAgent {
       participantsContext || 'No participants context available.',
       '',
       'Conversation history:',
-      historyContext || 'No previous messages.',
+      historyContext && historyContext.trim().length > 0 ? historyContext : 'No previous messages.',
     ].join('\n');
 
     const userContext = this.formatUserContext(user);
 
     const systemPrompt = `You are ${assistantName}, an AI assistant.\n\nYour role and focus:\n${assistantDescription}\n\nUser Information (Person you're assisting):\n${userContext}\n\n${configOverride ? `Additional instructions for this conversation:\n${configOverride}\n` : ''}\n\nGuidelines:\n1. Stay focused on your area of expertise: ${assistantDescription}\n2. Be helpful, clear, and concise\n3. You can engage in casual conversation, but prioritize your main function\n4. You have access to the user's information above. Use this knowledge naturally when appropriate.\n5. Do not roleplay as the user (${user.displayName || 'User'})\n6. FORMATTING INSTRUCTION: DO NOT prefix your response with your name (like "${assistantName}:"). The UI already displays your name and avatar. Just write the response content directly.`;
 
+    const userPromptText = `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${assistantName}. Remember: DO NOT include "${assistantName}:" at the start of your response.`;
+
+    // CONTENT FILTERING: Classify user's message and validate user access
+    // Decrypt message first if encrypted (messages are stored encrypted in database)
+    const messageContentForClassification = isEncrypted(lastMessage.content)
+      ? decryptMessage(lastMessage.content)
+      : lastMessage.content;
+
+    const classification = await contentClassificationService.classifyText(messageContentForClassification);
+
+    logger.info({
+      conversationId: lastMessage.conversationId,
+      userId: user.id,
+      messageContent: messageContentForClassification.substring(0, 100),
+      classification,
+    }, 'content_classification_check_assistant');
+
+    // Validate user can access this content
+    contentClassificationService.validateUserAccess(
+      classification.ageRating,
+      user.birthDate ? calculateAge(new Date(user.birthDate)) : undefined,
+      user.birthDate || undefined
+    );
+
+    // Get model for chat (Venice AI for all chat)
+    const modelSelection = await modelRouter.getModel({ feature: 'CHAT' });
+
+    logger.info({
+      conversationId: lastMessage.conversationId,
+      assistantName,
+      provider: modelSelection.provider,
+      model: modelSelection.model,
+      reasoning: modelSelection.reasoning,
+    }, 'Model selected for assistant chat response');
+
     const llmRequest: LLMRequest = {
-      provider: 'gemini',
-      model: 'gemini-2.5-flash-lite',
+      provider: modelSelection.provider,
+      model: modelSelection.model,
       systemPrompt: `${systemPrompt}\n\nTOOL USAGE:\nYou have access to web_search tool. Use it when you need current information, real-time data, or facts that may have changed since your training. Examples: weather, news, current events, recent facts, stock prices, etc.`,
-      userPrompt: `${conversationContext}\n\nLatest message:\n${lastMessage.content}\n\nRespond now as ${assistantName}. Remember: DO NOT include "${assistantName}:" at the start of your response.`,
+      userPrompt: userPromptText,
       allowBrowsing: true,       // Enable web search
       autoExecuteTools: true,    // Auto-execute tools
       temperature: 0.7,          // Balanced for assistance

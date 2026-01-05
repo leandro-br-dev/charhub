@@ -2,7 +2,7 @@ import { prisma } from '../../config/database';
 import { redis } from '../../config/redis';
 import { logger } from '../../config/logger';
 import { callLLM, type LLMResponse } from '../llm';
-import { trackFromLLMResponse } from '../llm/llmUsageTracker';
+import { trackFromLLMResponse, trackLLMUsage } from '../llm/llmUsageTracker';
 import { TranslationStatus } from '../../generated/prisma';
 import crypto from 'crypto';
 
@@ -295,7 +295,6 @@ export class TranslationService {
     const providerEnum = providerMap[provider.toLowerCase()] || 'GEMINI';
 
     // Track asynchronously (don't block the response)
-    const { trackLLMUsage } = require('../llm/llmUsageTracker');
     trackLLMUsage({
       userId,
       feature: 'CONTENT_TRANSLATION',

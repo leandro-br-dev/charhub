@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "Analyse des coûts LLM",
+    "header": {
+      "title": "Analyse des coûts LLM",
+      "description": "Suivre et analyser les coûts d'utilisation des LLM sur l'ensemble de la plateforme"
+    },
+    "dateRange": {
+      "label": "Période",
+      "last7Days": "7 derniers jours",
+      "last30Days": "30 derniers jours",
+      "last90Days": "90 derniers jours"
+    },
+    "sections": {
+      "costsByFeature": "Coûts par fonctionnalité",
+      "costsByModel": "Coûts par modèle",
+      "costsByPlan": "Coûts par plan d'abonnement",
+      "dailyCosts": "Tendance des coûts quotidiens",
+      "cachingMetrics": "Efficacité de la mise en cache",
+      "topUsers": "Utilisateurs principaux par coût"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "Coût total des LLM",
+        "description": "Coût opérationnel total des appels d'API LLM pour la période sélectionnée",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "Utilisateurs",
+      "avgCost": "Coût moyen/utilisateur"
+    },
+    "caching": {
+      "hitRate": "Taux de succès du cache",
+      "totalRequests": "Requêtes totales",
+      "cachedRequests": "Requêtes mises en cache",
+      "costSavings": "Économies de coûts"
+    },
+    "table": {
+      "userId": "ID utilisateur",
+      "totalCost": "Coût total",
+      "requests": "Requêtes"
+    },
+    "metrics": {
+      "requests": "requêtes",
+      "req": "req",
+      "avgReq": "moy/req"
+    },
+    "messages": {
+      "noData": "Aucune donnée disponible pour la période sélectionnée"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "Génération de personnages",
+      "STORY_GENERATION": "Génération d'histoires",
+      "CONTENT_TRANSLATION": "Traduction de contenu",
+      "CHAT_MESSAGE": "Messages de chat",
+      "AUTOMATED_GENERATION": "Génération automatisée",
+      "IMAGE_ANALYSIS": "Analyse d'images",
+      "OTHER": "Autre"
+    },
+    "planNames": {
+      "FREE": "Gratuit",
+      "PLUS": "Plus",
+      "PREMIUM": "Premium"
+    }
+  }
+}

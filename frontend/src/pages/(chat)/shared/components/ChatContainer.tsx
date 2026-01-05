@@ -254,11 +254,20 @@ const ChatContainer = () => {
 
   const handleSendMessage = useCallback(
     async (content: string): Promise<boolean> => {
+      console.log('[ChatContainer] handleSendMessage called', {
+        conversationId,
+        content,
+        socketIsConnected: socketState.isConnected,
+        socketId: socketState.socketId
+      });
+
       if (!conversationId) {
+        console.warn('[ChatContainer] No conversationId, returning false');
         return false;
       }
 
       if (socketState.isConnected) {
+        console.log('[ChatContainer] Using WebSocket to send message');
         try {
           const result = await socketState.sendMessage({
             conversationId,
@@ -266,7 +275,7 @@ const ChatContainer = () => {
             assistantParticipantId,
           });
 
-          console.log('[ChatContainer] Message sent successfully', {
+          console.log('[ChatContainer] Message sent successfully via WebSocket', {
             messageId: result.message.id,
             respondingBots: result.respondingBots,
           });
@@ -279,8 +288,11 @@ const ChatContainer = () => {
         } catch (error) {
           console.warn('[ChatContainer] WebSocket send failed, falling back to REST', error);
         }
+      } else {
+        console.log('[ChatContainer] WebSocket not connected, using REST fallback');
       }
 
+      console.log('[ChatContainer] Using REST API fallback');
       try {
         const message = await chatService.sendMessage({ conversationId, content });
         appendMessageToCache(queryClient, conversationId, message);

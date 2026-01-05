@@ -75,7 +75,7 @@ const LLM_PRICING_DATA: LLMPricingData[] = [
   // OpenRouter Venice AI (Free uncensored model)
   {
     provider: 'GROQ', // Using GROQ as placeholder for OpenRouter
-    model: 'venice-uncensored-free',
+    model: 'cognitivecomputations/dolphin-mistral-24b-venice-edition:free',
     inputPricePerMillion: 0.00,
     outputPricePerMillion: 0.00,
     source: 'https://openrouter.ai/docs/quickstart',
