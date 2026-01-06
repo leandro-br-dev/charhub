@@ -44,6 +44,10 @@ jest.mock('../../../config/logger', () => ({
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { __mockExports } = require('../../../config/database');
 
+// Get logger mock
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const logger = require('../../../config/logger').logger;
+
 describe('LLM Usage Tracker', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -289,8 +293,6 @@ describe('LLM Usage Tracker', () => {
     });
 
     it('should skip tracking when no usage data', () => {
-      const logger = require('../../../config/logger').logger;
-
       const response = {
         provider: 'gemini',
         model: 'gemini-2.5-flash-lite',
@@ -311,8 +313,6 @@ describe('LLM Usage Tracker', () => {
     });
 
     it('should skip tracking for unknown provider', () => {
-      const logger = require('../../../config/logger').logger;
-
       const response = {
         provider: 'unknown_provider',
         model: 'test-model',
