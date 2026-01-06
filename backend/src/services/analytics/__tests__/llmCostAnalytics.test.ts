@@ -321,7 +321,8 @@ describe('LLM Cost Analytics', () => {
       // The SQL query should order by date ASC
       expect(__mockExports.mockQueryRaw).toHaveBeenCalled();
       const queryArg = __mockExports.mockQueryRaw.mock.calls[0][0];
-      expect(queryArg).toContain('ORDER BY date ASC');
+      const queryString = Array.isArray(queryArg) ? queryArg.join('') : queryArg;
+      expect(queryString).toContain('ORDER BY date ASC');
     });
   });
 
@@ -464,7 +465,7 @@ describe('LLM Cost Analytics', () => {
       // Cost without cache = 0.10 * 10 + 1.0 = 2.0
       // Actual cost = 0.10 + 1.0 = 1.1
       // Savings = 2.0 - 1.1 = 0.9
-      expect(result.costSavings).toBe(0.9);
+      expect(result.costSavings).toBeCloseTo(0.9, 10);
     });
   });
 });

@@ -90,9 +90,9 @@ describe('LLM Usage Tracker', () => {
       // Total: 0.225
       expect(__mockExports.mockCreate).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          inputCost: 0.075,
-          outputCost: 0.15,
-          totalCost: 0.225,
+          inputCost: expect.closeTo(0.075, 10),
+          outputCost: expect.closeTo(0.15, 10),
+          totalCost: expect.closeTo(0.225, 10),
           totalTokens: 1500000,
         }),
       });
@@ -118,9 +118,9 @@ describe('LLM Usage Tracker', () => {
       // Total: 0.0225
       expect(__mockExports.mockCreate).toHaveBeenCalledWith({
         data: expect.objectContaining({
-          inputCost: 0.0075,
-          outputCost: 0.015,
-          totalCost: 0.0225,
+          inputCost: expect.closeTo(0.0075, 10),
+          outputCost: expect.closeTo(0.015, 10),
+          totalCost: expect.closeTo(0.0225, 10),
           cached: true,
         }),
       });
