@@ -7,6 +7,7 @@
 
 import { logger } from '../config/logger';
 import { callLLM } from '../services/llm';
+import { modelRouter } from '../services/llm/modelRouter';
 
 export interface StoryCoverPromptInput {
   title: string;
@@ -153,9 +154,18 @@ export async function generateStoryCoverPrompt(input: StoryCoverPromptInput): Pr
       'Return ONLY the prompt text, nothing else.',
     ].join('\n');
 
+    // Get model for story generation (Grok 4-1 for all)
+    const modelSelection = await modelRouter.getModel({ feature: 'STORY_GENERATION' });
+
+    logger.info({
+      provider: modelSelection.provider,
+      model: modelSelection.model,
+      reasoning: modelSelection.reasoning,
+    }, 'Model selected for story cover prompt generation');
+
     const response = await callLLM({
-      provider: 'gemini',
-      model: 'gemini-2.5-flash',
+      provider: modelSelection.provider,
+      model: modelSelection.model,
       systemPrompt,
       userPrompt,
       temperature: 0.7, // Slightly higher for creativity

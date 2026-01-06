@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "LLM Kostenanalyse",
+    "header": {
+      "title": "LLM Kostenanalyse",
+      "description": "Überwachen und analysieren Sie die LLM-Nutzungskosten plattformweit"
+    },
+    "dateRange": {
+      "label": "Zeitraum",
+      "last7Days": "Letzte 7 Tage",
+      "last30Days": "Letzte 30 Tage",
+      "last90Days": "Letzte 90 Tage"
+    },
+    "sections": {
+      "costsByFeature": "Kosten nach Funktion",
+      "costsByModel": "Kosten nach Modell",
+      "costsByPlan": "Kosten nach Abonnementplan",
+      "dailyCosts": "Trend der täglichen Kosten",
+      "cachingMetrics": "Caching-Effektivität",
+      "topUsers": "Top-Nutzer nach Kosten"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "Gesamte LLM-Kosten",
+        "description": "Gesamte Betriebskosten für LLM-API-Aufrufe im ausgewählten Zeitraum",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "Nutzer",
+      "avgCost": "Durchschn. Kosten/Nutzer"
+    },
+    "caching": {
+      "hitRate": "Cache-Trefferquote",
+      "totalRequests": "Gesamtanfragen",
+      "cachedRequests": "Gecachte Anfragen",
+      "costSavings": "Kosteneinsparungen"
+    },
+    "table": {
+      "userId": "Benutzer-ID",
+      "totalCost": "Gesamtkosten",
+      "requests": "Anfragen"
+    },
+    "metrics": {
+      "requests": "Anfragen",
+      "req": "Anfr.",
+      "avgReq": "Durchschn./Anfr."
+    },
+    "messages": {
+      "noData": "Für den ausgewählten Zeitraum sind keine Daten verfügbar"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "Charaktergenerierung",
+      "STORY_GENERATION": "Geschichtengenerierung",
+      "CONTENT_TRANSLATION": "Inhaltsübersetzung",
+      "CHAT_MESSAGE": "Chat-Nachrichten",
+      "AUTOMATED_GENERATION": "Automatisierte Generierung",
+      "IMAGE_ANALYSIS": "Bildanalyse",
+      "OTHER": "Sonstige"
+    },
+    "planNames": {
+      "FREE": "Kostenlos",
+      "PLUS": "Plus",
+      "PREMIUM": "Premium"
+    }
+  }
+}
