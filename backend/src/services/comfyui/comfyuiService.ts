@@ -21,6 +21,9 @@ import type {
 import { ImageGenerationType } from './types';
 import avatarWorkflow from './workflows/avatar.workflow.json';
 import avatarWithIPAdapterWorkflow from './workflows/avatar-with-ipadapter.workflow.json';
+import coverWorkflow from './workflows/cover.workflow.json';
+import coverWithIPAdapterWorkflow from './workflows/cover-with-ipadapter.workflow.json';
+import coverWithReferencesWorkflow from './workflows/cover-with-references.workflow.json';
 import stickerWorkflow from './workflows/sticker.workflow.json';
 import multiRefFaceWorkflow from './workflows/multi-ref-face.workflow.json';
 import multiRefFrontWorkflow from './workflows/multi-ref-front.workflow.json';
@@ -206,6 +209,15 @@ export class ComfyUIService {
   }
 
   /**
+   * Generate cover image (portrait 3:4 aspect ratio)
+   */
+  async generateCover(prompt: SDPrompt): Promise<ImageGenerationResult> {
+    logger.info('Starting cover generation');
+    const workflow = this.prepareWorkflow(ImageGenerationType.COVER, prompt);
+    return this.executeWorkflow(workflow);
+  }
+
+  /**
    * Prepare workflow with prompts and LoRAs
    */
   private prepareWorkflow(type: ImageGenerationType, prompt: SDPrompt): ComfyWorkflow {
@@ -220,6 +232,16 @@ export class ComfyUIService {
         } else {
           workflow = JSON.parse(JSON.stringify(avatarWorkflow));
           logger.info('Using standard avatar workflow');
+        }
+        break;
+      case ImageGenerationType.COVER:
+        // Use IP-Adapter workflow if reference image is provided
+        if (prompt.referenceImagePath) {
+          workflow = JSON.parse(JSON.stringify(coverWithIPAdapterWorkflow));
+          logger.info({ referenceImagePath: prompt.referenceImagePath }, 'Using cover workflow with IP-Adapter');
+        } else {
+          workflow = JSON.parse(JSON.stringify(coverWorkflow));
+          logger.info('Using standard cover workflow');
         }
         break;
       case ImageGenerationType.STICKER:
@@ -433,6 +455,46 @@ export class ComfyUIService {
 
     // Replace @REFERENCE_PATH@ placeholder with actual path
     // The LoadImagesFromDir node expects a Windows-style path
+    if (workflowTemplate['43']) {
+      workflowTemplate['43'].inputs.directory = referencePath;
+      logger.debug({ referencePath }, 'Set reference directory in workflow');
+    }
+
+    // Execute the workflow
+    return this.executeWorkflow(workflowTemplate);
+  }
+
+  /**
+   * Generate cover image with reference images
+   * Uses LoadImagesFromDir for multiple reference support
+   */
+  async generateCoverWithReferences(
+    referencePath: string,
+    prompt: SDPrompt
+  ): Promise<ImageGenerationResult> {
+    logger.info({ referencePath }, 'Starting cover generation with references');
+
+    const workflowTemplate = JSON.parse(JSON.stringify(coverWithReferencesWorkflow));
+
+    // Set random seed for KSampler
+    const seed = Math.floor(Date.now() * 1000) % (2 ** 32);
+    workflowTemplate['3'].inputs.seed = seed;
+
+    // Set prompts
+    workflowTemplate['6'].inputs.text = prompt.positive;
+    workflowTemplate['7'].inputs.text = prompt.negative;
+
+    // Set LoRAs if provided
+    if (prompt.loras && prompt.loras.length > 0) {
+      const loraNode = workflowTemplate['11'];
+      prompt.loras.slice(0, 4).forEach((lora, index) => {
+        const loraNum = (index + 1).toString().padStart(2, '0');
+        loraNode.inputs[`lora_${loraNum}`] = lora.filepathRelative.replace(/\//g, '\\');
+        loraNode.inputs[`strength_${loraNum}`] = lora.strength;
+      });
+    }
+
+    // Replace @REFERENCE_PATH@ placeholder with actual path
     if (workflowTemplate['43']) {
       workflowTemplate['43'].inputs.directory = referencePath;
       logger.debug({ referencePath }, 'Set reference directory in workflow');
