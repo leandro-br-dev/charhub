@@ -135,7 +135,7 @@ export function AvatarGenerationModal({
           prompt={prompt}
           onPromptChange={setPrompt}
           sampleImage={sampleImage ? URL.createObjectURL(sampleImage) : null}
-          onSampleImageChange={(file) => setSampleImage(file)}
+          onSampleImageChange={(file: File | null) => setSampleImage(file)}
           disabled={isGenerating || isUploading}
         />
 

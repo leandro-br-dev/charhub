@@ -14,13 +14,17 @@ export interface Stage {
 
 export interface MultiStageProgressProps {
   characterId: string;
-  prompt: {
+  prompt?: {
     positive: string;
     negative: string;
   };
   referenceImages?: Array<{ type: string; url: string }>;
   onComplete?: (results: Stage[]) => void;
   onError?: (error: string) => void;
+  // Additional props for ReferenceGenerationModal compatibility
+  viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[];
+  userPrompt?: string;
+  sampleImageUrl?: string | null;
 }
 
 export function MultiStageProgress({
@@ -29,6 +33,9 @@ export function MultiStageProgress({
   referenceImages = [],
   onComplete,
   onError,
+  viewsToGenerate,
+  userPrompt,
+  sampleImageUrl,
 }: MultiStageProgressProps) {
   const { t } = useTranslation(['characters', 'common']);
 
@@ -79,13 +86,37 @@ export function MultiStageProgress({
     })));
 
     try {
+      // Build request body from available props
+      const requestBody: Record<string, unknown> = {
+        characterId,
+      };
+
+      // Add prompt if available (from new props or old prompt prop)
+      if (userPrompt || prompt?.positive) {
+        requestBody.prompt = {
+          positive: userPrompt || prompt?.positive || '',
+          negative: prompt?.negative || '',
+        };
+      }
+
+      // Add reference images
+      if (referenceImages && referenceImages.length > 0) {
+        requestBody.referenceImages = referenceImages;
+      }
+
+      // Add sample image URL if provided (from new prop)
+      if (sampleImageUrl) {
+        requestBody.sampleImageUrl = sampleImageUrl;
+      }
+
+      // Add views to generate if provided
+      if (viewsToGenerate && viewsToGenerate.length > 0 && viewsToGenerate.length < 4) {
+        requestBody.viewsToGenerate = viewsToGenerate;
+      }
+
       const response = await api.post<{ jobId: string; message: string; estimatedTime: string; stages: string[] }>(
         '/api/v1/image-generation/character-dataset',
-        {
-          characterId,
-          prompt,
-          referenceImages,
-        }
+        requestBody
       );
 
       setJobId(response.data.jobId);
@@ -171,7 +202,7 @@ export function MultiStageProgress({
 
           // Fetch current images to show completed ones during generation
           try {
-            const imagesResponse = await api.get<{ success: boolean; data: { AVATAR?: any[]; REFERENCE?: any[]; [key: string]: any[] } }>(
+            const imagesResponse = await api.get<{ success: boolean; data: Record<string, any[]> }>(
               `/api/v1/image-generation/characters/${characterId}/images`
             );
             const referenceImages = imagesResponse.data.data.REFERENCE || [];
@@ -362,7 +393,7 @@ export function MultiStageProgress({
             </p>
           </div>
           <button
-            onClick={onComplete}
+            onClick={() => onComplete?.(stages)}
             className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-opacity"
           >
             {t('common:done', 'Done')}
