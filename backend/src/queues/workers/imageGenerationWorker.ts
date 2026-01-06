@@ -7,7 +7,8 @@
 import { Job } from 'bullmq';
 import { prisma } from '../../config/database';
 import { logger } from '../../config/logger';
-import { comfyuiService, promptEngineering, ImageGenerationType } from '../../services/comfyui';
+import { comfyuiService, promptEngineering, promptAgent, ImageGenerationType } from '../../services/comfyui';
+import type { ReferenceImage } from '../../services/comfyui/types';
 import { r2Service } from '../../services/r2Service';
 import { convertToWebP, getContrastingChromaKey } from '../../utils/imageUtils';
 import { multiStageCharacterGenerator } from '../../services/image-generation/multiStageCharacterGenerator';
@@ -106,10 +107,13 @@ export async function processImageGeneration(
 async function processAvatarGeneration(
   data: AvatarGenerationJobData
 ): Promise<ImageGenerationJobResult> {
-  const { characterId, userId, referenceImageUrl, prompt: providedPrompt } = data;
+  const { characterId, userId, referenceImageUrl, prompt: providedPrompt, imageType = 'AVATAR' } = data;
+
+  const isCover = imageType === 'COVER';
+  const imageTypeName = isCover ? 'cover' : 'avatar';
 
   // Calculate cost
-  const cost = getImageGenerationCost('avatar', { withReference: !!referenceImageUrl });
+  const cost = getImageGenerationCost(imageTypeName, { withReference: !!referenceImageUrl });
 
   // Execute with credit management
   return executeWithCredits(async () => {
@@ -123,117 +127,231 @@ async function processAvatarGeneration(
       throw new Error(`Character ${characterId} not found`);
     }
 
-    // Download and upload reference image to ComfyUI if provided (for IP-Adapter)
-    let referenceImageFilename: string | undefined;
-    if (referenceImageUrl) {
-      try {
-        // Extract R2 key from URL
-        // URL format: https://pub-xxx.r2.dev/characters/xxx/reference/uploaded_xxx.webp
-        // or: https://media.charhub.app/characters/xxx/reference/uploaded_xxx.webp
-        const urlObj = new URL(referenceImageUrl);
-        const r2Key = urlObj.pathname.replace(/^\//, ''); // Remove leading slash
+    // For cover with references: use prepareReferences to upload all images
+    let referencePath: string | undefined;
+    let referenceCount = 0;
 
-        // Download image directly from R2 using SDK (more reliable than fetch with presigned URL)
-        const imageBuffer = await r2Service.downloadObject(r2Key);
-        logger.info({ r2Key, sizeBytes: imageBuffer.length }, 'Downloaded reference image from R2');
-
-        // Upload to ComfyUI server
-        const tempFilename = `ref_${Date.now()}_${characterId}.png`;
-        referenceImageFilename = await comfyuiService.uploadImage(imageBuffer, tempFilename, true);
-
-        logger.info({ referenceImageFilename, originalUrl: referenceImageUrl }, 'Reference image uploaded to ComfyUI for IP-Adapter');
-      } catch (error) {
-        logger.warn({ error, referenceImageUrl }, 'Failed to upload reference image to ComfyUI, proceeding without IP-Adapter');
-      }
-    }
-
-    // Use provided prompt if available, otherwise build from character data
-    let prompt: any;
-    if (providedPrompt && providedPrompt.trim().length > 0) {
-      // Use the pre-generated Stable Diffusion prompt
-      logger.info({ characterId, providedPrompt }, 'Using pre-generated Stable Diffusion prompt');
-      prompt = {
-        positive: providedPrompt,
-        negative: 'low quality, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry',
-        referenceImagePath: referenceImageFilename,
-      };
-    } else {
-      // Fallback: Build prompt using LLM-powered translation to SD tags
-      logger.info({ characterId }, 'No prompt provided, building from character data');
-      prompt = await promptEngineering.buildAvatarPrompt({
-        name: `${character.firstName} ${character.lastName || ''}`.trim(),
-        style: character.style || undefined,
-        age: character.age || undefined,
-        gender: character.gender || undefined,
-        species: character.species?.name || undefined,
-        physicalCharacteristics: character.physicalCharacteristics || undefined,
-        defaultAttire: character.mainAttire?.description || undefined,
-        lora: character.lora
-          ? {
-              name: character.lora.name,
-              filepathRelative: character.lora.filepathRelative || '',
-            }
-          : undefined,
+    if (isCover) {
+      // Fetch ALL existing reference images for this character
+      const referenceImages = await prisma.characterImage.findMany({
+        where: {
+          characterId,
+          type: 'REFERENCE',
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 8, // Get up to 8 reference images
+        select: { url: true, key: true },
       });
 
-      // Add reference image filename to prompt if available (for ComfyUI LoadImage node)
-      if (referenceImageFilename) {
-        prompt.referenceImagePath = referenceImageFilename;
+      // Also include user-provided reference image if available
+      const allReferences: ReferenceImage[] = [];
+      if (referenceImageUrl) {
+        allReferences.push({ type: 'SAMPLE', url: referenceImageUrl });
+      }
+      referenceImages.forEach(img => {
+        allReferences.push({ type: 'REFERENCE', url: img.url });
+      });
+
+      referenceCount = allReferences.length;
+
+      // Prepare references folder in ComfyUI if we have any
+      if (allReferences.length > 0) {
+        try {
+          // Cleanup old references first
+          await comfyuiService.cleanupReferences(characterId);
+
+          // Prepare new references
+          const prepareResponse = await comfyuiService.prepareReferences(characterId, allReferences);
+          referencePath = prepareResponse.referencePath;
+          logger.info({ characterId, referencePath, imageCount: allReferences.length }, 'References prepared for cover generation');
+        } catch (error) {
+          logger.warn({ error }, 'Failed to prepare references for cover, proceeding without references');
+        }
       }
     }
 
-    logger.info({ characterId, prompt: prompt.positive, hasReferenceImage: !!referenceImageFilename, usedProvidedPrompt: !!providedPrompt }, 'Avatar prompt ready');
+    // Build prompt based on image type
+    let prompt: any;
+    if (isCover) {
+      // For cover: use promptAgent to generate both positive and negative prompts
+      logger.info({ characterId, providedPrompt }, 'Building cover prompts with promptAgent');
+
+      const { positive, negative: neg } = await promptAgent.generatePrompts({
+        character: {
+          name: `${character.firstName} ${character.lastName || ''}`.trim(),
+          gender: character.gender || undefined,
+          age: character.age || undefined,
+          species: character.species?.name || undefined,
+          physicalCharacteristics: character.physicalCharacteristics || undefined,
+          personality: character.personality || undefined,
+          defaultAttire: character.mainAttire?.description || undefined,
+          style: character.style || undefined,
+        },
+        generation: {
+          type: 'COVER',
+          isNsfw: false, // TODO: detect from character settings
+        },
+        userInput: providedPrompt ? {
+          prompt: providedPrompt,
+          isAdditive: false, // User prompt for cover is usually substitutive (replaces clothing/scene)
+        } : undefined,
+        hasReferenceImages: !!referencePath,
+        referenceImageCount: referenceCount,
+      });
+
+      prompt = {
+        positive,
+        negative: neg,
+      };
+
+      // Add LoRAs if available
+      if (character.lora) {
+        prompt.loras = [{
+          name: character.lora.name,
+          filepathRelative: character.lora.filepathRelative || '',
+          strength: 1.0,
+        }];
+      }
+    } else {
+      // For avatar: handle reference image and build prompt
+      let referenceImageFilename: string | undefined;
+
+      // For avatar with single reference image
+      const referenceImages = await prisma.characterImage.findMany({
+        where: { characterId, type: 'REFERENCE' },
+        orderBy: { createdAt: 'desc' },
+        take: 1,
+        select: { url: true, key: true },
+      });
+
+      const referenceUrls = [...(referenceImageUrl ? [referenceImageUrl] : []), ...referenceImages.map(img => img.url)];
+
+      if (referenceUrls.length > 0) {
+        try {
+          const firstRefUrl = referenceUrls[0];
+          const urlObj = new URL(firstRefUrl);
+          const r2Key = urlObj.pathname.replace(/^\//, '');
+
+          const imageBuffer = await r2Service.downloadObject(r2Key);
+          logger.info({ r2Key, sizeBytes: imageBuffer.length }, 'Downloaded reference image from R2');
+
+          const tempFilename = `ref_${Date.now()}_${characterId}.png`;
+          referenceImageFilename = await comfyuiService.uploadImage(imageBuffer, tempFilename, true);
+
+          logger.info({ referenceImageFilename, originalUrl: firstRefUrl }, 'Reference image uploaded to ComfyUI for IP-Adapter');
+        } catch (error) {
+          logger.warn({ error }, 'Failed to upload reference image to ComfyUI, proceeding without IP-Adapter');
+        }
+      }
+
+      // Use promptAgent to generate prompts for avatar
+      logger.info({ characterId, providedPrompt }, 'Building avatar prompts with promptAgent');
+
+      const { positive, negative: neg } = await promptAgent.generatePrompts({
+        character: {
+          name: `${character.firstName} ${character.lastName || ''}`.trim(),
+          gender: character.gender || undefined,
+          age: character.age || undefined,
+          species: character.species?.name || undefined,
+          physicalCharacteristics: character.physicalCharacteristics || undefined,
+          personality: character.personality || undefined,
+          defaultAttire: character.mainAttire?.description || undefined,
+          style: character.style || undefined,
+        },
+        generation: {
+          type: 'AVATAR',
+          isNsfw: false, // TODO: detect from character settings
+        },
+        userInput: providedPrompt ? {
+          prompt: providedPrompt,
+          isAdditive: true, // Avatar user prompt is usually additive (adds details)
+        } : undefined,
+        hasReferenceImages: !!referenceImageFilename,
+      });
+
+      prompt = {
+        positive,
+        negative: neg,
+        referenceImagePath: referenceImageFilename,
+      };
+
+      // Add LoRAs if available
+      if (character.lora) {
+        prompt.loras = [{
+          name: character.lora.name,
+          filepathRelative: character.lora.filepathRelative || '',
+          strength: 1.0,
+        }];
+      }
+    }
+
+    logger.info({ characterId, imageType, prompt: prompt.positive, hasReferences: !!referencePath }, `${imageTypeName} prompt ready`);
 
     // Generate image with ComfyUI
-    const result = await comfyuiService.generateAvatar(prompt);
+    const result = isCover
+      ? (referencePath
+          ? await comfyuiService.generateCoverWithReferences(referencePath, prompt)
+          : await comfyuiService.generateCover(prompt))
+      : await comfyuiService.generateAvatar(prompt);
 
     // Convert to WebP
     const webpBuffer = await convertToWebP(result.imageBytes, {
       prompt: prompt.positive,
       character: character.firstName,
-      type: 'avatar',
+      type: imageTypeName,
     });
 
     // Upload to R2
-    const objectKey = `characters/${characterId}/avatar/avatar_${Date.now()}.webp`;
+    const objectKey = `characters/${characterId}/${imageTypeName}/${imageTypeName}_${Date.now()}.webp`;
     const { publicUrl } = await r2Service.uploadObject({
       key: objectKey,
       body: webpBuffer,
       contentType: 'image/webp',
     });
 
-    // Save to database - deactivate other avatars and set this as active
-    await prisma.$transaction([
-      // Deactivate all existing avatars for this character
-      prisma.characterImage.updateMany({
-        where: {
-          characterId,
-          type: 'AVATAR',
-        },
-        data: { isActive: false },
-      }),
-      // Create new avatar as active
-      prisma.characterImage.create({
+    // Save to database
+    if (isCover) {
+      // For cover: don't deactivate other images, just create new cover
+      await prisma.characterImage.create({
         data: {
           characterId,
-          type: 'AVATAR',
+          type: 'COVER',
           url: publicUrl,
           key: objectKey,
           contentType: 'image/webp',
           sizeBytes: webpBuffer.length,
-          isActive: true, // Set as active avatar automatically
+          isActive: false, // Covers are not active by default
         },
-      }),
-    ]);
+      });
+    } else {
+      // For avatar: deactivate other avatars and set this as active
+      await prisma.$transaction([
+        prisma.characterImage.updateMany({
+          where: { characterId, type: 'AVATAR' },
+          data: { isActive: false },
+        }),
+        prisma.characterImage.create({
+          data: {
+            characterId,
+            type: 'AVATAR',
+            url: publicUrl,
+            key: objectKey,
+            contentType: 'image/webp',
+            sizeBytes: webpBuffer.length,
+            isActive: true,
+          },
+        }),
+      ]);
+    }
 
-    logger.info({ characterId, url: publicUrl }, 'Avatar generated successfully');
+    logger.info({ characterId, imageType, url: publicUrl }, `${imageTypeName} generated successfully`);
 
     return {
       success: true,
       imageUrl: publicUrl,
       characterId,
     };
-  }, userId, cost, `Avatar generation for character ${characterId}`);
+  }, userId, cost, `${imageTypeName} generation for character ${characterId}`);
 }
 
 /**
@@ -300,27 +418,47 @@ async function processStickerGeneration(
       }
     }
 
-    // Build prompt (with LLM-powered translation to SD tags)
-    const prompt = await promptEngineering.buildStickerPrompt(
-      {
+    // Use promptAgent to generate prompts for sticker
+    logger.info({ characterId, emotion, actionTag }, 'Building sticker prompts with promptAgent');
+
+    const { positive, negative: neg } = await promptAgent.generatePrompts({
+      character: {
         name: `${character.firstName} ${character.lastName || ''}`.trim(),
-        style: character.style || undefined,
-        age: character.age || undefined,
         gender: character.gender || undefined,
+        age: character.age || undefined,
         species: character.species?.name || undefined,
         physicalCharacteristics: character.physicalCharacteristics || undefined,
-        defaultAttire: customInstructions || character.mainAttire?.description || undefined,
-        lora: character.lora
-          ? {
-              name: character.lora.name,
-              filepathRelative: character.lora.filepathRelative || '',
-            }
-          : undefined,
+        personality: character.personality || undefined,
+        defaultAttire: character.mainAttire?.description || undefined,
+        style: character.style || undefined,
       },
-      emotion,
-      actionTag,
-      chromaKeyPrompt
-    );
+      generation: {
+        type: 'STICKER',
+        isNsfw: false, // Stickers are always SFW
+        emotion,
+      },
+      userInput: {
+        prompt: `${actionTag || ''} ${customInstructions || ''} ${chromaKeyPrompt}`.trim(),
+        isAdditive: true, // Adds details to the sticker
+      },
+      overrides: {
+        background: chromaKeyPrompt,
+      },
+    });
+
+    const prompt: any = {
+      positive,
+      negative: neg,
+    };
+
+    // Add LoRAs if available
+    if (character.lora) {
+      prompt.loras = [{
+        name: character.lora.name,
+        filepathRelative: character.lora.filepathRelative || '',
+        strength: 1.0,
+      }];
+    }
 
     logger.info({ characterId, emotion, prompt: prompt.positive }, 'Generated sticker prompt');
 
@@ -505,15 +643,17 @@ async function processMultiStageDatasetGeneration(
   data: MultiStageDatasetGenerationJobData,
   job: Job<ImageGenerationJobData>
 ): Promise<MultiStageGenerationResult> {
-  const { characterId, userId, prompt, loras, referenceImages } = data;
+  const { characterId, userId, prompt, loras, referenceImages, viewsToGenerate } = data;
 
-  // Calculate cost
-  const cost = getImageGenerationCost('multi-stage-dataset');
+  // Calculate cost - adjust based on number of views being generated
+  const viewsCount = viewsToGenerate?.length || 4;
+  const baseCost = getImageGenerationCost('multi-stage-dataset');
+  const cost = Math.ceil(baseCost * (viewsCount / 4)); // Proportional cost
 
-  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost }, 'Processing multi-stage dataset generation');
+  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost, viewsToGenerate }, 'Processing multi-stage dataset generation');
 
   // Update job progress
-  job.updateProgress({ stage: 0, total: 4, message: 'Starting multi-stage generation...' });
+  job.updateProgress({ stage: 0, total: viewsCount, message: 'Starting multi-stage generation...' });
 
   // Execute with credit management
   await executeWithCredits(async () => {
@@ -524,6 +664,7 @@ async function processMultiStageDatasetGeneration(
       loras,
       userSamples: referenceImages || [],
       userId,
+      viewsToGenerate,
       onProgress: (stage, total, message) => {
         logger.info({ jobId: job.id, stage, total, message }, 'Multi-stage progress update');
         job.updateProgress({ stage, total, message });

@@ -12,11 +12,11 @@
     "account": "アカウント",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することで、弊社のプライバシーポリシーに同意し、CharHubがあなたの基本プロフィール情報にアクセスすることを許可します。",
+    "privacy": "続行することにより、お客様は当社のプライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを承認します。",
     "logout": "サインアウト",
     "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
-    "tokenStored": "HTTP-only cookieに保存済み",
+    "tokenStored": "HTTP専用Cookieに保存済み",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
     "navTagline": "安全なOAuthデモ",
@@ -39,19 +39,22 @@
     "cancel": "キャンセル",
     "save": "保存",
     "saving": "保存中...",
+    "loading": "読み込み中...",
+    "use": "使用",
+    "add": "追加",
     "delete": "削除",
     "deleting": "削除中...",
     "enabled": "有効",
     "disabled": "無効",
     "selectOption": "オプションを選択",
-    "noResults": "オプションは見つかりませんでした。",
+    "noResults": "オプションが見つかりませんでした。",
     "chat": {
-      "with": "とチャット"
+      "with": "チャット相手"
     },
     "messages": {
-      "linkCopied": "リンクをクリップボードにコピーしました！",
-      "chatStarted": "チャットを開始しました！",
-      "characterDeleted": "キャラクターを削除しました"
+      "linkCopied": "リンクがクリップボードにコピーされました！",
+      "chatStarted": "チャットが正常に開始されました！",
+      "characterDeleted": "キャラクターが正常に削除されました"
     },
     "contentFilter": {
       "ariaLabel": "コンテンツフィルター",
@@ -62,12 +65,12 @@
       "blur": "センシティブなコンテンツをぼかす",
       "hidden": "成人向けコンテンツを非表示にする",
       "descriptions": {
-        "none": "制限なくすべてのコンテンツを表示する",
-        "blur": "成人向けコンテンツにぼかしを適用する",
+        "none": "制限なしですべてのコンテンツを表示",
+        "blur": "成人向けコンテンツにぼかしを適用",
         "hidden": "成人向けコンテンツを完全に非表示にする"
       },
       "ageRatings": {
-        "L": "全年齢対象",
+        "L": "全年齢",
         "TEN": "10歳以上",
         "TWELVE": "12歳以上",
         "FOURTEEN": "14歳以上",
@@ -75,7 +78,7 @@
         "EIGHTEEN": "18歳以上"
       },
       "noBirthdateWarning": "⚠️ 年齢が登録されていません",
-      "noBirthdateDescription": "年齢制限コンテンツにアクセスするには、設定で生年月日を追加してください。",
+      "noBirthdateDescription": "年齢制限のあるコンテンツにアクセスするには、設定で生年月日を追加してください。",
       "goToSettings": "設定へ移動",
       "blocked": "(ブロック済み)"
     },
@@ -87,11 +90,10 @@
     "seeMore": "もっと見る",
     "seeMoreArrow": "もっと見る →",
     "back": "戻る",
-    "loading": "読み込み中...",
     "credits": "クレジット",
     "tryAgain": "もう一度試す",
     "generate": "生成",
     "generating": "生成中...",
-    "use": "使用"
+    "done": "完了"
   }
 }

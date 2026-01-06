@@ -47,6 +47,7 @@ export interface MultiStageGenerationOptions {
   userSamples?: ReferenceImage[]; // User-provided SAMPLE images (1-4)
   userId: string;
   onProgress?: (stage: number, total: number, message: string) => void;
+  viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to generate
 }
 
 export interface ReferenceView {
@@ -94,9 +95,17 @@ export class MultiStageCharacterGenerator {
    * New simplified flow with cumulative references in a single folder
    */
   async generateCharacterDataset(options: MultiStageGenerationOptions): Promise<void> {
-    const { characterId, prompt, loras = [], userSamples = [], userId, onProgress } = options;
+    const { characterId, prompt, userSamples = [], userId, onProgress, viewsToGenerate } = options;
 
-    logger.info({ characterId, userSamples: userSamples.length }, 'Starting multi-stage character generation (simplified)');
+    // Filter views to generate if specified
+    const viewsToProcess = viewsToGenerate && viewsToGenerate.length > 0
+      ? REFERENCE_VIEWS.filter(v => viewsToGenerate.includes(v.content))
+      : REFERENCE_VIEWS;
+
+    logger.info({ characterId, userSamples: userSamples.length, viewsToGenerate: viewsToProcess.map(v => v.content) }, 'Starting multi-stage character generation (simplified)');
+
+    // Import promptAgent dynamically to avoid circular dependencies
+    const { promptAgent } = await import('../comfyui/promptAgent');
 
     try {
       // Verify character ownership
@@ -121,8 +130,111 @@ export class MultiStageCharacterGenerator {
         throw new Error('Avatar must be generated first. Please generate an avatar before creating reference images.');
       }
 
+      // Fetch full character data for prompt generation
+      const fullCharacter = await prisma.character.findUnique({
+        where: { id: characterId },
+        include: {
+          species: true,
+          mainAttire: true,
+          lora: true,
+        },
+      });
+
+      if (!fullCharacter) {
+        throw new Error('Character not found');
+      }
+
+      // Generate prompts using promptAgent
+      // The prompt.positive from API is treated as user input (additive)
+      const userPrompt = prompt?.positive || '';
+      const generatedPrompts = await promptAgent.generatePrompts({
+        character: {
+          name: `${fullCharacter.firstName} ${fullCharacter.lastName || ''}`.trim(),
+          gender: fullCharacter.gender || undefined,
+          age: fullCharacter.age || undefined,
+          species: fullCharacter.species?.name || undefined,
+          physicalCharacteristics: fullCharacter.physicalCharacteristics || undefined,
+          personality: fullCharacter.personality || undefined,
+          defaultAttire: fullCharacter.mainAttire?.description || undefined,
+          style: fullCharacter.style || undefined,
+        },
+        generation: {
+          type: 'REFERENCE_FRONT', // Will be adjusted per view, but use front as default
+          isNsfw: false,
+        },
+        userInput: userPrompt ? {
+          prompt: userPrompt,
+          isAdditive: true, // Reference generation is additive
+        } : undefined,
+        hasReferenceImages: userSamples.length > 0,
+        referenceImageCount: userSamples.length,
+      });
+
+      // Use generated prompts
+      const finalPrompt = {
+        positive: generatedPrompts.positive,
+        negative: generatedPrompts.negative,
+      };
+
+      logger.info({ characterId, originalPrompt: userPrompt, generatedPositive: finalPrompt.positive?.substring(0, 100) + '...' }, 'Prompts generated via promptAgent');
+
+      // Update loras from character data
+      const characterLoras = fullCharacter.lora ? [{
+        name: fullCharacter.lora.name,
+        filepathRelative: fullCharacter.lora.filepathRelative || '',
+        strength: 1.0,
+      }] : [];
+
+      // Delete existing reference images for the views being regenerated
+      logger.info({ characterId, regeneratingViews: viewsToProcess.map(v => v.content) }, 'Checking for existing reference images to delete...');
+
+      const existingReferences = await prisma.characterImage.findMany({
+        where: {
+          characterId,
+          type: ImageType.REFERENCE,
+          content: {
+            in: viewsToProcess.map(v => v.content),
+          },
+        },
+      });
+
+      logger.info({ characterId, count: existingReferences.length }, `Found ${existingReferences.length} existing reference images for selected views`);
+
+      if (existingReferences.length > 0) {
+        logger.info({ characterId, count: existingReferences.length }, 'Deleting existing reference images for selected views before generating new ones');
+
+        for (const ref of existingReferences) {
+          logger.info({ imageId: ref.id, key: ref.key, url: ref.url, content: ref.content }, 'Processing reference image for deletion');
+
+          // Delete from R2 if key exists
+          if (ref.key) {
+            try {
+              await r2Service.deleteObject(ref.key);
+              logger.info({ key: ref.key }, 'Successfully deleted reference image from R2');
+            } catch (err) {
+              logger.error({ key: ref.key, err }, 'Failed to delete reference image from R2, continuing...');
+            }
+          } else {
+            logger.warn({ imageId: ref.id }, 'Reference image has no key, skipping R2 deletion');
+          }
+        }
+
+        // Delete from database
+        await prisma.characterImage.deleteMany({
+          where: {
+            characterId,
+            type: ImageType.REFERENCE,
+            content: {
+              in: viewsToProcess.map(v => v.content),
+            },
+          },
+        });
+
+        logger.info({ characterId, count: existingReferences.length }, 'Successfully deleted existing reference images from database');
+      }
+
       // Step 1: Prepare temp folder with AVATAR + USER SAMPLES
-      onProgress?.(0, 4, 'Preparing reference folder...');
+      onProgress?.(0, viewsToProcess.length, 'Preparing reference folder...');
 
       const referenceImages: ReferenceImage[] = [
         { type: 'AVATAR', url: existingAvatar.url },
@@ -133,21 +245,44 @@ export class MultiStageCharacterGenerator {
       logger.info({ referencePath: prepareResponse.referencePath, imageCount: referenceImages.length }, 'Reference folder prepared');
 
       // Step 2-4: Generate each reference view, adding each to the folder
-      for (let i = 0; i < REFERENCE_VIEWS.length; i++) {
-        const view = REFERENCE_VIEWS[i];
+      // Generate timestamp for this batch to ensure unique keys
+      const batchTimestamp = Date.now();
+
+      // Get all existing references for views NOT being regenerated (to use as context)
+      const existingOtherReferences = await prisma.characterImage.findMany({
+        where: {
+          characterId,
+          type: ImageType.REFERENCE,
+          content: {
+            notIn: viewsToProcess.map(v => v.content),
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      logger.info({ characterId, otherReferencesCount: existingOtherReferences.length }, 'Found existing reference images for other views');
+
+      for (let i = 0; i < viewsToProcess.length; i++) {
+        const view = viewsToProcess[i];
         const stageNumber = i + 1;
 
         // For stages after the first, re-prepare with ALL previously generated images
+        // + existing references from views NOT being regenerated
         if (i > 0) {
-          // Build fresh reference list: AVATAR + all previously generated REFERENCEs
+          // Build fresh reference list: AVATAR + SAMPLES + existing other refs + newly generated refs
           const freshReferences: ReferenceImage[] = [
             { type: 'AVATAR', url: existingAvatar.url },
             ...userSamples.map(s => ({ type: 'SAMPLE', url: s.url })),
           ];
 
-          // Add all previously generated reference images
+          // Add existing references from other views (not being regenerated)
+          for (const existingRef of existingOtherReferences) {
+            freshReferences.push({ type: 'REFERENCE', url: existingRef.url });
+          }
+
+          // Add all previously generated reference images in this batch
           for (let j = 0; j < i; j++) {
-            const previousView = REFERENCE_VIEWS[j];
+            const previousView = viewsToProcess[j];
             const previousImage = await prisma.characterImage.findFirst({
               where: {
                 characterId,
@@ -174,19 +309,22 @@ export class MultiStageCharacterGenerator {
         const result = await this.generateReferenceView({
           characterId,
           view,
-          prompt,
-          loras,
+          prompt: finalPrompt,
+          loras: characterLoras,
           referencePath: prepareResponse.referencePath,
         });
 
         // Upload the new reference to R2
-        const r2Key = `characters/${characterId}/references/${view.content}.webp`;
+        // Use timestamp in key to ensure unique files (avoid cache issues)
+        const r2Key = `characters/${characterId}/references/${view.content}_${batchTimestamp}.webp`;
         const { publicUrl } = await r2Service.uploadObject({
           key: r2Key,
           body: result.imageBytes,
           contentType: 'image/webp',
-          cacheControl: 'public, max-age=31536000',
+          cacheControl: 'public, max-age=3600', // 1 hour cache instead of 1 year
         });
+
+        logger.info({ stage: stageNumber, view: view.content, r2Key, publicUrl }, 'Uploading reference image to R2');
 
         // Save to database with content field
         await prisma.characterImage.create({
@@ -206,7 +344,7 @@ export class MultiStageCharacterGenerator {
 
         logger.info({ stage: stageNumber, view: view.content, imageUrl: publicUrl }, `Reference generation completed`);
 
-        onProgress?.(stageNumber, 4, `Completed reference ${view.content}`);
+        onProgress?.(stageNumber, viewsToProcess.length, `Completed reference ${view.content}`);
       }
 
       // Cleanup ComfyUI temp folder

@@ -280,7 +280,7 @@ export class BatchCharacterGenerator {
       lastName: characterData.lastName || null,
       age: characterData.age || null,
       gender: characterData.gender || null,
-      species: characterData.species || null,
+      speciesId: characterData.species || null,
       style: characterData.style || 'ANIME',
       physicalCharacteristics: characterData.physicalCharacteristics || null,
       personality: characterData.personality || null,
