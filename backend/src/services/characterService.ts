@@ -42,6 +42,39 @@ function validateGender(gender: string | null | undefined): CharacterGender | nu
 }
 
 /**
+ * Find species ID by name (case-insensitive search)
+ * Searches both the name field and description field
+ * Returns null if species not found
+ */
+async function findSpeciesIdByName(speciesName: string | null | undefined): Promise<string | null> {
+  if (!speciesName || speciesName.trim() === '') return null;
+
+  try {
+    // Search for species by name (case-insensitive) or description
+    const species = await prisma.species.findFirst({
+      where: {
+        OR: [
+          { name: { equals: speciesName, mode: 'insensitive' } },
+          { description: { contains: speciesName, mode: 'insensitive' } },
+        ],
+      },
+      select: { id: true },
+    });
+
+    if (species) {
+      return species.id;
+    }
+
+    // Species not found - log info and return null
+    logger.info(`Species not found for name "${speciesName}", will be stored as null`);
+    return null;
+  } catch (error) {
+    logger.error({ error, speciesName }, 'Error finding species by name');
+    return null;
+  }
+}
+
+/**
  * Map gender string from frontend (e.g., "Male") to Prisma enum (e.g., "MALE")
  * Used in search/filter operations
  */
@@ -189,10 +222,11 @@ export function enrichCharactersWithAvatar<T extends Record<string, any>>(
  */
 export async function createCharacter(data: CreateCharacterInput) {
   try {
-    const { attireIds, tagIds, contentTags, speciesId, gender, ...characterData } = data;
+    const { attireIds, tagIds, contentTags, species, gender, ...characterData } = data;
 
-    // Validate gender
+    // Validate gender and find species ID (async operation)
     const validatedGender = validateGender(gender);
+    const speciesId = await findSpeciesIdByName(species);
 
     // Create character with relations
     const character = await prisma.character.create({
@@ -200,7 +234,7 @@ export async function createCharacter(data: CreateCharacterInput) {
         ...characterData,
         // Use validated gender enum value
         gender: validatedGender,
-        // Use species ID directly from input
+        // Use species ID from lookup (null if not found)
         ...(speciesId ? { speciesId } : {}),
         contentTags: contentTags || [],
         // Connect attires if provided
@@ -711,7 +745,7 @@ export async function updateCharacter(
   data: UpdateCharacterInput
 ) {
   try {
-    const { attireIds, tagIds, contentTags, speciesId, gender, ...updateData } = data;
+    const { attireIds, tagIds, contentTags, species, gender, ...updateData } = data;
 
     // Check if translatable fields are being updated
     const translatableFields = ['personality', 'history', 'physicalCharacteristics'];
@@ -725,8 +759,9 @@ export async function updateCharacter(
       finalUpdateData.gender = validateGender(gender);
     }
 
-    // Use speciesId directly from input
-    if (speciesId !== undefined) {
+    // Find species ID from species name (async operation)
+    if (species !== undefined) {
+      const speciesId = await findSpeciesIdByName(species);
       finalUpdateData.speciesId = speciesId;
     }
 
