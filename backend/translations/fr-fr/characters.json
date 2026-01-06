@@ -32,21 +32,21 @@
       "THREE_D": "3D"
     },
     "visualStyleDescriptions": {
-      "ANIME": "Style anime japonais",
+      "ANIME": "Style animé japonais",
       "REALISTIC": "Art photoréaliste ou réaliste",
       "SEMI_REALISTIC": "Style artistique semi-réaliste",
       "CARTOON": "Style dessin animé occidental",
       "MANGA": "Style manga/bande dessinée japonais",
       "MANHWA": "Style manhwa/webtoon coréen",
       "COMIC": "Style bande dessinée occidentale",
-      "CHIBI": "Style super déformé/kawaii",
+      "CHIBI": "Style super déformé/mignon",
       "PIXEL_ART": "Style pixel art/jeu rétro",
       "THREE_D": "Style rendu 3D"
     },
     "contentTags": {
       "VIOLENCE": "Violence",
       "GORE": "Gore",
-      "SEXUAL": "Sexuel",
+      "SEXUAL": "Contenu sexuel",
       "NUDITY": "Nudité",
       "LANGUAGE": "Langage explicite",
       "DRUGS": "Drogues",
@@ -58,14 +58,14 @@
       "GAMBLING": "Jeu d'argent"
     },
     "contentTagHints": {
-      "VIOLENCE": "Combat, bagarres ou conflits agressifs.",
+      "VIOLENCE": "Combat, bagarres ou conflit agressif.",
       "GORE": "Blessures graphiques et détails explicites.",
-      "SEXUAL": "Thèmes adultes ou sous-entendus.",
+      "SEXUAL": "Thèmes adultes ou insinuations.",
       "NUDITY": "Nudité partielle ou totale.",
       "LANGUAGE": "Langage explicite ou grossier.",
-      "DRUGS": "Consommation de drogues ou références.",
+      "DRUGS": "Consommation ou références aux drogues.",
       "ALCOHOL": "Consommation d'alcool.",
-      "HORROR": "Images dérangeantes ou d'horreur.",
+      "HORROR": "Imagerie dérangeante ou d'horreur.",
       "PSYCHOLOGICAL": "Santé mentale ou tension psychologique.",
       "DISCRIMINATION": "Discours de haine ou préjugés.",
       "CRIME": "Thèmes d'activités criminelles.",
@@ -73,7 +73,7 @@
     },
     "accessibility": {
       "addToFavorites": "Ajouter aux favoris",
-      "removeFromFavorites": "Retirer des favoris"
+      "removeFromFavorites": "Supprimer des favoris"
     },
     "stats": {
       "conversations": "Conversations",
@@ -91,8 +91,8 @@
         "newCharacter": "Nouveau personnage",
         "createCharacter": "Nouveau personnage",
         "retry": "Réessayer",
-        "blurSensitive": "Flouter le contenu sensible",
-        "showSensitive": "Afficher le contenu sensible"
+        "blurSensitive": "Flouter les contenus sensibles",
+        "showSensitive": "Afficher les contenus sensibles"
       },
       "tabs": {
         "myCharacters": "Mes personnages",
@@ -101,7 +101,7 @@
       "filters": {
         "searchPlaceholder": "Rechercher par nom ou style",
         "allAgeRatings": "Toutes les classifications d'âge",
-        "noFilter": "Tout"
+        "noFilter": "N'importe lequel"
       },
       "states": {
         "loading": "Chargement de vos personnages...",
@@ -129,12 +129,12 @@
         "identityHint": "Définissez comment les gens découvrent et identifient ce personnage en un coup d'œil.",
         "profile": "Profil narratif",
         "profileHint": "Décrivez la personnalité, les traits et l'histoire pour guider l'IA.",
-        "configuration": "Disponibilité et modération",
+        "configuration": "Disponibilité & modération",
         "configurationHint": "Contrôlez l'apparence du personnage, qui peut y accéder et quelles protections s'appliquent.",
-        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer selon leurs préférences.",
-        "contentTagsCharacterHint": "Ces sujets définissent ce que le personnage est à l'aise de discuter à la classification d'âge sélectionnée.",
+        "contentTagsHint": "Marquez les thèmes potentiellement sensibles. Les utilisateurs peuvent les filtrer en fonction de leurs préférences.",
+        "contentTagsCharacterHint": "Ces sujets définissent ce que le personnage est à l'aise de discuter pour la classification d'âge sélectionnée.",
         "contentTagsUserHint": "Sélectionnez les thèmes que vous souhaitez inclure. Tout ce qui n'est pas coché reste bloqué pour cette classification.",
-        "contentTagLocked": "Débloqué avec des classifications d'âge plus élevées."
+        "contentTagLocked": "Débloqué pour les classifications d'âge supérieures."
       },
       "fields": {
         "firstName": "Prénom",
@@ -149,13 +149,13 @@
         "history": "Histoire",
         "isPublic": "Visibilité",
         "ageRating": "Classification d'âge",
-        "originalLanguageCode": "Langue originale",
+        "originalLanguageCode": "Langue d'origine",
         "contentTags": "Avertissements de contenu",
         "visibility": "Visibilité"
       },
       "placeholders": {
-        "style": "Sélectionner un style visuel",
-        "reference": "Ex: One Piece, Marvel Comics, Original",
+        "style": "Sélectionner le style visuel",
+        "reference": "Ex : One Piece, Marvel Comics, Original",
         "genderSelect": "Sélectionner le genre",
         "speciesSelect": "Sélectionner l'espèce"
       },
@@ -168,7 +168,7 @@
       },
       "avatar": {
         "upload": "Importer une image",
-        "change": "Changer d'image",
+        "change": "Changer l'image",
         "remove": "Supprimer",
         "uploading": "Importation...",
         "helperCreate": "Choisissez un avatar maintenant et nous le conserverons pendant que vous remplissez le reste du formulaire.",
@@ -177,30 +177,30 @@
         "previewAlt": "Aperçu de l'avatar du personnage",
         "invalidUrl": "Saisissez une URL d'image valide (http/https).",
         "saveFirst": "Veuillez d'abord enregistrer le personnage avant de générer l'avatar",
-        "insufficientCredits": "Crédits insuffisants. Vous avez besoin de {{required}} crédits mais vous en avez {{current}}.",
-        "generationStarted": "Génération de l'avatar lancée ! Cela peut prendre une minute. Vérifiez l'onglet Images pour les résultats.",
+        "insufficientCredits": "Crédits insuffisants. Il vous faut {{required}} crédits mais vous en avez {{current}}.",
+        "generationStarted": "Génération de l'avatar démarrée ! Cela peut prendre une minute. Vérifiez l'onglet Images pour les résultats.",
         "generationComplete": "Avatar généré avec succès !",
-        "generationFailed": "Échec de la génération de l'avatar. Veuillez réessayer.",
+        "generationFailed": "La génération de l'avatar a échoué. Veuillez réessayer.",
         "generationError": "Échec du démarrage de la génération de l'avatar. Veuillez réessayer."
       },
       "images": {
-        "coverHeader": "Couverture du personnage",
+        "coverHeader": "Image de couverture du personnage",
         "coverDescription": "Image orientée portrait utilisée comme couverture du personnage.",
-        "upload": "Importer une couverture",
+        "upload": "Importer la couverture",
         "change": "Changer la couverture",
         "uploading": "Importation...",
-        "urlModalTitle": "Utiliser l'image depuis une URL",
+        "urlModalTitle": "Utiliser une image depuis une URL",
         "urlLabel": "URL de l'image",
         "previewAlt": "Aperçu de la couverture du personnage"
       },
       "tags": {
-        "searchPlaceholder": "Rechercher des tags (ex: VTuber, Maid)",
+        "searchPlaceholder": "Rechercher des tags (ex : VTuber, Maid)",
         "selected": "Tags sélectionnés",
         "none": "Aucun tag sélectionné",
         "suggestions": "Suggestions",
         "loading": "Chargement...",
         "noResults": "Aucun résultat",
-        "incompatibleToast": "Certains tags sélectionnés sont incompatibles avec la classification d'âge actuelle. Veuillez les vérifier.",
+        "incompatibleToast": "Certains tags sélectionnés sont incompatibles avec la classification d'âge actuelle. Veuillez vérifier.",
         "incompatibleHint": "Les tags en surbrillance sont incompatibles avec la classification d'âge sélectionnée. Supprimez-les pour continuer.",
         "incompatibleChip": "Incompatible avec la classification d'âge actuelle"
       },
@@ -230,18 +230,18 @@
           "description": "Créez votre personnage étape par étape avec un contrôle total sur chaque détail",
           "features": [
             "Personnalisation complète",
-            "Remplissez tous les champs manuellement",
+            "Remplir tous les champs manuellement",
             "Parfait pour les personnages détaillés"
           ],
           "button": "Créer manuellement",
           "cost": "Gratuit"
         },
         "ai": {
-          "title": "Création assistée par l'IA",
+          "title": "Création assistée par IA",
           "description": "Laissez l'IA générer votre personnage à partir d'une description ou d'une image",
           "features": [
             "Génération automatique",
-            "Importez une image ou décrivez",
+            "Importer une image ou décrire",
             "Rapide et créatif"
           ],
           "button": "Créer avec l'IA",
@@ -249,7 +249,7 @@
           "costWithoutImage": "{{credits}} crédits (sans image)",
           "costBreakdown": {
             "title": "Détail du coût en crédits",
-            "imageAnalysis": "Analyse d'image : {{credits}} crédits (seulement si l'image est importée)",
+            "imageAnalysis": "Analyse d'image : {{credits}} crédits (uniquement si image importée)",
             "textAnalysis": "Analyse de texte : {{credits}} crédits",
             "characterEnrichment": "Enrichissement du personnage : {{credits}} crédits",
             "avatarGeneration": "Génération d'avatar : {{credits}} crédits",
@@ -269,6 +269,11 @@
       "cancelButton": "Annuler les modifications",
       "states": {
         "loading": "Chargement du personnage..."
+      },
+      "accessDenied": {
+        "title": "Accès refusé",
+        "message": "Seuls les administrateurs peuvent modifier les personnages officiels.",
+        "backButton": "Retour au profil"
       }
     },
     "detail": {
@@ -277,12 +282,12 @@
         "notFound": "Nous n'avons pas pu trouver ce personnage."
       },
       "actions": {
-        "backToHub": "Retour à l'accueil",
+        "backToHub": "Retour au hub",
         "edit": "Modifier",
         "delete": "Supprimer",
         "deleting": "Suppression...",
         "share": "Partager",
-        "startChat": "Démarrer une conversation",
+        "startChat": "Commencer la conversation",
         "startingChat": "Démarrage..."
       },
       "confirmDelete": {
@@ -294,7 +299,7 @@
       "labels": {
         "public": "Public",
         "private": "Privé",
-        "createdAt": "Créé",
+        "createdAt": "Créé le",
         "createdBy": "Créé par",
         "updatedAt": "Dernière mise à jour",
         "identifier": "ID du personnage : {{id}}",
@@ -304,7 +309,7 @@
         "favoriteCount_plural": "{{count}} favoris",
         "stats": "Statistiques"
       },
-      "sampleImages": "Images d'exemple",
+      "sampleImages": "Exemples d'images",
       "sections": {
         "physicalCharacteristics": "Apparence",
         "personality": "Personnalité",
@@ -320,87 +325,41 @@
       "gallery": "Images générées",
       "avatarHeader": "Avatars",
       "avatarDescription": "Images d'avatar générées pour ce personnage",
-      "coverHeader": "Couverture du personnage",
+      "coverHeader": "Image de couverture du personnage",
       "coverDescription": "Image orientée portrait utilisée comme couverture du personnage.",
-      "generateNew": "Générer un(e) nouvel(le) {{type}}",
-      "onlyAvatarSupported": "Seule la génération d'avatars est prise en charge pour le moment",
+      "generateNew": "Générer un nouveau {{type}}",
+      "onlyAvatarSupported": "Seule la génération d'avatar est prise en charge pour le moment",
       "startingGeneration": "Démarrage de la génération...",
       "generatingImage": "Génération de l'image... Cela peut prendre jusqu'à 1 minute",
       "processing": "Traitement de l'image par l'IA...",
       "generationComplete": "Génération terminée !",
       "imageGeneratedSuccess": "Image générée avec succès !",
-      "imageActivated": "Image définie comme active",
       "preview": "Aperçu",
       "generationInfo": "À propos de la génération d'images",
       "infoPrompt": "L'IA utilisera la description de votre personnage pour créer l'image",
       "infoTime": "La génération prend environ 30 à 60 secondes",
-      "infoActive": "Les nouvelles images sont automatiquement définies comme actives",
-      "deleteConfirmTitle": "Supprimer l'image ?",
-      "deleteConfirmMessage": "Êtes-vous sûr de vouloir supprimer cette image ? Cette action est irréversible.",
-      "delete": "Supprimer",
-      "scrollToZoom": "Faites défiler pour zoomer",
-      "dragToPan": "Faites glisser pour vous déplacer (lorsque vous zoomez)"
+      "infoActive": "Les nouvelles images sont automatiquement définies comme actives"
     },
     "imageGeneration": {
       "multiStage": {
-        "@deprecated": "Utilisez plutôt referenceImages - multiStage est conservé pour la rétrocompatibilité",
         "title": "Jeu de données de référence multi-étapes",
-        "description": "Générez 4 images de référence (avatar, vue de face, de profil, de dos) pour une génération de personnage cohérente",
-        "costInfo": "Coût de génération",
-        "costDescription": "Jeu de données de référence multi-étapes (4 images) :",
+        "description": "Générez 4 images de référence (avatar, vue de face, de côté, de dos) pour une génération cohérente de personnages",
         "stages": {
-          "face": "Visage (Portrait)",
-          "front": "Corps (de face)",
-          "side": "Corps (de profil)",
-          "back": "Corps (de dos)"
+          "avatar": "Avatar (Visage)",
+          "front": "Corps de face",
+          "side": "Corps de côté",
+          "back": "Corps de dos"
         },
         "startButton": "Générer le jeu de données",
-        "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
-        "insufficientCredits": "Crédits insuffisants (besoin de {{cost}})",
         "generating": "Génération du jeu de données...",
         "ready": "Prêt à générer",
         "waiting": "En attente...",
         "failed": "Échec",
-        "estimatedTime": "Temps estimé : 3-4 minutes",
-        "generationComplete": "Génération terminée !",
-        "allStagesCompleted": "Les 4 images de référence ont été générées.",
+        "estimatedTime": "Temps estimé : 8-12 minutes",
         "errors": {
           "startFailed": "Échec du démarrage de la génération",
-          "generationFailed": "Échec de la génération",
-          "pollFailed": "Échec de la vérification du statut de la génération"
-        },
-        "progress": {
-          "stage": "Étape {{stage}} sur {{total}}",
-          "message": "{{message}}"
-        }
-      },
-      "referenceImages": {
-        "title": "Jeu de données de référence multi-étapes",
-        "description": "Générez 4 images de référence (avatar, vue de face, de profil, de dos) pour une génération de personnage cohérente",
-        "costInfo": "Coût de génération",
-        "costDescription": "Jeu de données de référence multi-étapes (4 images) :",
-        "selectViews": "Sélectionnez les vues à générer",
-        "selectAtLeastOne": "Sélectionnez au moins une vue à générer",
-        "stages": {
-          "face": "Visage (Portrait)",
-          "front": "Corps (de face)",
-          "side": "Corps (de profil)",
-          "back": "Corps (de dos)"
-        },
-        "startButton": "Générer le jeu de données",
-        "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
-        "insufficientCredits": "Crédits insuffisants (besoin de {{cost}})",
-        "generating": "Génération du jeu de données...",
-        "ready": "Prêt à générer",
-        "waiting": "En attente...",
-        "failed": "Échec",
-        "estimatedTime": "Temps estimé : 3-4 minutes",
-        "generationComplete": "Génération terminée !",
-        "allStagesCompleted": "Les 4 images de référence ont été générées.",
-        "errors": {
-          "startFailed": "Échec du démarrage de la génération",
-          "generationFailed": "Échec de la génération",
-          "pollFailed": "Échec de la vérification du statut de la génération"
+          "generationFailed": "La génération a échoué",
+          "pollFailed": "Échec de la vérification du statut de génération"
         },
         "progress": {
           "stage": "Étape {{stage}} sur {{total}}",
@@ -409,72 +368,41 @@
       },
       "imagesTab": {
         "dropdownLabel": "Générer ou importer...",
-        "generateAvatar": "Générer un avatar",
-        "generateReferenceDataset": "Générer un jeu de données de référence (4 vues)",
-        "uploadCover": "Importer une image de couverture",
+        "generateAvatar": "Générer l'avatar",
+        "generateReferenceDataset": "Générer le jeu de données de référence (4 vues)",
+        "uploadCover": "Importer l'image de couverture",
         "avatarsCount": "{{count}} avatar",
         "avatarsCount_plural": "{{count}} avatars",
         "referenceCount": "{{count}} image de référence",
         "referenceCount_plural": "{{count}} images de référence",
         "avatarsSection": "Avatars",
-        "noAvatars": "Aucun avatar pour l'instant",
-        "noReferenceImages": "Aucune image de référence pour l'instant",
-        "active": "Active",
-        "imageActivated": "Image définie comme active",
-        "avatarSection": {
-          "title": "Avatars",
-          "description": "Images de profil représentant votre personnage",
-          "shortDescription": "Photos de profil"
-        },
-        "coverSection": {
-          "title": "Images de couverture",
-          "description": "Images plein corps orientées portrait",
-          "shortDescription": "Plein corps portrait"
-        },
-        "referenceSection": {
-          "title": "Images de référence",
-          "description": "Jeu de données de référence à 4 vues pour une génération IA cohérente",
-          "shortDescription": "Jeu de données de référence à 4 vues"
-        },
-        "buttons": {
-          "upload": "Importer",
-          "generateAI": "Générer avec l'IA",
-          "view": "Afficher",
-          "delete": "Supprimer",
-          "setActive": "Définir comme actif"
-        },
-        "modals": {
-          "promptLabel": "Contexte/Invite",
-          "promptPlaceholder": "Décrivez un contexte ou un style additionnel...",
-          "sampleImageLabel": "Image de référence (Facultatif)",
-          "sampleImageHint": "Importez une image d'exemple à utiliser comme référence de style",
-          "generating": "Génération...",
-          "uploading": "Importation..."
-        }
+        "noAvatars": "Pas encore d'avatars",
+        "noReferenceImages": "Pas encore d'images de référence",
+        "active": "Actif"
       }
     },
     "createAI": {
       "title": "Générateur de personnage par IA",
       "subtitle": "Décrivez votre personnage ou importez une image, et l'IA générera les détails pour vous",
       "descriptionLabel": "Description du personnage",
-      "descriptionPlaceholder": "Décrivez votre personnage... (ex: \"Un brave chevalier à l'armure d'argent et au cœur noble\")",
+      "descriptionPlaceholder": "Décrivez votre personnage... (ex : \"Un chevalier courageux avec une armure d'argent et un cœur noble\")",
       "descriptionHint": "Plus votre description est détaillée, meilleurs seront les résultats",
       "imageLabel": "Image du personnage",
       "uploadPrompt": "Cliquez pour importer l'image du personnage",
-      "uploadHint": "PNG, JPEG, WEBP, GIF (max 10Mo)",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (max 10 Mo)",
       "generateButton": "Générer le personnage",
       "generating": "Génération...",
       "howItWorks": "Comment ça marche",
       "step1": "Fournissez une description textuelle et/ou importez une image",
       "step2": "L'IA analyse votre saisie et génère les détails du personnage",
-      "step3": "Vérifiez et modifiez le personnage généré avant de l'enregistrer",
+      "step3": "Vérifiez et modifiez le personnage généré avant d'enregistrer",
       "step4": "Un avatar sera automatiquement généré pour vous",
       "loading": {
         "creatingCharacter": "Création de votre personnage",
         "analyzingEssence": "Analyse de l'essence...",
         "threadsOfFate": "Les fils du destin sont tissés...",
-        "gatheringMagic": "Rassemblement de magie ancienne...",
-        "shapingDestiny": "Façonnement de leur destin...",
+        "gatheringMagic": "Rassembler la magie ancienne...",
+        "shapingDestiny": "Façonner leur destin...",
         "breathingLife": "Donner vie à l'existence..."
       },
       "progress": {
@@ -484,7 +412,7 @@
         "generatingDetails": "Forge de leur identité",
         "generatingHistory": "Tissage de leur histoire",
         "creatingCharacter": "Donner vie",
-        "queuingAvatar": "Préparation du visuel",
+        "queuingAvatar": "Préparation de l'aspect visuel",
         "generatingAvatar": "Peinture de leur portrait",
         "queuingMultiStage": "Préparation du jeu de données de référence (4 vues)",
         "completed": "Votre héros vous attend",
@@ -507,8 +435,8 @@
       "confirmDiscard": "Êtes-vous sûr de vouloir ignorer ce personnage ? Cette action est irréversible.",
       "characterDiscarded": "Personnage ignoré avec succès",
       "discardFailed": "Échec de l'ignorance du personnage",
-      "generationStarted": "Génération du personnage lancée ! Suivi de la progression...",
-      "generationFailed": "Échec de la génération du personnage. Veuillez réessayer."
+      "generationStarted": "Génération du personnage démarrée ! Suivi de la progression...",
+      "generationFailed": "La génération du personnage a échoué. Veuillez réessayer."
     },
     "errors": {
       "createFailed": "Nous n'avons pas pu créer le personnage. Veuillez réessayer.",
@@ -516,11 +444,9 @@
       "deleteFailed": "Nous n'avons pas pu supprimer le personnage.",
       "detailUnavailable": "Impossible de charger les détails du personnage pour le moment.",
       "descriptionOrImageRequired": "Veuillez fournir une description ou une image",
-      "imageTooLarge": "L'image doit être inférieure à 10Mo",
+      "imageTooLarge": "L'image doit être inférieure à 10 Mo",
       "invalidImageType": "L'image doit être au format PNG, JPEG, WEBP ou GIF",
-      "generationFailed": "Échec de la génération du personnage",
-      "failedToActivateImage": "Échec de l'activation de l'image",
-      "failedToGenerateImage": "Échec de la génération de l'image"
+      "generationFailed": "Échec de la génération du personnage"
     }
   }
 }

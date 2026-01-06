@@ -8,10 +8,17 @@ import { AgeRatingBadge } from '../../../components/ui/AgeRatingBadge';
 import { useCharacterMutations, useCharacterQuery } from '../shared/hooks/useCharacterQueries';
 import { chatService } from '../../../services/chatService';
 import { useAuth } from '../../../hooks/useAuth';
+import { useAdmin } from '../../../hooks/useAdmin';
 import { usePageHeader } from '../../../hooks/usePageHeader';
 import { characterStatsService, type CharacterStats } from '../../../services/characterStatsService';
 import { FavoriteButton } from '../../../components/ui/FavoriteButton';
 import { useToast } from '../../../contexts/ToastContext';
+
+/**
+ * CharHub Official user ID (UUID constant)
+ * Characters owned by this user can only be edited by ADMINs
+ */
+const CHARHUB_OFFICIAL_ID = '00000000-0000-0000-0000-000000000001';
 
 export default function CharacterDetailPage(): JSX.Element {
   const { t } = useTranslation(['characters', 'common', 'dashboard', 'species']);
@@ -19,6 +26,7 @@ export default function CharacterDetailPage(): JSX.Element {
   const params = useParams<{ characterId: string }>();
   const characterId = params.characterId ?? '';
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   const { setTitle } = usePageHeader();
 
   const { data, isLoading, isError } = useCharacterQuery(characterId);
@@ -43,8 +51,10 @@ export default function CharacterDetailPage(): JSX.Element {
   }, [data, t]);
 
   const isOwner = useMemo(() => {
-    return user?.id === data?.userId;
-  }, [user, data]);
+    if (!user || !data) return false;
+    // User is owner OR (user is ADMIN and character is official)
+    return user.id === data.userId || (isAdmin && data.userId === CHARHUB_OFFICIAL_ID);
+  }, [user, data, isAdmin]);
 
   // Get sample images (max 4)
   const sampleImages = useMemo(() => {

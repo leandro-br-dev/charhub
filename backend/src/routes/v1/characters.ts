@@ -19,6 +19,7 @@ import {
   updateCharacterSchema,
 } from '../../validators';
 import { generateAutomatedCharacter } from '../../controllers/automatedCharacterGenerationController';
+import { canEditCharacter } from '../../services/characterService';
 
 const router = Router();
 const upload = multer({
@@ -609,6 +610,7 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const userId = req.auth?.user?.id;
+    const userRole = req.auth?.user?.role;
 
     if (!userId) {
       return res.status(401).json({
@@ -617,12 +619,24 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
       });
     }
 
-    // Check ownership
-    const isOwner = await characterService.isCharacterOwner(id, userId);
-    if (!isOwner) {
+    // Get character to check ownership
+    const character = await prisma.character.findUnique({
+      where: { id },
+      select: { userId: true },
+    });
+
+    if (!character) {
+      return res.status(404).json({
+        success: false,
+        message: 'Character not found',
+      });
+    }
+
+    // Check if user can edit (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
       return res.status(403).json({
         success: false,
-        message: 'You can only update your own characters',
+        message: 'You do not have permission to edit this character',
       });
     }
 
@@ -630,14 +644,14 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
     const validatedData = updateCharacterSchema.parse(req.body);
     const preferredLang = req.auth?.user?.preferredLanguage || undefined;
 
-    const character = await characterService.updateCharacter(id, {
+    const updatedCharacter = await characterService.updateCharacter(id, {
       ...validatedData,
       ...(preferredLang ? { originalLanguageCode: preferredLang } : {}),
     } as any);
 
     return res.json({
       success: true,
-      data: character,
+      data: updatedCharacter,
     });
   } catch (error) {
     if (error instanceof Error && 'issues' in error) {
@@ -664,6 +678,7 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const userId = req.auth?.user?.id;
+    const userRole = req.auth?.user?.role;
 
     if (!userId) {
       return res.status(401).json({
@@ -672,12 +687,24 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
       });
     }
 
-    // Check ownership
-    const isOwner = await characterService.isCharacterOwner(id, userId);
-    if (!isOwner) {
+    // Get character to check ownership
+    const character = await prisma.character.findUnique({
+      where: { id },
+      select: { userId: true },
+    });
+
+    if (!character) {
+      return res.status(404).json({
+        success: false,
+        message: 'Character not found',
+      });
+    }
+
+    // Check if user can edit (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
       return res.status(403).json({
         success: false,
-        message: 'You can only delete your own characters',
+        message: 'You do not have permission to delete this character',
       });
     }
 

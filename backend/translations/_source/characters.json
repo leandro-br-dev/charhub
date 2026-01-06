@@ -269,6 +269,11 @@
       "cancelButton": "Discard changes",
       "states": {
         "loading": "Loading character..."
+      },
+      "accessDenied": {
+        "title": "Access Denied",
+        "message": "Only administrators can edit official characters.",
+        "backButton": "Back to Profile"
       }
     },
     "detail": {
