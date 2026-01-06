@@ -52,7 +52,7 @@ class ContentClassificationService {
         userPrompt,
         temperature: 0, // Consistent classification
         maxTokens: 256,
-      } as any);
+      });
 
       // Parse response
       const content = response.content.trim().toUpperCase();
