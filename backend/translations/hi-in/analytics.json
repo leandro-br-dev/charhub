@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "LLM लागत विश्लेषण",
+    "header": {
+      "title": "LLM लागत विश्लेषण",
+      "description": "प्लेटफॉर्म पर LLM उपयोग की लागतों की निगरानी और विश्लेषण करें"
+    },
+    "dateRange": {
+      "label": "अवधि",
+      "last7Days": "पिछले 7 दिन",
+      "last30Days": "पिछले 30 दिन",
+      "last90Days": "पिछले 90 दिन"
+    },
+    "sections": {
+      "costsByFeature": "फ़ीचर के अनुसार लागत",
+      "costsByModel": "मॉडल के अनुसार लागत",
+      "costsByPlan": "सदस्यता योजना के अनुसार लागत",
+      "dailyCosts": "दैनिक लागत प्रवृत्ति",
+      "cachingMetrics": "कैशिंग प्रभावशीलता",
+      "topUsers": "लागत के अनुसार शीर्ष उपयोगकर्ता"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "कुल LLM लागत",
+        "description": "चयनित अवधि में LLM API कॉल के लिए कुल परिचालन लागत",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "उपयोगकर्ता",
+      "avgCost": "औसत लागत/उपयोगकर्ता"
+    },
+    "caching": {
+      "hitRate": "कैश हिट दर",
+      "totalRequests": "कुल अनुरोध",
+      "cachedRequests": "कैश किए गए अनुरोध",
+      "costSavings": "लागत बचत"
+    },
+    "table": {
+      "userId": "उपयोगकर्ता ID",
+      "totalCost": "कुल लागत",
+      "requests": "अनुरोध"
+    },
+    "metrics": {
+      "requests": "अनुरोध",
+      "req": "अनुरोध",
+      "avgReq": "औसत/अनुरोध"
+    },
+    "messages": {
+      "noData": "चयनित अवधि के लिए कोई डेटा उपलब्ध नहीं है"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "चरित्र निर्माण",
+      "STORY_GENERATION": "कहानी निर्माण",
+      "CONTENT_TRANSLATION": "सामग्री अनुवाद",
+      "CHAT_MESSAGE": "चैट संदेश",
+      "AUTOMATED_GENERATION": "स्वचालित निर्माण",
+      "IMAGE_ANALYSIS": "छवि विश्लेषण",
+      "OTHER": "अन्य"
+    },
+    "planNames": {
+      "FREE": "मुफ्त",
+      "PLUS": "प्लस",
+      "PREMIUM": "प्रीमियम"
+    }
+  }
+}

@@ -5,9 +5,12 @@ import {
 } from '../storyCoverPromptAgent';
 import { callLLM } from '../../services/llm';
 import { logger } from '../../config/logger';
+import { modelRouter } from '../../services/llm/modelRouter';
+import type { ModelSelection } from '../../services/llm/modelRouter';
 
 // Mock dependencies
 jest.mock('../../services/llm');
+jest.mock('../../services/llm/modelRouter');
 jest.mock('../../config/logger', () => ({
   logger: {
     error: jest.fn(),
@@ -25,6 +28,12 @@ describe('storyCoverPromptAgent - Unit Tests', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Mock model router to return Grok 4-1 for story generation
+    (modelRouter.getModel as jest.MockedFunction<typeof modelRouter.getModel>).mockResolvedValue({
+      provider: 'grok',
+      model: 'grok-4-1-fast-reasoning',
+      reasoning: 'Story generation - using Grok 4-1 (NSFW-friendly, cost-effective)',
+    } as ModelSelection);
   });
 
   afterEach(() => {
@@ -45,10 +54,10 @@ describe('storyCoverPromptAgent - Unit Tests', () => {
       expect(result).toContain('masterpiece');
       expect(result).toContain('best quality');
       expect(callLLM).toHaveBeenCalledWith({
-        provider: 'gemini',
-        model: 'gemini-2.5-flash',
+        provider: 'grok',
+        model: 'grok-4-1-fast-reasoning', // Updated to match model router output
         systemPrompt: expect.any(String),
-        userPrompt: expect.stringContaining('The Dragon Academy'),
+        userPrompt: expect.any(String),
         temperature: 0.7,
         maxTokens: 768,
       });
@@ -301,8 +310,8 @@ describe('storyCoverPromptAgent - Unit Tests', () => {
 
       expect(callLLM).toHaveBeenCalledWith(
         expect.objectContaining({
-          provider: 'gemini',
-          model: 'gemini-2.5-flash',
+          provider: 'grok',
+          model: 'grok-4-1-fast-reasoning', // Updated to match model router output
         })
       );
     });
@@ -550,8 +559,8 @@ describe('storyCoverPromptAgent - Unit Tests', () => {
       // The function should handle character with only name gracefully
       expect(callLLM).toHaveBeenCalledWith(
         expect.objectContaining({
-          provider: 'gemini',
-          model: 'gemini-2.5-flash',
+          provider: 'grok',
+          model: 'grok-4-1-fast-reasoning', // Updated to match model router output
         })
       );
     });

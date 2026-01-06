@@ -192,7 +192,12 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
       console.log('[useChatSocket] Connecting to WebSocket...');
       socket.connect();
     } else {
-      console.log('[useChatSocket] Socket already connected');
+      console.log('[useChatSocket] Socket already connected - setting connected state');
+      // Socket is already connected, but the 'connect' event already fired
+      // so we need to manually set the connected state
+      setIsConnected(true);
+      setSocketId(socket.id ?? null);
+      setConnectionError(null);
     }
 
     return () => {
@@ -454,6 +459,13 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
   const sendMessage = useCallback(
     (payload: SendMessageOptions) =>
       new Promise<SendMessageResult>((resolve, reject) => {
+        console.log('[useChatSocket] sendMessage called', {
+          hasSocket: !!socket,
+          socketId: socket?.id,
+          connected: socket?.connected,
+          payload
+        });
+
         if (!socket) {
           console.error('[useChatSocket] sendMessage failed: socket is null');
           reject(new Error('Socket is not initialized'));
