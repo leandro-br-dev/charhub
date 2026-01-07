@@ -70,11 +70,11 @@ export function ImageGenerationModal({
             <div className="space-y-4">
               {/* Cost Information */}
               <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <h3 className="font-semibold mb-2">Generation Cost</h3>
+                <h3 className="font-semibold mb-2">{t('characters:imageGeneration.multiStage.costInfo')}</h3>
                 <div className="text-sm space-y-1">
                   <div className="flex justify-between">
-                    <span>Multi-stage reference dataset (4 images):</span>
-                    <span className="font-bold">{IMAGE_GENERATION_COSTS.REFERENCE_SET} credits</span>
+                    <span>{t('characters:imageGeneration.multiStage.costDescription')}</span>
+                    <span className="font-bold">{IMAGE_GENERATION_COSTS.REFERENCE_SET} {t('common:credits')}</span>
                   </div>
                 </div>
               </div>
@@ -82,10 +82,6 @@ export function ImageGenerationModal({
               {/* Progress Component */}
               <MultiStageProgress
                 characterId={characterId}
-                prompt={{
-                  positive: form.values.physicalCharacteristics || form.values.personality || '',
-                  negative: 'low quality, blurry, distorted, deformed, ugly, bad anatomy, bad proportions',
-                }}
                 onComplete={onComplete}
                 onError={(error) => {
                   console.error('Multi-stage generation failed:', error);
