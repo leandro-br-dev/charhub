@@ -16,7 +16,7 @@
     "logout": "Se déconnecter",
     "logoutLoading": "Déconnexion en cours...",
     "authenticatedUser": "Utilisateur authentifié",
-    "tokenStored": "Stocké dans un cookie HTTP-only",
+    "tokenStored": "Stocké dans un cookie HTTP-seulement",
     "navDashboard": "Tableau de bord",
     "navCharacters": "Personnages",
     "navTagline": "Démo OAuth sécurisée",
@@ -29,7 +29,7 @@
       "label": "Thème",
       "option": {
         "light": "Clair",
-        "dark": "Foncé",
+        "dark": "Sombre",
         "system": "Système"
       }
     },
@@ -39,8 +39,11 @@
     "cancel": "Annuler",
     "save": "Enregistrer",
     "saving": "Enregistrement...",
+    "loading": "Chargement...",
+    "use": "Utiliser",
+    "add": "Ajouter",
     "delete": "Supprimer",
-    "deleting": "Suppression...",
+    "deleting": "Suppression en cours...",
     "enabled": "Activé",
     "disabled": "Désactivé",
     "selectOption": "Sélectionner une option",
@@ -50,7 +53,7 @@
     },
     "messages": {
       "linkCopied": "Lien copié dans le presse-papiers !",
-      "chatStarted": "Discussion démarrée avec succès !",
+      "chatStarted": "Chat démarré avec succès !",
       "characterDeleted": "Personnage supprimé avec succès"
     },
     "contentFilter": {
@@ -58,7 +61,7 @@
       "title": "Filtre de contenu",
       "ageRating": "Classification par âge",
       "blurNsfw": "Flouter le contenu explicite",
-      "none": "Aucun filtre",
+      "none": "Pas de filtre",
       "blur": "Flouter le contenu sensible",
       "hidden": "Masquer le contenu mature",
       "descriptions": {
@@ -68,11 +71,11 @@
       },
       "ageRatings": {
         "L": "Tout public",
-        "TEN": "10+",
-        "TWELVE": "12+",
-        "FOURTEEN": "14+",
-        "SIXTEEN": "16+",
-        "EIGHTEEN": "18+"
+        "TEN": "10 ans et plus",
+        "TWELVE": "12 ans et plus",
+        "FOURTEEN": "14 ans et plus",
+        "SIXTEEN": "16 ans et plus",
+        "EIGHTEEN": "18 ans et plus"
       },
       "noBirthdateWarning": "⚠️ Âge non enregistré",
       "noBirthdateDescription": "Pour accéder au contenu soumis à une restriction d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
@@ -81,17 +84,16 @@
     },
     "errors": {
       "generic": "Une erreur est survenue. Veuillez réessayer.",
-      "failedToFetchData": "Échec de la récupération des données"
+      "failedToFetchData": "Échec du chargement des données"
     },
     "character": "Personnage",
     "seeMore": "Voir plus",
     "seeMoreArrow": "Voir plus →",
     "back": "Retour",
-    "loading": "Chargement...",
     "credits": "crédits",
     "tryAgain": "Réessayer",
     "generate": "Générer",
     "generating": "Génération en cours...",
-    "use": "Utiliser"
+    "done": "Terminé"
   }
 }

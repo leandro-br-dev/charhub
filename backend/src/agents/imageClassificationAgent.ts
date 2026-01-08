@@ -36,7 +36,7 @@ export async function classifyImageViaLLM(imageUrl: string): Promise<ImageClassi
 
   const response = await callLLM({
     provider: 'grok',
-    model: 'grok-4-fast-non-reasoning',
+    model: 'grok-4-1-fast-non-reasoning', // Updated to match config
     systemPrompt,
     userPrompt,
     images: [imageUrl], // Pass image URL for vision analysis

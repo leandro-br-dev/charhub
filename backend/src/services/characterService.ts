@@ -42,9 +42,9 @@ function validateGender(gender: string | null | undefined): CharacterGender | nu
 }
 
 /**
- * Finds species ID by name (case-insensitive search)
- * - Searches by name or description
- * - Returns null if not found
+ * Find species ID by name (case-insensitive search)
+ * Searches both the name field and description field
+ * Returns null if species not found
  */
 async function findSpeciesIdByName(speciesName: string | null | undefined): Promise<string | null> {
   if (!speciesName || speciesName.trim() === '') return null;
@@ -69,7 +69,7 @@ async function findSpeciesIdByName(speciesName: string | null | undefined): Prom
     logger.info(`Species not found for name "${speciesName}", will be stored as null`);
     return null;
   } catch (error) {
-    logger.error({ error, speciesName }, 'Error searching for species');
+    logger.error({ error, speciesName }, 'Error finding species by name');
     return null;
   }
 }
@@ -759,10 +759,9 @@ export async function updateCharacter(
       finalUpdateData.gender = validateGender(gender);
     }
 
-    // Find species ID by name (async operation)
-    let speciesId: string | null | undefined = undefined;
+    // Find species ID from species name (async operation)
     if (species !== undefined) {
-      speciesId = await findSpeciesIdByName(species);
+      const speciesId = await findSpeciesIdByName(species);
       finalUpdateData.speciesId = speciesId;
     }
 

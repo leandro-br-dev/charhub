@@ -2,30 +2,31 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
+    "createCharacter": "Créer un personnage",
     "tabs": {
       "discover": "Découvrir",
-      "chat": "Discuter",
+      "chat": "Chat",
       "story": "Histoire"
     },
     "sections": {
       "popularCharacters": "Personnages populaires",
       "favoriteCharacters": "Vos favoris",
-      "popular": "Populaires",
+      "popular": "Populaire",
       "favorites": "Favoris",
       "myStories": "Mes histoires",
       "popularStories": "Histoires populaires",
       "mine": "Les miennes",
       "noPopularCharacters": "Aucun personnage populaire trouvé.",
-      "noFavoriteCharacters": "Vous n'avez pas encore de personnages favoris.",
+      "noFavoriteCharacters": "Vous n'avez pas encore ajouté de personnages à vos favoris.",
       "createCharacter": "Créer un personnage",
       "browseCharacters": "Parcourir les personnages"
     },
     "noStories": "Aucune histoire pour l'instant. Créez votre première histoire !",
     "createStory": "Créer une histoire",
-    "plusRequired": "Plan Plus requis",
+    "plusRequired": "Nécessite l'abonnement Plus",
     "recentConversations": "Conversations récentes",
     "newConversation": "Nouvelle conversation",
-    "noConversations": "Aucune conversation pour l'instant. Commencez à discuter maintenant !",
+    "noConversations": "Aucune conversation pour l'instant. Commencez à discuter dès maintenant !",
     "startChat": "Démarrer une nouvelle conversation",
     "endOfList": {
       "characters": {
@@ -53,7 +54,7 @@
           "action2Full": "Parcourir les personnages"
         },
         "stories": {
-          "title": "Découvrez les histoires",
+          "title": "Découvrir des histoires",
           "description": "Vivez des aventures interactives immersives",
           "action": "Parcourir",
           "actionFull": "Parcourir les histoires",
@@ -63,8 +64,8 @@
         "pricing": {
           "title": "Débloquez le Premium",
           "description": "Créations illimitées, fonctionnalités exclusives et bien plus encore",
-          "action": "Voir les plans",
-          "actionFull": "Voir les plans"
+          "action": "Voir les abonnements",
+          "actionFull": "Voir les abonnements"
         }
       }
     },
@@ -83,11 +84,17 @@
       "selectSpecies": "Sélectionner les espèces...",
       "clear": "Effacer",
       "genders": {
-        "male": "Masculin",
-        "female": "Féminin",
+        "male": "Homme",
+        "female": "Femme",
         "nonBinary": "Non-binaire",
         "other": "Autre",
-        "unknown": "Inconnu"
+        "unknown": "Inconnu",
+        "MALE": "Homme",
+        "FEMALE": "Femme",
+        "NON_BINARY": "Non-binaire",
+        "NON-BINARY": "Non-binaire",
+        "OTHER": "Autre",
+        "UNKNOWN": "Inconnu"
       }
     }
   }
