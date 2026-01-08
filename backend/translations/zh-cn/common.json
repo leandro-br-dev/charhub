@@ -12,14 +12,14 @@
     "account": "账户",
     "continueGoogle": "使用 Google 继续",
     "continueFacebook": "使用 Facebook 继续",
-    "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本个人资料信息。",
-    "logout": "退出登录",
-    "logoutLoading": "正在退出登录...",
+    "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本资料信息。",
+    "logout": "退出",
+    "logoutLoading": "正在退出...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在 HTTP-only Cookie 中",
+    "tokenStored": "存储在仅限 HTTP 的 Cookie 中",
     "navDashboard": "仪表盘",
     "navCharacters": "角色",
-    "navTagline": "安全 OAuth 演示",
+    "navTagline": "安全的 OAuth 演示",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -35,10 +35,13 @@
     },
     "none": "无",
     "unknown": "未知",
-    "nameNotAvailable": "名称不可用",
+    "nameNotAvailable": "姓名不可用",
     "cancel": "取消",
     "save": "保存",
     "saving": "正在保存...",
+    "loading": "正在加载...",
+    "use": "使用",
+    "add": "添加",
     "delete": "删除",
     "deleting": "正在删除...",
     "enabled": "已启用",
@@ -57,12 +60,12 @@
       "ariaLabel": "内容过滤器",
       "title": "内容过滤器",
       "ageRating": "年龄分级",
-      "blurNsfw": "模糊显式内容",
+      "blurNsfw": "模糊限制级内容",
       "none": "无过滤器",
       "blur": "模糊敏感内容",
       "hidden": "隐藏成人内容",
       "descriptions": {
-        "none": "显示所有内容，无任何限制",
+        "none": "显示所有内容，无限制",
         "blur": "对成人内容应用模糊效果",
         "hidden": "完全隐藏成人内容"
       },
@@ -75,23 +78,22 @@
         "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ 未注册年龄",
-      "noBirthdateDescription": "要访问年龄限制内容，请在设置中添加您的出生日期。",
+      "noBirthdateDescription": "要访问受年龄限制的内容，请在设置中添加您的出生日期。",
       "goToSettings": "前往设置",
-      "blocked": "（已屏蔽）"
+      "blocked": "（已阻止）"
     },
     "errors": {
       "generic": "发生错误。请重试。",
-      "failedToFetchData": "获取数据失败"
+      "failedToFetchData": "未能获取数据"
     },
     "character": "角色",
     "seeMore": "查看更多",
     "seeMoreArrow": "查看更多 →",
     "back": "返回",
-    "loading": "加载中...",
     "credits": "积分",
     "tryAgain": "重试",
     "generate": "生成",
     "generating": "正在生成...",
-    "use": "使用"
+    "done": "完成"
   }
 }

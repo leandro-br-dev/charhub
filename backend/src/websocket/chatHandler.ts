@@ -393,8 +393,20 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
     });
 
     socket.on('send_message', async (rawPayload, callback) => {
+      logger.info({
+        socketId: socket.id,
+        userId: user?.id,
+        rawPayload,
+      }, 'send_message event received');
+
       try {
         const payload = sendMessageSchema.parse(rawPayload);
+
+        logger.info({
+          conversationId: payload.conversationId,
+          userId: user.id,
+          content: payload.content?.substring(0, 50),
+        }, 'sendMessage payload parsed');
 
         await ensureConversationAccess(payload.conversationId, user.id);
 
@@ -545,8 +557,17 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
           // Use queue system if enabled
           const preferredLanguage = socket.data.preferredLanguage;
           const costPerBot = estimatedCreditCost / respondingParticipantIds.length;
+
+          logger.info({
+            conversationId: payload.conversationId,
+            messageId: message.id,
+            messageCount: conversation.messages.length,
+            respondingBots: respondingParticipantIds.length,
+            isNSFW,
+          }, 'Queueing AI response jobs');
+
           for (const participantId of respondingParticipantIds) {
-            await queueAIResponse({
+            const jobId = await queueAIResponse({
               conversationId: payload.conversationId,
               participantId,
               lastMessageId: message.id,
@@ -555,6 +576,13 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
               isNSFW,
               requestingUserId: user.id, // Pass who sent the message (who pays)
             });
+
+            logger.info({
+              conversationId: payload.conversationId,
+              participantId,
+              messageId: message.id,
+              jobId,
+            }, 'AI response job queued');
           }
         } else {
           // Fallback: generate responses directly without queues

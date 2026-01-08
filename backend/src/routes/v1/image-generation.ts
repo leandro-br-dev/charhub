@@ -10,6 +10,7 @@ import { QueueName } from '../../queues/config';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 import { ImageGenerationType } from '../../services/comfyui';
+import { r2Service } from '../../services/r2Service';
 import type {
   AvatarGenerationJobData,
   StickerGenerationJobData,
@@ -24,7 +25,7 @@ const router = Router();
  */
 router.post('/avatar', requireAuth, async (req, res) => {
   try {
-    const { characterId } = req.body;
+    const { characterId, prompt, referenceImageUrl, imageType } = req.body;
     const user = req.auth?.user;
 
     if (!user) {
@@ -35,6 +36,11 @@ router.post('/avatar', requireAuth, async (req, res) => {
 
     if (!characterId) {
       return res.status(400).json({ error: 'characterId is required' });
+    }
+
+    // Validate imageType if provided
+    if (imageType && imageType !== 'AVATAR' && imageType !== 'COVER') {
+      return res.status(400).json({ error: 'imageType must be either AVATAR or COVER' });
     }
 
     // Verify character exists and user has access
@@ -51,30 +57,33 @@ router.post('/avatar', requireAuth, async (req, res) => {
 
     // Check if user owns the character
     if (character.userId !== userId) {
-      return res.status(403).json({ error: 'You can only generate avatars for your own characters' });
+      return res.status(403).json({ error: 'You can only generate images for your own characters' });
     }
 
-    // Queue the job
+    // Queue the job with optional prompt, reference image, and image type
     const jobData: AvatarGenerationJobData = {
       type: ImageGenerationType.AVATAR,
       userId,
       characterId,
+      prompt, // Optional Stable Diffusion prompt
+      referenceImageUrl, // Optional URL to reference image for IP-Adapter
+      imageType: imageType || 'AVATAR', // Whether to save as AVATAR or COVER type
     };
 
     const job = await queueManager.addJob(QueueName.IMAGE_GENERATION, 'generate-avatar', jobData, {
       priority: 5, // Normal priority
     });
 
-    logger.info({ jobId: job.id, characterId, userId }, 'Avatar generation job queued');
+    logger.info({ jobId: job.id, characterId, userId, hasPrompt: !!prompt, hasReference: !!referenceImageUrl, imageType }, 'Image generation job queued');
 
     return res.json({
       success: true,
       jobId: job.id,
-      message: 'Avatar generation started',
+      message: `${imageType || 'Avatar'} generation started`,
     });
   } catch (error) {
-    logger.error({ err: error }, 'Failed to queue avatar generation');
-    return res.status(500).json({ error: 'Failed to start avatar generation' });
+    logger.error({ err: error }, 'Failed to queue image generation');
+    return res.status(500).json({ error: 'Failed to start image generation' });
   }
 });
 
@@ -428,16 +437,22 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
       return res.status(404).json({ error: 'Image not found' });
     }
 
+    // Delete from R2 if key exists
+    if (image.key) {
+      try {
+        await r2Service.deleteObject(image.key);
+        logger.info({ key: image.key }, 'Deleted image from R2');
+      } catch (err) {
+        logger.error({ key: image.key, err }, 'Failed to delete image from R2, continuing with database deletion');
+      }
+    }
+
     // Delete from database
     await prisma.characterImage.delete({
       where: { id: imageId },
     });
 
-    // TODO: Delete from R2 storage using image.key
-    // This would require r2Service.deleteObject({ key: image.key })
-    // For now, we just delete the database record
-
-    logger.info({ characterId, imageId }, 'Image deleted');
+    logger.info({ characterId, imageId }, 'Image deleted successfully');
 
     return res.json({
       success: true,
@@ -459,10 +474,14 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
  * POST /api/v1/image-generation/character-dataset
  * Generate complete 4-stage reference dataset for a character
  * Long-running operation - returns job ID for polling
+ *
+ * New parameter: viewsToGenerate - optional array of views to regenerate
+ * Example: viewsToGenerate: ["face", "side"] - only regenerate face and side views
+ * If not provided, all 4 views will be generated (existing behavior)
  */
 router.post('/character-dataset', requireAuth, async (req, res) => {
   try {
-    const { characterId, prompt, loras, referenceImages } = req.body;
+    const { characterId, prompt, loras, referenceImages, viewsToGenerate } = req.body;
     const user = req.auth?.user;
 
     if (!user) {
@@ -471,21 +490,51 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
 
     const userId = user.id;
 
-    if (!characterId || !prompt) {
-      return res.status(400).json({ error: 'characterId and prompt are required' });
+    if (!characterId) {
+      return res.status(400).json({ error: 'characterId is required' });
     }
 
-    if (!prompt.positive || !prompt.negative) {
-      return res.status(400).json({ error: 'prompt must contain positive and negative text' });
-    }
-
-    // Verify character ownership
+    // Verify character ownership and get character data
     const character = await prisma.character.findUnique({
       where: { id: characterId },
+      select: {
+        id: true,
+        userId: true,
+        firstName: true,
+        lastName: true,
+        gender: true,
+        speciesId: true,
+        physicalCharacteristics: true,
+        personality: true,
+        reference: true,
+        style: true,
+      },
     });
 
     if (!character || character.userId !== userId) {
       return res.status(403).json({ error: 'Character not found or unauthorized' });
+    }
+
+    // Fetch species data if character has one
+    let species = null;
+    if (character.speciesId) {
+      species = await prisma.species.findUnique({
+        where: { id: character.speciesId },
+        select: { name: true },
+      });
+    }
+
+    // Build prompts automatically if not provided or if empty
+    let finalPrompt = prompt;
+    if (!prompt || !prompt.positive || !prompt.negative || prompt.positive.trim() === '' || prompt.negative.trim() === '') {
+      const { buildImagePrompt } = await import('../../services/image-generation/promptBuilder');
+      finalPrompt = buildImagePrompt(
+        character,
+        species,
+        prompt?.positive,
+        prompt?.negative
+      );
+      logger.info({ characterId, autoGenerated: true }, 'Prompts auto-generated from character data');
     }
 
     // Prepare job data
@@ -493,10 +542,22 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
       type: 'multi-stage-dataset' as const,
       userId,
       characterId,
-      prompt,
+      prompt: finalPrompt,
       loras: loras || [],
       referenceImages: referenceImages || [],
+      viewsToGenerate: viewsToGenerate || undefined, // Pass viewsToGenerate if provided
     };
+
+    // Calculate estimated time and stages based on viewsToGenerate
+    const allStages = ['Face (portrait)', 'Front (body)', 'Side (body)', 'Back (body)'];
+    const stagesToGenerate = viewsToGenerate && viewsToGenerate.length > 0
+      ? allStages.filter((_, i) => {
+          const view = ['face', 'front', 'side', 'back'][i];
+          return viewsToGenerate.includes(view as any);
+        })
+      : allStages;
+
+    const estimatedTime = `${Math.ceil(stagesToGenerate.length * 0.75)}-${Math.ceil(stagesToGenerate.length)} minutes`;
 
     // Queue the job
     const job = await queueManager.addJob(QueueName.IMAGE_GENERATION, 'multi-stage-dataset', jobData, {
@@ -508,15 +569,18 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
       characterId,
       userId,
       initialRefs: referenceImages?.length || 0,
+      viewsToGenerate: viewsToGenerate || 'all',
     }, 'Multi-stage character dataset generation job queued');
 
     return res.json({
       success: true,
       jobId: job.id,
-      message: 'Multi-stage dataset generation started',
-      estimatedTime: '8-12 minutes', // ~30 seconds per stage * 4 stages
+      message: viewsToGenerate && viewsToGenerate.length > 0
+        ? `Regenerating ${viewsToGenerate.length} reference view(s)`
+        : 'Multi-stage dataset generation started',
+      estimatedTime,
       pollUrl: `/api/v1/image-generation/status/${job.id}`,
-      stages: ['Avatar (face)', 'Front (body)', 'Side (body)', 'Back (body)'],
+      stages: stagesToGenerate,
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to queue multi-stage dataset generation');

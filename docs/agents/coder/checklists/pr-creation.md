@@ -59,7 +59,71 @@ git checkout feature/your-feature-name
 
 ---
 
-### Step 1.3: Merge Main into Feature Branch
+### Step 1.3: PRE-MERGE SAFETY CHECKS (CRITICAL!)
+
+**🚨 READ [merge-safety-guide.md](../merge-safety-guide.md) if this is your first time!**
+
+**⚠️ BEFORE running `git merge main`, you MUST complete these safety checks to prevent data loss:**
+
+```bash
+# 1. Check for unapplied stashes (dangling work)
+git stash list
+
+# Expected: Empty output (no stashes)
+# ⚠️ If stashes exist: Review each stash and apply or discard them BEFORE merging
+#    git stash show stash@{0}     # See what's in the stash
+#    git stash apply stash@{0}    # Apply if needed
+#    git stash drop stash@{0}     # Discard if not needed
+```
+
+**Why this matters:** Stashes can contain uncommitted work that might conflict with the merge. If you have stashes, they may represent work that was saved during a previous failed merge attempt. **Review and handle them BEFORE proceeding!**
+
+```bash
+# 2. Check for dangling/unreachable commits
+git log --oneline --graph --all --date-order -20
+
+# Look for:
+# - Commits that don't connect to any branch
+# - "git stash" commits (Author: git stash <git@stash>)
+# - WIP commits that should be on HEAD but aren't
+```
+
+**What to look for:** The graph should show a clean history with your feature branch connecting to main. If you see commits that "float" disconnected from any branch, investigate them!
+
+```bash
+# 3. Create a backup branch (mandatory before merge!)
+git branch feature/$(git rev-parse --abbrev-ref HEAD | sed 's/feature\///')-backup-$(date +%Y%m%d%H%M%S)
+
+# Example: Creates "feature/my-feature-backup-20260107103045"
+```
+
+**Why backup?** If the merge goes wrong, you can recover from this point. Takes 1 second, can save hours of recovery work!
+
+```bash
+# 4. Verify working directory is clean
+git status
+
+# Expected output:
+# On branch feature/your-feature
+# nothing to commit, working tree clean
+#
+# ⚠️ If you see uncommitted changes:
+#    - Review them carefully
+#    - Commit them if they're part of your feature
+#    - Discard them if they're temporary test changes
+```
+
+**Checklist before merge:**
+- [ ] `git stash list` → No stashes (or all reviewed and handled)
+- [ ] `git log --graph` → No dangling commits visible
+- [ ] Backup branch created
+- [ ] Working directory clean (`git status`)
+
+**🚨 If ANY of these checks fail, STOP and investigate before merging!**
+
+---
+
+### Step 1.4: Merge Main into Feature Branch
 
 ```bash
 git merge main
@@ -81,12 +145,72 @@ Automatic merge failed; fix conflicts and then commit the result.
 ```
 
 **If conflicts occur:**
-1. Open conflicted files (Git marks them with `<<<<<<<`, `=======`, `>>>>>>>`)
-2. Resolve conflicts manually (keep needed changes from both sides)
-3. Remove conflict markers
-4. Test resolved code
-5. Stage resolved files: `git add .`
-6. Complete merge: `git commit -m "chore: merge main into feature branch"`
+
+**🚨 CRITICAL: DO NOT USE `git checkout --theirs` OR `--ours` WITHOUT INVESTIGATION!**
+
+These commands discard one side's changes completely. Before using them:
+
+```bash
+# For EACH conflicted file, first understand what you're discarding:
+
+# 1. See YOUR version (feature branch)
+git show HEAD:path/to/conflicted/file.tsx > /tmp/ours.tsx
+
+# 2. See THEIR version (main branch)
+git show main:path/to/conflicted/file.tsx > /tmp/theirs.tsx
+
+# 3. Compare to see what differs
+diff /tmp/ours.tsx /tmp/theirs.tsx | head -50
+
+# 4. ONLY THEN decide:
+#    - For YOUR work files (code YOU wrote): Manually merge in editor
+#    - For GENERATED files (translations, build artifacts): Usually safe to use --theirs
+```
+
+**Safe conflict resolution process:**
+
+1. **Identify conflict type:**
+   - **Code you wrote** → Manually merge (keep BOTH sides' changes)
+   - **Generated files** (translations, `.lock` files) → `git checkout --theirs` is safe
+   - **Files you didn't modify** → `git checkout --theirs` is safe
+
+2. **For code files (manual resolution):**
+   ```bash
+   # Open file in editor
+   vim path/to/file.tsx
+
+   # Resolve conflicts by keeping BOTH sets of changes
+   # Remove conflict markers: <<<<<<<, =======, >>>>>>>
+
+   # Test the resolved file works
+   npm run build
+
+   # Stage it
+   git add path/to/file.tsx
+   ```
+
+3. **For generated files (auto-resolution):**
+   ```bash
+   # Safe to accept main's version
+   git checkout --theirs translations/*/characters.json
+   git add translations/
+   ```
+
+4. **After resolving ALL conflicts:**
+   ```bash
+   git status  # Verify all conflicts resolved
+   git add -A
+   git commit -m "chore: merge main into feature branch"
+   ```
+
+5. **CRITICAL: Verify you didn't lose work:**
+   ```bash
+   # Check line counts of key files
+   git diff HEAD~1 HEAD --stat | grep -E "\.tsx$|\.ts$"
+
+   # Look for drastic line reductions in files you worked on
+   # Example: "ImagesTab.tsx | 469 ----" ← ⚠️ MAJOR DATA LOSS!
+   ```
 
 ---
 

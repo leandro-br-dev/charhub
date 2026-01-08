@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "LLM 成本分析",
+    "header": {
+      "title": "LLM 成本分析",
+      "description": "监控和分析平台上的 LLM 使用成本"
+    },
+    "dateRange": {
+      "label": "期间",
+      "last7Days": "过去 7 天",
+      "last30Days": "过去 30 天",
+      "last90Days": "过去 90 天"
+    },
+    "sections": {
+      "costsByFeature": "按功能划分的成本",
+      "costsByModel": "按模型划分的成本",
+      "costsByPlan": "按订阅计划划分的成本",
+      "dailyCosts": "每日成本趋势",
+      "cachingMetrics": "缓存效率",
+      "topUsers": "按成本排名的热门用户"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "LLM 总成本",
+        "description": "选定期间内 LLM API 调用的总运营成本",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "用户",
+      "avgCost": "平均成本/用户"
+    },
+    "caching": {
+      "hitRate": "缓存命中率",
+      "totalRequests": "总请求数",
+      "cachedRequests": "已缓存请求数",
+      "costSavings": "成本节约"
+    },
+    "table": {
+      "userId": "用户 ID",
+      "totalCost": "总成本",
+      "requests": "请求数"
+    },
+    "metrics": {
+      "requests": "请求",
+      "req": "请求",
+      "avgReq": "平均/请求"
+    },
+    "messages": {
+      "noData": "选定期间无可用数据"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "角色生成",
+      "STORY_GENERATION": "故事生成",
+      "CONTENT_TRANSLATION": "内容翻译",
+      "CHAT_MESSAGE": "聊天消息",
+      "AUTOMATED_GENERATION": "自动化生成",
+      "IMAGE_ANALYSIS": "图像分析",
+      "OTHER": "其他"
+    },
+    "planNames": {
+      "FREE": "免费版",
+      "PLUS": "Plus 版",
+      "PREMIUM": "高级版"
+    }
+  }
+}
