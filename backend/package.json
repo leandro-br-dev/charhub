@@ -41,7 +41,7 @@
     "@google/genai": "^1.33.0",
     "@paypal/paypal-server-sdk": "^2.1.0",
     "@prisma/adapter-pg": "^7.2.0",
-    "@prisma/client": "7.1.0",
+    "@prisma/client": "7.2.0",
     "@types/multer": "^2.0.0",
     "@types/pg": "^8.16.0",
     "@types/socket.io": "^3.0.2",
