@@ -1,4 +1,5 @@
 import { callLLM } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import { logger } from '../config/logger';
 import { parseJsonSafe } from '../utils/json';
 
@@ -112,6 +113,18 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
       temperature: 0.3, // Slightly higher than 0 for more creative trait suggestions
       maxTokens: 1024,
     } as any);
+
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      feature: 'IMAGE_ANALYSIS',
+      featureId: imageUrl, // Use imageUrl as the feature ID
+      operation: 'character_image_analysis',
+      cached: false,
+      metadata: {
+        imageUrl,
+        analysisType: 'character',
+      },
+    });
 
     const raw = (response.content || '').trim();
 

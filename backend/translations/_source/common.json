@@ -39,6 +39,9 @@
     "cancel": "Cancel",
     "save": "Save",
     "saving": "Saving...",
+    "loading": "Loading...",
+    "use": "Use",
+    "add": "Add",
     "delete": "Delete",
     "deleting": "Deleting...",
     "enabled": "Enabled",
@@ -92,6 +95,7 @@
     "tryAgain": "Try Again",
     "generate": "Generate",
     "generating": "Generating...",
-    "use": "Use"
+    "use": "Use",
+    "done": "Done"
   }
 }
