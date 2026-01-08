@@ -5,3 +5,4 @@ export { chatService } from './chatService';
 export { subscriptionService } from './subscriptionService';
 export { planService } from './planService';
 export { creditService } from './creditService';
+export { analyticsService } from './analyticsService';

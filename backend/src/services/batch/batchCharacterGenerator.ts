@@ -269,7 +269,8 @@ export class BatchCharacterGenerator {
       (curatedImage.description || '') + ' Anime style character.', // Explicitly specify anime style
       imageAnalysis,
       null, // No text data for Civitai images
-      'en' // Default to English for bot-generated characters
+      'en', // Default to English for bot-generated characters
+      undefined // No user object for bot generation (no content filtering)
     );
 
     // Step 5: Create character in database

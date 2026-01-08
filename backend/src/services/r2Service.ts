@@ -1,5 +1,5 @@
 import type { Readable } from 'node:stream';
-import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { logger } from '../config/logger';
 
@@ -194,6 +194,31 @@ export class R2Service {
     } catch (error) {
       logger.error({ err: error, key: cleanKey }, 'Failed to download object from R2');
       throw Object.assign(new Error('Failed to download file from Cloudflare R2'), { cause: error, statusCode: 502 });
+    }
+  }
+
+  /**
+   * Delete an object from R2
+   * @param key - Object key in R2
+   * @returns true if deleted successfully
+   */
+  public async deleteObject(key: string): Promise<boolean> {
+    const client = this.ensureClient();
+    const cleanKey = sanitizeKey(key);
+
+    try {
+      await client.send(
+        new DeleteObjectCommand({
+          Bucket: this.config.bucketName,
+          Key: cleanKey,
+        })
+      );
+
+      logger.debug({ key: cleanKey }, 'Deleted object from Cloudflare R2');
+      return true;
+    } catch (error) {
+      logger.error({ err: error, key: cleanKey }, 'Failed to delete object from Cloudflare R2');
+      throw Object.assign(new Error('Failed to delete file from Cloudflare R2'), { cause: error, statusCode: 502 });
     }
   }
 }

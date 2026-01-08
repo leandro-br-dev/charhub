@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../../lib/api';
+import { IMAGE_GENERATION_COSTS } from '../../../config/credits';
+import { creditService } from '../../../services/creditService';
 
 export interface Stage {
   id: number;
@@ -12,13 +14,17 @@ export interface Stage {
 
 export interface MultiStageProgressProps {
   characterId: string;
-  prompt: {
+  prompt?: {
     positive: string;
     negative: string;
   };
   referenceImages?: Array<{ type: string; url: string }>;
   onComplete?: (results: Stage[]) => void;
   onError?: (error: string) => void;
+  // Additional props for ReferenceGenerationModal compatibility
+  viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[];
+  userPrompt?: string;
+  sampleImageUrl?: string | null;
 }
 
 export function MultiStageProgress({
@@ -27,10 +33,18 @@ export function MultiStageProgress({
   referenceImages = [],
   onComplete,
   onError,
+  viewsToGenerate,
+  userPrompt,
+  sampleImageUrl,
 }: MultiStageProgressProps) {
   const { t } = useTranslation(['characters', 'common']);
+
+  const cost = IMAGE_GENERATION_COSTS.REFERENCE_SET;
+  const [credits, setCredits] = useState<number | null>(null);
+  const [hasEnoughCredits, setHasEnoughCredits] = useState(false);
+
   const [stages, setStages] = useState<Stage[]>([
-    { id: 1, name: t('characters:imageGeneration.multiStage.stages.avatar'), status: 'pending', viewType: 'face' },
+    { id: 1, name: t('characters:imageGeneration.multiStage.stages.face'), status: 'pending', viewType: 'face' },
     { id: 2, name: t('characters:imageGeneration.multiStage.stages.front'), status: 'pending', viewType: 'front' },
     { id: 3, name: t('characters:imageGeneration.multiStage.stages.side'), status: 'pending', viewType: 'side' },
     { id: 4, name: t('characters:imageGeneration.multiStage.stages.back'), status: 'pending', viewType: 'back' },
@@ -38,23 +52,71 @@ export function MultiStageProgress({
   const [jobId, setJobId] = useState<string | null>(null);
   const [overallProgress, setOverallProgress] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Load credits on mount
+  useEffect(() => {
+    const loadCredits = async () => {
+      try {
+        const balance = await creditService.getBalance();
+        setCredits(balance);
+        setHasEnoughCredits(balance >= cost);
+      } catch (error) {
+        console.error('Failed to load credits:', error);
+        setCredits(0);
+        setHasEnoughCredits(false);
+      }
+    };
+    loadCredits();
+  }, [cost]);
 
   // Start generation
   const startGeneration = async () => {
     setIsGenerating(true);
+    setIsComplete(false);
     setError(null);
     setOverallProgress(0);
-    setStages(prev => prev.map(s => ({ ...s, status: 'pending' as const, imageUrl: undefined })));
+
+    // Mark first stage as in_progress immediately
+    setStages(prev => prev.map((s, idx) => ({
+      ...s,
+      status: idx === 0 ? 'in_progress' as const : 'pending' as const,
+      imageUrl: undefined
+    })));
 
     try {
+      // Build request body from available props
+      const requestBody: Record<string, unknown> = {
+        characterId,
+      };
+
+      // Add prompt if available (from new props or old prompt prop)
+      if (userPrompt || prompt?.positive) {
+        requestBody.prompt = {
+          positive: userPrompt || prompt?.positive || '',
+          negative: prompt?.negative || '',
+        };
+      }
+
+      // Add reference images
+      if (referenceImages && referenceImages.length > 0) {
+        requestBody.referenceImages = referenceImages;
+      }
+
+      // Add sample image URL if provided (from new prop)
+      if (sampleImageUrl) {
+        requestBody.sampleImageUrl = sampleImageUrl;
+      }
+
+      // Add views to generate if provided
+      if (viewsToGenerate && viewsToGenerate.length > 0 && viewsToGenerate.length < 4) {
+        requestBody.viewsToGenerate = viewsToGenerate;
+      }
+
       const response = await api.post<{ jobId: string; message: string; estimatedTime: string; stages: string[] }>(
         '/api/v1/image-generation/character-dataset',
-        {
-          characterId,
-          prompt,
-          referenceImages,
-        }
+        requestBody
       );
 
       setJobId(response.data.jobId);
@@ -91,23 +153,32 @@ export function MultiStageProgress({
 
         const { state, progress, result, failedReason } = statusResponse.data;
 
-        if (state === 'completed' && result?.results) {
+        if (state === 'completed') {
           clearInterval(interval);
           setIsGenerating(false);
+          setIsComplete(true);
           setOverallProgress(100);
 
-          // Update stages with results
-          const updatedStages = stages.map(stage => {
-            const resultItem = result.results.find((r: { stage: number; type: string; viewType: string; imageUrl: string }) => r.viewType === stage.viewType);
-            return {
+          // Update stages with results if available
+          if (result?.results) {
+            const updatedStages = stages.map(stage => {
+              const resultItem = result.results.find((r: { stage: number; type: string; viewType: string; imageUrl: string }) => r.viewType === stage.viewType);
+              return {
+                ...stage,
+                status: 'completed' as const,
+                imageUrl: resultItem?.imageUrl,
+              };
+            });
+
+            setStages(updatedStages);
+          } else {
+            // No results but completed - mark all as completed
+            const updatedStages = stages.map(stage => ({
               ...stage,
               status: 'completed' as const,
-              imageUrl: resultItem?.imageUrl,
-            };
-          });
-
-          setStages(updatedStages);
-          onComplete?.(updatedStages);
+            }));
+            setStages(updatedStages);
+          }
         } else if (state === 'failed') {
           clearInterval(interval);
           setIsGenerating(false);
@@ -128,6 +199,35 @@ export function MultiStageProgress({
             }
             return stage;
           }));
+
+          // Fetch current images to show completed ones during generation
+          try {
+            const imagesResponse = await api.get<{ success: boolean; data: Record<string, any[]> }>(
+              `/api/v1/image-generation/characters/${characterId}/images`
+            );
+            const referenceImages = imagesResponse.data.data.REFERENCE || [];
+
+            console.log('[MultiStageProgress] Polling - reference images found:', referenceImages.length, referenceImages.map((img: any) => ({ content: img.content, url: img.url })));
+
+            // Update stages with actual image URLs
+            setStages(prev => {
+              const updated = prev.map(stage => {
+                const matchingImage = referenceImages.find((img: any) => img.content === stage.viewType);
+                if (matchingImage && !stage.imageUrl) {
+                  console.log('[MultiStageProgress] Updating stage:', stage.viewType, 'with image:', matchingImage.url);
+                  return {
+                    ...stage,
+                    imageUrl: matchingImage.url,
+                  };
+                }
+                return stage;
+              });
+              return updated;
+            });
+          } catch (err) {
+            // Silently fail - image fetch is not critical
+            console.error('Failed to fetch images during polling:', err);
+          }
         }
       } catch (err: any) {
         clearInterval(interval);
@@ -249,9 +349,17 @@ export function MultiStageProgress({
       {!isGenerating && !error && overallProgress === 0 && (
         <button
           onClick={startGeneration}
-          className="w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+          disabled={!hasEnoughCredits}
+          className={`w-full py-3 px-6 text-white rounded-lg font-semibold transition-opacity ${
+            hasEnoughCredits
+              ? 'bg-primary hover:opacity-90'
+              : 'bg-gray-400 cursor-not-allowed'
+          }`}
         >
-          {t('characters:imageGeneration.multiStage.startButton')}
+          {!hasEnoughCredits
+            ? `Insufficient credits (need ${cost})`
+            : `${t('characters:imageGeneration.multiStage.startButton')} (${cost} credits)`
+          }
         </button>
       )}
 
@@ -259,10 +367,38 @@ export function MultiStageProgress({
       {error && (
         <button
           onClick={startGeneration}
-          className="w-full py-3 px-6 bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+          disabled={!hasEnoughCredits}
+          className={`w-full py-3 px-6 text-white rounded-lg font-semibold transition-opacity ${
+            hasEnoughCredits
+              ? 'bg-primary hover:opacity-90'
+              : 'bg-gray-400 cursor-not-allowed'
+          }`}
         >
-          {t('common:retry')}
+          {!hasEnoughCredits
+            ? `Insufficient credits (need ${cost})`
+            : t('common:retry')
+          }
         </button>
+      )}
+
+      {/* Completion Message & Done Button */}
+      {isComplete && !error && (
+        <div className="space-y-3">
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-500 rounded-lg text-center">
+            <p className="text-green-700 dark:text-green-300 font-semibold text-lg">
+              ✓ {t('characters:imageGeneration.multiStage.generationComplete', 'Generation Complete!')}
+            </p>
+            <p className="text-green-600 dark:text-green-400 text-sm mt-1">
+              {t('characters:imageGeneration.multiStage.allStagesCompleted', 'All 4 reference images have been generated.')}
+            </p>
+          </div>
+          <button
+            onClick={() => onComplete?.(stages)}
+            className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-opacity"
+          >
+            {t('common:done', 'Done')}
+          </button>
+        </div>
       )}
     </div>
   );

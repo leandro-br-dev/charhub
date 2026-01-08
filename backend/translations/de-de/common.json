@@ -12,7 +12,7 @@
     "account": "Konto",
     "continueGoogle": "Mit Google fortfahren",
     "continueFacebook": "Mit Facebook fortfahren",
-    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
     "logoutLoading": "Melde ab...",
     "authenticatedUser": "Authentifizierter Benutzer",
@@ -39,14 +39,17 @@
     "cancel": "Abbrechen",
     "save": "Speichern",
     "saving": "Wird gespeichert...",
+    "loading": "Wird geladen...",
+    "use": "Verwenden",
+    "add": "Hinzufügen",
     "delete": "Löschen",
     "deleting": "Wird gelöscht...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Eine Option auswählen",
+    "selectOption": "Option auswählen",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
-      "with": "Chatte mit"
+      "with": "Chatten mit"
     },
     "messages": {
       "linkCopied": "Link in Zwischenablage kopiert!",
@@ -57,14 +60,14 @@
       "ariaLabel": "Inhaltsfilter",
       "title": "Inhaltsfilter",
       "ageRating": "Altersfreigabe",
-      "blurNsfw": "Explizite Inhalte unscharf machen",
+      "blurNsfw": "Explizite Inhalte unkenntlich machen",
       "none": "Kein Filter",
-      "blur": "Sensible Inhalte unscharf machen",
+      "blur": "Sensibles unkenntlich machen",
       "hidden": "Reife Inhalte ausblenden",
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
-        "blur": "Reife Inhalte unscharf machen",
-        "hidden": "Reife Inhalte vollständig ausblenden"
+        "blur": "Reife Inhalte unkenntlich machen",
+        "hidden": "Reife Inhalte komplett ausblenden"
       },
       "ageRatings": {
         "L": "Frei",
@@ -75,7 +78,7 @@
         "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ Alter nicht registriert",
-      "noBirthdateDescription": "Um auf altersbeschränkte Inhalte zuzugreifen, fügen Sie Ihr Geburtsdatum in den Einstellungen hinzu.",
+      "noBirthdateDescription": "Um auf altersbeschränkte Inhalte zuzugreifen, fügen Sie bitte Ihr Geburtsdatum in den Einstellungen hinzu.",
       "goToSettings": "Zu den Einstellungen",
       "blocked": "(blockiert)"
     },
@@ -87,11 +90,10 @@
     "seeMore": "Mehr anzeigen",
     "seeMoreArrow": "Mehr anzeigen →",
     "back": "Zurück",
-    "loading": "Lädt...",
-    "credits": "Credits",
+    "credits": "Guthaben",
     "tryAgain": "Erneut versuchen",
     "generate": "Generieren",
     "generating": "Wird generiert...",
-    "use": "Verwenden"
+    "done": "Fertig"
   }
 }

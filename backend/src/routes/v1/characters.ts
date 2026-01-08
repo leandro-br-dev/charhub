@@ -20,6 +20,7 @@ import {
 } from '../../validators';
 import { generateAutomatedCharacter } from '../../controllers/automatedCharacterGenerationController';
 import { canEditCharacter } from '../../services/characterService';
+import { contentClassificationService } from '../../services/contentClassification';
 
 const router = Router();
 const upload = multer({
@@ -643,6 +644,38 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
     // Validate input
     const validatedData = updateCharacterSchema.parse(req.body);
     const preferredLang = req.auth?.user?.preferredLanguage || undefined;
+    const user = req.auth?.user;
+
+    // CONTENT FILTERING: Classify text fields and validate user access
+    // Combine all text fields that might contain sensitive content
+    const textFieldsToClassify = [
+      validatedData.physicalCharacteristics,
+      validatedData.personality,
+      validatedData.history,
+    ].filter(Boolean).join(' ');
+
+    if (textFieldsToClassify && user) {
+      logger.info({
+        userId: user.id,
+        characterId: id,
+        textLength: textFieldsToClassify.length,
+      }, 'content_classification_check_character_update');
+
+      const classification = await contentClassificationService.classifyText(textFieldsToClassify);
+
+      // Validate user can access this content
+      contentClassificationService.validateUserAccess(
+        classification.ageRating,
+        undefined, // userAge - will be calculated from birthDate
+        user.birthDate || undefined
+      );
+
+      logger.info({
+        userId: user.id,
+        characterId: id,
+        classification,
+      }, 'content_classification_validation_passed');
+    }
 
     const updatedCharacter = await characterService.updateCharacter(id, {
       ...validatedData,
@@ -654,6 +687,14 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
       data: updatedCharacter,
     });
   } catch (error) {
+    // Check if this is a content restriction error (age validation)
+    if (error instanceof Error && error.message.includes('Content is rated')) {
+      return res.status(403).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
     if (error instanceof Error && 'issues' in error) {
       return res.status(400).json({
         success: false,

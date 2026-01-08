@@ -83,8 +83,21 @@ function ensureInitialized() {
 
       const lastMessage = conversation.messages.find(m => m.id === lastMessageId);
       if (!lastMessage) {
+        logger.error({
+          conversationId,
+          lastMessageId,
+          allMessageIds: conversation.messages.map(m => m.id),
+          totalMessages: conversation.messages.length,
+        }, 'Last message not found in conversation');
         throw new Error(`Message ${lastMessageId} not found`);
       }
+
+      logger.info({
+        conversationId,
+        lastMessageId,
+        lastMessageContent: lastMessage.content?.substring(0, 100),
+        totalMessagesInConversation: conversation.messages.length,
+      }, 'Last message found in conversation');
 
       // Find the participant that should respond
       const participant = conversation.participants.find(p => p.id === participantId);
@@ -133,6 +146,14 @@ function ensureInitialized() {
         lastMessageSenderId: lastMessage.senderId
       }, 'All users before calling agent.execute (queue worker)');
 
+      logger.info({
+        conversationId: conversation.id,
+        participantId,
+        lastMessageContent: lastMessage.content?.substring(0, 100),
+        lastMessageId: lastMessage.id,
+      }, 'About to call agent.execute');
+
+      const startTime = Date.now();
       const content = await agent.execute(
         conversation,
         conversation.owner,
@@ -141,6 +162,16 @@ function ensureInitialized() {
         job.data.preferredLanguage,  // Pass the preferred language from job data
         allUsers  // Pass all users for multi-user context
       );
+
+      const executionTime = Date.now() - startTime;
+
+      logger.info({
+        conversationId: conversation.id,
+        participantId,
+        executionTime,
+        contentLength: content?.length || 0,
+        contentPreview: content?.substring(0, 100),
+      }, 'agent.execute completed');
 
       // Determine sender ID based on participant type
       let senderId: string;
@@ -218,7 +249,46 @@ function ensureInitialized() {
         participantId,
         content,
       };
-    } catch (error) {
+    } catch (error: any) {
+      // Check if this is a content restriction error (age validation)
+      if (error instanceof Error && error.message.includes('Content is rated')) {
+        logger.warn(
+          { jobId: job.id, conversationId, participantId },
+          'Message blocked - content not allowed for user age'
+        );
+
+        // Send a system message to inform the user
+        if (ioInstance) {
+          const room = getRoomName(conversationId);
+          ioInstance.to(room).emit('typing_stop', {
+            conversationId,
+            participantId,
+            source: 'bot',
+          });
+
+          // Send system message about content restriction
+          ioInstance.to(room).emit('message_received', {
+            id: `system-${Date.now()}`,
+            conversationId,
+            senderId: 'system',
+            senderType: 'SYSTEM',
+            content: `⚠️ ${error.message}`,
+            attachments: null,
+            metadata: null,
+            timestamp: new Date().toISOString(),
+          });
+        }
+
+        // Return success to not fail the job, but indicate message was blocked
+        return {
+          success: true,
+          messageId: null, // No message was created
+          participantId,
+          content: error.message,
+          blocked: true,
+        };
+      }
+
       logger.error(
         { error, jobId: job.id, conversationId, participantId },
         'Error processing AI response job'
