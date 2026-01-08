@@ -2,6 +2,7 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
+    "createCharacter": "创建角色",
     "tabs": {
       "discover": "发现",
       "chat": "聊天",
@@ -9,23 +10,23 @@
     },
     "sections": {
       "popularCharacters": "热门角色",
-      "favoriteCharacters": "我的收藏",
+      "favoriteCharacters": "您的收藏",
       "popular": "热门",
       "favorites": "收藏",
       "myStories": "我的故事",
       "popularStories": "热门故事",
       "mine": "我的",
       "noPopularCharacters": "未找到热门角色。",
-      "noFavoriteCharacters": "您尚未收藏任何角色。",
+      "noFavoriteCharacters": "您还没有收藏任何角色。",
       "createCharacter": "创建角色",
       "browseCharacters": "浏览角色"
     },
-    "noStories": "暂无故事。创建您的第一个故事吧！",
+    "noStories": "还没有故事。创建您的第一个故事吧！",
     "createStory": "创建故事",
-    "plusRequired": "需要 Plus 会员计划",
+    "plusRequired": "需要Plus会员计划",
     "recentConversations": "最近对话",
     "newConversation": "新对话",
-    "noConversations": "暂无对话。立即开始聊天吧！",
+    "noConversations": "还没有对话。立即开始聊天吧！",
     "startChat": "开始新聊天",
     "endOfList": {
       "characters": {
@@ -36,16 +37,16 @@
       "stories": {
         "message": "您已看完所有故事！",
         "cta": "创建您自己的故事",
-        "description": "开始与AI角色一起创建互动故事"
+        "description": "开始使用AI角色创建互动故事"
       }
     },
     "carousel": {
-      "alt": "{{title}} 的轮播图",
-      "goToSlide": "前往幻灯片 {{slide}}",
+      "alt": "“{{title}}”的轮播图",
+      "goToSlide": "前往幻灯片{{slide}}",
       "plus": "PLUS",
       "slides": {
         "welcome": {
-          "title": "欢迎来到 CharHub",
+          "title": "欢迎来到CharHub",
           "description": "创建独特的角色，让您的故事栩栩如生",
           "action1": "创建",
           "action1Full": "创建角色",
@@ -53,7 +54,7 @@
           "action2Full": "浏览角色"
         },
         "stories": {
-          "title": "探索故事",
+          "title": "发现故事",
           "description": "体验沉浸式互动冒险",
           "action": "浏览",
           "actionFull": "浏览故事",
@@ -61,15 +62,15 @@
           "createFull": "创建故事"
         },
         "pricing": {
-          "title": "解锁高级功能",
-          "description": "无限创作、独家功能及更多",
+          "title": "解锁高级版",
+          "description": "无限创作、专属功能及更多",
           "action": "查看计划",
           "actionFull": "查看计划"
         }
       }
     },
     "storyCard": {
-      "alt": "{{title}} 的封面图",
+      "alt": "“{{title}}”的封面图",
       "play": "播放"
     },
     "infiniteScroll": {
@@ -87,7 +88,13 @@
         "female": "女性",
         "nonBinary": "非二元性别",
         "other": "其他",
-        "unknown": "未知"
+        "unknown": "未知",
+        "MALE": "男性",
+        "FEMALE": "女性",
+        "NON_BINARY": "非二元性别",
+        "NON-BINARY": "非二元性别",
+        "OTHER": "其他",
+        "UNKNOWN": "未知"
       }
     }
   }

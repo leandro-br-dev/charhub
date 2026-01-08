@@ -23,6 +23,14 @@
 
 ---
 
+## 🚨 Critical Safety Guides
+
+| # | Guide | When to Use |
+|---|-------|-------------|
+| ⚠️ | [Merge Safety Guide](merge-safety-guide.md) | **READ BEFORE ANY MERGE** - Prevents data loss |
+
+---
+
 ## 🔗 Workflow Diagram
 
 ```

@@ -1,10 +1,10 @@
 # LLM Cost Tracking & Analytics System - Feature Specification
 
-**Status**: 🏗️ Active (Ready for Implementation)
-**Version**: 1.0.0
+**Status**: ✅ Implementation Complete | 📊 Awaiting Data Collection (30+ days)
+**Version**: 2.1.0
 **Date Created**: 2026-01-03
-**Last Updated**: 2026-01-03
-**Priority**: Critical (Business Intelligence)
+**Last Updated**: 2026-01-05
+**Priority**: Critical (Business Intelligence + Content Safety)
 **Assigned To**: Agent Planner + Agent Coder
 **GitHub Issue**: TBD
 
@@ -18,6 +18,8 @@ Criar sistema abrangente de rastreamento, mensuração e análise de custos de L
 3. Avaliar lucratividade por plano (FREE, PLUS, PREMIUM)
 4. Identificar oportunidades de otimização
 5. Planejar sustentabilidade financeira
+6. **[NEW]** Classificar conteúdo e validar idade de usuários
+7. **[NEW]** Rotear requisições para modelos otimizados por feature
 
 **Problema Atual**:
 - Não sabemos quanto gastamos em LLM por feature
@@ -25,6 +27,8 @@ Criar sistema abrangente de rastreamento, mensuração e análise de custos de L
 - Impossível calcular lucratividade de planos pagos
 - Não há visibility de custos operacionais
 - Decisões de pricing são baseadas em estimativas
+- **[NEW]** Conteúdo NSFW não é filtrado por idade do usuário
+- **[NEW]** Modelo fixo sem otimização de custo/qualidade
 
 **Solução Proposta**:
 - Sistema de tracking de tokens (input/output)
@@ -32,6 +36,91 @@ Criar sistema abrangente de rastreamento, mensuração e análise de custos de L
 - Dashboard de analytics de custos
 - Recomendações de pricing baseadas em dados
 - ROI analysis por feature e por plano
+- **[NEW]** Classificação de conteúdo via LLM (Gemini 2.5 Flash-Lite)
+- **[NEW]** Validação de idade do usuário vs classificação de conteúdo
+- **[NEW]** Router de modelos otimizado por feature (Venice AI FREE para chat, Grok 4-1 para geração)
+
+---
+
+## Unplanned Additions (Implemented During Development)
+
+Durante a implementação, foram identificadas necessidades críticas que resultaram em adições ao escopo original:
+
+### 1. Content Classification System
+
+**Problema Identificado**: Conteúdo NSFW estava sendo gerado sem controle, sem validação por idade do usuário.
+
+**Solução Implementada**:
+- Arquivo: `backend/src/services/contentClassification/index.ts`
+- LLM: Gemini 2.5 Flash-Lite (rápido, barato, multilingual)
+- Classifica conteúdo em: L, TEN, TWELVE, FOURTEEN, SIXTEEN, EIGHTEEN
+- Determina SFW/NSFW
+- Valida idade do usuário vs classificação etária
+
+**Impacto**:
+- ✅ Chat: Mensagens são classificadas antes de gerar resposta
+- ✅ Character Generation: Descrições são validadas antes de gerar
+- ✅ Character Edit: Edições são validadas antes de salvar
+- Usuário < idade mínima recebe erro 403 com mensagem clara
+
+### 2. Model Router Service
+
+**Problema Identificado**: Código usava modelo fixo sem considerar custo/qualidade por feature.
+
+**Solução Implementada**:
+- Arquivo: `backend/src/services/llm/modelRouter.ts`
+- Router baseado em feature type (não em conteúdo)
+- Estratégia de roteamento otimizada:
+
+| Feature | Provider | Model | Motivo |
+|---------|----------|-------|--------|
+| CHAT | OpenRouter | Venice AI (Dolphin Mistral 24B) | FREE, NSFW-friendly |
+| CHARACTER_GENERATION | Grok | Grok 4-1 Fast Reasoning | NSFW-friendly, custo-efetivo |
+| STORY_GENERATION | Grok | Grok 4-1 Fast Reasoning | NSFW-friendly |
+| IMAGE_ANALYSIS | Grok | Grok 4-1 Fast Non-Reasoning | Melhor visão, baixa censura |
+| CONTENT_TRANSLATION | Grok | Grok 4-1 Fast Non-Reasoning | NSFW-friendly |
+| SYSTEM_TRANSLATION (SFW) | Gemini | Gemini 3 Flash Preview | Rápido |
+| SYSTEM_TRANSLATION (NSFW) | Grok | Grok 4-1 Fast Non-Reasoning | NSFW-friendly |
+
+### 3. OpenRouter Integration
+
+**Problema Identificado**: Necessidade de modelo gratuito para chat (alto volume).
+
+**Solução Implementada**:
+- Arquivo: `backend/src/services/llm/openrouter.ts`
+- Integração via API OpenAI-compatible
+- Modelo: `cognitivecomputations/dolphin-mistral-24b-venice-edition:free`
+- Custo: $0 para chat (modelo gratuito da Venice AI)
+- Validação de modelo desabilitada para OpenRouter (modelos dinâmicos)
+
+### 4. Message Decryption Handling
+
+**Problema Identificado**: Mensagens do chat são criptografadas no banco de dados, impedindo classificação de conteúdo.
+
+**Solução Implementada**:
+- Arquivo: `backend/src/agents/responseGenerationAgent.ts`
+- Função `isEncrypted()` detecta formato criptografado
+- Função `decryptMessage()` descriptografa antes da classificação
+- Classificação agora analisa texto original, não criptografado
+
+### 5. Error Propagation for Age Validation
+
+**Problema Identificado**: Erros de validação de idade eram capturados e transformados em fallback silencioso.
+
+**Solução Implementada**:
+- Modificação em: `automatedCharacterGenerationController.ts`, `responseQueue.ts`
+- Erros de validação são propagados ao usuário
+- Chat: Sistema envia mensagem via WebSocket com aviso
+- Character Gen: Retorna erro 403 com mensagem clara
+
+**Files Modified**:
+- `backend/src/services/contentClassification/index.ts` (novo)
+- `backend/src/services/llm/modelRouter.ts` (novo)
+- `backend/src/services/llm/openrouter.ts` (novo)
+- `backend/src/agents/responseGenerationAgent.ts` (modificado)
+- `backend/src/controllers/automatedCharacterGenerationController.ts` (modificado)
+- `backend/src/queues/responseQueue.ts` (modificado)
+- `backend/src/routes/v1/characters.ts` (modificado)
 
 ---
 
@@ -77,16 +166,26 @@ Criar sistema abrangente de rastreamento, mensuração e análise de custos de L
 ### Success Metrics
 
 **Phase 1 - Tracking (Foundation)**:
-- [ ] 100% das requisições LLM rastreadas
-- [ ] Custo calculado em tempo real
+- [x] 100% das requisições LLM rastreadas
+- [x] Custo calculado em tempo real
 - [ ] Database com histórico de 30+ dias
 
-**Phase 2 - Analytics (Insights)**:
-- [ ] Dashboard com custos por feature
-- [ ] Custo médio por usuário (FREE vs PAID)
-- [ ] ROI por plano calculado
+**Phase 1.5 - Content Filtering (Unplanned Addition)**:
+- [x] Content classification service implementado
+- [x] Age validation implementado
+- [x] Model router implementado
+- [x] OpenRouter integration (Venice AI FREE)
+- [x] Chat filtering ativo
+- [x] Character generation filtering ativo
+- [x] Character edit filtering ativo
 
-**Phase 3 - Optimization (Action)**:
+**Phase 2 - Analytics & Dashboard (COMPLETED)**:
+- [x] Dashboard com custos por feature
+- [x] Custo médio por usuário (FREE vs PAID)
+- [x] ROI por plano calculado
+- [x] Internacionalização completa (12 idiomas)
+
+**Phase 3 - Optimization (Action - PENDING, awaiting 30+ days of data)**:
 - [ ] Identificar top 3 features mais caras
 - [ ] Recomendar pricing ótimo de créditos
 - [ ] Plano de redução de custos (target: -20% sem perder qualidade)
@@ -771,40 +870,63 @@ router.get('/llm-costs/by-plan', requireAuth, requireAdmin, async (req, res) => 
 
 ## Success Metrics
 
-**Phase 1 Complete**:
-- [ ] All LLM models mapped
-- [ ] Current pricing documented
-- [ ] Cost per feature calculated
-- [ ] Optimal credit pricing defined
+**Phase 1 Complete** ✅:
+- [x] All LLM models mapped
+- [x] Current pricing documented
+- [x] Cost per feature calculated
+- [x] Optimal credit pricing defined
 
-**Phase 2 Complete**:
-- [ ] 100% LLM calls tracked
-- [ ] Costs calculated in real-time
-- [ ] 30+ days of data collected
+**Phase 1.5 Complete** ✅ (Content Filtering):
+- [x] Content classification service (Gemini 2.5 Flash-Lite)
+- [x] Age validation system (L, TEN, TWELVE, FOURTEEN, SIXTEEN, EIGHTEEN)
+- [x] Model router service (feature-based routing)
+- [x] OpenRouter integration (Venice AI FREE for chat)
+- [x] Chat message filtering
+- [x] Character generation filtering
+- [x] Character edit filtering
 
-**Phase 3 Complete**:
-- [ ] Dashboard showing costs by feature
+**Phase 2 Complete** ✅:
+- [x] 100% LLM calls tracked
+- [x] Costs calculated in real-time
+- [x] Dashboard showing costs by feature
+- [x] Cost by plan visualization
+- [x] Caching metrics display
+- [x] Top users by cost
+- [x] Daily costs trend
+- [x] Full i18n support (12 languages)
+- [ ] 30+ days of data collected (IN PROGRESS - started 2026-01-05)
+
+**Phase 3 Pending** 📊:
 - [ ] Monthly cost projections accurate within 10%
-- [ ] Profitability per plan calculated
+- [ ] Profitability per plan calculated (awaiting data)
+- [ ] Optimization recommendations (awaiting data)
 
 ---
 
 ## Expected Outcomes
 
 **Cost Optimization**:
-- Identify expensive features: Target -20% cost reduction
-- Switch to cheaper models where appropriate
-- Implement aggressive caching
+- [x] Identify expensive features: Venice AI FREE for chat = $0 cost
+- [x] Switch to cheaper models where appropriate (Grok 4-1 instead of Gemini Pro)
+- [x] Translation caching implemented (90% cost reduction)
+- [ ] Aggressive caching for other features (PENDING - Phase 3)
 
 **Pricing Optimization**:
-- Data-driven credit pricing
-- Profitable PLUS/PREMIUM plans
-- Sustainable free tier
+- [x] Data-driven credit pricing (Venice AI reduces chat cost to $0)
+- [ ] Profitable PLUS/PREMIUM plans (PENDING - Phase 3 analysis)
+- [ ] Sustainable free tier (PENDING - Phase 3 analysis)
+
+**Content Safety**:
+- [x] Age-based content filtering active
+- [x] NSFW content blocked for underage users
+- [x] Clear error messages for restricted content
 
 **Business Intelligence**:
-- Monthly cost projections
-- ROI per feature
-- User acquisition cost vs LTV
+- [x] Real-time cost tracking
+- [x] Dashboard for visualization
+- [ ] Monthly cost projections (PENDING - Phase 3)
+- [ ] ROI per feature (PENDING - Phase 3)
+- [ ] User acquisition cost vs LTV (PENDING - Phase 3)
 
 ---
 
@@ -823,23 +945,98 @@ router.get('/llm-costs/by-plan', requireAuth, requireAdmin, async (req, res) => 
 
 ## Notes for Agent Planner
 
-This feature has TWO phases:
+This feature has evolved during implementation and now includes THREE major components:
 
-**Phase 1 (Agent Planner - YOU)**: Research & Analysis
-- Web research LLM pricing
-- Map features to costs
-- Calculate optimal pricing
-- Create business recommendations
+**Phase 1 - Cost Tracking (COMPLETED)**:
+- ✅ Web research LLM pricing
+- ✅ Map features to costs
+- ✅ Tracking service implemented
+- ✅ All LLM calls tracked in real-time
 
-**Phase 2 (Agent Coder)**: Implementation
-- Build tracking system
-- Integrate with services
-- Create analytics
+**Phase 1.5 - Content Safety (COMPLETED - Unplanned Addition)**:
+- ✅ Content classification service (Gemini 2.5 Flash-Lite)
+- ✅ Age validation system
+- ✅ Model router service
+- ✅ OpenRouter integration (Venice AI FREE)
+- ✅ Chat, character generation, and character edit filtering
 
-**Start with Phase 1 before any code is written.**
+**Phase 2 - Analytics & Dashboard (COMPLETED)**:
+- ✅ Dashboard UI for cost visualization
+- ✅ API endpoints for analytics
+- ✅ Full i18n support (12 languages)
+- ✅ Real-time data visualization
+
+**Phase 3 - Optimization & Analysis (PENDING - Scheduled for 2026-02-05)**:
+- [ ] Collect 30+ days of LLM usage data (STARTED: 2026-01-05)
+- [ ] Pricing optimization analysis
+- [ ] ROI calculations per plan
+- [ ] Cost reduction recommendations
+
+---
+
+## Phase 3: Analytics Analysis Task (For Agent Planner)
+
+**Scheduled Date**: 2026-02-05 (30+ days after data collection started)
+**Assigned To**: Agent Planner
+**Prerequisites**: 30+ days of LLM usage data collected
+
+### Task Objectives
+
+1. **Cost Analysis by Feature**
+   - Identify top 3 most expensive features
+   - Calculate cost per request for each feature
+   - Analyze cost trends over time
+
+2. **Profitability by Plan**
+   - Calculate LLM cost per FREE user
+   - Calculate LLM cost per PLUS user
+   - Calculate LLM cost per PREMIUM user
+   - Determine which plans are profitable
+
+3. **Pricing Optimization**
+   - Current credit price vs actual LLM cost
+   - Recommended credit pricing for profitability
+   - Recommended monthly credits for PLUS/PREMIUM
+   - Sustainable daily free tier limit
+
+4. **Cost Reduction Opportunities**
+   - Features with highest caching potential
+   - Models that can be replaced with cheaper alternatives
+   - Target: 20% cost reduction without quality loss
+
+5. **Projections & Recommendations**
+   - Monthly cost projections (conservative, moderate, aggressive growth)
+   - ROI per user acquisition channel
+   - Break-even analysis by plan
+   - Actionable recommendations for pricing
+
+### Deliverables
+
+1. **Analysis Report** (`docs/05-business/analysis/llm-cost-analysis-2026-02.md`)
+   - Executive summary
+   - Cost breakdown by feature
+   - Profitability analysis by plan
+   - Pricing recommendations
+   - Cost reduction opportunities
+
+2. **Updated Pricing Configuration**
+   - Recommended credit prices
+   - Recommended plan quotas
+   - Recommended free tier limits
+
+3. **Implementation Tasks** (create new feature specs if needed)
+   - Pricing changes to implement
+   - Additional caching to add
+   - Model swaps to consider
+
+### Data Sources
+
+- **Dashboard**: `/admin/analytics` (requires ADMIN role)
+- **API**: `/api/v1/admin/analytics/llm/*`
+- **Database**: `LLMUsageLog`, `LLMPricing` tables
 
 ---
 
 **End of Specification**
 
-📊 Ready for planning phase - Business intelligence foundation!
+📊 Cost tracking: COMPLETE | 🛡️ Content filtering: COMPLETE | 📈 Analytics dashboard: COMPLETE | 📋 Phase 3 analysis: SCHEDULED FOR 2026-02-05

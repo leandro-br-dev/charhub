@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "تحليلات تكلفة LLM",
+    "header": {
+      "title": "تحليلات تكلفة LLM",
+      "description": "مراقبة وتحليل تكاليف استخدام LLM عبر المنصة"
+    },
+    "dateRange": {
+      "label": "الفترة",
+      "last7Days": "آخر 7 أيام",
+      "last30Days": "آخر 30 يومًا",
+      "last90Days": "آخر 90 يومًا"
+    },
+    "sections": {
+      "costsByFeature": "التكاليف حسب الميزة",
+      "costsByModel": "التكاليف حسب النموذج",
+      "costsByPlan": "التكاليف حسب خطة الاشتراك",
+      "dailyCosts": "اتجاه التكاليف اليومية",
+      "cachingMetrics": "فعالية التخزين المؤقت",
+      "topUsers": "أبرز المستخدمين حسب التكلفة"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "إجمالي تكلفة LLM",
+        "description": "إجمالي التكلفة التشغيلية لمكالمات LLM API في الفترة المحددة",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "المستخدمون",
+      "avgCost": "متوسط التكلفة/المستخدم"
+    },
+    "caching": {
+      "hitRate": "معدل نجاح ذاكرة التخزين المؤقت",
+      "totalRequests": "إجمالي الطلبات",
+      "cachedRequests": "الطلبات المخزنة مؤقتًا",
+      "costSavings": "توفير التكلفة"
+    },
+    "table": {
+      "userId": "معرف المستخدم",
+      "totalCost": "التكلفة الإجمالية",
+      "requests": "الطلبات"
+    },
+    "metrics": {
+      "requests": "طلبات",
+      "req": "طلب",
+      "avgReq": "متوسط/طلب"
+    },
+    "messages": {
+      "noData": "لا توجد بيانات متاحة للفترة المحددة"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "توليد الشخصيات",
+      "STORY_GENERATION": "توليد القصص",
+      "CONTENT_TRANSLATION": "ترجمة المحتوى",
+      "CHAT_MESSAGE": "رسائل الدردشة",
+      "AUTOMATED_GENERATION": "التوليد التلقائي",
+      "IMAGE_ANALYSIS": "تحليل الصور",
+      "OTHER": "أخرى"
+    },
+    "planNames": {
+      "FREE": "مجاني",
+      "PLUS": "بلس",
+      "PREMIUM": "بريميوم"
+    }
+  }
+}

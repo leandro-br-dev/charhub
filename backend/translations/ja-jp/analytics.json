@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "LLMコスト分析",
+    "header": {
+      "title": "LLMコスト分析",
+      "description": "プラットフォーム全体のLLM利用コストを監視・分析する"
+    },
+    "dateRange": {
+      "label": "期間",
+      "last7Days": "過去7日間",
+      "last30Days": "過去30日間",
+      "last90Days": "過去90日間"
+    },
+    "sections": {
+      "costsByFeature": "機能別コスト",
+      "costsByModel": "モデル別コスト",
+      "costsByPlan": "サブスクリプションプラン別コスト",
+      "dailyCosts": "日次コスト推移",
+      "cachingMetrics": "キャッシング効果",
+      "topUsers": "コスト上位ユーザー"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "LLM総コスト",
+        "description": "選択された期間におけるLLM API呼び出しの運用総コスト",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "ユーザー数",
+      "avgCost": "ユーザーあたりの平均コスト"
+    },
+    "caching": {
+      "hitRate": "キャッシュヒット率",
+      "totalRequests": "総リクエスト数",
+      "cachedRequests": "キャッシュ済みリクエスト数",
+      "costSavings": "コスト削減額"
+    },
+    "table": {
+      "userId": "ユーザーID",
+      "totalCost": "総コスト",
+      "requests": "リクエスト数"
+    },
+    "metrics": {
+      "requests": "リクエスト",
+      "req": "リクエスト",
+      "avgReq": "平均/リクエスト"
+    },
+    "messages": {
+      "noData": "選択された期間のデータはありません"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "キャラクター生成",
+      "STORY_GENERATION": "ストーリー生成",
+      "CONTENT_TRANSLATION": "コンテンツ翻訳",
+      "CHAT_MESSAGE": "チャットメッセージ",
+      "AUTOMATED_GENERATION": "自動生成",
+      "IMAGE_ANALYSIS": "画像分析",
+      "OTHER": "その他"
+    },
+    "planNames": {
+      "FREE": "無料",
+      "PLUS": "プラス",
+      "PREMIUM": "プレミアム"
+    }
+  }
+}
