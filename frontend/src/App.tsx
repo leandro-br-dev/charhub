@@ -1,5 +1,5 @@
 import { Outlet, Route, Routes, Navigate } from 'react-router-dom';
-import { ProtectedRoute } from './components/layout';
+import { ProtectedRoute, AdminRoute } from './components/layout';
 import { AuthenticatedLayout } from './layouts';
 import Home from './pages/home';
 import Login from './pages/(auth)/login';
@@ -27,6 +27,7 @@ import { StoryDetailPage } from './pages/story/[storyId]';
 import PlansPage from './pages/plans';
 import TasksPage from './pages/tasks';
 import DiscoverPage from './pages/(discover)';
+import AnalyticsPage from './pages/admin/analytics';
 
 function PublicShell(): JSX.Element {
   return (
@@ -80,6 +81,17 @@ export default function App(): JSX.Element {
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/tasks" element={<TasksPage />} />
         <Route path="/stories/:storyId/edit" element={<StoryEditPage />} />
+      </Route>
+
+      {/* Admin-only routes */}
+      <Route
+        element={
+          <AdminRoute>
+            <AuthenticatedLayout />
+          </AdminRoute>
+        }
+      >
+        <Route path="/admin/analytics" element={<AnalyticsPage />} />
       </Route>
     </Routes>
   );

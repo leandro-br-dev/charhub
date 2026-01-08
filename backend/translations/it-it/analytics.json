@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "Analisi Costi LLM",
+    "header": {
+      "title": "Analisi Costi LLM",
+      "description": "Monitora e analizza i costi di utilizzo degli LLM sulla piattaforma"
+    },
+    "dateRange": {
+      "label": "Periodo",
+      "last7Days": "Ultimi 7 giorni",
+      "last30Days": "Ultimi 30 giorni",
+      "last90Days": "Ultimi 90 giorni"
+    },
+    "sections": {
+      "costsByFeature": "Costi per funzionalità",
+      "costsByModel": "Costi per modello",
+      "costsByPlan": "Costi per piano di abbonamento",
+      "dailyCosts": "Andamento costi giornalieri",
+      "cachingMetrics": "Efficacia della cache",
+      "topUsers": "Utenti con i costi maggiori"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "Costo totale LLM",
+        "description": "Costo operativo totale per le chiamate API LLM nel periodo selezionato",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "Utenti",
+      "avgCost": "Costo medio/utente"
+    },
+    "caching": {
+      "hitRate": "Tasso di successo della cache",
+      "totalRequests": "Richieste totali",
+      "cachedRequests": "Richieste nella cache",
+      "costSavings": "Risparmi sui costi"
+    },
+    "table": {
+      "userId": "ID Utente",
+      "totalCost": "Costo totale",
+      "requests": "Richieste"
+    },
+    "metrics": {
+      "requests": "richieste",
+      "req": "req",
+      "avgReq": "avg/req"
+    },
+    "messages": {
+      "noData": "Nessun dato disponibile per il periodo selezionato"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "Generazione di personaggi",
+      "STORY_GENERATION": "Generazione di storie",
+      "CONTENT_TRANSLATION": "Traduzione di contenuti",
+      "CHAT_MESSAGE": "Messaggi di chat",
+      "AUTOMATED_GENERATION": "Generazione automatizzata",
+      "IMAGE_ANALYSIS": "Analisi immagini",
+      "OTHER": "Altro"
+    },
+    "planNames": {
+      "FREE": "Gratuito",
+      "PLUS": "Plus",
+      "PREMIUM": "Premium"
+    }
+  }
+}

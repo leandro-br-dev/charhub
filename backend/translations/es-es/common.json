@@ -16,10 +16,10 @@
     "logout": "Cerrar sesión",
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
-    "tokenStored": "Almacenado en cookie solo HTTP",
+    "tokenStored": "Almacenado en una cookie solo HTTP",
     "navDashboard": "Panel de control",
     "navCharacters": "Personajes",
-    "navTagline": "Demostración segura de OAuth",
+    "navTagline": "Demo de OAuth seguro",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -39,19 +39,22 @@
     "cancel": "Cancelar",
     "save": "Guardar",
     "saving": "Guardando...",
+    "loading": "Cargando...",
+    "use": "Usar",
+    "add": "Añadir",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
     "enabled": "Habilitado",
     "disabled": "Deshabilitado",
-    "selectOption": "Seleccionar una opción",
+    "selectOption": "Selecciona una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
       "with": "Chatear con"
     },
     "messages": {
       "linkCopied": "¡Enlace copiado al portapapeles!",
-      "chatStarted": "¡Chat iniciado correctamente!",
-      "characterDeleted": "Personaje eliminado correctamente"
+      "chatStarted": "¡Chat iniciado con éxito!",
+      "characterDeleted": "Personaje eliminado con éxito"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
@@ -63,7 +66,7 @@
       "hidden": "Ocultar Maduro",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar difuminado al contenido maduro",
+        "blur": "Aplicar desenfoque al contenido maduro",
         "hidden": "Ocultar completamente el contenido maduro"
       },
       "ageRatings": {
@@ -81,17 +84,16 @@
     },
     "errors": {
       "generic": "Ocurrió un error. Por favor, inténtalo de nuevo.",
-      "failedToFetchData": "Error al obtener datos"
+      "failedToFetchData": "No se pudieron obtener los datos"
     },
     "character": "Personaje",
     "seeMore": "Ver más",
     "seeMoreArrow": "Ver más →",
     "back": "Atrás",
-    "loading": "Cargando...",
     "credits": "créditos",
     "tryAgain": "Intentar de Nuevo",
     "generate": "Generar",
     "generating": "Generando...",
-    "use": "Usar"
+    "done": "Hecho"
   }
 }

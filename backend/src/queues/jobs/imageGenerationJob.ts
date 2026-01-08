@@ -16,6 +16,7 @@ export interface AvatarGenerationJobData extends BaseImageJobData {
   characterId: string;
   referenceImageUrl?: string; // Optional URL to reference image for IP-Adapter
   prompt?: string; // Optional Stable Diffusion prompt for avatar generation
+  imageType?: 'AVATAR' | 'COVER'; // Whether to save as AVATAR or COVER type
 }
 
 export interface StickerGenerationJobData extends BaseImageJobData {
@@ -58,6 +59,7 @@ export interface MultiStageDatasetGenerationJobData {
     strength: number;
   }>;
   referenceImages?: ReferenceImage[]; // Optional initial user-provided references
+  viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to regenerate
 }
 
 export type ImageGenerationJobData =

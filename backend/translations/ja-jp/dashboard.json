@@ -2,41 +2,42 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
+    "createCharacter": "キャラクターを作成",
     "tabs": {
       "discover": "発見",
       "chat": "チャット",
       "story": "ストーリー"
     },
     "sections": {
-      "popularCharacters": "人気キャラクター",
+      "popularCharacters": "人気のキャラクター",
       "favoriteCharacters": "お気に入り",
       "popular": "人気",
       "favorites": "お気に入り",
       "myStories": "マイストーリー",
-      "popularStories": "人気ストーリー",
+      "popularStories": "人気のストーリー",
       "mine": "自分",
-      "noPopularCharacters": "人気キャラクターは見つかりませんでした。",
-      "noFavoriteCharacters": "まだキャラクターをお気に入りに追加していません。",
+      "noPopularCharacters": "人気のキャラクターは見つかりませんでした。",
+      "noFavoriteCharacters": "まだお気に入りのキャラクターはいません。",
       "createCharacter": "キャラクターを作成",
-      "browseCharacters": "キャラクターを閲覧"
+      "browseCharacters": "キャラクターを探す"
     },
-    "noStories": "まだストーリーがありません。最初のストーリーを作成しましょう！",
+    "noStories": "まだストーリーはありません。最初のストーリーを作成しましょう！",
     "createStory": "ストーリーを作成",
     "plusRequired": "プラスプランが必要です",
     "recentConversations": "最近の会話",
     "newConversation": "新しい会話",
-    "noConversations": "まだ会話がありません。今すぐチャットを始めましょう！",
+    "noConversations": "まだ会話はありません。今すぐチャットを始めましょう！",
     "startChat": "新しいチャットを開始",
     "endOfList": {
       "characters": {
         "message": "すべてのキャラクターを見ました！",
         "cta": "自分だけのキャラクターを作成",
-        "description": "想像力を形にし、ユニークなAIキャラクターを作成しましょう"
+        "description": "想像力を形にして、ユニークなAIキャラクターを作成しましょう"
       },
       "stories": {
         "message": "すべてのストーリーを見ました！",
         "cta": "自分だけのストーリーを作成",
-        "description": "AIキャラクターでインタラクティブなストーリーを作成しましょう"
+        "description": "AIキャラクターでインタラクティブなストーリーを作成し始めましょう"
       }
     },
     "carousel": {
@@ -46,17 +47,17 @@
       "slides": {
         "welcome": {
           "title": "CharHubへようこそ",
-          "description": "ユニークなキャラクターを作成し、ストーリーを生き生きとさせましょう",
+          "description": "ユニークなキャラクターを作成し、あなたのストーリーに命を吹き込みましょう",
           "action1": "作成",
           "action1Full": "キャラクターを作成",
-          "action2": "閲覧",
-          "action2Full": "キャラクターを閲覧"
+          "action2": "探す",
+          "action2Full": "キャラクターを探す"
         },
         "stories": {
           "title": "ストーリーを発見",
-          "description": "没入型インタラクティブアドベンチャーを体験しましょう",
-          "action": "閲覧",
-          "actionFull": "ストーリーを閲覧",
+          "description": "没入感のあるインタラクティブな冒険を体験しましょう",
+          "action": "探す",
+          "actionFull": "ストーリーを探す",
           "create": "作成",
           "createFull": "ストーリーを作成"
         },
@@ -87,7 +88,13 @@
         "female": "女性",
         "nonBinary": "ノンバイナリー",
         "other": "その他",
-        "unknown": "不明"
+        "unknown": "不明",
+        "MALE": "男性",
+        "FEMALE": "女性",
+        "NON_BINARY": "ノンバイナリー",
+        "NON-BINARY": "ノンバイナリー",
+        "OTHER": "その他",
+        "UNKNOWN": "不明"
       }
     }
   }
