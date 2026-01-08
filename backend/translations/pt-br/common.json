@@ -10,8 +10,8 @@
     },
     "settings": "Configurações",
     "account": "Conta",
-    "continueGoogle": "Continuar com Google",
-    "continueFacebook": "Continuar com Facebook",
+    "continueGoogle": "Continuar com o Google",
+    "continueFacebook": "Continuar com o Facebook",
     "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
     "logout": "Sair",
     "logoutLoading": "Saindo...",
@@ -39,6 +39,9 @@
     "cancel": "Cancelar",
     "save": "Salvar",
     "saving": "Salvando...",
+    "loading": "Carregando...",
+    "use": "Usar",
+    "add": "Adicionar",
     "delete": "Excluir",
     "deleting": "Excluindo...",
     "enabled": "Ativado",
@@ -59,12 +62,12 @@
       "ageRating": "Classificação Etária",
       "blurNsfw": "Borrar Conteúdo Explícito",
       "none": "Sem Filtro",
-      "blur": "Borrar Sensível",
-      "hidden": "Ocultar Maduro",
+      "blur": "Borrar Conteúdo Sensível",
+      "hidden": "Ocultar Conteúdo Adulto",
       "descriptions": {
-        "none": "Mostrar todo o conteúdo sem restrições",
-        "blur": "Aplicar desfoque ao conteúdo maduro",
-        "hidden": "Ocultar completamente o conteúdo maduro"
+        "none": "Exibir todo o conteúdo sem restrições",
+        "blur": "Aplicar desfoque ao conteúdo adulto",
+        "hidden": "Ocultar completamente o conteúdo adulto"
       },
       "ageRatings": {
         "L": "Livre",
@@ -87,11 +90,10 @@
     "seeMore": "Ver mais",
     "seeMoreArrow": "Ver mais →",
     "back": "Voltar",
-    "loading": "Carregando...",
     "credits": "créditos",
     "tryAgain": "Tentar Novamente",
     "generate": "Gerar",
     "generating": "Gerando...",
-    "use": "Usar"
+    "done": "Concluído"
   }
 }

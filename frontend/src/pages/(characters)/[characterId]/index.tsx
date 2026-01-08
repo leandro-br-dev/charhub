@@ -56,11 +56,11 @@ export default function CharacterDetailPage(): JSX.Element {
     return user.id === data.userId || (isAdmin && data.userId === CHARHUB_OFFICIAL_ID);
   }, [user, data, isAdmin]);
 
-  // Get sample images (max 4)
-  const sampleImages = useMemo(() => {
+  // Get avatar and cover images (max 4)
+  const galleryImages = useMemo(() => {
     if (!data?.images) return [];
     return data.images
-      .filter(img => img.type === 'SAMPLE')
+      .filter(img => img.type === 'AVATAR' || img.type === 'COVER')
       .slice(0, 4);
   }, [data]);
 
@@ -237,9 +237,9 @@ export default function CharacterDetailPage(): JSX.Element {
             {/* Character image with overlay stats */}
             <div className="relative overflow-hidden rounded-none bg-card shadow-lg md:rounded-2xl">
               <div ref={coverRef} className="relative h-[50vh] md:aspect-[2/3] md:h-auto">
-                {(() => { const cov = (data.images || []).find((i:any)=>i.type==='COVER')?.url; return cov || data.avatar; })() ? (
+                {(() => { const cov = (data.images || []).find((i:any)=>i.type==='COVER' && i.isActive===true)?.url; return cov || data.avatar; })() ? (
                   <CachedImage
-                    src={(data.images || []).find((i:any)=>i.type==='COVER')?.url || data.avatar || ''}
+                    src={(data.images || []).find((i:any)=>i.type==='COVER' && i.isActive===true)?.url || data.avatar || ''}
                     alt={fullName}
                     className="h-full w-full object-cover"
                   />
@@ -267,8 +267,8 @@ export default function CharacterDetailPage(): JSX.Element {
                   className="absolute top-4 right-4"
                 />
 
-                {/* Stats overlay - bottom - Hidden on mobile */}
-                <div className="absolute bottom-4 left-4 right-4 z-10 hidden gap-3 md:flex">
+                {/* Stats overlay - bottom - Visible on both mobile and desktop */}
+                <div className="absolute bottom-16 left-4 right-4 z-20 flex gap-3 md:bottom-4">
                   <div className="flex flex-1 items-center justify-center gap-2 rounded-full bg-white/20 px-4 py-3 backdrop-blur-sm">
                     <span className="material-symbols-outlined text-xl text-content">chat</span>
                     <span className="text-lg font-semibold text-content">
@@ -324,6 +324,59 @@ export default function CharacterDetailPage(): JSX.Element {
                 </div>
               </div>
 
+              {/* Tags - right after name */}
+              <div className="mb-6 flex flex-wrap gap-2">
+                {/* Age rating badge */}
+                <AgeRatingBadge
+                  ageRating={data.ageRating}
+                  variant="inline"
+                  size="md"
+                />
+
+                {/* Content tags */}
+                {data.contentTags && data.contentTags.length > 0 && data.contentTags.map((ct) => (
+                  <UITag
+                    key={ct}
+                    label={t(`characters:contentTags.${ct}`)}
+                    tone="secondary"
+                    selected
+                    disabled
+                  />
+                ))}
+
+                {/* Gender and species */}
+                {data.gender && (
+                  <UITag
+                    label={t(`filters.genders.${data.gender.toLowerCase()}`, data.gender, { ns: 'dashboard' })}
+                    selected
+                    icon={<span className="material-symbols-outlined text-sm">{resolveGenderIcon(data.gender)}</span>}
+                    disabled
+                  />
+                )}
+                {data.species && (
+                  <UITag
+                    label={typeof data.species === 'object'
+                      ? t(`species:${data.species.name}.name`, data.species.name)
+                      : 'Unknown'}
+                    selected
+                    icon={<span className="material-symbols-outlined text-sm">{resolveSpeciesIcon(data.species)}</span>}
+                    disabled
+                  />
+                )}
+
+                {/* Regular tags */}
+                {data.tags && data.tags.length > 0 && data.tags.map((tag) => (
+                  <UITag
+                    key={tag.id}
+                    label={t('tags-character:' + tag.name + '.name', tag.name)}
+                    title={t('tags-character:' + tag.name + '.description', '')}
+                    selected
+                    icon={<span className="material-symbols-outlined text-sm">sell</span>}
+                    disabled
+                  />
+                ))}
+              </div>
+
               {/* Stats row */}
               <div className="mb-6 grid grid-cols-2 gap-4">
                 <div>
@@ -355,21 +408,21 @@ export default function CharacterDetailPage(): JSX.Element {
               </Button>
             </div>            
 
-            {/* Gallery thumbnails - Only show if sample images exist */}
-            {sampleImages.length > 0 && (
+            {/* Gallery thumbnails - Only show if avatar/cover images exist */}
+            {galleryImages.length > 0 && (
               <div className="mx-0 rounded-2xl bg-card p-4 shadow-lg">
                 <h3 className="mb-3 text-sm font-semibold text-title">
-                  {t('characters:detail.sampleImages', 'Sample Images')}
+                  {t('characters:detail.galleryImages', 'Gallery')}
                 </h3>
                 <div className="grid grid-cols-4 gap-2">
-                  {sampleImages.map((img, i) => (
+                  {galleryImages.map((img, i) => (
                     <div
                       key={img.id}
                       className="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 transition-transform hover:scale-105"
                     >
                       <CachedImage
                         src={img.url}
-                        alt={img.description || `${fullName} sample ${i + 1}`}
+                        alt={img.description || `${fullName} ${img.type.toLowerCase()} ${i + 1}`}
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -381,60 +434,6 @@ export default function CharacterDetailPage(): JSX.Element {
               {/* Introduction */}
               <div className="mx-0 rounded-2xl bg-card p-6 shadow-lg">
                 <h2 className="mb-4 text-xl font-semibold text-title">{t('characters:detail.sections.introduction')}</h2>
-
-              {/* Tags */}
-              <div className="mb-4 flex flex-wrap gap-2">
-                {/* Age rating badge */}
-                <AgeRatingBadge
-                  ageRating={data.ageRating}
-                  variant="inline"
-                  size="md"
-                />
-
-                {/* Content tags */}
-                {data.contentTags && data.contentTags.length > 0 && data.contentTags.map((ct) => (
-                  <UITag
-                    key={ct}
-                    label={t(`characters:contentTags.${ct}`)}
-                    tone="secondary"
-                    selected
-                    disabled
-                  />
-                ))}
-               
-                {/* Gender and species */}
-                {data.gender && (
-                  <UITag
-                    label={t(`filters.genders.${data.gender.toLowerCase()}`, data.gender)}
-                    selected
-                    icon={<span className="material-symbols-outlined text-sm">{resolveGenderIcon(data.gender)}</span>}
-                    disabled
-                  />
-                )}
-                {data.species && (
-                  <UITag
-                    label={typeof data.species === 'object'
-                      ? t(`species:${data.species.name}.name`, data.species.name)
-                      : 'Unknown'}
-                    selected
-                    icon={<span className="material-symbols-outlined text-sm">{resolveSpeciesIcon(data.species)}</span>}
-                    disabled
-                  />
-                )}
-
-                {/* Regular tags */}
-                {data.tags && data.tags.length > 0 && data.tags.map((tag) => (
-                  <UITag
-                    key={tag.id}
-                    label={t('tags-character:' + tag.name + '.name', tag.name)}
-                    title={t('tags-character:' + tag.name + '.description', '')}
-                    selected
-                    icon={<span className="material-symbols-outlined text-sm">sell</span>}
-                    disabled
-                  />
-                ))}
-
-              </div>
 
               {/* Description box with collapsible behavior */}
               <div

@@ -2,20 +2,21 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
+    "createCharacter": "إنشاء شخصية",
     "tabs": {
-      "discover": "استكشاف",
+      "discover": "اكتشف",
       "chat": "دردشة",
-      "story": "قصة"
+      "story": "قصص"
     },
     "sections": {
-      "popularCharacters": "شخصيات شائعة",
+      "popularCharacters": "الشخصيات الرائجة",
       "favoriteCharacters": "مفضلاتك",
-      "popular": "شائع",
+      "popular": "رائج",
       "favorites": "المفضلة",
       "myStories": "قصصي",
-      "popularStories": "قصص شائعة",
-      "mine": "خاص بي",
-      "noPopularCharacters": "لم يتم العثور على شخصيات شائعة.",
+      "popularStories": "القصص الرائجة",
+      "mine": "لي",
+      "noPopularCharacters": "لم يتم العثور على شخصيات رائجة.",
       "noFavoriteCharacters": "لم تقم بإضافة أي شخصيات إلى مفضلاتك بعد.",
       "createCharacter": "إنشاء شخصية",
       "browseCharacters": "تصفح الشخصيات"
@@ -23,30 +24,30 @@
     "noStories": "لا توجد قصص بعد. أنشئ قصتك الأولى!",
     "createStory": "إنشاء قصة",
     "plusRequired": "يتطلب خطة Plus",
-    "recentConversations": "محادثات حديثة",
+    "recentConversations": "المحادثات الأخيرة",
     "newConversation": "محادثة جديدة",
     "noConversations": "لا توجد محادثات بعد. ابدأ الدردشة الآن!",
-    "startChat": "ابدأ محادثة جديدة",
+    "startChat": "بدء محادثة جديدة",
     "endOfList": {
       "characters": {
-        "message": "لقد رأيت كل الشخصيات!",
+        "message": "لقد رأيت جميع الشخصيات!",
         "cta": "أنشئ شخصيتك الخاصة",
-        "description": "أطلق العنان لخيالك وأنشئ شخصيات AI فريدة"
+        "description": "أحضر خيالك إلى الحياة وأنشئ شخصيات ذكاء اصطناعي فريدة"
       },
       "stories": {
-        "message": "لقد رأيت كل القصص!",
+        "message": "لقد رأيت جميع القصص!",
         "cta": "أنشئ قصتك الخاصة",
-        "description": "ابدأ بإنشاء قصص تفاعلية مع شخصيات AI"
+        "description": "ابدأ بإنشاء قصص تفاعلية مع شخصيات الذكاء الاصطناعي"
       }
     },
     "carousel": {
       "alt": "صورة دوارة لـ {{title}}",
-      "goToSlide": "انتقال إلى الشريحة {{slide}}",
+      "goToSlide": "اذهب إلى الشريحة {{slide}}",
       "plus": "PLUS",
       "slides": {
         "welcome": {
-          "title": "مرحباً بك في CharHub",
-          "description": "أنشئ شخصيات فريدة وأحضر قصصك إلى الحياة",
+          "title": "مرحبًا بك في CharHub",
+          "description": "أنشئ شخصيات فريدة وأحيِ قصصك",
           "action1": "إنشاء",
           "action1Full": "إنشاء شخصية",
           "action2": "تصفح",
@@ -54,15 +55,15 @@
         },
         "stories": {
           "title": "اكتشف القصص",
-          "description": "اختبر مغامرات تفاعلية غامرة",
+          "description": "استمتع بمغامرات تفاعلية غامرة",
           "action": "تصفح",
           "actionFull": "تصفح القصص",
           "create": "إنشاء",
           "createFull": "إنشاء قصة"
         },
         "pricing": {
-          "title": "افتح الميزات المميزة",
-          "description": "إبداعات غير محدودة، وميزات حصرية، والمزيد",
+          "title": "افتح Premium",
+          "description": "إبداعات غير محدودة، ميزات حصرية، والمزيد",
           "action": "عرض الخطط",
           "actionFull": "عرض الخطط"
         }
@@ -78,16 +79,22 @@
     "filters": {
       "title": "الفلاتر",
       "gender": "الجنس",
-      "species": "الأنواع",
+      "species": "النوع",
       "selectGender": "اختر الجنس...",
-      "selectSpecies": "اختر الأنواع...",
+      "selectSpecies": "اختر النوع...",
       "clear": "مسح",
       "genders": {
         "male": "ذكر",
         "female": "أنثى",
-        "nonBinary": "غير ثنائي الجنس",
-        "other": "أخرى",
-        "unknown": "غير معروف"
+        "nonBinary": "غير ثنائي",
+        "other": "آخر",
+        "unknown": "غير معروف",
+        "MALE": "ذكر",
+        "FEMALE": "أنثى",
+        "NON_BINARY": "غير ثنائي",
+        "NON-BINARY": "غير ثنائي",
+        "OTHER": "آخر",
+        "UNKNOWN": "غير معروف"
       }
     }
   }

@@ -2,6 +2,7 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
+    "createCharacter": "Create Character",
     "tabs": {
       "discover": "Discover",
       "chat": "Chat",
@@ -87,7 +88,13 @@
         "female": "Female",
         "nonBinary": "Non-Binary",
         "other": "Other",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "MALE": "Male",
+        "FEMALE": "Female",
+        "NON_BINARY": "Non-Binary",
+        "NON-BINARY": "Non-Binary",
+        "OTHER": "Other",
+        "UNKNOWN": "Unknown"
       }
     }
   }

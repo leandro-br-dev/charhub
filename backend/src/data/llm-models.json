@@ -86,33 +86,32 @@
       "name": "XAI Grok",
       "baseUrl": "https://api.x.ai/v1",
       "models": {
-        "grok-4-fast-non-reasoning": {
-          "name": "Grok 4 Fast (Non-Reasoning)",
+        "grok-4-1-fast-non-reasoning": {
+          "name": "Grok 4-1 Fast (Non-Reasoning)",
           "performance": "fast",
           "contextWindow": 2000000,
           "maxOutput": 8192,
-          "description": "Cost-efficient fast model without reasoning mode"
+          "description": "Next generation tool-calling agents. 2M context window. Excellent for image analysis with very low censorship. RECOMMENDED for NSFW image analysis."
         },
-        "grok-code-fast-1": {
-          "name": "Grok Code Fast",
-          "performance": "medium",
-          "contextWindow": 256000,
-          "maxOutput": 8192,
-          "description": "Speedy and economical reasoning model for agentic coding"
-        },
-        "grok-4-fast-reasoning": {
-          "name": "Grok 4 Fast (Reasoning)",
+        "grok-4-1-fast-reasoning": {
+          "name": "Grok 4-1 Fast (Reasoning)",
           "performance": "high",
           "contextWindow": 2000000,
           "maxOutput": 16384,
-          "description": "Frontier-level performance with exceptional token efficiency"
-        },
-        "grok-4": {
-          "name": "Grok 4",
-          "performance": "high",
-          "contextWindow": 256000,
-          "maxOutput": 16384,
-          "description": "Most intelligent model with native tool use and real-time search (Nov 2024 cutoff)"
+          "description": "Next generation tool-calling agents with reasoning. 2M context window. Supports NSFW content. RECOMMENDED for story/character generation."
+        }
+      }
+    },
+    "openrouter": {
+      "name": "OpenRouter",
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "models": {
+        "venice-uncensored-free": {
+          "name": "Venice Uncensored (free)",
+          "performance": "medium",
+          "contextWindow": 32000,
+          "maxOutput": 4096,
+          "description": "FREE uncensored model (cognitivecomputations/dolphin-mistral-24b-venice-edition:free). Great for NSFW chat. Used by JanitorAI, ChubAI, SillyTavern."
         }
       }
     }
