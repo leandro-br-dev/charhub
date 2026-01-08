@@ -60,11 +60,22 @@ const MessageInput = React.memo(
     }, [message, transcriptionError]);
 
     const handleSendMessageInternal = useCallback(async () => {
+      console.log('[MessageInput] handleSendMessageInternal called', {
+        hasMessage: !!message,
+        messageTrim: message.trim(),
+        messageLength: message.length,
+        disabled,
+        isSending,
+        hasOnSendMessage: typeof onSendMessage === 'function'
+      });
+
       if (message.trim() && !disabled && !isSending) {
         setIsSending(true);
         setTranscriptionError(null);
         try {
+          console.log('[MessageInput] Calling onSendMessage...');
           const success = await onSendMessage(message);
+          console.log('[MessageInput] onSendMessage returned', success);
           if (success) {
             setMessage("");
           }
@@ -73,6 +84,12 @@ const MessageInput = React.memo(
         } finally {
           setIsSending(false);
         }
+      } else {
+        console.warn('[MessageInput] Cannot send message', {
+          messageTrim: message.trim(),
+          disabled,
+          isSending
+        });
       }
     }, [message, disabled, isSending, onSendMessage]);
 

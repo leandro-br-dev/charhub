@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "LLM Cost Analytics",
+    "header": {
+      "title": "LLM Cost Analytics",
+      "description": "Monitor and analyze LLM usage costs across the platform"
+    },
+    "dateRange": {
+      "label": "Period",
+      "last7Days": "Last 7 Days",
+      "last30Days": "Last 30 Days",
+      "last90Days": "Last 90 Days"
+    },
+    "sections": {
+      "costsByFeature": "Costs by Feature",
+      "costsByModel": "Costs by Model",
+      "costsByPlan": "Costs by Subscription Plan",
+      "dailyCosts": "Daily Costs Trend",
+      "cachingMetrics": "Caching Effectiveness",
+      "topUsers": "Top Users by Cost"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "Total LLM Cost",
+        "description": "Total operational cost for LLM API calls in the selected period",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "Users",
+      "avgCost": "Avg Cost/User"
+    },
+    "caching": {
+      "hitRate": "Cache Hit Rate",
+      "totalRequests": "Total Requests",
+      "cachedRequests": "Cached Requests",
+      "costSavings": "Cost Savings"
+    },
+    "table": {
+      "userId": "User ID",
+      "totalCost": "Total Cost",
+      "requests": "Requests"
+    },
+    "metrics": {
+      "requests": "requests",
+      "req": "req",
+      "avgReq": "avg/req"
+    },
+    "messages": {
+      "noData": "No data available for the selected period"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "Character Generation",
+      "STORY_GENERATION": "Story Generation",
+      "CONTENT_TRANSLATION": "Content Translation",
+      "CHAT_MESSAGE": "Chat Messages",
+      "AUTOMATED_GENERATION": "Automated Generation",
+      "IMAGE_ANALYSIS": "Image Analysis",
+      "OTHER": "Other"
+    },
+    "planNames": {
+      "FREE": "Free",
+      "PLUS": "Plus",
+      "PREMIUM": "Premium"
+    }
+  }
+}

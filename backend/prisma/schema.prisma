@@ -135,6 +135,9 @@ model User {
   userPlans          UserPlan[]          @relation("UserSubscriptionPlans")
   plusAccessGrants   UserPlusAccess[]    @relation("UserPlusAccessGrants")
 
+  // LLM cost tracking relations
+  llmUsageLogs       LLMUsageLog[]       @relation("UserLLMUsageLogs")
+
   @@unique([provider, providerAccountId])
 }
 
@@ -1112,4 +1115,98 @@ model BatchGenerationLog {
 
   @@index([scheduledAt])
   @@index([executedAt])
+}
+
+// ============================================================================
+// LLM COST TRACKING SYSTEM
+// ============================================================================
+
+// LLM Provider enum
+enum LLMProvider {
+  GEMINI
+  OPENAI
+  GROK
+  ANTHROPIC
+  TOGETHER_AI
+  GROQ
+}
+
+// Feature type enum for LLM usage tracking
+enum FeatureType {
+  CHARACTER_GENERATION
+  STORY_GENERATION
+  CONTENT_TRANSLATION
+  CHAT_MESSAGE
+  AUTOMATED_GENERATION
+  IMAGE_ANALYSIS
+  OTHER
+}
+
+// LLM Usage Log - tracks all LLM API calls for cost analysis
+model LLMUsageLog {
+  id          String   @id @default(uuid())
+
+  // Context
+  userId      String?
+  user        User?    @relation("UserLLMUsageLogs", fields: [userId], references: [id], onDelete: SetNull)
+  feature     FeatureType // CHARACTER_GEN, STORY_GEN, TRANSLATION, CHAT, etc
+  featureId   String?  // ID of character, story, etc (for drill-down)
+
+  // LLM Details
+  provider    LLMProvider // GEMINI, OPENAI, GROK, etc
+  model       String   // e.g., "gemini-2.5-flash-lite", "gpt-4o-mini"
+  operation   String?  // e.g., "character_analysis", "translation", "chat_response"
+
+  // Token Usage
+  inputTokens  Int
+  outputTokens Int
+  totalTokens  Int
+
+  // Cost Calculation (in USD)
+  inputCost    Decimal  @db.Decimal(10, 6)
+  outputCost   Decimal  @db.Decimal(10, 6)
+  totalCost    Decimal  @db.Decimal(10, 6)
+
+  // Timing
+  latency      Int?     // Response time in ms
+  cached       Boolean  @default(false) // Was response cached?
+
+  // Metadata
+  metadata     Json?    // Additional context
+
+  createdAt    DateTime @default(now())
+
+  @@index([userId, feature, createdAt])
+  @@index([feature, createdAt])
+  @@index([createdAt])
+  @@index([provider, model])
+}
+
+// LLM Pricing Configuration - stores pricing data for LLM models
+model LLMPricing {
+  id          String   @id @default(uuid())
+
+  provider    LLMProvider
+  model       String   // e.g., "gemini-2.5-flash-lite"
+
+  // Pricing per 1M tokens (USD)
+  inputPricePerMillion  Decimal @db.Decimal(10, 4)
+  outputPricePerMillion Decimal @db.Decimal(10, 4)
+
+  // Effective date range
+  effectiveFrom DateTime @default(now())
+  effectiveTo   DateTime?
+
+  // Metadata
+  source      String?  // e.g., "https://ai.google.dev/pricing"
+  notes       String?  @db.Text
+
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([provider, model, effectiveFrom])
+  @@index([provider, model])
+  @@index([isActive])
+  @@index([effectiveFrom])
 }

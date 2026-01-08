@@ -3,6 +3,7 @@ import type { UseCharacterFormReturn } from '../hooks/useCharacterForm';
 import { ImageGenerationPanel } from './ImageGenerationPanel';
 import { MultiStageProgress } from '../../../../components/features/image-generation';
 import { UrlImageUploader } from '../../../../components/ui/UrlImageUploader';
+import { IMAGE_GENERATION_COSTS } from '../../../../config/credits';
 
 type ModalMode = 'avatar' | 'multi-stage' | 'upload-cover' | null;
 
@@ -66,17 +67,27 @@ export function ImageGenerationModal({
           )}
 
           {mode === 'multi-stage' && (
-            <MultiStageProgress
-              characterId={characterId}
-              prompt={{
-                positive: form.values.physicalCharacteristics || form.values.personality || '',
-                negative: ''
-              }}
-              onComplete={onComplete}
-              onError={(error) => {
-                console.error('Multi-stage generation failed:', error);
-              }}
-            />
+            <div className="space-y-4">
+              {/* Cost Information */}
+              <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <h3 className="font-semibold mb-2">{t('characters:imageGeneration.multiStage.costInfo')}</h3>
+                <div className="text-sm space-y-1">
+                  <div className="flex justify-between">
+                    <span>{t('characters:imageGeneration.multiStage.costDescription')}</span>
+                    <span className="font-bold">{IMAGE_GENERATION_COSTS.REFERENCE_SET} {t('common:credits')}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Progress Component */}
+              <MultiStageProgress
+                characterId={characterId}
+                onComplete={onComplete}
+                onError={(error) => {
+                  console.error('Multi-stage generation failed:', error);
+                }}
+              />
+            </div>
           )}
 
           {mode === 'upload-cover' && (

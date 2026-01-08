@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "Análisis de Costos de LLM",
+    "header": {
+      "title": "Análisis de Costos de LLM",
+      "description": "Monitorea y analiza los costos de uso de LLM en toda la plataforma"
+    },
+    "dateRange": {
+      "label": "Período",
+      "last7Days": "Últimos 7 Días",
+      "last30Days": "Últimos 30 Días",
+      "last90Days": "Últimos 90 Días"
+    },
+    "sections": {
+      "costsByFeature": "Costos por Característica",
+      "costsByModel": "Costos por Modelo",
+      "costsByPlan": "Costos por Plan de Suscripción",
+      "dailyCosts": "Tendencia de Costos Diarios",
+      "cachingMetrics": "Efectividad del Caché",
+      "topUsers": "Usuarios Principales por Costo"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "Costo Total de LLM",
+        "description": "Costo operativo total de las llamadas a la API de LLM en el período seleccionado",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "Usuarios",
+      "avgCost": "Costo Promedio/Usuario"
+    },
+    "caching": {
+      "hitRate": "Tasa de Aciertos del Caché",
+      "totalRequests": "Solicitudes Totales",
+      "cachedRequests": "Solicitudes en Caché",
+      "costSavings": "Ahorros de Costo"
+    },
+    "table": {
+      "userId": "ID de Usuario",
+      "totalCost": "Costo Total",
+      "requests": "Solicitudes"
+    },
+    "metrics": {
+      "requests": "solicitudes",
+      "req": "sol.",
+      "avgReq": "prom./sol."
+    },
+    "messages": {
+      "noData": "No hay datos disponibles para el período seleccionado"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "Generación de Personajes",
+      "STORY_GENERATION": "Generación de Historias",
+      "CONTENT_TRANSLATION": "Traducción de Contenido",
+      "CHAT_MESSAGE": "Mensajes de Chat",
+      "AUTOMATED_GENERATION": "Generación Automatizada",
+      "IMAGE_ANALYSIS": "Análisis de Imágenes",
+      "OTHER": "Otro"
+    },
+    "planNames": {
+      "FREE": "Gratis",
+      "PLUS": "Plus",
+      "PREMIUM": "Premium"
+    }
+  }
+}

@@ -23,6 +23,9 @@ export interface ImagesByType {
 
 export interface GenerateAvatarRequest {
   characterId: string;
+  prompt?: string;
+  referenceImageUrl?: string;
+  imageType?: 'AVATAR' | 'COVER';
 }
 
 export interface GenerateImageRequest {
@@ -142,7 +145,12 @@ class ImageGenerationService {
   async generateAvatar(request: GenerateAvatarRequest): Promise<{ jobId: string; message: string }> {
     const response = await api.post<{ jobId: string; message: string }>(
       '/api/v1/image-generation/avatar',
-      { characterId: request.characterId }
+      {
+        characterId: request.characterId,
+        ...(request.prompt !== undefined && { prompt: request.prompt }),
+        ...(request.referenceImageUrl !== undefined && { referenceImageUrl: request.referenceImageUrl }),
+        ...(request.imageType !== undefined && { imageType: request.imageType }),
+      }
     );
     return response.data;
   }

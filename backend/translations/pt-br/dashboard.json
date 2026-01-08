@@ -2,9 +2,10 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
+    "createCharacter": "Criar Personagem",
     "tabs": {
       "discover": "Descobrir",
-      "chat": "Conversar",
+      "chat": "Chat",
       "story": "História"
     },
     "sections": {
@@ -26,7 +27,7 @@
     "recentConversations": "Conversas Recentes",
     "newConversation": "Nova Conversa",
     "noConversations": "Nenhuma conversa ainda. Comece a conversar agora!",
-    "startChat": "Iniciar Nova Conversa",
+    "startChat": "Iniciar Novo Chat",
     "endOfList": {
       "characters": {
         "message": "Você viu todos os personagens!",
@@ -53,7 +54,7 @@
           "action2Full": "Explorar Personagens"
         },
         "stories": {
-          "title": "Descubra Histórias",
+          "title": "Descobrir Histórias",
           "description": "Experimente aventuras interativas imersivas",
           "action": "Explorar",
           "actionFull": "Explorar Histórias",
@@ -79,15 +80,21 @@
       "title": "Filtros",
       "gender": "Gênero",
       "species": "Espécie",
-      "selectGender": "Selecionar gêneros...",
-      "selectSpecies": "Selecionar espécies...",
+      "selectGender": "Selecione os gêneros...",
+      "selectSpecies": "Selecione as espécies...",
       "clear": "Limpar",
       "genders": {
         "male": "Masculino",
         "female": "Feminino",
-        "nonBinary": "Não-binário",
+        "nonBinary": "Não-Binário",
         "other": "Outro",
-        "unknown": "Desconhecido"
+        "unknown": "Desconhecido",
+        "MALE": "Masculino",
+        "FEMALE": "Feminino",
+        "NON_BINARY": "Não-Binário",
+        "NON-BINARY": "Não-Binário",
+        "OTHER": "Outro",
+        "UNKNOWN": "Desconhecido"
       }
     }
   }
