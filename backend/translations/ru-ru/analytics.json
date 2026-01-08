@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "Аналитика затрат на LLM",
+    "header": {
+      "title": "Аналитика затрат на LLM",
+      "description": "Мониторинг и анализ затрат на использование LLM по всей платформе"
+    },
+    "dateRange": {
+      "label": "Период",
+      "last7Days": "Последние 7 дней",
+      "last30Days": "Последние 30 дней",
+      "last90Days": "Последние 90 дней"
+    },
+    "sections": {
+      "costsByFeature": "Затраты по функциям",
+      "costsByModel": "Затраты по моделям",
+      "costsByPlan": "Затраты по тарифным планам",
+      "dailyCosts": "Динамика ежедневных затрат",
+      "cachingMetrics": "Эффективность кеширования",
+      "topUsers": "Топ пользователей по затратам"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "Общая стоимость LLM",
+        "description": "Общая операционная стоимость вызовов LLM API за выбранный период",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "Пользователи",
+      "avgCost": "Средние затраты/пользователь"
+    },
+    "caching": {
+      "hitRate": "Коэффициент попаданий кеша",
+      "totalRequests": "Всего запросов",
+      "cachedRequests": "Кешированные запросы",
+      "costSavings": "Экономия средств"
+    },
+    "table": {
+      "userId": "ID пользователя",
+      "totalCost": "Общая стоимость",
+      "requests": "Запросы"
+    },
+    "metrics": {
+      "requests": "запросов",
+      "req": "зап.",
+      "avgReq": "ср./зап."
+    },
+    "messages": {
+      "noData": "Нет данных за выбранный период"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "Генерация персонажей",
+      "STORY_GENERATION": "Генерация историй",
+      "CONTENT_TRANSLATION": "Перевод контента",
+      "CHAT_MESSAGE": "Сообщения чата",
+      "AUTOMATED_GENERATION": "Автоматическая генерация",
+      "IMAGE_ANALYSIS": "Анализ изображений",
+      "OTHER": "Прочее"
+    },
+    "planNames": {
+      "FREE": "Бесплатный",
+      "PLUS": "Плюс",
+      "PREMIUM": "Премиум"
+    }
+  }
+}

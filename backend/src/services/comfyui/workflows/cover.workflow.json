@@ -1,0 +1,74 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 12345,
+      "steps": 30,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": ["4", 0],
+      "positive": ["6", 0],
+      "negative": ["7", 0],
+      "latent_image": ["5", 0]
+    },
+    "class_type": "KSampler"
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "waiNSFWIllustrious_v130.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
+  "5": {
+    "inputs": {
+      "width": 768,
+      "height": 1152,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage"
+  },
+  "6": {
+    "inputs": {
+      "text": "",
+      "clip": ["11", 1]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "7": {
+    "inputs": {
+      "text": "",
+      "clip": ["11", 1]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "8": {
+    "inputs": {
+      "samples": ["3", 0],
+      "vae": ["4", 2]
+    },
+    "class_type": "VAEDecode"
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "CharHub_Cover",
+      "images": ["8", 0]
+    },
+    "class_type": "SaveImage"
+  },
+  "11": {
+    "inputs": {
+      "lora_01": "None",
+      "strength_01": 1,
+      "lora_02": "None",
+      "strength_02": 1,
+      "lora_03": "None",
+      "strength_03": 1,
+      "lora_04": "None",
+      "strength_04": 1,
+      "model": ["4", 0],
+      "clip": ["4", 1]
+    },
+    "class_type": "Lora Loader Stack (rgthree)"
+  }
+}

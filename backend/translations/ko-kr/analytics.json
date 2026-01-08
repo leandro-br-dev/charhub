@@ -1,0 +1,68 @@
+{
+  "description": "LLM Cost Analytics Dashboard for Admin",
+  "resources": {
+    "title": "LLM 비용 분석",
+    "header": {
+      "title": "LLM 비용 분석",
+      "description": "플랫폼 전반의 LLM 사용 비용을 모니터링하고 분석합니다"
+    },
+    "dateRange": {
+      "label": "기간",
+      "last7Days": "지난 7일",
+      "last30Days": "지난 30일",
+      "last90Days": "지난 90일"
+    },
+    "sections": {
+      "costsByFeature": "기능별 비용",
+      "costsByModel": "모델별 비용",
+      "costsByPlan": "구독 플랜별 비용",
+      "dailyCosts": "일별 비용 추이",
+      "cachingMetrics": "캐싱 효율성",
+      "topUsers": "비용 지출 상위 사용자"
+    },
+    "cards": {
+      "totalCost": {
+        "title": "총 LLM 비용",
+        "description": "선택한 기간 동안의 LLM API 호출에 대한 총 운영 비용",
+        "currency": "USD"
+      }
+    },
+    "planStats": {
+      "users": "사용자",
+      "avgCost": "사용자당 평균 비용"
+    },
+    "caching": {
+      "hitRate": "캐시 적중률",
+      "totalRequests": "총 요청 수",
+      "cachedRequests": "캐시된 요청 수",
+      "costSavings": "비용 절감"
+    },
+    "table": {
+      "userId": "사용자 ID",
+      "totalCost": "총 비용",
+      "requests": "요청 수"
+    },
+    "metrics": {
+      "requests": "요청 수",
+      "req": "요청",
+      "avgReq": "평균/요청"
+    },
+    "messages": {
+      "noData": "선택한 기간에 대한 데이터가 없습니다"
+    },
+    "featureNames": {
+      "CHARACTER_GENERATION": "캐릭터 생성",
+      "STORY_GENERATION": "스토리 생성",
+      "CONTENT_TRANSLATION": "콘텐츠 번역",
+      "CHAT_MESSAGE": "채팅 메시지",
+      "AUTOMATED_GENERATION": "자동 생성",
+      "IMAGE_ANALYSIS": "이미지 분석",
+      "OTHER": "기타"
+    },
+    "planNames": {
+      "FREE": "무료",
+      "PLUS": "플러스",
+      "PREMIUM": "프리미엄"
+    }
+  }
+}

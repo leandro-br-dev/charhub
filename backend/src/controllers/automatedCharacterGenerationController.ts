@@ -10,6 +10,8 @@ import type { Server } from 'socket.io';
 import { logger } from '../config/logger';
 import { analyzeCharacterImage, type CharacterImageAnalysisResult } from '../agents/characterImageAnalysisAgent';
 import { callLLM } from '../services/llm';
+import { modelRouter } from '../services/llm/modelRouter';
+import { contentClassificationService } from '../services/contentClassification';
 import { createCharacter } from '../services/characterService';
 import { queueManager } from '../queues/QueueManager';
 import { QueueName } from '../queues/config';
@@ -26,6 +28,7 @@ import { CharacterGenerationStep } from '../types/character-generation';
 import { randomUUID } from 'crypto';
 import { createTransaction } from '../services/creditService';
 import { CreditTransactionType } from '../generated/prisma';
+import type { User } from '../generated/prisma';
 
 // AI Generation Credit Costs
 const AI_GENERATION_COSTS = {
@@ -54,7 +57,11 @@ interface GeneratedCharacterData {
 /**
  * Analyze text description to extract character details
  */
-async function analyzeTextDescription(description: string, preferredLanguage: string = 'en'): Promise<GeneratedCharacterData> {
+async function analyzeTextDescription(
+  description: string,
+  preferredLanguage: string = 'en',
+  user?: User
+): Promise<GeneratedCharacterData> {
   const systemPrompt = [
     'You are a character data extraction assistant.',
     'Given a text description of a character, extract structured character information.',
@@ -88,9 +95,55 @@ async function analyzeTextDescription(description: string, preferredLanguage: st
   ].join('\n');
 
   try {
+    logger.info({
+      userId: user?.id,
+      userBirthDate: user?.birthDate,
+      descriptionLength: description?.length,
+      hasUser: !!user,
+    }, 'analyzeTextDescription_start');
+
+    // CONTENT FILTERING: Classify the description and validate user access
+    if (user) {
+      logger.info({
+        userId: user.id,
+        birthDate: user.birthDate,
+      }, 'content_classification_starting');
+
+      const classification = await contentClassificationService.classifyText(description);
+
+      logger.info({
+        userId: user.id,
+        description: description.substring(0, 100),
+        classification,
+      }, 'content_classification_check_character_generation');
+
+      // Validate user can access this content
+      contentClassificationService.validateUserAccess(
+        classification.ageRating,
+        undefined, // userAge - will be calculated from birthDate
+        user.birthDate || undefined
+      );
+
+      logger.info({
+        userId: user.id,
+        classification,
+      }, 'content_classification_validation_passed');
+    } else {
+      logger.warn('No user provided - skipping content classification');
+    }
+
+    // Get model for character generation (Grok 4-1 for all)
+    const modelSelection = await modelRouter.getModel({ feature: 'CHARACTER_GENERATION' });
+
+    logger.info({
+      provider: modelSelection.provider,
+      model: modelSelection.model,
+      reasoning: modelSelection.reasoning,
+    }, 'Model selected for character text analysis');
+
     const response = await callLLM({
-      provider: 'gemini',
-      model: 'gemini-2.5-flash',
+      provider: modelSelection.provider,
+      model: modelSelection.model,
       systemPrompt,
       userPrompt,
       temperature: 0.7,
@@ -109,6 +162,13 @@ async function analyzeTextDescription(description: string, preferredLanguage: st
     return parsed;
 
   } catch (error) {
+    // Check if this is a content restriction error (age validation)
+    if (error instanceof Error && error.message.includes('Content is rated')) {
+      // Re-throw age validation errors - user should see this error
+      throw error;
+    }
+
+    // For other errors (LLM failures, etc.), use fallback
     logger.error({ error, description: description.substring(0, 100) }, 'text_description_analysis_failed');
 
     // Return minimal valid data
@@ -324,7 +384,8 @@ export async function compileCharacterDataWithLLM(
   userDescription: string | null,
   imageAnalysis: CharacterImageAnalysisResult | null,
   textData: GeneratedCharacterData | null,
-  preferredLanguage: string = 'en'
+  preferredLanguage: string = 'en',
+  user?: User
 ): Promise<GeneratedCharacterData> {
   const { physicalCharacteristics: imgPhys, visualStyle, clothing } = imageAnalysis || {
     physicalCharacteristics: {} as any,
@@ -419,9 +480,36 @@ export async function compileCharacterDataWithLLM(
       `Return ONLY valid JSON, no markdown, no commentary.`,
     ].join('\n');
 
+    // CONTENT FILTERING: Classify the description and validate user access
+    if (user && userDescription) {
+      const classification = await contentClassificationService.classifyText(userDescription);
+
+      logger.info({
+        userId: user.id,
+        description: userDescription.substring(0, 100),
+        classification,
+      }, 'content_classification_check_character_compilation');
+
+      // Validate user can access this content
+      contentClassificationService.validateUserAccess(
+        classification.ageRating,
+        undefined, // userAge - will be calculated from birthDate
+        user.birthDate || undefined
+      );
+    }
+
+    // Get model for character generation (Grok 4-1 for all)
+    const modelSelection = await modelRouter.getModel({ feature: 'CHARACTER_GENERATION' });
+
+    logger.info({
+      provider: modelSelection.provider,
+      model: modelSelection.model,
+      reasoning: modelSelection.reasoning,
+    }, 'Model selected for character data compilation');
+
     const response = await callLLM({
-      provider: 'gemini',
-      model: 'gemini-2.5-flash',
+      provider: modelSelection.provider,
+      model: modelSelection.model,
       systemPrompt: 'You are a character data compilation assistant. Always output valid JSON with ALL required fields.',
       userPrompt: compilationPrompt,
       temperature: 0.7,
@@ -459,9 +547,15 @@ export async function compileCharacterDataWithLLM(
     throw new Error('Invalid LLM compilation result');
 
   } catch (error) {
+    // Check if this is a content restriction error (age validation)
+    if (error instanceof Error && error.message.includes('Content is rated')) {
+      // Re-throw age validation errors - user should see this error
+      throw error;
+    }
+
     logger.error({ error }, 'Failed to compile with LLM, falling back to simple merge');
     // Fallback to simple merge if LLM compilation fails
-    return await simpleMergeAnalysisResults(imageAnalysis, textData, preferredLanguage);
+    return await simpleMergeAnalysisResults(imageAnalysis, textData, preferredLanguage, user);
   }
 }
 
@@ -471,7 +565,8 @@ export async function compileCharacterDataWithLLM(
 async function simpleMergeAnalysisResults(
   imageAnalysis: CharacterImageAnalysisResult | null,
   textData: GeneratedCharacterData | null,
-  preferredLanguage: string = 'en'
+  preferredLanguage: string = 'en',
+  _user?: User // User available for future content filtering
 ): Promise<GeneratedCharacterData> {
   // Start with text data as base
   const merged: GeneratedCharacterData = textData || { firstName: 'Character' };
@@ -513,9 +608,18 @@ async function simpleMergeAnalysisResults(
         'Return ONLY valid JSON, no markdown.',
       ].join('\n');
 
+      // Get model for character generation (Grok 4-1 for all)
+      const modelSelection = await modelRouter.getModel({ feature: 'CHARACTER_GENERATION' });
+
+      logger.info({
+        provider: modelSelection.provider,
+        model: modelSelection.model,
+        reasoning: modelSelection.reasoning,
+      }, 'Model selected for character enrichment fallback');
+
       const response = await callLLM({
-        provider: 'gemini',
-        model: 'gemini-2.5-flash',
+        provider: modelSelection.provider,
+        model: modelSelection.model,
         systemPrompt: 'You are a character enrichment assistant. Always output valid JSON with ALL required fields.',
         userPrompt: enrichmentPrompt,
         temperature: 0.7,
@@ -718,6 +822,7 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
         let presignedImageUrl: string | null = null;
         let uploadedImageSizeBytes: number = 0;
         let imageAgeRating: AgeRating = AgeRating.L;
+        let imageContentTags: string[] = []; // Store content tags from image classification
 
         // Process image if provided
         if (imageFile) {
@@ -784,8 +889,13 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
             // Classify image for age rating using presigned URL
             const classification = await classifyImageViaLLM(presignedImageUrl);
             imageAgeRating = classification.ageRating;
+            imageContentTags = classification.contentTags || [];
 
-            logger.info({ imageAnalysis, ageRating: imageAgeRating }, 'image_analysis_completed');
+            logger.info({
+              imageAnalysis,
+              ageRating: imageAgeRating,
+              contentTags: imageContentTags,
+            }, 'image_analysis_completed');
 
             // Step 3: Description extracted
             emitCharacterGenerationProgress(
@@ -824,7 +934,11 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
         let textData: GeneratedCharacterData | null = null;
         const preferredLanguage = user.preferredLanguage || 'en';
         if (description && typeof description === 'string' && description.trim().length > 0) {
-          textData = await analyzeTextDescription(description.trim(), preferredLanguage);
+          textData = await analyzeTextDescription(
+            description.trim(),
+            preferredLanguage,
+            user // Pass user for content filtering
+          );
           logger.info({ textData }, 'text_description_analyzed');
         } else {
           logger.info('no_text_description_provided');
@@ -836,7 +950,8 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
           userDescriptionText,
           imageAnalysis,
           textData,
-          preferredLanguage
+          preferredLanguage,
+          user // Pass user for content filtering
         );
 
         logger.info({
@@ -1121,6 +1236,23 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
         }, 'automated_character_generation_completed');
 
       } catch (error) {
+        // Check if this is a content restriction error (age validation)
+        if (error instanceof Error && error.message.includes('Content is rated')) {
+          logger.error({ error, sessionId }, 'automated_character_generation_age_restricted');
+          emitCharacterGenerationProgress(
+            io,
+            user.id,
+            sessionId,
+            createProgressEvent(
+              CharacterGenerationStep.ERROR,
+              0,
+              'Content not allowed for your age',
+              { error: error.message }
+            )
+          );
+          return;
+        }
+
         logger.error({ error, sessionId }, 'automated_character_generation_failed');
         emitCharacterGenerationProgress(
           io,
@@ -1140,6 +1272,16 @@ export async function generateAutomatedCharacter(req: Request, res: Response): P
     });
 
   } catch (error) {
+    // Check if this is a content restriction error (age validation)
+    if (error instanceof Error && error.message.includes('Content is rated')) {
+      logger.error({ error }, 'automated_character_generation_age_restricted_init');
+      res.status(403).json({
+        error: 'Content not allowed for your age',
+        details: error.message,
+      });
+      return;
+    }
+
     logger.error({ error }, 'automated_character_generation_init_failed');
     res.status(500).json({
       error: 'Failed to start character generation',

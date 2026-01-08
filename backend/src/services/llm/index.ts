@@ -1,11 +1,12 @@
 import { callGemini } from './gemini';
 import { callOpenAI } from './openai';
 import { callGrok } from './grok';
+import { callOpenRouter } from './openrouter';
 import { getToolDefinitions, executeTools, type ToolCall, type ToolResult } from './tools';
 import { logger } from '../../config/logger';
 import llmModels from '../../data/llm-models.json';
 
-export type LLMProvider = 'gemini' | 'openai' | 'grok';
+export type LLMProvider = 'gemini' | 'openai' | 'grok' | 'openrouter';
 
 export interface LLMRequest {
   provider: LLMProvider;
@@ -66,12 +67,12 @@ export function validateModel(provider: LLMProvider, model: string): boolean {
  */
 export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
   // Validate provider
-  if (!['gemini', 'openai', 'grok'].includes(request.provider)) {
+  if (!['gemini', 'openai', 'grok', 'openrouter'].includes(request.provider)) {
     throw new Error(`Invalid provider: ${request.provider}`);
   }
 
-  // Validate model
-  if (!validateModel(request.provider, request.model)) {
+  // Validate model (skip for OpenRouter as models are dynamic)
+  if (request.provider !== 'openrouter' && !validateModel(request.provider, request.model)) {
     throw new Error(`Invalid model ${request.model} for provider ${request.provider}`);
   }
 
@@ -123,6 +124,17 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
         systemPrompt: request.systemPrompt,
         userPrompt: request.userPrompt,
         images: request.images, // Pass images for vision models
+        temperature: request.temperature,
+        maxTokens: request.maxTokens,
+      });
+      break;
+
+    case 'openrouter':
+      // OpenRouter (Venice AI) doesn't support tools yet, fallback to basic call
+      response = await callOpenRouter({
+        model: request.model,
+        systemPrompt: request.systemPrompt,
+        userPrompt: request.userPrompt,
         temperature: request.temperature,
         maxTokens: request.maxTokens,
       });
@@ -185,3 +197,6 @@ export async function callLLM(request: LLMRequest): Promise<LLMResponse> {
     usage: response.usage,
   };
 }
+
+// Export LLM usage tracking functions
+export * from './llmUsageTracker';

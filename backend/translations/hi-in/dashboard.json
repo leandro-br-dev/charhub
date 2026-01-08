@@ -2,67 +2,68 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
+    "createCharacter": "कैरेक्टर बनाएं",
     "tabs": {
       "discover": "खोजें",
       "chat": "चैट",
       "story": "कहानी"
     },
     "sections": {
-      "popularCharacters": "लोकप्रिय पात्र",
+      "popularCharacters": "लोकप्रिय कैरेक्टर",
       "favoriteCharacters": "आपके पसंदीदा",
       "popular": "लोकप्रिय",
       "favorites": "पसंदीदा",
-      "myStories": "मेरी कहानियाँ",
-      "popularStories": "लोकप्रिय कहानियाँ",
+      "myStories": "मेरी कहानियां",
+      "popularStories": "लोकप्रिय कहानियां",
       "mine": "मेरी",
-      "noPopularCharacters": "कोई लोकप्रिय पात्र नहीं मिले।",
-      "noFavoriteCharacters": "आपने अभी तक किसी पात्र को पसंदीदा नहीं बनाया है।",
-      "createCharacter": "पात्र बनाएँ",
-      "browseCharacters": "पात्र ब्राउज़ करें"
+      "noPopularCharacters": "कोई लोकप्रिय कैरेक्टर नहीं मिले।",
+      "noFavoriteCharacters": "आपने अभी तक कोई कैरेक्टर पसंदीदा नहीं किया है।",
+      "createCharacter": "कैरेक्टर बनाएं",
+      "browseCharacters": "कैरेक्टर ब्राउज़ करें"
     },
-    "noStories": "अभी तक कोई कहानियाँ नहीं। अपनी पहली कहानी बनाएँ!",
-    "createStory": "कहानी बनाएँ",
+    "noStories": "अभी कोई कहानी नहीं है। अपनी पहली कहानी बनाएं!",
+    "createStory": "कहानी बनाएं",
     "plusRequired": "प्लस प्लान आवश्यक है",
     "recentConversations": "हाल की बातचीत",
     "newConversation": "नई बातचीत",
-    "noConversations": "अभी तक कोई बातचीत नहीं। अभी चैट करना शुरू करें!",
+    "noConversations": "अभी कोई बातचीत नहीं है। अभी चैट करना शुरू करें!",
     "startChat": "नई चैट शुरू करें",
     "endOfList": {
       "characters": {
-        "message": "आपने सभी पात्र देख लिए हैं!",
-        "cta": "अपना पात्र बनाएँ",
-        "description": "अपनी कल्पना को साकार करें और अद्वितीय AI पात्र बनाएँ"
+        "message": "आपने सभी कैरेक्टर देख लिए हैं!",
+        "cta": "अपना खुद का कैरेक्टर बनाएं",
+        "description": "अपनी कल्पना को जीवंत करें और अनोखे AI कैरेक्टर बनाएं"
       },
       "stories": {
-        "message": "आपने सभी कहानियाँ देख ली हैं!",
-        "cta": "अपनी कहानी बनाएँ",
-        "description": "AI पात्रों के साथ इंटरैक्टिव कहानियाँ बनाना शुरू करें"
+        "message": "आपने सभी कहानियां देख ली हैं!",
+        "cta": "अपनी खुद की कहानी बनाएं",
+        "description": "AI कैरेक्टर के साथ इंटरैक्टिव कहानियां बनाना शुरू करें"
       }
     },
     "carousel": {
       "alt": "{{title}} के लिए कैरोसेल छवि",
-      "goToSlide": "स्लाइड {{slide}} पर जाएँ",
-      "plus": "PLUS",
+      "goToSlide": "स्लाइड {{slide}} पर जाएं",
+      "plus": "प्लस",
       "slides": {
         "welcome": {
           "title": "CharHub में आपका स्वागत है",
-          "description": "अद्वितीय पात्र बनाएँ और अपनी कहानियों को जीवंत करें",
-          "action1": "बनाएँ",
-          "action1Full": "पात्र बनाएँ",
+          "description": "अनोखे कैरेक्टर बनाएं और अपनी कहानियों को जीवंत करें",
+          "action1": "बनाएं",
+          "action1Full": "कैरेक्टर बनाएं",
           "action2": "ब्राउज़ करें",
-          "action2Full": "पात्र ब्राउज़ करें"
+          "action2Full": "कैरेक्टर ब्राउज़ करें"
         },
         "stories": {
-          "title": "कहानियाँ खोजें",
-          "description": "मनोरंजक इंटरैक्टिव रोमांच का अनुभव करें",
+          "title": "कहानियां खोजें",
+          "description": "इमर्सिव इंटरैक्टिव रोमांच का अनुभव करें",
           "action": "ब्राउज़ करें",
-          "actionFull": "कहानियाँ ब्राउज़ करें",
-          "create": "बनाएँ",
-          "createFull": "कहानी बनाएँ"
+          "actionFull": "कहानियां ब्राउज़ करें",
+          "create": "बनाएं",
+          "createFull": "कहानी बनाएं"
         },
         "pricing": {
           "title": "प्रीमियम अनलॉक करें",
-          "description": "असीमित रचनाएँ, विशेष सुविधाएँ, और बहुत कुछ",
+          "description": "असीमित रचनाएं, विशेष सुविधाएं, और बहुत कुछ",
           "action": "प्लान देखें",
           "actionFull": "प्लान देखें"
         }
@@ -70,10 +71,10 @@
     },
     "storyCard": {
       "alt": "{{title}} के लिए कवर छवि",
-      "play": "खेलें"
+      "play": "चलाएं"
     },
     "infiniteScroll": {
-      "endOfList": "सभी पात्र लोड हो चुके हैं"
+      "endOfList": "सभी कैरेक्टर लोड हो चुके हैं"
     },
     "filters": {
       "title": "फ़िल्टर",
@@ -85,9 +86,15 @@
       "genders": {
         "male": "पुरुष",
         "female": "महिला",
-        "nonBinary": "गैर-बाइनरी",
+        "nonBinary": "Non-Binary",
         "other": "अन्य",
-        "unknown": "अज्ञात"
+        "unknown": "अज्ञात",
+        "MALE": "पुरुष",
+        "FEMALE": "महिला",
+        "NON_BINARY": "Non-Binary",
+        "NON-BINARY": "Non-Binary",
+        "OTHER": "अन्य",
+        "UNKNOWN": "अज्ञात"
       }
     }
   }
