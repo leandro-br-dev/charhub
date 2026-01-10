@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import api from '../../../../lib/api';
 import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { PromptWithSampleImageInput } from '../../../../components/features/image-generation';
@@ -42,6 +43,7 @@ export function ReferenceGenerationModal({
   const { addToast } = useToast();
 
   const [prompt, setPrompt] = useState('');
+  const [referenceImageCreditCost, setReferenceImageCreditCost] = useState<number>(10); // Default 10 credits
   const [sampleImage, setSampleImage] = useState<File | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -49,6 +51,24 @@ export function ReferenceGenerationModal({
   const [selectedViews, setSelectedViews] = useState<ReferenceView[]>(['face', 'front', 'side', 'back']);
   const [selectAll, setSelectAll] = useState(true);
   const [uploadedSampleUrl, setUploadedSampleUrl] = useState<string | null>(null);
+
+  // Fetch service costs on mount
+  useEffect(() => {
+    const fetchServiceCosts = async () => {
+      try {
+        const response = await api.get<{ success: boolean; data: any[] }>('/api/v1/credits/service-costs');
+        // For reference images, we use the same cost as IMAGE_GENERATION
+        const imageGenCost = response.data.data.find((cost) => cost.serviceIdentifier === 'IMAGE_GENERATION');
+        if (imageGenCost) {
+          setReferenceImageCreditCost(imageGenCost.creditsPerUnit);
+        }
+      } catch (error) {
+        console.error('Failed to fetch service costs:', error);
+      }
+    };
+
+    fetchServiceCosts();
+  }, []);
 
   const handleGenerate = async () => {
     if (!characterId || selectedViews.length === 0) return;
@@ -150,7 +170,7 @@ export function ReferenceGenerationModal({
                 {t('characters:imageGeneration.referenceImages.shortDescription', '4-view reference dataset for consistent AI generation')}
               </p>
               <span className="text-xs font-semibold text-accent whitespace-nowrap">
-                {selectedViews.length} × {imageGenerationService.COST_PER_REFERENCE_IMAGE} {t('common:credits', 'credits')}
+                {selectedViews.length * referenceImageCreditCost} {t('common:credits', 'credits')}
               </span>
             </div>
 

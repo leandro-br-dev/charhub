@@ -160,7 +160,7 @@ export function UnifiedImageGenerationModal({
           {!isAvatar && (
             <div className="rounded-lg bg-muted/30 p-3 text-xs text-muted">
               <span className="material-symbols-outlined text-sm align-middle mr-1">info</span>
-              Cover images use a 3:4 portrait aspect ratio.
+              {t('characters:images.coverAspectInfo', 'Cover images use a 3:4 portrait aspect ratio.')}
             </div>
           )}
 
@@ -279,7 +279,7 @@ export function UnifiedImageGenerationModal({
             disabled={isGenerating}
           >
             <span className="material-symbols-outlined text-lg">refresh</span>
-            {t('common:regenerate', 'Generate Again')}
+            {t('common:generateAgain', 'Generate Again')}
           </Button>
 
           <Button

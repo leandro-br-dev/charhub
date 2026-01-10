@@ -18,6 +18,7 @@ export interface ModalProps {
   children: ReactNode;
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
+  showCloseButton?: boolean;
 }
 
 export function Modal({
@@ -26,7 +27,8 @@ export function Modal({
   title,
   children,
   className = '',
-  size = 'md'
+  size = 'md',
+  showCloseButton = true
 }: ModalProps): JSX.Element | null {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(isOpen);
@@ -150,13 +152,15 @@ export function Modal({
       >
         <header className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
           <h2 className="text-lg font-semibold text-title">{title}</h2>
-          <Button
-            aria-label="Close dialog"
-            variant="light"
-            size="small"
-            icon="close"
-            onClick={onClose}
-          />
+          {showCloseButton && (
+            <Button
+              aria-label="Close dialog"
+              variant="light"
+              size="small"
+              icon="close"
+              onClick={onClose}
+            />
+          )}
         </header>
         <div className="max-h-[70vh] overflow-y-auto px-6 py-5 text-sm text-content">
           {children}

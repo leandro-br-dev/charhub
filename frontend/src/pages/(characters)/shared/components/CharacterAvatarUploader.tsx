@@ -293,9 +293,8 @@ export function CharacterAvatarUploader({
   };
 
   const handleGenerationComplete = () => {
-    // Refresh avatar from server
+    // Refresh avatar from server - DON'T close modal, let user see result
     setRefreshTriggerLocal(prev => prev + 1);
-    setIsGenerationModalOpen(false);
   };
 
   return (
