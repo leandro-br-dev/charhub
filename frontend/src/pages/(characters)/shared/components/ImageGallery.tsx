@@ -78,10 +78,31 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
   const handleDelete = async (imageId: string) => {
     try {
       setDeletingId(imageId);
+
+      // Check if the deleted image was the active one
+      const deletedImage = images.find((img) => img.id === imageId);
+      const wasActive = deletedImage?.isActive;
+
       await imageGenerationService.deleteImage(characterId, imageId);
 
       // Remove from local state
       setImages((prev) => prev.filter((img) => img.id !== imageId));
+
+      // If the deleted image was active, activate the next available image
+      if (wasActive) {
+        const remainingImages = images.filter((img) => img.id !== imageId);
+        if (remainingImages.length > 0) {
+          // Activate the first remaining image
+          const nextImage = remainingImages[0];
+          await imageGenerationService.activateImage(characterId, nextImage.id);
+          setImages((prev) =>
+            prev.map((img) => ({
+              ...img,
+              isActive: img.id === nextImage.id,
+            }))
+          );
+        }
+      }
 
       addToast(
         t('characters:images.imageDeleted', 'Image deleted successfully'),
@@ -89,6 +110,11 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
       );
 
       setDeleteConfirmId(null);
+
+      // Notify parent to refresh
+      if (onImageActivated) {
+        onImageActivated();
+      }
     } catch (error) {
       console.error('Failed to delete image:', error);
       addToast(

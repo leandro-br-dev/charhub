@@ -22,6 +22,8 @@ export interface UnifiedImageGenerationModalProps {
   onComplete: () => void;
 }
 
+type ModalState = 'form' | 'generating' | 'result';
+
 export function UnifiedImageGenerationModal({
   isOpen,
   onClose,
@@ -32,11 +34,12 @@ export function UnifiedImageGenerationModal({
   const { t } = useTranslation(['characters', 'common']);
   const { addToast } = useToast();
 
+  const [modalState, setModalState] = useState<ModalState>('form');
   const [prompt, setPrompt] = useState('');
   const [sampleImage, setSampleImage] = useState<File | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [progress, setProgress] = useState('');
+  const [progressMessage, setProgressMessage] = useState('');
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
 
   const isAvatar = imageType === 'AVATAR';
@@ -53,14 +56,15 @@ export function UnifiedImageGenerationModal({
 
     try {
       setIsGenerating(true);
-      setProgress(t('characters:images.startingGeneration', 'Starting generation...'));
+      setModalState('generating');
+      setProgressMessage(t('characters:images.startingGeneration', 'Starting generation...'));
       setGeneratedImageUrl(null);
 
       // Upload sample image if provided
       let uploadedSampleUrl: string | null = null;
       if (sampleImage) {
         setIsUploading(true);
-        setProgress(t('characters:imageGeneration.imagesTab.modals.uploading', 'Uploading sample image...'));
+        setProgressMessage(t('characters:imageGeneration.imagesTab.modals.uploading', 'Uploading sample image...'));
 
         const uploadResult = await characterService.uploadCharacterImage({
           characterId,
@@ -80,14 +84,14 @@ export function UnifiedImageGenerationModal({
         imageType: imageType,
       });
 
-      setProgress(t('characters:images.generatingImage', 'Generating image... This may take up to 1 minute'));
+      setProgressMessage(t('characters:images.generatingImage', 'Generating image with AI...'));
 
       // Poll for completion
       const result = await imageGenerationService.pollJobStatus(
         jobId,
         (status: JobStatus) => {
           if (status.state === 'active') {
-            setProgress(t('characters:images.processing', 'Processing image with AI...'));
+            setProgressMessage(t('characters:images.processing', 'Processing image with AI...'));
           }
         },
         60, // 60 attempts
@@ -95,13 +99,8 @@ export function UnifiedImageGenerationModal({
       );
 
       if (result.state === 'completed' && result.result?.imageUrl) {
-        setProgress(t('characters:images.generationComplete', 'Generation complete!'));
         setGeneratedImageUrl(result.result.imageUrl);
-
-        addToast(
-          t('characters:images.imageGeneratedSuccess', 'Image generated successfully!'),
-          'success'
-        );
+        setModalState('result');
 
         if (onComplete) {
           onComplete();
@@ -111,7 +110,7 @@ export function UnifiedImageGenerationModal({
       }
     } catch (error) {
       console.error('Failed to generate image:', error);
-      setProgress('');
+      setModalState('form');
       addToast(
         t('characters:errors.failedToGenerateImage', 'Failed to generate image. Please try again.'),
         'error'
@@ -127,94 +126,170 @@ export function UnifiedImageGenerationModal({
       setPrompt('');
       setSampleImage(null);
       setGeneratedImageUrl(null);
-      setProgress('');
+      setProgressMessage('');
+      setModalState('form');
       onClose();
     }
   };
 
-  return (
-    <Modal
-      isOpen={isOpen}
-      onClose={handleClose}
-      title={title}
-      size="md"
-    >
-      <div className="space-y-4">
-        {/* Description */}
-        <p className="text-sm text-description">
-          {description}
-        </p>
+  const handleBackToForm = () => {
+    setModalState('form');
+    setGeneratedImageUrl(null);
+  };
 
-        {/* Note about aspect ratio for cover */}
-        {!isAvatar && (
-          <div className="rounded-lg bg-muted/30 p-3 text-xs text-muted">
-            <span className="material-symbols-outlined text-sm align-middle mr-1">info</span>
-            Cover images use a 3:4 portrait aspect ratio.
-          </div>
-        )}
+  const handleRegenerate = () => {
+    handleGenerate();
+  };
 
-        {/* Prompt + Sample Image Input */}
-        <PromptWithSampleImageInput
-          prompt={prompt}
-          onPromptChange={setPrompt}
-          sampleImage={sampleImage ? URL.createObjectURL(sampleImage) : null}
-          onSampleImageChange={(file: File | null) => setSampleImage(file)}
-          disabled={isGenerating || isUploading}
-        />
+  // Form state
+  if (modalState === 'form') {
+    return (
+      <Modal
+        isOpen={isOpen}
+        onClose={handleClose}
+        title={title}
+        size="md"
+      >
+        <div className="space-y-4">
+          {/* Description */}
+          <p className="text-sm text-description">
+            {description}
+          </p>
 
-        {/* Progress Message */}
-        {progress && (
-          <div className="rounded-lg bg-accent/10 p-3 text-sm text-accent">
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined animate-pulse text-base">hourglass_empty</span>
-              {progress}
+          {/* Note about aspect ratio for cover */}
+          {!isAvatar && (
+            <div className="rounded-lg bg-muted/30 p-3 text-xs text-muted">
+              <span className="material-symbols-outlined text-sm align-middle mr-1">info</span>
+              Cover images use a 3:4 portrait aspect ratio.
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Generated Image Preview */}
-        {generatedImageUrl && (
-          <div>
-            <p className="mb-2 text-sm font-medium text-title">
-              {t('characters:images.preview', 'Preview')}:
-            </p>
-            <img
-              src={generatedImageUrl}
-              alt={title}
-              className="max-h-64 rounded-lg border border-border shadow-md mx-auto"
-            />
-          </div>
-        )}
-      </div>
+          {/* Prompt + Sample Image Input */}
+          <PromptWithSampleImageInput
+            prompt={prompt}
+            onPromptChange={setPrompt}
+            sampleImage={sampleImage ? URL.createObjectURL(sampleImage) : null}
+            onSampleImageChange={(file: File | null) => setSampleImage(file)}
+            disabled={isGenerating || isUploading}
+          />
+        </div>
 
-      {/* Footer */}
-      <div className="flex justify-end gap-2 mt-4">
-        <Button
-          type="button"
-          variant="light"
-          onClick={handleClose}
-          disabled={isGenerating || isUploading}
-        >
-          {t('common:cancel', 'Cancel')}
-        </Button>
-        <Button
-          type="button"
-          variant="primary"
-          onClick={handleGenerate}
-          disabled={isGenerating || isUploading}
-        >
-          {isGenerating || isUploading ? (
-            <>
-              <span className="material-symbols-outlined animate-spin text-lg">progress_activity</span>
-              {t('characters:imageGeneration.imagesTab.modals.generating', 'Generating...')}
-            </>
-          ) : (
+        {/* Footer */}
+        <div className="flex justify-end gap-2 mt-4">
+          <Button
+            type="button"
+            variant="light"
+            onClick={handleClose}
+            disabled={isGenerating || isUploading}
+          >
+            {t('common:cancel', 'Cancel')}
+          </Button>
+          <Button
+            type="button"
+            variant="primary"
+            onClick={handleGenerate}
+            disabled={isGenerating || isUploading}
+          >
             <>
               <span className="material-symbols-outlined text-lg">auto_awesome</span>
               {t('common:generate', 'Generate')}
             </>
-          )}
+          </Button>
+        </div>
+      </Modal>
+    );
+  }
+
+  // Generating state
+  if (modalState === 'generating') {
+    return (
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {}}
+        title={title}
+        size="md"
+        showCloseButton={false}
+      >
+        <div className="flex min-h-[300px] flex-col items-center justify-center space-y-6">
+          {/* Spinner */}
+          <span className="material-symbols-outlined animate-spin text-6xl text-accent">progress_activity</span>
+
+          {/* Progress message */}
+          <div className="text-center">
+            <p className="text-lg font-medium text-title">
+              {t('characters:images.generatingImage', 'Generating your image...')}
+            </p>
+            <p className="mt-2 text-sm text-muted">
+              {progressMessage}
+            </p>
+          </div>
+
+          {/* Info message */}
+          <p className="max-w-md text-center text-xs text-muted">
+            {t('characters:images.generatingInfo', 'This usually takes 30-60 seconds. Please don\'t close this window.')}
+          </p>
+        </div>
+      </Modal>
+    );
+  }
+
+  // Result state
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      title={t('characters:images.generationComplete', 'Generation Complete!')}
+      size="md"
+    >
+      <div className="space-y-4">
+        {/* Generated Image */}
+        {generatedImageUrl && (
+          <div className="flex justify-center">
+            <img
+              src={generatedImageUrl}
+              alt={title}
+              className="max-h-96 rounded-lg border border-border shadow-lg"
+            />
+          </div>
+        )}
+
+        {/* Success message */}
+        <p className="text-center text-sm text-description">
+          {t('characters:images.generationSuccessMessage', 'Your image has been generated and saved!')}
+        </p>
+      </div>
+
+      {/* Footer with 3 buttons */}
+      <div className="flex justify-between mt-4">
+        <Button
+          type="button"
+          variant="light"
+          onClick={handleBackToForm}
+          disabled={isGenerating}
+        >
+          <span className="material-symbols-outlined text-lg">arrow_back</span>
+          {t('common:back', 'Back')}
         </Button>
+
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleRegenerate}
+            disabled={isGenerating}
+          >
+            <span className="material-symbols-outlined text-lg">refresh</span>
+            {t('common:regenerate', 'Generate Again')}
+          </Button>
+
+          <Button
+            type="button"
+            variant="primary"
+            onClick={handleClose}
+          >
+            {t('common:close', 'Close')}
+          </Button>
+        </div>
       </div>
     </Modal>
   );
