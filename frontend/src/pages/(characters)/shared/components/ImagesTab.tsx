@@ -8,6 +8,7 @@ import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { SmartDropdown } from '../../../../components/ui/SmartDropdown';
 import { ImageCropperModal } from '../../../../components/ui/ImageCropperModal';
+import { ImageViewerModal } from '../../../../components/ui/ImageViewerModal';
 import { AvatarGenerationModal } from './AvatarGenerationModal';
 import { CoverGenerationModal } from './CoverGenerationModal';
 import { ReferenceGenerationModal } from './ReferenceGenerationModal';
@@ -407,16 +408,15 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
         />
       )}
 
-      {/* Image View Modal */}
-      <Dialog
-        isOpen={viewImageModal !== null}
-        onClose={() => setViewImageModal(null)}
-        title={viewImageModal?.title || 'Image Preview'}
-      >
-        {viewImageModal?.url && (
-          <img src={viewImageModal.url} alt="Preview" className="max-w-full max-h-[80vh] object-contain" />
-        )}
-      </Dialog>
+      {/* Image View Modal - Full screen viewer with zoom */}
+      {viewImageModal && (
+        <ImageViewerModal
+          isOpen={true}
+          onClose={() => setViewImageModal(null)}
+          src={viewImageModal.url}
+          title={viewImageModal.title}
+        />
+      )}
     </div>
   );
 }

@@ -208,23 +208,23 @@ export function ImageViewerModal({
         {/* Zoom controls - left side */}
         <div className="flex items-center gap-2">
           <button
-            onClick={zoomOut}
-            disabled={scale <= 0.5}
-            className="p-2 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
-            title={t('common:imageViewer.zoomOut', 'Zoom out') || 'Zoom out (-)'}
-          >
-            <span className="material-symbols-outlined text-xl text-gray-900 dark:text-gray-100">zoom_out</span>
-          </button>
-          <span className="text-sm font-medium min-w-[60px] text-center text-gray-900 dark:text-gray-100">
-            {Math.round(scale * 100)}%
-          </span>
-          <button
             onClick={zoomIn}
             disabled={scale >= 5}
             className="p-2 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
             title={t('common:imageViewer.zoomIn', 'Zoom in') || 'Zoom in (+)'}
           >
             <span className="material-symbols-outlined text-xl text-gray-900 dark:text-gray-100">zoom_in</span>
+          </button>
+          <span className="text-sm font-medium min-w-[60px] text-center text-gray-900 dark:text-gray-100">
+            {Math.round(scale * 100)}%
+          </span>
+          <button
+            onClick={zoomOut}
+            disabled={scale <= 0.5}
+            className="p-2 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+            title={t('common:imageViewer.zoomOut', 'Zoom out') || 'Zoom out (-)'}
+          >
+            <span className="material-symbols-outlined text-xl text-gray-900 dark:text-gray-100">zoom_out</span>
           </button>
           <button
             onClick={resetZoom}
