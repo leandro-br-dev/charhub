@@ -9,8 +9,7 @@ import { Button } from '../../../../components/ui/Button';
 import { SmartDropdown } from '../../../../components/ui/SmartDropdown';
 import { ImageCropperModal } from '../../../../components/ui/ImageCropperModal';
 import { ImageViewerModal } from '../../../../components/ui/ImageViewerModal';
-import { AvatarGenerationModal } from './AvatarGenerationModal';
-import { CoverGenerationModal } from './CoverGenerationModal';
+import { UnifiedImageGenerationModal, type ImageGenerationType } from './UnifiedImageGenerationModal';
 import { ReferenceGenerationModal } from './ReferenceGenerationModal';
 import { Dialog } from '../../../../components/ui';
 import { characterService } from '../../../../services/characterService';
@@ -22,7 +21,7 @@ interface ImagesTabProps {
   onAvatarActivated?: () => void;
 }
 
-type ActiveModal = 'avatar-generate' | 'cover-generate' | 'reference' | 'avatar-url' | 'cover-url' | null;
+type ActiveModal = 'image-generate' | 'reference' | 'avatar-url' | 'cover-url' | null;
 type UploadType = 'avatar' | 'cover' | null;
 
 export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabProps): JSX.Element {
@@ -33,6 +32,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
   const [activeModal, setActiveModal] = useState<ActiveModal>(null);
   const [viewImageModal, setViewImageModal] = useState<{ url: string; title: string } | null>(null);
   const [imageCreditCost, setImageCreditCost] = useState<number>(10);
+  const [generatingImageType, setGeneratingImageType] = useState<ImageGenerationType>('AVATAR');
 
   // Upload state
   const avatarFileInputRef = useRef<HTMLInputElement>(null);
@@ -90,6 +90,11 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
   const handleModalComplete = () => {
     handleImageUpdate();
     setActiveModal(null);
+  };
+
+  const openImageGenerateModal = (type: ImageGenerationType) => () => {
+    setGeneratingImageType(type);
+    setActiveModal('image-generate');
   };
 
   // Upload handlers
@@ -263,7 +268,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
           characterId={characterId}
           onImageActivated={handleImageUpdate}
           onImageDeleted={handleImageUpdate}
-          onGenerateClick={() => setActiveModal('avatar-generate')}
+          onGenerateClick={openImageGenerateModal('AVATAR')}
           onUploadDevice={() => avatarFileInputRef.current?.click()}
           onUploadUrl={() => openUrlModal('avatar')()}
           onViewImage={(url) => setViewImageModal({ url, title: t('characters:imageGeneration.imagesTab.avatarSection.title', 'Avatar') })}
@@ -282,7 +287,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
           characterId={characterId}
           onImageActivated={handleImageUpdate}
           onImageDeleted={handleImageUpdate}
-          onGenerateClick={() => setActiveModal('cover-generate')}
+          onGenerateClick={openImageGenerateModal('COVER')}
           onUploadDevice={() => coverFileInputRef.current?.click()}
           onUploadUrl={() => openUrlModal('cover')()}
           onViewImage={(url) => setViewImageModal({ url, title: t('characters:imageGeneration.imagesTab.coverSection.title', 'Cover') })}
@@ -321,17 +326,11 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
       />
 
       {/* Generation Modals */}
-      <AvatarGenerationModal
-        isOpen={activeModal === 'avatar-generate'}
+      <UnifiedImageGenerationModal
+        isOpen={activeModal === 'image-generate'}
         onClose={() => setActiveModal(null)}
-        characterId={characterId}
-        onComplete={handleModalComplete}
-      />
-
-      <CoverGenerationModal
-        isOpen={activeModal === 'cover-generate'}
-        onClose={() => setActiveModal(null)}
-        characterId={characterId}
+        characterId={characterId || ''}
+        imageType={generatingImageType}
         onComplete={handleModalComplete}
       />
 
