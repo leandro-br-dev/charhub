@@ -125,7 +125,7 @@ git checkout feature/your-feature-name
 
 ### Step 1.4: PRE-MERGE SAFETY CHECKS (CRITICAL!)
 
-**🚨 READ [merge-safety-guide.md](../merge-safety-guide.md) if this is your first time!**
+**🚨 READ [git-safety-pre-flight.md](git-safety-pre-flight.md) if this is your first time!**
 
 **⚠️ BEFORE running `git merge main`, you MUST complete these safety checks to prevent data loss:**
 
