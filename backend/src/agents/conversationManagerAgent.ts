@@ -1,5 +1,6 @@
 import { logger } from '../config/logger';
 import { callLLM, LLMRequest } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import { Conversation, Message, ConversationParticipant } from '../generated/prisma';
 
 // System prompt for the conversation manager
@@ -183,6 +184,14 @@ Which bot(s) should respond? Output only the JSON array of participant IDs.`;
 
       const response = await callLLM(llmRequest);
 
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(response, {
+        userId: conversation.userId,
+        feature: 'CHAT_MESSAGE',
+        featureId: conversation.id,
+        operation: 'bot_selection',
+      });
+
       logger.debug(
         { conversationId: conversation.id, rawResponse: response.content },
         'LLM response received'
@@ -279,6 +288,15 @@ Respond with ONLY "true" if NSFW or "false" if SFW.`;
       };
 
       const response = await callLLM(llmRequest);
+
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(response, {
+        userId: conversation.userId,
+        feature: 'CHAT_MESSAGE',
+        featureId: conversation.id,
+        operation: 'nsfw_check',
+      });
+
       const cleanedResponse = response.content.trim().toLowerCase();
 
       return cleanedResponse.includes('true');

@@ -6,6 +6,7 @@ import * as conversationService from '../../services/conversationService';
 import * as messageService from '../../services/messageService';
 import * as assistantService from '../../services/assistantService';
 import { SenderType } from '../../generated/prisma';
+import { trackFromLLMResponse } from '../../services/llm/llmUsageTracker';
 import {
   createConversationSchema,
   updateConversationSchema,
@@ -858,6 +859,14 @@ router.post('/:id/suggest-reply', requireAuth, async (req: Request, res: Respons
       userPrompt,
       temperature: 0.8, // Slightly lower temperature for more focused responses
       maxTokens: 100,
+    });
+
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(suggestion, {
+      userId: undefined,
+      feature: 'CHAT_MESSAGE',
+      featureId: req.params.id,
+      operation: 'reply_suggestion',
     });
 
     return res.json({

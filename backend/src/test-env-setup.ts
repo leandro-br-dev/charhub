@@ -4,15 +4,32 @@
  * Sets environment variables to prevent external service initialization
  */
 
+// Load .env.local for DATABASE_URL_TEST
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Try to load .env.local from backend directory
+const envLocalPath = path.resolve(process.cwd(), '.env.local');
+const result = dotenv.config({ path: envLocalPath });
+
+if (result.error) {
+  // .env.local might not exist, that's ok - use defaults
+  console.debug('Note: .env.local not loaded, using default test configuration');
+}
+
 // Mock environment variables for tests
 process.env.NODE_ENV = 'test';
 
 // Database configuration
-// DO NOT set DATABASE_URL here - let it be configured via environment variables:
+// Priority: DATABASE_URL_TEST > DATABASE_URL > default
 // - In CI: set by GitHub Actions workflow
-// - Locally: set DATABASE_URL_TEST in .env or shell before running tests
+// - Locally: set DATABASE_URL_TEST in .env.local or shell before running tests
 // Default for local dev (only if nothing is set):
-if (!process.env.DATABASE_URL && !process.env.DATABASE_URL_TEST) {
+if (process.env.DATABASE_URL_TEST) {
+  // Use test database URL if explicitly set
+  process.env.DATABASE_URL = process.env.DATABASE_URL_TEST;
+} else if (!process.env.DATABASE_URL) {
+  // Default fallback (should not be used in production)
   process.env.DATABASE_URL = 'postgresql://charhub:charhub_dev_password@localhost:5433/charhub_db?schema=public';
 }
 

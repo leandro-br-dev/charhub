@@ -16,6 +16,12 @@ npx prisma migrate deploy
 
 echo "✅ Migrations completed!"
 
+# Run database seeds (critical data like LLM pricing)
+echo "🌱 Running database seeds..."
+npx tsx src/scripts/seed.ts || echo "⚠️  Seeds failed or already populated"
+
+echo "✅ Seeds completed!"
+
 # Start the application
 echo "🎉 Starting application..."
 exec node dist/index.js

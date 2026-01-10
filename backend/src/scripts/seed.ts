@@ -5,6 +5,7 @@ import { Visibility, AuthProvider, AgeRating, ContentTag, UserRole, PlanTier, Vi
 import { seedAllTags } from './seedTags';
 import { seedAllSpecies } from './seedSpecies';
 import { seedStripePlans } from './seeds/seedStripePlans';
+import { seedLLMPricing } from './seeds/seedLLMPricing';
 import { prisma } from '../config/database';
 
 const DATA_DIR = path.resolve(__dirname, '../data');
@@ -23,6 +24,7 @@ interface SeedStats {
   plans: { created: number; skipped: number };
   stripePlans: { configured: number; skipped: number };
   serviceCosts: { created: number; skipped: number };
+  llmPricing: { created: number; updated: number; skipped: number };
   errors: string[];
 }
 
@@ -510,6 +512,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     plans: { created: 0, skipped: 0 },
     stripePlans: { configured: 0, skipped: 0 },
     serviceCosts: { created: 0, skipped: 0 },
+    llmPricing: { created: 0, updated: 0, skipped: 0 },
     errors: [],
   };
 
@@ -563,6 +566,14 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     // 7. Seed service credit costs
     stats.serviceCosts = await seedServiceCosts(options);
 
+    // 8. Seed LLM pricing data
+    console.log('\n💰 Seeding LLM pricing...');
+    stats.llmPricing = await seedLLMPricing({
+      verbose: options.verbose,
+      dryRun: options.dryRun,
+      force: options.force,
+    });
+
   } catch (error) {
     stats.errors.push(String(error));
     console.error('\n❌ Seed failed:', error);
@@ -579,6 +590,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
   console.log(`Plans:         ${stats.plans.created} created, ${stats.plans.skipped} skipped`);
   console.log(`Stripe Plans:  ${stats.stripePlans.configured} configured, ${stats.stripePlans.skipped} skipped`);
   console.log(`Service Costs: ${stats.serviceCosts.created} created, ${stats.serviceCosts.skipped} skipped`);
+  console.log(`LLM Pricing:   ${stats.llmPricing.created} created, ${stats.llmPricing.updated} updated, ${stats.llmPricing.skipped} skipped`);
   console.log(`Duration:      ${duration}s`);
 
   if (stats.errors.length > 0) {
