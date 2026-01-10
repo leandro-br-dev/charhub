@@ -427,10 +427,10 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
       return res.status(403).json({ error: 'Access denied' });
     }
 
-    // Get the image to delete
+    // Get the image to delete (including isActive and type)
     const image = await prisma.characterImage.findFirst({
       where: { id: imageId, characterId },
-      select: { id: true, key: true },
+      select: { id: true, key: true, isActive: true, type: true },
     });
 
     if (!image) {
@@ -444,6 +444,36 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
         logger.info({ key: image.key }, 'Deleted image from R2');
       } catch (err) {
         logger.error({ key: image.key, err }, 'Failed to delete image from R2, continuing with database deletion');
+      }
+    }
+
+    // If the deleted image was active, activate the next available image of the same type
+    if (image.isActive) {
+      const nextImage = await prisma.characterImage.findFirst({
+        where: {
+          characterId,
+          type: image.type,
+          id: { not: imageId },
+        },
+        select: { id: true },
+      });
+
+      if (nextImage) {
+        // Activate the next image before deleting the current one
+        await prisma.characterImage.updateMany({
+          where: {
+            characterId,
+            type: image.type,
+          },
+          data: { isActive: false },
+        });
+
+        await prisma.characterImage.update({
+          where: { id: nextImage.id },
+          data: { isActive: true },
+        });
+
+        logger.info({ characterId, imageId, newActiveId: nextImage.id, type: image.type }, 'Activated next image after deleting active image');
       }
     }
 

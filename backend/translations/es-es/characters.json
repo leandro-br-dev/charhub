@@ -6,13 +6,13 @@
       "updatedAt": "Actualizado el {{date}}",
       "public": "Público",
       "private": "Privado",
-      "identifier": "ID del personaje: {{id}}",
+      "identifier": "ID de personaje: {{id}}",
       "unsavedChanges": "Cambios sin guardar",
       "allSaved": "Todos los cambios guardados",
       "submitting": "Guardando..."
     },
     "ageRatings": {
-      "L": "Gratis",
+      "L": "Libre",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -22,7 +22,7 @@
     "visualStyles": {
       "ANIME": "Anime",
       "REALISTIC": "Realista",
-      "SEMI_REALISTIC": "Semirrealista",
+      "SEMI_REALISTIC": "Semi-realista",
       "CARTOON": "Dibujos animados",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
@@ -32,16 +32,16 @@
       "THREE_D": "3D"
     },
     "visualStyleDescriptions": {
-      "ANIME": "Estilo anime japonés",
+      "ANIME": "Estilo de anime japonés",
       "REALISTIC": "Arte fotorrealista o realista",
-      "SEMI_REALISTIC": "Estilo artístico semirrealista",
+      "SEMI_REALISTIC": "Estilo de arte semi-realista",
       "CARTOON": "Estilo de dibujos animados occidental",
-      "MANGA": "Estilo manga/cómic japonés",
-      "MANHWA": "Estilo manhwa/webtoon coreano",
+      "MANGA": "Estilo de manga/cómic japonés",
+      "MANHWA": "Estilo de manhwa/webtoon coreano",
       "COMIC": "Estilo de cómic occidental",
-      "CHIBI": "Estilo super deforme/bonito",
-      "PIXEL_ART": "Estilo pixel art/juego retro",
-      "THREE_D": "Estilo renderizado 3D"
+      "CHIBI": "Estilo superdeformed/adorable",
+      "PIXEL_ART": "Estilo Pixel Art/juego retro",
+      "THREE_D": "Estilo renderizado en 3D"
     },
     "contentTags": {
       "VIOLENCE": "Violencia",
@@ -55,17 +55,17 @@
       "PSYCHOLOGICAL": "Psicológico",
       "DISCRIMINATION": "Discriminación",
       "CRIME": "Crimen",
-      "GAMBLING": "Apuestas"
+      "GAMBLING": "Juegos de azar"
     },
     "contentTagHints": {
       "VIOLENCE": "Combate, peleas o conflicto agresivo.",
-      "GORE": "Heridas gráficas y detalles explícitos.",
-      "SEXUAL": "Temas o insinuaciones para adultos.",
+      "GORE": "Lesiones gráficas y detalles explícitos.",
+      "SEXUAL": "Temas para adultos o insinuaciones.",
       "NUDITY": "Desnudez parcial o total.",
       "LANGUAGE": "Lenguaje explícito o fuerte.",
-      "DRUGS": "Consumo o referencias a drogas.",
+      "DRUGS": "Uso o referencias a drogas.",
       "ALCOHOL": "Consumo de alcohol.",
-      "HORROR": "Imágenes perturbadoras o de horror.",
+      "HORROR": "Imágenes inquietantes o de horror.",
       "PSYCHOLOGICAL": "Salud mental o tensión psicológica.",
       "DISCRIMINATION": "Discurso de odio o prejuicios.",
       "CRIME": "Temas de actividad criminal.",
@@ -90,7 +90,7 @@
       "actions": {
         "newCharacter": "Nuevo personaje",
         "createCharacter": "Nuevo personaje",
-        "retry": "Intentar de nuevo",
+        "retry": "Reintentar",
         "blurSensitive": "Difuminar contenido sensible",
         "showSensitive": "Mostrar contenido sensible"
       },
@@ -109,13 +109,13 @@
         "empty": "Aún no hay personajes disponibles.",
         "empty_private": "Todavía no has creado ningún personaje.",
         "empty_public": "Ningún personaje público coincide con tus filtros.",
-        "emptyHint": "Empieza creando un perfil o ajusta tus filtros.",
+        "emptyHint": "Empieza por crear un perfil o ajusta tus filtros.",
         "emptySearchHint": "Ajusta tus filtros o borra la búsqueda para ver más resultados."
       },
       "labels": {
         "total": "{{count}} personaje disponible",
         "total_plural": "{{count}} personajes disponibles",
-        "quickCreateLink": "Ir directamente a la creación"
+        "quickCreateLink": "Salta directamente a la creación"
       }
     },
     "sidebar": {
@@ -126,14 +126,14 @@
       "cancel": "Cancelar",
       "sections": {
         "identity": "Identidad",
-        "identityHint": "Define cómo las personas descubren e identifican a este personaje a primera vista.",
+        "identityHint": "Define cómo las personas descubren e identifican a este personaje de un vistazo.",
         "profile": "Perfil narrativo",
-        "profileHint": "Describe la personalidad, los rasgos y el trasfondo para guiar a la IA.",
+        "profileHint": "Describe la personalidad, los rasgos y la historia para guiar a la IA.",
         "configuration": "Disponibilidad y moderación",
-        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardias se aplican.",
-        "contentTagsHint": "Marca los temas potencialmente sensibles. Los usuarios pueden filtrarlos según sus preferencias.",
-        "contentTagsCharacterHint": "Estos temas definen con qué temas el personaje se siente cómodo discutiendo en la clasificación por edad seleccionada.",
-        "contentTagsUserHint": "Selecciona los temas que deseas incluir. Cualquier tema sin marcar permanecerá bloqueado para esta clasificación.",
+        "configurationHint": "Controla cómo aparece el personaje, quién puede acceder a él y qué salvaguardas se aplican.",
+        "contentTagsHint": "Marca temas potencialmente sensibles. Los usuarios pueden filtrarlos según sus preferencias.",
+        "contentTagsCharacterHint": "Estos temas definen de qué está dispuesto a hablar el personaje según la clasificación por edad seleccionada.",
+        "contentTagsUserHint": "Selecciona los temas que quieres incluir. Todo lo que no esté marcado permanecerá bloqueado para esta clasificación.",
         "contentTagLocked": "Desbloqueado en clasificaciones por edad superiores."
       },
       "fields": {
@@ -146,7 +146,7 @@
         "reference": "Referencia / fuente",
         "physicalCharacteristics": "Descripción física",
         "personality": "Personalidad",
-        "history": "Trasfondo",
+        "history": "Historia de fondo",
         "isPublic": "Visibilidad",
         "ageRating": "Clasificación por edad",
         "originalLanguageCode": "Idioma original",
@@ -171,30 +171,30 @@
         "change": "Cambiar imagen",
         "remove": "Eliminar",
         "uploading": "Subiendo...",
-        "helperCreate": "Elige un avatar ahora y lo mantendremos mientras completas el resto del formulario.",
-        "helperEdit": "Actualiza el avatar cuando quieras. Los cambios se aplican tan pronto como guardes.",
+        "helperCreate": "Elige un avatar ahora y lo mantendremos mientras rellenas el resto del formulario.",
+        "helperEdit": "Actualiza el avatar cuando quieras. Los cambios se aplicarán tan pronto como guardes.",
         "error": "No pudimos subir esta imagen. Intenta con otro archivo.",
-        "previewAlt": "Previsualización del avatar del personaje",
+        "previewAlt": "Vista previa del avatar del personaje",
         "invalidUrl": "Introduce una URL de imagen válida (http/https).",
-        "saveFirst": "Por favor, guarda el personaje primero antes de generar el avatar",
+        "saveFirst": "Guarda el personaje primero antes de generar el avatar",
         "insufficientCredits": "Créditos insuficientes. Necesitas {{required}} créditos pero tienes {{current}}.",
-        "generationStarted": "¡Generación de avatar iniciada! Esto puede tardar un minuto. Consulta la pestaña Imágenes para ver los resultados.",
+        "generationStarted": "¡Se inició la generación del avatar! Esto puede tardar un minuto. Consulta la pestaña Imágenes para ver los resultados.",
         "generationComplete": "¡Avatar generado con éxito!",
-        "generationFailed": "La generación de avatar falló. Por favor, inténtalo de nuevo.",
-        "generationError": "Fallo al iniciar la generación de avatar. Por favor, inténtalo de nuevo."
+        "generationFailed": "La generación del avatar falló. Inténtalo de nuevo.",
+        "generationError": "No se pudo iniciar la generación del avatar. Inténtalo de nuevo."
       },
       "images": {
         "coverHeader": "Portada del personaje",
-        "coverDescription": "Imagen orientada a retrato utilizada como portada del personaje.",
+        "coverDescription": "Imagen con orientación vertical utilizada como portada del personaje.",
         "upload": "Subir portada",
         "change": "Cambiar portada",
         "uploading": "Subiendo...",
         "urlModalTitle": "Usar imagen desde URL",
         "urlLabel": "URL de la imagen",
-        "previewAlt": "Previsualización de la portada del personaje"
+        "previewAlt": "Vista previa de la portada del personaje"
       },
       "tags": {
-        "searchPlaceholder": "Buscar etiquetas (ej: VTuber, Maid)",
+        "searchPlaceholder": "Buscar etiquetas (ej., VTuber, Maid)",
         "selected": "Etiquetas seleccionadas",
         "none": "Ninguna etiqueta seleccionada",
         "suggestions": "Sugerencias",
@@ -210,12 +210,12 @@
         "configuration": "Configuración",
         "tags": "Etiquetas",
         "images": "Imágenes",
-        "lockedHint": "Completa los detalles básicos de identidad para desbloquear las otras secciones."
+        "lockedHint": "Rellena los detalles básicos de identidad para desbloquear las otras secciones."
       }
     },
     "create": {
       "title": "Crear un nuevo personaje",
-      "subtitle": "Combina el contexto narrativo, el estilo visual y la configuración de moderación. Puedes perfeccionarlo todo más tarde.",
+      "subtitle": "Combina el contexto narrativo, el estilo visual y los ajustes de moderación. Podrás refinar todo más tarde.",
       "avatar": {
         "header": "Avatar del personaje",
         "description": "Representación visual de tu personaje."
@@ -237,7 +237,7 @@
           "cost": "Gratis"
         },
         "ai": {
-          "title": "Creación impulsada por IA",
+          "title": "Creación con IA",
           "description": "Deja que la IA genere tu personaje a partir de una descripción o imagen",
           "features": [
             "Generación automática",
@@ -248,7 +248,7 @@
           "cost": "{{credits}} créditos",
           "costWithoutImage": "{{credits}} créditos (sin imagen)",
           "costBreakdown": {
-            "title": "Desglose de costo en créditos",
+            "title": "Desglose de costes de créditos",
             "imageAnalysis": "Análisis de imagen: {{credits}} créditos (solo si se sube imagen)",
             "textAnalysis": "Análisis de texto: {{credits}} créditos",
             "characterEnrichment": "Enriquecimiento de personaje: {{credits}} créditos",
@@ -260,7 +260,7 @@
     },
     "edit": {
       "title": "Editar personaje",
-      "subtitle": "Actualizando {{name}}",
+      "subtitle": "Actualizando a {{name}}",
       "avatar": {
         "header": "Avatar del personaje",
         "description": "Representación visual de tu personaje."
@@ -292,28 +292,28 @@
       },
       "confirmDelete": {
         "title": "¿Eliminar personaje?",
-        "message": "Esta acción no se puede deshacer. Todos los datos asociados con este personaje se eliminarán permanentemente.",
+        "message": "Esta acción no se puede deshacer. Todos los datos asociados con este personaje serán eliminados permanentemente.",
         "confirm": "Eliminar permanentemente",
         "cancel": "Cancelar"
       },
       "labels": {
         "public": "Público",
         "private": "Privado",
-        "createdAt": "Creado el",
+        "createdAt": "Creado",
         "createdBy": "Creado por",
         "updatedAt": "Última actualización",
-        "identifier": "ID del personaje: {{id}}",
+        "identifier": "ID de personaje: {{id}}",
         "messageCount": "{{count}} mensaje",
         "messageCount_plural": "{{count}} mensajes",
         "favoriteCount": "{{count}} favorito",
         "favoriteCount_plural": "{{count}} favoritos",
         "stats": "Estadísticas"
       },
-      "sampleImages": "Imágenes de ejemplo",
+      "sampleImages": "Imágenes de muestra",
       "sections": {
         "physicalCharacteristics": "Apariencia",
         "personality": "Personalidad",
-        "history": "Trasfondo",
+        "history": "Historia de fondo",
         "contentTags": "Advertencias de contenido",
         "metadata": "Etiquetas",
         "introduction": "Introducción",
@@ -323,35 +323,40 @@
     "images": {
       "saveFirst": "Guarda el personaje primero para gestionar las imágenes",
       "gallery": "Imágenes generadas",
-      "avatarHeader": "Avatares",
-      "avatarDescription": "Imágenes de avatar generadas para este personaje",
-      "coverHeader": "Portada del personaje",
-      "coverDescription": "Imagen orientada a retrato utilizada como portada del personaje.",
-      "generateNew": "Generar nuevo {{type}}",
-      "onlyAvatarSupported": "Solo se admite la generación de avatar por el momento",
+      "avatarHeader": "Generar avatar",
+      "avatarDescription": "Genera un nuevo avatar usando IA. Puedes proporcionar contexto adicional y una imagen de ejemplo como referencia de estilo.",
+      "coverHeader": "Generar imagen de portada",
+      "coverDescription": "Genera una imagen de portada con orientación vertical usando IA. Proporciona contexto adicional y una imagen de ejemplo como referencia de estilo.",
+      "generateNew": "Generar nuevo/a {{type}}",
+      "onlyAvatarSupported": "Solo la generación de avatares es compatible en este momento",
       "startingGeneration": "Iniciando generación...",
       "generatingImage": "Generando imagen... Esto puede tardar hasta 1 minuto",
       "processing": "Procesando imagen con IA...",
       "generationComplete": "¡Generación completa!",
       "imageGeneratedSuccess": "¡Imagen generada con éxito!",
       "imageActivated": "Imagen establecida como activa",
-      "preview": "Previsualizar",
+      "preview": "Vista previa",
       "generationInfo": "Acerca de la generación de imágenes",
-      "infoPrompt": "La IA utilizará la descripción de tu personaje para crear la imagen",
+      "infoPrompt": "La IA usará la descripción de tu personaje para crear la imagen",
       "infoTime": "La generación tarda aproximadamente 30-60 segundos",
       "infoActive": "Las nuevas imágenes se establecen automáticamente como activas",
       "deleteConfirmTitle": "¿Eliminar imagen?",
       "deleteConfirmMessage": "¿Estás seguro de que quieres eliminar esta imagen? Esta acción no se puede deshacer.",
       "delete": "Eliminar",
       "scrollToZoom": "Desplázate para hacer zoom",
-      "dragToPan": "Arrastra para desplazarte (cuando estés con zoom)"
+      "dragToPan": "Arrastra para desplazar (cuando se haga zoom)",
+      "generatingInfo": "Esto suele tardar entre 30 y 60 segundos. Por favor, no cierres esta ventana.",
+      "generationSuccessMessage": "¡Tu imagen ha sido generada y guardada!",
+      "coverAspectInfo": "Las imágenes de portada usan una relación de aspecto vertical de 3:4.",
+      "setAsActive": "Establecer como activa",
+      "noImagesYet": "Aún no se han generado imágenes"
     },
     "imageGeneration": {
       "multiStage": {
-        "@deprecated": "Usar referenceImages en su lugar - multiStage se mantiene por compatibilidad con versiones anteriores",
+        "@deprecated": "Usa referenceImages en su lugar - multiStage se mantiene por compatibilidad inversa",
         "title": "Conjunto de datos de referencia multietapa",
         "description": "Genera 4 imágenes de referencia (avatar, frontal, lateral, trasera) para una generación de personajes consistente",
-        "costInfo": "Costo de generación",
+        "costInfo": "Coste de generación",
         "costDescription": "Conjunto de datos de referencia multietapa (4 imágenes):",
         "stages": {
           "face": "Cara (Retrato)",
@@ -361,18 +366,18 @@
         },
         "startButton": "Generar conjunto de datos",
         "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
-        "insufficientCredits": "Créditos insuficientes (necesitas {{cost}})",
+        "insufficientCredits": "Créditos insuficientes (se necesitan {{cost}})",
         "generating": "Generando conjunto de datos...",
         "ready": "Listo para generar",
         "waiting": "Esperando...",
-        "failed": "Fallido",
+        "failed": "Falló",
         "estimatedTime": "Tiempo estimado: 3-4 minutos",
         "generationComplete": "¡Generación completa!",
         "allStagesCompleted": "Se han generado las 4 imágenes de referencia.",
         "errors": {
-          "startFailed": "Fallo al iniciar la generación",
+          "startFailed": "No se pudo iniciar la generación",
           "generationFailed": "La generación falló",
-          "pollFailed": "Fallo al verificar el estado de la generación"
+          "pollFailed": "No se pudo verificar el estado de la generación"
         },
         "progress": {
           "stage": "Etapa {{stage}} de {{total}}",
@@ -382,9 +387,10 @@
       "referenceImages": {
         "title": "Conjunto de datos de referencia multietapa",
         "description": "Genera 4 imágenes de referencia (avatar, frontal, lateral, trasera) para una generación de personajes consistente",
-        "costInfo": "Costo de generación",
+        "shortDescription": "Conjunto de datos de referencia multivista para una generación de personajes consistente",
+        "costInfo": "Coste de generación",
         "costDescription": "Conjunto de datos de referencia multietapa (4 imágenes):",
-        "selectViews": "Selecciona las vistas a generar",
+        "selectViews": "Seleccionar vistas a generar",
         "selectAtLeastOne": "Selecciona al menos una vista para generar",
         "stages": {
           "face": "Cara (Retrato)",
@@ -394,18 +400,18 @@
         },
         "startButton": "Generar conjunto de datos",
         "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
-        "insufficientCredits": "Créditos insuficientes (necesitas {{cost}})",
+        "insufficientCredits": "Créditos insuficientes (se necesitan {{cost}})",
         "generating": "Generando conjunto de datos...",
         "ready": "Listo para generar",
         "waiting": "Esperando...",
-        "failed": "Fallido",
+        "failed": "Falló",
         "estimatedTime": "Tiempo estimado: 3-4 minutos",
         "generationComplete": "¡Generación completa!",
         "allStagesCompleted": "Se han generado las 4 imágenes de referencia.",
         "errors": {
-          "startFailed": "Fallo al iniciar la generación",
+          "startFailed": "No se pudo iniciar la generación",
           "generationFailed": "La generación falló",
-          "pollFailed": "Fallo al verificar el estado de la generación"
+          "pollFailed": "No se pudo verificar el estado de la generación"
         },
         "progress": {
           "stage": "Etapa {{stage}} de {{total}}",
@@ -417,14 +423,14 @@
         "generateAvatar": "Generar avatar",
         "generateReferenceDataset": "Generar conjunto de datos de referencia (4 vistas)",
         "uploadCover": "Subir imagen de portada",
-        "avatarsCount": "{{count}} avatar",
+        "avatarsCount": "{{count}} avatares",
         "avatarsCount_plural": "{{count}} avatares",
-        "referenceCount": "{{count}} imagen de referencia",
+        "referenceCount": "{{count}} imágenes de referencia",
         "referenceCount_plural": "{{count}} imágenes de referencia",
         "avatarsSection": "Avatares",
         "noAvatars": "Aún no hay avatares",
         "noReferenceImages": "Aún no hay imágenes de referencia",
-        "active": "Activa",
+        "active": "Activo",
         "imageActivated": "Imagen establecida como activa",
         "avatarSection": {
           "title": "Avatares",
@@ -433,12 +439,12 @@
         },
         "coverSection": {
           "title": "Imágenes de portada",
-          "description": "Imágenes de cuerpo completo orientadas a retrato",
-          "shortDescription": "Cuerpo completo en retrato"
+          "description": "Imágenes de cuerpo entero con orientación vertical",
+          "shortDescription": "Cuerpo entero vertical"
         },
         "referenceSection": {
           "title": "Imágenes de referencia",
-          "description": "Conjunto de datos de referencia de 4 vistas para una generación de IA consistente",
+          "description": "Conjunto de datos de referencia de 4 vistas para una generación consistente con IA",
           "shortDescription": "Conjunto de datos de referencia de 4 vistas"
         },
         "buttons": {
@@ -446,26 +452,26 @@
           "generateAI": "Generar con IA",
           "view": "Ver",
           "delete": "Eliminar",
-          "setActive": "Establecer como activa"
+          "setActive": "Establecer activa"
         },
         "modals": {
-          "promptLabel": "Contexto/Prompt",
+          "promptLabel": "Contexto/Indicación",
           "promptPlaceholder": "Describe contexto o estilo adicional...",
           "sampleImageLabel": "Imagen de referencia (Opcional)",
-          "sampleImageHint": "Sube una imagen de ejemplo para usarla como referencia de estilo",
+          "sampleImageHint": "Sube una imagen de ejemplo para usar como referencia de estilo",
           "generating": "Generando...",
           "uploading": "Subiendo..."
         }
       }
     },
     "createAI": {
-      "title": "Generador de personajes por IA",
-      "subtitle": "Describe a tu personaje o sube una imagen, y la IA generará los detalles por ti",
+      "title": "Generador de personajes con IA",
+      "subtitle": "Describe tu personaje o sube una imagen, y la IA generará los detalles por ti",
       "descriptionLabel": "Descripción del personaje",
-      "descriptionPlaceholder": "Describe a tu personaje... (ej: \"Un valiente caballero con armadura de plata y un corazón noble\")",
+      "descriptionPlaceholder": "Describe tu personaje... (ej., \"Un valiente caballero con armadura plateada y un corazón noble\")",
       "descriptionHint": "Cuanto más detallada sea tu descripción, mejores serán los resultados",
       "imageLabel": "Imagen del personaje",
-      "uploadPrompt": "Haz clic para subir la imagen del personaje",
+      "uploadPrompt": "Haz clic para subir imagen del personaje",
       "uploadHint": "PNG, JPEG, WEBP, GIF (máx. 10MB)",
       "generateButton": "Generar personaje",
       "generating": "Generando...",
@@ -473,7 +479,7 @@
       "step1": "Proporciona una descripción de texto y/o sube una imagen",
       "step2": "La IA analiza tu entrada y genera los detalles del personaje",
       "step3": "Revisa y edita el personaje generado antes de guardarlo",
-      "step4": "Se te generará un avatar automáticamente",
+      "step4": "Se generará un avatar automáticamente para ti",
       "loading": {
         "creatingCharacter": "Creando tu personaje",
         "analyzingEssence": "Analizando la esencia...",
@@ -511,9 +517,9 @@
       },
       "confirmDiscard": "¿Estás seguro de que quieres descartar este personaje? Esta acción no se puede deshacer.",
       "characterDiscarded": "Personaje descartado con éxito",
-      "discardFailed": "Fallo al descartar el personaje",
-      "generationStarted": "¡Generación de personaje iniciada! Observando el progreso...",
-      "generationFailed": "La generación de personaje falló. Por favor, inténtalo de nuevo."
+      "discardFailed": "No se pudo descartar el personaje",
+      "generationStarted": "¡Se inició la generación del personaje! Observando el progreso...",
+      "generationFailed": "La generación del personaje falló. Inténtalo de nuevo."
     },
     "errors": {
       "createFailed": "No pudimos crear el personaje. Por favor, inténtalo de nuevo.",
@@ -523,9 +529,9 @@
       "descriptionOrImageRequired": "Por favor, proporciona una descripción o una imagen",
       "imageTooLarge": "La imagen debe ser menor de 10MB",
       "invalidImageType": "La imagen debe ser PNG, JPEG, WEBP o GIF",
-      "generationFailed": "Fallo al generar el personaje",
-      "failedToActivateImage": "Fallo al activar la imagen",
-      "failedToGenerateImage": "Fallo al generar la imagen"
+      "generationFailed": "No se pudo generar el personaje",
+      "failedToActivateImage": "No se pudo activar la imagen",
+      "failedToGenerateImage": "No se pudo generar la imagen"
     }
   }
 }

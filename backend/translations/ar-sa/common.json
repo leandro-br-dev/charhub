@@ -12,17 +12,17 @@
     "account": "الحساب",
     "continueGoogle": "المتابعة باستخدام Google",
     "continueFacebook": "المتابعة باستخدام Facebook",
-    "privacy": "بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
+    "privacy": "باستمرارك، فإنك توافق على سياسة الخصوصية الخاصة بنا وتفوض CharHub بالوصول إلى معلومات ملفك الشخصي الأساسية.",
     "logout": "تسجيل الخروج",
     "logoutLoading": "جاري تسجيل الخروج...",
     "authenticatedUser": "مستخدم موثق",
-    "tokenStored": "مخزن في ملف تعريف الارتباط HTTP-only",
+    "tokenStored": "مخزن في ملف تعريف ارتباط (كوكي) HTTP-only",
     "navDashboard": "لوحة التحكم",
     "navCharacters": "الشخصيات",
-    "navTagline": "عرض توضيحي آمن لـ OAuth",
+    "navTagline": "تجربة OAuth آمنة",
     "providerLabel": {
-      "google": "Google",
-      "facebook": "Facebook"
+      "google": "جوجل",
+      "facebook": "فيسبوك"
     },
     "provider": "المزود",
     "theme": {
@@ -35,7 +35,7 @@
     },
     "none": "لا شيء",
     "unknown": "غير معروف",
-    "nameNotAvailable": "الاسم غير متاح",
+    "nameNotAvailable": "الاسم غير متوفر",
     "cancel": "إلغاء",
     "save": "حفظ",
     "saving": "جاري الحفظ...",
@@ -46,7 +46,7 @@
     "deleting": "جاري الحذف...",
     "enabled": "مفعل",
     "disabled": "معطل",
-    "selectOption": "حدد خيارًا",
+    "selectOption": "اختر خيارًا",
     "noResults": "لم يتم العثور على خيارات.",
     "chat": {
       "with": "الدردشة مع"
@@ -59,15 +59,15 @@
     "contentFilter": {
       "ariaLabel": "فلتر المحتوى",
       "title": "فلتر المحتوى",
-      "ageRating": "التقييم العمري",
+      "ageRating": "التصنيف العمري",
       "blurNsfw": "تمويه المحتوى الصريح",
-      "none": "لا يوجد فلتر",
+      "none": "بلا فلتر",
       "blur": "تمويه الحساس",
-      "hidden": "إخفاء المحتوى للبالغين",
+      "hidden": "إخفاء محتوى الكبار",
       "descriptions": {
-        "none": "عرض جميع المحتويات بدون قيود",
-        "blur": "تطبيق التمويه على المحتوى للبالغين",
-        "hidden": "إخفاء المحتوى للبالغين بالكامل"
+        "none": "عرض جميع المحتوى بدون قيود",
+        "blur": "تطبيق التمويه على محتوى الكبار",
+        "hidden": "إخفاء محتوى الكبار بالكامل"
       },
       "ageRatings": {
         "L": "مجاني",
@@ -83,17 +83,20 @@
       "blocked": "(محظور)"
     },
     "errors": {
-      "generic": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "generic": "حدث خطأ. الرجاء المحاولة مرة أخرى.",
       "failedToFetchData": "فشل في جلب البيانات"
     },
     "character": "شخصية",
-    "seeMore": "اطلع على المزيد",
-    "seeMoreArrow": "اطلع على المزيد ←",
-    "back": "رجوع",
-    "credits": "رصيد",
+    "seeMore": "عرض المزيد",
+    "seeMoreArrow": "عرض المزيد ←",
+    "back": "الرجوع",
+    "credits": "الاعتمادات",
     "tryAgain": "حاول مرة أخرى",
     "generate": "توليد",
     "generating": "جاري التوليد...",
+    "generateAgain": "توليد مرة أخرى",
+    "regenerate": "إعادة التوليد",
+    "close": "إغلاق",
     "done": "تم"
   }
 }

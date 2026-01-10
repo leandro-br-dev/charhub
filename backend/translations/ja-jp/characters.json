@@ -2,13 +2,13 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "名無しキャラクター",
+      "untitledCharacter": "名なしのキャラクター",
       "updatedAt": "{{date}}に更新",
       "public": "公開",
       "private": "非公開",
       "identifier": "キャラクターID: {{id}}",
       "unsavedChanges": "未保存の変更があります",
-      "allSaved": "全ての変更を保存しました",
+      "allSaved": "全ての変更が保存されました",
       "submitting": "保存中..."
     },
     "ageRatings": {
@@ -32,44 +32,44 @@
       "THREE_D": "3D"
     },
     "visualStyleDescriptions": {
-      "ANIME": "日本のアニメスタイル",
+      "ANIME": "Japanese anime style",
       "REALISTIC": "フォトリアルまたはリアルなアートスタイル",
       "SEMI_REALISTIC": "セミリアルなアートスタイル",
-      "CARTOON": "欧米のカートゥーンスタイル",
-      "MANGA": "日本のManga/コミックスタイル",
-      "MANHWA": "韓国のManhwa/ウェブトゥーンスタイル",
-      "COMIC": "欧米のコミックスタイル",
-      "CHIBI": "デフォルメされた/キュートなスタイル",
+      "CARTOON": "西洋のカートゥーンスタイル",
+      "MANGA": "Japanese manga/comic style",
+      "MANHWA": "Korean manhwa/webtoon style",
+      "COMIC": "西洋のコミックブック スタイル",
+      "CHIBI": "スーパーデフォルメ/かわいいスタイル",
       "PIXEL_ART": "ピクセルアート/レトロゲームスタイル",
       "THREE_D": "3Dレンダリングスタイル"
     },
     "contentTags": {
       "VIOLENCE": "暴力",
-      "GORE": "ゴア表現",
+      "GORE": "ゴア",
       "SEXUAL": "性的表現",
       "NUDITY": "ヌード",
-      "LANGUAGE": "過激な言葉遣い",
+      "LANGUAGE": "不適切な言葉",
       "DRUGS": "薬物",
-      "ALCOHOL": "飲酒",
+      "ALCOHOL": "アルコール",
       "HORROR": "ホラー",
-      "PSYCHOLOGICAL": "心理的表現",
+      "PSYCHOLOGICAL": "心理的描写",
       "DISCRIMINATION": "差別",
       "CRIME": "犯罪",
       "GAMBLING": "ギャンブル"
     },
     "contentTagHints": {
-      "VIOLENCE": "戦闘、争い、攻撃的な対立。",
-      "GORE": "生々しい怪我や露骨な描写。",
-      "SEXUAL": "大人向けテーマまたは示唆的な表現。",
-      "NUDITY": "部分的または全体的なヌード。",
-      "LANGUAGE": "露骨または過激な言葉遣い。",
+      "VIOLENCE": "戦闘、争い、または攻撃的な対立。",
+      "GORE": "生々しい負傷や露骨な描写。",
+      "SEXUAL": "成人向けテーマまたは示唆的な表現。",
+      "NUDITY": "部分的または完全なヌード。",
+      "LANGUAGE": "露骨な表現または強い言葉遣い。",
       "DRUGS": "薬物の使用または言及。",
       "ALCOHOL": "アルコール摂取。",
-      "HORROR": "不穏なまたはホラーな描写。",
+      "HORROR": "不穏またはホラー描写。",
       "PSYCHOLOGICAL": "精神衛生または心理的な緊張。",
       "DISCRIMINATION": "ヘイトスピーチまたは偏見。",
       "CRIME": "犯罪行為のテーマ。",
-      "GAMBLING": "賭博またはギャンブルに関する言及。"
+      "GAMBLING": "賭博またはギャンブルの言及。"
     },
     "accessibility": {
       "addToFavorites": "お気に入りに追加",
@@ -86,11 +86,11 @@
     },
     "hub": {
       "title": "キャラクター",
-      "subtitle": "あなたの物語、チャットエージェント、AI体験を彩る登場人物たちを作成、整理、進化させましょう。",
+      "subtitle": "あなたの物語、チャットエージェント、AI体験を支えるキャストを作成、整理、進化させましょう。",
       "actions": {
         "newCharacter": "新しいキャラクター",
         "createCharacter": "新しいキャラクター",
-        "retry": "もう一度試す",
+        "retry": "再試行",
         "blurSensitive": "センシティブな内容をぼかす",
         "showSensitive": "センシティブな内容を表示"
       },
@@ -100,22 +100,22 @@
       },
       "filters": {
         "searchPlaceholder": "名前またはスタイルで検索",
-        "allAgeRatings": "全ての年齢制限",
+        "allAgeRatings": "全ての年齢レーティング",
         "noFilter": "すべて"
       },
       "states": {
         "loading": "キャラクターを読み込み中...",
         "error": "キャラクターを読み込めませんでした。もう一度お試しください。",
-        "empty": "まだ利用可能なキャラクターはありません。",
+        "empty": "まだキャラクターがありません。",
         "empty_private": "まだキャラクターを作成していません。",
         "empty_public": "フィルターに一致する公開キャラクターはありません。",
         "emptyHint": "プロフィールを作成するか、フィルターを調整して開始してください。",
         "emptySearchHint": "フィルターを調整するか、検索をクリアしてより多くの結果を表示してください。"
       },
       "labels": {
-        "total": "利用可能なキャラクター: {{count}}体",
-        "total_plural": "利用可能なキャラクター: {{count}}体",
-        "quickCreateLink": "すぐに作成を開始する"
+        "total": "{{count}}体のキャラクターが利用可能です",
+        "total_plural": "{{count}}体のキャラクターが利用可能です",
+        "quickCreateLink": "すぐに作成を開始"
       }
     },
     "sidebar": {
@@ -126,15 +126,15 @@
       "cancel": "キャンセル",
       "sections": {
         "identity": "基本情報",
-        "identityHint": "このキャラクターがどのように発見され、一目で識別されるかを定義します。",
+        "identityHint": "人々がこのキャラクターを一目で発見し、識別する方法を定義します。",
         "profile": "物語のプロフィール",
-        "profileHint": "AIを導くために、性格、特徴、背景物語を記述します。",
+        "profileHint": "AIを導くために、性格、特徴、および背景を記述します。",
         "configuration": "公開設定とモデレーション",
-        "configurationHint": "キャラクターの表示方法、アクセスできるユーザー、適用されるセーフガードを管理します。",
-        "contentTagsHint": "潜在的にセンシティブなテーマをマークします。ユーザーは好みに応じてそれらをフィルターで除外できます。",
-        "contentTagsCharacterHint": "これらのトピックは、選択された年齢制限においてキャラクターが快適に議論できる内容を定義します。",
-        "contentTagsUserHint": "含めたいテーマを選択してください。チェックされていないものは、この年齢制限でブロックされたままになります。",
-        "contentTagLocked": "より高い年齢制限でロック解除されます。"
+        "configurationHint": "キャラクターの表示方法、誰がアクセスできるか、およびどの保護策が適用されるかを管理します。",
+        "contentTagsHint": "機密性の高いテーマをマークします。ユーザーは自分の設定に基づいてそれらをフィルターで除外できます。",
+        "contentTagsCharacterHint": "これらのトピックは、選択された年齢レーティングでキャラクターが快適に議論できる内容を定義します。",
+        "contentTagsUserHint": "含めたいテーマを選択してください。チェックされていないものは、このレーティングではブロックされたままになります。",
+        "contentTagLocked": "より高い年齢レーティングで解除されます。"
       },
       "fields": {
         "firstName": "名",
@@ -146,63 +146,63 @@
         "reference": "参考 / 出典",
         "physicalCharacteristics": "身体的特徴",
         "personality": "性格",
-        "history": "背景物語",
+        "history": "過去の物語",
         "isPublic": "公開設定",
-        "ageRating": "年齢制限",
+        "ageRating": "年齢レーティング",
         "originalLanguageCode": "原語",
         "contentTags": "コンテンツ警告",
         "visibility": "公開設定"
       },
       "placeholders": {
         "style": "ビジュアルスタイルを選択",
-        "reference": "例: ワンピース、マーベル・コミックス、オリジナル",
+        "reference": "例: ワンピース、マーベル・コミック、オリジナル",
         "genderSelect": "性別を選択",
         "speciesSelect": "種族を選択"
       },
       "labels": {
         "unsavedChanges": "未保存の変更があります",
-        "allSaved": "変更を保存しました",
+        "allSaved": "変更が保存されました",
         "submitting": "保存中...",
         "visibilityPublic": "公開",
         "visibilityPrivate": "非公開"
       },
       "avatar": {
         "upload": "画像をアップロード",
-        "change": "画像を更新",
+        "change": "画像を変更",
         "remove": "削除",
         "uploading": "アップロード中...",
-        "helperCreate": "今すぐアバターを選択してください。残りのフォームを記入している間も保持されます。",
-        "helperEdit": "いつでもアバターを更新できます。変更は保存するとすぐに適用されます。",
-        "error": "この画像をアップロードできませんでした。別のファイルをお試しください。",
-        "previewAlt": "キャラクターアバターのプレビュー",
-        "invalidUrl": "有効な画像URL (http/https) を入力してください。",
+        "helperCreate": "今すぐアバターを選択してください。フォームの残りを入力している間も保持されます。",
+        "helperEdit": "いつでもアバターを更新できます。変更は保存後すぐに適用されます。",
+        "error": "この画像をアップロードできませんでした。別のファイルを試してください。",
+        "previewAlt": "キャラクターアバタープレビュー",
+        "invalidUrl": "有効な画像URL（http/https）を入力してください。",
         "saveFirst": "アバターを生成する前に、まずキャラクターを保存してください",
-        "insufficientCredits": "クレジットが不足しています。{{required}}クレジット必要ですが、{{current}}クレジットしかありません。",
-        "generationStarted": "アバターの生成を開始しました！1分ほどかかる場合があります。結果は「画像」タブでご確認ください。",
+        "insufficientCredits": "クレジットが不足しています。{{required}}クレジットが必要ですが、現在{{current}}クレジットしかありません。",
+        "generationStarted": "アバターの生成が開始されました！数分かかる場合があります。結果は画像タブで確認してください。",
         "generationComplete": "アバターが正常に生成されました！",
         "generationFailed": "アバターの生成に失敗しました。もう一度お試しください。",
-        "generationError": "アバターの生成開始に失敗しました。もう一度お試しください。"
+        "generationError": "アバターの生成を開始できませんでした。もう一度お試しください。"
       },
       "images": {
         "coverHeader": "キャラクターカバー",
-        "coverDescription": "キャラクターのカバーとして使用される縦向きの画像です。",
+        "coverDescription": "キャラクターカバーとして使用される縦向きの画像です。",
         "upload": "カバーをアップロード",
-        "change": "カバーを更新",
+        "change": "カバーを変更",
         "uploading": "アップロード中...",
         "urlModalTitle": "URLから画像を使用",
         "urlLabel": "画像URL",
-        "previewAlt": "キャラクターカバーのプレビュー"
+        "previewAlt": "キャラクターカバープレビュー"
       },
       "tags": {
-        "searchPlaceholder": "タグを検索 (例: VTuber、メイド)",
+        "searchPlaceholder": "タグを検索 (例: VTuber, メイド)",
         "selected": "選択中のタグ",
-        "none": "タグが選択されていません",
+        "none": "タグは選択されていません",
         "suggestions": "候補",
         "loading": "読み込み中...",
         "noResults": "結果がありません",
-        "incompatibleToast": "一部の選択されたタグは現在の年齢制限と互換性がありません。ご確認ください。",
-        "incompatibleHint": "強調表示されているタグは、選択された年齢制限と互換性がありません。続行するには削除してください。",
-        "incompatibleChip": "現在の年齢制限と互換性がありません"
+        "incompatibleToast": "一部の選択されたタグは、現在の年齢レーティングと互換性がありません。ご確認ください。",
+        "incompatibleHint": "ハイライト表示されたタグは、選択された年齢レーティングと互換性がありません。続行するにはこれらを削除してください。",
+        "incompatibleChip": "現在の年齢レーティングと互換性がありません"
       },
       "tabs": {
         "identity": "基本情報",
@@ -210,15 +210,15 @@
         "configuration": "設定",
         "tags": "タグ",
         "images": "画像",
-        "lockedHint": "他のセクションをアンロックするには、まず基本的な基本情報を入力してください。"
+        "lockedHint": "他のセクションを解除するには、まず基本的な基本情報を入力してください。"
       }
     },
     "create": {
       "title": "新しいキャラクターを作成",
-      "subtitle": "物語の文脈、ビジュアルスタイル、モデレーション設定を組み合わせます。これらは後で全て調整可能です。",
+      "subtitle": "物語の文脈、ビジュアルスタイル、モデレーション設定を組み合わせます。後で全てを調整できます。",
       "avatar": {
         "header": "キャラクターアバター",
-        "description": "キャラクターの視覚的表現。"
+        "description": "あなたのキャラクターの視覚的表現。"
       },
       "saveButton": "キャラクターを保存",
       "cancelButton": "キャンセルして戻る",
@@ -227,29 +227,29 @@
         "subtitle": "あなたのニーズに最適な方法を選択してください",
         "manual": {
           "title": "手動作成",
-          "description": "すべての詳細を完全に制御しながら、キャラクターを段階的に作成します",
+          "description": "全ての詳細を完全に制御しながら、キャラクターをステップバイステップで作成します",
           "features": [
             "完全なカスタマイズ",
-            "全てのフィールドを手動で入力",
-            "詳細なキャラクター作成に最適"
+            "すべてのフィールドを手動で入力",
+            "詳細なキャラクターに最適"
           ],
           "button": "手動で作成",
           "cost": "無料"
         },
         "ai": {
           "title": "AIによる作成",
-          "description": "説明文または画像からAIにキャラクターを生成させます",
+          "description": "説明や画像からAIにキャラクターを生成させます",
           "features": [
             "自動生成",
             "画像をアップロードまたは記述",
-            "高速で創造的"
+            "高速かつ創造的"
           ],
           "button": "AIで作成",
           "cost": "{{credits}}クレジット",
-          "costWithoutImage": "{{credits}}クレジット (画像なしの場合)",
+          "costWithoutImage": "{{credits}}クレジット（画像なし）",
           "costBreakdown": {
-            "title": "クレジットコストの内訳",
-            "imageAnalysis": "画像分析: {{credits}}クレジット (画像がアップロードされた場合のみ)",
+            "title": "クレジット費用内訳",
+            "imageAnalysis": "画像分析: {{credits}}クレジット（画像アップロード時のみ）",
             "textAnalysis": "テキスト分析: {{credits}}クレジット",
             "characterEnrichment": "キャラクターエンリッチメント: {{credits}}クレジット",
             "avatarGeneration": "アバター生成: {{credits}}クレジット",
@@ -263,7 +263,7 @@
       "subtitle": "{{name}}を更新中",
       "avatar": {
         "header": "キャラクターアバター",
-        "description": "キャラクターの視覚的表現。"
+        "description": "あなたのキャラクターの視覚的表現。"
       },
       "saveButton": "キャラクターを更新",
       "cancelButton": "変更を破棄",
@@ -272,7 +272,7 @@
       },
       "accessDenied": {
         "title": "アクセス拒否",
-        "message": "公式キャラクターを編集できるのは管理者のみです。",
+        "message": "公式キャラクターは管理者のみ編集できます。",
         "backButton": "プロフィールに戻る"
       }
     },
@@ -313,7 +313,7 @@
       "sections": {
         "physicalCharacteristics": "外見",
         "personality": "性格",
-        "history": "背景物語",
+        "history": "過去の物語",
         "contentTags": "コンテンツ警告",
         "metadata": "タグ",
         "introduction": "紹介",
@@ -323,50 +323,55 @@
     "images": {
       "saveFirst": "画像を管理するには、まずキャラクターを保存してください",
       "gallery": "生成された画像",
-      "avatarHeader": "アバター",
-      "avatarDescription": "このキャラクター用に生成されたアバター画像",
-      "coverHeader": "キャラクターカバー",
-      "coverDescription": "キャラクターのカバーとして使用される縦向きの画像です。",
+      "avatarHeader": "アバターを生成",
+      "avatarDescription": "AIを使用して新しいアバターを生成します。追加のコンテキストやスタイル参照用のサンプル画像を提供できます。",
+      "coverHeader": "カバー画像を生成",
+      "coverDescription": "AIを使用して縦向きのカバー画像を生成します。追加のコンテキストやスタイル参照用のサンプル画像を提供できます。",
       "generateNew": "新しい{{type}}を生成",
-      "onlyAvatarSupported": "現在、アバター生成のみサポートされています",
+      "onlyAvatarSupported": "現在、アバターの生成のみがサポートされています",
       "startingGeneration": "生成を開始しています...",
-      "generatingImage": "画像を生成中... 最大1分かかる場合があります",
+      "generatingImage": "画像を生成しています... 最大1分かかる場合があります",
       "processing": "AIで画像を処理中...",
       "generationComplete": "生成完了！",
       "imageGeneratedSuccess": "画像が正常に生成されました！",
-      "imageActivated": "画像をアクティブに設定しました",
+      "imageActivated": "画像がアクティブに設定されました",
       "preview": "プレビュー",
       "generationInfo": "画像生成について",
-      "infoPrompt": "AIはキャラクターの説明を使用して画像を生成します",
+      "infoPrompt": "AIがキャラクター説明を使用して画像を生成します",
       "infoTime": "生成には約30～60秒かかります",
       "infoActive": "新しい画像は自動的にアクティブに設定されます",
       "deleteConfirmTitle": "画像を削除しますか？",
       "deleteConfirmMessage": "この画像を削除してもよろしいですか？この操作は元に戻せません。",
       "delete": "削除",
       "scrollToZoom": "スクロールでズーム",
-      "dragToPan": "ドラッグでパン (ズーム時)"
+      "dragToPan": "ドラッグでパン（ズームイン時）",
+      "generatingInfo": "通常30～60秒かかります。このウィンドウを閉じないでください。",
+      "generationSuccessMessage": "画像が生成され、保存されました！",
+      "coverAspectInfo": "カバー画像は3:4の縦横比を使用します。",
+      "setAsActive": "アクティブに設定",
+      "noImagesYet": "まだ画像は生成されていません"
     },
     "imageGeneration": {
       "multiStage": {
-        "@deprecated": "代わりにreferenceImagesを使用してください - multiStageは後方互換性のために維持されます",
+        "@deprecated": "Use referenceImages instead - multiStage is kept for backward compatibility",
         "title": "マルチステージ参照データセット",
         "description": "一貫性のあるキャラクター生成のために、4つの参照画像（アバター、正面、側面、背面）を生成します",
-        "costInfo": "生成コスト",
+        "costInfo": "生成費用",
         "costDescription": "マルチステージ参照データセット（4画像）:",
         "stages": {
-          "face": "顔 (ポートレート)",
-          "front": "全身 (正面)",
-          "side": "全身 (側面)",
-          "back": "全身 (背面)"
+          "face": "顔（ポートレート）",
+          "front": "体の正面",
+          "side": "体の側面",
+          "back": "体の背面"
         },
         "startButton": "データセットを生成",
-        "startButtonWithCost": "{{button}} ({{cost}}{{credits}})",
-        "insufficientCredits": "クレジット不足 ({{cost}}必要です)",
+        "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
+        "insufficientCredits": "クレジット不足（{{cost}}必要）",
         "generating": "データセットを生成中...",
         "ready": "生成準備完了",
         "waiting": "待機中...",
-        "failed": "失敗しました",
-        "estimatedTime": "推定時間: 3〜4分",
+        "failed": "失敗",
+        "estimatedTime": "推定時間: 3～4分",
         "generationComplete": "生成完了！",
         "allStagesCompleted": "4つの参照画像全てが生成されました。",
         "errors": {
@@ -375,31 +380,32 @@
           "pollFailed": "生成ステータスの確認に失敗しました"
         },
         "progress": {
-          "stage": "{{total}}段階中、{{stage}}段階目",
+          "stage": "ステージ {{total}} の {{stage}}",
           "message": "{{message}}"
         }
       },
       "referenceImages": {
         "title": "マルチステージ参照データセット",
         "description": "一貫性のあるキャラクター生成のために、4つの参照画像（アバター、正面、側面、背面）を生成します",
-        "costInfo": "生成コスト",
+        "shortDescription": "一貫性のあるキャラクター生成のための多視点参照データセット",
+        "costInfo": "生成費用",
         "costDescription": "マルチステージ参照データセット（4画像）:",
         "selectViews": "生成するビューを選択",
         "selectAtLeastOne": "少なくとも1つのビューを選択して生成してください",
         "stages": {
-          "face": "顔 (ポートレート)",
-          "front": "全身 (正面)",
-          "side": "全身 (側面)",
-          "back": "全身 (背面)"
+          "face": "顔（ポートレート）",
+          "front": "体の正面",
+          "side": "体の側面",
+          "back": "体の背面"
         },
         "startButton": "データセットを生成",
-        "startButtonWithCost": "{{button}} ({{cost}}{{credits}})",
-        "insufficientCredits": "クレジット不足 ({{cost}}必要です)",
+        "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
+        "insufficientCredits": "クレジット不足（{{cost}}必要）",
         "generating": "データセットを生成中...",
         "ready": "生成準備完了",
         "waiting": "待機中...",
-        "failed": "失敗しました",
-        "estimatedTime": "推定時間: 3〜4分",
+        "failed": "失敗",
+        "estimatedTime": "推定時間: 3～4分",
         "generationComplete": "生成完了！",
         "allStagesCompleted": "4つの参照画像全てが生成されました。",
         "errors": {
@@ -408,14 +414,14 @@
           "pollFailed": "生成ステータスの確認に失敗しました"
         },
         "progress": {
-          "stage": "{{total}}段階中、{{stage}}段階目",
+          "stage": "ステージ {{total}} の {{stage}}",
           "message": "{{message}}"
         }
       },
       "imagesTab": {
         "dropdownLabel": "生成またはアップロード...",
         "generateAvatar": "アバターを生成",
-        "generateReferenceDataset": "参照データセットを生成 (4ビュー)",
+        "generateReferenceDataset": "参照データセットを生成（4視点）",
         "uploadCover": "カバー画像をアップロード",
         "avatarsCount": "{{count}}体のアバター",
         "avatarsCount_plural": "{{count}}体のアバター",
@@ -425,7 +431,7 @@
         "noAvatars": "まだアバターがありません",
         "noReferenceImages": "まだ参照画像がありません",
         "active": "アクティブ",
-        "imageActivated": "画像をアクティブに設定しました",
+        "imageActivated": "画像がアクティブに設定されました",
         "avatarSection": {
           "title": "アバター",
           "description": "あなたのキャラクターを表すプロフィール画像",
@@ -438,8 +444,8 @@
         },
         "referenceSection": {
           "title": "参照画像",
-          "description": "一貫性のあるAI生成のための4ビュー参照データセット",
-          "shortDescription": "4ビュー参照データセット"
+          "description": "一貫性のあるAI生成のための4視点参照データセット",
+          "shortDescription": "4視点参照データセット"
         },
         "buttons": {
           "upload": "アップロード",
@@ -451,7 +457,7 @@
         "modals": {
           "promptLabel": "コンテキスト/プロンプト",
           "promptPlaceholder": "追加のコンテキストやスタイルを記述してください...",
-          "sampleImageLabel": "参照画像 (オプション)",
+          "sampleImageLabel": "参照画像（オプション）",
           "sampleImageHint": "スタイル参照として使用するサンプル画像をアップロードしてください",
           "generating": "生成中...",
           "uploading": "アップロード中..."
@@ -462,17 +468,17 @@
       "title": "AIキャラクタージェネレーター",
       "subtitle": "キャラクターを記述するか画像をアップロードすると、AIが詳細を生成します",
       "descriptionLabel": "キャラクターの説明",
-      "descriptionPlaceholder": "キャラクターを記述してください... (例: 「銀色の鎧をまとった高潔な心の勇敢な騎士」)",
-      "descriptionHint": "説明が詳細であるほど、結果は良くなります",
+      "descriptionPlaceholder": "あなたのキャラクターを説明してください... (例: 「銀の鎧と高潔な心を持つ勇敢な騎士」)",
+      "descriptionHint": "説明が詳細であるほど、結果が良くなります",
       "imageLabel": "キャラクター画像",
       "uploadPrompt": "クリックしてキャラクター画像をアップロード",
-      "uploadHint": "PNG、JPEG、WEBP、GIF (最大10MB)",
+      "uploadHint": "PNG, JPEG, WEBP, GIF (最大10MB)",
       "generateButton": "キャラクターを生成",
       "generating": "生成中...",
       "howItWorks": "仕組み",
-      "step1": "テキストの説明を入力するか、画像をアップロードします",
+      "step1": "テキスト説明を提供するか、画像をアップロードします",
       "step2": "AIがあなたの入力を分析し、キャラクターの詳細を生成します",
-      "step3": "生成されたキャラクターを保存する前に確認および編集します",
+      "step3": "保存する前に、生成されたキャラクターを確認して編集します",
       "step4": "アバターが自動的に生成されます",
       "loading": {
         "creatingCharacter": "キャラクターを作成中",
@@ -490,11 +496,11 @@
         "generatingHistory": "彼らの物語を紡ぎ中",
         "creatingCharacter": "彼らに命を吹き込み中",
         "queuingAvatar": "ビジュアルを準備中",
-        "generatingAvatar": "彼らの肖像を描画中",
-        "queuingMultiStage": "参照データセット（4ビュー）を準備中",
+        "generatingAvatar": "彼らの肖像画を描画中",
+        "queuingMultiStage": "参照データセット（4視点）を準備中",
         "completed": "あなたのヒーローが待っています",
-        "error": "予期せぬ展開",
-        "preparing": "あなたの冒険を準備中"
+        "error": "予期せぬひねり",
+        "preparing": "冒険を準備中"
       },
       "reveal": {
         "heroEmerges": "ヒーローの登場",
@@ -504,27 +510,27 @@
       },
       "actions": {
         "editCharacter": "キャラクターを編集",
-        "viewProfile": "プロフィールを表示",
+        "viewProfile": "プロフィールを見る",
         "discard": "破棄",
         "discarding": "破棄中...",
         "createAnother": "別のキャラクターを作成"
       },
       "confirmDiscard": "このキャラクターを破棄してもよろしいですか？この操作は元に戻せません。",
-      "characterDiscarded": "キャラクターを正常に破棄しました",
+      "characterDiscarded": "キャラクターが正常に破棄されました",
       "discardFailed": "キャラクターの破棄に失敗しました",
-      "generationStarted": "キャラクター生成を開始しました！進捗を監視中...",
+      "generationStarted": "キャラクター生成が開始されました！進捗を確認中...",
       "generationFailed": "キャラクター生成に失敗しました。もう一度お試しください。"
     },
     "errors": {
       "createFailed": "キャラクターを作成できませんでした。もう一度お試しください。",
       "updateFailed": "キャラクターを更新できませんでした。",
       "deleteFailed": "キャラクターを削除できませんでした。",
-      "detailUnavailable": "現在、キャラクターの詳細を読み込むことができません。",
-      "descriptionOrImageRequired": "説明または画像のいずれかを提供してください",
-      "imageTooLarge": "画像は10MBより小さい必要があります",
+      "detailUnavailable": "現在、キャラクターの詳細を読み込めません。",
+      "descriptionOrImageRequired": "説明または画像のいずれかを入力してください",
+      "imageTooLarge": "画像は10MB未満である必要があります",
       "invalidImageType": "画像はPNG、JPEG、WEBP、またはGIFである必要があります",
       "generationFailed": "キャラクターの生成に失敗しました",
-      "failedToActivateImage": "画像の有効化に失敗しました",
+      "failedToActivateImage": "画像をアクティブ化できませんでした",
       "failedToGenerateImage": "画像の生成に失敗しました"
     }
   }

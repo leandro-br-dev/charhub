@@ -44,29 +44,29 @@
     "add": "Añadir",
     "delete": "Eliminar",
     "deleting": "Eliminando...",
-    "enabled": "Habilitado",
-    "disabled": "Deshabilitado",
-    "selectOption": "Selecciona una opción",
+    "enabled": "Activado",
+    "disabled": "Desactivado",
+    "selectOption": "Seleccionar una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
       "with": "Chatear con"
     },
     "messages": {
       "linkCopied": "¡Enlace copiado al portapapeles!",
-      "chatStarted": "¡Chat iniciado con éxito!",
-      "characterDeleted": "Personaje eliminado con éxito"
+      "chatStarted": "¡Chat iniciado correctamente!",
+      "characterDeleted": "Personaje eliminado correctamente"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
       "title": "Filtro de Contenido",
-      "ageRating": "Clasificación por Edad",
-      "blurNsfw": "Difuminar Contenido Explícito",
-      "none": "Sin Filtro",
-      "blur": "Difuminar Sensible",
-      "hidden": "Ocultar Maduro",
+      "ageRating": "Clasificación por edad",
+      "blurNsfw": "Difuminar contenido explícito",
+      "none": "Sin filtro",
+      "blur": "Difuminar sensible",
+      "hidden": "Ocultar contenido maduro",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar desenfoque al contenido maduro",
+        "blur": "Aplicar difuminado al contenido maduro",
         "hidden": "Ocultar completamente el contenido maduro"
       },
       "ageRatings": {
@@ -83,17 +83,20 @@
       "blocked": "(bloqueado)"
     },
     "errors": {
-      "generic": "Ocurrió un error. Por favor, inténtalo de nuevo.",
-      "failedToFetchData": "No se pudieron obtener los datos"
+      "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+      "failedToFetchData": "Error al obtener los datos"
     },
     "character": "Personaje",
     "seeMore": "Ver más",
     "seeMoreArrow": "Ver más →",
-    "back": "Atrás",
+    "back": "Volver",
     "credits": "créditos",
-    "tryAgain": "Intentar de Nuevo",
+    "tryAgain": "Intentar de nuevo",
     "generate": "Generar",
     "generating": "Generando...",
+    "generateAgain": "Generar de nuevo",
+    "regenerate": "Regenerar",
+    "close": "Cerrar",
     "done": "Hecho"
   }
 }

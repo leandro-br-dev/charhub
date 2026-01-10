@@ -12,7 +12,7 @@
     "account": "Konto",
     "continueGoogle": "Mit Google fortfahren",
     "continueFacebook": "Mit Facebook fortfahren",
-    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
     "logoutLoading": "Melde ab...",
     "authenticatedUser": "Authentifizierter Benutzer",
@@ -39,20 +39,20 @@
     "cancel": "Abbrechen",
     "save": "Speichern",
     "saving": "Wird gespeichert...",
-    "loading": "Wird geladen...",
+    "loading": "Lädt...",
     "use": "Verwenden",
     "add": "Hinzufügen",
     "delete": "Löschen",
     "deleting": "Wird gelöscht...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Option auswählen",
+    "selectOption": "Wählen Sie eine Option",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
-      "with": "Chatten mit"
+      "with": "Chat mit"
     },
     "messages": {
-      "linkCopied": "Link in Zwischenablage kopiert!",
+      "linkCopied": "Link in die Zwischenablage kopiert!",
       "chatStarted": "Chat erfolgreich gestartet!",
       "characterDeleted": "Charakter erfolgreich gelöscht"
     },
@@ -60,17 +60,17 @@
       "ariaLabel": "Inhaltsfilter",
       "title": "Inhaltsfilter",
       "ageRating": "Altersfreigabe",
-      "blurNsfw": "Explizite Inhalte unkenntlich machen",
+      "blurNsfw": "Explizite Inhalte unscharf machen",
       "none": "Kein Filter",
-      "blur": "Sensibles unkenntlich machen",
-      "hidden": "Reife Inhalte ausblenden",
+      "blur": "Sensible Inhalte unscharf machen",
+      "hidden": "Nicht jugendfreie Inhalte ausblenden",
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
-        "blur": "Reife Inhalte unkenntlich machen",
-        "hidden": "Reife Inhalte komplett ausblenden"
+        "blur": "Nicht jugendfreie Inhalte unscharf machen",
+        "hidden": "Nicht jugendfreie Inhalte vollständig ausblenden"
       },
       "ageRatings": {
-        "L": "Frei",
+        "L": "Freigegeben",
         "TEN": "10+",
         "TWELVE": "12+",
         "FOURTEEN": "14+",
@@ -84,16 +84,19 @@
     },
     "errors": {
       "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
-      "failedToFetchData": "Daten konnten nicht abgerufen werden"
+      "failedToFetchData": "Fehler beim Abrufen der Daten"
     },
     "character": "Charakter",
     "seeMore": "Mehr anzeigen",
     "seeMoreArrow": "Mehr anzeigen →",
     "back": "Zurück",
-    "credits": "Guthaben",
+    "credits": "Credits",
     "tryAgain": "Erneut versuchen",
     "generate": "Generieren",
-    "generating": "Wird generiert...",
+    "generating": "Generiert...",
+    "generateAgain": "Erneut generieren",
+    "regenerate": "Regenerieren",
+    "close": "Schließen",
     "done": "Fertig"
   }
 }
