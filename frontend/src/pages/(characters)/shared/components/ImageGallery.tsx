@@ -131,12 +131,12 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
                 ? 'border-accent shadow-lg ring-2 ring-accent/20'
                 : 'border-border hover:border-accent/50'
             }`}
+            onClick={() => setViewerImage({ url: image.url, title: `${imageType} image` })}
           >
             <CachedImage
               src={image.url}
               alt={`${imageType} image`}
-              className="aspect-square w-full object-cover cursor-pointer"
-              onClick={() => setViewerImage({ url: image.url, title: `${imageType} image` })}
+              className="aspect-square w-full object-cover"
             />
 
             {image.isActive && (
@@ -147,11 +147,11 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
 
             {/* Action buttons overlay */}
             {!image.isActive && (
-              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                 <Button
-                  onClick={() => handleActivate(image.id)}
+                  onClick={(e) => { e.stopPropagation(); handleActivate(image.id); }}
                   disabled={activatingId === image.id}
-                  className="bg-accent text-white hover:bg-accent/90"
+                  className="pointer-events-auto bg-accent text-white hover:bg-accent/90"
                   size="small"
                 >
                   {activatingId === image.id ? (
@@ -166,19 +166,19 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
             )}
 
             {/* Delete button - always visible on hover, positioned at top right */}
-            <div className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
+            <div className="pointer-events-none absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
               <button
                 type="button"
-                onClick={() => setDeleteConfirmId(image.id)}
+                onClick={(e) => { e.stopPropagation(); setDeleteConfirmId(image.id); }}
                 disabled={deletingId === image.id}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow-lg hover:bg-red-600 disabled:opacity-50"
+                className="pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow-lg hover:bg-red-600 disabled:opacity-50"
                 title={t('characters:images.delete', 'Delete image') ?? 'Delete image'}
               >
                 <span className="material-symbols-outlined text-base">delete</span>
               </button>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
               <p className="text-xs text-white">
                 {new Date(image.createdAt).toLocaleDateString()}
               </p>
