@@ -35,7 +35,68 @@
 
 ---
 
-### Step 1.1: Update Main Branch
+### Step 1.1: PRE-CHECKOUT SAFETY CHECK (CRITICAL!)
+
+**🚨 STOP! Execute this BEFORE switching branches!**
+
+**Why this step is CRITICAL:**
+- If you have uncommitted changes and switch branches, you risk losing work
+- Git may carry your changes to another branch, causing confusion
+- You could accidentally run `git reset --hard` on wrong branch and lose everything
+
+**This is the #1 cause of code loss! Do NOT skip!**
+
+```bash
+# 1. Verify current branch
+git branch --show-current
+# Expected: feature/your-feature-name (NOT main!)
+
+# 2. Check working directory status
+git status
+```
+
+**⚠️ CRITICAL DECISION POINT:**
+
+**If `git status` shows "nothing to commit, working tree clean":**
+- ✅ Safe to proceed to Step 1.2
+
+**If `git status` shows modified files (M file.tsx, etc.):**
+- ❌ **STOP! DO NOT PROCEED!**
+- ⚠️ You have uncommitted changes that WILL BE LOST if you continue!
+
+**You MUST do ONE of these:**
+
+**Option A: Commit your changes (RECOMMENDED)**
+```bash
+git add .
+git commit -m "wip: save work before updating branch with main"
+git push origin HEAD  # ← CRITICAL: Backup to GitHub!
+```
+
+**Option B: Stash your changes (if you really don't want to commit)**
+```bash
+git stash push -m "work in progress before branch update"
+# Later you can apply with: git stash pop
+```
+
+**After committing OR stashing, verify:**
+```bash
+git status
+# MUST show: "nothing to commit, working tree clean"
+```
+
+**Checklist before proceeding:**
+- [ ] `git status` shows "nothing to commit, working tree clean"
+- [ ] All important changes are committed OR stashed
+- [ ] If committed: pushed to GitHub with `git push origin HEAD`
+
+**✅ ONLY AFTER all checks pass, proceed to Step 1.2**
+
+---
+
+### Step 1.2: Update Main Branch
+
+**Execute ONLY if Step 1.1 checklist is complete!**
 
 ```bash
 # Switch to main and pull latest changes
@@ -49,9 +110,12 @@ Already on 'main'
 Your branch is up to date with 'origin/main'.
 ```
 
+**⚠️ If git checkout shows warnings about modified files:**
+- ❌ You skipped Step 1.1! Go back and commit your changes!
+
 ---
 
-### Step 1.2: Switch Back to Feature Branch
+### Step 1.3: Switch Back to Feature Branch
 
 ```bash
 git checkout feature/your-feature-name
@@ -59,7 +123,7 @@ git checkout feature/your-feature-name
 
 ---
 
-### Step 1.3: PRE-MERGE SAFETY CHECKS (CRITICAL!)
+### Step 1.4: PRE-MERGE SAFETY CHECKS (CRITICAL!)
 
 **🚨 READ [merge-safety-guide.md](../merge-safety-guide.md) if this is your first time!**
 
@@ -123,7 +187,7 @@ git status
 
 ---
 
-### Step 1.4: Merge Main into Feature Branch
+### Step 1.5: Merge Main into Feature Branch
 
 ```bash
 git merge main
@@ -214,7 +278,7 @@ diff /tmp/ours.tsx /tmp/theirs.tsx | head -50
 
 ---
 
-### Step 1.4: Re-run ALL Tests After Merge
+### Step 1.6: Re-run ALL Tests After Merge
 
 **Why**: Main may have introduced breaking changes, dependency updates, schema changes.
 
@@ -253,7 +317,7 @@ docker compose up -d --build
 
 ---
 
-### Step 1.4.1: Verify Prisma Migrations Were Generated (If Schema Changed)
+### Step 1.6.1: Verify Prisma Migrations Were Generated (If Schema Changed)
 
 **⚠️ CRITICAL: If you modified `backend/prisma/schema.prisma`, you MUST generate and commit the corresponding migration!**
 
@@ -338,7 +402,7 @@ CREATE TABLE "MyNewTable" (
 
 ---
 
-### Step 1.5: Verify All Docker Containers Are Healthy
+### Step 1.7: Verify All Docker Containers Are Healthy
 
 **⚠️ CRITICAL: Common mistake - Agent Coder creates PR without checking if backend is in restart loop!**
 

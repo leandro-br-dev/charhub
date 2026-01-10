@@ -1,7 +1,101 @@
 # Merge Safety Guide - Preventing Data Loss
 
-**Last Updated**: 2026-01-06
+**Last Updated**: 2026-01-10
 **Severity**: CRITICAL
+
+---
+
+## 🚨 GIT COMMANDS THAT CAN CAUSE DATA LOSS
+
+**⚠️ READ THIS FIRST! These commands have caused us to lose code TWICE!**
+
+### ❌ NEVER Execute These Commands Without Safeguards
+
+#### 1. `git reset --hard` - Permanently Discards ALL Uncommitted Changes
+
+**What it does:**
+- Deletes EVERY file change in your working directory
+- Changes are NOT recoverable (not in stash, reflog, or anywhere)
+- 4 hours of work → GONE instantly
+
+**When FORBIDDEN:**
+- ❌ If you have ANY uncommitted changes
+- ❌ If you haven't created a backup branch
+- ❌ If you're not 100% certain which branch you're on
+
+**Safe alternative:**
+```bash
+# INSTEAD OF: git reset --hard
+# DO THIS:
+git add .
+git commit -m "wip: save work"
+git push origin HEAD  # Backup to GitHub!
+# ONLY THEN reset if truly needed
+```
+
+---
+
+#### 2. `git checkout <branch>` - Can Silently Carry Changes or Discard Them
+
+**What it does:**
+- If working directory has changes, git may:
+  - Carry them to the new branch (causing confusion)
+  - Refuse to switch (if conflicts)
+  - Silently discard them (in some edge cases)
+
+**When FORBIDDEN:**
+- ❌ Before checking `git status` first
+- ❌ If working directory shows modified files
+
+**Safe alternative:**
+```bash
+# INSTEAD OF: git checkout main
+# DO THIS:
+git status  # Check if clean first!
+# If NOT clean:
+git add .
+git commit -m "wip: save work"
+git push origin HEAD
+# ONLY THEN:
+git checkout main
+```
+
+**See:** [git-safety-pre-flight.md](checklists/git-safety-pre-flight.md) for complete pre-checkout checklist
+
+---
+
+#### 3. `git clean -fd` - Permanently Deletes Untracked Files
+
+**What it does:**
+- Deletes files that aren't in git (new files you created)
+- Files are NOT recoverable
+
+**When FORBIDDEN:**
+- ❌ ALWAYS (no safe use case for agents)
+
+---
+
+### ✅ MANDATORY: Commit Every 30-60 Minutes
+
+**NEW RULE to prevent data loss:**
+
+```bash
+# During implementation, commit frequently:
+git add .
+git commit -m "wip: [what you just did]"
+git push origin HEAD  # ← CRITICAL: Backup to GitHub!
+
+# Repeat every 30-60 minutes
+```
+
+**Why:**
+- Maximum loss = 1 hour (vs total loss)
+- GitHub = automatic backup
+- Recoverable via git history
+
+**See:** [feature-implementation.md](checklists/feature-implementation.md) for detailed commit workflow
+
+---
 
 ## 🚨 Critical Incident: Data Loss During Merge
 

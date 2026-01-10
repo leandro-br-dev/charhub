@@ -126,6 +126,239 @@ Your work follows this cycle:
 
 ---
 
+## 🚨 GIT SAFETY: COMANDOS PROIBIDOS
+
+**⚠️ CRITICAL**: These git commands can cause PERMANENT data loss. Read carefully!
+
+### ❌ NEVER Execute These Commands
+
+#### 1. `git reset --hard` (Permanently discards uncommitted changes)
+
+**Why it's dangerous:**
+- Deletes ALL uncommitted work instantly
+- Changes are NOT recoverable (not in stash, reflog, or anywhere)
+- If you have 4 hours of work not committed, it's GONE
+
+**When it's FORBIDDEN:**
+- ❌ If you have uncommitted changes in working directory
+- ❌ If you haven't created a backup branch
+- ❌ If you're not 100% sure which branch you're on
+
+**Safe alternative:**
+```bash
+# INSTEAD OF: git reset --hard
+# DO THIS:
+git add .
+git commit -m "wip: save work before switching branches"
+git push origin HEAD  # Backup to GitHub!
+# NOW it's safe to reset if needed
+```
+
+**ONLY permitted if:**
+- ✅ Backup branch created: `git branch backup-$(date +%Y%m%d%H%M%S)`
+- ✅ Working directory is clean: `git status` shows "nothing to commit"
+- ✅ You verified current branch: `git branch --show-current`
+
+---
+
+#### 2. `git clean -fd` (Permanently deletes untracked files)
+
+**Why it's dangerous:**
+- Deletes files that are NOT in git (new files you created)
+- Files are NOT recoverable (not in git history)
+- Can delete important work like new components, configs, etc.
+
+**When it's FORBIDDEN:**
+- ❌ ALWAYS forbidden (no safe use case for agents)
+
+**Safe alternative:**
+```bash
+# INSTEAD OF: git clean -fd
+# DO THIS: Review files manually and delete individually
+git status  # See untracked files
+# Review each file, then delete manually if truly not needed
+rm specific-file-i-dont-want.txt
+```
+
+---
+
+#### 3. `git checkout <branch>` (Without verifying working directory first)
+
+**Why it's dangerous:**
+- Can carry uncommitted changes to another branch
+- Can cause merge conflicts or loss when switching back
+- Changes end up in wrong branch, causing confusion
+
+**When it's FORBIDDEN:**
+- ❌ If you haven't checked `git status` first
+- ❌ If working directory shows modified files
+
+**Safe alternative:**
+```bash
+# INSTEAD OF: git checkout main
+# DO THIS:
+
+# STEP 1: Verify working directory is clean
+git status
+# If shows modified files, STOP and commit them first!
+
+# STEP 2: If NOT clean, commit your work
+git add .
+git commit -m "wip: save work before switching branches"
+git push origin HEAD  # Backup to GitHub
+
+# STEP 3: NOW safe to checkout
+git checkout main
+```
+
+**MANDATORY checklist before ANY `git checkout`:**
+- [ ] Executed `git status` - shows "nothing to commit, working tree clean"
+- [ ] Verified current branch: `git branch --show-current`
+- [ ] If not clean: committed all changes OR created stash
+- [ ] ONLY THEN: `git checkout <branch>`
+
+---
+
+#### 4. `git checkout --force` or `git checkout -f` (Forces checkout, discarding changes)
+
+**Why it's dangerous:**
+- Silently discards uncommitted changes without warning
+- Changes are NOT recoverable
+
+**When it's FORBIDDEN:**
+- ❌ ALWAYS forbidden (same as `git reset --hard`)
+
+**Safe alternative:**
+```bash
+# INSTEAD OF: git checkout --force main
+# DO THIS:
+git add .
+git commit -m "wip: save work"
+git push origin HEAD
+git checkout main
+```
+
+---
+
+### ✅ SAFE Git Workflow: Commit Early, Commit Often
+
+**NEW MANDATORY RULE: Commit every 30-60 minutes**
+
+**Why frequent commits save you:**
+- Code goes into git history (recoverable via `git reflog`)
+- Push to GitHub = automatic remote backup
+- Maximum loss = 1 hour of work (vs total loss)
+- Commits can be squashed later before PR merge
+
+**How to implement:**
+
+```bash
+# During implementation, commit EVERY TIME you complete a unit of work:
+
+# 10:00 - Implemented credit calculation
+git add .
+git commit -m "wip: implement credit cost calculation"
+git push origin HEAD  # ← CRITICAL: Backup to GitHub!
+
+# 10:30 - Added validation
+git add .
+git commit -m "wip: add credit validation logic"
+git push origin HEAD
+
+# 11:00 - Implemented UI
+git add .
+git commit -m "wip: add credit display to UI components"
+git push origin HEAD
+
+# 11:30 - Added tests
+git add .
+git commit -m "wip: add tests for credit system"
+git push origin HEAD
+
+# 12:00 - Feature complete, ready for PR
+git add .
+git commit -m "feat(credits): implement credit system with validation and UI"
+git push origin HEAD
+# NOW create PR
+```
+
+**Commits WIP (Work in Progress) are ENCOURAGED:**
+- ✅ "wip: ..." commits are perfectly fine during development
+- ✅ Better to have 10 WIP commits than lose 4 hours of work
+- ✅ Can be squashed with `git rebase -i` later if desired (but not required)
+
+**Why push after every commit:**
+- GitHub becomes your backup server
+- If your machine crashes, code is safe on GitHub
+- If you accidentally delete branch locally, it's on remote
+- Other agents can see your progress
+
+**Timeline example:**
+```
+09:00 - Start work, create branch
+09:15 - First WIP commit + push
+09:45 - Second WIP commit + push
+10:30 - Third WIP commit + push
+11:00 - Fourth WIP commit + push
+11:30 - Fifth WIP commit + push
+12:00 - Final commit + push + create PR
+
+Result: 6 commits pushed to GitHub
+        If anything goes wrong at 11:45, maximum loss = 15 minutes
+        Without this: If anything goes wrong, loss = 3 hours
+```
+
+---
+
+### 🔍 Before ANY Git Operation: Pre-Flight Checklist
+
+**Execute this checklist BEFORE:**
+- Any `git checkout <branch>`
+- Any `git merge main`
+- Any `git reset`
+- Any potentially destructive operation
+
+```bash
+# 1. Where am I?
+git branch --show-current
+# ✓ Confirm you're on the branch you think you are
+
+# 2. Do I have uncommitted changes?
+git status
+# ✓ Must show "nothing to commit, working tree clean"
+# ✗ If shows modified files: STOP and commit them first!
+
+# 3. (For risky operations) Create backup
+git branch backup-$(date +%Y%m%d%H%M%S)
+# ✓ Backup branch created
+
+# 4. ONLY NOW proceed with the operation
+```
+
+**See also:** [git-safety-pre-flight.md](checklists/git-safety-pre-flight.md) for complete pre-flight checklist.
+
+---
+
+### 🛡️ Protection Layers
+
+**Layer 1: Frequent Commits (every 30-60min)**
+- Code in git history
+- Recoverable via `git reflog`
+
+**Layer 2: Push to GitHub (after every commit)**
+- Code on remote server
+- Safe even if local machine dies
+
+**Layer 3: Backup Branches (before risky operations)**
+- Snapshot of current state
+- Recoverable via `git checkout backup-YYYYMMDDHHMMSS`
+
+**Layer 4: Working Directory Verification (before git checkout/merge/reset)**
+- Prevents carrying changes to wrong branch
+- Prevents accidental data loss
+
+---
+
 ## 📚 Documentation Structure
 
 ### For Agent Coder (You)
