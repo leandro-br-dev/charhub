@@ -23,6 +23,14 @@ const LLM_PRICING_DATA: LLMPricingData[] = [
   // Google Gemini Pricing (Updated January 2026)
   {
     provider: 'GEMINI',
+    model: 'gemini-3-pro-preview',
+    inputPricePerMillion: 2.00, // $2.00 for prompts <= 200K tokens, $4.00 for > 200K tokens
+    outputPricePerMillion: 12.00, // $12.00 for prompts <= 200K tokens, $18.00 for > 200K tokens
+    source: 'https://ai.google.dev/gemini-api/docs/pricing',
+    notes: 'The best model in the world for multimodal understanding and most advanced reasoning/coding model yet. Pre-release. Higher pricing for >200K tokens. DOES NOT support NSFW content.',
+  },
+  {
+    provider: 'GEMINI',
     model: 'gemini-3-flash-preview',
     inputPricePerMillion: 0.50,
     outputPricePerMillion: 3.00,

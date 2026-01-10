@@ -10,6 +10,7 @@ import type { Server } from 'socket.io';
 import { logger } from '../config/logger';
 import { analyzeCharacterImage, type CharacterImageAnalysisResult } from '../agents/characterImageAnalysisAgent';
 import { callLLM } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import { modelRouter } from '../services/llm/modelRouter';
 import { contentClassificationService } from '../services/contentClassification';
 import { createCharacter } from '../services/characterService';
@@ -150,6 +151,14 @@ async function analyzeTextDescription(
       maxTokens: 1024,
     } as any);
 
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: user?.id,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined, // Character not created yet
+      operation: 'text_analysis',
+    });
+
     const raw = (response.content || '').trim();
     const parsed = parseJsonSafe<GeneratedCharacterData>(raw);
 
@@ -211,6 +220,14 @@ export async function enrichCharacterData(data: GeneratedCharacterData, preferre
         maxTokens: 128,
       } as any);
 
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(response, {
+        userId: undefined,
+        feature: 'AUTOMATED_GENERATION',
+        featureId: undefined,
+        operation: 'name_generation',
+      });
+
       const nameData = parseJsonSafe<{ firstName: string; lastName?: string }>(response.content.trim());
       if (nameData.firstName) {
         data.firstName = nameData.firstName;
@@ -248,6 +265,14 @@ export async function enrichCharacterData(data: GeneratedCharacterData, preferre
         maxTokens: 256,
       } as any);
 
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(response, {
+        userId: undefined,
+        feature: 'AUTOMATED_GENERATION',
+        featureId: undefined,
+        operation: 'personality_generation',
+      });
+
       data.personality = response.content.trim();
       logger.info('Generated creative personality for character');
     } catch (error) {
@@ -281,6 +306,14 @@ export async function enrichCharacterData(data: GeneratedCharacterData, preferre
         temperature: 0.8,
         maxTokens: 512,
       } as any);
+
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(response, {
+        userId: undefined,
+        feature: 'AUTOMATED_GENERATION',
+        featureId: undefined,
+        operation: 'history_generation',
+      });
 
       data.history = response.content.trim();
       logger.info('Generated creative history for character');
@@ -353,6 +386,14 @@ export async function generateStableDiffusionPrompt(
       temperature: 0.6,
       maxTokens: 256,
     } as any);
+
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: undefined,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'avatar_prompt_generation',
+    });
 
     const prompt = response.content.trim();
     logger.info({ prompt }, 'stable_diffusion_prompt_generated');
@@ -516,6 +557,14 @@ export async function compileCharacterDataWithLLM(
       maxTokens: 4096,
     } as any);
 
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: user?.id,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'character_compilation',
+    });
+
     const compiledData = parseJsonSafe<GeneratedCharacterData>((response.content || '').trim());
 
     // Validate all required fields are present
@@ -625,6 +674,14 @@ async function simpleMergeAnalysisResults(
         temperature: 0.7,
         maxTokens: 2048,
       } as any);
+
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(response, {
+        userId: _user?.id,
+        feature: 'AUTOMATED_GENERATION',
+        featureId: undefined,
+        operation: 'character_enrichment_fallback',
+      });
 
       const enriched = parseJsonSafe<GeneratedCharacterData>((response.content || '').trim());
 
