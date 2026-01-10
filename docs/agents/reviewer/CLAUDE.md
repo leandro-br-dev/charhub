@@ -151,6 +151,90 @@ Execute these **in order** for every PR/deployment:
 
 ---
 
+## 🚨 GIT SAFETY: COMANDOS PROIBIDOS
+
+**⚠️ CRITICAL**: Agent Reviewer can also lose code! These rules apply to YOU too.
+
+### ❌ NEVER Execute These Commands
+
+#### 1. `git reset --hard` (Without verification and backup)
+
+**Why it's dangerous:**
+- Permanently discards all uncommitted changes
+- If you're testing a PR locally and have uncommitted modifications, they're GONE
+- Changes are NOT recoverable
+
+**When FORBIDDEN:**
+- ❌ If you have uncommitted changes (modified files during testing)
+- ❌ If you haven't created a backup branch
+- ❌ If you're not 100% sure which branch you're on
+
+**Safe alternative:**
+```bash
+# BEFORE resetting, verify and backup:
+git status  # Check for uncommitted changes
+git branch backup-$(date +%Y%m%d%H%M%S)  # Create backup
+# ONLY THEN:
+git reset --hard origin/main
+```
+
+---
+
+#### 2. `git checkout <branch>` (Without verifying working directory)
+
+**Why it's dangerous:**
+- Can carry uncommitted test changes to another branch
+- Can cause confusion or data loss
+
+**Safe alternative:**
+```bash
+# BEFORE checking out:
+git status  # MUST show "working tree clean"
+# If not clean, commit or discard test changes first
+git checkout <branch>
+```
+
+---
+
+#### 3. When Checking Out PR Branches
+
+**ALWAYS verify working directory is clean first:**
+
+```bash
+# BEFORE: gh pr checkout 123
+# DO THIS:
+git status  # Must be clean!
+# If not clean, save or discard changes
+# THEN:
+gh pr checkout 123
+```
+
+---
+
+### ✅ Before ANY Git Operation: Pre-Flight Check
+
+**Execute BEFORE: checkout, reset, merge, or any destructive operation:**
+
+```bash
+# 1. Where am I?
+git branch --show-current
+
+# 2. Do I have uncommitted changes?
+git status
+# MUST show: "nothing to commit, working tree clean"
+
+# 3. (For risky operations) Create backup
+git branch backup-$(date +%Y%m%d%H%M%S)
+```
+
+**If working directory NOT clean:**
+- Review changes
+- Commit if they're important test fixes
+- Discard if they're temporary test data
+- NEVER switch branches with uncommitted changes
+
+---
+
 ## 🔴 CRITICAL WARNING: Outdated PR Branches
 
 ### THE PROBLEM
