@@ -85,9 +85,6 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
 
       await imageGenerationService.deleteImage(characterId, imageId);
 
-      // Remove from local state
-      setImages((prev) => prev.filter((img) => img.id !== imageId));
-
       // If the deleted image was active, activate the next available image
       if (wasActive) {
         const remainingImages = images.filter((img) => img.id !== imageId);
@@ -95,14 +92,12 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
           // Activate the first remaining image
           const nextImage = remainingImages[0];
           await imageGenerationService.activateImage(characterId, nextImage.id);
-          setImages((prev) =>
-            prev.map((img) => ({
-              ...img,
-              isActive: img.id === nextImage.id,
-            }))
-          );
         }
       }
+
+      // Reload images from server to get the updated state
+      const updatedImages = await imageGenerationService.listCharacterImages(characterId);
+      setImages(updatedImages[imageType] || []);
 
       addToast(
         t('characters:images.imageDeleted', 'Image deleted successfully'),
@@ -111,7 +106,7 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
 
       setDeleteConfirmId(null);
 
-      // Notify parent to refresh
+      // Notify parent to refresh avatar display
       if (onImageActivated) {
         onImageActivated();
       }

@@ -88,8 +88,9 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
   };
 
   const handleModalComplete = () => {
+    // Only refresh images, don't close the modal
+    // The modal will show the result screen and let user decide what to do
     handleImageUpdate();
-    setActiveModal(null);
   };
 
   const openImageGenerateModal = (type: ImageGenerationType) => () => {
