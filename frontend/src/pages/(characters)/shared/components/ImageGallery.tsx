@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../../../../components/ui/Button';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { Modal } from '../../../../components/ui/Modal';
+import { ImageViewerModal } from '../../../../components/ui/ImageViewerModal';
 import { imageGenerationService, type GeneratedImage, type ImagesByType } from '../../../../services/imageGenerationService';
 import { useToast } from '../../../../contexts/ToastContext';
 
@@ -20,6 +21,7 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
   const [activatingId, setActivatingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [viewerImage, setViewerImage] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
     loadImages();
@@ -133,7 +135,8 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
             <CachedImage
               src={image.url}
               alt={`${imageType} image`}
-              className="aspect-square w-full object-cover"
+              className="aspect-square w-full object-cover cursor-pointer"
+              onClick={() => setViewerImage({ url: image.url, title: `${imageType} image` })}
             />
 
             {image.isActive && (
@@ -231,6 +234,16 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
             </div>
           </div>
         </Modal>
+      )}
+
+      {/* Image viewer modal */}
+      {viewerImage && (
+        <ImageViewerModal
+          isOpen={true}
+          onClose={() => setViewerImage(null)}
+          src={viewerImage.url}
+          title={viewerImage.title}
+        />
       )}
     </>
   );

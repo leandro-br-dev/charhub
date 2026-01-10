@@ -4,27 +4,30 @@
 **Priority**: High
 **Branch**: `feature/character-image-generation-fixes`
 **Created**: 2025-01-08
-**Updated**: 2025-01-08
+**Updated**: 2025-01-10
 
 ## Overview
 
-This document outlines remaining fixes for character image generation features. Many of these were previously fixed but lost due to merge conflicts. This phase focuses on improving UX flow after image generation completion and fixing remaining issues.
+This document outlines remaining fixes for character image generation features. Many of these were previously fixed but lost due to merge conflicts and improper git handling. This phase focuses on re-implementing all fixes from scratch with proper incremental commits.
 
-## Completed in Phase 1
+## Implementation Status
 
-The following items were already implemented in the current branch:
+**ALL ITEMS NEED TO BE RE-IMPLEMENTED**
 
-- ✅ AvatarGenerationModal prompt is now optional
-- ✅ Species field mapper fixed to extract name instead of UUID
-- ✅ ReferenceGenerationModal layout fixed (no scroll issues)
-- ✅ Cost calculation is now conditional based on selected view count
-- ✅ Progress tracking stage indexing fixed (off-by-one correction)
-- ✅ Image display during generation filters by timestamp
-- ✅ Multi-stage modal has auto-close countdown (3 seconds)
-- ✅ FaceDetailer added to cover workflows (cover.workflow.json, cover-with-references.workflow.json, cover-with-ipadapter.workflow.json)
-- ✅ CharacterAvatarUploader updated to use modal system
+All previous implementations were lost due to merge conflicts and improper git handling. The following items must be implemented again:
 
-## Remaining Issues
+- ❌ AvatarGenerationModal prompt is now optional
+- ❌ Species field mapper fixed to extract name instead of UUID
+- ❌ ReferenceGenerationModal layout fixed (no scroll issues)
+- ❌ Cost calculation is now conditional based on selected view count
+- ❌ Progress tracking stage indexing fixed (off-by-one correction)
+- ❌ Image display during generation filters by timestamp
+- ❌ Multi-stage modal has auto-close countdown (3 seconds)
+- ❌ FaceDetailer added to cover workflows (cover.workflow.json, cover-with-references.workflow.json, cover-with-ipadapter.workflow.json)
+- ❌ CharacterAvatarUploader updated to use modal system
+- ✅ ImageGallery now uses ImageViewerModal for full-screen image viewing
+
+## Issues to Implement
 
 ### 1. Avatar/Cover Post-Generation UX Enhancement
 
@@ -298,10 +301,19 @@ Handle this separately in issue #108. Add better error message in avatar generat
 
 ### 9. FaceDetailer for Multi-Ref Workflows (Avatar Only)
 
-**Status**: ✅ ALREADY IMPLEMENTED
+**Status**: ❌ NEEDS VERIFICATION
 **Files**: `multi-ref-front.workflow.json`, `multi-ref-side.workflow.json`, `multi-ref-back.workflow.json`
 
-**Note**: The multi-reference workflows already have FaceDetailer nodes implemented. This was verified in Phase 1.
+**Note**: Verify if multi-reference workflows have FaceDetailer nodes implemented. If not, add them.
+
+---
+
+### 10. ImageGallery Full-Screen Image Viewer
+
+**Status**: ✅ IMPLEMENTED (2025-01-10)
+**Files**: `ImageGallery.tsx`
+
+**Implementation**: ImageGallery now uses ImageViewerModal for full-screen image viewing when clicking on images.
 
 ---
 
