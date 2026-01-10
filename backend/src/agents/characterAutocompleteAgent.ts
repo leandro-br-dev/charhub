@@ -1,4 +1,5 @@
 import { callLLM } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import { parseJsonSafe } from '../utils/json';
 type ContentTag =
   | 'VIOLENCE'
@@ -140,6 +141,14 @@ export async function runCharacterAutocomplete(
     temperature: 0.7,
     allowBrowsing: mode === 'web',
     autoExecuteTools: mode === 'web', // Auto-execute web search if in web mode
+  });
+
+  // Track LLM usage for cost analysis
+  trackFromLLMResponse(llmResponse, {
+    userId: undefined,
+    feature: 'AUTOMATED_GENERATION',
+    featureId: undefined,
+    operation: 'character_autocomplete',
   });
 
   // Parse JSON safely - clean markdown if present

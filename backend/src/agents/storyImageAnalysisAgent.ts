@@ -1,4 +1,5 @@
 import { callLLM } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import { logger } from '../config/logger';
 import { parseJsonSafe } from '../utils/json';
 
@@ -81,6 +82,14 @@ export async function analyzeStoryImage(imageUrl: string): Promise<StoryImageAna
       temperature: 0.3,
       maxTokens: 1024,
     } as any);
+
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: undefined,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'story_image_analysis',
+    });
 
     const raw = (response.content || '').trim();
 

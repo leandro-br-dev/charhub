@@ -11,6 +11,7 @@ import { logger } from '../config/logger';
 import { analyzeStoryImage, type StoryImageAnalysisResult } from '../agents/storyImageAnalysisAgent';
 import { generateStoryCoverPrompt } from '../agents/storyCoverPromptAgent';
 import { callLLM } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import { createStory } from '../services/storyService';
 import { queueManager } from '../queues/QueueManager';
 import { QueueName } from '../queues/config';
@@ -112,6 +113,14 @@ async function generateStoryTags(
       maxTokens: 512,
     } as any);
 
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: undefined,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'story_tag_generation',
+    });
+
     const raw = (response.content || '').trim();
     const parsed = parseJsonSafe<{ tagNames?: string[]; contentTagNames?: string[] }>(raw);
 
@@ -177,6 +186,14 @@ async function generateStoryObjectives(
       temperature: 0.4,
       maxTokens: 512,
     } as any);
+
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: undefined,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'story_objectives_generation',
+    });
 
     const raw = (response.content || '').trim();
     const parsed = parseJsonSafe<{ objectives?: string[] }>(raw);
@@ -335,6 +352,14 @@ async function analyzeTextDescription(description: string, preferredLanguage: st
       maxTokens: 4096,
     } as any);
 
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: undefined,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'story_compilation',
+    });
+
     const raw = (response.content || '').trim();
     const parsed = parseJsonSafe<any>(raw);
 
@@ -453,6 +478,14 @@ async function compileStoryDataWithLLM(
       temperature: 0.8,
       maxTokens: 6144, // Increased for character data
     } as any);
+
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: undefined,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'story_compilation_from_image',
+    });
 
     const raw = (response.content || '').trim();
     const parsed = parseJsonSafe<any>(raw);

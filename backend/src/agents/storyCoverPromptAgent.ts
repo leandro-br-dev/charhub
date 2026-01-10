@@ -7,6 +7,7 @@
 
 import { logger } from '../config/logger';
 import { callLLM } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
 import { modelRouter } from '../services/llm/modelRouter';
 
 export interface StoryCoverPromptInput {
@@ -171,6 +172,14 @@ export async function generateStoryCoverPrompt(input: StoryCoverPromptInput): Pr
       temperature: 0.7, // Slightly higher for creativity
       maxTokens: 768, // Increased for more detailed prompts with BREAK syntax
     } as any);
+
+    // Track LLM usage for cost analysis
+    trackFromLLMResponse(response, {
+      userId: undefined,
+      feature: 'AUTOMATED_GENERATION',
+      featureId: undefined,
+      operation: 'story_cover_prompt_generation',
+    });
 
     let prompt = (response.content || '').trim();
 

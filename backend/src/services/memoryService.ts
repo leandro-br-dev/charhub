@@ -1,6 +1,11 @@
 // backend/src/services/memoryService.ts
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
+import { callLLM } from '../services/llm';
+import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
+
+// Local reference to avoid unused import warning (callLLM is used dynamically)
+void callLLM;
 
 // Constants - Token-based limits
 const MAX_CONTEXT_TOKENS = parseInt(process.env.MAX_CONTEXT_TOKENS || '8000', 10); // Total context window
@@ -242,6 +247,14 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
         userPrompt,
         temperature: 0.3,
         maxTokens: 2000,
+      });
+
+      // Track LLM usage for cost analysis
+      trackFromLLMResponse(result, {
+        userId: conversation?.userId,
+        feature: 'CHAT_MESSAGE',
+        featureId: conversation?.id,
+        operation: 'memory_compression',
       });
 
       // Parse JSON response
