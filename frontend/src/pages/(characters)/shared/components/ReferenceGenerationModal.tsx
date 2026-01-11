@@ -128,6 +128,10 @@ export function ReferenceGenerationModal({
     // Allow closing if not actively generating or uploading
     // (After generation completes, isGenerating will be false via onGenerationComplete callback)
     if (!isGenerating && !isUploading) {
+      // If generation was completed, refresh images before closing
+      if (jobStarted) {
+        onComplete();
+      }
       setPrompt('');
       setSampleImage(null);
       setUploadedSampleUrl(null);

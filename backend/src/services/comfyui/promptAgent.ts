@@ -95,10 +95,21 @@ export class PromptAgent {
         generationType: generation.type,
         responseLength: response.content.length,
         responsePreview: response.content.substring(0, 500) + '...',
+        fullResponse: response.content, // Log full response for debugging
       }, 'PromptAgent: Received response from GROK');
 
       // Parse the response to extract positive and negative prompts
-      return this.parseResponse(response.content, generation);
+      const parsed = this.parseResponse(response.content, generation);
+
+      // DEBUG: Log the parsed prompts
+      logger.info({
+        generationType: generation.type,
+        positiveLength: parsed.positive.length,
+        negativeLength: parsed.negative.length,
+        negativePreview: parsed.negative.substring(0, 500) + '...',
+      }, 'PromptAgent: Parsed prompts');
+
+      return parsed;
     } catch (error) {
       console.error('Prompt generation failed:', error);
       // Fallback to basic prompt
@@ -162,15 +173,16 @@ mini dress, fur trimmed, black patterned dress, black sheer embroidered short sl
 The negative prompt must be the OPPOSITE of what you want in the positive prompt:
 
 1. **Dynamic & Contextual**: Base it on the positive prompt content
-2. **Subject Count**: If positive has "1girl" or "solo", negative includes "multiple girls, multiple characters"
+2. **Subject Count**: If positive has "1girl" or "solo", negative MUST include "(multiple girls), (multiple characters)" with parentheses for emphasis
    - If positive has "2girls", DON'T include multiple subjects in negative
+   - **CRITICAL**: Always use parentheses around multiple subject tags: (multiple girls), (multiple characters)
 3. **Quality**: Always include quality negatives but adjust based on positive
 4. **Opposites**: If positive has "smile", negative can include "frown"
 5. **Avoid Contradictions**: Don't negate what's actually wanted in the positive
 
 Example:
 - Positive: "1girl, smile, standing at beach"
-- Negative: "low quality, multiple girls, frown, indoors, poorly drawn hands"
+- Negative: "low quality, (multiple girls), (multiple characters), frown, indoors, poorly drawn hands"
 
 # EMPHASIS RULES
 
