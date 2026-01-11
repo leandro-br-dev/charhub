@@ -83,6 +83,26 @@ enum CharacterGender {
   UNKNOWN
 }
 
+// ============================================================================
+// VISUAL STYLE REFERENCE SYSTEM
+// ============================================================================
+
+// Model type for style resources (checkpoints and LoRAs)
+enum ModelType {
+  CHECKPOINT     // Base model (SDXL, SD1.5, etc)
+  LORA_STYLE     // Style enhancement LoRA (anime screencap, realistic, etc)
+  LORA_CONTENT   // Content-specific LoRA (furry, hentai, etc)
+}
+
+// Content type for checkpoint overrides
+enum ContentType {
+  GENERAL     // Default content
+  FURRY       // Anthropomorphic characters
+  HENTAI      // Adult anime content
+  FANTASY     // Fantasy themes
+  SCI_FI      // Science fiction themes
+}
+
 model User {
   id                String       @id @default(uuid())
   provider          AuthProvider
@@ -236,6 +256,121 @@ model Lora {
   @@index([civitaiModelId])
   @@index([civitaiVersionId])
   @@index([deleted])
+}
+
+// Visual Style Configuration - manages checkpoints and LoRAs per visual style
+model VisualStyleConfig {
+  id   String      @id @default(uuid())
+  style VisualStyle @unique // ANIME, REALISTIC, etc
+  name String // Display name
+  description String? // User-facing description
+  isActive Boolean @default(true)
+
+  // Default checkpoint for this style
+  defaultCheckpointId String?
+  defaultCheckpoint StyleCheckpoint? @relation("DefaultCheckpoint", fields: [defaultCheckpointId], references: [id])
+
+  // Content-specific overrides
+  contentCheckpoints StyleContentCheckpoint[]
+
+  // LoRAs to apply for this style
+  styleLoras StyleLoraMapping[]
+
+  // Style-specific prompt modifiers
+  positivePromptSuffix String? // Tags to add for this style
+  negativePromptSuffix String? // Tags to avoid for this style
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Stable Diffusion Checkpoints for visual styles
+model StyleCheckpoint {
+  id   String   @id @default(uuid())
+  name String // e.g., "RAMTHRUST'S-NSFW-PINK-ALCHEMY-MIX"
+  filename String @unique // e.g., "ramthrustsNSFWPINK_alchemyMix176.safetensors"
+  path String // Full path in ComfyUI
+  civitaiUrl String? // Reference URL
+  modelType ModelType // CHECKPOINT
+
+  // What styles use this checkpoint?
+  defaultForStyles VisualStyleConfig[] @relation("DefaultCheckpoint")
+  contentMappings StyleContentCheckpoint[]
+
+  // Configuration
+  config Json? // { sampler: "DPM++ 2M Karras", cfg: 6, steps: 30 }
+
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([modelType])
+  @@index([isActive])
+}
+
+// LoRA Models for visual styles
+model StyleLora {
+  id   String   @id @default(uuid())
+  name String // e.g., "Velvet's Mythic Fantasy Styles"
+  filename String @unique // e.g., "iLLMythD4rkL1nesV2.safetensors"
+  path String // Full path in ComfyUI
+  civitaiUrl String?
+  modelType ModelType // LORA_STYLE or LORA_CONTENT
+
+  // Trigger words (comma-separated)
+  triggerWords String? // e.g., "D4rkL1nes"
+
+  // What styles use this LoRA?
+  styleMappings StyleLoraMapping[]
+
+  // Configuration
+  weight Float @default(1.0) // Default weight (0.0-1.5)
+
+  isActive Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([modelType])
+  @@index([isActive])
+}
+
+// Maps LoRAs to Visual Styles
+model StyleLoraMapping {
+  id   String @id @default(uuid())
+
+  styleId String
+  styleConfig VisualStyleConfig @relation(fields: [styleId], references: [id], onDelete: Cascade)
+
+  loraId String
+  lora StyleLora @relation(fields: [loraId], references: [id], onDelete: Cascade)
+
+  // Override default weight for this style
+  weight Float?
+
+  // Application priority (lower = applied first)
+  priority Int @default(0)
+
+  @@unique([styleId, loraId])
+  @@index([styleId])
+  @@index([loraId])
+}
+
+// Content-specific checkpoint overrides
+model StyleContentCheckpoint {
+  id   String @id @default(uuid())
+
+  styleId String
+  styleConfig VisualStyleConfig @relation(fields: [styleId], references: [id], onDelete: Cascade)
+
+  checkpointId String
+  checkpoint StyleCheckpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
+
+  contentType ContentType // FURRY, HENTAI, etc
+
+  @@unique([styleId, contentType])
+  @@index([styleId])
+  @@index([contentType])
+  @@index([checkpointId])
 }
 
 // Attire (clothing/appearance system)
