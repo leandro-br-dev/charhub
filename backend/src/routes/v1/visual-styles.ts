@@ -24,7 +24,7 @@ const router = Router();
  *
  * Get all available visual styles
  */
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
   try {
     const styles = await getAllVisualStyles();
 
@@ -46,10 +46,10 @@ router.get('/', async (req, res) => {
  *
  * Get configuration for a specific visual style
  */
-router.get('/:style', async (req, res) => {
+router.get('/:style', async (_req, res) => {
   try {
-    const { style } = req.params;
-    const { contentType } = req.query;
+    const { style } = _req.params;
+    const { contentType } = _req.query;
 
     // Validate style enum
     if (!Object.values(VisualStyle).includes(style as VisualStyle)) {
@@ -152,7 +152,7 @@ router.post('/validate', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Invalid request body',
-        errors: error.errors,
+        errors: error.issues,
       });
     }
 
@@ -215,7 +215,7 @@ router.post('/admin/checkpoint', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Invalid request body',
-        errors: error.errors,
+        errors: error.issues,
       });
     }
 
@@ -270,7 +270,7 @@ router.post('/admin/lora', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Invalid request body',
-        errors: error.errors,
+        errors: error.issues,
       });
     }
 
@@ -341,7 +341,7 @@ router.put('/admin/:style/lora', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Invalid request body',
-        errors: error.errors,
+        errors: error.issues,
       });
     }
 

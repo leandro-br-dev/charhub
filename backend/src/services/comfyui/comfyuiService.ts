@@ -17,6 +17,7 @@ import type {
   GenerateWithReferencesRequest,
   GenerateWithReferencesResponse,
   CleanupResponse,
+  LoraConfig,
 } from './types';
 import { ImageGenerationType } from './types';
 import type { VisualStyle, ContentType } from '../../generated/prisma';
@@ -538,7 +539,7 @@ export class ComfyUIService {
     baseNegative: string,
     style: VisualStyle,
     contentType?: ContentType,
-    existingLoras?: Array<{ filepathRelative: string; strength: number }>
+    existingLoras?: LoraConfig[]
   ): Promise<SDPrompt> {
     // Validate style
     const valid = await isValidVisualStyle(style);
@@ -572,7 +573,7 @@ export class ComfyUIService {
 
     // Merge style LoRAs with existing LoRAs
     // Style LoRAs take priority but existing ones are appended
-    const loras = existingLoras ? [...existingLoras] : [];
+    const loras: LoraConfig[] = existingLoras ? [...existingLoras] : [];
 
     // Add style LoRAs (convert to expected format)
     config.loras.forEach(styleLora => {
@@ -587,6 +588,7 @@ export class ComfyUIService {
       } else {
         // Add new style LoRA
         loras.push({
+          name: styleLora.name,
           filepathRelative: styleLora.path,
           strength: styleLora.weight
         });
