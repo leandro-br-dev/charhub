@@ -105,7 +105,8 @@
       "promoteCharacterUnavailable": "Character promotion is not available yet.",
       "audioPlaybackUnavailable": "Audio playback is not available yet.",
       "reviewFileUnavailable": "File review is not available yet.",
-      "suggestionFailed": "Failed to generate reply suggestion."
+      "suggestionFailed": "Failed to generate reply suggestion.",
+      "developmentPlanProcessFailed": "Error processing the development plan. Could not proceed."
     },
     "success": {
       "created": "Conversation created successfully",

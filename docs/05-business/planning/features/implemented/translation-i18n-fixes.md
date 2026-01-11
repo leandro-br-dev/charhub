@@ -1,9 +1,9 @@
 # Translation & i18n Fixes - Feature Specification
 
-**Status**: 🏗️ Active (Ready for Implementation)
+**Status**: ✅ Ready for Review
 **Version**: 1.0.0
 **Date Created**: 2026-01-02
-**Last Updated**: 2026-01-02
+**Last Updated**: 2026-01-11
 **Priority**: Medium-High
 **Assigned To**: Agent Coder
 **GitHub Issue**: TBD
@@ -720,3 +720,45 @@ frontend/src/
 **End of Specification**
 
 🌍 Ready for implementation - Focus on complete i18n coverage and toast audit!
+
+---
+
+## Status Update
+
+**Status**: Ready for Review
+**PR Created**: 2026-01-11
+**Branch**: feature/translation-i18n-fixes
+**Agent**: Agent Coder
+
+### Implementation Summary
+
+This implementation addresses critical i18n issues identified in the specification:
+
+#### Part 1: Toast Translation Fixes
+- ✅ **frontend/src/pages/plans/index.tsx**: Fixed hardcoded Portuguese toast `'Erro ao ativar assinatura'` → `t('error_starting_subscription')`
+- ✅ **frontend/src/pages/(chat)/shared/components/MessageItem.tsx**: Fixed hardcoded English toast `"Error processing the development plan..."` → `t('errors.developmentPlanProcessFailed')`
+- ✅ **backend/translations/_source/chat.json**: Added new translation key `errors.developmentPlanProcessFailed`
+- ✅ **All 11 languages**: Translation compiled to all supported languages
+
+#### Part 2: Gender Tag Translation Fixes
+- ✅ **frontend/src/pages/(characters)/create-ai/components/CharacterRevealScreen.tsx**: Now uses `t('filters.genders.{gender}', ..., { ns: 'dashboard' })`
+- ✅ **frontend/src/pages/(characters)/create-ai/components/FinalRevealScreen.tsx**: Now uses `t('filters.genders.{gender}', ..., { ns: 'dashboard' })`
+
+#### Part 3: Script Enhancement
+- ✅ **scripts/db-copy-from-env.sh**: Enhanced to accept source/destination parameters (e.g., `agent-03 5403 agent-02 5402`)
+- Previously hardcoded to agent-01, now flexible for any environment
+
+### Testing Completed
+- ✅ Backend lint passed (0 errors, 353 pre-existing warnings)
+- ✅ Frontend build passed
+- ✅ TypeScript compilation successful
+- ✅ Agent-02 database restored from agent-03 (3 users, 34 characters, 1 story)
+- ✅ Backend verified healthy
+
+### What Changed
+- Fixed 2 hardcoded toasts to use i18n keys
+- Fixed 2 locations displaying raw gender ENUMs to use translations
+- Enhanced db-copy-from-env.sh script with source/destination parameters
+- Added 1 new translation key compiled to 11 languages
+
+### Ready for Agent Reviewer

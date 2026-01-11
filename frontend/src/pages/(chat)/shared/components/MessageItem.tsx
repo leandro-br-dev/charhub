@@ -216,7 +216,7 @@ const MessageItem = memo(
               "Failed to process and clean development plan for sending:",
               e
             );
-            addToast("Error processing the development plan. Could not proceed.", "error");
+            addToast(t('errors.developmentPlanProcessFailed'), "error");
             return;
           }
         }

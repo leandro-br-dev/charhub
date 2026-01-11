@@ -8,7 +8,7 @@ interface CharacterRevealScreenProps {
 }
 
 export function CharacterRevealScreen({ step, data }: CharacterRevealScreenProps): JSX.Element {
-  const { t } = useTranslation(['characters', 'common']);
+  const { t } = useTranslation(['characters', 'common', 'dashboard']);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export function CharacterRevealScreen({ step, data }: CharacterRevealScreenProps
                 <p className="text-xs uppercase tracking-wide text-muted mb-1">
                   {t('characters:form.fields.gender', 'Gender')}
                 </p>
-                <p className="text-xl font-semibold capitalize">{typeof data.gender === 'object' ? data.gender.name : data.gender}</p>
+                <p className="text-xl font-semibold capitalize">{t(`filters.genders.${typeof data.gender === 'object' ? data.gender.name : data.gender}`, typeof data.gender === 'object' ? data.gender.name : data.gender, { ns: 'dashboard' })}</p>
               </div>
             )}
           </div>

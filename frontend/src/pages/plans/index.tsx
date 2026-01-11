@@ -110,7 +110,7 @@ export default function PlansPage() {
       await loadData();
     } catch (err: any) {
       console.error('[Plans] Failed to activate subscription:', err);
-      addToast(err.response?.data?.message || 'Erro ao ativar assinatura', 'error');
+      addToast(err.response?.data?.message || t('error_starting_subscription'), 'error');
     }
   };
 
