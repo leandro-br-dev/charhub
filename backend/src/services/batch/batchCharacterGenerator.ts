@@ -484,10 +484,28 @@ export class BatchCharacterGenerator {
     }
 
     // Step 8: Wait for avatar to complete and generate reference images
+    logger.info({
+      characterId: character.id,
+      hasAvatarJobId: !!avatarJobId,
+      referenceGenerationEnabled: this.REFERENCE_GENERATION_ENABLED,
+      generateReferences: this.GENERATE_REFERENCES,
+    }, 'Step 8: Checking if reference generation should run');
+
     if (avatarJobId && this.REFERENCE_GENERATION_ENABLED) {
       try {
+        logger.info({
+          characterId: character.id,
+          jobId: avatarJobId,
+          timeout: this.REFERENCE_WAIT_TIMEOUT,
+        }, 'Step 8: Waiting for avatar generation to complete...');
+
         // Wait for avatar generation to complete
         const avatarCompleted = await this.waitForAvatarGeneration(character.id, avatarJobId);
+
+        logger.info({
+          characterId: character.id,
+          avatarCompleted,
+        }, 'Step 8: Avatar wait completed');
 
         if (avatarCompleted) {
           // Generate reference images (4 views: face, front, side, back)
@@ -519,6 +537,12 @@ export class BatchCharacterGenerator {
           characterId: character.id,
         }, 'Reference generation failed for automated character (non-critical, continuing...)');
       }
+    } else {
+      logger.info({
+        characterId: character.id,
+        avatarJobId,
+        referenceGenerationEnabled: this.REFERENCE_GENERATION_ENABLED,
+      }, 'Step 8: Skipping reference generation (conditions not met)');
     }
 
     return character;
