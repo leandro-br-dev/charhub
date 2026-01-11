@@ -72,6 +72,14 @@ export class PromptAgent {
     // Build the user prompt with all context
     const userPrompt = this.buildUserPrompt(input);
 
+    // DEBUG: Log the prompts being sent to GROK
+    logger.info({
+      generationType: generation.type,
+      systemPromptLength: systemPrompt.length,
+      userPromptLength: userPrompt.length,
+      systemPromptPreview: systemPrompt.substring(0, 500) + '...',
+    }, 'PromptAgent: Sending request to GROK');
+
     try {
       const response = await callGrok({
         model: 'grok-4-1-fast-non-reasoning',
@@ -80,6 +88,13 @@ export class PromptAgent {
         maxTokens: 800,
         temperature: 0.7,
       });
+
+      // DEBUG: Log the response from GROK
+      logger.info({
+        generationType: generation.type,
+        responseLength: response.content.length,
+        responsePreview: response.content.substring(0, 500) + '...',
+      }, 'PromptAgent: Received response from GROK');
 
       // Parse the response to extract positive and negative prompts
       return this.parseResponse(response.content, generation);
