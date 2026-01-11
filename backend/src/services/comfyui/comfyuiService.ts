@@ -19,6 +19,12 @@ import type {
   CleanupResponse,
 } from './types';
 import { ImageGenerationType } from './types';
+import type { VisualStyle, ContentType } from '../../generated/prisma';
+import {
+  getVisualStyleConfiguration,
+  buildComfyUIPayload,
+  isValidVisualStyle,
+} from '../visualStyleService';
 import avatarWorkflow from './workflows/avatar.workflow.json';
 import avatarWithIPAdapterWorkflow from './workflows/avatar-with-ipadapter.workflow.json';
 import coverWorkflow from './workflows/cover.workflow.json';
@@ -507,6 +513,224 @@ export class ComfyUIService {
   /**
    * ============================================================================
    * END MIDDLEWARE v2.0 HIGH-LEVEL API METHODS
+   * ============================================================================
+   */
+
+  /**
+   * ============================================================================
+   * VISUAL STYLE REFERENCE SYSTEM INTEGRATION
+   * ============================================================================
+   */
+
+  /**
+   * Prepare SDPrompt with visual style configuration
+   * Applies checkpoint-specific config, LoRAs, and prompt modifiers
+   *
+   * @param basePrompt - Base positive prompt
+   * @param baseNegative - Base negative prompt
+   * @param style - Visual style (ANIME, REALISTIC, etc)
+   * @param contentType - Optional content type for checkpoint override
+   * @param existingLoras - Optional existing LoRAs to merge with style
+   * @returns Enhanced SDPrompt with style applied
+   */
+  async applyVisualStyleToPrompt(
+    basePrompt: string,
+    baseNegative: string,
+    style: VisualStyle,
+    contentType?: ContentType,
+    existingLoras?: Array<{ filepathRelative: string; strength: number }>
+  ): Promise<SDPrompt> {
+    // Validate style
+    const valid = await isValidVisualStyle(style);
+    if (!valid) {
+      logger.warn({ style }, 'Invalid visual style, using base prompt');
+      return {
+        positive: basePrompt,
+        negative: baseNegative,
+        loras: existingLoras || []
+      };
+    }
+
+    // Get visual style configuration
+    const config = await getVisualStyleConfiguration(style, contentType);
+    if (!config) {
+      logger.warn({ style }, 'No visual style configuration found, using base prompt');
+      return {
+        positive: basePrompt,
+        negative: baseNegative,
+        loras: existingLoras || []
+      };
+    }
+
+    // Build enhanced prompts
+    const { positive, negative } = await this.applyVisualStyleToPrompts(
+      style,
+      contentType,
+      basePrompt,
+      baseNegative
+    );
+
+    // Merge style LoRAs with existing LoRAs
+    // Style LoRAs take priority but existing ones are appended
+    const loras = existingLoras ? [...existingLoras] : [];
+
+    // Add style LoRAs (convert to expected format)
+    config.loras.forEach(styleLora => {
+      // Check if LoRA with same filename already exists
+      const existingIndex = loras.findIndex(
+        l => l.filepathRelative.includes(styleLora.filename)
+      );
+
+      if (existingIndex >= 0) {
+        // Update existing LoRA weight
+        loras[existingIndex].strength = styleLora.weight;
+      } else {
+        // Add new style LoRA
+        loras.push({
+          filepathRelative: styleLora.path,
+          strength: styleLora.weight
+        });
+      }
+    });
+
+    return {
+      positive,
+      negative,
+      loras
+    };
+  }
+
+  /**
+   * Get visual style configuration for external use
+   *
+   * @param style - Visual style to query
+   * @param contentType - Optional content type for checkpoint override
+   * @returns Style configuration or null
+   */
+  async getVisualStyleConfig(
+    style: VisualStyle,
+    contentType?: ContentType
+  ): Promise<{
+    checkpoint: string;
+    checkpointConfig: {
+      sampler?: string;
+      cfg?: number;
+      steps?: number;
+      clipSkip?: number;
+    };
+    loras: Array<{ filename: string; weight: number }>;
+    positive: string;
+    negative: string;
+  } | null> {
+    return buildComfyUIPayload(
+      style,
+      contentType,
+      '', // Base prompt will be added by caller
+      ''
+    );
+  }
+
+  /**
+   * Apply visual style to prompts (internal helper)
+   */
+  private async applyVisualStyleToPrompts(
+    style: VisualStyle,
+    contentType: ContentType | undefined,
+    basePositive: string,
+    baseNegative: string
+  ): Promise<{ positive: string; negative: string }> {
+    const config = await getVisualStyleConfiguration(style, contentType);
+
+    if (!config) {
+      return { positive: basePositive, negative: baseNegative };
+    }
+
+    let positive = basePositive;
+    let negative = baseNegative;
+
+    // Add LoRA trigger words to positive prompt
+    const triggerWords = config.loras
+      .map(lora => lora.triggerWords)
+      .filter(Boolean)
+      .join(', ');
+    if (triggerWords) {
+      positive = `${positive}, ${triggerWords}`;
+    }
+
+    // Add style-specific suffixes
+    if (config.positivePromptSuffix) {
+      positive = `${positive}, ${config.positivePromptSuffix}`;
+    }
+
+    if (config.negativePromptSuffix) {
+      negative = `${negative}, ${config.negativePromptSuffix}`;
+    }
+
+    return { positive, negative };
+  }
+
+  /**
+   * Update workflow with visual style checkpoint and LoRAs
+   * This method modifies the workflow in-place to use the style's resources
+   *
+   * @param workflow - ComfyUI workflow to modify
+   * @param style - Visual style to apply
+   * @param contentType - Optional content type for checkpoint override
+   * @returns Modified workflow with style applied
+   */
+  async applyVisualStyleToWorkflow(
+    workflow: ComfyWorkflow,
+    style: VisualStyle,
+    contentType?: ContentType
+  ): Promise<ComfyWorkflow> {
+    const config = await getVisualStyleConfiguration(style, contentType);
+
+    if (!config) {
+      logger.warn({ style }, 'No visual style configuration found, workflow unchanged');
+      return workflow;
+    }
+
+    // Deep clone workflow to avoid modifying original
+    const modifiedWorkflow = JSON.parse(JSON.stringify(workflow));
+
+    // Update checkpoint if LoraLoader node exists
+    // Note: Checkpoint loading is typically done in a separate node
+    // This is a placeholder for future checkpoint dynamic loading
+    logger.debug(
+      { checkpoint: config.checkpoint.filename },
+      'Visual style checkpoint (note: checkpoint loading not yet implemented in workflows)'
+    );
+
+    // Update LoRAs in LoraLoader node (node 11 in most workflows)
+    if (modifiedWorkflow['11'] && modifiedWorkflow['11'].class_type === 'LoraLoader') {
+      const loraNode = modifiedWorkflow['11'].inputs;
+
+      // Clear existing LoRAs
+      for (let i = 1; i <= 4; i++) {
+        const loraNum = i.toString().padStart(2, '0');
+        loraNode[`lora_${loraNum}`] = 'None';
+        loraNode[`strength_${loraNum}`] = 0;
+      }
+
+      // Apply style LoRAs
+      config.loras.slice(0, 4).forEach((lora, index) => {
+        const loraNum = (index + 1).toString().padStart(2, '0');
+        loraNode[`lora_${loraNum}`] = lora.path;
+        loraNode[`strength_${loraNum}`] = lora.weight;
+      });
+
+      logger.debug(
+        { loraCount: config.loras.length },
+        'Applied visual style LoRAs to workflow'
+      );
+    }
+
+    return modifiedWorkflow;
+  }
+
+  /**
+   * ============================================================================
+   * END VISUAL STYLE REFERENCE SYSTEM INTEGRATION
    * ============================================================================
    */
 
