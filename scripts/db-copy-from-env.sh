@@ -19,22 +19,31 @@ NC='\033[0m' # No Color
 
 SOURCE_ENV="${1:-}"
 SOURCE_PORT="${2:-}"
+DEST_ENV="${3:-}"
+DEST_PORT="${4:-}"
 
-if [ -z "$SOURCE_ENV" ] || [ -z "$SOURCE_PORT" ]; then
+if [ -z "$SOURCE_ENV" ] || [ -z "$SOURCE_PORT" ] || [ -z "$DEST_ENV" ] || [ -z "$DEST_PORT" ]; then
   echo -e "${RED}❌ ERROR: Missing parameters${NC}"
   echo ""
-  echo "Usage: ./scripts/db-copy-from-env.sh <source-env> <source-port>"
+  echo "Usage: ./scripts/db-copy-from-env.sh <source-env> <source-port> <dest-env> <dest-port>"
   echo ""
   echo "Examples:"
-  echo "  ./scripts/db-copy-from-env.sh agent-02 5402   # Copy from agent-02"
-  echo "  ./scripts/db-copy-from-env.sh agent-03 5403   # Copy from agent-03"
-  echo "  ./scripts/db-copy-from-env.sh reviewer 5404   # Copy from reviewer"
+  echo "  ./scripts/db-copy-from-env.sh agent-03 5403 agent-02 5402   # Copy from agent-03 to agent-02"
+  echo "  ./scripts/db-copy-from-env.sh agent-03 5403 agent-01 5401   # Copy from agent-03 to agent-01"
+  echo "  ./scripts/db-copy-from-env.sh reviewer 5404 agent-02 5402   # Copy from reviewer to agent-02"
   echo ""
   echo "This script:"
   echo "  ✓ Connects to source database via NETWORK (read-only)"
   echo "  ✓ Creates dump file"
-  echo "  ✓ Restores to agent-01 database"
+  echo "  ✓ Restores to destination database"
   echo "  ✓ NEVER touches source volumes (100% safe)"
+  exit 1
+fi
+
+# Resolve absolute path for destination project
+DEST_PROJECT_PATH="/root/projects/charhub-${DEST_ENV}"
+if [ ! -d "$DEST_PROJECT_PATH" ]; then
+  echo -e "${RED}❌ ERROR: Destination project directory not found: ${DEST_PROJECT_PATH}${NC}"
   exit 1
 fi
 
@@ -80,12 +89,12 @@ echo ""
 # Confirm with User
 # ============================================================================
 
-echo -e "${YELLOW}⚠️  WARNING: This will REPLACE all data in agent-01 database${NC}"
+echo -e "${YELLOW}⚠️  WARNING: This will REPLACE all data in ${DEST_ENV} database${NC}"
 echo ""
 echo "Source: ${SOURCE_ENV} (localhost:${SOURCE_PORT})"
-echo "Destination: agent-01 (current environment)"
+echo "Destination: ${DEST_ENV} (${DEST_PROJECT_PATH})"
 echo ""
-echo "Current agent-01 data will be lost!"
+echo "Current ${DEST_ENV} data will be lost!"
 echo ""
 read -p "Continue? (yes/NO): " -r
 
@@ -97,11 +106,11 @@ fi
 echo ""
 
 # ============================================================================
-# Stop Agent-01 Backend
+# Stop Destination Backend
 # ============================================================================
 
-echo -e "${BLUE}🛑 Stopping agent-01 backend...${NC}"
-cd /root/projects/charhub-agent-01
+echo -e "${BLUE}🛑 Stopping ${DEST_ENV} backend...${NC}"
+cd "${DEST_PROJECT_PATH}"
 docker compose stop backend 2>/dev/null || true
 sleep 2
 
@@ -129,25 +138,17 @@ echo -e "${GREEN}✓ Dump created: ${DUMP_LINES} lines${NC}"
 echo "  File: ${DUMP_FILE}"
 
 # ============================================================================
-# Restore to Agent-01
+# Restore to Destination
 # ============================================================================
 
 echo ""
-echo -e "${BLUE}📥 Restoring dump to agent-01...${NC}"
+echo -e "${BLUE}📥 Restoring dump to ${DEST_ENV}...${NC}"
 
-# Get agent-01 postgres port
-AGENT01_PORT=$(docker compose port postgres 5432 2>/dev/null | cut -d: -f2)
-
-if [ -z "$AGENT01_PORT" ]; then
-  echo -e "${RED}❌ ERROR: Cannot find agent-01 postgres port${NC}"
-  exit 1
-fi
-
-echo "Agent-01 postgres port: ${AGENT01_PORT}"
+echo "Destination postgres port: ${DEST_PORT}"
 
 PGPASSWORD=charhub_dev_password psql \
   -h localhost \
-  -p "$AGENT01_PORT" \
+  -p "$DEST_PORT" \
   -U charhub \
   -d charhub_db \
   < "$DUMP_FILE" 2>&1 | grep -v "^DROP\|^CREATE\|^ALTER\|^COPY" | tail -20
@@ -161,9 +162,9 @@ echo -e "${GREEN}✓ Restore completed${NC}"
 echo ""
 echo -e "${BLUE}🔍 Verifying restored data...${NC}"
 
-RESTORED_USERS=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$AGENT01_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"User\";" | tr -d ' ')
-RESTORED_CHARS=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$AGENT01_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"Character\";" | tr -d ' ')
-RESTORED_STORIES=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$AGENT01_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"Story\";" | tr -d ' ')
+RESTORED_USERS=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$DEST_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"User\";" | tr -d ' ')
+RESTORED_CHARS=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$DEST_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"Character\";" | tr -d ' ')
+RESTORED_STORIES=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$DEST_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"Story\";" | tr -d ' ')
 
 echo "  Users:      ${RESTORED_USERS}"
 echo "  Characters: ${RESTORED_CHARS}"
@@ -174,7 +175,7 @@ echo "  Stories:    ${RESTORED_STORIES}"
 # ============================================================================
 
 echo ""
-echo -e "${BLUE}🚀 Restarting agent-01 backend...${NC}"
+echo -e "${BLUE}🚀 Restarting ${DEST_ENV} backend...${NC}"
 docker compose up -d backend
 sleep 5
 
@@ -202,7 +203,7 @@ echo -e "${GREEN}✓ Database copy completed successfully${NC}"
 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 echo "Source: ${SOURCE_ENV} (${USER_COUNT} users)"
-echo "Destination: agent-01 (${RESTORED_USERS} users, ${RESTORED_CHARS} characters, ${RESTORED_STORIES} stories)"
+echo "Destination: ${DEST_ENV} (${RESTORED_USERS} users, ${RESTORED_CHARS} characters, ${RESTORED_STORIES} stories)"
 echo ""
-echo "Agent-01 is ready for testing!"
+echo "${DEST_ENV} is ready for testing!"
 echo ""
