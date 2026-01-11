@@ -9,6 +9,7 @@ import { Modal } from '../../../../components/ui/Modal';
 import { characterService } from '../../../../services/characterService';
 import { imageGenerationService } from '../../../../services/imageGenerationService';
 import { useToast } from '../../../../contexts/ToastContext';
+import { UnifiedImageGenerationModal } from './UnifiedImageGenerationModal';
 
 interface CharacterAvatarUploaderProps {
   mode: 'create' | 'edit';
@@ -42,6 +43,8 @@ export function CharacterAvatarUploader({
   const [urlError, setUrlError] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [imageCreditCost, setImageCreditCost] = useState<number>(10); // Default 10 credits
+  const [isGenerationModalOpen, setIsGenerationModalOpen] = useState(false);
+  const [refreshTriggerLocal, setRefreshTriggerLocal] = useState(0);
 
   useEffect(() => {
     setPreviewUrl(currentAvatar ?? null);
@@ -86,6 +89,26 @@ export function CharacterAvatarUploader({
 
     fetchServiceCosts();
   }, []);
+
+  // Fetch active avatar when local refresh trigger changes
+  useEffect(() => {
+    if (!characterId || refreshTriggerLocal === 0) return;
+
+    const fetchActiveAvatar = async () => {
+      try {
+        const images = await imageGenerationService.listCharacterImages(characterId);
+        const activeAvatar = images.AVATAR?.find((img) => img.isActive);
+        if (activeAvatar) {
+          setPreviewUrl(activeAvatar.url);
+          onAvatarChange(activeAvatar.url);
+        }
+      } catch (error) {
+        console.error('Failed to fetch active avatar:', error);
+      }
+    };
+
+    fetchActiveAvatar();
+  }, [refreshTriggerLocal, characterId, onAvatarChange]);
 
   const helperText = mode === 'create'
     ? t(
@@ -258,7 +281,7 @@ export function CharacterAvatarUploader({
     }
   };
 
-  const handleAIGeneration = async () => {
+  const handleAIGeneration = () => {
     if (!characterId) {
       addToast(
         t('characters:form.avatar.saveFirst', 'Please save the character first before generating avatar'),
@@ -266,74 +289,12 @@ export function CharacterAvatarUploader({
       );
       return;
     }
+    setIsGenerationModalOpen(true);
+  };
 
-    try {
-      setIsGenerating(true);
-      setUploadError(null);
-
-      // Check balance
-      const balanceResponse = await api.post<{
-        success: boolean;
-        data: { hasEnough: boolean; currentBalance: number; requiredCredits: number; deficit: number };
-      }>('/api/v1/credits/check-balance', {
-        requiredCredits: imageCreditCost,
-      });
-
-      if (!balanceResponse.data.data.hasEnough) {
-        addToast(
-          t(
-            'characters:form.avatar.insufficientCredits',
-            'Insufficient credits. You need {{required}} credits but have {{current}}.',
-            {
-              required: imageCreditCost,
-              current: balanceResponse.data.data.currentBalance,
-            }
-          ),
-          'error'
-        );
-        return;
-      }
-
-      // Start generation
-      const { jobId } = await imageGenerationService.generateAvatar({ characterId });
-
-      addToast(
-        t(
-          'characters:form.avatar.generationStarted',
-          'Avatar generation started! This may take a minute. Check the Images tab for results.'
-        ),
-        'success',
-        8000
-      );
-
-      // Optional: Poll for completion
-      imageGenerationService
-        .pollJobStatus(jobId, undefined, 60, 5000)
-        .then((status) => {
-          if (status.state === 'completed' && status.result?.success) {
-            addToast(
-              t('characters:form.avatar.generationComplete', 'Avatar generated successfully!'),
-              'success'
-            );
-          } else if (status.state === 'failed') {
-            addToast(
-              t('characters:form.avatar.generationFailed', 'Avatar generation failed. Please try again.'),
-              'error'
-            );
-          }
-        })
-        .catch((error) => {
-          console.error('Failed to poll job status:', error);
-        });
-    } catch (error) {
-      console.error('[CharacterAvatarUploader] AI generation failed', error);
-      addToast(
-        t('characters:form.avatar.generationError', 'Failed to start avatar generation. Please try again.'),
-        'error'
-      );
-    } finally {
-      setIsGenerating(false);
-    }
+  const handleGenerationComplete = () => {
+    // Refresh avatar from server - DON'T close modal, let user see result
+    setRefreshTriggerLocal(prev => prev + 1);
   };
 
   return (
@@ -505,6 +466,15 @@ export function CharacterAvatarUploader({
           cropShape="round"
         />
       )}
+
+      {/* Unified Image Generation Modal */}
+      <UnifiedImageGenerationModal
+        isOpen={isGenerationModalOpen}
+        onClose={() => setIsGenerationModalOpen(false)}
+        characterId={characterId || ''}
+        imageType="AVATAR"
+        onComplete={handleGenerationComplete}
+      />
     </div>
   );
 }

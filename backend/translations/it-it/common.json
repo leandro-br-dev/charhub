@@ -12,11 +12,11 @@
     "account": "Account",
     "continueGoogle": "Continua con Google",
     "continueFacebook": "Continua con Facebook",
-    "privacy": "Continuando accetti la nostra informativa sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di profilo di base.",
+    "privacy": "Continuando accetti la nostra politica sulla privacy e autorizzi CharHub ad accedere alle tue informazioni di profilo di base.",
     "logout": "Esci",
     "logoutLoading": "Uscita in corso...",
     "authenticatedUser": "Utente autenticato",
-    "tokenStored": "Memorizzato in cookie HTTP-only",
+    "tokenStored": "Memorizzato in cookie solo HTTP",
     "navDashboard": "Dashboard",
     "navCharacters": "Personaggi",
     "navTagline": "Demo OAuth sicura",
@@ -24,7 +24,7 @@
       "google": "Google",
       "facebook": "Facebook"
     },
-    "provider": "Fornitore",
+    "provider": "Provider",
     "theme": {
       "label": "Tema",
       "option": {
@@ -60,14 +60,14 @@
       "ariaLabel": "Filtro contenuti",
       "title": "Filtro Contenuti",
       "ageRating": "Classificazione per età",
-      "blurNsfw": "Sfoca Contenuti Espliciti",
-      "none": "Nessun Filtro",
-      "blur": "Sfoca Contenuti Maturo",
-      "hidden": "Nascondi Contenuti Maturo",
+      "blurNsfw": "Sfoca contenuti espliciti",
+      "none": "Nessun filtro",
+      "blur": "Sfoca sensibili",
+      "hidden": "Nascondi maturi",
       "descriptions": {
         "none": "Mostra tutti i contenuti senza restrizioni",
-        "blur": "Applica sfocatura ai contenuti maturo",
-        "hidden": "Nascondi completamente i contenuti maturo"
+        "blur": "Applica sfocatura ai contenuti maturi",
+        "hidden": "Nascondi completamente i contenuti maturi"
       },
       "ageRatings": {
         "L": "Libero",
@@ -79,7 +79,7 @@
       },
       "noBirthdateWarning": "⚠️ Età non registrata",
       "noBirthdateDescription": "Per accedere ai contenuti con restrizioni di età, aggiungi la tua data di nascita nelle impostazioni.",
-      "goToSettings": "Vai alle Impostazioni",
+      "goToSettings": "Vai alle impostazioni",
       "blocked": "(bloccato)"
     },
     "errors": {
@@ -94,6 +94,9 @@
     "tryAgain": "Riprova",
     "generate": "Genera",
     "generating": "Generazione in corso...",
+    "generateAgain": "Genera di nuovo",
+    "regenerate": "Rigenera",
+    "close": "Chiudi",
     "done": "Fatto"
   }
 }

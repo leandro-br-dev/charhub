@@ -95,7 +95,10 @@
     "tryAgain": "Try Again",
     "generate": "Generate",
     "generating": "Generating...",
+    "generateAgain": "Generate Again",
+    "regenerate": "Regenerate",
     "use": "Use",
+    "close": "Close",
     "done": "Done"
   }
 }

@@ -46,7 +46,7 @@ export interface MultiStageGenerationOptions {
   }>;
   userSamples?: ReferenceImage[]; // User-provided SAMPLE images (1-4)
   userId: string;
-  onProgress?: (stage: number, total: number, message: string) => void;
+  onProgress?: (stage: number, total: number, message: string, completedImages?: Array<{ content: string; url: string }>) => void;
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to generate
 }
 
@@ -262,6 +262,9 @@ export class MultiStageCharacterGenerator {
 
       logger.info({ characterId, otherReferencesCount: existingOtherReferences.length }, 'Found existing reference images for other views');
 
+      // Track completed images for progress callback
+      const completedImages: Array<{ content: string; url: string }> = [];
+
       for (let i = 0; i < viewsToProcess.length; i++) {
         const view = viewsToProcess[i];
         const stageNumber = i + 1;
@@ -344,7 +347,10 @@ export class MultiStageCharacterGenerator {
 
         logger.info({ stage: stageNumber, view: view.content, imageUrl: publicUrl }, `Reference generation completed`);
 
-        onProgress?.(stageNumber, viewsToProcess.length, `Completed reference ${view.content}`);
+        // Add to completed images for progress callback
+        completedImages.push({ content: view.content, url: publicUrl });
+
+        onProgress?.(stageNumber, viewsToProcess.length, `Completed reference ${view.content}`, completedImages);
       }
 
       // Cleanup ComfyUI temp folder

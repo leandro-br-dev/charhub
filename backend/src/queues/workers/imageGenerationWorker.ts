@@ -665,9 +665,9 @@ async function processMultiStageDatasetGeneration(
       userSamples: referenceImages || [],
       userId,
       viewsToGenerate,
-      onProgress: (stage, total, message) => {
-        logger.info({ jobId: job.id, stage, total, message }, 'Multi-stage progress update');
-        job.updateProgress({ stage, total, message });
+      onProgress: (stage, total, message, completedImages) => {
+        // Include completedImages in progress for real-time UI updates
+        job.updateProgress({ stage, total, message, completedImages });
       },
     });
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '../../../../components/ui/Button';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { Modal } from '../../../../components/ui/Modal';
+import { ImageViewerModal } from '../../../../components/ui/ImageViewerModal';
 import { imageGenerationService, type GeneratedImage, type ImagesByType } from '../../../../services/imageGenerationService';
 import { useToast } from '../../../../contexts/ToastContext';
 
@@ -20,6 +21,7 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
   const [activatingId, setActivatingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+  const [viewerImage, setViewerImage] = useState<{ url: string; title: string } | null>(null);
 
   useEffect(() => {
     loadImages();
@@ -76,10 +78,26 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
   const handleDelete = async (imageId: string) => {
     try {
       setDeletingId(imageId);
+
+      // Check if the deleted image was the active one
+      const deletedImage = images.find((img) => img.id === imageId);
+      const wasActive = deletedImage?.isActive;
+
       await imageGenerationService.deleteImage(characterId, imageId);
 
-      // Remove from local state
-      setImages((prev) => prev.filter((img) => img.id !== imageId));
+      // If the deleted image was active, activate the next available image
+      if (wasActive) {
+        const remainingImages = images.filter((img) => img.id !== imageId);
+        if (remainingImages.length > 0) {
+          // Activate the first remaining image
+          const nextImage = remainingImages[0];
+          await imageGenerationService.activateImage(characterId, nextImage.id);
+        }
+      }
+
+      // Reload images from server to get the updated state
+      const updatedImages = await imageGenerationService.listCharacterImages(characterId);
+      setImages(updatedImages[imageType] || []);
 
       addToast(
         t('characters:images.imageDeleted', 'Image deleted successfully'),
@@ -87,6 +105,11 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
       );
 
       setDeleteConfirmId(null);
+
+      // Notify parent to refresh avatar display
+      if (onImageActivated) {
+        onImageActivated();
+      }
     } catch (error) {
       console.error('Failed to delete image:', error);
       addToast(
@@ -129,6 +152,7 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
                 ? 'border-accent shadow-lg ring-2 ring-accent/20'
                 : 'border-border hover:border-accent/50'
             }`}
+            onClick={() => setViewerImage({ url: image.url, title: `${imageType} image` })}
           >
             <CachedImage
               src={image.url}
@@ -144,11 +168,11 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
 
             {/* Action buttons overlay */}
             {!image.isActive && (
-              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
                 <Button
-                  onClick={() => handleActivate(image.id)}
+                  onClick={(e) => { e.stopPropagation(); handleActivate(image.id); }}
                   disabled={activatingId === image.id}
-                  className="bg-accent text-white hover:bg-accent/90"
+                  className="pointer-events-auto bg-accent text-white hover:bg-accent/90"
                   size="small"
                 >
                   {activatingId === image.id ? (
@@ -163,19 +187,19 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
             )}
 
             {/* Delete button - always visible on hover, positioned at top right */}
-            <div className="absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
+            <div className="pointer-events-none absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100">
               <button
                 type="button"
-                onClick={() => setDeleteConfirmId(image.id)}
+                onClick={(e) => { e.stopPropagation(); setDeleteConfirmId(image.id); }}
                 disabled={deletingId === image.id}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow-lg hover:bg-red-600 disabled:opacity-50"
+                className="pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow-lg hover:bg-red-600 disabled:opacity-50"
                 title={t('characters:images.delete', 'Delete image') ?? 'Delete image'}
               >
                 <span className="material-symbols-outlined text-base">delete</span>
               </button>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-2">
               <p className="text-xs text-white">
                 {new Date(image.createdAt).toLocaleDateString()}
               </p>
@@ -231,6 +255,16 @@ export function ImageGallery({ characterId, imageType, onImageActivated }: Image
             </div>
           </div>
         </Modal>
+      )}
+
+      {/* Image viewer modal */}
+      {viewerImage && (
+        <ImageViewerModal
+          isOpen={true}
+          onClose={() => setViewerImage(null)}
+          src={viewerImage.url}
+          title={viewerImage.title}
+        />
       )}
     </>
   );

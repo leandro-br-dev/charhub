@@ -123,7 +123,7 @@ export function IdentityTab({ form }: IdentityTabProps): JSX.Element {
             >
               <option value="">{t('characters:form.placeholders.speciesSelect', 'Select species')}</option>
               {sortedSpeciesOptions.map(option => (
-                <option key={option.id} value={option.name}>
+                <option key={option.id} value={option.id}>
                   {t(`species:${option.name}.name`, option.name)}
                 </option>
               ))}

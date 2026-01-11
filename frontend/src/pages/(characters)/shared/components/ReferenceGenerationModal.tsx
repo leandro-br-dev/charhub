@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import api from '../../../../lib/api';
 import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { PromptWithSampleImageInput } from '../../../../components/features/image-generation';
@@ -42,6 +43,7 @@ export function ReferenceGenerationModal({
   const { addToast } = useToast();
 
   const [prompt, setPrompt] = useState('');
+  const [referenceImageCreditCost, setReferenceImageCreditCost] = useState<number>(10); // Default 10 credits
   const [sampleImage, setSampleImage] = useState<File | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -49,6 +51,24 @@ export function ReferenceGenerationModal({
   const [selectedViews, setSelectedViews] = useState<ReferenceView[]>(['face', 'front', 'side', 'back']);
   const [selectAll, setSelectAll] = useState(true);
   const [uploadedSampleUrl, setUploadedSampleUrl] = useState<string | null>(null);
+
+  // Fetch service costs on mount
+  useEffect(() => {
+    const fetchServiceCosts = async () => {
+      try {
+        const response = await api.get<{ success: boolean; data: any[] }>('/api/v1/credits/service-costs');
+        // For reference images, we use the same cost as IMAGE_GENERATION
+        const imageGenCost = response.data.data.find((cost) => cost.serviceIdentifier === 'IMAGE_GENERATION');
+        if (imageGenCost) {
+          setReferenceImageCreditCost(imageGenCost.creditsPerUnit);
+        }
+      } catch (error) {
+        console.error('Failed to fetch service costs:', error);
+      }
+    };
+
+    fetchServiceCosts();
+  }, []);
 
   const handleGenerate = async () => {
     if (!characterId || selectedViews.length === 0) return;
@@ -141,32 +161,22 @@ export function ReferenceGenerationModal({
       title={t('characters:imageGeneration.referenceImages.title', 'Generate Reference Dataset')}
       size="lg"
     >
-      <div className="space-y-4">
+      <div className="space-y-3">
         {!jobStarted ? (
           <>
-            {/* Description */}
-            <p className="text-sm text-description">
-              {t('characters:imageGeneration.referenceImages.description', 'Generate 4 reference images (avatar, front, side, back) for consistent AI character generation.')}
-            </p>
-
-            {/* Cost Information */}
-            <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <h3 className="font-semibold mb-2 text-sm">
-                {t('characters:imageGeneration.referenceImages.costInfo', 'Generation Cost')}
-              </h3>
-              <div className="text-sm space-y-1">
-                <div className="flex justify-between">
-                  <span>{t('characters:imageGeneration.referenceImages.costDescription', 'Multi-stage reference dataset (4 images):')}</span>
-                </div>
-              </div>
+            {/* Compact Header with Cost */}
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs text-description flex-1">
+                {t('characters:imageGeneration.referenceImages.shortDescription', '4-view reference dataset for consistent AI generation')}
+              </p>
+              <span className="text-xs font-semibold text-accent whitespace-nowrap">
+                {selectedViews.length * referenceImageCreditCost} {t('common:credits', 'credits')}
+              </span>
             </div>
 
-            {/* View Selection */}
-            <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-sm">
-                  {t('characters:imageGeneration.referenceImages.selectViews', 'Select Views to Generate')}
-                </h3>
+            {/* View Selection - Compact */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
                 <label className="flex items-center gap-2 text-xs cursor-pointer">
                   <input
                     type="checkbox"
@@ -175,17 +185,22 @@ export function ReferenceGenerationModal({
                     disabled={isGenerating || isUploading}
                     className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                   />
-                  <span>{t('common:selectAll', 'Select All')}</span>
+                  <span className="font-medium">{t('common:selectAll', 'All')}</span>
                 </label>
+                {selectedViews.length === 0 && (
+                  <p className="text-xs text-red-500">
+                    {t('characters:imageGeneration.referenceImages.selectAtLeastOne', 'Select at least one')}
+                  </p>
+                )}
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-4 gap-2">
                 {REFERENCE_VIEWS.map(view => (
                   <label
                     key={view.value}
-                    className={`flex items-center gap-2 p-2 rounded-md border cursor-pointer transition-colors ${
+                    className={`flex flex-col items-center justify-center gap-1 p-2 rounded-lg border cursor-pointer transition-colors ${
                       selectedViews.includes(view.value)
                         ? 'bg-primary/10 border-primary'
-                        : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600'
+                        : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600 hover:border-primary/50'
                     }`}
                   >
                     <input
@@ -195,15 +210,10 @@ export function ReferenceGenerationModal({
                       disabled={isGenerating || isUploading}
                       className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
                     />
-                    <span className="text-xs capitalize">{t(view.labelKey, view.value)}</span>
+                    <span className="text-[10px] capitalize text-center leading-tight">{t(view.labelKey, view.value)}</span>
                   </label>
                 ))}
               </div>
-              {selectedViews.length === 0 && (
-                <p className="mt-2 text-xs text-red-500">
-                  {t('characters:imageGeneration.referenceImages.selectAtLeastOne', 'Select at least one view to generate')}
-                </p>
-              )}
             </div>
 
             {/* Prompt + Sample Image Input */}
@@ -216,12 +226,13 @@ export function ReferenceGenerationModal({
             />
 
             {/* Footer */}
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-2 pt-2">
               <Button
                 type="button"
                 variant="light"
                 onClick={handleClose}
                 disabled={isGenerating || isUploading}
+                size="small"
               >
                 {t('common:cancel', 'Cancel')}
               </Button>
@@ -230,6 +241,7 @@ export function ReferenceGenerationModal({
                 variant="primary"
                 onClick={handleGenerate}
                 disabled={isGenerating || isUploading || selectedViews.length === 0}
+                size="small"
               >
                 {isGenerating || isUploading ? (
                   <>
@@ -239,7 +251,7 @@ export function ReferenceGenerationModal({
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-lg">auto_awesome</span>
-                    {t('characters:imageGeneration.referenceImages.startButton', 'Generate Dataset')}
+                    {t('characters:imageGeneration.referenceImages.startButton', 'Generate')}
                   </>
                 )}
               </Button>

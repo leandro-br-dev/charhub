@@ -10,16 +10,16 @@
     },
     "settings": "设置",
     "account": "账户",
-    "continueGoogle": "使用 Google 继续",
-    "continueFacebook": "使用 Facebook 继续",
+    "continueGoogle": "继续使用 Google",
+    "continueFacebook": "继续使用 Facebook",
     "privacy": "继续即表示您同意我们的隐私政策，并授权 CharHub 访问您的基本资料信息。",
-    "logout": "退出",
-    "logoutLoading": "正在退出...",
+    "logout": "退出登录",
+    "logoutLoading": "正在退出登录...",
     "authenticatedUser": "已认证用户",
-    "tokenStored": "存储在仅限 HTTP 的 Cookie 中",
+    "tokenStored": "存储在 HTTP-only cookie 中",
     "navDashboard": "仪表盘",
     "navCharacters": "角色",
-    "navTagline": "安全的 OAuth 演示",
+    "navTagline": "安全 OAuth 演示",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -57,11 +57,11 @@
       "characterDeleted": "角色已成功删除"
     },
     "contentFilter": {
-      "ariaLabel": "内容过滤器",
-      "title": "内容过滤器",
+      "ariaLabel": "内容筛选器",
+      "title": "内容筛选",
       "ageRating": "年龄分级",
-      "blurNsfw": "模糊限制级内容",
-      "none": "无过滤器",
+      "blurNsfw": "模糊露骨内容",
+      "none": "无筛选",
       "blur": "模糊敏感内容",
       "hidden": "隐藏成人内容",
       "descriptions": {
@@ -71,20 +71,20 @@
       },
       "ageRatings": {
         "L": "免费",
-        "TEN": "10+",
-        "TWELVE": "12+",
-        "FOURTEEN": "14+",
-        "SIXTEEN": "16+",
-        "EIGHTEEN": "18+"
+        "TEN": "10岁以上",
+        "TWELVE": "12岁以上",
+        "FOURTEEN": "14岁以上",
+        "SIXTEEN": "16岁以上",
+        "EIGHTEEN": "18岁以上"
       },
-      "noBirthdateWarning": "⚠️ 未注册年龄",
+      "noBirthdateWarning": "⚠️ 年龄未注册",
       "noBirthdateDescription": "要访问受年龄限制的内容，请在设置中添加您的出生日期。",
       "goToSettings": "前往设置",
-      "blocked": "（已阻止）"
+      "blocked": "(已屏蔽)"
     },
     "errors": {
       "generic": "发生错误。请重试。",
-      "failedToFetchData": "未能获取数据"
+      "failedToFetchData": "获取数据失败"
     },
     "character": "角色",
     "seeMore": "查看更多",
@@ -94,6 +94,9 @@
     "tryAgain": "重试",
     "generate": "生成",
     "generating": "正在生成...",
+    "generateAgain": "再次生成",
+    "regenerate": "重新生成",
+    "close": "关闭",
     "done": "完成"
   }
 }

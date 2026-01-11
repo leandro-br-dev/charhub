@@ -8,8 +8,8 @@ import { Modal } from '../../../../components/ui/Modal';
 import { Button } from '../../../../components/ui/Button';
 import { SmartDropdown } from '../../../../components/ui/SmartDropdown';
 import { ImageCropperModal } from '../../../../components/ui/ImageCropperModal';
-import { AvatarGenerationModal } from './AvatarGenerationModal';
-import { CoverGenerationModal } from './CoverGenerationModal';
+import { ImageViewerModal } from '../../../../components/ui/ImageViewerModal';
+import { UnifiedImageGenerationModal, type ImageGenerationType } from './UnifiedImageGenerationModal';
 import { ReferenceGenerationModal } from './ReferenceGenerationModal';
 import { Dialog } from '../../../../components/ui';
 import { characterService } from '../../../../services/characterService';
@@ -21,7 +21,7 @@ interface ImagesTabProps {
   onAvatarActivated?: () => void;
 }
 
-type ActiveModal = 'avatar-generate' | 'cover-generate' | 'reference' | 'avatar-url' | 'cover-url' | null;
+type ActiveModal = 'image-generate' | 'reference' | 'avatar-url' | 'cover-url' | null;
 type UploadType = 'avatar' | 'cover' | null;
 
 export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabProps): JSX.Element {
@@ -32,6 +32,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
   const [activeModal, setActiveModal] = useState<ActiveModal>(null);
   const [viewImageModal, setViewImageModal] = useState<{ url: string; title: string } | null>(null);
   const [imageCreditCost, setImageCreditCost] = useState<number>(10);
+  const [generatingImageType, setGeneratingImageType] = useState<ImageGenerationType>('AVATAR');
 
   // Upload state
   const avatarFileInputRef = useRef<HTMLInputElement>(null);
@@ -87,8 +88,14 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
   };
 
   const handleModalComplete = () => {
+    // Only refresh images, don't close the modal
+    // The modal will show the result screen and let user decide what to do
     handleImageUpdate();
-    setActiveModal(null);
+  };
+
+  const openImageGenerateModal = (type: ImageGenerationType) => () => {
+    setGeneratingImageType(type);
+    setActiveModal('image-generate');
   };
 
   // Upload handlers
@@ -262,7 +269,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
           characterId={characterId}
           onImageActivated={handleImageUpdate}
           onImageDeleted={handleImageUpdate}
-          onGenerateClick={() => setActiveModal('avatar-generate')}
+          onGenerateClick={openImageGenerateModal('AVATAR')}
           onUploadDevice={() => avatarFileInputRef.current?.click()}
           onUploadUrl={() => openUrlModal('avatar')()}
           onViewImage={(url) => setViewImageModal({ url, title: t('characters:imageGeneration.imagesTab.avatarSection.title', 'Avatar') })}
@@ -281,7 +288,7 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
           characterId={characterId}
           onImageActivated={handleImageUpdate}
           onImageDeleted={handleImageUpdate}
-          onGenerateClick={() => setActiveModal('cover-generate')}
+          onGenerateClick={openImageGenerateModal('COVER')}
           onUploadDevice={() => coverFileInputRef.current?.click()}
           onUploadUrl={() => openUrlModal('cover')()}
           onViewImage={(url) => setViewImageModal({ url, title: t('characters:imageGeneration.imagesTab.coverSection.title', 'Cover') })}
@@ -301,6 +308,8 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
         onViewImage={(url) => setViewImageModal({ url, title: t('characters:imageGeneration.referenceImages.title', 'Reference') })}
         t={t}
         imageCreditCost={imageCreditCost * 4}
+        characterId={characterId}
+        onImageDeleted={handleImageUpdate}
       />
 
       {/* Hidden file inputs */}
@@ -320,17 +329,11 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
       />
 
       {/* Generation Modals */}
-      <AvatarGenerationModal
-        isOpen={activeModal === 'avatar-generate'}
+      <UnifiedImageGenerationModal
+        isOpen={activeModal === 'image-generate'}
         onClose={() => setActiveModal(null)}
-        characterId={characterId}
-        onComplete={handleModalComplete}
-      />
-
-      <CoverGenerationModal
-        isOpen={activeModal === 'cover-generate'}
-        onClose={() => setActiveModal(null)}
-        characterId={characterId}
+        characterId={characterId || ''}
+        imageType={generatingImageType}
         onComplete={handleModalComplete}
       />
 
@@ -407,16 +410,15 @@ export function ImagesTab({ form, characterId, onAvatarActivated }: ImagesTabPro
         />
       )}
 
-      {/* Image View Modal */}
-      <Dialog
-        isOpen={viewImageModal !== null}
-        onClose={() => setViewImageModal(null)}
-        title={viewImageModal?.title || 'Image Preview'}
-      >
-        {viewImageModal?.url && (
-          <img src={viewImageModal.url} alt="Preview" className="max-w-full max-h-[80vh] object-contain" />
-        )}
-      </Dialog>
+      {/* Image View Modal - Full screen viewer with zoom */}
+      {viewImageModal && (
+        <ImageViewerModal
+          isOpen={true}
+          onClose={() => setViewImageModal(null)}
+          src={viewImageModal.url}
+          title={viewImageModal.title}
+        />
+      )}
     </div>
   );
 }
@@ -690,6 +692,8 @@ interface ReferenceSectionProps {
   onViewImage: (url: string) => void;
   t: any;
   imageCreditCost: number;
+  characterId: string;
+  onImageDeleted?: () => void;
 }
 
 function ReferenceSection({
@@ -701,7 +705,30 @@ function ReferenceSection({
   onViewImage,
   t,
   imageCreditCost,
+  characterId,
+  onImageDeleted,
 }: ReferenceSectionProps): JSX.Element {
+  const { addToast } = useToast();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
+
+  const handleDelete = async (imageId: string) => {
+    if (!characterId) return;
+    try {
+      setDeletingId(imageId);
+      await imageGenerationService.deleteImage(characterId, imageId);
+      addToast(t('characters:images.imageDeleted', 'Image deleted successfully'), 'success');
+      setDeleteConfirmId(null);
+      if (onImageDeleted) {
+        onImageDeleted();
+      }
+    } catch (error) {
+      console.error('Failed to delete reference image:', error);
+      addToast(t('characters:errors.failedToDeleteImage', 'Failed to delete image'), 'error');
+    } finally {
+      setDeletingId(null);
+    }
+  };
   const views: Array<{
     content: 'face' | 'front' | 'side' | 'back';
     labelKey: string;
@@ -787,21 +814,71 @@ function ReferenceSection({
                   {view.labelKey}
                 </div>
 
-                {/* View button on hover */}
+                {/* View and Delete buttons on hover */}
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-                  <button
-                    type="button"
-                    onClick={() => onViewImage(displayImg.url)}
-                    className="absolute top-1 right-1 w-8 h-8 flex items-center justify-center bg-white/90 rounded-md hover:bg-white"
-                    title={t('characters:imageGeneration.imagesTab.buttons.view', 'View')}
-                  >
-                    <span className="material-symbols-outlined text-base text-black">visibility</span>
-                  </button>
+                  <div className="absolute top-1 right-1 flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => onViewImage(displayImg.url)}
+                      className="w-8 h-8 flex items-center justify-center bg-white/90 rounded-md hover:bg-white"
+                      title={t('characters:imageGeneration.imagesTab.buttons.view', 'View')}
+                    >
+                      <span className="material-symbols-outlined text-base text-black">visibility</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setDeleteConfirmId(displayImg.id)}
+                      disabled={deletingId === displayImg.id}
+                      className="w-8 h-8 flex items-center justify-center bg-red-500 rounded-md hover:bg-red-600 disabled:opacity-50"
+                      title={t('characters:imageGeneration.imagesTab.buttons.delete', 'Delete')}
+                    >
+                      <span className="material-symbols-outlined text-base text-white">delete</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
+      )}
+
+      {/* Delete confirmation modal */}
+      {deleteConfirmId && (
+        <Modal
+          isOpen={true}
+          onClose={() => setDeleteConfirmId(null)}
+          title={t('characters:images.deleteConfirmTitle', 'Delete image?')}
+          size="sm"
+        >
+          <div className="space-y-4">
+            <p className="text-sm text-description">
+              {t('characters:images.deleteConfirmMessage', 'Are you sure you want to delete this image? This action cannot be undone.')}
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="light"
+                onClick={() => setDeleteConfirmId(null)}
+                disabled={deletingId === deleteConfirmId}
+              >
+                {t('common:cancel', 'Cancel')}
+              </Button>
+              <Button
+                type="button"
+                variant="primary"
+                onClick={() => handleDelete(deleteConfirmId)}
+                disabled={deletingId === deleteConfirmId}
+                className="bg-red-500 hover:bg-red-600"
+              >
+                {deletingId === deleteConfirmId ? (
+                  <span className="material-symbols-outlined animate-spin text-lg">progress_activity</span>
+                ) : (
+                  t('characters:images.delete', 'Delete')
+                )}
+              </Button>
+            </div>
+          </div>
+        </Modal>
       )}
     </div>
   );

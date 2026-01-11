@@ -21,10 +21,10 @@ export const CHARACTER_GENERATION_COSTS = {
  */
 export const IMAGE_GENERATION_COSTS = {
   /** Single avatar generation */
-  SINGLE: 50,
+  SINGLE: 25,
 
   /** Single image generation with reference image (IP-Adapter) */
-  WITH_REFERENCE: 75,
+  WITH_REFERENCE: 25,
 
   /** Multi-stage reference dataset (4 images: avatar, front, side, back) */
   REFERENCE_SET: 100,

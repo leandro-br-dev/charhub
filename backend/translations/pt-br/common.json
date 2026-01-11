@@ -19,7 +19,7 @@
     "tokenStored": "Armazenado em cookie somente HTTP",
     "navDashboard": "Painel",
     "navCharacters": "Personagens",
-    "navTagline": "Demonstração segura de OAuth",
+    "navTagline": "Demonstração de OAuth seguro",
     "providerLabel": {
       "google": "Google",
       "facebook": "Facebook"
@@ -65,7 +65,7 @@
       "blur": "Borrar Conteúdo Sensível",
       "hidden": "Ocultar Conteúdo Adulto",
       "descriptions": {
-        "none": "Exibir todo o conteúdo sem restrições",
+        "none": "Mostrar todo o conteúdo sem restrições",
         "blur": "Aplicar desfoque ao conteúdo adulto",
         "hidden": "Ocultar completamente o conteúdo adulto"
       },
@@ -94,6 +94,9 @@
     "tryAgain": "Tentar Novamente",
     "generate": "Gerar",
     "generating": "Gerando...",
+    "generateAgain": "Gerar Novamente",
+    "regenerate": "Regenerar",
+    "close": "Fechar",
     "done": "Concluído"
   }
 }

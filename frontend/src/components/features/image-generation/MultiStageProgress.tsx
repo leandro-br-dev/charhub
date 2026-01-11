@@ -71,6 +71,13 @@ export function MultiStageProgress({
     loadCredits();
   }, [cost]);
 
+  // Auto-start generation when component mounts and credits are loaded
+  useEffect(() => {
+    if (credits !== null && !isGenerating && !isComplete && !error && overallProgress === 0) {
+      startGeneration();
+    }
+  }, [credits]);
+
   // Start generation
   const startGeneration = async () => {
     setIsGenerating(true);
@@ -137,7 +144,7 @@ export function MultiStageProgress({
         const statusResponse = await api.get<{
           jobId: string;
           state: 'waiting' | 'active' | 'completed' | 'failed';
-          progress: { stage: number; total: number; message: string };
+          progress: { stage: number; total: number; message: string; completedImages?: Array<{ content: string; url: string }> };
           result?: {
             success: boolean;
             characterId: string;
@@ -159,25 +166,34 @@ export function MultiStageProgress({
           setIsComplete(true);
           setOverallProgress(100);
 
-          // Update stages with results if available
-          if (result?.results) {
-            const updatedStages = stages.map(stage => {
-              const resultItem = result.results.find((r: { stage: number; type: string; viewType: string; imageUrl: string }) => r.viewType === stage.viewType);
-              return {
-                ...stage,
-                status: 'completed' as const,
-                imageUrl: resultItem?.imageUrl,
-              };
-            });
+          // Fetch all generated images from database ONCE when complete
+          try {
+            const imagesResponse = await api.get<{ success: boolean; data: Record<string, any[]> }>(
+              `/api/v1/image-generation/characters/${characterId}/images`
+            );
+            const referenceImages = imagesResponse.data.data.REFERENCE || [];
 
-            setStages(updatedStages);
-          } else {
-            // No results but completed - mark all as completed
-            const updatedStages = stages.map(stage => ({
+            console.log('[MultiStageProgress] Completed - reference images:', referenceImages.map((img: any) => ({ content: img.content, url: img.url })));
+
+            // Update all stages with actual image URLs from database
+            setStages(prev => {
+              const updated = prev.map(stage => {
+                const matchingImage = referenceImages.find((img: any) => img.content === stage.viewType);
+                return {
+                  ...stage,
+                  status: 'completed' as const,
+                  imageUrl: matchingImage?.url || stage.imageUrl,
+                };
+              });
+              return updated;
+            });
+          } catch (err) {
+            console.error('Failed to fetch completed images:', err);
+            // Fallback: mark all as completed without images
+            setStages(prev => prev.map(stage => ({
               ...stage,
               status: 'completed' as const,
-            }));
-            setStages(updatedStages);
+            })));
           }
         } else if (state === 'failed') {
           clearInterval(interval);
@@ -187,47 +203,27 @@ export function MultiStageProgress({
           setStages(prev => prev.map(s => s.status === 'in_progress' ? { ...s, status: 'error' as const } : s));
           onError?.(errorMsg);
         } else if (state === 'active' && progress) {
-          // Update progress
+          // Update progress immediately - use completedImages from progress if available
           setOverallProgress((progress.stage / progress.total) * 100);
 
-          // Update stage statuses
+          // Update stage statuses - mark previous stages as completed, current as in_progress
           setStages(prev => prev.map((stage, idx) => {
-            if (idx < progress.stage - 1) {
-              return { ...stage, status: 'completed' as const };
-            } else if (idx === progress.stage - 1) {
-              return { ...stage, status: 'in_progress' as const };
+            const updatedStage: Stage = idx < progress.stage
+              ? { ...stage, status: 'completed' as const }
+              : idx === progress.stage
+              ? { ...stage, status: 'in_progress' as const }
+              : stage;
+
+            // Update imageUrl if available from progress.completedImages
+            if (progress.completedImages && idx < progress.stage) {
+              const completedImage = progress.completedImages.find(img => img.content === stage.viewType);
+              if (completedImage) {
+                return { ...updatedStage, imageUrl: completedImage.url };
+              }
             }
-            return stage;
+
+            return updatedStage;
           }));
-
-          // Fetch current images to show completed ones during generation
-          try {
-            const imagesResponse = await api.get<{ success: boolean; data: Record<string, any[]> }>(
-              `/api/v1/image-generation/characters/${characterId}/images`
-            );
-            const referenceImages = imagesResponse.data.data.REFERENCE || [];
-
-            console.log('[MultiStageProgress] Polling - reference images found:', referenceImages.length, referenceImages.map((img: any) => ({ content: img.content, url: img.url })));
-
-            // Update stages with actual image URLs
-            setStages(prev => {
-              const updated = prev.map(stage => {
-                const matchingImage = referenceImages.find((img: any) => img.content === stage.viewType);
-                if (matchingImage && !stage.imageUrl) {
-                  console.log('[MultiStageProgress] Updating stage:', stage.viewType, 'with image:', matchingImage.url);
-                  return {
-                    ...stage,
-                    imageUrl: matchingImage.url,
-                  };
-                }
-                return stage;
-              });
-              return updated;
-            });
-          } catch (err) {
-            // Silently fail - image fetch is not critical
-            console.error('Failed to fetch images during polling:', err);
-          }
         }
       } catch (err: any) {
         clearInterval(interval);
@@ -236,39 +232,36 @@ export function MultiStageProgress({
         setError(errorMsg);
         onError?.(errorMsg);
       }
-    }, 3000); // Poll every 3 seconds
+    }, 1000); // Poll every 1 second for faster updates
 
     return () => clearInterval(interval);
-  }, [jobId, t, stages, onComplete, onError]);
+  }, [jobId, t, characterId, onComplete, onError]);
 
   const getStatusColor = (status: Stage['status']) => {
     switch (status) {
       case 'completed':
-        return 'border-green-500 bg-green-50 dark:bg-green-900/20';
+        return 'bg-muted/30';
       case 'in_progress':
-        return 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 animate-pulse';
+        return 'bg-primary/10 ring-1 ring-primary/30';
       case 'error':
-        return 'border-red-500 bg-red-50 dark:bg-red-900/20';
+        return 'bg-red-50 dark:bg-red-900/20 ring-1 ring-red-500/30';
       default:
-        return 'border-gray-300 dark:border-gray-700';
+        return 'bg-muted/10';
     }
   };
 
   const getStatusIcon = (status: Stage['status']) => {
     switch (status) {
       case 'completed':
-        return '✓';
+        return <span className="material-symbols-outlined text-green-500 text-lg">check_circle</span>;
       case 'in_progress':
         return (
-          <svg className="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12c0-4.411-3.589-8-8-8v4c2.205 0 4 1.795 4 4s-1.795 4-4 4 4-4 4-1.795 4-4-4-4z"></path>
-          </svg>
+          <span className="material-symbols-outlined text-primary text-lg animate-spin">progress_activity</span>
         );
       case 'error':
-        return '✕';
+        return <span className="material-symbols-outlined text-red-500 text-lg">error</span>;
       default:
-        return null;
+        return <span className="material-symbols-outlined text-gray-400 dark:text-gray-600 text-lg">radio_button_unchecked</span>;
     }
   };
 
@@ -303,14 +296,14 @@ export function MultiStageProgress({
       )}
 
       {/* Individual Stages */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {stages.map((stage) => (
           <div
             key={stage.id}
-            className={`border-2 rounded-lg p-4 transition-all ${getStatusColor(stage.status)}`}
+            className={`rounded-lg p-3 transition-all ${getStatusColor(stage.status)}`}
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="font-semibold text-sm">{stage.name}</span>
+              <span className="text-sm font-medium text-title">{stage.name}</span>
               {getStatusIcon(stage.status)}
             </div>
 
@@ -318,26 +311,22 @@ export function MultiStageProgress({
               <img
                 src={stage.imageUrl}
                 alt={stage.name}
-                className="w-full aspect-square object-cover rounded"
+                className="w-full aspect-square object-cover rounded-md"
               />
             ) : (
-              <div className="w-full aspect-square bg-gray-100 dark:bg-gray-800 rounded flex items-center justify-center">
+              <div className="w-full aspect-square bg-muted/50 rounded-md flex items-center justify-center">
                 {stage.status === 'pending' && (
-                  <span className="text-gray-400 dark:text-gray-600 text-xs text-center">
+                  <span className="text-xs text-muted text-center">
                     {t('characters:imageGeneration.multiStage.waiting')}
                   </span>
                 )}
                 {stage.status === 'in_progress' && (
-                  <div className="flex flex-col items-center gap-2">
-                    <svg className="animate-spin h-8 w-8 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12c0-4.411-3.589-8-8-8v4c2.205 0 4 1.795 4 4s-1.795 4-4 4 4-4 4-1.795 4-4-4-4z"></path>
-                    </svg>
-                    <span className="text-blue-500 text-xs">{t('characters:imageGeneration.multiStage.generating')}</span>
-                  </div>
+                  <span className="text-xs text-primary text-center">
+                    {t('characters:imageGeneration.multiStage.generating')}
+                  </span>
                 )}
                 {stage.status === 'error' && (
-                  <span className="text-red-500 text-xs">✕ {t('characters:imageGeneration.multiStage.failed')}</span>
+                  <span className="text-xs text-red-500 text-center">{t('characters:imageGeneration.multiStage.failed')}</span>
                 )}
               </div>
             )}
@@ -384,17 +373,18 @@ export function MultiStageProgress({
       {/* Completion Message & Done Button */}
       {isComplete && !error && (
         <div className="space-y-3">
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-500 rounded-lg text-center">
-            <p className="text-green-700 dark:text-green-300 font-semibold text-lg">
-              ✓ {t('characters:imageGeneration.multiStage.generationComplete', 'Generation Complete!')}
+          <div className="p-4 bg-muted/30 rounded-lg text-center">
+            <p className="text-title font-semibold text-lg flex items-center justify-center gap-2">
+              <span className="material-symbols-outlined text-green-500">check_circle</span>
+              {t('characters:imageGeneration.multiStage.generationComplete', 'Generation Complete!')}
             </p>
-            <p className="text-green-600 dark:text-green-400 text-sm mt-1">
+            <p className="text-description text-sm mt-1">
               {t('characters:imageGeneration.multiStage.allStagesCompleted', 'All 4 reference images have been generated.')}
             </p>
           </div>
           <button
             onClick={() => onComplete?.(stages)}
-            className="w-full py-3 px-6 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-opacity"
+            className="w-full py-3 px-6 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-opacity"
           >
             {t('common:done', 'Done')}
           </button>

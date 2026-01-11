@@ -14,9 +14,9 @@
     "continueFacebook": "Continuer avec Facebook",
     "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder à vos informations de profil de base.",
     "logout": "Se déconnecter",
-    "logoutLoading": "Déconnexion en cours...",
+    "logoutLoading": "Déconnexion...",
     "authenticatedUser": "Utilisateur authentifié",
-    "tokenStored": "Stocké dans un cookie HTTP-seulement",
+    "tokenStored": "Stocké dans un cookie HTTP-only",
     "navDashboard": "Tableau de bord",
     "navCharacters": "Personnages",
     "navTagline": "Démo OAuth sécurisée",
@@ -43,7 +43,7 @@
     "use": "Utiliser",
     "add": "Ajouter",
     "delete": "Supprimer",
-    "deleting": "Suppression en cours...",
+    "deleting": "Suppression...",
     "enabled": "Activé",
     "disabled": "Désactivé",
     "selectOption": "Sélectionner une option",
@@ -61,13 +61,13 @@
       "title": "Filtre de contenu",
       "ageRating": "Classification par âge",
       "blurNsfw": "Flouter le contenu explicite",
-      "none": "Pas de filtre",
+      "none": "Aucun filtre",
       "blur": "Flouter le contenu sensible",
-      "hidden": "Masquer le contenu mature",
+      "hidden": "Cacher le contenu mature",
       "descriptions": {
         "none": "Afficher tout le contenu sans restrictions",
         "blur": "Appliquer un flou au contenu mature",
-        "hidden": "Masquer complètement le contenu mature"
+        "hidden": "Cacher complètement le contenu mature"
       },
       "ageRatings": {
         "L": "Tout public",
@@ -78,13 +78,13 @@
         "EIGHTEEN": "18 ans et plus"
       },
       "noBirthdateWarning": "⚠️ Âge non enregistré",
-      "noBirthdateDescription": "Pour accéder au contenu soumis à une restriction d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
+      "noBirthdateDescription": "Pour accéder au contenu soumis à restriction d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
       "goToSettings": "Aller aux paramètres",
       "blocked": "(bloqué)"
     },
     "errors": {
       "generic": "Une erreur est survenue. Veuillez réessayer.",
-      "failedToFetchData": "Échec du chargement des données"
+      "failedToFetchData": "Échec de la récupération des données"
     },
     "character": "Personnage",
     "seeMore": "Voir plus",
@@ -93,7 +93,10 @@
     "credits": "crédits",
     "tryAgain": "Réessayer",
     "generate": "Générer",
-    "generating": "Génération en cours...",
+    "generating": "Génération...",
+    "generateAgain": "Générer à nouveau",
+    "regenerate": "Regénérer",
+    "close": "Fermer",
     "done": "Terminé"
   }
 }

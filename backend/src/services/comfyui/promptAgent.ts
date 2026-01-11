@@ -136,17 +136,17 @@ NEGATIVE: [your negative prompt here]
    - Action/pose details
 
 Example structure:
-1woman, black hair, bob hair, hair over one eye, black eyes, villainess, smirk, closed mouth, masterpiece, high detailed skin, best quality, high res, very aesthetic, villainess, smirk, perfect eyes, (colourful:1.3), (detailed face:1.4), evil smile, lush lips, natural breasts, (close-up portrait off-shoulder, highly detailed, masterpiece, best quality, hyper detailed, cinematic composition)
+1woman, black hair, bob hair, hair over one eye, black eyes, villainess, smirk, closed mouth, masterpiece, high detailed skin, best quality, high res, very aesthetic, villainess, smirk, perfect eyes, (detailed face), evil smile, lush lips, (close-up portrait off-shoulder, highly detailed, masterpiece, best quality, hyper detailed, cinematic composition)
 (masterpiece, best quality, ultra-detailed, absurdres, highres, 8k, very aesthetic, highly detailed, cinematic, full detailed, detailed hair, detailed face, detailed eyes) evil grin
 BREAK
-mini dress, fur trimmed, black patterned dress, black sheer embroidered short sleeves, white fur boa, cross-laced boots, thick thighs, wide hips, huge natural breasts, bursting breasts, deep cleavage, perspective shot, dynamic angle, focus, smirk, warm atmosphere, in heat, cocktail bar, twinkle, sitting at bar, legs crossed, hand on knee, looking away, beautiful face, beautiful eyes, detailed eyes, sharp focus, highest quality, ultra HD, high resolution, 8K, official_anime_key_visual, sharp lines, vivid contrast, glossy texture, soft lighting, tonal balance, high aesthetic sense, shadow gradation, and visual harmony, BREAK, Hype4realistic
+mini dress, fur trimmed, black patterned dress, black sheer embroidered short sleeves, white fur boa, cross-laced boots, perspective shot, dynamic angle, focus, smirk, warm atmosphere, in heat, cocktail bar, twinkle, sitting at bar, legs crossed, hand on knee, looking away, beautiful face, beautiful eyes, detailed eyes, sharp focus, highest quality, ultra HD, high resolution, 8K, official_anime_key_visual, sharp lines, vivid contrast, glossy texture, soft lighting, tonal balance, high aesthetic sense, shadow gradation, and visual harmony, BREAK, Hype4realistic
 
 # NEGATIVE PROMPT RULES
 
 The negative prompt must be the OPPOSITE of what you want in the positive prompt:
 
 1. **Dynamic & Contextual**: Base it on the positive prompt content
-2. **Subject Count**: If positive has "1girl" or "solo", negative includes "(multiple girls:1.3), (multiple characters:1.3)"
+2. **Subject Count**: If positive has "1girl" or "solo", negative includes "multiple girls, multiple characters"
    - If positive has "2girls", DON'T include multiple subjects in negative
 3. **Quality**: Always include quality negatives but adjust based on positive
 4. **Opposites**: If positive has "smile", negative can include "frown"
@@ -154,7 +154,38 @@ The negative prompt must be the OPPOSITE of what you want in the positive prompt
 
 Example:
 - Positive: "1girl, smile, standing at beach"
-- Negative: "low quality, (multiple girls:1.3), frown, indoors, poorly drawn hands"
+- Negative: "low quality, multiple girls, frown, indoors, poorly drawn hands"
+
+# EMPHASIS RULES
+
+**IMPORTANT**: Use ONLY these emphasis methods:
+- Single parentheses for emphasis: (detailed face)
+- Double parentheses for strong emphasis: ((masterpiece))
+- Periods for extra emphasis: very.. detailed.. face
+- DO NOT use numerical weights like :1.3, :1.2, etc. - these cause color instability
+
+${isAvatar || (isReference && generation.type === 'REFERENCE_FACE') ? `
+# FACE-ONLY GENERATION RULES
+
+CRITICAL: For ${isAvatar ? 'AVATAR' : 'REFERENCE FACE'} generation, focus EXCLUSIVELY on the face:
+
+**ALLOWED** (face and neck only):
+- Facial features: eyes, nose, mouth, lips, eyebrows, eyelashes
+- Hair: hair, bangs, hair accessories
+- Expression: smile, smirk, frown, etc.
+- Neck and shoulders (upper chest/shoulders area only)
+- Jewelry/accessories on head/neck
+
+**FORBIDDEN** (body details):
+- NO body descriptions: curvy body, voluptuous breasts, large breasts, thick thighs, wide hips, etc.
+- NO full body references
+- NO clothing below shoulders/upper chest
+- NO arms, hands, legs, feet
+
+The goal is to generate HEADSHOTS that focus on facial features. Any body details will cause the model to generate full body images instead of face portraits.
+
+**Negative prompt MUST include**: full body, wide shot, body, breasts, thighs, hips, arms, hands, legs
+` : ''}
 
 # GENERATION TYPE SPECIFICS
 
@@ -171,8 +202,9 @@ ${isAvatar ? `
 ## AVATAR GENERATION
 - Aspect ratio: Square 1:1 (768x768)
 - Close-up portrait, headshot focus
-- Emphasize face and upper body
+- Face and neck ONLY - no body details
 - Simple background unless specified
+- DO NOT include: breasts, body, curves, thighs, hips, arms, legs
 ` : ''}
 
 ${isSticker ? `
@@ -185,7 +217,7 @@ ${isSticker ? `
 ${isReference ? `
 ## REFERENCE GENERATION
 - Type: ${generation.type.replace('REFERENCE_', '')}
-- Full body (all except face)
+${generation.type === 'REFERENCE_FACE' ? '- Face portrait ONLY - no body details' : '- Full body'}
 - Clean background for reference
 - Neutral expression unless specified
 ` : ''}
@@ -204,7 +236,8 @@ If user provides clothing/scene descriptions, they OVERRIDE defaults. Use ((doub
 - Include BREAK between sections for better model understanding
 - Quality tags first, character traits next, scene last
 - Be specific but concise
-- Use emphasis parentheses: (tag:1.2), ((tag)) for strong emphasis
+- Use emphasis parentheses: (tag), ((tag)) for emphasis
+- DO NOT use numerical weights: no :1.2, :1.3, :1.4, etc.
 ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by context' : '- Keep content SFW unless explicitly requested'}${refInfo}`;
   }
 
@@ -318,15 +351,21 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
   private getDefaultNegative(positive: string, generation: PromptAgentInput['generation']): string {
     const hasSingleSubject = /\b(1girl|1boy|solo)\b/i.test(positive);
     const hasSmile = /\bsmile|smirk|grin\b/i.test(positive);
+    const isFaceGeneration = generation.type === 'AVATAR' || generation.type === 'REFERENCE_FACE';
 
     let negative = 'low quality, worst quality, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry';
 
     if (hasSingleSubject) {
-      negative += ', (multiple girls:1.3), (multiple characters:1.3), (multiple views:1.3)';
+      negative += ', multiple girls, multiple characters, multiple views';
     }
 
     if (hasSmile) {
       negative += ', frown, sad, angry';
+    }
+
+    // Add body exclusions for face generation
+    if (isFaceGeneration) {
+      negative += ', full body, wide shot, body, breasts, thick thighs, wide hips, voluptuous, curvy, arms, hands, legs, feet, shoulders, upper body';
     }
 
     // Add type-specific negatives
@@ -356,6 +395,7 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
 
     const genderTag = character.gender?.toLowerCase()?.includes('fem') ? '1girl' : '1boy';
     const nameTag = character.name || 'character';
+    const isFaceGeneration = generation.type === 'AVATAR' || generation.type === 'REFERENCE_FACE';
 
     let positive = `${genderTag}, ${nameTag}`;
 
@@ -364,9 +404,9 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
 
     // Add type-specific tags
     if (generation.type === 'COVER') {
-      positive += ', (full body:1.2), standing, looking at viewer, solo, cinematic lighting, detailed composition';
-    } else if (generation.type === 'AVATAR') {
-      positive += ', (close-up portrait:1.2), detailed face, looking at viewer, headshot';
+      positive += ', full body, standing, looking at viewer, solo, cinematic lighting, detailed composition';
+    } else if (isFaceGeneration) {
+      positive += ', close-up portrait, detailed face, looking at viewer, headshot, face focus';
     }
 
     // Add user prompt if provided
@@ -379,7 +419,17 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
       positive += `, (${character.style})`;
     }
 
-    const negative = 'low quality, worst quality, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry, (multiple girls:1.3), (multiple characters:1.3)';
+    let negative = 'low quality, worst quality, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry';
+
+    // Add multiple subject exclusions (not relevant for face generation)
+    if (!isFaceGeneration) {
+      negative += ', multiple girls, multiple characters';
+    }
+
+    // Add body exclusions for face generation
+    if (isFaceGeneration) {
+      negative += ', full body, wide shot, body, breasts, thick thighs, wide hips, voluptuous, curvy, arms, hands, legs, feet, shoulders, upper body';
+    }
 
     return { positive, negative };
   }
