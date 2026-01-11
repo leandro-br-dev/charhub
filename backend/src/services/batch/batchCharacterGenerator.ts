@@ -18,8 +18,6 @@ import { createCharacter } from '../../services/characterService';
 import { generateStableDiffusionPrompt } from '../../controllers/automatedCharacterGenerationController';
 import type { ImageType } from '../../generated/prisma';
 import { multiStageCharacterGenerator } from '../image-generation/multiStageCharacterGenerator';
-import { prisma as prismaClient } from '../../config/database';
-import { setTimeout } from 'timers/promises';
 
 /**
  * Generation result
@@ -269,7 +267,7 @@ export class BatchCharacterGenerator {
       }
 
       // Wait before polling again
-      await setTimeout(this.REFERENCE_POLL_INTERVAL);
+      await this.delay(this.REFERENCE_POLL_INTERVAL);
     }
 
     logger.warn({ characterId, jobId, elapsedMs: Date.now() - startTime }, 'Avatar generation timed out');
