@@ -587,9 +587,11 @@ export class ComfyUIService {
         loras[existingIndex].strength = styleLora.weight;
       } else {
         // Add new style LoRA
+        // Normalize Windows path to forward slashes for ComfyUI
+        const normalizedPath = styleLora.path.replace(/\\/g, '/');
         loras.push({
           name: styleLora.name,
-          filepathRelative: styleLora.path,
+          filepathRelative: normalizedPath,
           strength: styleLora.weight
         });
       }
@@ -698,10 +700,12 @@ export class ComfyUIService {
     // Update checkpoint if LoraLoader node exists
     // Note: Checkpoint loading is typically done in a separate node
     // This is a placeholder for future checkpoint dynamic loading
-    logger.debug(
-      { checkpoint: config.checkpoint.filename },
-      'Visual style checkpoint (note: checkpoint loading not yet implemented in workflows)'
-    );
+    if (config.checkpoint) {
+      logger.debug(
+        { checkpoint: config.checkpoint.filename },
+        'Visual style checkpoint (note: checkpoint loading not yet implemented in workflows)'
+      );
+    }
 
     // Update LoRAs in LoraLoader node (node 11 in most workflows)
     if (modifiedWorkflow['11'] && modifiedWorkflow['11'].class_type === 'LoraLoader') {

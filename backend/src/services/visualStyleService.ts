@@ -33,7 +33,7 @@ export interface VisualStyleConfiguration {
   style: VisualStyle;
   name: string;
   description: string | null;
-  checkpoint: CheckpointConfig;
+  checkpoint: CheckpointConfig | null; // Can be null - checkpoint swap not yet implemented
   loras: LoRAConfig[];
   positivePromptSuffix: string | null;
   negativePromptSuffix: string | null;
@@ -279,12 +279,12 @@ export async function buildComfyUIPayload(
   );
 
   return {
-    checkpoint: config.checkpoint.filename,
+    checkpoint: config.checkpoint?.filename || '',
     checkpointConfig: {
-      sampler: config.checkpoint.sampler,
-      cfg: config.checkpoint.cfg,
-      steps: config.checkpoint.steps,
-      clipSkip: config.checkpoint.clipSkip
+      sampler: config.checkpoint?.sampler,
+      cfg: config.checkpoint?.cfg,
+      steps: config.checkpoint?.steps,
+      clipSkip: config.checkpoint?.clipSkip
     },
     loras: config.loras.map(lora => ({
       filename: lora.filename,
