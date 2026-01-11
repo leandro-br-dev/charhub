@@ -589,6 +589,7 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
     const jobData = {
       type: 'multi-stage-dataset' as const,
       userId,
+      userRole,
       characterId,
       prompt: finalPrompt,
       loras: loras || [],

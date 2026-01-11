@@ -5,9 +5,9 @@
  * 1. Generate AVATAR first (with or without user SAMPLEs)
  * 2. Create temp folder with character UUID
  * 3. Add AVATAR + SAMPLES to folder
- * 4. Generate REFERENCE front (using AVATAR + SAMPLES)
+ * 4. Generate REFERENCE front (using AVATAR + SAMPLEs)
  * 5. Add REFERENCE front to folder
- * 6. Generate REFERENCE side (using AVATAR + SAMPLES + REFERENCE front)
+ * 6. Generate REFERENCE side (using AVATAR + SAMPLEs + REFERENCE front)
  * 7. Add REFERENCE side to folder
  * 8. Generate REFERENCE back (using all previous images)
  * 9. SAMPLEs can be discarded after reference pack is complete
@@ -18,8 +18,10 @@
 
 import { comfyuiService } from '../comfyui/comfyuiService';
 import { r2Service } from '../r2Service';
+import { canEditCharacter } from '../../middleware/authorization';
 import { prisma } from '../../config/database';
 import type { ReferenceImage } from '../comfyui/types';
+import type { UserRole } from '../../types';
 import { logger } from '../../config/logger';
 import { ImageType } from '../../generated/prisma';
 import { readFileSync } from 'fs';
@@ -46,6 +48,7 @@ export interface MultiStageGenerationOptions {
   }>;
   userSamples?: ReferenceImage[]; // User-provided SAMPLE images (1-4)
   userId: string;
+  userRole?: UserRole;
   onProgress?: (stage: number, total: number, message: string, completedImages?: Array<{ content: string; url: string }>) => void;
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to generate
 }
@@ -95,7 +98,7 @@ export class MultiStageCharacterGenerator {
    * New simplified flow with cumulative references in a single folder
    */
   async generateCharacterDataset(options: MultiStageGenerationOptions): Promise<void> {
-    const { characterId, prompt, userSamples = [], userId, onProgress, viewsToGenerate } = options;
+    const { characterId, prompt, userSamples = [], userId, userRole, onProgress, viewsToGenerate } = options;
 
     // Filter views to generate if specified
     const viewsToProcess = viewsToGenerate && viewsToGenerate.length > 0
@@ -113,7 +116,12 @@ export class MultiStageCharacterGenerator {
         where: { id: characterId },
       });
 
-      if (!character || character.userId !== userId) {
+      if (!character) {
+        throw new Error('Character not found');
+      }
+
+      // Check if user can edit the character (owner OR admin for official characters)
+      if (!canEditCharacter(userId, userRole, character.userId)) {
         throw new Error('Character not found or unauthorized');
       }
 
