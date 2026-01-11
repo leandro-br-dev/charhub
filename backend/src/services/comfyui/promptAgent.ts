@@ -5,6 +5,7 @@
  */
 
 import { callGrok } from '../llm/grok';
+import { logger } from '../../config/logger';
 
 // ============================================================================
 // TYPES
