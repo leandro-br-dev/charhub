@@ -118,7 +118,9 @@ export function ReferenceGenerationModal({
   };
 
   const handleClose = () => {
-    if (!isGenerating && !isUploading && !jobStarted) {
+    // Allow closing if not actively generating or uploading
+    // (Can close even after jobStarted is true but generation is complete)
+    if (!isGenerating && !isUploading) {
       setPrompt('');
       setSampleImage(null);
       setUploadedSampleUrl(null);
