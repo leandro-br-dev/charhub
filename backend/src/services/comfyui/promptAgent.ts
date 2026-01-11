@@ -476,10 +476,9 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
 
     let negative = 'low quality, worst quality, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry';
 
-    // Add multiple subject exclusions (not relevant for face generation)
-    if (!isFaceGeneration) {
-      negative += ', multiple girls, multiple characters';
-    }
+    // Add multiple subject exclusions with emphasis (for all types)
+    // Using parentheses tells SD to pay extra attention to avoiding multiple characters
+    negative += ', (multiple girls), (multiple characters)';
 
     // Add body exclusions for face generation
     if (isFaceGeneration) {

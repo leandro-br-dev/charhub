@@ -21,6 +21,7 @@ export interface MultiStageProgressProps {
   referenceImages?: Array<{ type: string; url: string }>;
   onComplete?: (results: Stage[]) => void;
   onError?: (error: string) => void;
+  onGenerationComplete?: () => void; // Called when generation completes (before Done button click)
   // Additional props for ReferenceGenerationModal compatibility
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[];
   userPrompt?: string;
@@ -33,6 +34,7 @@ export function MultiStageProgress({
   referenceImages = [],
   onComplete,
   onError,
+  onGenerationComplete,
   viewsToGenerate,
   userPrompt,
   sampleImageUrl,
@@ -174,6 +176,9 @@ export function MultiStageProgress({
           setIsGenerating(false);
           setIsComplete(true);
           setOverallProgress(100);
+
+          // Notify parent that generation is complete (allows X button to work)
+          onGenerationComplete?.();
 
           // Fetch all generated images from database ONCE when complete
           try {
