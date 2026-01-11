@@ -5,6 +5,7 @@
 
 import { Router } from 'express';
 import { requireAuth } from '../../middleware/auth';
+import { canEditCharacter } from '../../middleware/authorization';
 import { queueManager } from '../../queues/QueueManager';
 import { QueueName } from '../../queues/config';
 import { logger } from '../../config/logger';
@@ -33,6 +34,7 @@ router.post('/avatar', requireAuth, async (req, res) => {
     }
 
     const userId = user.id;
+    const userRole = user.role;
 
     if (!characterId) {
       return res.status(400).json({ error: 'characterId is required' });
@@ -55,8 +57,8 @@ router.post('/avatar', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'Character not found or access denied' });
     }
 
-    // Check if user owns the character
-    if (character.userId !== userId) {
+    // Check if user can edit the character (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
       return res.status(403).json({ error: 'You can only generate images for your own characters' });
     }
 
@@ -101,6 +103,7 @@ router.post('/sticker', requireAuth, async (req, res) => {
     }
 
     const userId = user.id;
+    const userRole = user.role;
 
     if (!characterId || !emotion || !actionTag) {
       return res.status(400).json({ error: 'characterId, emotion, and actionTag are required' });
@@ -118,8 +121,8 @@ router.post('/sticker', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'Character not found or access denied' });
     }
 
-    // Check if user owns the character
-    if (character.userId !== userId) {
+    // Check if user can edit the character (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
       return res.status(403).json({ error: 'You can only generate stickers for your own characters' });
     }
 
@@ -164,6 +167,7 @@ router.post('/stickers/bulk', requireAuth, async (req, res) => {
     }
 
     const userId = user.id;
+    const userRole = user.role;
 
     if (!characterId) {
       return res.status(400).json({ error: 'characterId is required' });
@@ -181,8 +185,8 @@ router.post('/stickers/bulk', requireAuth, async (req, res) => {
       return res.status(404).json({ error: 'Character not found or access denied' });
     }
 
-    // Check if user owns the character
-    if (character.userId !== userId) {
+    // Check if user can edit the character (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
       return res.status(403).json({ error: 'You can only generate stickers for your own characters' });
     }
 
@@ -341,11 +345,14 @@ router.get('/characters/:characterId/images', requireAuth, async (req, res) => {
 router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, async (req, res) => {
   try {
     const { characterId, imageId } = req.params;
-    const userId = req.auth?.user.id;
+    const user = req.auth?.user;
 
-    if (!userId) {
+    if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+
+    const userId = user.id;
+    const userRole = user.role;
 
     // Verify character ownership
     const character = await prisma.character.findUnique({
@@ -357,7 +364,8 @@ router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, a
       return res.status(404).json({ error: 'Character not found' });
     }
 
-    if (character.userId !== userId) {
+    // Check if user can edit the character (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
       return res.status(403).json({ error: 'Access denied' });
     }
 
@@ -407,11 +415,14 @@ router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, a
 router.delete('/characters/:characterId/images/:imageId', requireAuth, async (req, res) => {
   try {
     const { characterId, imageId } = req.params;
-    const userId = req.auth?.user.id;
+    const user = req.auth?.user;
 
-    if (!userId) {
+    if (!user) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
+
+    const userId = user.id;
+    const userRole = user.role;
 
     // Verify character ownership
     const character = await prisma.character.findUnique({
@@ -423,7 +434,8 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
       return res.status(404).json({ error: 'Character not found' });
     }
 
-    if (character.userId !== userId) {
+    // Check if user can edit the character (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
       return res.status(403).json({ error: 'Access denied' });
     }
 
@@ -519,6 +531,7 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
     }
 
     const userId = user.id;
+    const userRole = user.role;
 
     if (!characterId) {
       return res.status(400).json({ error: 'characterId is required' });
@@ -541,8 +554,13 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
       },
     });
 
-    if (!character || character.userId !== userId) {
-      return res.status(403).json({ error: 'Character not found or unauthorized' });
+    if (!character) {
+      return res.status(404).json({ error: 'Character not found' });
+    }
+
+    // Check if user can edit the character (owner OR admin for official characters)
+    if (!canEditCharacter(userId, userRole, character.userId)) {
+      return res.status(403).json({ error: 'Unauthorized to generate images for this character' });
     }
 
     // Fetch species data if character has one
@@ -571,6 +589,7 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
     const jobData = {
       type: 'multi-stage-dataset' as const,
       userId,
+      userRole,
       characterId,
       prompt: finalPrompt,
       loras: loras || [],

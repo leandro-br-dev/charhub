@@ -5,6 +5,7 @@
 
 import { ImageGenerationType } from '../../services/comfyui';
 import type { ReferenceImage } from '../../services/comfyui/types';
+import type { UserRole } from '../../types';
 
 export interface BaseImageJobData {
   userId: string;
@@ -48,6 +49,7 @@ export interface CoverGenerationJobData extends BaseImageJobData {
 export interface MultiStageDatasetGenerationJobData {
   type: 'multi-stage-dataset';
   userId: string;
+  userRole?: UserRole;
   characterId: string;
   prompt: {
     positive: string;

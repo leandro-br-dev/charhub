@@ -117,13 +117,27 @@ export function ReferenceGenerationModal({
     onClose();
   };
 
+  // Callback to reset isGenerating when generation completes (without closing modal)
+  const onGenerationComplete = () => {
+    setIsGenerating(false);
+    // Don't call onComplete here - let user click "Done" button
+    // This allows X button to work after generation completes
+  };
+
   const handleClose = () => {
-    if (!isGenerating && !isUploading && !jobStarted) {
+    // Allow closing if not actively generating or uploading
+    // (After generation completes, isGenerating will be false via onGenerationComplete callback)
+    if (!isGenerating && !isUploading) {
+      // If generation was completed, refresh images before closing
+      if (jobStarted) {
+        onComplete();
+      }
       setPrompt('');
       setSampleImage(null);
       setUploadedSampleUrl(null);
       setSelectedViews(['face', 'front', 'side', 'back']);
       setSelectAll(true);
+      setJobStarted(false);
       onClose();
     }
   };
@@ -265,6 +279,7 @@ export function ReferenceGenerationModal({
               viewsToGenerate={selectedViews.length === 4 ? undefined : selectedViews}
               userPrompt={prompt}
               sampleImageUrl={uploadedSampleUrl}
+              onGenerationComplete={onGenerationComplete}
               onComplete={handleComplete}
               onError={(error) => {
                 console.error('Multi-stage generation failed:', error);

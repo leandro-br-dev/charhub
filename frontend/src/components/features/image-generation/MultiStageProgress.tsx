@@ -21,6 +21,7 @@ export interface MultiStageProgressProps {
   referenceImages?: Array<{ type: string; url: string }>;
   onComplete?: (results: Stage[]) => void;
   onError?: (error: string) => void;
+  onGenerationComplete?: () => void; // Called when generation completes (before Done button click)
   // Additional props for ReferenceGenerationModal compatibility
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[];
   userPrompt?: string;
@@ -33,6 +34,7 @@ export function MultiStageProgress({
   referenceImages = [],
   onComplete,
   onError,
+  onGenerationComplete,
   viewsToGenerate,
   userPrompt,
   sampleImageUrl,
@@ -43,12 +45,21 @@ export function MultiStageProgress({
   const [credits, setCredits] = useState<number | null>(null);
   const [hasEnoughCredits, setHasEnoughCredits] = useState(false);
 
-  const [stages, setStages] = useState<Stage[]>([
-    { id: 1, name: t('characters:imageGeneration.multiStage.stages.face'), status: 'pending', viewType: 'face' },
-    { id: 2, name: t('characters:imageGeneration.multiStage.stages.front'), status: 'pending', viewType: 'front' },
-    { id: 3, name: t('characters:imageGeneration.multiStage.stages.side'), status: 'pending', viewType: 'side' },
-    { id: 4, name: t('characters:imageGeneration.multiStage.stages.back'), status: 'pending', viewType: 'back' },
-  ]);
+  // Determine which views to show based on viewsToGenerate prop
+  const viewsToShow = viewsToGenerate && viewsToGenerate.length > 0 ? viewsToGenerate : ['face', 'front', 'side', 'back'] as const;
+
+  // Initialize stages based on viewsToGenerate
+  const [stages, setStages] = useState<Stage[]>(() => {
+    const allStageConfigs = [
+      { id: 1, name: t('characters:imageGeneration.multiStage.stages.face'), status: 'pending' as const, viewType: 'face' as const },
+      { id: 2, name: t('characters:imageGeneration.multiStage.stages.front'), status: 'pending' as const, viewType: 'front' as const },
+      { id: 3, name: t('characters:imageGeneration.multiStage.stages.side'), status: 'pending' as const, viewType: 'side' as const },
+      { id: 4, name: t('characters:imageGeneration.multiStage.stages.back'), status: 'pending' as const, viewType: 'back' as const },
+    ];
+
+    // Filter stages based on viewsToGenerate
+    return allStageConfigs.filter(stage => viewsToShow.includes(stage.viewType));
+  });
   const [jobId, setJobId] = useState<string | null>(null);
   const [overallProgress, setOverallProgress] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -166,19 +177,27 @@ export function MultiStageProgress({
           setIsComplete(true);
           setOverallProgress(100);
 
+          // Notify parent that generation is complete (allows X button to work)
+          onGenerationComplete?.();
+
           // Fetch all generated images from database ONCE when complete
           try {
             const imagesResponse = await api.get<{ success: boolean; data: Record<string, any[]> }>(
               `/api/v1/image-generation/characters/${characterId}/images`
             );
-            const referenceImages = imagesResponse.data.data.REFERENCE || [];
+            const allReferenceImages = imagesResponse.data.data.REFERENCE || [];
 
-            console.log('[MultiStageProgress] Completed - reference images:', referenceImages.map((img: any) => ({ content: img.content, url: img.url })));
+            // Filter to only show images for views that were requested to be generated
+            const requestedReferenceImages = allReferenceImages.filter((img: any) =>
+              viewsToShow.includes(img.content)
+            );
 
-            // Update all stages with actual image URLs from database
+            console.log('[MultiStageProgress] Completed - requested reference images:', requestedReferenceImages.map((img: any) => ({ content: img.content, url: img.url })));
+
+            // Update stages with actual image URLs from database (only for requested views)
             setStages(prev => {
               const updated = prev.map(stage => {
-                const matchingImage = referenceImages.find((img: any) => img.content === stage.viewType);
+                const matchingImage = requestedReferenceImages.find((img: any) => img.content === stage.viewType);
                 return {
                   ...stage,
                   status: 'completed' as const,
@@ -379,7 +398,10 @@ export function MultiStageProgress({
               {t('characters:imageGeneration.multiStage.generationComplete', 'Generation Complete!')}
             </p>
             <p className="text-description text-sm mt-1">
-              {t('characters:imageGeneration.multiStage.allStagesCompleted', 'All 4 reference images have been generated.')}
+              {stages.length === 1
+                ? t('characters:imageGeneration.multiStage.oneStageCompleted', '1 reference image has been generated.')
+                : t('characters:imageGeneration.multiStage.stagesCompleted', `{{count}} reference images have been generated.`, { count: stages.length })
+              }
             </p>
           </div>
           <button

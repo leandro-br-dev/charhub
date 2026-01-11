@@ -643,7 +643,7 @@ async function processMultiStageDatasetGeneration(
   data: MultiStageDatasetGenerationJobData,
   job: Job<ImageGenerationJobData>
 ): Promise<MultiStageGenerationResult> {
-  const { characterId, userId, prompt, loras, referenceImages, viewsToGenerate } = data;
+  const { characterId, userId, userRole, prompt, loras, referenceImages, viewsToGenerate } = data;
 
   // Calculate cost - adjust based on number of views being generated
   const viewsCount = viewsToGenerate?.length || 4;
@@ -664,6 +664,7 @@ async function processMultiStageDatasetGeneration(
       loras,
       userSamples: referenceImages || [],
       userId,
+      userRole,
       viewsToGenerate,
       onProgress: (stage, total, message, completedImages) => {
         // Include completedImages in progress for real-time UI updates

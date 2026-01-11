@@ -5,9 +5,9 @@
  * 1. Generate AVATAR first (with or without user SAMPLEs)
  * 2. Create temp folder with character UUID
  * 3. Add AVATAR + SAMPLES to folder
- * 4. Generate REFERENCE front (using AVATAR + SAMPLES)
+ * 4. Generate REFERENCE front (using AVATAR + SAMPLEs)
  * 5. Add REFERENCE front to folder
- * 6. Generate REFERENCE side (using AVATAR + SAMPLES + REFERENCE front)
+ * 6. Generate REFERENCE side (using AVATAR + SAMPLEs + REFERENCE front)
  * 7. Add REFERENCE side to folder
  * 8. Generate REFERENCE back (using all previous images)
  * 9. SAMPLEs can be discarded after reference pack is complete
@@ -18,8 +18,10 @@
 
 import { comfyuiService } from '../comfyui/comfyuiService';
 import { r2Service } from '../r2Service';
+import { canEditCharacter } from '../../middleware/authorization';
 import { prisma } from '../../config/database';
 import type { ReferenceImage } from '../comfyui/types';
+import type { UserRole } from '../../types';
 import { logger } from '../../config/logger';
 import { ImageType } from '../../generated/prisma';
 import { readFileSync } from 'fs';
@@ -46,6 +48,7 @@ export interface MultiStageGenerationOptions {
   }>;
   userSamples?: ReferenceImage[]; // User-provided SAMPLE images (1-4)
   userId: string;
+  userRole?: UserRole;
   onProgress?: (stage: number, total: number, message: string, completedImages?: Array<{ content: string; url: string }>) => void;
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to generate
 }
@@ -91,11 +94,30 @@ const REFERENCE_VIEWS: ReferenceView[] = [
 
 export class MultiStageCharacterGenerator {
   /**
+   * Convert view content to generation type
+   */
+  private viewContentToGenerationType(content: string): 'REFERENCE_FACE' | 'REFERENCE_FRONT' | 'REFERENCE_SIDE' | 'REFERENCE_BACK' {
+    const upperContent = content.toUpperCase();
+    switch (upperContent) {
+      case 'FACE':
+        return 'REFERENCE_FACE';
+      case 'FRONT':
+        return 'REFERENCE_FRONT';
+      case 'SIDE':
+        return 'REFERENCE_SIDE';
+      case 'BACK':
+        return 'REFERENCE_BACK';
+      default:
+        return 'REFERENCE_FRONT'; // fallback
+    }
+  }
+
+  /**
    * Generate complete 4-stage reference dataset for a character
    * New simplified flow with cumulative references in a single folder
    */
   async generateCharacterDataset(options: MultiStageGenerationOptions): Promise<void> {
-    const { characterId, prompt, userSamples = [], userId, onProgress, viewsToGenerate } = options;
+    const { characterId, prompt, userSamples = [], userId, userRole, onProgress, viewsToGenerate } = options;
 
     // Filter views to generate if specified
     const viewsToProcess = viewsToGenerate && viewsToGenerate.length > 0
@@ -113,7 +135,12 @@ export class MultiStageCharacterGenerator {
         where: { id: characterId },
       });
 
-      if (!character || character.userId !== userId) {
+      if (!character) {
+        throw new Error('Character not found');
+      }
+
+      // Check if user can edit the character (owner OR admin for official characters)
+      if (!canEditCharacter(userId, userRole, character.userId)) {
         throw new Error('Character not found or unauthorized');
       }
 
@@ -144,39 +171,8 @@ export class MultiStageCharacterGenerator {
         throw new Error('Character not found');
       }
 
-      // Generate prompts using promptAgent
       // The prompt.positive from API is treated as user input (additive)
       const userPrompt = prompt?.positive || '';
-      const generatedPrompts = await promptAgent.generatePrompts({
-        character: {
-          name: `${fullCharacter.firstName} ${fullCharacter.lastName || ''}`.trim(),
-          gender: fullCharacter.gender || undefined,
-          age: fullCharacter.age || undefined,
-          species: fullCharacter.species?.name || undefined,
-          physicalCharacteristics: fullCharacter.physicalCharacteristics || undefined,
-          personality: fullCharacter.personality || undefined,
-          defaultAttire: fullCharacter.mainAttire?.description || undefined,
-          style: fullCharacter.style || undefined,
-        },
-        generation: {
-          type: 'REFERENCE_FRONT', // Will be adjusted per view, but use front as default
-          isNsfw: false,
-        },
-        userInput: userPrompt ? {
-          prompt: userPrompt,
-          isAdditive: true, // Reference generation is additive
-        } : undefined,
-        hasReferenceImages: userSamples.length > 0,
-        referenceImageCount: userSamples.length,
-      });
-
-      // Use generated prompts
-      const finalPrompt = {
-        positive: generatedPrompts.positive,
-        negative: generatedPrompts.negative,
-      };
-
-      logger.info({ characterId, originalPrompt: userPrompt, generatedPositive: finalPrompt.positive?.substring(0, 100) + '...' }, 'Prompts generated via promptAgent');
 
       // Update loras from character data
       const characterLoras = fullCharacter.lora ? [{
@@ -307,6 +303,41 @@ export class MultiStageCharacterGenerator {
         }
 
         logger.info({ stage: stageNumber, view: view.content }, `Starting reference generation`);
+
+        // Generate prompts specific to this view using promptAgent
+        const generationType = this.viewContentToGenerationType(view.content);
+        logger.info({ stage: stageNumber, view: view.content, generationType }, 'Generating prompts for this view');
+
+        const generatedPrompts = await promptAgent.generatePrompts({
+          character: {
+            name: `${fullCharacter.firstName} ${fullCharacter.lastName || ''}`.trim(),
+            gender: fullCharacter.gender || undefined,
+            age: fullCharacter.age || undefined,
+            species: fullCharacter.species?.name || undefined,
+            physicalCharacteristics: fullCharacter.physicalCharacteristics || undefined,
+            personality: fullCharacter.personality || undefined,
+            defaultAttire: fullCharacter.mainAttire?.description || undefined,
+            style: fullCharacter.style || undefined,
+          },
+          generation: {
+            type: generationType,
+            isNsfw: false,
+          },
+          userInput: userPrompt ? {
+            prompt: userPrompt,
+            isAdditive: true, // Reference generation is additive
+          } : undefined,
+          hasReferenceImages: userSamples.length > 0 || i > 0, // Has references if samples exist or we have previous views
+          referenceImageCount: userSamples.length + i,
+        });
+
+        // Use generated prompts for this specific view
+        const finalPrompt = {
+          positive: generatedPrompts.positive,
+          negative: generatedPrompts.negative,
+        };
+
+        logger.info({ stage: stageNumber, view: view.content, generationType, promptPreview: finalPrompt.positive?.substring(0, 100) + '...' }, 'Prompts generated for this view');
 
         // Generate this view
         const result = await this.generateReferenceView({

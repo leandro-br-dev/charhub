@@ -5,6 +5,7 @@
  */
 
 import { callGrok } from '../llm/grok';
+import { logger } from '../../config/logger';
 
 // ============================================================================
 // TYPES
@@ -72,6 +73,14 @@ export class PromptAgent {
     // Build the user prompt with all context
     const userPrompt = this.buildUserPrompt(input);
 
+    // DEBUG: Log the prompts being sent to GROK
+    logger.info({
+      generationType: generation.type,
+      systemPromptLength: systemPrompt.length,
+      userPromptLength: userPrompt.length,
+      systemPromptPreview: systemPrompt.substring(0, 500) + '...',
+    }, 'PromptAgent: Sending request to GROK');
+
     try {
       const response = await callGrok({
         model: 'grok-4-1-fast-non-reasoning',
@@ -81,8 +90,26 @@ export class PromptAgent {
         temperature: 0.7,
       });
 
+      // DEBUG: Log the response from GROK
+      logger.info({
+        generationType: generation.type,
+        responseLength: response.content.length,
+        responsePreview: response.content.substring(0, 500) + '...',
+        fullResponse: response.content, // Log full response for debugging
+      }, 'PromptAgent: Received response from GROK');
+
       // Parse the response to extract positive and negative prompts
-      return this.parseResponse(response.content, generation);
+      const parsed = this.parseResponse(response.content, generation);
+
+      // DEBUG: Log the parsed prompts
+      logger.info({
+        generationType: generation.type,
+        positiveLength: parsed.positive.length,
+        negativeLength: parsed.negative.length,
+        negativePreview: parsed.negative.substring(0, 500) + '...',
+      }, 'PromptAgent: Parsed prompts');
+
+      return parsed;
     } catch (error) {
       console.error('Prompt generation failed:', error);
       // Fallback to basic prompt
@@ -146,15 +173,16 @@ mini dress, fur trimmed, black patterned dress, black sheer embroidered short sl
 The negative prompt must be the OPPOSITE of what you want in the positive prompt:
 
 1. **Dynamic & Contextual**: Base it on the positive prompt content
-2. **Subject Count**: If positive has "1girl" or "solo", negative includes "multiple girls, multiple characters"
+2. **Subject Count**: If positive has "1girl" or "solo", negative MUST include "(multiple girls), (multiple characters)" with parentheses for emphasis
    - If positive has "2girls", DON'T include multiple subjects in negative
+   - **CRITICAL**: Always use parentheses around multiple subject tags: (multiple girls), (multiple characters)
 3. **Quality**: Always include quality negatives but adjust based on positive
 4. **Opposites**: If positive has "smile", negative can include "frown"
 5. **Avoid Contradictions**: Don't negate what's actually wanted in the positive
 
 Example:
 - Positive: "1girl, smile, standing at beach"
-- Negative: "low quality, multiple girls, frown, indoors, poorly drawn hands"
+- Negative: "low quality, (multiple girls), (multiple characters), frown, indoors, poorly drawn hands"
 
 # EMPHASIS RULES
 
@@ -165,26 +193,58 @@ Example:
 - DO NOT use numerical weights like :1.3, :1.2, etc. - these cause color instability
 
 ${isAvatar || (isReference && generation.type === 'REFERENCE_FACE') ? `
-# FACE-ONLY GENERATION RULES
+# FACE-ONLY GENERATION RULES - CRITICAL
 
-CRITICAL: For ${isAvatar ? 'AVATAR' : 'REFERENCE FACE'} generation, focus EXCLUSIVELY on the face:
+For ${isAvatar ? 'AVATAR' : 'REFERENCE FACE'} generation, you MUST generate HEADSHOT PORTRAITS focused ONLY on the face and neck area.
 
-**ALLOWED** (face and neck only):
+## POSITIVE PROMPT - WHAT TO INCLUDE
+
+**MANDATORY - Always include these:**
+- Face tags: portrait, headshot, face focus, close-up
+- Quality tags: masterpiece, best quality, detailed face, detailed eyes
 - Facial features: eyes, nose, mouth, lips, eyebrows, eyelashes
-- Hair: hair, bangs, hair accessories
+- Hair: hair, bangs, hair accessories (head area only)
 - Expression: smile, smirk, frown, etc.
-- Neck and shoulders (upper chest/shoulders area only)
-- Jewelry/accessories on head/neck
+- Neck area: neck, collarbone (upper chest/shoulders only)
 
-**FORBIDDEN** (body details):
-- NO body descriptions: curvy body, voluptuous breasts, large breasts, thick thighs, wide hips, etc.
-- NO full body references
-- NO clothing below shoulders/upper chest
-- NO arms, hands, legs, feet
+**ALLOWED - Optional context (upper body only):**
+- Shoulders and upper chest area (above the bust)
+- Jewelry/accessories on neck/head: necklace, earrings, hair accessories
+- Upper clothing ONLY if above bust: collar, neckline, shirt above chest
+- Simple background unless specified
 
-The goal is to generate HEADSHOTS that focus on facial features. Any body details will cause the model to generate full body images instead of face portraits.
+**STRICTLY FORBIDDEN - DO NOT INCLUDE under any circumstances:**
+- Body shape descriptions: curvaceous, voluptuous, hourglass, figure, body
+- Lower body parts: breasts, cleavage, waist, hips, thighs, legs, butt, arms, hands, feet
+- Clothing below shoulders/bust: skirt, dress, pants, shorts, stockings, garters, shoes, heels
+- Full body references: standing, full body, whole body, from head to toe
+- Pose descriptions that imply full body: provocative pose, standing confidently
 
-**Negative prompt MUST include**: full body, wide shot, body, breasts, thighs, hips, arms, hands, legs
+**Why this matters:** Including body details like "skirt", "heels", "thighs" will cause Stable Diffusion to generate full body images even when you want a face portrait. The model associates these tags with full body compositions.
+
+## NEGATIVE PROMPT - WHAT TO EXCLUDE
+
+**ALWAYS include these with emphasis:**
+- (multiple girls), (multiple characters) - MUST use parentheses for emphasis
+- full body, wide shot, body, breasts, thighs, hips, waist, arms, hands, legs, feet
+- standing, standing pose, provocative pose, seductive pose
+
+**Why emphasis matters:** Using (multiple girls) instead of just "multiple girls" tells SD to pay extra attention to avoiding multiple characters.
+
+## BREAK SEPARATOR USAGE
+
+When using the BREAK separator:
+- First section (before BREAK): Face, hair, expression, quality tags only
+- Second section (after BREAK): Background, lighting, composition only - NO body or clothing details below shoulders
+
+Example CORRECT structure:
+1girl, portrait, headshot, face focus, detailed facial features, long wavy golden hair, heart-shaped face, blue eyes, plump lips, masterpiece, best quality, detailed face, detailed eyes
+BREAK
+clean simple background, soft lighting, sharp focus, high quality
+
+Example INCORRECT (what NOT to do):
+1girl, portrait, detailed face, long hair, curvaceous figure, skimpy dress, high heels, standing confidently ← WRONG: includes body details
+
 ` : ''}
 
 # GENERATION TYPE SPECIFICS
@@ -202,9 +262,11 @@ ${isAvatar ? `
 ## AVATAR GENERATION
 - Aspect ratio: Square 1:1 (768x768)
 - Close-up portrait, headshot focus
-- Face and neck ONLY - no body details
+- Face and neck ONLY - absolutely NO body details below shoulders
 - Simple background unless specified
-- DO NOT include: breasts, body, curves, thighs, hips, arms, legs
+- CRITICAL: DO NOT include clothing below bust (no skirts, dresses, pants, stockings, shoes, heels)
+- CRITICAL: DO NOT include body shape descriptions (no curvaceous, voluptuous, figure)
+- CRITICAL: DO NOT include full body pose references (no standing, provocative pose, etc.)
 ` : ''}
 
 ${isSticker ? `
@@ -217,7 +279,12 @@ ${isSticker ? `
 ${isReference ? `
 ## REFERENCE GENERATION
 - Type: ${generation.type.replace('REFERENCE_', '')}
-${generation.type === 'REFERENCE_FACE' ? '- Face portrait ONLY - no body details' : '- Full body'}
+${generation.type === 'REFERENCE_FACE' ? `
+- Face portrait ONLY - no body details below shoulders
+- CRITICAL: DO NOT include clothing below bust (no skirts, dresses, pants, stockings, shoes, heels)
+- CRITICAL: DO NOT include body shape descriptions (no curvaceous, voluptuous, figure)
+- CRITICAL: DO NOT include full body pose references (no standing, provocative pose, etc.)
+` : '- Full body'}
 - Clean background for reference
 - Neutral expression unless specified
 ` : ''}
@@ -421,10 +488,9 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
 
     let negative = 'low quality, worst quality, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, jpeg artifacts, signature, watermark, username, blurry';
 
-    // Add multiple subject exclusions (not relevant for face generation)
-    if (!isFaceGeneration) {
-      negative += ', multiple girls, multiple characters';
-    }
+    // Add multiple subject exclusions with emphasis (for all types)
+    // Using parentheses tells SD to pay extra attention to avoiding multiple characters
+    negative += ', (multiple girls), (multiple characters)';
 
     // Add body exclusions for face generation
     if (isFaceGeneration) {
