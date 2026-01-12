@@ -313,7 +313,8 @@ model StyleLora {
   id   String   @id @default(uuid())
   name String // e.g., "Velvet's Mythic Fantasy Styles"
   filename String @unique // e.g., "iLLMythD4rkL1nesV2.safetensors"
-  path String // Full path in ComfyUI
+  path String // Full path in ComfyUI (legacy, for reference)
+  filepathRelative String? // Relative path from models/ folder, e.g., "loras/Illustrious/Style/xxx.safetensors"
   civitaiUrl String?
   modelType ModelType // LORA_STYLE or LORA_CONTENT
 

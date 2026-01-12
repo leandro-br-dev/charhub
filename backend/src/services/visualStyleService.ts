@@ -13,6 +13,7 @@ export interface LoRAConfig {
   name: string;
   filename: string;
   path: string;
+  filepathRelative?: string | null;
   triggerWords: string | null;
   weight: number;
   priority: number;
@@ -102,6 +103,7 @@ export async function getVisualStyleConfiguration(
       name: mapping.lora.name,
       filename: mapping.lora.filename,
       path: mapping.lora.path,
+      filepathRelative: mapping.lora.filepathRelative,
       triggerWords: mapping.lora.triggerWords,
       weight: mapping.weight ?? mapping.lora.weight,
       priority: mapping.priority

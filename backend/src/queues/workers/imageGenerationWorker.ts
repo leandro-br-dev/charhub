@@ -388,7 +388,11 @@ async function processAvatarGeneration(
     });
     const tagNames = characterTags.map(t => t.name);
 
-    // Apply visual style to prompt
+    // Detect content type for checkpoint overrides
+    const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
+
+    // Apply visual style to prompt (for prompt modifiers)
+    // Note: LoRAs and checkpoint are handled in comfyuiService via workflow
     prompt = await applyVisualStyleToPrompt(
       prompt,
       character.style,
@@ -401,11 +405,12 @@ async function processAvatarGeneration(
     logger.info({ characterId, imageType, prompt: prompt.positive, hasReferences: !!referencePath }, `${imageTypeName} prompt ready`);
 
     // Generate image with ComfyUI
+    // Pass visual style for automatic checkpoint and LoRA swap
     const result = isCover
       ? (referencePath
-          ? await comfyuiService.generateCoverWithReferences(referencePath, prompt)
-          : await comfyuiService.generateCover(prompt))
-      : await comfyuiService.generateAvatar(prompt);
+          ? await comfyuiService.generateCoverWithReferences(referencePath, prompt, character.style as any, contentType)
+          : await comfyuiService.generateCover(prompt, character.style as any, contentType))
+      : await comfyuiService.generateAvatar(prompt, character.style as any, contentType);
 
     // Convert to WebP
     const webpBuffer = await convertToWebP(result.imageBytes, {
@@ -588,7 +593,11 @@ async function processStickerGeneration(
     });
     const tagNames = characterTags.map(t => t.name);
 
-    // Apply visual style to prompt
+    // Detect content type for checkpoint overrides
+    const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
+
+    // Apply visual style to prompt (for prompt modifiers)
+    // Note: LoRAs and checkpoint are handled in comfyuiService via workflow
     prompt = await applyVisualStyleToPrompt(
       prompt,
       character.style,
@@ -601,7 +610,8 @@ async function processStickerGeneration(
     logger.info({ characterId, emotion, prompt: prompt.positive }, 'Generated sticker prompt');
 
     // Generate image with ComfyUI
-    const result = await comfyuiService.generateSticker(prompt);
+    // Pass visual style for automatic checkpoint and LoRA swap
+    const result = await comfyuiService.generateSticker(prompt, character.style as any, contentType);
 
     // Convert to WebP (stickers have transparency)
     const webpBuffer = await convertToWebP(result.imageBytes, {
@@ -783,12 +793,28 @@ async function processMultiStageDatasetGeneration(
 ): Promise<MultiStageGenerationResult> {
   const { characterId, userId, userRole, prompt, loras, referenceImages, viewsToGenerate } = data;
 
+  // Get character data for visual style and content type detection
+  const character = await prisma.character.findUnique({
+    where: { id: characterId },
+    include: { lora: true, mainAttire: true, species: true, tags: true },
+  });
+
+  if (!character) {
+    throw new Error(`Character ${characterId} not found`);
+  }
+
+  // Get character tags for content type detection
+  const tagNames = character.tags?.map(t => t.name) || [];
+
+  // Detect content type for checkpoint overrides
+  const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
+
   // Calculate cost - adjust based on number of views being generated
   const viewsCount = viewsToGenerate?.length || 4;
   const baseCost = getImageGenerationCost('multi-stage-dataset');
   const cost = Math.ceil(baseCost * (viewsCount / 4)); // Proportional cost
 
-  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost, viewsToGenerate }, 'Processing multi-stage dataset generation');
+  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost, viewsToGenerate, visualStyle: character.style, contentType }, 'Processing multi-stage dataset generation');
 
   // Update job progress
   job.updateProgress({ stage: 0, total: viewsCount, message: 'Starting multi-stage generation...' });
@@ -803,6 +829,8 @@ async function processMultiStageDatasetGeneration(
       userSamples: referenceImages || [],
       userId,
       userRole,
+      visualStyle: character.style as any,
+      contentType,
       viewsToGenerate,
       onProgress: (stage, total, message, completedImages) => {
         // Include completedImages in progress for real-time UI updates

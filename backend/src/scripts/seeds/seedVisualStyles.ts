@@ -5,21 +5,23 @@
  * checkpoints, and LoRAs for image generation.
  */
 
-import { PrismaClient, VisualStyle, ModelType, ContentType } from '../src/generated/prisma';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
+import { PrismaClient, VisualStyle, ModelType, ContentType } from '../../generated/prisma';
 
-const connectionString = `${process.env.DATABASE_URL}`;
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
+export interface SeedVisualStylesOptions {
+  verbose?: boolean;
+  dryRun?: boolean;
+  prisma: PrismaClient;
+}
 
-const prisma = new PrismaClient({
-  adapter,
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-});
-
-export async function seedVisualStyles() {
+export async function seedVisualStyles(options?: SeedVisualStylesOptions) {
   console.log('🎨 Seeding visual styles...');
+
+  // Use provided prisma instance or create new one for standalone execution
+  const prisma = options?.prisma;
+
+  if (!prisma) {
+    throw new Error('Prisma instance is required. Pass it via options.prisma');
+  }
 
   // ========================================
   // CHECKPOINTS
@@ -430,17 +432,4 @@ export async function seedVisualStyles() {
   });
 
   console.log('✅ Visual styles seeded successfully');
-}
-
-// Run seed if called directly
-if (require.main === module) {
-  seedVisualStyles()
-    .catch((e) => {
-      console.error('Error seeding visual styles:', e);
-      process.exit(1);
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-      await pool.end();
-    });
 }
