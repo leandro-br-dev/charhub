@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../../../lib/api';
 import { IMAGE_GENERATION_COSTS } from '../../../config/credits';
@@ -65,6 +65,19 @@ export function MultiStageProgress({
   const [isGenerating, setIsGenerating] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Use refs to store callbacks to prevent re-creating polling interval on every render
+  const onCompleteRef = useRef(onComplete);
+  const onErrorRef = useRef(onError);
+  const onGenerationCompleteRef = useRef(onGenerationComplete);
+  const pollingActiveRef = useRef(false);
+
+  // Update refs when callbacks change
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+    onErrorRef.current = onError;
+    onGenerationCompleteRef.current = onGenerationComplete;
+  }, [onComplete, onError, onGenerationComplete]);
 
   // Load credits on mount
   useEffect(() => {
@@ -148,7 +161,10 @@ export function MultiStageProgress({
 
   // Poll job status
   useEffect(() => {
-    if (!jobId) return;
+    if (!jobId || pollingActiveRef.current) return;
+
+    // Mark polling as active to prevent multiple intervals
+    pollingActiveRef.current = true;
 
     const interval = setInterval(async () => {
       try {
@@ -173,12 +189,13 @@ export function MultiStageProgress({
 
         if (state === 'completed') {
           clearInterval(interval);
+          pollingActiveRef.current = false;
           setIsGenerating(false);
           setIsComplete(true);
           setOverallProgress(100);
 
           // Notify parent that generation is complete (allows X button to work)
-          onGenerationComplete?.();
+          onGenerationCompleteRef.current?.();
 
           // Fetch all generated images from database ONCE when complete
           try {
@@ -216,11 +233,12 @@ export function MultiStageProgress({
           }
         } else if (state === 'failed') {
           clearInterval(interval);
+          pollingActiveRef.current = false;
           setIsGenerating(false);
           const errorMsg = failedReason || t('characters:imageGeneration.multiStage.errors.generationFailed');
           setError(errorMsg);
           setStages(prev => prev.map(s => s.status === 'in_progress' ? { ...s, status: 'error' as const } : s));
-          onError?.(errorMsg);
+          onErrorRef.current?.(errorMsg);
         } else if (state === 'active' && progress) {
           // Update progress immediately - use completedImages from progress if available
           setOverallProgress((progress.stage / progress.total) * 100);
@@ -246,15 +264,19 @@ export function MultiStageProgress({
         }
       } catch (err: any) {
         clearInterval(interval);
+        pollingActiveRef.current = false;
         setIsGenerating(false);
         const errorMsg = t('characters:imageGeneration.multiStage.errors.pollFailed');
         setError(errorMsg);
-        onError?.(errorMsg);
+        onErrorRef.current?.(errorMsg);
       }
     }, 1000); // Poll every 1 second for faster updates
 
-    return () => clearInterval(interval);
-  }, [jobId, t, characterId, onComplete, onError]);
+    return () => {
+      clearInterval(interval);
+      pollingActiveRef.current = false;
+    };
+  }, [jobId, t, characterId]);
 
   const getStatusColor = (status: Stage['status']) => {
     switch (status) {
@@ -405,7 +427,7 @@ export function MultiStageProgress({
             </p>
           </div>
           <button
-            onClick={() => onComplete?.(stages)}
+            onClick={() => onCompleteRef.current?.(stages)}
             className="w-full py-3 px-6 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-opacity"
           >
             {t('common:done', 'Done')}
