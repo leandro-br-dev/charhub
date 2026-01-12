@@ -151,9 +151,91 @@ Execute these **in order** for every PR/deployment:
 
 ---
 
-## 🚨 GIT SAFETY: COMANDOS PROIBIDOS
+## 🚨 SAFETY: COMANDOS DESTRUTIVOS PROIBIDOS
 
-**⚠️ CRITICAL**: Agent Reviewer can also lose code! These rules apply to YOU too.
+**⚠️ CRITICAL**: Agent Reviewer can also lose data! These rules apply to YOU too.
+
+This section covers BOTH Git safety AND Docker/Database safety.
+
+---
+
+## 🚨 DOCKER/DATABASE SAFETY: COMANDOS PROIBIDOS
+
+**⚠️ CRITICAL**: Related to Issue #113 - "Investigar perda constante de dados em banco PostgreSQL"
+
+### ❌ NEVER Execute These Commands Without Explicit User Permission
+
+#### 1. `docker compose down -v` (Destroys ALL database volumes)
+
+**Why it's EXTREMELY dangerous:**
+- **PERMANENTLY DELETES** all database volumes
+- Loses ALL test data: characters, users, configurations, translations
+- Cannot be recovered - data is GONE forever
+- Directly contributes to Issue #113 (constant data loss in dev environments)
+- Breaks development workflow - developers lose hours of test data setup
+
+**When FORBIDDEN:**
+- ❌ During PR testing (use controlled script instead)
+- ❌ When migration fails (investigate first, don't destroy evidence)
+- ❌ To "fix" database issues (use proper migration tools)
+- ❌ Without EXPLICIT user permission with clear warning
+
+**Safe alternatives:**
+```bash
+# ✅ CORRECT: Stop containers but preserve data
+docker compose down  # No -v flag!
+
+# ✅ CORRECT: Clean database for tests (preserves ability to restore)
+./scripts/db-switch.sh clean
+
+# ✅ CORRECT: Switch back to populated database
+./scripts/db-switch.sh populated
+
+# ✅ CORRECT: Copy data from another environment
+./scripts/db-copy-from-env.sh
+```
+
+**If you need to reset database:**
+1. **ASK USER FIRST** with clear warning:
+   ```
+   ⚠️ ATENÇÃO: Preciso resetar o banco de dados.
+   Isso vai APAGAR TODOS OS DADOS de desenvolvimento.
+
+   Dados que serão perdidos:
+   - Personagens de teste
+   - Usuários criados
+   - Configurações
+   - Traduções
+   - Histórico de conversas
+
+   Você autoriza? (Isso NÃO pode ser desfeito)
+   ```
+2. Wait for explicit "yes" confirmation
+3. Then use controlled script: `./scripts/db-switch.sh clean`
+
+---
+
+#### 2. `docker volume rm` / `docker volume prune` (Destroys volumes)
+
+**Why it's dangerous:**
+- Same as `docker compose down -v`
+- Can accidentally delete volumes from other projects
+- No confirmation prompt by default
+
+**When FORBIDDEN:**
+- ❌ Without explicit user permission
+- ❌ Without specifying exact volume name
+- ❌ Using wildcard patterns
+
+**Safe alternative:**
+```bash
+# Use controlled scripts that know which volumes to touch
+./scripts/db-switch.sh clean
+```
+
+---
+
+## 🚨 GIT SAFETY: COMANDOS PROIBIDOS
 
 ### ❌ NEVER Execute These Commands
 
@@ -232,6 +314,29 @@ git branch backup-$(date +%Y%m%d%H%M%S)
 - Commit if they're important test fixes
 - Discard if they're temporary test data
 - NEVER switch branches with uncommitted changes
+
+---
+
+### ✅ Before ANY Docker/Database Operation: Pre-Flight Check
+
+**Execute BEFORE: docker compose down, volume operations, or database resets:**
+
+```bash
+# 1. What containers are running?
+docker compose ps
+
+# 2. What volumes exist?
+docker volume ls | grep charhub
+
+# 3. Do I have permission to destroy data?
+# - If NO explicit user permission → STOP
+# - If YES → Use controlled script: ./scripts/db-switch.sh clean
+```
+
+**If you need to reset database:**
+- ASK USER FIRST (see warning template above)
+- Wait for explicit "yes" confirmation
+- Use controlled script, NOT direct docker commands
 
 ---
 
