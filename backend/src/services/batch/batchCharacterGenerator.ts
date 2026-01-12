@@ -38,6 +38,8 @@ export interface BatchGenerationOptions {
   userId?: string;
   maxRetries?: number;
   delayBetweenMs?: number;
+  /** Optional: specific image IDs to generate from (bypasses diversification algorithm) */
+  specificImageIds?: string[];
 }
 
 /**
@@ -68,13 +70,19 @@ export class BatchCharacterGenerator {
     totalDuration: number;
   }> {
     const startTime = Date.now();
-    const { count, maxRetries = this.maxRetries, delayBetweenMs = this.delayBetweenMs } = options;
+    const { count, maxRetries = this.maxRetries, delayBetweenMs = this.delayBetweenMs, specificImageIds } = options;
 
-    logger.info({ count }, 'Starting batch character generation with AI pipeline');
+    logger.info({ count, specificImageIds }, 'Starting batch character generation with AI pipeline');
 
-    // 1. Select diverse images from approved curated images
-    const selectedImageIds = await diversificationAlgorithm.selectImages({ count });
-    logger.info({ selected: selectedImageIds.length }, 'Images selected for generation');
+    // 1. Select diverse images from approved curated images (or use specific IDs if provided)
+    let selectedImageIds: string[];
+    if (specificImageIds && specificImageIds.length > 0) {
+      selectedImageIds = specificImageIds;
+      logger.info({ selected: selectedImageIds.length }, 'Using specific image IDs for generation');
+    } else {
+      selectedImageIds = await diversificationAlgorithm.selectImages({ count });
+      logger.info({ selected: selectedImageIds.length }, 'Images selected for generation');
+    }
 
     if (selectedImageIds.length === 0) {
       logger.warn('No approved curated images available for generation');
@@ -323,6 +331,8 @@ export class BatchCharacterGenerator {
         userSamples: referenceImages,
         userId: this.botUserId,
         userRole: 'ADMIN', // Bot user has admin role
+        visualStyle: character.style || undefined, // Apply Visual Style System for model/LoRA selection
+        contentType: undefined, // Let Visual Style System determine content type
         onProgress: (stage, total, message) => {
           logger.info({ characterId, stage, total, message }, 'Reference generation progress');
         },

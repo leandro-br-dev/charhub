@@ -100,11 +100,10 @@ class FullGenerationFlowTester {
     console.log('\n[1/6] Creating test image from Civit.ai...');
 
     try {
-      // Use a known good Civitai image URL for testing
-      // Using a high-quality anime character image
+      // Use the specified Civitai image URL for testing
       const testImage = {
         id: 'civitai-test-' + Date.now(),
-        url: 'https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/633fcfb4-11fb-44e7-8529-e278bdf6a662/width=450/height=813/633fcfb4-11fb-44e7-8529-e278bdf6a662.jpeg',
+        url: 'https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/d65a6d2e-4a20-4a8b-800e-42402a0f7ab3/original=true,quality=90/116771308.jpeg',
         rating: 4.5,
         nsfwLevel: 0,
       };
@@ -273,9 +272,10 @@ class FullGenerationFlowTester {
         throw new Error('Curated image not found');
       }
 
-      // Generate using batch generator (includes reference generation)
+      // Generate using batch generator with specific image ID (includes reference generation)
       const results = await batchCharacterGenerator.generateBatch({
         count: 1,
+        specificImageIds: [curatedImageId], // Use the specific image we just created
       });
 
       if (!results.results || results.results.length === 0) {
