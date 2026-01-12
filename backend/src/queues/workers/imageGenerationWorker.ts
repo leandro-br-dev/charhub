@@ -24,7 +24,7 @@ import type {
   MultiStageDatasetGenerationJobData,
   MultiStageGenerationResult,
 } from '../jobs/imageGenerationJob';
-import { StickerStatus } from '../../generated/prisma';
+import { StickerStatus, ContentType } from '../../generated/prisma';
 
 /**
  * Execute operation with credit management
@@ -60,6 +60,94 @@ async function executeWithCredits<T>(
       `Refund for failed: ${reason}`
     );
     throw error;
+  }
+}
+
+/**
+ * Detect content type based on character species and other attributes
+ * This enables automatic checkpoint overrides for specific content types
+ */
+function detectContentType(
+  speciesName?: string | null,
+  physicalCharacteristics?: string | null,
+  tags?: string[] | null
+): ContentType | undefined {
+  if (!speciesName && !physicalCharacteristics && !tags) {
+    return undefined;
+  }
+
+  const lowerSpecies = speciesName?.toLowerCase() || '';
+  const lowerPhysical = physicalCharacteristics?.toLowerCase() || '';
+  const lowerTags = tags?.map(t => t.toLowerCase()).join(' ') || '';
+
+  const combinedText = `${lowerSpecies} ${lowerPhysical} ${lowerTags}`;
+
+  // Detect FURRY content
+  if (
+    combinedText.includes('furry') ||
+    combinedText.includes('anthro') ||
+    combinedText.includes('anthropomorphic') ||
+    combinedText.includes('kemono') ||
+    combinedText.includes('werewolf') ||
+    combinedText.includes('kitsune') ||
+    combinedText.includes('dragon')
+  ) {
+    return ContentType.FURRY;
+  }
+
+  // HENTAI content is explicitly set by user (NSFW flag), not auto-detected
+  // This is a safety measure to avoid misclassification
+
+  // Additional content types can be added here
+  // FANTASY, SCI_FI, etc.
+
+  return undefined;
+}
+
+/**
+ * Apply visual style to prompt based on character configuration
+ * This is the centralized integration point for the Visual Style Reference System
+ */
+async function applyVisualStyleToPrompt(
+  prompt: { positive: string; negative: string; loras?: any[]; referenceImagePath?: string },
+  characterStyle: string | null,
+  speciesName?: string | null,
+  physicalCharacteristics?: string | null,
+  tags?: string[] | null
+): Promise<{ positive: string; negative: string; loras?: any[]; referenceImagePath?: string }> {
+  if (!characterStyle) {
+    return prompt; // No style set, return prompt as-is
+  }
+
+  try {
+    // Detect content type for checkpoint overrides
+    const contentType = detectContentType(speciesName, physicalCharacteristics, tags);
+
+    // Apply visual style using ComfyUI service integration
+    const enhancedPrompt = await comfyuiService.applyVisualStyleToPrompt(
+      prompt.positive,
+      prompt.negative,
+      characterStyle as any, // VisualStyle enum
+      contentType,
+      prompt.loras // Preserve existing LoRAs
+    );
+
+    // Preserve referenceImagePath if it exists
+    const result = { ...enhancedPrompt };
+    if (prompt.referenceImagePath) {
+      result.referenceImagePath = prompt.referenceImagePath;
+    }
+
+    logger.info({
+      style: characterStyle,
+      contentType,
+      loraCount: result.loras?.length || 0,
+    }, 'Visual style applied to prompt');
+
+    return result;
+  } catch (error) {
+    logger.warn({ error, style: characterStyle }, 'Failed to apply visual style, using base prompt');
+    return prompt; // Fall back to base prompt on error
   }
 }
 
@@ -285,14 +373,44 @@ async function processAvatarGeneration(
       }
     }
 
+    // ============================================================================
+    // VISUAL STYLE REFERENCE SYSTEM INTEGRATION
+    // Automatically applies checkpoint, LoRAs, and prompt modifiers based on character.style
+    // ============================================================================
+    // Get character tags for content type detection
+    const characterTags = await prisma.tag.findMany({
+      where: {
+        characters: {
+          some: { id: characterId }
+        }
+      },
+      select: { name: true },
+    });
+    const tagNames = characterTags.map(t => t.name);
+
+    // Detect content type for checkpoint overrides
+    const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
+
+    // Apply visual style to prompt (for prompt modifiers)
+    // Note: LoRAs and checkpoint are handled in comfyuiService via workflow
+    prompt = await applyVisualStyleToPrompt(
+      prompt,
+      character.style,
+      character.species?.name,
+      character.physicalCharacteristics,
+      tagNames
+    );
+    // ============================================================================
+
     logger.info({ characterId, imageType, prompt: prompt.positive, hasReferences: !!referencePath }, `${imageTypeName} prompt ready`);
 
     // Generate image with ComfyUI
+    // Pass visual style for automatic checkpoint and LoRA swap
     const result = isCover
       ? (referencePath
-          ? await comfyuiService.generateCoverWithReferences(referencePath, prompt)
-          : await comfyuiService.generateCover(prompt))
-      : await comfyuiService.generateAvatar(prompt);
+          ? await comfyuiService.generateCoverWithReferences(referencePath, prompt, character.style as any, contentType)
+          : await comfyuiService.generateCover(prompt, character.style as any, contentType))
+      : await comfyuiService.generateAvatar(prompt, character.style as any, contentType);
 
     // Convert to WebP
     const webpBuffer = await convertToWebP(result.imageBytes, {
@@ -446,7 +564,7 @@ async function processStickerGeneration(
       },
     });
 
-    const prompt: any = {
+    let prompt: any = {
       positive,
       negative: neg,
     };
@@ -460,10 +578,40 @@ async function processStickerGeneration(
       }];
     }
 
+    // ============================================================================
+    // VISUAL STYLE REFERENCE SYSTEM INTEGRATION
+    // Automatically applies checkpoint, LoRAs, and prompt modifiers for stickers too
+    // ============================================================================
+    // Get character tags for content type detection
+    const characterTags = await prisma.tag.findMany({
+      where: {
+        characters: {
+          some: { id: characterId }
+        }
+      },
+      select: { name: true },
+    });
+    const tagNames = characterTags.map(t => t.name);
+
+    // Detect content type for checkpoint overrides
+    const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
+
+    // Apply visual style to prompt (for prompt modifiers)
+    // Note: LoRAs and checkpoint are handled in comfyuiService via workflow
+    prompt = await applyVisualStyleToPrompt(
+      prompt,
+      character.style,
+      character.species?.name,
+      character.physicalCharacteristics,
+      tagNames
+    );
+    // ============================================================================
+
     logger.info({ characterId, emotion, prompt: prompt.positive }, 'Generated sticker prompt');
 
     // Generate image with ComfyUI
-    const result = await comfyuiService.generateSticker(prompt);
+    // Pass visual style for automatic checkpoint and LoRA swap
+    const result = await comfyuiService.generateSticker(prompt, character.style as any, contentType);
 
     // Convert to WebP (stickers have transparency)
     const webpBuffer = await convertToWebP(result.imageBytes, {
@@ -645,12 +793,28 @@ async function processMultiStageDatasetGeneration(
 ): Promise<MultiStageGenerationResult> {
   const { characterId, userId, userRole, prompt, loras, referenceImages, viewsToGenerate } = data;
 
+  // Get character data for visual style and content type detection
+  const character = await prisma.character.findUnique({
+    where: { id: characterId },
+    include: { lora: true, mainAttire: true, species: true, tags: true },
+  });
+
+  if (!character) {
+    throw new Error(`Character ${characterId} not found`);
+  }
+
+  // Get character tags for content type detection
+  const tagNames = character.tags?.map(t => t.name) || [];
+
+  // Detect content type for checkpoint overrides
+  const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
+
   // Calculate cost - adjust based on number of views being generated
   const viewsCount = viewsToGenerate?.length || 4;
   const baseCost = getImageGenerationCost('multi-stage-dataset');
   const cost = Math.ceil(baseCost * (viewsCount / 4)); // Proportional cost
 
-  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost, viewsToGenerate }, 'Processing multi-stage dataset generation');
+  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost, viewsToGenerate, visualStyle: character.style, contentType }, 'Processing multi-stage dataset generation');
 
   // Update job progress
   job.updateProgress({ stage: 0, total: viewsCount, message: 'Starting multi-stage generation...' });
@@ -665,6 +829,8 @@ async function processMultiStageDatasetGeneration(
       userSamples: referenceImages || [],
       userId,
       userRole,
+      visualStyle: character.style as any,
+      contentType,
       viewsToGenerate,
       onProgress: (stage, total, message, completedImages) => {
         // Include completedImages in progress for real-time UI updates

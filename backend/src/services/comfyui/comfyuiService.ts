@@ -17,8 +17,15 @@ import type {
   GenerateWithReferencesRequest,
   GenerateWithReferencesResponse,
   CleanupResponse,
+  LoraConfig,
 } from './types';
 import { ImageGenerationType } from './types';
+import type { VisualStyle, ContentType } from '../../generated/prisma';
+import {
+  getVisualStyleConfiguration,
+  buildComfyUIPayload,
+  isValidVisualStyle,
+} from '../visualStyleService';
 import avatarWorkflow from './workflows/avatar.workflow.json';
 import avatarWithIPAdapterWorkflow from './workflows/avatar-with-ipadapter.workflow.json';
 import coverWorkflow from './workflows/cover.workflow.json';
@@ -193,27 +200,57 @@ export class ComfyUIService {
   /**
    * Generate avatar image
    */
-  async generateAvatar(prompt: SDPrompt): Promise<ImageGenerationResult> {
-    logger.info('Starting avatar generation');
-    const workflow = this.prepareWorkflow(ImageGenerationType.AVATAR, prompt);
+  async generateAvatar(
+    prompt: SDPrompt,
+    visualStyle?: VisualStyle,
+    contentType?: ContentType
+  ): Promise<ImageGenerationResult> {
+    logger.info({ visualStyle, contentType }, 'Starting avatar generation');
+    let workflow = this.prepareWorkflow(ImageGenerationType.AVATAR, prompt);
+
+    // Apply visual style if provided
+    if (visualStyle) {
+      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, contentType);
+    }
+
     return this.executeWorkflow(workflow);
   }
 
   /**
    * Generate sticker image
    */
-  async generateSticker(prompt: SDPrompt): Promise<ImageGenerationResult> {
-    logger.info('Starting sticker generation');
-    const workflow = this.prepareWorkflow(ImageGenerationType.STICKER, prompt);
+  async generateSticker(
+    prompt: SDPrompt,
+    visualStyle?: VisualStyle,
+    contentType?: ContentType
+  ): Promise<ImageGenerationResult> {
+    logger.info({ visualStyle, contentType }, 'Starting sticker generation');
+    let workflow = this.prepareWorkflow(ImageGenerationType.STICKER, prompt);
+
+    // Apply visual style if provided
+    if (visualStyle) {
+      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, contentType);
+    }
+
     return this.executeWorkflow(workflow);
   }
 
   /**
    * Generate cover image (portrait 3:4 aspect ratio)
    */
-  async generateCover(prompt: SDPrompt): Promise<ImageGenerationResult> {
-    logger.info('Starting cover generation');
-    const workflow = this.prepareWorkflow(ImageGenerationType.COVER, prompt);
+  async generateCover(
+    prompt: SDPrompt,
+    visualStyle?: VisualStyle,
+    contentType?: ContentType
+  ): Promise<ImageGenerationResult> {
+    logger.info({ visualStyle, contentType }, 'Starting cover generation');
+    let workflow = this.prepareWorkflow(ImageGenerationType.COVER, prompt);
+
+    // Apply visual style if provided
+    if (visualStyle) {
+      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, contentType);
+    }
+
     return this.executeWorkflow(workflow);
   }
 
@@ -470,9 +507,11 @@ export class ComfyUIService {
    */
   async generateCoverWithReferences(
     referencePath: string,
-    prompt: SDPrompt
+    prompt: SDPrompt,
+    visualStyle?: VisualStyle,
+    contentType?: ContentType
   ): Promise<ImageGenerationResult> {
-    logger.info({ referencePath }, 'Starting cover generation with references');
+    logger.info({ referencePath, visualStyle, contentType }, 'Starting cover generation with references');
 
     const workflowTemplate = JSON.parse(JSON.stringify(coverWithReferencesWorkflow));
 
@@ -494,6 +533,17 @@ export class ComfyUIService {
       });
     }
 
+    // Apply visual style if provided
+    if (visualStyle) {
+      const styledWorkflow = await this.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, contentType);
+      // Replace @REFERENCE_PATH@ placeholder with actual path (in case it was modified)
+      if (styledWorkflow['43']) {
+        styledWorkflow['43'].inputs.directory = referencePath;
+        logger.debug({ referencePath }, 'Set reference directory in styled workflow');
+      }
+      return this.executeWorkflow(styledWorkflow);
+    }
+
     // Replace @REFERENCE_PATH@ placeholder with actual path
     if (workflowTemplate['43']) {
       workflowTemplate['43'].inputs.directory = referencePath;
@@ -507,6 +557,285 @@ export class ComfyUIService {
   /**
    * ============================================================================
    * END MIDDLEWARE v2.0 HIGH-LEVEL API METHODS
+   * ============================================================================
+   */
+
+  /**
+   * ============================================================================
+   * VISUAL STYLE REFERENCE SYSTEM INTEGRATION
+   * ============================================================================
+   */
+
+  /**
+   * Prepare SDPrompt with visual style configuration
+   * Applies checkpoint-specific config, LoRAs, and prompt modifiers
+   *
+   * @param basePrompt - Base positive prompt
+   * @param baseNegative - Base negative prompt
+   * @param style - Visual style (ANIME, REALISTIC, etc)
+   * @param contentType - Optional content type for checkpoint override
+   * @param existingLoras - Optional existing LoRAs to merge with style
+   * @returns Enhanced SDPrompt with style applied
+   */
+  async applyVisualStyleToPrompt(
+    basePrompt: string,
+    baseNegative: string,
+    style: VisualStyle,
+    contentType?: ContentType,
+    existingLoras?: LoraConfig[]
+  ): Promise<SDPrompt> {
+    // Validate style
+    const valid = await isValidVisualStyle(style);
+    if (!valid) {
+      logger.warn({ style }, 'Invalid visual style, using base prompt');
+      return {
+        positive: basePrompt,
+        negative: baseNegative,
+        loras: existingLoras || []
+      };
+    }
+
+    // Get visual style configuration
+    const config = await getVisualStyleConfiguration(style, contentType);
+    if (!config) {
+      logger.warn({ style }, 'No visual style configuration found, using base prompt');
+      return {
+        positive: basePrompt,
+        negative: baseNegative,
+        loras: existingLoras || []
+      };
+    }
+
+    // Build enhanced prompts
+    const { positive, negative } = await this.applyVisualStyleToPrompts(
+      style,
+      contentType,
+      basePrompt,
+      baseNegative
+    );
+
+    // Merge style LoRAs with existing LoRAs
+    // Style LoRAs take priority but existing ones are appended
+    const loras: LoraConfig[] = existingLoras ? [...existingLoras] : [];
+
+    // Add style LoRAs (convert to expected format)
+    config.loras.forEach(styleLora => {
+      // Check if LoRA with same filename already exists
+      const existingIndex = loras.findIndex(
+        l => l.filepathRelative.includes(styleLora.filename)
+      );
+
+      if (existingIndex >= 0) {
+        // Update existing LoRA weight
+        loras[existingIndex].strength = styleLora.weight;
+      } else {
+        // Add new style LoRA
+        // Normalize Windows path to forward slashes for ComfyUI
+        const normalizedPath = styleLora.path.replace(/\\/g, '/');
+        loras.push({
+          name: styleLora.name,
+          filepathRelative: normalizedPath,
+          strength: styleLora.weight
+        });
+      }
+    });
+
+    return {
+      positive,
+      negative,
+      loras
+    };
+  }
+
+  /**
+   * Get visual style configuration for external use
+   *
+   * @param style - Visual style to query
+   * @param contentType - Optional content type for checkpoint override
+   * @returns Style configuration or null
+   */
+  async getVisualStyleConfig(
+    style: VisualStyle,
+    contentType?: ContentType
+  ): Promise<{
+    checkpoint: string;
+    checkpointConfig: {
+      sampler?: string;
+      cfg?: number;
+      steps?: number;
+      clipSkip?: number;
+    };
+    loras: Array<{ filename: string; weight: number }>;
+    positive: string;
+    negative: string;
+  } | null> {
+    return buildComfyUIPayload(
+      style,
+      contentType,
+      '', // Base prompt will be added by caller
+      ''
+    );
+  }
+
+  /**
+   * Apply visual style to prompts (internal helper)
+   */
+  private async applyVisualStyleToPrompts(
+    style: VisualStyle,
+    contentType: ContentType | undefined,
+    basePositive: string,
+    baseNegative: string
+  ): Promise<{ positive: string; negative: string }> {
+    const config = await getVisualStyleConfiguration(style, contentType);
+
+    if (!config) {
+      return { positive: basePositive, negative: baseNegative };
+    }
+
+    let positive = basePositive;
+    let negative = baseNegative;
+
+    // Add LoRA trigger words to positive prompt
+    const triggerWords = config.loras
+      .map(lora => lora.triggerWords)
+      .filter(Boolean)
+      .join(', ');
+    if (triggerWords) {
+      positive = `${positive}, ${triggerWords}`;
+    }
+
+    // Add style-specific suffixes
+    if (config.positivePromptSuffix) {
+      positive = `${positive}, ${config.positivePromptSuffix}`;
+    }
+
+    if (config.negativePromptSuffix) {
+      negative = `${negative}, ${config.negativePromptSuffix}`;
+    }
+
+    return { positive, negative };
+  }
+
+  /**
+   * Update workflow with visual style checkpoint and LoRAs
+   * This method modifies the workflow in-place to use the style's resources
+   *
+   * @param workflow - ComfyUI workflow to modify
+   * @param style - Visual style to apply
+   * @param contentType - Optional content type for checkpoint override
+   * @returns Modified workflow with style applied
+   */
+  async applyVisualStyleToWorkflow(
+    workflow: ComfyWorkflow,
+    style: VisualStyle,
+    contentType?: ContentType
+  ): Promise<ComfyWorkflow> {
+    const config = await getVisualStyleConfiguration(style, contentType);
+
+    if (!config) {
+      logger.warn({ style }, 'No visual style configuration found, workflow unchanged');
+      return workflow;
+    }
+
+    // Deep clone workflow to avoid modifying original
+    const modifiedWorkflow = JSON.parse(JSON.stringify(workflow));
+
+    // ============================================================================
+    // SWAP CHECKPOINT IN THE WORKFLOW
+    // ============================================================================
+    if (config.checkpoint) {
+      // Find all CheckpointLoaderSimple nodes and update them
+      let checkpointUpdated = false;
+
+      for (const nodeId in modifiedWorkflow) {
+        const node = modifiedWorkflow[nodeId];
+        if (node.class_type === 'CheckpointLoaderSimple') {
+          // Update checkpoint filename
+          const oldCheckpoint = node.inputs.ckpt_name;
+          node.inputs.ckpt_name = config.checkpoint.filename;
+          checkpointUpdated = true;
+
+          logger.info(
+            { nodeId, oldCheckpoint, newCheckpoint: config.checkpoint.filename },
+            'Checkpoint swapped in workflow'
+          );
+        }
+      }
+
+      if (!checkpointUpdated) {
+        logger.warn(
+          { style, checkpoint: config.checkpoint.filename },
+          'No CheckpointLoaderSimple node found in workflow, checkpoint not swapped'
+        );
+      }
+    }
+    // ============================================================================
+
+    // Update LoRAs in LoraLoader node (node 11 in most workflows)
+    // Handle both LoraLoader and Lora Loader Stack (rgthree) types
+    const loraNodeId = Object.keys(modifiedWorkflow).find(id => {
+      const node = modifiedWorkflow[id];
+      return node.class_type === 'LoraLoader' ||
+             node.class_type === 'Lora Loader Stack (rgthree)' ||
+             node.class_type === 'Lora Loader Stack (rgthree)'; // with space
+    });
+
+    if (loraNodeId) {
+      const loraNode = modifiedWorkflow[loraNodeId].inputs;
+
+      // Determine the type of LoRA loader and update accordingly
+      const isRgthreeStack = modifiedWorkflow[loraNodeId].class_type.includes('rgthree');
+
+      if (isRgthreeStack) {
+        // Clear existing LoRAs for rgthree stack (up to 10 slots)
+        for (let i = 1; i <= 10; i++) {
+          const loraNum = i.toString().padStart(2, '0');
+          if (loraNode[`lora_${loraNum}`] !== undefined) {
+            loraNode[`lora_${loraNum}`] = 'None';
+          }
+          if (loraNode[`strength_${loraNum}`] !== undefined) {
+            loraNode[`strength_${loraNum}`] = 0;
+          }
+        }
+
+        // Apply style LoRAs (use filepathRelative with Windows-style path)
+        config.loras.slice(0, 10).forEach((lora, index) => {
+          const loraNum = (index + 1).toString().padStart(2, '0');
+          // Convert forward slashes to backslashes for ComfyUI Windows paths
+          const loraPath = lora.filepathRelative || lora.filename;
+          loraNode[`lora_${loraNum}`] = loraPath.replace(/\//g, '\\');
+          loraNode[`strength_${loraNum}`] = lora.weight;
+        });
+      } else {
+        // Standard LoraLoader (up to 4 slots)
+        for (let i = 1; i <= 4; i++) {
+          const loraNum = i.toString().padStart(2, '0');
+          loraNode[`lora_${loraNum}`] = 'None';
+          loraNode[`strength_${loraNum}`] = 0;
+        }
+
+        // Apply style LoRAs (use filepathRelative with Windows-style path)
+        config.loras.slice(0, 4).forEach((lora, index) => {
+          const loraNum = (index + 1).toString().padStart(2, '0');
+          // Convert forward slashes to backslashes for ComfyUI Windows paths
+          const loraPath = lora.filepathRelative || lora.filename;
+          loraNode[`lora_${loraNum}`] = loraPath.replace(/\//g, '\\');
+          loraNode[`strength_${loraNum}`] = lora.weight;
+        });
+      }
+
+      logger.info(
+        { loraCount: config.loras.length, nodeId: loraNodeId },
+        'Applied visual style LoRAs to workflow'
+      );
+    }
+
+    return modifiedWorkflow;
+  }
+
+  /**
+   * ============================================================================
+   * END VISUAL STYLE REFERENCE SYSTEM INTEGRATION
    * ============================================================================
    */
 

@@ -23,6 +23,7 @@ import { prisma } from '../../config/database';
 import type { ReferenceImage } from '../comfyui/types';
 import type { UserRole } from '../../types';
 import { logger } from '../../config/logger';
+import type { ContentType, VisualStyle } from '../../generated/prisma';
 import { ImageType } from '../../generated/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -49,6 +50,8 @@ export interface MultiStageGenerationOptions {
   userSamples?: ReferenceImage[]; // User-provided SAMPLE images (1-4)
   userId: string;
   userRole?: UserRole;
+  visualStyle?: VisualStyle;
+  contentType?: ContentType;
   onProgress?: (stage: number, total: number, message: string, completedImages?: Array<{ content: string; url: string }>) => void;
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to generate
 }
@@ -117,7 +120,7 @@ export class MultiStageCharacterGenerator {
    * New simplified flow with cumulative references in a single folder
    */
   async generateCharacterDataset(options: MultiStageGenerationOptions): Promise<void> {
-    const { characterId, prompt, userSamples = [], userId, userRole, onProgress, viewsToGenerate } = options;
+    const { characterId, prompt, userSamples = [], userId, userRole, visualStyle, contentType, onProgress, viewsToGenerate } = options;
 
     // Filter views to generate if specified
     const viewsToProcess = viewsToGenerate && viewsToGenerate.length > 0
@@ -346,6 +349,8 @@ export class MultiStageCharacterGenerator {
           prompt: finalPrompt,
           loras: characterLoras,
           referencePath: prepareResponse.referencePath,
+          visualStyle,
+          contentType,
         });
 
         // Upload the new reference to R2
@@ -405,8 +410,10 @@ export class MultiStageCharacterGenerator {
     prompt: { positive: string; negative: string };
     loras: Array<{ name: string; filepathRelative: string; strength: number }>;
     referencePath: string;
+    visualStyle?: 'ANIME' | 'REALISTIC' | 'SEMI_REALISTIC' | 'CARTOON' | 'MANGA' | 'MANHWA' | 'COMIC' | 'CHIBI' | 'PIXEL_ART' | 'THREE_D';
+    contentType?: ContentType;
   }): Promise<{ imageBytes: Buffer; filename: string }> {
-    const { view, prompt, loras, referencePath } = options;
+    const { view, prompt, loras, referencePath, visualStyle, contentType } = options;
 
     // Adjust prompt for this view
     const adjustedPrompt = {
@@ -451,8 +458,15 @@ export class MultiStageCharacterGenerator {
       logger.debug({ view: view.content, referencePath }, 'Set reference directory in workflow');
     }
 
+    // Apply visual style if provided (swaps checkpoint and applies style LoRAs)
+    let finalWorkflow = workflowTemplate;
+    if (visualStyle) {
+      finalWorkflow = await comfyuiService.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, contentType);
+      logger.info({ view: view.content, visualStyle, contentType }, 'Applied visual style to reference workflow');
+    }
+
     // Execute workflow
-    return comfyuiService.executeWorkflow(workflowTemplate);
+    return comfyuiService.executeWorkflow(finalWorkflow);
   }
 }
 

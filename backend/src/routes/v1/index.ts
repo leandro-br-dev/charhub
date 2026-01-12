@@ -25,6 +25,7 @@ import creditsRoutes from './credits';
 import plansRoutes from './plans';
 import subscriptionsRoutes from './subscriptions';
 import imageGenerationRoutes from './image-generation';
+import visualStylesRoutes from './visual-styles';
 import characterPopulationRoutes from './character-population';
 import { checkFreeMonthlyCredits } from '../../middleware/checkFreeMonthlyCredits';
 
@@ -60,6 +61,7 @@ router.use('/credits', creditsRoutes);
 router.use('/plans', plansRoutes);
 router.use('/subscriptions', subscriptionsRoutes);
 router.use('/image-generation', imageGenerationRoutes);
+router.use('/visual-styles', visualStylesRoutes);
 router.use('/character-population', characterPopulationRoutes);
 router.use('/', accessRoutes);
 
