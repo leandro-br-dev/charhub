@@ -17,6 +17,7 @@ import { compileCharacterDataWithLLM } from '../../controllers/automatedCharacte
 import { createCharacter } from '../../services/characterService';
 import { generateStableDiffusionPrompt } from '../../controllers/automatedCharacterGenerationController';
 import type { ImageType } from '../../generated/prisma';
+import { multiStageCharacterGenerator } from '../image-generation/multiStageCharacterGenerator';
 
 /**
  * Generation result
@@ -37,6 +38,8 @@ export interface BatchGenerationOptions {
   userId?: string;
   maxRetries?: number;
   delayBetweenMs?: number;
+  /** Optional: specific image IDs to generate from (bypasses diversification algorithm) */
+  specificImageIds?: string[];
 }
 
 /**
@@ -46,6 +49,12 @@ export class BatchCharacterGenerator {
   private readonly maxRetries: number = 3;
   private readonly delayBetweenMs: number = 5000; // 5 seconds between generations
   private readonly botUserId: string;
+
+  // Automated reference generation configuration
+  private readonly GENERATE_REFERENCES: boolean = process.env.AUTO_GENERATE_REFERENCES !== 'false'; // Default: true
+  private readonly REFERENCE_WAIT_TIMEOUT: number = parseInt(process.env.REFERENCE_WAIT_TIMEOUT || '300000', 10); // 5 minutes
+  private readonly REFERENCE_POLL_INTERVAL: number = 5000; // Check every 5 seconds
+  private readonly REFERENCE_GENERATION_ENABLED: boolean = true; // Master switch for reference generation
 
   constructor() {
     this.botUserId = process.env.OFFICIAL_BOT_USER_ID || '00000000-0000-0000-0000-000000000001';
@@ -61,13 +70,19 @@ export class BatchCharacterGenerator {
     totalDuration: number;
   }> {
     const startTime = Date.now();
-    const { count, maxRetries = this.maxRetries, delayBetweenMs = this.delayBetweenMs } = options;
+    const { count, maxRetries = this.maxRetries, delayBetweenMs = this.delayBetweenMs, specificImageIds } = options;
 
-    logger.info({ count }, 'Starting batch character generation with AI pipeline');
+    logger.info({ count, specificImageIds }, 'Starting batch character generation with AI pipeline');
 
-    // 1. Select diverse images from approved curated images
-    const selectedImageIds = await diversificationAlgorithm.selectImages({ count });
-    logger.info({ selected: selectedImageIds.length }, 'Images selected for generation');
+    // 1. Select diverse images from approved curated images (or use specific IDs if provided)
+    let selectedImageIds: string[];
+    if (specificImageIds && specificImageIds.length > 0) {
+      selectedImageIds = specificImageIds;
+      logger.info({ selected: selectedImageIds.length }, 'Using specific image IDs for generation');
+    } else {
+      selectedImageIds = await diversificationAlgorithm.selectImages({ count });
+      logger.info({ selected: selectedImageIds.length }, 'Images selected for generation');
+    }
 
     if (selectedImageIds.length === 0) {
       logger.warn('No approved curated images available for generation');
@@ -237,6 +252,118 @@ export class BatchCharacterGenerator {
   }
 
   /**
+   * Wait for avatar generation to complete
+   * Polls database for active avatar image with timeout
+   */
+  private async waitForAvatarGeneration(characterId: string, jobId: string, timeoutMs: number = this.REFERENCE_WAIT_TIMEOUT): Promise<boolean> {
+    const startTime = Date.now();
+
+    logger.info({ characterId, jobId, timeoutMs }, 'Waiting for avatar generation to complete...');
+
+    while (Date.now() - startTime < timeoutMs) {
+      const avatar = await prisma.characterImage.findFirst({
+        where: {
+          characterId,
+          type: 'AVATAR' as ImageType,
+          isActive: true,
+        },
+      });
+
+      if (avatar) {
+        logger.info({ characterId, jobId, avatarUrl: avatar.url }, 'Avatar generation completed');
+        return true;
+      }
+
+      // Wait before polling again
+      await this.delay(this.REFERENCE_POLL_INTERVAL);
+    }
+
+    logger.warn({ characterId, jobId, elapsedMs: Date.now() - startTime }, 'Avatar generation timed out');
+    return false;
+  }
+
+  /**
+   * Generate reference images for automated character generation
+   * Uses multiStageCharacterGenerator to generate 4 reference views
+   * Gracefully handles failures - continues on error
+   */
+  private async generateReferenceImagesForAutomated(
+    characterId: string,
+    curatedImageUrl: string
+  ): Promise<{ success: boolean; generatedCount: number; error?: string }> {
+    if (!this.REFERENCE_GENERATION_ENABLED || !this.GENERATE_REFERENCES) {
+      logger.info({ characterId, reason: 'Reference generation disabled by config' }, 'Skipping reference generation');
+      return { success: true, generatedCount: 0 };
+    }
+
+    const startTime = Date.now();
+    logger.info({ characterId }, 'Starting automated reference generation...');
+
+    try {
+      // Build default prompts for reference generation
+      const character = await prisma.character.findUnique({
+        where: { id: characterId },
+        include: { species: true, mainAttire: true },
+      });
+
+      if (!character) {
+        throw new Error('Character not found');
+      }
+
+      // Import prompt builder
+      const { buildImagePrompt } = await import('../image-generation/promptBuilder');
+
+      const prompt = buildImagePrompt(
+        character,
+        character.species,
+        undefined, // No custom positive prompt
+        undefined  // No custom negative prompt
+      );
+
+      // Use Civitai image as sample reference
+      const referenceImages = [{ type: 'SAMPLE' as const, url: curatedImageUrl }];
+
+      // Generate all 4 reference views
+      await multiStageCharacterGenerator.generateCharacterDataset({
+        characterId,
+        prompt,
+        loras: [], // No custom LoRAs for automated generation
+        userSamples: referenceImages,
+        userId: this.botUserId,
+        userRole: 'ADMIN', // Bot user has admin role
+        visualStyle: character.style || undefined, // Apply Visual Style System for model/LoRA selection
+        contentType: undefined, // Let Visual Style System determine content type
+        onProgress: (stage, total, message) => {
+          logger.info({ characterId, stage, total, message }, 'Reference generation progress');
+        },
+      });
+
+      const duration = Date.now() - startTime;
+      const generatedCount = 4; // face, front, side, back
+
+      logger.info({
+        characterId,
+        generatedCount,
+        durationMs: duration,
+      }, 'Automated reference generation completed successfully');
+
+      return { success: true, generatedCount };
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+      logger.error({
+        characterId,
+        error: errorMessage,
+        durationMs: duration,
+      }, 'Automated reference generation failed');
+
+      // Return success=false but don't throw - allow main flow to continue
+      return { success: false, generatedCount: 0, error: errorMessage };
+    }
+  }
+
+  /**
    * Generate character using existing AI pipeline
    * This reuses the same flow as automated character generation
    */
@@ -331,6 +458,7 @@ export class BatchCharacterGenerator {
     }
 
     // Step 7: Generate avatar using ComfyUI with IP-Adapter
+    let avatarJobId: string | undefined;
     try {
       logger.info({ characterId: character.id }, 'Queuing avatar generation with ComfyUI...');
 
@@ -353,6 +481,8 @@ export class BatchCharacterGenerator {
         { priority: 5 }
       );
 
+      avatarJobId = job.id;
+
       logger.info({
         jobId: job.id,
         characterId: character.id,
@@ -361,6 +491,68 @@ export class BatchCharacterGenerator {
     } catch (error) {
       logger.warn({ error, characterId: character.id }, 'Failed to queue avatar generation');
       // Continue even if avatar generation fails
+    }
+
+    // Step 8: Wait for avatar to complete and generate reference images
+    logger.info({
+      characterId: character.id,
+      hasAvatarJobId: !!avatarJobId,
+      referenceGenerationEnabled: this.REFERENCE_GENERATION_ENABLED,
+      generateReferences: this.GENERATE_REFERENCES,
+    }, 'Step 8: Checking if reference generation should run');
+
+    if (avatarJobId && this.REFERENCE_GENERATION_ENABLED) {
+      try {
+        logger.info({
+          characterId: character.id,
+          jobId: avatarJobId,
+          timeout: this.REFERENCE_WAIT_TIMEOUT,
+        }, 'Step 8: Waiting for avatar generation to complete...');
+
+        // Wait for avatar generation to complete
+        const avatarCompleted = await this.waitForAvatarGeneration(character.id, avatarJobId);
+
+        logger.info({
+          characterId: character.id,
+          avatarCompleted,
+        }, 'Step 8: Avatar wait completed');
+
+        if (avatarCompleted) {
+          // Generate reference images (4 views: face, front, side, back)
+          logger.info({ characterId: character.id, jobId: avatarJobId }, 'Avatar completed, starting reference generation...');
+
+          const referenceResult = await this.generateReferenceImagesForAutomated(
+            character.id,
+            uploadResult.publicUrl
+          );
+
+          if (referenceResult.success) {
+            logger.info({
+              characterId: character.id,
+              generatedCount: referenceResult.generatedCount,
+            }, 'Reference generation completed successfully for automated character');
+          } else {
+            logger.warn({
+              characterId: character.id,
+              error: referenceResult.error,
+            }, 'Reference generation failed for automated character (non-critical)');
+          }
+        } else {
+          logger.warn({ characterId: character.id, jobId: avatarJobId }, 'Avatar generation timed out, skipping reference generation');
+        }
+      } catch (error) {
+        // Reference generation failure should not break the entire flow
+        logger.error({
+          error: error instanceof Error ? error.message : 'Unknown error',
+          characterId: character.id,
+        }, 'Reference generation failed for automated character (non-critical, continuing...)');
+      }
+    } else {
+      logger.info({
+        characterId: character.id,
+        avatarJobId,
+        referenceGenerationEnabled: this.REFERENCE_GENERATION_ENABLED,
+      }, 'Step 8: Skipping reference generation (conditions not met)');
     }
 
     return character;

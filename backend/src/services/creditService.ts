@@ -55,6 +55,8 @@ export async function getCurrentBalance(userId: string): Promise<number> {
 /**
  * Create a credit transaction
  * Returns the updated balance
+ *
+ * Credit balance validation is skipped for users with BOT or ADMIN role.
  */
 export async function createTransaction(
   userId: string,
@@ -64,13 +66,29 @@ export async function createTransaction(
   relatedUsageLogId?: string,
   relatedPlanId?: string
 ): Promise<{ transaction: any; newBalance: number }> {
+  // Get user to check role (for credit bypass)
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+
+  const isBypassUser = user?.role === 'BOT' || user?.role === 'ADMIN';
+
   // Get current balance
   const currentBalance = await getCurrentBalance(userId);
   const newBalance = currentBalance + amountCredits;
 
-  // Validate sufficient balance for spending
-  if (amountCredits < 0 && newBalance < 0) {
+  // Validate sufficient balance for spending (skip for BOT/ADMIN)
+  if (amountCredits < 0 && newBalance < 0 && !isBypassUser) {
     throw new Error('Insufficient credits');
+  }
+
+  // Log credit-free operations for BOT/ADMIN users
+  if (isBypassUser && amountCredits < 0) {
+    logger.info(
+      { userId, userRole: user?.role, amountCredits: -amountCredits, transactionType },
+      'Credit bypass: BOT/ADMIN user exempt from credit check'
+    );
   }
 
   // Create transaction

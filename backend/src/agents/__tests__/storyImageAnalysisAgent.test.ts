@@ -52,7 +52,7 @@ describe('storyImageAnalysisAgent - Unit Tests', () => {
 
       expect(callLLM).toHaveBeenCalledWith({
         provider: 'grok',
-        model: 'grok-4-fast-non-reasoning',
+        model: 'grok-4-1-fast-non-reasoning',
         systemPrompt: expect.any(String),
         userPrompt: expect.any(String),
         images: [mockImageUrl],
@@ -396,7 +396,7 @@ describe('storyImageAnalysisAgent - Unit Tests', () => {
   });
 
   describe('Prompt Building Logic', () => {
-    it('should use grok-4-fast-non-reasoning model', async () => {
+    it('should use grok-4-1-fast-non-reasoning model', async () => {
       (callLLM as jest.Mock as any).mockResolvedValue({
         content: JSON.stringify({ overallDescription: 'Test' }),
       });
@@ -406,7 +406,7 @@ describe('storyImageAnalysisAgent - Unit Tests', () => {
       expect(callLLM).toHaveBeenCalledWith(
         expect.objectContaining({
           provider: 'grok',
-          model: 'grok-4-fast-non-reasoning',
+          model: 'grok-4-1-fast-non-reasoning',
         })
       );
     });

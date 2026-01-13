@@ -106,7 +106,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
   try {
     const response = await callLLM({
       provider: 'grok',
-      model: 'grok-4-fast-non-reasoning',
+      model: 'grok-4-1-fast-non-reasoning',
       systemPrompt,
       userPrompt,
       images: [imageUrl], // Pass image URL for vision analysis
