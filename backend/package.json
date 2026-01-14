@@ -30,6 +30,8 @@
     "migrate:r2-paths:dry": "DRY_RUN=true tsx src/scripts/migrateR2Paths.ts",
     "migrate:r2-files": "tsx src/scripts/migrateR2Files.ts",
     "migrate:r2-files:dry": "DRY_RUN=true tsx src/scripts/migrateR2Files.ts",
+    "revert:r2-paths": "tsx src/scripts/revertR2Paths.ts",
+    "revert:r2-paths:dry": "DRY_RUN=true tsx src/scripts/revertR2Paths.ts",
     "cleanup:r2-orphans": "DRY_RUN=true tsx src/scripts/cleanupR2Orphans.ts",
     "cleanup:r2-orphans:exec": "DRY_RUN=false tsx src/scripts/cleanupR2Orphans.ts"
   },
