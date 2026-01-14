@@ -195,6 +195,43 @@ export const characterService = {
   },
 
   /**
+   * Get newest characters with pagination (sorted by creation date)
+   */
+  async getNewestWithPagination(params: {
+    skip?: number;
+    limit?: number;
+    ageRatings?: AgeRating[];
+    genders?: string[];
+    species?: string[];
+  } = {}): Promise<CharacterListResult> {
+    try {
+      const { skip = 0, limit = 20, ageRatings, genders, species } = params;
+      const query: Record<string, unknown> = { skip, limit, sortBy: 'newest' };
+
+      if (ageRatings) {
+        query.ageRatings = ageRatings;
+      }
+      if (genders) {
+        query.gender = genders;
+      }
+      if (species) {
+        query.species = species;
+      }
+
+      const response = await api.get<{ success: boolean; data: Character[]; total: number; hasMore: boolean }>(BASE_PATH, { params: query });
+
+      return {
+        characters: response.data.data || [],
+        total: response.data.total || 0,
+        hasMore: response.data.hasMore || false,
+      };
+    } catch (error) {
+      console.error('[characterService] getNewestWithPagination failed:', error);
+      return { characters: [], total: 0, hasMore: false };
+    }
+  },
+
+  /**
    * Get user's favorite characters
    */
   async getFavorites(limit = 10): Promise<Character[]> {

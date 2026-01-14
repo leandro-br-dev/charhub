@@ -80,8 +80,9 @@ function DashboardContent(): JSX.Element {
   // State
   const [carouselHighlights, setCarouselHighlights] = useState<CarouselHighlight[]>([]);
   const [popularCharacters, setPopularCharacters] = useState<Character[]>([]);
+  const [newestCharacters, setNewestCharacters] = useState<Character[]>([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState<Character[]>([]);
-  const [discoverView, setDiscoverView] = useState<'popular' | 'favorites'>('popular');
+  const [discoverView, setDiscoverView] = useState<'popular' | 'newest' | 'favorites'>('popular');
   const [favoriteCharacterIds, setFavoriteCharacterIds] = useState<Set<string>>(new Set());
   const [statsById, setStatsById] = useState<Record<string, CharacterStats | undefined>>({});
   const [imagesById, setImagesById] = useState<Record<string, number>>({});
@@ -126,7 +127,7 @@ function DashboardContent(): JSX.Element {
   // Ensure non-authenticated users always see "popular" views
   useEffect(() => {
     if (!isAuthenticated) {
-      if (discoverView === 'favorites') {
+      if (discoverView === 'favorites' || discoverView === 'newest') {
         setDiscoverView('popular');
       }
       if (storyView === 'my') {
@@ -175,6 +176,21 @@ function DashboardContent(): JSX.Element {
 
         setPopularCharacters(result.characters);
         setHasMore(result.hasMore);
+
+        // Fetch newest characters
+        try {
+          const newestResult = await characterService.getNewestWithPagination({
+            skip: 0,
+            limit: initialLimit,
+            ageRatings,
+            genders: characterFilters.genders,
+            species: characterFilters.species,
+          });
+          setNewestCharacters(newestResult.characters);
+        } catch (error) {
+          console.warn('[Dashboard] Failed to fetch newest characters:', error);
+          setNewestCharacters([]);
+        }
 
         // Fetch favorites if authenticated (for the favorite tab)
         if (isAuthenticated) {
@@ -434,6 +450,17 @@ function DashboardContent(): JSX.Element {
     return false;
   });
 
+  const filteredNewestCharacters = newestCharacters.filter((c) => {
+    if (!shouldHideContent((c as any).ageRating, (c as any).contentTags || [])) {
+      // If not authenticated, only show 'L' rated content
+      if (!isAuthenticated) {
+        return c.ageRating === 'L';
+      }
+      return true;
+    }
+    return false;
+  });
+
   const filteredFavoriteCharacters = favoriteCharacters.filter((c) => {
     if (!shouldHideContent((c as any).ageRating, (c as any).contentTags || [])) {
       if (!isAuthenticated) {
@@ -512,9 +539,11 @@ function DashboardContent(): JSX.Element {
                   <h2 className="hidden sm:block text-lg font-semibold text-title">
                     {discoverView === 'popular'
                       ? t('dashboard:sections.popularCharacters')
+                      : discoverView === 'newest'
+                      ? t('dashboard:sections.newest') + ' ' + t('dashboard:sections.popularCharacters').toLowerCase()
                       : t('dashboard:sections.favoriteCharacters')}
                   </h2>
-                  {/* Hide favorites toggle for non-authenticated users */}
+                  {/* Hide favorites/newest toggle for non-authenticated users */}
                   {isAuthenticated && (
                     <div className="ml-auto sm:ml-0 flex rounded-xl border border-border overflow-hidden">
                       <button
@@ -523,6 +552,13 @@ function DashboardContent(): JSX.Element {
                         className={`px-3 py-1 text-sm ${discoverView === 'popular' ? 'bg-primary text-black' : 'text-content'}`}
                       >
                         {t('dashboard:sections.popular')}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDiscoverView('newest')}
+                        className={`px-3 py-1 text-sm ${discoverView === 'newest' ? 'bg-primary text-black' : 'text-content'}`}
+                      >
+                        {t('dashboard:sections.newest')}
                       </button>
                       <button
                         type="button"
@@ -548,12 +584,17 @@ function DashboardContent(): JSX.Element {
                 ) : (
                   <>
                     <div className="flex flex-wrap items-stretch gap-4">
-                      {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).map((character) => (
+                      {(discoverView === 'popular'
+                        ? filteredPopularCharacters
+                        : discoverView === 'newest'
+                        ? filteredNewestCharacters
+                        : filteredFavoriteCharacters
+                      ).map((character) => (
                         <CharacterCard
                           key={character.id}
                           character={character}
                           isFavorite={favoriteCharacterIds.has(character.id)}
-                          clickAction={discoverView === 'popular' ? 'view' : 'chat'}
+                          clickAction={discoverView === 'popular' || discoverView === 'newest' ? 'view' : 'chat'}
                           blurNsfw={blurNsfw}
                           chatCount={statsById[character.id]?.conversationCount}
                           favoriteCount={statsById[character.id]?.favoriteCount}
@@ -584,18 +625,25 @@ function DashboardContent(): JSX.Element {
                         )}
                       </div>
                     )}
-                    {(discoverView === 'popular' ? filteredPopularCharacters : filteredFavoriteCharacters).length === 0 && (
+                    {(discoverView === 'popular'
+                      ? filteredPopularCharacters
+                      : discoverView === 'newest'
+                      ? filteredNewestCharacters
+                      : filteredFavoriteCharacters
+                    ).length === 0 && (
                       <div className="w-full text-center py-12 bg-light/50 rounded-xl border border-dashed border-border">
                         <p className="text-muted mb-4">
                           {discoverView === 'popular'
                             ? t('dashboard:sections.noPopularCharacters', { defaultValue: 'Nenhum personagem popular encontrado.' })
+                            : discoverView === 'newest'
+                            ? t('dashboard:sections.noNewCharacters', { defaultValue: 'Nenhum personagem novo ainda.' })
                             : t('dashboard:sections.noFavoriteCharacters', { defaultValue: 'Você ainda não tem personagens favoritos.' })}
                         </p>
                         <button
                           onClick={() => navigate('/characters/create')}
                           className="px-6 py-2 bg-primary text-black rounded-lg hover:bg-primary/80 transition-colors"
                         >
-                          {discoverView === 'popular'
+                          {discoverView === 'popular' || discoverView === 'newest'
                             ? t('dashboard:sections.createCharacter', { defaultValue: 'Criar Personagem' })
                             : t('dashboard:sections.browseCharacters', { defaultValue: 'Explorar Personagens' })}
                         </button>
