@@ -2,13 +2,38 @@
  * R2Service Unit Tests - Environment Prefix Functionality
  * Tests for environment-based path prefixing in R2 storage
  */
-import { R2Service } from '../r2Service';
 
-// Mock the logger to avoid console output during tests
-jest.mock('../../config/logger');
+// Mock the logger FIRST, before any imports that use it
+jest.mock('../../config/logger', () => ({
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
+  },
+}));
+
+import { R2Service } from '../r2Service';
+import { S3Client } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
+// Mock AWS SDK modules
+jest.mock('@aws-sdk/client-s3', () => ({
+  S3Client: jest.fn().mockImplementation(() => ({
+    send: jest.fn(),
+  })),
+  PutObjectCommand: jest.fn(),
+  GetObjectCommand: jest.fn(),
+  DeleteObjectCommand: jest.fn(),
+}));
+
+jest.mock('@aws-sdk/s3-request-presigner', () => ({
+  getSignedUrl: jest.fn(),
+}));
 
 describe('R2Service - Environment Prefixes', () => {
   let originalNodeEnv: string | undefined;
+  let mockSend: jest.Mock;
 
   beforeEach(() => {
     // Save original NODE_ENV
@@ -117,6 +142,12 @@ describe('R2Service - Environment Prefixes', () => {
       process.env.R2_SECRET_ACCESS_KEY = 'test-secret';
       process.env.R2_ENDPOINT_URL = 'https://test.r2.dev';
       process.env.R2_PUBLIC_URL_BASE = 'https://media.charhub.app';
+
+      // Mock the S3Client send method to return success
+      mockSend = jest.fn().mockResolvedValue({ $metadata: { httpStatusCode: 200 } });
+      (S3Client as jest.Mock).mockImplementation(() => ({
+        send: mockSend,
+      }));
     });
 
     it('should throw configuration error when R2 is not configured', async () => {
@@ -146,6 +177,7 @@ describe('R2Service - Environment Prefixes', () => {
 
         expect(result.key).toMatch(/^dev\/characters\/123\/avatar\.webp$/);
         expect(result.publicUrl).toContain('/dev/characters/');
+        expect(mockSend).toHaveBeenCalled();
       }
     });
 
@@ -162,6 +194,7 @@ describe('R2Service - Environment Prefixes', () => {
 
         expect(result.key).toMatch(/^prod\/characters\/123\/avatar\.webp$/);
         expect(result.publicUrl).toContain('/prod/characters/');
+        expect(mockSend).toHaveBeenCalled();
       }
     });
 
@@ -178,6 +211,7 @@ describe('R2Service - Environment Prefixes', () => {
 
         expect(result.key).toBe('dev/characters/123/avatar.webp');
         expect(result.key).not.toMatch(/^dev\/dev\//);
+        expect(mockSend).toHaveBeenCalled();
       }
     });
   });
@@ -191,6 +225,11 @@ describe('R2Service - Environment Prefixes', () => {
       process.env.R2_SECRET_ACCESS_KEY = 'test-secret';
       process.env.R2_ENDPOINT_URL = 'https://test.r2.dev';
       process.env.R2_PUBLIC_URL_BASE = 'https://media.charhub.app';
+
+      // Mock getSignedUrl to return a mock presigned URL
+      (getSignedUrl as jest.Mock).mockResolvedValue(
+        'https://example.com/dev/characters/123/avatar.webp?signature=abc123'
+      );
     });
 
     it('should throw configuration error when R2 is not configured', async () => {
@@ -211,6 +250,7 @@ describe('R2Service - Environment Prefixes', () => {
         const url = await service.getPresignedUrl('characters/123/avatar.webp');
         // Presigned URL contains the key with environment prefix
         expect(url).toContain('/dev/characters/123/avatar.webp');
+        expect(getSignedUrl).toHaveBeenCalled();
       }
     });
   });
@@ -224,6 +264,19 @@ describe('R2Service - Environment Prefixes', () => {
       process.env.R2_SECRET_ACCESS_KEY = 'test-secret';
       process.env.R2_ENDPOINT_URL = 'https://test.r2.dev';
       process.env.R2_PUBLIC_URL_BASE = 'https://media.charhub.app';
+
+      // Mock the S3Client send method to return a mock response
+      const mockBody = {
+        async *[Symbol.asyncIterator]() {
+          yield Buffer.from('test data');
+        },
+      };
+      mockSend = jest.fn().mockResolvedValue({
+        Body: mockBody,
+      });
+      (S3Client as jest.Mock).mockImplementation(() => ({
+        send: mockSend,
+      }));
     });
 
     it('should throw configuration error when R2 is not configured', async () => {
@@ -241,11 +294,10 @@ describe('R2Service - Environment Prefixes', () => {
       const service = new R2Service();
 
       if (service.isConfigured()) {
-        // This will fail if the file doesn't exist, but we're testing
-        // that the prefix is applied correctly
-        await expect(
-          service.downloadObject('characters/123/avatar.webp')
-        ).rejects.toThrow(); // File doesn't exist, but prefix was applied
+        const buffer = await service.downloadObject('characters/123/avatar.webp');
+        expect(buffer).toBeInstanceOf(Buffer);
+        expect(buffer.toString()).toBe('test data');
+        expect(mockSend).toHaveBeenCalled();
       }
     });
   });
@@ -259,6 +311,12 @@ describe('R2Service - Environment Prefixes', () => {
       process.env.R2_SECRET_ACCESS_KEY = 'test-secret';
       process.env.R2_ENDPOINT_URL = 'https://test.r2.dev';
       process.env.R2_PUBLIC_URL_BASE = 'https://media.charhub.app';
+
+      // Mock the S3Client send method to return success
+      mockSend = jest.fn().mockResolvedValue({ $metadata: { httpStatusCode: 204 } });
+      (S3Client as jest.Mock).mockImplementation(() => ({
+        send: mockSend,
+      }));
     });
 
     it('should throw configuration error when R2 is not configured', async () => {
@@ -276,11 +334,9 @@ describe('R2Service - Environment Prefixes', () => {
       const service = new R2Service();
 
       if (service.isConfigured()) {
-        // This will fail if the file doesn't exist, but we're testing
-        // that the prefix is applied correctly
-        await expect(
-          service.deleteObject('characters/123/avatar.webp')
-        ).rejects.toThrow(); // File doesn't exist, but prefix was applied
+        const result = await service.deleteObject('characters/123/avatar.webp');
+        expect(result).toBe(true);
+        expect(mockSend).toHaveBeenCalled();
       }
     });
   });
