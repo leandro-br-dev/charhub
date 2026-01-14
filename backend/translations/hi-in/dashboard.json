@@ -12,27 +12,29 @@
       "popularCharacters": "लोकप्रिय कैरेक्टर",
       "favoriteCharacters": "आपके पसंदीदा",
       "popular": "लोकप्रिय",
+      "newest": "नए",
       "favorites": "पसंदीदा",
       "myStories": "मेरी कहानियां",
       "popularStories": "लोकप्रिय कहानियां",
       "mine": "मेरी",
       "noPopularCharacters": "कोई लोकप्रिय कैरेक्टर नहीं मिले।",
-      "noFavoriteCharacters": "आपने अभी तक कोई कैरेक्टर पसंदीदा नहीं किया है।",
+      "noNewCharacters": "अभी तक कोई नया कैरेक्टर नहीं है।",
+      "noFavoriteCharacters": "आपने अभी तक किसी कैरेक्टर को पसंदीदा नहीं बनाया है।",
       "createCharacter": "कैरेक्टर बनाएं",
       "browseCharacters": "कैरेक्टर ब्राउज़ करें"
     },
-    "noStories": "अभी कोई कहानी नहीं है। अपनी पहली कहानी बनाएं!",
+    "noStories": "अभी तक कोई कहानी नहीं है। अपनी पहली कहानी बनाएं!",
     "createStory": "कहानी बनाएं",
-    "plusRequired": "प्लस प्लान आवश्यक है",
+    "plusRequired": "प्लस प्लान की आवश्यकता है",
     "recentConversations": "हाल की बातचीत",
     "newConversation": "नई बातचीत",
-    "noConversations": "अभी कोई बातचीत नहीं है। अभी चैट करना शुरू करें!",
+    "noConversations": "अभी तक कोई बातचीत नहीं हुई है। अभी चैट करना शुरू करें!",
     "startChat": "नई चैट शुरू करें",
     "endOfList": {
       "characters": {
         "message": "आपने सभी कैरेक्टर देख लिए हैं!",
         "cta": "अपना खुद का कैरेक्टर बनाएं",
-        "description": "अपनी कल्पना को जीवंत करें और अनोखे AI कैरेक्टर बनाएं"
+        "description": "अपनी कल्पना को साकार करें और अद्वितीय AI कैरेक्टर बनाएं"
       },
       "stories": {
         "message": "आपने सभी कहानियां देख ली हैं!",
@@ -41,13 +43,13 @@
       }
     },
     "carousel": {
-      "alt": "{{title}} के लिए कैरोसेल छवि",
+      "alt": "{{title}} के लिए कैरोसेल इमेज",
       "goToSlide": "स्लाइड {{slide}} पर जाएं",
-      "plus": "प्लस",
+      "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "CharHub में आपका स्वागत है",
-          "description": "अनोखे कैरेक्टर बनाएं और अपनी कहानियों को जीवंत करें",
+          "description": "अद्वितीय कैरेक्टर बनाएं और अपनी कहानियों को जीवंत करें",
           "action1": "बनाएं",
           "action1Full": "कैरेक्टर बनाएं",
           "action2": "ब्राउज़ करें",
@@ -55,7 +57,7 @@
         },
         "stories": {
           "title": "कहानियां खोजें",
-          "description": "इमर्सिव इंटरैक्टिव रोमांच का अनुभव करें",
+          "description": "मनमोहक संवादात्मक रोमांच का अनुभव करें",
           "action": "ब्राउज़ करें",
           "actionFull": "कहानियां ब्राउज़ करें",
           "create": "बनाएं",
@@ -70,11 +72,11 @@
       }
     },
     "storyCard": {
-      "alt": "{{title}} के लिए कवर छवि",
-      "play": "चलाएं"
+      "alt": "{{title}} के लिए कवर इमेज",
+      "play": "खेलें"
     },
     "infiniteScroll": {
-      "endOfList": "सभी कैरेक्टर लोड हो चुके हैं"
+      "endOfList": "सभी कैरेक्टर लोड हो गए हैं"
     },
     "filters": {
       "title": "फ़िल्टर",
@@ -82,17 +84,17 @@
       "species": "प्रजाति",
       "selectGender": "लिंग चुनें...",
       "selectSpecies": "प्रजाति चुनें...",
-      "clear": "साफ़ करें",
+      "clear": "साफ करें",
       "genders": {
         "male": "पुरुष",
         "female": "महिला",
-        "nonBinary": "Non-Binary",
+        "nonBinary": "गैर-बाइनरी",
         "other": "अन्य",
         "unknown": "अज्ञात",
         "MALE": "पुरुष",
         "FEMALE": "महिला",
-        "NON_BINARY": "Non-Binary",
-        "NON-BINARY": "Non-Binary",
+        "NON_BINARY": "गैर-बाइनरी",
+        "NON-BINARY": "गैर-बाइनरी",
         "OTHER": "अन्य",
         "UNKNOWN": "अज्ञात"
       }

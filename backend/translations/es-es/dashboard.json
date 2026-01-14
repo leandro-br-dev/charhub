@@ -12,11 +12,13 @@
       "popularCharacters": "Personajes Populares",
       "favoriteCharacters": "Tus Favoritos",
       "popular": "Populares",
+      "newest": "Nuevos",
       "favorites": "Favoritos",
       "myStories": "Mis Historias",
       "popularStories": "Historias Populares",
-      "mine": "Mis",
+      "mine": "Mías",
       "noPopularCharacters": "No se encontraron personajes populares.",
+      "noNewCharacters": "Aún no hay personajes nuevos.",
       "noFavoriteCharacters": "Aún no has añadido ningún personaje a favoritos.",
       "createCharacter": "Crear Personaje",
       "browseCharacters": "Explorar Personajes"
@@ -55,7 +57,7 @@
         },
         "stories": {
           "title": "Descubre Historias",
-          "description": "Experimenta aventuras interactivas inmersivas",
+          "description": "Vive aventuras interactivas inmersivas",
           "action": "Explorar",
           "actionFull": "Explorar Historias",
           "create": "Crear",
@@ -74,7 +76,7 @@
       "play": "Jugar"
     },
     "infiniteScroll": {
-      "endOfList": "Todos los personajes han sido cargados"
+      "endOfList": "Se han cargado todos los personajes"
     },
     "filters": {
       "title": "Filtros",

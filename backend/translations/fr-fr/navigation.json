@@ -6,7 +6,10 @@
     "development": "Développement",
     "characters": "Personnages",
     "tasks": "Tâches",
-    "assets": "Ressources",
+    "assets": "Actifs",
+    "admin": "Admin",
+    "adminAnalytics": "Analytiques",
+    "adminMenu": "Menu Admin",
     "openNavigation": "Ouvrir la navigation",
     "closeNavigation": "Fermer la navigation",
     "goBack": "Retour",
@@ -21,10 +24,10 @@
     "characterSidebar": "Aperçu des personnages",
     "characterSidebarPlaceholder": "Parcourez et épinglez vos personnages préférés ici dès que la barre latérale du hub sera reconstruite.",
     "storySidebar": "Histoires",
-    "storySidebarPlaceholder": "Conservez les brouillons et les plans de chapitres ici une fois la suite de narration migrée.",
+    "storySidebarPlaceholder": "Gardez les brouillons et les plans de chapitres ici une fois la suite de narration migrée.",
     "viewAllCharacters": "Voir tous les personnages",
     "viewAllStories": "Voir toutes les histoires",
     "sidebarDefaultTitle": "Explorer CharHub",
-    "sidebarDefaultDescription": "Utilisez les icônes de la barre de navigation pour passer d'une expérience à l'autre."
+    "sidebarDefaultDescription": "Utilisez les icônes de la barre de navigation pour basculer entre les expériences."
   }
 }

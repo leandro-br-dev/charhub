@@ -12,11 +12,13 @@
       "popularCharacters": "Personagens Populares",
       "favoriteCharacters": "Seus Favoritos",
       "popular": "Populares",
+      "newest": "Novidades",
       "favorites": "Favoritos",
       "myStories": "Minhas Histórias",
       "popularStories": "Histórias Populares",
       "mine": "Minhas",
       "noPopularCharacters": "Nenhum personagem popular encontrado.",
+      "noNewCharacters": "Nenhum personagem novo ainda.",
       "noFavoriteCharacters": "Você ainda não favoritou nenhum personagem.",
       "createCharacter": "Criar Personagem",
       "browseCharacters": "Explorar Personagens"

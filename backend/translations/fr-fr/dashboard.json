@@ -12,22 +12,24 @@
       "popularCharacters": "Personnages populaires",
       "favoriteCharacters": "Vos favoris",
       "popular": "Populaire",
+      "newest": "Nouveautés",
       "favorites": "Favoris",
       "myStories": "Mes histoires",
       "popularStories": "Histoires populaires",
       "mine": "Les miennes",
       "noPopularCharacters": "Aucun personnage populaire trouvé.",
-      "noFavoriteCharacters": "Vous n'avez pas encore ajouté de personnages à vos favoris.",
+      "noNewCharacters": "Pas de nouveaux personnages pour l'instant.",
+      "noFavoriteCharacters": "Vous n'avez pas encore mis de personnages en favoris.",
       "createCharacter": "Créer un personnage",
       "browseCharacters": "Parcourir les personnages"
     },
-    "noStories": "Aucune histoire pour l'instant. Créez votre première histoire !",
+    "noStories": "Pas encore d'histoires. Créez votre première histoire !",
     "createStory": "Créer une histoire",
-    "plusRequired": "Nécessite l'abonnement Plus",
+    "plusRequired": "Nécessite le forfait Plus",
     "recentConversations": "Conversations récentes",
     "newConversation": "Nouvelle conversation",
-    "noConversations": "Aucune conversation pour l'instant. Commencez à discuter dès maintenant !",
-    "startChat": "Démarrer une nouvelle conversation",
+    "noConversations": "Pas encore de conversations. Commencez à chatter maintenant !",
+    "startChat": "Démarrer un nouveau chat",
     "endOfList": {
       "characters": {
         "message": "Vous avez vu tous les personnages !",
@@ -62,10 +64,10 @@
           "createFull": "Créer une histoire"
         },
         "pricing": {
-          "title": "Débloquez le Premium",
-          "description": "Créations illimitées, fonctionnalités exclusives et bien plus encore",
-          "action": "Voir les abonnements",
-          "actionFull": "Voir les abonnements"
+          "title": "Débloquez Premium",
+          "description": "Créations illimitées, fonctionnalités exclusives et plus encore",
+          "action": "Voir les forfaits",
+          "actionFull": "Voir les forfaits"
         }
       }
     },

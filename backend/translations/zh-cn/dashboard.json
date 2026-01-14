@@ -10,44 +10,46 @@
     },
     "sections": {
       "popularCharacters": "热门角色",
-      "favoriteCharacters": "您的收藏",
+      "favoriteCharacters": "我的收藏",
       "popular": "热门",
+      "newest": "最新",
       "favorites": "收藏",
       "myStories": "我的故事",
       "popularStories": "热门故事",
       "mine": "我的",
       "noPopularCharacters": "未找到热门角色。",
-      "noFavoriteCharacters": "您还没有收藏任何角色。",
+      "noNewCharacters": "暂无新角色。",
+      "noFavoriteCharacters": "您尚未收藏任何角色。",
       "createCharacter": "创建角色",
       "browseCharacters": "浏览角色"
     },
-    "noStories": "还没有故事。创建您的第一个故事吧！",
+    "noStories": "暂无故事。创建您的第一个故事吧！",
     "createStory": "创建故事",
-    "plusRequired": "需要Plus会员计划",
+    "plusRequired": "需要Plus会员",
     "recentConversations": "最近对话",
     "newConversation": "新对话",
-    "noConversations": "还没有对话。立即开始聊天吧！",
+    "noConversations": "暂无对话。立即开始聊天吧！",
     "startChat": "开始新聊天",
     "endOfList": {
       "characters": {
-        "message": "您已看完所有角色！",
+        "message": "您已浏览完所有角色！",
         "cta": "创建您自己的角色",
-        "description": "将您的想象变为现实，创建独特的AI角色"
+        "description": "将您的想象变为现实，创造独特的AI角色"
       },
       "stories": {
-        "message": "您已看完所有故事！",
+        "message": "您已浏览完所有故事！",
         "cta": "创建您自己的故事",
-        "description": "开始使用AI角色创建互动故事"
+        "description": "开始与AI角色一起创作互动故事"
       }
     },
     "carousel": {
-      "alt": "“{{title}}”的轮播图",
+      "alt": "{{title}}的轮播图",
       "goToSlide": "前往幻灯片{{slide}}",
       "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "欢迎来到CharHub",
-          "description": "创建独特的角色，让您的故事栩栩如生",
+          "description": "创建独特角色，让您的故事栩栩如生",
           "action1": "创建",
           "action1Full": "创建角色",
           "action2": "浏览",
@@ -63,21 +65,21 @@
         },
         "pricing": {
           "title": "解锁高级版",
-          "description": "无限创作、专属功能及更多",
-          "action": "查看计划",
-          "actionFull": "查看计划"
+          "description": "无限创作、专属功能等",
+          "action": "查看套餐",
+          "actionFull": "查看套餐"
         }
       }
     },
     "storyCard": {
-      "alt": "“{{title}}”的封面图",
-      "play": "播放"
+      "alt": "{{title}}的封面图片",
+      "play": "开始"
     },
     "infiniteScroll": {
       "endOfList": "所有角色已加载完毕"
     },
     "filters": {
-      "title": "筛选",
+      "title": "筛选器",
       "gender": "性别",
       "species": "物种",
       "selectGender": "选择性别...",
