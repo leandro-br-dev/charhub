@@ -3,13 +3,16 @@
  * Migrate R2 files to environment-prefixed paths
  *
  * This script moves actual files in R2 from root to environment-prefixed paths.
- * It copies files to new locations and deletes old files after successful copy.
+ * It ONLY migrates files that are referenced in the LOCAL database, leaving
+ * all other files untouched (for other environments to migrate later).
  *
  * Process:
- * 1. Lists all objects in R2 bucket
- * 2. Copies objects without environment prefix to new prefixed path
- * 3. Verifies copy succeeded
- * 4. Deletes old object
+ * 1. Query LOCAL database for all R2 keys (CharacterImage, CuratedImage, Story)
+ * 2. For each key found in database, copy file to new environment-prefixed path
+ * 3. Verify copy succeeded
+ * 4. Delete old file
+ *
+ * IMPORTANT: Files NOT in the local database are LEFT UNTOUCHED!
  *
  * Usage:
  *   npm run migrate:r2-files          # Execute migration
@@ -20,7 +23,8 @@
  *   DRY_RUN - if true, only logs actions without executing (default: false)
  */
 
-import { S3Client, ListObjectsV2Command, CopyObjectCommand, DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, CopyObjectCommand, DeleteObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
+import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 
 const DRY_RUN = process.env.DRY_RUN === 'true';
@@ -34,7 +38,7 @@ const config = {
   endpointUrl: process.env.R2_ENDPOINT_URL,
 };
 
-// Validate configuration
+// Validate R2 configuration
 if (!config.bucketName || !config.accountId || !config.accessKeyId || !config.secretAccessKey || !config.endpointUrl) {
   logger.error('Missing R2 configuration. Check environment variables.');
   throw new Error('Missing R2 configuration. Check environment variables.');
@@ -50,12 +54,70 @@ const client = new S3Client({
   },
 });
 
+const R2_PUBLIC_URL_BASE = process.env.R2_PUBLIC_URL_BASE || 'https://media.charhub.app';
+
 interface MigrationResult {
-  totalObjects: number;
+  totalInDatabase: number;
   migrated: number;
   skipped: number;
   failed: number;
   errors: Array<{ key: string; error: string }>;
+}
+
+/**
+ * Extract R2 key from URL
+ * Handles URLs like: https://media.charhub.app/characters/123/avatar.webp
+ */
+function extractKeyFromUrl(url: string): string | null {
+  if (!url.startsWith(R2_PUBLIC_URL_BASE)) {
+    return null;
+  }
+  const key = url.replace(R2_PUBLIC_URL_BASE + '/', '');
+  return key;
+}
+
+/**
+ * Get all R2 keys referenced in the local database
+ */
+async function getDatabaseKeys(): Promise<Set<string>> {
+  const keys = new Set<string>();
+
+  logger.info('Fetching R2 keys from CharacterImage table...');
+  const characterImages = await prisma.characterImage.findMany({
+    where: { key: { not: null } },
+    select: { key: true },
+  });
+  for (const img of characterImages) {
+    if (img.key) keys.add(img.key);
+  }
+  logger.info({ count: characterImages.length }, 'CharacterImage keys loaded');
+
+  logger.info('Fetching R2 keys from CuratedImage table...');
+  const curatedImages = await prisma.curatedImage.findMany({
+    where: { r2Key: { not: null }, uploadedToR2: true },
+    select: { r2Key: true },
+  });
+  for (const img of curatedImages) {
+    if (img.r2Key) keys.add(img.r2Key);
+  }
+  logger.info({ count: curatedImages.length }, 'CuratedImage keys loaded');
+
+  logger.info('Extracting R2 keys from Story.coverImage URLs...');
+  const stories = await prisma.story.findMany({
+    where: { coverImage: { not: null } },
+    select: { coverImage: true },
+  });
+  for (const story of stories) {
+    if (story.coverImage) {
+      const key = extractKeyFromUrl(story.coverImage);
+      if (key) keys.add(key);
+    }
+  }
+  logger.info({ count: stories.length }, 'Story cover image keys loaded');
+
+  logger.info({ totalUniqueKeys: keys.size }, 'Total unique R2 keys found in database');
+
+  return keys;
 }
 
 /**
@@ -80,106 +142,84 @@ async function migrateR2Files(): Promise<MigrationResult> {
   logger.info({ environment, dryRun: DRY_RUN, bucket: config.bucketName }, 'Starting R2 file migration');
 
   const result: MigrationResult = {
-    totalObjects: 0,
+    totalInDatabase: 0,
     migrated: 0,
     skipped: 0,
     failed: 0,
     errors: [],
   };
 
-  let continuationToken: string | undefined;
+  // Step 1: Get all keys from local database
+  const databaseKeys = await getDatabaseKeys();
+  result.totalInDatabase = databaseKeys.size;
 
-  do {
-    // List objects in bucket
-    const listCommand = new ListObjectsV2Command({
-      Bucket: config.bucketName,
-      ContinuationToken: continuationToken,
-      MaxKeys: 1000,
-    });
+  if (databaseKeys.size === 0) {
+    logger.warn('No R2 keys found in local database. Nothing to migrate.');
+    return result;
+  }
 
-    const listResponse = await client.send(listCommand);
-    const objects = listResponse.Contents || [];
+  // Step 2: Migrate each key found in database
+  for (const oldKey of databaseKeys) {
+    // Skip if already in correct environment folder
+    if (oldKey.startsWith(`${environment}/`)) {
+      logger.debug({ key: oldKey }, 'Key already has environment prefix, skipping');
+      result.skipped++;
+      continue;
+    }
 
-    result.totalObjects += objects.length;
-    logger.info({ count: objects.length, total: result.totalObjects }, 'Listed objects from R2');
+    // Skip if in different environment folder (shouldn't happen, but safety check)
+    const otherEnv = environment === 'dev' ? 'prod' : 'dev';
+    if (oldKey.startsWith(`${otherEnv}/`)) {
+      logger.debug({ key: oldKey, env: otherEnv }, 'Key belongs to different environment, skipping');
+      result.skipped++;
+      continue;
+    }
 
-    for (const object of objects) {
-      const oldKey = object.Key;
-      if (!oldKey) continue;
+    // Construct new key with environment prefix
+    const newKey = `${environment}/${oldKey}`;
 
-      // Skip if already in correct environment folder
-      if (oldKey.startsWith(`${environment}/`)) {
-        logger.debug({ key: oldKey }, 'Object already in correct environment folder, skipping');
-        result.skipped++;
-        continue;
-      }
+    logger.info({ oldKey, newKey }, 'Migrating file referenced in database');
 
-      // Skip if in different environment folder (other environment's data)
-      const otherEnv = environment === 'dev' ? 'prod' : 'dev';
-      if (oldKey.startsWith(`${otherEnv}/`)) {
-        logger.debug({ key: oldKey, env: otherEnv }, 'Object belongs to different environment, skipping');
-        result.skipped++;
-        continue;
-      }
+    if (!DRY_RUN) {
+      try {
+        // Copy object to new location
+        await client.send(
+          new CopyObjectCommand({
+            Bucket: config.bucketName,
+            CopySource: `${config.bucketName}/${oldKey}`,
+            Key: newKey,
+            MetadataDirective: 'COPY', // Preserve metadata
+          })
+        );
 
-      // Construct new key with environment prefix
-      const newKey = `${environment}/${oldKey}`;
+        logger.debug({ newKey }, 'File copied successfully');
 
-      logger.info({ oldKey, newKey, size: object.Size }, 'Migrating object');
-
-      if (!DRY_RUN) {
-        try {
-          // Copy object to new location
-          await client.send(
-            new CopyObjectCommand({
-              Bucket: config.bucketName,
-              CopySource: `${config.bucketName}/${oldKey}`,
-              Key: newKey,
-              MetadataDirective: 'COPY', // Preserve metadata
-            })
-          );
-
-          logger.debug({ newKey }, 'Object copied successfully');
-
-          // Verify copy succeeded
-          const verified = await verifyObjectExists(newKey);
-          if (!verified) {
-            throw new Error('Copy verification failed');
-          }
-
-          // Delete old object
-          await client.send(
-            new DeleteObjectCommand({
-              Bucket: config.bucketName,
-              Key: oldKey,
-            })
-          );
-
-          logger.debug({ oldKey }, 'Old object deleted');
-          result.migrated++;
-        } catch (error) {
-          const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-          logger.error({ oldKey, newKey, error: errorMsg }, 'Failed to migrate object');
-          result.failed++;
-          result.errors.push({ key: oldKey, error: errorMsg });
+        // Verify copy succeeded
+        const verified = await verifyObjectExists(newKey);
+        if (!verified) {
+          throw new Error('Copy verification failed');
         }
-      } else {
+
+        // Delete old object
+        await client.send(
+          new DeleteObjectCommand({
+            Bucket: config.bucketName,
+            Key: oldKey,
+          })
+        );
+
+        logger.debug({ oldKey }, 'Old file deleted');
         result.migrated++;
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+        logger.error({ oldKey, newKey, error: errorMsg }, 'Failed to migrate file');
+        result.failed++;
+        result.errors.push({ key: oldKey, error: errorMsg });
       }
+    } else {
+      result.migrated++;
     }
-
-    continuationToken = listResponse.NextContinuationToken;
-
-    // Log progress every 1000 objects
-    if (result.totalObjects % 1000 === 0) {
-      logger.info({
-        total: result.totalObjects,
-        migrated: result.migrated,
-        skipped: result.skipped,
-        failed: result.failed,
-      }, 'Migration progress');
-    }
-  } while (continuationToken);
+  }
 
   return result;
 }
@@ -196,7 +236,7 @@ if (require.main === module) {
         environment,
         bucket: config.bucketName,
         result: {
-          totalObjects: result.totalObjects,
+          totalInDatabase: result.totalInDatabase,
           migrated: result.migrated,
           skipped: result.skipped,
           failed: result.failed,
