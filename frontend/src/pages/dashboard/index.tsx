@@ -448,6 +448,22 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
+  }).filter((c) => {
+    // Apply gender filter
+    if (characterFilters.genders.length > 0) {
+      const gender = (c as any).gender;
+      if (!gender || !characterFilters.genders.includes(gender)) {
+        return false;
+      }
+    }
+    // Apply species filter
+    if (characterFilters.species.length > 0) {
+      const species = (c as any).speciesId || (c as any).species?.id;
+      if (!species || !characterFilters.species.includes(species)) {
+        return false;
+      }
+    }
+    return true;
   });
 
   const filteredNewestCharacters = newestCharacters.filter((c) => {
@@ -459,6 +475,22 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
+  }).filter((c) => {
+    // Apply gender filter
+    if (characterFilters.genders.length > 0) {
+      const gender = (c as any).gender;
+      if (!gender || !characterFilters.genders.includes(gender)) {
+        return false;
+      }
+    }
+    // Apply species filter
+    if (characterFilters.species.length > 0) {
+      const species = (c as any).speciesId || (c as any).species?.id;
+      if (!species || !characterFilters.species.includes(species)) {
+        return false;
+      }
+    }
+    return true;
   });
 
   const filteredFavoriteCharacters = favoriteCharacters.filter((c) => {
