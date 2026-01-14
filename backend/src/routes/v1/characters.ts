@@ -481,6 +481,17 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
 /**
  * GET /api/v1/characters
  * List characters (public or user's own) with pagination
+ * Query params:
+ * - sortBy: 'popular' | 'newest' | 'favorites' - How to sort characters
+ * - search: string - Search term
+ * - tags: string[] - Filter by tags
+ * - genders: string[] - Filter by genders
+ * - species: string[] - Filter by species
+ * - ageRatings: string[] - Filter by age ratings
+ * - skip: number - Pagination offset
+ * - limit: number - Pagination limit
+ * - userId: string - Filter by specific user ID
+ * - public: boolean - If 'false', show only user's own characters
  */
 router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
@@ -495,6 +506,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       userId: filterUserId,
       public: publicOnly,
       ageRatings,
+      sortBy,
     } = req.query;
 
     let result;
@@ -569,8 +581,26 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
     };
 
+    // Handle sortBy parameter for dashboard filtering
+    const sortByValue = typeof sortBy === 'string' ? sortBy as characterService.CharacterSortBy : undefined;
+
+    // If sortBy is specified, use the appropriate sorting method
+    if (sortByValue === 'popular') {
+      result = await characterService.getPopularCharacters(commonOptions);
+    } else if (sortByValue === 'newest') {
+      result = await characterService.getNewestCharacters(commonOptions);
+    } else if (sortByValue === 'favorites' && userId) {
+      const characters = await characterService.getFavoriteCharacters(userId, commonOptions);
+      result = { characters, total: characters.length, hasMore: false };
+    } else if (sortByValue === 'favorites' && !userId) {
+      // User requested favorites but is not authenticated
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required to view favorites',
+      });
+    }
     // If filtering by specific user ID (e.g., viewing someone's profile)
-    if (filterUserId && typeof filterUserId === 'string') {
+    else if (filterUserId && typeof filterUserId === 'string') {
       const characters = await characterService.getCharactersByUserId(filterUserId, commonOptions);
       result = { characters, total: characters.length, hasMore: false };
     }

@@ -12,32 +12,34 @@
       "popularCharacters": "人気のキャラクター",
       "favoriteCharacters": "お気に入り",
       "popular": "人気",
+      "newest": "新着",
       "favorites": "お気に入り",
-      "myStories": "マイストーリー",
-      "popularStories": "人気のストーリー",
-      "mine": "自分",
+      "myStories": "私の物語",
+      "popularStories": "人気の物語",
+      "mine": "自分の",
       "noPopularCharacters": "人気のキャラクターは見つかりませんでした。",
-      "noFavoriteCharacters": "まだお気に入りのキャラクターはいません。",
+      "noNewCharacters": "新しいキャラクターはまだいません。",
+      "noFavoriteCharacters": "まだお気に入りのキャラクターがいません。",
       "createCharacter": "キャラクターを作成",
       "browseCharacters": "キャラクターを探す"
     },
-    "noStories": "まだストーリーはありません。最初のストーリーを作成しましょう！",
-    "createStory": "ストーリーを作成",
+    "noStories": "まだ物語がありません。最初の物語を作成しましょう！",
+    "createStory": "物語を作成",
     "plusRequired": "プラスプランが必要です",
     "recentConversations": "最近の会話",
     "newConversation": "新しい会話",
-    "noConversations": "まだ会話はありません。今すぐチャットを始めましょう！",
+    "noConversations": "まだ会話がありません。今すぐチャットを始めましょう！",
     "startChat": "新しいチャットを開始",
     "endOfList": {
       "characters": {
         "message": "すべてのキャラクターを見ました！",
         "cta": "自分だけのキャラクターを作成",
-        "description": "想像力を形にして、ユニークなAIキャラクターを作成しましょう"
+        "description": "あなたの想像力を形にし、ユニークなAIキャラクターを作成しましょう"
       },
       "stories": {
-        "message": "すべてのストーリーを見ました！",
-        "cta": "自分だけのストーリーを作成",
-        "description": "AIキャラクターでインタラクティブなストーリーを作成し始めましょう"
+        "message": "すべての物語を見ました！",
+        "cta": "自分だけの物語を作成",
+        "description": "AIキャラクターと一緒にインタラクティブな物語を作り始めましょう"
       }
     },
     "carousel": {
@@ -47,19 +49,19 @@
       "slides": {
         "welcome": {
           "title": "CharHubへようこそ",
-          "description": "ユニークなキャラクターを作成し、あなたのストーリーに命を吹き込みましょう",
+          "description": "ユニークなキャラクターを作成し、あなたの物語を生き生きとさせましょう",
           "action1": "作成",
           "action1Full": "キャラクターを作成",
           "action2": "探す",
           "action2Full": "キャラクターを探す"
         },
         "stories": {
-          "title": "ストーリーを発見",
-          "description": "没入感のあるインタラクティブな冒険を体験しましょう",
+          "title": "物語を発見",
+          "description": "没入型インタラクティブアドベンチャーを体験しましょう",
           "action": "探す",
-          "actionFull": "ストーリーを探す",
+          "actionFull": "物語を探す",
           "create": "作成",
-          "createFull": "ストーリーを作成"
+          "createFull": "物語を作成"
         },
         "pricing": {
           "title": "プレミアムをアンロック",

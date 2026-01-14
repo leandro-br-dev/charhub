@@ -12,11 +12,13 @@
       "popularCharacters": "Popular Characters",
       "favoriteCharacters": "Your Favorites",
       "popular": "Popular",
+      "newest": "New",
       "favorites": "Favorites",
       "myStories": "My Stories",
       "popularStories": "Popular Stories",
       "mine": "Mine",
       "noPopularCharacters": "No popular characters found.",
+      "noNewCharacters": "No new characters yet.",
       "noFavoriteCharacters": "You haven't favorited any characters yet.",
       "createCharacter": "Create Character",
       "browseCharacters": "Browse Characters"

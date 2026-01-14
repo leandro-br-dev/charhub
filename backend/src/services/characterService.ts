@@ -12,6 +12,11 @@ import { translationService } from './translation/translationService';
 export const CHARHUB_OFFICIAL_ID = '00000000-0000-0000-0000-000000000001';
 
 /**
+ * Sort options for character lists
+ */
+export type CharacterSortBy = 'popular' | 'newest' | 'favorites';
+
+/**
  * Character Service
  *
  * Handles character CRUD operations and business logic.
@@ -1130,5 +1135,324 @@ export async function isCharacterFavorited(
   } catch (error) {
     logger.error({ error, userId, characterId }, 'Error checking favorite status');
     return false;
+  }
+}
+
+/**
+ * Get popular characters sorted by conversation count
+ * Characters with more conversations appear first
+ */
+export async function getPopularCharacters(options?: {
+  search?: string;
+  tags?: string[];
+  gender?: string | string[];
+  species?: string | string[];
+  ageRatings?: string[];
+  blockedTags?: string[];
+  skip?: number;
+  limit?: number;
+}): Promise<CharacterListResult> {
+  try {
+    const { search, tags, gender, species, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
+
+    const where: Prisma.CharacterWhereInput = {
+      visibility: Visibility.PUBLIC,
+      isSystemCharacter: false, // Hide system characters
+    };
+
+    // Add search filter
+    if (search && search.trim()) {
+      const searchTerm = search.trim();
+      where.OR = [
+        { firstName: { contains: searchTerm, mode: 'insensitive' } },
+        { lastName: { contains: searchTerm, mode: 'insensitive' } },
+        {
+          physicalCharacteristics: { contains: searchTerm, mode: 'insensitive' },
+        },
+        { personality: { contains: searchTerm, mode: 'insensitive' } },
+        { history: { contains: searchTerm, mode: 'insensitive' } },
+      ];
+    }
+
+    // Add gender filter (support multiple values)
+    if (gender && gender !== 'all') {
+      const genderArray = Array.isArray(gender) ? gender : [gender];
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
+      if (genderValues.length === 1) {
+        where.gender = genderValues[0];
+      } else if (genderValues.length > 1) {
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
+        if (hasNull && nonNullValues.length > 0) {
+          const existingOR = where.OR;
+          where.OR = [
+            ...(existingOR ? [typeof existingOR === 'boolean' ? {} : existingOR] as any : []),
+            { gender: null },
+            { gender: { in: nonNullValues } }
+          ];
+        } else if (hasNull) {
+          where.gender = null;
+        } else {
+          where.gender = { in: nonNullValues as any };
+        }
+      }
+    }
+
+    // Add species filter (support multiple values)
+    if (species) {
+      const speciesArray = Array.isArray(species) ? species : [species];
+      const speciesValues = speciesArray.map(s => s === 'unknown' ? null : s).filter(v => v !== undefined);
+      if (speciesValues.length === 1) {
+        where.speciesId = speciesValues[0];
+      } else if (speciesValues.length > 1) {
+        const hasNull = speciesArray.includes('unknown');
+        const nonNullValues = speciesValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          where.AND = [
+            ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
+            { OR: [
+              { speciesId: null },
+              { speciesId: { in: nonNullValues } }
+            ]}
+          ];
+        } else if (hasNull) {
+          where.speciesId = null;
+        } else {
+          where.speciesId = { in: nonNullValues };
+        }
+      }
+    }
+
+    // Add tags filter
+    if (tags && tags.length > 0) {
+      where.tags = {
+        some: {
+          id: {
+            in: tags,
+          },
+        },
+      };
+    }
+
+    // Add age ratings filter
+    if (ageRatings && ageRatings.length > 0) {
+      where.ageRating = {
+        in: ageRatings as any[],
+      } as any;
+    }
+
+    // Get all matching characters with their conversation counts
+    const characters = await prisma.character.findMany({
+      where,
+      include: characterInclude,
+      orderBy: { createdAt: 'desc' }, // Default order, will be re-sorted by conversation count
+      take: skip + limit + 100, // Fetch extra to account for filtering
+    });
+
+    // Filter out characters with blocked content tags
+    let filteredCharacters = characters;
+    if (blockedTags && blockedTags.length > 0) {
+      filteredCharacters = characters.filter(char => {
+        const charTags = char.contentTags as string[];
+        const hasBlockedTag = charTags.some(tag => blockedTags.includes(tag));
+        return !hasBlockedTag;
+      });
+    }
+
+    // Get conversation counts for all characters
+    const characterIds = filteredCharacters.map(c => c.id);
+
+    // Fetch conversation counts in batch
+    const conversationCounts = await Promise.all(
+      characterIds.map(async (characterId) => {
+        const participations = await prisma.conversationParticipant.findMany({
+          where: {
+            OR: [
+              { actingCharacterId: characterId },
+              { representingCharacterId: characterId }
+            ]
+          },
+          select: {
+            conversationId: true
+          },
+          distinct: ['conversationId']
+        });
+        return {
+          characterId,
+          count: participations.length
+        };
+      })
+    );
+
+    // Create a map for quick lookup
+    const countMap = new Map(
+      conversationCounts.map(cc => [cc.characterId, cc.count])
+    );
+
+    // Sort characters by conversation count (descending)
+    const sortedCharacters = filteredCharacters.sort((a, b) => {
+      const countA = countMap.get(a.id) || 0;
+      const countB = countMap.get(b.id) || 0;
+      return countB - countA; // Descending order (most popular first)
+    });
+
+    // Apply pagination after sorting
+    const paginatedCharacters = sortedCharacters.slice(skip, skip + limit);
+
+    logger.debug(
+      { filters: options, count: paginatedCharacters.length, total: sortedCharacters.length },
+      'Popular characters fetched'
+    );
+
+    return {
+      characters: enrichCharactersWithAvatar(paginatedCharacters),
+      total: sortedCharacters.length,
+      hasMore: skip + limit < sortedCharacters.length,
+    };
+  } catch (error) {
+    logger.error({ error, options }, 'Error getting popular characters');
+    throw error;
+  }
+}
+
+/**
+ * Get newest characters sorted by creation date (newest first)
+ */
+export async function getNewestCharacters(options?: {
+  search?: string;
+  tags?: string[];
+  gender?: string | string[];
+  species?: string | string[];
+  ageRatings?: string[];
+  blockedTags?: string[];
+  skip?: number;
+  limit?: number;
+}): Promise<CharacterListResult> {
+  try {
+    const { search, tags, gender, species, ageRatings, blockedTags, skip = 0, limit = 20 } = options || {};
+
+    const where: Prisma.CharacterWhereInput = {
+      visibility: Visibility.PUBLIC,
+      isSystemCharacter: false, // Hide system characters
+    };
+
+    // Add search filter
+    if (search && search.trim()) {
+      const searchTerm = search.trim();
+      where.OR = [
+        { firstName: { contains: searchTerm, mode: 'insensitive' } },
+        { lastName: { contains: searchTerm, mode: 'insensitive' } },
+        {
+          physicalCharacteristics: { contains: searchTerm, mode: 'insensitive' },
+        },
+        { personality: { contains: searchTerm, mode: 'insensitive' } },
+        { history: { contains: searchTerm, mode: 'insensitive' } },
+      ];
+    }
+
+    // Add gender filter (support multiple values)
+    if (gender && gender !== 'all') {
+      const genderArray = Array.isArray(gender) ? gender : [gender];
+      const genderValues = genderArray.map(g => mapGenderToEnum(g)).filter(v => v !== undefined);
+      if (genderValues.length === 1) {
+        where.gender = genderValues[0];
+      } else if (genderValues.length > 1) {
+        const hasNull = genderArray.includes('unknown') || genderArray.includes('Unknown');
+        const nonNullValues = genderValues.filter(v => v !== null) as CharacterGender[];
+        if (hasNull && nonNullValues.length > 0) {
+          const existingOR = where.OR;
+          where.OR = [
+            ...(existingOR ? [typeof existingOR === 'boolean' ? {} : existingOR] as any : []),
+            { gender: null },
+            { gender: { in: nonNullValues } }
+          ];
+        } else if (hasNull) {
+          where.gender = null;
+        } else {
+          where.gender = { in: nonNullValues as any };
+        }
+      }
+    }
+
+    // Add species filter (support multiple values)
+    if (species) {
+      const speciesArray = Array.isArray(species) ? species : [species];
+      const speciesValues = speciesArray.map(s => s === 'unknown' ? null : s).filter(v => v !== undefined);
+      if (speciesValues.length === 1) {
+        where.speciesId = speciesValues[0];
+      } else if (speciesValues.length > 1) {
+        const hasNull = speciesArray.includes('unknown');
+        const nonNullValues = speciesValues.filter(v => v !== null) as string[];
+        if (hasNull && nonNullValues.length > 0) {
+          where.AND = [
+            ...(where.AND ? (Array.isArray(where.AND) ? where.AND : [where.AND]) : []),
+            { OR: [
+              { speciesId: null },
+              { speciesId: { in: nonNullValues } }
+            ]}
+          ];
+        } else if (hasNull) {
+          where.speciesId = null;
+        } else {
+          where.speciesId = { in: nonNullValues };
+        }
+      }
+    }
+
+    // Add tags filter
+    if (tags && tags.length > 0) {
+      where.tags = {
+        some: {
+          id: {
+            in: tags,
+          },
+        },
+      };
+    }
+
+    // Add age ratings filter
+    if (ageRatings && ageRatings.length > 0) {
+      where.ageRating = {
+        in: ageRatings as any[],
+      } as any;
+    }
+
+    // Get total count (for pagination)
+    const total = await prisma.character.count({ where });
+
+    const characters = await prisma.character.findMany({
+      where,
+      include: characterInclude,
+      orderBy: { createdAt: 'desc' }, // Newest first
+      skip,
+      take: limit,
+    });
+
+    // Filter out characters with blocked content tags (post-query filtering)
+    let filteredCharacters = characters;
+    if (blockedTags && blockedTags.length > 0) {
+      filteredCharacters = characters.filter(char => {
+        const charTags = char.contentTags as string[];
+        const hasBlockedTag = charTags.some(tag => blockedTags.includes(tag));
+        return !hasBlockedTag;
+      });
+    }
+
+    // Calculate hasMore based on skip, limit, and total
+    const hasMore = skip + (limit || 20) < total;
+
+    logger.debug(
+      { filters: options, count: filteredCharacters.length, total, hasMore, blocked: characters.length - filteredCharacters.length },
+      'Newest characters fetched'
+    );
+
+    return {
+      characters: enrichCharactersWithAvatar(filteredCharacters),
+      total,
+      hasMore,
+    };
+  } catch (error) {
+    logger.error({ error, options }, 'Error getting newest characters');
+    throw error;
   }
 }

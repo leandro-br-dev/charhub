@@ -2,32 +2,34 @@
   "description": "UI strings for the main dashboard page, including tabs, sections, and various components.",
   "resources": {
     "title": "CharHub",
-    "createCharacter": "Crea Personaggio",
+    "createCharacter": "Crea personaggio",
     "tabs": {
       "discover": "Scopri",
       "chat": "Chat",
       "story": "Storia"
     },
     "sections": {
-      "popularCharacters": "Personaggi Popolari",
-      "favoriteCharacters": "I Tuoi Preferiti",
+      "popularCharacters": "Personaggi popolari",
+      "favoriteCharacters": "I tuoi preferiti",
       "popular": "Popolari",
+      "newest": "Nuovi",
       "favorites": "Preferiti",
-      "myStories": "Le Mie Storie",
-      "popularStories": "Storie Popolari",
-      "mine": "Le Mie",
+      "myStories": "Le mie storie",
+      "popularStories": "Storie popolari",
+      "mine": "Mie",
       "noPopularCharacters": "Nessun personaggio popolare trovato.",
+      "noNewCharacters": "Ancora nessun nuovo personaggio.",
       "noFavoriteCharacters": "Non hai ancora aggiunto personaggi ai preferiti.",
-      "createCharacter": "Crea Personaggio",
-      "browseCharacters": "Sfoglia Personaggi"
+      "createCharacter": "Crea personaggio",
+      "browseCharacters": "Sfoglia personaggi"
     },
-    "noStories": "Nessuna storia ancora. Crea la tua prima storia!",
-    "createStory": "Crea Storia",
-    "plusRequired": "Richiede piano Plus",
-    "recentConversations": "Conversazioni Recenti",
-    "newConversation": "Nuova Conversazione",
-    "noConversations": "Nessuna conversazione ancora. Inizia a chattare ora!",
-    "startChat": "Inizia Nuova Chat",
+    "noStories": "Ancora nessuna storia. Crea la tua prima storia!",
+    "createStory": "Crea storia",
+    "plusRequired": "Richiede il piano Plus",
+    "recentConversations": "Conversazioni recenti",
+    "newConversation": "Nuova conversazione",
+    "noConversations": "Ancora nessuna conversazione. Inizia a chattare ora!",
+    "startChat": "Avvia nuova chat",
     "endOfList": {
       "characters": {
         "message": "Hai visto tutti i personaggi!",
@@ -41,31 +43,31 @@
       }
     },
     "carousel": {
-      "alt": "Immagine carosello per {{title}}",
-      "goToSlide": "Vai alla diapositiva {{slide}}",
+      "alt": "Immagine del carosello per {{title}}",
+      "goToSlide": "Vai alla slide {{slide}}",
       "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "Benvenuto su CharHub",
           "description": "Crea personaggi unici e dai vita alle tue storie",
           "action1": "Crea",
-          "action1Full": "Crea Personaggio",
+          "action1Full": "Crea personaggio",
           "action2": "Sfoglia",
-          "action2Full": "Sfoglia Personaggi"
+          "action2Full": "Sfoglia personaggi"
         },
         "stories": {
-          "title": "Scopri Storie",
-          "description": "Vivi avventure interattive coinvolgenti",
+          "title": "Scopri storie",
+          "description": "Vivi avventure interattive e coinvolgenti",
           "action": "Sfoglia",
-          "actionFull": "Sfoglia Storie",
+          "actionFull": "Sfoglia storie",
           "create": "Crea",
-          "createFull": "Crea Storia"
+          "createFull": "Crea storia"
         },
         "pricing": {
           "title": "Sblocca Premium",
           "description": "Creazioni illimitate, funzionalità esclusive e altro ancora",
-          "action": "Visualizza Piani",
-          "actionFull": "Visualizza Piani"
+          "action": "Visualizza piani",
+          "actionFull": "Visualizza piani"
         }
       }
     },
@@ -86,13 +88,13 @@
       "genders": {
         "male": "Maschio",
         "female": "Femmina",
-        "nonBinary": "Non binario",
+        "nonBinary": "Non-binario",
         "other": "Altro",
         "unknown": "Sconosciuto",
         "MALE": "Maschio",
         "FEMALE": "Femmina",
-        "NON_BINARY": "Non binario",
-        "NON-BINARY": "Non binario",
+        "NON_BINARY": "Non-binario",
+        "NON-BINARY": "Non-binario",
         "OTHER": "Altro",
         "UNKNOWN": "Sconosciuto"
       }

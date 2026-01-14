@@ -5,49 +5,51 @@
     "createCharacter": "إنشاء شخصية",
     "tabs": {
       "discover": "اكتشف",
-      "chat": "دردشة",
-      "story": "قصص"
+      "chat": "المحادثة",
+      "story": "القصص"
     },
     "sections": {
-      "popularCharacters": "الشخصيات الرائجة",
-      "favoriteCharacters": "مفضلاتك",
+      "popularCharacters": "شخصيات رائجة",
+      "favoriteCharacters": "مفضلتك",
       "popular": "رائج",
+      "newest": "جديد",
       "favorites": "المفضلة",
       "myStories": "قصصي",
-      "popularStories": "القصص الرائجة",
+      "popularStories": "قصص رائجة",
       "mine": "لي",
       "noPopularCharacters": "لم يتم العثور على شخصيات رائجة.",
-      "noFavoriteCharacters": "لم تقم بإضافة أي شخصيات إلى مفضلاتك بعد.",
+      "noNewCharacters": "لا توجد شخصيات جديدة بعد.",
+      "noFavoriteCharacters": "لم تقم بتفضيل أي شخصيات بعد.",
       "createCharacter": "إنشاء شخصية",
       "browseCharacters": "تصفح الشخصيات"
     },
     "noStories": "لا توجد قصص بعد. أنشئ قصتك الأولى!",
     "createStory": "إنشاء قصة",
-    "plusRequired": "يتطلب خطة Plus",
-    "recentConversations": "المحادثات الأخيرة",
+    "plusRequired": "يتطلب باقة بلس",
+    "recentConversations": "محادثات حديثة",
     "newConversation": "محادثة جديدة",
     "noConversations": "لا توجد محادثات بعد. ابدأ الدردشة الآن!",
-    "startChat": "بدء محادثة جديدة",
+    "startChat": "ابدأ محادثة جديدة",
     "endOfList": {
       "characters": {
-        "message": "لقد رأيت جميع الشخصيات!",
+        "message": "لقد شاهدت جميع الشخصيات!",
         "cta": "أنشئ شخصيتك الخاصة",
-        "description": "أحضر خيالك إلى الحياة وأنشئ شخصيات ذكاء اصطناعي فريدة"
+        "description": "اجعل خيالك ينبض بالحياة وأنشئ شخصيات ذكاء اصطناعي فريدة"
       },
       "stories": {
-        "message": "لقد رأيت جميع القصص!",
+        "message": "لقد شاهدت جميع القصص!",
         "cta": "أنشئ قصتك الخاصة",
         "description": "ابدأ بإنشاء قصص تفاعلية مع شخصيات الذكاء الاصطناعي"
       }
     },
     "carousel": {
       "alt": "صورة دوارة لـ {{title}}",
-      "goToSlide": "اذهب إلى الشريحة {{slide}}",
-      "plus": "PLUS",
+      "goToSlide": "انتقل إلى الشريحة {{slide}}",
+      "plus": "بلس",
       "slides": {
         "welcome": {
-          "title": "مرحبًا بك في CharHub",
-          "description": "أنشئ شخصيات فريدة وأحيِ قصصك",
+          "title": "أهلاً بك في CharHub",
+          "description": "أنشئ شخصيات فريدة واجعل قصصك تنبض بالحياة",
           "action1": "إنشاء",
           "action1Full": "إنشاء شخصية",
           "action2": "تصفح",
@@ -55,15 +57,15 @@
         },
         "stories": {
           "title": "اكتشف القصص",
-          "description": "استمتع بمغامرات تفاعلية غامرة",
+          "description": "اختبر مغامرات تفاعلية غامرة",
           "action": "تصفح",
           "actionFull": "تصفح القصص",
           "create": "إنشاء",
           "createFull": "إنشاء قصة"
         },
         "pricing": {
-          "title": "افتح Premium",
-          "description": "إبداعات غير محدودة، ميزات حصرية، والمزيد",
+          "title": "افتح قفل المميزات",
+          "description": "إبداعات غير محدودة، وميزات حصرية، والمزيد",
           "action": "عرض الخطط",
           "actionFull": "عرض الخطط"
         }
@@ -80,8 +82,8 @@
       "title": "الفلاتر",
       "gender": "الجنس",
       "species": "النوع",
-      "selectGender": "اختر الجنس...",
-      "selectSpecies": "اختر النوع...",
+      "selectGender": "اختر الأجناس...",
+      "selectSpecies": "اختر الأنواع...",
       "clear": "مسح",
       "genders": {
         "male": "ذكر",

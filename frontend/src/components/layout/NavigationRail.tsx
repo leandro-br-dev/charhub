@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu } from '@headlessui/react';
 import { useAuth } from '../../hooks/useAuth';
-// Button removed from imports as related actions were removed
 import { SmartDropdown } from '../ui/SmartDropdown';
 import { CachedImage } from '../ui/CachedImage';
 import { LanguageSwitcher } from '../features/LanguageSwitcher';
@@ -129,15 +128,6 @@ export function NavigationRail({
         opensSidebar: true
       },
       {
-        to: '/development',
-        icon: 'terminal',
-        labelKey: 'navigation:development',
-        fallbackLabel: 'Development',
-        available: false,
-        onlyAdmin: true,
-        opensSidebar: true
-      },
-      {
         to: '/characters',
         icon: 'groups',
         labelKey: 'navigation:characters',
@@ -151,6 +141,15 @@ export function NavigationRail({
         labelKey: 'navigation:tasks',
         fallbackLabel: 'Tasks',
         available: true,
+        opensSidebar: false
+      },
+      {
+        to: '/admin',
+        icon: 'admin_panel_settings',
+        labelKey: 'navigation:admin',
+        fallbackLabel: 'Admin',
+        available: true,
+        onlyAdmin: true,
         opensSidebar: false
       },
       {
@@ -215,6 +214,50 @@ export function NavigationRail({
 
           const label = t(item.labelKey as any, item.fallbackLabel);
           const isItemActive = activeItem && item.opensSidebar ? activeItem.startsWith(item.to) : undefined;
+
+          // Special handling for Admin button with dropdown
+          if (item.to === '/admin' && item.available) {
+            return (
+              <SmartDropdown
+                key={item.to}
+                menuWidth="w-48"
+                buttonContent={
+                  <button
+                    type="button"
+                    className={`relative group flex ${isOverlay ? 'h-10 w-10 rounded-xl' : 'h-12 w-12 rounded-2xl'} items-center justify-center transition-all duration-200 ease-in-out ${
+                      isItemActive
+                        ? 'bg-primary text-black shadow-lg'
+                        : 'bg-light text-muted hover:bg-primary hover:text-black'
+                    }`}
+                    title={label}
+                  >
+                    <span className="material-symbols-outlined text-xl">{item.icon}</span>
+                    <span className="sr-only">{label}</span>
+                    {!isOverlay && (
+                      <span className="absolute left-full z-[100] ml-4 hidden min-w-max origin-left rounded-md bg-gray-900 px-2 py-1 text-xs font-medium text-white shadow-lg group-hover:block">
+                        {label}
+                      </span>
+                    )}
+                  </button>
+                }
+              >
+                <Menu.Item>
+                  {({ active }) => (
+                    <Link
+                      to="/admin/analytics"
+                      className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm ${
+                        active ? 'bg-primary/10 text-content' : 'text-content'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-base">bar_chart</span>
+                      {t('navigation:adminAnalytics', 'Analytics')}
+                    </Link>
+                  )}
+                </Menu.Item>
+              </SmartDropdown>
+            );
+          }
+
           return (
             <NavItem
               key={item.to}

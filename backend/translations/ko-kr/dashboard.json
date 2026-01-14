@@ -10,71 +10,73 @@
     },
     "sections": {
       "popularCharacters": "인기 캐릭터",
-      "favoriteCharacters": "내가 찜한 캐릭터",
+      "favoriteCharacters": "내가 좋아하는 캐릭터",
       "popular": "인기",
+      "newest": "최신",
       "favorites": "즐겨찾기",
       "myStories": "내 스토리",
       "popularStories": "인기 스토리",
-      "mine": "내 것",
-      "noPopularCharacters": "인기 캐릭터가 없습니다.",
-      "noFavoriteCharacters": "아직 찜한 캐릭터가 없습니다.",
+      "mine": "내 스토리",
+      "noPopularCharacters": "인기 캐릭터를 찾을 수 없습니다.",
+      "noNewCharacters": "새로운 캐릭터가 아직 없습니다.",
+      "noFavoriteCharacters": "아직 즐겨찾기한 캐릭터가 없습니다.",
       "createCharacter": "캐릭터 만들기",
       "browseCharacters": "캐릭터 둘러보기"
     },
-    "noStories": "아직 스토리가 없습니다. 첫 스토리를 만들어보세요!",
+    "noStories": "아직 스토리가 없습니다. 첫 번째 스토리를 만들어보세요!",
     "createStory": "스토리 만들기",
-    "plusRequired": "플러스 플랜 필요",
+    "plusRequired": "플러스 플랜이 필요합니다",
     "recentConversations": "최근 대화",
-    "newConversation": "새로운 대화",
-    "noConversations": "아직 대화가 없습니다. 지금 바로 채팅을 시작해보세요!",
+    "newConversation": "새 대화",
+    "noConversations": "아직 대화가 없습니다. 지금 채팅을 시작하세요!",
     "startChat": "새 채팅 시작",
     "endOfList": {
       "characters": {
-        "message": "모든 캐릭터를 확인했습니다!",
+        "message": "모든 캐릭터를 다 봤습니다!",
         "cta": "나만의 캐릭터 만들기",
-        "description": "상상력을 현실로 만들고 독특한 AI 캐릭터를 생성하세요"
+        "description": "상상력을 현실로 만들고 독특한 AI 캐릭터를 만들어보세요."
       },
       "stories": {
-        "message": "모든 스토리를 확인했습니다!",
+        "message": "모든 스토리를 다 봤습니다!",
         "cta": "나만의 스토리 만들기",
-        "description": "AI 캐릭터와 함께 인터랙티브 스토리를 만들어보세요"
+        "description": "AI 캐릭터와 함께 인터랙티브 스토리를 만들어보세요."
       }
     },
     "carousel": {
       "alt": "{{title}}의 캐러셀 이미지",
-      "goToSlide": "{{slide}}번째 슬라이드로 이동",
+      "goToSlide": "{{slide}}번 슬라이드로 이동",
       "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "CharHub에 오신 것을 환영합니다",
-          "description": "독특한 캐릭터를 만들고 스토리에 생명을 불어넣으세요",
+          "description": "독특한 캐릭터를 만들고 스토리를 생생하게 구현해보세요",
           "action1": "만들기",
           "action1Full": "캐릭터 만들기",
           "action2": "둘러보기",
           "action2Full": "캐릭터 둘러보기"
         },
         "stories": {
-          "title": "스토리 둘러보기",
-          "description": "몰입감 넘치는 인터랙티브 모험을 경험하세요",
+          "title": "스토리를 둘러보세요",
+          "description": "몰입감 넘치는 인터랙티브 모험을 경험해보세요",
           "action": "둘러보기",
           "actionFull": "스토리 둘러보기",
           "create": "만들기",
           "createFull": "스토리 만들기"
         },
         "pricing": {
-          "title": "프리미엄 기능 잠금 해제",
-          "description": "무제한 생성, 독점 기능 등 다양한 혜택",
-          "action": "플랜 보기",
-          "actionFull": "플랜 보기"
+          "title": "프리미엄 잠금 해제",
+          "description": "무제한 생성, 독점 기능 등",
+          "action": "요금제 보기",
+          "actionFull": "요금제 보기"
         }
       }
     },
     "storyCard": {
       "alt": "{{title}}의 표지 이미지",
-      "play": "재생"
+      "play": "플레이"
     },
     "infiniteScroll": {
-      "endOfList": "모든 캐릭터가 로드되었습니다"
+      "endOfList": "모든 캐릭터를 불러왔습니다"
     },
     "filters": {
       "title": "필터",

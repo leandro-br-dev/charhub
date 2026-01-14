@@ -12,11 +12,13 @@
       "popularCharacters": "Beliebte Charaktere",
       "favoriteCharacters": "Deine Favoriten",
       "popular": "Beliebt",
+      "newest": "Neu",
       "favorites": "Favoriten",
       "myStories": "Meine Stories",
       "popularStories": "Beliebte Stories",
       "mine": "Meine",
       "noPopularCharacters": "Keine beliebten Charaktere gefunden.",
+      "noNewCharacters": "Noch keine neuen Charaktere.",
       "noFavoriteCharacters": "Du hast noch keine Charaktere favorisiert.",
       "createCharacter": "Charakter erstellen",
       "browseCharacters": "Charaktere durchsuchen"
@@ -37,7 +39,7 @@
       "stories": {
         "message": "Du hast alle Stories gesehen!",
         "cta": "Erstelle deine eigene Story",
-        "description": "Beginne, interaktive Stories mit KI-Charakteren zu erstellen"
+        "description": "Beginne interaktive Stories mit KI-Charakteren zu erstellen"
       }
     },
     "carousel": {
