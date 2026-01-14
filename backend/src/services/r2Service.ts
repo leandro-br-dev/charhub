@@ -62,10 +62,15 @@ export class R2Service {
   private readonly config: R2Config;
   private readonly missingConfig: string[];
   private readonly client: S3Client | null;
+  private readonly environment: 'dev' | 'prod';
 
   constructor() {
     this.config = loadConfig();
     this.missingConfig = REQUIRED_CONFIG_KEYS.filter(key => !this.config[key]);
+
+    // Determine environment from NODE_ENV
+    const nodeEnv = (process.env.NODE_ENV || 'development').toLowerCase();
+    this.environment = nodeEnv === 'production' ? 'prod' : 'dev';
 
     if (this.missingConfig.length > 0) {
       logger.warn({ missing: this.missingConfig }, 'Cloudflare R2 configuration is incomplete. Service will be disabled.');
@@ -83,7 +88,7 @@ export class R2Service {
       },
     });
 
-    logger.info('Cloudflare R2 client configured successfully.');
+    logger.info({ environment: this.environment }, 'Cloudflare R2 client configured successfully.');
   }
 
   public isConfigured(): boolean {
@@ -101,36 +106,56 @@ export class R2Service {
     return this.client;
   }
 
+  /**
+   * Prefix object key with environment folder
+   * Examples:
+   *   dev:  characters/123/avatar.webp -> dev/characters/123/avatar.webp
+   *   prod: characters/123/avatar.webp -> prod/characters/123/avatar.webp
+   *
+   * If key already starts with the correct environment prefix, returns as-is
+   */
+  private prefixWithEnvironment(key: string): string {
+    const cleanKey = sanitizeKey(key);
+
+    // If key already starts with environment prefix, return as-is
+    if (cleanKey.startsWith(`${this.environment}/`)) {
+      return cleanKey;
+    }
+
+    // Add environment prefix
+    return `${this.environment}/${cleanKey}`;
+  }
+
   public getPublicUrl(objectKey: string): string {
     if (!this.isConfigured()) {
       throw new R2ConfigurationError(this.missingConfig);
     }
 
-    const cleanKey = sanitizeKey(objectKey);
-    return `${this.config.publicUrlBase}/${cleanKey}`;
+    const prefixedKey = this.prefixWithEnvironment(objectKey);
+    return `${this.config.publicUrlBase}/${prefixedKey}`;
   }
 
   public async uploadObject(params: UploadObjectParams): Promise<{ key: string; publicUrl: string }> {
     const client = this.ensureClient();
-    const cleanKey = sanitizeKey(params.key);
+    const prefixedKey = this.prefixWithEnvironment(params.key);
 
     try {
       await client.send(
         new PutObjectCommand({
           Bucket: this.config.bucketName,
-          Key: cleanKey,
+          Key: prefixedKey,
           Body: params.body,
           ContentType: params.contentType || 'application/octet-stream',
           CacheControl: params.cacheControl,
         })
       );
 
-      const publicUrl = this.getPublicUrl(cleanKey);
-      logger.debug({ key: cleanKey }, 'Uploaded object to Cloudflare R2');
+      const publicUrl = this.getPublicUrl(prefixedKey);
+      logger.debug({ key: prefixedKey, environment: this.environment }, 'Uploaded object to Cloudflare R2');
 
-      return { key: cleanKey, publicUrl };
+      return { key: prefixedKey, publicUrl };
     } catch (error) {
-      logger.error({ err: error, key: cleanKey }, 'Failed to upload object to Cloudflare R2');
+      logger.error({ err: error, key: prefixedKey }, 'Failed to upload object to Cloudflare R2');
       throw Object.assign(new Error('Failed to upload file to Cloudflare R2'), { cause: error, statusCode: 502 });
     }
   }
@@ -143,20 +168,20 @@ export class R2Service {
    */
   public async getPresignedUrl(key: string, expiresIn: number = 3600): Promise<string> {
     const client = this.ensureClient();
-    const cleanKey = sanitizeKey(key);
+    const prefixedKey = this.prefixWithEnvironment(key);
 
     try {
       const command = new GetObjectCommand({
         Bucket: this.config.bucketName,
-        Key: cleanKey,
+        Key: prefixedKey,
       });
 
       const presignedUrl = await getSignedUrl(client, command, { expiresIn });
-      logger.debug({ key: cleanKey, expiresIn }, 'Generated presigned URL for R2 object');
+      logger.debug({ key: prefixedKey, expiresIn }, 'Generated presigned URL for R2 object');
 
       return presignedUrl;
     } catch (error) {
-      logger.error({ err: error, key: cleanKey }, 'Failed to generate presigned URL');
+      logger.error({ err: error, key: prefixedKey }, 'Failed to generate presigned URL');
       throw Object.assign(new Error('Failed to generate presigned URL'), { cause: error, statusCode: 502 });
     }
   }
@@ -168,12 +193,12 @@ export class R2Service {
    */
   public async downloadObject(key: string): Promise<Buffer> {
     const client = this.ensureClient();
-    const cleanKey = sanitizeKey(key);
+    const prefixedKey = this.prefixWithEnvironment(key);
 
     try {
       const command = new GetObjectCommand({
         Bucket: this.config.bucketName,
-        Key: cleanKey,
+        Key: prefixedKey,
       });
 
       const response = await client.send(command);
@@ -189,10 +214,10 @@ export class R2Service {
       }
       const buffer = Buffer.concat(chunks);
 
-      logger.debug({ key: cleanKey, sizeBytes: buffer.length }, 'Downloaded object from R2');
+      logger.debug({ key: prefixedKey, sizeBytes: buffer.length }, 'Downloaded object from R2');
       return buffer;
     } catch (error) {
-      logger.error({ err: error, key: cleanKey }, 'Failed to download object from R2');
+      logger.error({ err: error, key: prefixedKey }, 'Failed to download object from R2');
       throw Object.assign(new Error('Failed to download file from Cloudflare R2'), { cause: error, statusCode: 502 });
     }
   }
@@ -204,20 +229,20 @@ export class R2Service {
    */
   public async deleteObject(key: string): Promise<boolean> {
     const client = this.ensureClient();
-    const cleanKey = sanitizeKey(key);
+    const prefixedKey = this.prefixWithEnvironment(key);
 
     try {
       await client.send(
         new DeleteObjectCommand({
           Bucket: this.config.bucketName,
-          Key: cleanKey,
+          Key: prefixedKey,
         })
       );
 
-      logger.debug({ key: cleanKey }, 'Deleted object from Cloudflare R2');
+      logger.debug({ key: prefixedKey }, 'Deleted object from Cloudflare R2');
       return true;
     } catch (error) {
-      logger.error({ err: error, key: cleanKey }, 'Failed to delete object from Cloudflare R2');
+      logger.error({ err: error, key: prefixedKey }, 'Failed to delete object from Cloudflare R2');
       throw Object.assign(new Error('Failed to delete file from Cloudflare R2'), { cause: error, statusCode: 502 });
     }
   }
