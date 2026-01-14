@@ -76,13 +76,14 @@ async function migrateR2Paths(): Promise<MigrationStats> {
 
   logger.info('Migrating CharacterImage records...');
 
-  const characterImages = await prisma.characterImage.findMany({
-    where: {
-      OR: [
-        { url: { not: { startsWith: `${R2_PUBLIC_URL_BASE}/${environment}/` } } },
-        { key: { not: null, not: { startsWith: `${environment}/` } } },
-      ],
-    },
+  // Get all CharacterImage records
+  const allCharacterImages = await prisma.characterImage.findMany();
+
+  // Filter to only those that need migration
+  const characterImages = allCharacterImages.filter(image => {
+    const urlNeedsMigration = !hasCorrectPrefix(image.url);
+    const keyNeedsMigration = image.key && !keyHasCorrectPrefix(image.key);
+    return urlNeedsMigration || keyNeedsMigration;
   });
 
   stats.characterImages.total = characterImages.length;
@@ -144,14 +145,15 @@ async function migrateR2Paths(): Promise<MigrationStats> {
 
   logger.info('Migrating Story cover images...');
 
-  const stories = await prisma.story.findMany({
-    where: {
-      coverImage: {
-        not: null,
-        not: { startsWith: `${R2_PUBLIC_URL_BASE}/${environment}/` },
-      },
-    },
+  // Get all Story records with cover images
+  const allStories = await prisma.story.findMany({
+    where: { coverImage: { not: null } },
   });
+
+  // Filter to only those that need migration
+  const stories = allStories.filter(story =>
+    story.coverImage && !hasCorrectPrefix(story.coverImage)
+  );
 
   stats.stories.total = stories.length;
   logger.info({ count: stories.length }, 'Found Story records to migrate');
@@ -190,14 +192,16 @@ async function migrateR2Paths(): Promise<MigrationStats> {
 
   logger.info('Migrating CuratedImage records...');
 
-  const curatedImages = await prisma.curatedImage.findMany({
-    where: {
-      uploadedToR2: true,
-      OR: [
-        { r2Url: { not: null, not: { startsWith: `${R2_PUBLIC_URL_BASE}/${environment}/` } } },
-        { r2Key: { not: null, not: { startsWith: `${environment}/` } } },
-      ],
-    },
+  // Get all CuratedImage records uploaded to R2
+  const allCuratedImages = await prisma.curatedImage.findMany({
+    where: { uploadedToR2: true },
+  });
+
+  // Filter to only those that need migration
+  const curatedImages = allCuratedImages.filter(image => {
+    const urlNeedsMigration = image.r2Url && !hasCorrectPrefix(image.r2Url);
+    const keyNeedsMigration = image.r2Key && !keyHasCorrectPrefix(image.r2Key);
+    return urlNeedsMigration || keyNeedsMigration;
   });
 
   stats.curatedImages.total = curatedImages.length;
@@ -221,7 +225,7 @@ async function migrateR2Paths(): Promise<MigrationStats> {
     if (needsUpdate) {
       logger.debug({
         id: image.id,
-        filename: image.filename,
+        sourceUrl: image.sourceUrl,
         oldUrl: image.r2Url,
         newUrl,
         oldKey: image.r2Key,
