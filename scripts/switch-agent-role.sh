@@ -61,6 +61,7 @@ if [ -z "$NEW_ROLE" ]; then
   echo "  - coder     (Agent Coder - implementation)"
   echo "  - reviewer  (Agent Reviewer - deployment & QA)"
   echo "  - planner   (Agent Planner - planning & architecture)"
+  echo "  - designer  (Agent Designer - UI/UX design)"
   echo ""
   echo "Example:"
   echo "  cd charhub-agent-01"
@@ -69,7 +70,7 @@ if [ -z "$NEW_ROLE" ]; then
 fi
 
 # Validate role exists
-VALID_ROLES=("coder" "reviewer" "planner")
+VALID_ROLES=("coder" "reviewer" "planner" "designer")
 if [[ ! " ${VALID_ROLES[@]} " =~ " ${NEW_ROLE} " ]]; then
   echo -e "${RED}❌ ERROR: Invalid role '${NEW_ROLE}'${NC}"
   echo "Valid roles: ${VALID_ROLES[@]}"
@@ -81,17 +82,6 @@ if [ "$NEW_ROLE" == "$CURRENT_ROLE" ]; then
   echo -e "${YELLOW}⚠ Agent ${AGENT_ID} is already configured as '${CURRENT_ROLE}'${NC}"
   echo "Nothing to do."
   exit 0
-fi
-
-# ============================================================================
-# Backup current CLAUDE.md
-# ============================================================================
-
-if [ -f "CLAUDE.md" ]; then
-  BACKUP_FILE="CLAUDE.md.backup-${CURRENT_ROLE}-$(date +%Y%m%d-%H%M%S)"
-  echo -e "${YELLOW}Backing up current CLAUDE.md to ${BACKUP_FILE}...${NC}"
-  cp CLAUDE.md "$BACKUP_FILE"
-  echo -e "${GREEN}✓ Backup created${NC}"
 fi
 
 # ============================================================================
@@ -111,6 +101,50 @@ fi
 
 cp "$TEMPLATE_SOURCE" CLAUDE.md
 echo -e "${GREEN}✓ Copied new CLAUDE.md from ${TEMPLATE_SOURCE}${NC}"
+
+# ============================================================================
+# Copy sub-agents to .claude/agents/
+# ============================================================================
+
+SUB_AGENTS_SOURCE="docs/agents/${NEW_ROLE}/sub-agents"
+SUB_AGENTS_DEST=".claude/agents"
+
+echo -e "${YELLOW}Copying sub-agents...${NC}"
+
+# Ensure destination directory exists
+mkdir -p "$SUB_AGENTS_DEST"
+echo -e "${GREEN}✓ Directory ${SUB_AGENTS_DEST} exists${NC}"
+
+# Clear destination directory (ensure it's empty before copying)
+if [ "$(ls -A $SUB_AGENTS_DEST 2>/dev/null)" ]; then
+  echo -e "${YELLOW}Clearing existing sub-agents from ${SUB_AGENTS_DEST}...${NC}"
+  rm -rf "${SUB_AGENTS_DEST:?}"/*
+  echo -e "${GREEN}✓ Directory cleared${NC}"
+fi
+
+# Check if source sub-agents directory exists
+if [ ! -d "$SUB_AGENTS_SOURCE" ]; then
+  echo -e "${YELLOW}⚠ No sub-agents directory found for '${NEW_ROLE}'${NC}"
+  echo "  Expected: ${SUB_AGENTS_SOURCE}"
+  echo "  Skipping sub-agents copy."
+else
+  # Copy all sub-agent files
+  SUB_AGENT_COUNT=$(find "$SUB_AGENTS_SOURCE" -name "*.md" | wc -l)
+
+  if [ "$SUB_AGENT_COUNT" -eq 0 ]; then
+    echo -e "${YELLOW}⚠ No markdown files found in ${SUB_AGENTS_SOURCE}${NC}"
+  else
+    cp "$SUB_AGENTS_SOURCE"/*.md "$SUB_AGENTS_DEST/"
+    echo -e "${GREEN}✓ Copied ${SUB_AGENT_COUNT} sub-agent(s) to ${SUB_AGENTS_DEST}${NC}"
+
+    # List copied sub-agents
+    echo ""
+    echo "Sub-agents loaded:"
+    find "$SUB_AGENTS_SOURCE" -name "*.md" -exec basename {} \; | while read -r filename; do
+      echo "  - ${filename}"
+    done
+  fi
+fi
 
 # ============================================================================
 # Update .agentrc
@@ -140,10 +174,8 @@ echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━
 echo ""
 echo "Files updated:"
 echo "  - CLAUDE.md (new role instructions)"
+echo "  - .claude/agents/ (sub-agents)"
 echo "  - .agentrc (updated metadata)"
-echo ""
-echo "Backup created:"
-echo "  - ${BACKUP_FILE}"
 echo ""
 echo -e "${BLUE}Agent Configuration:${NC}"
 echo "  ID:           ${AGENT_ID}"
@@ -158,7 +190,9 @@ echo "Next steps:"
 echo ""
 echo "1. Review the new CLAUDE.md to understand your new role"
 echo ""
-echo "2. Restart your environment if running:"
+echo "2. Check your sub-agents in .claude/agents/ directory"
+echo ""
+echo "3. Restart your environment if running:"
 echo "   docker compose down"
 echo "   docker compose up -d"
 echo ""
