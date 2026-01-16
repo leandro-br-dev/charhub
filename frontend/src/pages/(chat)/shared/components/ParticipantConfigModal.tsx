@@ -7,18 +7,27 @@ import { Button } from "../../../../components/ui/Button";
 import { Avatar } from "../../../../components/ui/Avatar";
 import { Modal } from "../../../../components/ui/Modal";
 import { Textarea } from "../../../../components/ui/Textarea";
+import { ImageViewerModal } from "../../../../components/ui/ImageViewerModal";
 import ComboboxSelect from "./ComboboxSelect";
 import ImageGalleryModal from "./ImageGalleryModal";
 
-// --- Placeholder Services ---
-const characterService = {
-  getCharacters: async (userId: string, options: any) => ({
-    success: true,
-    data: [
-      { id: 'char1', name: 'Persona One', avatar: null },
-      { id: 'char2', name: 'Persona Two', avatar: null },
-    ],
-  }),
+import { characterService } from "../../../../services/characterService";
+
+// Types for user config override
+interface UserConfigOverride {
+  instructions?: string;
+  genderOverride?: 'male' | 'female' | 'non-binary' | 'other' | null;
+}
+
+// Helper to parse user config from configOverride string
+const parseUserConfig = (configOverride?: string | null): UserConfigOverride | null => {
+  if (!configOverride) return null;
+  try {
+    return JSON.parse(configOverride);
+  } catch {
+    // If not JSON, treat as plain instructions string
+    return { instructions: configOverride };
+  }
 };
 
 const InfoItem = ({ icon, label, value }: { icon: string, label: string, value: any }) => {
@@ -58,15 +67,23 @@ const ParticipantConfigModal = ({
   const { user: loggedInUser } = useAuth();
   const userId = loggedInUser?.id;
 
-  const [localConfigOverride, setLocalConfigOverride] = useState("");
+  // State for user instructions and config
+  const [userInstructions, setUserInstructions] = useState("");
+  const [genderOverride, setGenderOverride] = useState("");
   const [selectedPersonaId, setSelectedPersonaId] = useState("");
   const [availablePersonas, setAvailablePersonas] = useState<any[]>([]);
   const [loadingPersonas, setLoadingPersonas] = useState(false);
+
+  // State for character/assistant config
+  const [localConfigOverride, setLocalConfigOverride] = useState("");
+
+  // UI state
   const [saving, setSaving] = useState(false);
   const [cloning, setCloning] = useState(false);
   const [promoting, setPromoting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [viewerImage, setViewerImage] = useState<{ src: string; title: string } | null>(null);
 
   useEffect(() => {
     if (isOpen && participant) {
@@ -74,10 +91,22 @@ const ParticipantConfigModal = ({
       setSaving(false);
       setCloning(false);
       setPromoting(false);
-      // Get data from raw ConversationParticipant
+
       const rawParticipant = participant.raw || participant;
-      setLocalConfigOverride(rawParticipant.configOverride || "");
+      const isUser = participant.actorType === "USER";
+
+      if (isUser) {
+        // Parse user config from JSON
+        const userConfig = parseUserConfig(rawParticipant.configOverride);
+        setUserInstructions(userConfig?.instructions || "");
+        setGenderOverride(userConfig?.genderOverride || "");
+      } else {
+        // For characters/assistants, use plain string
+        setLocalConfigOverride(rawParticipant.configOverride || "");
+      }
+
       setSelectedPersonaId(rawParticipant.representingCharacterId || "");
+
       if (
         participant.actorType === "ASSISTANT" ||
         participant.actorType === "USER"
@@ -87,6 +116,8 @@ const ParticipantConfigModal = ({
         setAvailablePersonas([]);
       }
     } else if (!isOpen) {
+      setUserInstructions("");
+      setGenderOverride("");
       setLocalConfigOverride("");
       setSelectedPersonaId("");
       setAvailablePersonas([]);
@@ -95,25 +126,29 @@ const ParticipantConfigModal = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, participant]);
 
-  const fetchAvailablePersonas = useCallback(async () => {
+  // Fetch available personas for user/assistant selection
+  const fetchAvailablePersonas = useCallback(async (search?: string) => {
     if (!userId) return;
     setLoadingPersonas(true);
     setError(null);
     try {
-      const result = await characterService.getCharacters(userId, {
-        isPublic: false,
+      const result = await characterService.getAvailablePersonas({
+        page: 1,
+        limit: 20,
+        search,
       });
+
       if (result.success) {
         const personaOptions = (result.data || []).map((char) => ({
           value: char.id,
-          label: char.name,
+          label: char.lastName
+            ? `${char.firstName} ${char.lastName}`
+            : char.firstName,
           avatar: char.avatar || null,
         }));
         setAvailablePersonas(personaOptions);
       } else {
-        throw new Error(
-          (result as any).error || t("participantConfigModal.errorFetchingPersonas")
-        );
+        throw new Error(t("participantConfigModal.errorFetchingPersonas"));
       }
     } catch (err: any) {
       setError(err.message || t("participantConfigModal.errorLoadingPersonas"));
@@ -123,42 +158,60 @@ const ParticipantConfigModal = ({
     }
   }, [userId, t]);
 
+  // Handle search in persona dropdown
+  const handlePersonaSearch = useCallback((searchTerm: string) => {
+    fetchAvailablePersonas(searchTerm);
+  }, [fetchAvailablePersonas]);
+
   const handleSave = async () => {
     if (!participant) return;
     setSaving(true);
     setError(null);
-    const configData: any = {};
-    let needsUpdate = false;
-    const rawParticipant = participant.raw || participant;
-    if (
-      participant.actorType !== "USER" &&
-      localConfigOverride !== (rawParticipant.configOverride || "")
-    ) {
-      configData.config_override = localConfigOverride;
-      needsUpdate = true;
-    }
-    if (
-      participant.actorType === "ASSISTANT" ||
-      participant.actorType === "USER"
-    ) {
-      const currentRepresentationId =
-        rawParticipant.representingCharacterId || "";
-      if (selectedPersonaId !== currentRepresentationId) {
+
+    try {
+      const configData: any = {};
+      const rawParticipant = participant.raw || participant;
+      const isUser = participant.actorType === "USER";
+
+      if (isUser) {
+        // For users: combine instructions + gender override into JSON
+        const userConfig: UserConfigOverride = {};
+
+        if (userInstructions.trim()) {
+          userConfig.instructions = userInstructions.trim();
+        }
+
+        if (genderOverride) {
+          userConfig.genderOverride = genderOverride as 'male' | 'female' | 'non-binary' | 'other';
+        }
+
+        configData.config_override = Object.keys(userConfig).length > 0
+          ? JSON.stringify(userConfig)
+          : null;
+
         configData.representing_character_id = selectedPersonaId || null;
-        needsUpdate = true;
+      } else {
+        // For characters/assistants: plain string instructions
+        if (localConfigOverride !== (rawParticipant.configOverride || "")) {
+          configData.config_override = localConfigOverride.trim() || null;
+        }
+
+        if (
+          participant.actorType === "ASSISTANT"
+        ) {
+          const currentRepresentationId =
+            rawParticipant.representingCharacterId || "";
+          if (selectedPersonaId !== currentRepresentationId) {
+            configData.representing_character_id = selectedPersonaId || null;
+          }
+        }
       }
-    }
-    if (needsUpdate) {
-      try {
-        await onSaveConfiguration(participant.id, configData);
-        onClose();
-      } catch (err: any) {
-        setError(err.message || t("chatPage.errorSavingConfig"));
-      } finally {
-        setSaving(false);
-      }
-    } else {
+
+      await onSaveConfiguration(participant.id, configData);
       onClose();
+    } catch (err: any) {
+      setError(err.message || t("chatPage.errorSavingConfig"));
+    } finally {
       setSaving(false);
     }
   };
@@ -221,6 +274,73 @@ const ParticipantConfigModal = ({
     return parts.join(" \n\n ");
   }, [participant]);
 
+  // Render user-specific content
+  const renderUserContent = () => {
+    return (
+      <div className="space-y-4">
+        {/* User Instructions */}
+        <Textarea
+          label={t("chatPage.userInstructionsLabel")}
+          placeholder={t("chatPage.userInstructionsPlaceholder")}
+          value={userInstructions}
+          onChange={(e) => setUserInstructions(e.target.value)}
+          rows={3}
+          disabled={saving}
+          maxLength={1000}
+        />
+        <p className="text-xs text-muted">
+          {t("chatPage.userInstructionsHelp")}
+        </p>
+
+        {/* Gender Override for this Conversation */}
+        <div>
+          <label className="block text-sm font-medium text-content mb-2">
+            {t("chatPage.genderOverrideLabel")}
+          </label>
+          <select
+            value={genderOverride}
+            onChange={(e) => setGenderOverride(e.target.value)}
+            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
+            disabled={saving}
+          >
+            <option value="">{t("chatPage.genderUseDefault")}</option>
+            <option value="male">{t("dashboard:filters.genders.male")}</option>
+            <option value="female">{t("dashboard:filters.genders.female")}</option>
+            <option value="non-binary">{t("dashboard:filters.genders.nonBinary")}</option>
+            <option value="other">{t("dashboard:filters.genders.other")}</option>
+          </select>
+          <p className="text-xs text-muted mt-1">
+            {t("chatPage.genderOverrideHelp")}
+          </p>
+        </div>
+
+        {/* Assume Persona */}
+        <div>
+          <ComboboxSelect
+            label={t("chatPage.assumePersonaLabel")}
+            options={personaOptionsWithDefault}
+            value={selectedPersonaId}
+            onChange={setSelectedPersonaId}
+            placeholder={t("chatPage.searchCharacterPlaceholder")}
+            valueKey="value"
+            labelKey="label"
+            disabled={saving || loadingPersonas}
+            searchable
+            onSearch={handlePersonaSearch}
+          />
+          <p className="text-xs text-muted mt-1">
+            {t("chatPage.assumePersonaHelp")}
+          </p>
+          {loadingPersonas && (
+            <p className="text-xs text-primary mt-1">
+              {t("chatPage.loadingPersonas")}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   const renderContent = () => {
     if (!participant)
       return <p className="text-muted">{t("chatPage.participantNotFound")}</p>;
@@ -240,12 +360,22 @@ const ParticipantConfigModal = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-4">
           <div className="md:col-span-1 flex flex-col items-center space-y-4">
             <div className="relative group">
-              <Avatar src={rep.avatar} size="large" />
+              <div className="w-48 h-64 rounded-2xl border-2 border-border overflow-hidden shadow-lg bg-light">
+                <img
+                  src={rep.avatar || "/default-avatar.png"}
+                  alt={rep.name || t("common.unknown")}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/default-avatar.png";
+                  }}
+                />
+              </div>
               <Button
                 variant="light"
                 size="small"
                 icon="photo_library"
-                className="absolute top-0 right-0 p-1.5"
+                className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm shadow-md"
                 onClick={() => setIsGalleryOpen(true)}
                 title={t("participantConfigModal.viewGalleryButton")}
               />
@@ -255,13 +385,13 @@ const ParticipantConfigModal = ({
                 <Button
                   variant="secondary"
                   onClick={handlePromote}
-                  disabled={promoting || saving}
+                  disabled={true}
                   icon="military_tech"
-                  className="w-full"
+                  className="w-full opacity-50"
+                  title={t("chatPage.promoteComingSoon")}
                 >
-                  {promoting
-                    ? t("chatPage.promotingButton")
-                    : t("chatPage.promoteToAssistantButton")}
+                  {t("chatPage.promoteToAssistantButton")}
+                  <span className="text-xs ml-2">({t("common.comingSoon")})</span>
                 </Button>
               )}
               {canClone && (
@@ -310,7 +440,7 @@ const ParticipantConfigModal = ({
                     : "transgender"
                 }
                 label={t("characters:form.fields.gender")}
-                value={rep.gender ? t(`filters.genders.${rep.gender}`, rep.gender) : "N/A"}
+                value={rep.gender ? t(`dashboard:filters.genders.${rep.gender.toUpperCase()}`, rep.gender) : "N/A"}
               />
               {rep.age && (
                 <InfoItem
@@ -328,24 +458,47 @@ const ParticipantConfigModal = ({
             )}
 
             <div className="pt-4 border-t border-gray-700 space-y-4">
+              {/* User-specific configuration */}
+              {isUser && renderUserContent()}
+
+              {/* Character/Assistant instructions */}
               {(isCharacterBot || isAssistant) && (
-                <Textarea
-                  label={t("chatPage.specificInstructionsLabel")}
-                  placeholder={t("chatPage.specificInstructionsPlaceholder")}
-                  value={localConfigOverride}
-                  onChange={(e) => setLocalConfigOverride(e.target.value)}
-                  rows={4}
-                  disabled={saving}
-                />
+                <div className="space-y-2">
+                  <Textarea
+                    label={t("chatPage.specificInstructionsLabel")}
+                    placeholder={t("chatPage.specificInstructionsPlaceholder")}
+                    value={localConfigOverride}
+                    onChange={(e) => setLocalConfigOverride(e.target.value)}
+                    rows={4}
+                    disabled={saving}
+                    maxLength={2000}
+                  />
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-muted">
+                      {t("chatPage.specificInstructionsHelp")}
+                    </p>
+                    <span className="text-xs text-muted">
+                      {localConfigOverride.length}/2000
+                    </span>
+                  </div>
+                  <details className="text-xs">
+                    <summary className="cursor-pointer text-primary hover:underline">
+                      {t("chatPage.specificInstructionsExamples")}
+                    </summary>
+                    <ul className="mt-2 space-y-1 text-muted pl-4 list-disc">
+                      <li>{t("chatPage.exampleInstruction1")}</li>
+                      <li>{t("chatPage.exampleInstruction2")}</li>
+                      <li>{t("chatPage.exampleInstruction3")}</li>
+                    </ul>
+                  </details>
+                </div>
               )}
-              {(isAssistant || isUser) && (
+
+              {/* Assistant persona selection */}
+              {isAssistant && (
                 <div>
                   <ComboboxSelect
-                    label={
-                      isUser
-                        ? t("chatPage.assumePersonaLabel")
-                        : t("chatPage.changeVisualPersonaLabel")
-                    }
+                    label={t("chatPage.changeVisualPersonaLabel")}
                     options={personaOptionsWithDefault}
                     value={selectedPersonaId}
                     onChange={setSelectedPersonaId}
@@ -388,13 +541,27 @@ const ParticipantConfigModal = ({
         <ImageGalleryModal
           isOpen={isGalleryOpen}
           onClose={() => setIsGalleryOpen(false)}
-          mode="view"
+          mode="select"
           characterId={participant.representation?.id}
           conversationId={participant.conversation_id}
           imageUrls={rep.gallery || []}
           title={t('participantConfigModal.galleryTitle', {
             name: rep.name || t('common.unknown'),
           })}
+          onImageSelect={(url) => {
+            // Open image in ImageViewerModal when user clicks on it
+            setIsGalleryOpen(false); // Close gallery first
+            setViewerImage({
+              src: url,
+              title: rep.name || t('common.unknown'),
+            });
+          }}
+        />
+        <ImageViewerModal
+          isOpen={viewerImage !== null}
+          onClose={() => setViewerImage(null)}
+          src={viewerImage?.src || ''}
+          title={viewerImage?.title || ''}
         />
       </>
     );

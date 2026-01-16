@@ -23,8 +23,16 @@ interface ProcessedParticipant {
   actorId: string;
   actorType: 'USER' | 'CHARACTER' | 'ASSISTANT';
   representation: {
+    id?: string | null;
     name: string;
     avatar?: string | null;
+    style?: string | null;
+    gender?: string | null;
+    physicalCharacteristics?: string | null;
+    personality?: string | null;
+    history?: string | null;
+    gallery?: string[];
+    age?: string | null;
   };
   raw: ConversationParticipant;
 }
@@ -60,8 +68,15 @@ function buildParticipantRepresentation(
       actorId: participant.actingCharacterId,
       actorType: 'CHARACTER',
       representation: {
+        id: character?.id || null,
         name,
         avatar: character?.images?.[0]?.url || null,
+        style: character?.style || null,
+        gender: character?.gender || null,
+        physicalCharacteristics: character?.physicalCharacteristics || null,
+        personality: character?.personality || null,
+        history: character?.history || null,
+        gallery: character?.images?.map(img => img.url) || [],
       },
       raw: participant,
     };
@@ -77,8 +92,15 @@ function buildParticipantRepresentation(
       actorId: participant.actingAssistantId,
       actorType: 'ASSISTANT',
       representation: {
+        id: persona?.id || null,
         name,
         avatar,
+        style: persona?.style || null,
+        gender: persona?.gender || null,
+        physicalCharacteristics: persona?.physicalCharacteristics || null,
+        personality: persona?.personality || null,
+        history: persona?.history || null,
+        gallery: persona?.images?.map(img => img.url) || [],
       },
       raw: participant,
     };
@@ -98,23 +120,49 @@ function appendMessageToCache(
   conversationId: string,
   message: Message
 ) {
-  const key = messageKeys.list(conversationId);
-  queryClient.setQueryData<{ items: Message[]; total: number }>(key, (previous) => {
-    if (!previous) {
-      return { items: [message], total: 1 };
-    }
-
-    const alreadyExists = previous.items.some((item) => item.id === message.id);
-    if (alreadyExists) {
-      return previous;
-    }
-
-    return {
-      items: [...previous.items, message],
-      total: previous.total + 1,
-    };
+  // Get all query keys that match this conversation's messages
+  const queryCache = queryClient.getQueryCache();
+  const matchingQueries = queryCache.findAll({
+    queryKey: messageKeys.lists(),
   });
 
+  console.log('[ChatContainer] appendMessageToCache', {
+    conversationId,
+    messageId: message.id,
+    matchingQueriesCount: matchingQueries.length,
+    matchingQueryKeys: matchingQueries.map(q => q.queryKey),
+  });
+
+  // Update all matching query keys to handle different query parameter combinations
+  matchingQueries.forEach((query) => {
+    const queryKey = query.queryKey;
+
+    // Check if this query is for the right conversation
+    // Format: ['messages', 'list', conversationId, query?]
+    if (queryKey.length >= 3 && queryKey[2] === conversationId) {
+      queryClient.setQueryData<{ items: Message[]; total: number }>(
+        queryKey,
+        (previous) => {
+          if (!previous) {
+            return { items: [message], total: 1 };
+          }
+
+          const alreadyExists = previous.items.some((item) => item.id === message.id);
+          if (alreadyExists) {
+            return previous;
+          }
+
+          return {
+            items: [...previous.items, message],
+            total: previous.total + 1,
+          };
+        }
+      );
+    }
+  });
+
+  // Invalidate to trigger re-render
+  queryClient.invalidateQueries({ queryKey: messageKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.detail(conversationId) });
 }
@@ -124,23 +172,49 @@ function removeMessageFromCache(
   conversationId: string,
   messageId: string
 ) {
-  const key = messageKeys.list(conversationId);
-  queryClient.setQueryData<{ items: Message[]; total: number }>(key, (previous) => {
-    if (!previous) {
-      return previous;
-    }
-
-    const filtered = previous.items.filter((item) => item.id !== messageId);
-    if (filtered.length === previous.items.length) {
-      return previous;
-    }
-
-    return {
-      items: filtered,
-      total: Math.max(previous.total - 1, 0),
-    };
+  // Get all query keys that match this conversation's messages
+  const queryCache = queryClient.getQueryCache();
+  const matchingQueries = queryCache.findAll({
+    queryKey: messageKeys.lists(),
   });
 
+  console.log('[ChatContainer] removeMessageFromCache', {
+    conversationId,
+    messageId,
+    matchingQueriesCount: matchingQueries.length,
+    matchingQueryKeys: matchingQueries.map(q => q.queryKey),
+  });
+
+  // Update all matching query keys to handle different query parameter combinations
+  matchingQueries.forEach((query) => {
+    const queryKey = query.queryKey;
+
+    // Check if this query is for the right conversation
+    // Format: ['messages', 'list', conversationId, query?]
+    if (queryKey.length >= 3 && queryKey[2] === conversationId) {
+      queryClient.setQueryData<{ items: Message[]; total: number }>(
+        queryKey,
+        (previous) => {
+          if (!previous) {
+            return previous;
+          }
+
+          const filtered = previous.items.filter((item) => item.id !== messageId);
+          if (filtered.length === previous.items.length) {
+            return previous;
+          }
+
+          return {
+            items: filtered,
+            total: Math.max(previous.total - 1, 0),
+          };
+        }
+      );
+    }
+  });
+
+  // Invalidate to trigger re-render
+  queryClient.invalidateQueries({ queryKey: messageKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.detail(conversationId) });
 }

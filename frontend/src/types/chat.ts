@@ -31,6 +31,11 @@ export interface ParticipantCharacter {
   lastName: string | null;
   avatar: string | null;
   gender: string | null;
+  style?: string | null;
+  physicalCharacteristics?: string | null;
+  personality?: string | null;
+  history?: string | null;
+  age?: string | null;
   images?: CharacterImage[]; // Optional relation from Prisma schema
 }
 

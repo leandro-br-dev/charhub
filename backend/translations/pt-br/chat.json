@@ -122,8 +122,14 @@
       "configureAssistantTitle": "Configurar assistente {{name}}",
       "configureUserRoleplayTitle": "Configurar encenação de {{name}}",
       "participantNotFound": "Participante não encontrado",
-      "specificInstructionsLabel": "Instruções específicas",
-      "specificInstructionsPlaceholder": "Adicione detalhes que devem influenciar as respostas durante esta conversa",
+      "specificInstructionsLabel": "Instruções Específicas para Esta Conversa",
+      "specificInstructionsPlaceholder": "Adicione instruções de comportamento personalizadas para este personagem apenas nesta conversa...",
+      "specificInstructionsHelp": "Estas instruções modificam como o personagem se comporta APENAS nesta conversa. Não afetam a definição base do personagem.",
+      "specificInstructionsExamples": "Exemplos de Instruções",
+      "exampleInstruction1": "Seja mais brincalhão e provocador nesta conversa",
+      "exampleInstruction2": "Aja nervoso porque é um cenário de primeiro encontro",
+      "exampleInstruction3": "Fale formalmente como se estivesse em uma corte real",
+      "promoteComingSoon": "Esta funcionalidade está chegando em breve",
       "assumePersonaLabel": "Assumir persona",
       "changeVisualPersonaLabel": "Persona visual",
       "selectCharacterPlaceholder": "Selecione um personagem",
@@ -146,7 +152,16 @@
       "confirmReprocessUserMessage": "Tem certeza de que deseja regenerar a resposta para esta mensagem?",
       "confirmReprocessBotMessage": "Tem certeza de que deseja regenerar esta mensagem?",
       "regenerateButton": "Regenerar",
-      "conversationSettingsTitle": "Configurações da Conversa"
+      "conversationSettingsTitle": "Configurações da Conversa",
+      "userInstructionsLabel": "Instruções Sobre Você",
+      "userInstructionsPlaceholder": "Conte aos personagens sobre você nesta conversa...",
+      "userInstructionsHelp": "Adicione detalhes sobre você que os personagens devem saber nesta conversa. Exemplo: 'Estou interpretando um cavaleiro medieval' ou 'Prefiro linguagem formal'.",
+      "genderOverrideLabel": "Gênero para Esta Conversa",
+      "genderUseDefault": "Usar padrão do meu perfil",
+      "genderOverrideHelp": "Substitua seu gênero apenas para esta conversa. Isso não altera seu perfil.",
+      "assumePersonaHelp": "Selecione um personagem para interpretar. Outros personagens irão chamá-lo pelo nome e características desta persona.",
+      "searchCharacterPlaceholder": "Buscar personagens...",
+      "noPersonaFound": "Nenhum personagem encontrado"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "Não foi possível buscar personas.",
@@ -227,7 +242,8 @@
       "saving": "Salvando...",
       "unknown": "Desconhecido",
       "search": "Buscar",
-      "searching": "Buscando..."
+      "searching": "Buscando...",
+      "comingSoon": "Em Breve"
     },
     "displayAvatarParticipants": {
       "addParticipantPrompt": "Adicione participantes para iniciar a conversa.",

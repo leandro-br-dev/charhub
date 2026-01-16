@@ -2,13 +2,13 @@
   "description": "Chat and conversation interface translations",
   "resources": {
     "title": "Беседы",
-    "newConversation": "Новая беседа",
+    "newConversation": "Новый диалог",
     "conversations": "Беседы",
     "noConversations": "Пока нет бесед",
     "createFirst": "Создайте свою первую беседу",
     "loading": "Загрузка...",
     "error": "Ошибка загрузки чата",
-    "unknownParticipant": "Неизвестно ({{id}})",
+    "unknownParticipant": "Неизвестный ({{id}})",
     "history": {
       "title": "История бесед",
       "newChat": "Новый чат",
@@ -27,7 +27,7 @@
       "editTitle": "Изменить название",
       "deleteConversation": "Удалить беседу",
       "deleteConfirmTitle": "Удалить беседу",
-      "deleteConfirmMessage": "Вы уверены, что хотите удалить \"{{title}}\"? Это действие необратимо.",
+      "deleteConfirmMessage": "Вы уверены, что хотите удалить \"{{title}}\"? Это действие отменить невозможно.",
       "thisConversation": "эту беседу",
       "deleteSuccess": "Беседа успешно удалена"
     },
@@ -51,7 +51,7 @@
     "message": {
       "send": "Отправить",
       "sending": "Отправка...",
-      "placeholder": "Напишите ваше сообщение...",
+      "placeholder": "Введите ваше сообщение...",
       "delete": "Удалить сообщение",
       "edit": "Редактировать сообщение",
       "copy": "Копировать",
@@ -74,7 +74,7 @@
     "typing": {
       "isTyping": "{{name}} печатает...",
       "areTyping": "{{names}} печатают...",
-      "generating": "Генерируется ответ..."
+      "generating": "Генерация ответа..."
     },
     "actions": {
       "create": "Создать",
@@ -91,21 +91,21 @@
       "sendFailed": "Не удалось отправить сообщение",
       "deleteFailed": "Не удалось удалить",
       "updateFailed": "Не удалось обновить",
-      "networkError": "Ошибка сети. Пожалуйста, проверьте ваше соединение.",
-      "unauthorized": "У вас нет разрешения на выполнение этого действия",
+      "networkError": "Ошибка сети. Пожалуйста, проверьте ваше подключение.",
+      "unauthorized": "У вас нет разрешения на это действие",
       "notFound": "Беседа не найдена",
       "generateAiFailed": "Не удалось сгенерировать ответ.",
       "addParticipantFailed": "Не удалось добавить участника.",
       "removeParticipantFailed": "Не удалось удалить участника.",
-      "cannotRemoveLastCharacter": "Невозможно удалить последнего персонажа из беседы. Должен остаться хотя бы один персонаж или ассистент.",
+      "cannotRemoveLastCharacter": "Нельзя удалить последнего персонажа из беседы. Должен остаться хотя бы один персонаж или ассистент.",
       "updateConversationFailed": "Не удалось обновить беседу.",
-      "reprocessNotAvailable": "Повторная обработка недоступна без ассистента-участника.",
+      "reprocessNotAvailable": "Повторная обработка недоступна без участника-ассистента.",
       "imageGenerationUnavailable": "Генерация изображений пока недоступна.",
       "cloneAssistantUnavailable": "Клонирование ассистента пока недоступно.",
-      "promoteCharacterUnavailable": "Повышение персонажа пока недоступно.",
+      "promoteCharacterUnavailable": "Продвижение персонажа пока недоступно.",
       "audioPlaybackUnavailable": "Воспроизведение аудио пока недоступно.",
-      "reviewFileUnavailable": "Просмотр файла пока недоступен.",
-      "suggestionFailed": "Не удалось сгенерировать предложение ответа.",
+      "reviewFileUnavailable": "Просмотр файлов пока недоступен.",
+      "suggestionFailed": "Не удалось сгенерировать предложение для ответа.",
       "developmentPlanProcessFailed": "Ошибка обработки плана развития. Не удалось продолжить."
     },
     "success": {
@@ -116,21 +116,27 @@
     },
     "chatPage": {
       "participantCount": "{{count}} участник",
-      "participantCount_plural": "{{count}} участников",
+      "participantCount_plural": "{{count}} участника",
       "configureParticipantTitle": "Настроить участника",
       "configureBotTitle": "Настроить {{name}}",
       "configureAssistantTitle": "Настроить ассистента {{name}}",
-      "configureUserRoleplayTitle": "Настроить ролевую игру для {{name}}",
+      "configureUserRoleplayTitle": "Настроить ролевую игру {{name}}",
       "participantNotFound": "Участник не найден",
-      "specificInstructionsLabel": "Особые инструкции",
-      "specificInstructionsPlaceholder": "Добавьте детали, которые должны влиять на ответы в ходе этой беседы",
+      "specificInstructionsLabel": "Особые инструкции для этой беседы",
+      "specificInstructionsPlaceholder": "Добавьте специальные инструкции по поведению для этого персонажа только в этой беседе...",
+      "specificInstructionsHelp": "Эти инструкции изменяют поведение персонажа ТОЛЬКО в этой беседе. Они не влияют на базовое определение персонажа.",
+      "specificInstructionsExamples": "Примеры инструкций",
+      "exampleInstruction1": "Будьте более игривым и дразнящим в этой беседе",
+      "exampleInstruction2": "Ведите себя нервно, потому что это сценарий первого свидания",
+      "exampleInstruction3": "Говорите официально, как при королевском дворе",
+      "promoteComingSoon": "Эта функция скоро появится",
       "assumePersonaLabel": "Принять образ",
       "changeVisualPersonaLabel": "Визуальный образ",
       "selectCharacterPlaceholder": "Выберите персонажа",
       "loadingPersonas": "Загрузка образов...",
       "savingConfigurationButton": "Сохранение...",
       "saveConfigurationButton": "Сохранить конфигурацию",
-      "promotingButton": "Повышение...",
+      "promotingButton": "Продвижение...",
       "promoteToAssistantButton": "Повысить до ассистента",
       "cloningButton": "Клонирование...",
       "cloneButton": "Клонировать ассистента",
@@ -143,16 +149,25 @@
       "confirmDeleteTitle": "Подтвердить удаление",
       "confirmDeleteMessage": "Вы уверены, что хотите удалить это сообщение?",
       "confirmReprocessTitle": "Подтвердить повторную генерацию",
-      "confirmReprocessUserMessage": "Вы уверены, что хотите сгенерировать ответ на это сообщение повторно?",
-      "confirmReprocessBotMessage": "Вы уверены, что хотите сгенерировать это сообщение повторно?",
+      "confirmReprocessUserMessage": "Вы уверены, что хотите повторно сгенерировать ответ на это сообщение?",
+      "confirmReprocessBotMessage": "Вы уверены, что хотите повторно сгенерировать это сообщение?",
       "regenerateButton": "Сгенерировать повторно",
-      "conversationSettingsTitle": "Настройки беседы"
+      "conversationSettingsTitle": "Настройки беседы",
+      "userInstructionsLabel": "Инструкции о себе",
+      "userInstructionsPlaceholder": "Расскажите персонажам о себе для этой беседы...",
+      "userInstructionsHelp": "Добавьте информацию о себе, которую персонажи должны знать в этой беседе. Например: 'Я играю роль средневекового рыцаря' или 'Я предпочитаю формальный язык'.",
+      "genderOverrideLabel": "Пол для этой беседы",
+      "genderUseDefault": "Использовать по умолчанию из профиля",
+      "genderOverrideHelp": "Изменить ваш пол только для этой беседы. Это не меняет ваш профиль.",
+      "assumePersonaHelp": "Выберите персонажа, чью роль вы будете играть. Другие персонажи будут обращаться к вам по имени и чертам этого образа.",
+      "searchCharacterPlaceholder": "Поиск персонажей...",
+      "noPersonaFound": "Персонажи не найдены"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "Не удалось получить образы.",
       "errorLoadingPersonas": "Не удалось загрузить образы.",
       "viewGalleryButton": "Открыть галерею",
-      "assistantDetails": "Исходный ассистент: {{name}}",
+      "assistantDetails": "Оригинальный ассистент: {{name}}",
       "galleryTitle": "Галерея {{name}}"
     },
     "conversationSettings": {
@@ -161,7 +176,7 @@
         "general": "Общие",
         "roleplay": "Ролевая игра",
         "view": "Внешний вид",
-        "multiuser": "Многопользовательская"
+        "multiuser": "Многопользовательский"
       },
       "interactionModeLabel": "Режим взаимодействия",
       "modeNormal": "Сбалансированная ролевая игра",
@@ -181,7 +196,7 @@
       "genreFantasy": "Фэнтези",
       "genreSciFi": "Научная фантастика",
       "genreModern": "Современность",
-      "genreCustom": "Пользовательский",
+      "genreCustom": "Другое",
       "customGenreDetailsLabel": "Детали пользовательского сценария",
       "customGenrePlaceholder": "Опишите пользовательский сценарий для ролевой игры",
       "allowNsfwLabel": "Разрешить контент для взрослых",
@@ -199,7 +214,7 @@
       "selectFromGalleryButton": "Выбрать из галереи",
       "removeBgImageButton": "Удалить изображение",
       "noImageSelected": "Фон не выбран",
-      "autoBackgroundInfo": "При включении обложка персонажа будет использоваться в качестве фона для бесед один на один.",
+      "autoBackgroundInfo": "Если включено, изображение обложки персонажа будет использоваться в качестве фона для бесед один на один.",
       "errorLoadingGallery": "Не удалось загрузить изображения галереи.",
       "galleryButton": "Открыть галерею",
       "imageGalleryTitle": "Галерея чата",
@@ -209,8 +224,8 @@
         "private": "Приватная",
         "unlisted": "Непубличная",
         "public": "Публичная",
-        "publicWarning": "Эта беседа будет видна всем и доступна в публичных списках.",
-        "unlistedWarning": "Доступ к этой беседе может получить любой, у кого есть ссылка, но она не будет отображаться в публичных списках."
+        "publicWarning": "Эта беседа будет видна всем и доступна для поиска в публичных списках.",
+        "unlistedWarning": "Эта беседа доступна по ссылке, но не будет отображаться в публичных списках."
       }
     },
     "common": {
@@ -219,7 +234,7 @@
       "save": "Сохранить",
       "confirm": "Подтвердить",
       "enabled": "Включено",
-      "disabled": "Выключено",
+      "disabled": "Отключено",
       "allowed": "Разрешено",
       "denied": "Запрещено",
       "deleting": "Удаление...",
@@ -227,7 +242,8 @@
       "saving": "Сохранение...",
       "unknown": "Неизвестно",
       "search": "Поиск",
-      "searching": "Поиск..."
+      "searching": "Поиск...",
+      "comingSoon": "Скоро"
     },
     "displayAvatarParticipants": {
       "addParticipantPrompt": "Добавьте участников, чтобы начать беседу.",
@@ -250,20 +266,20 @@
       "actionsMenuTitle": "Дополнительные действия",
       "generateImageAction": "Сгенерировать изображение",
       "suggestReplyAction": "Предложить ответ",
-      "generatingSuggestion": "Генерируется предложение...",
+      "generatingSuggestion": "Генерация предложения...",
       "micButtonStopRecordingTitle": "Остановить запись",
       "micButtonProcessingTitle": "Обработка...",
       "micButtonRecordTitle": "Записать аудио"
     },
     "messageItem": {
-      "generatingAudio": "Генерируется аудио...",
+      "generatingAudio": "Генерация аудио...",
       "playingAudio": "Воспроизведение аудио...",
       "audioErrorPrefix": "Ошибка аудио",
       "playAudioCachedActionTitle": "Воспроизвести аудио",
       "playAudioActionTitle": "Сгенерировать и воспроизвести аудио",
       "deleteActionTitle": "Удалить сообщение",
       "editActionTitle": "Редактировать сообщение",
-      "regenerateActionTitle": "Сгенерировать ответ повторно",
+      "regenerateActionTitle": "Повторно сгенерировать ответ",
       "youSender": "Вы",
       "unknownSender": "Неизвестный",
       "creditsUsedTitle": "Использовано {{count}} кредитов",
@@ -275,9 +291,9 @@
     },
     "memory": {
       "active": "Память активна (обновлено {{timeAgo}})",
-      "activeTooltip": "История беседы автоматически сжимается для сохранения контекста. Недавние сообщения сохраняются полностью, старые сообщения суммируются.",
+      "activeTooltip": "История беседы автоматически сжимается для экономии контекста. Последние сообщения сохраняются полностью, старые сообщения суммируются.",
       "compressing": "Сжатие истории беседы...",
-      "compressingTooltip": "Ваша беседа суммируется для оптимизации использования памяти. Это может занять несколько мгновений.",
+      "compressingTooltip": "Ваша беседа суммируется для оптимизации использования памяти. Это может занять несколько секунд.",
       "compressionComplete": "История успешно сжата"
     },
     "presence": {
@@ -299,20 +315,20 @@
       "title": "Пригласить пользователя",
       "searchPlaceholder": "Поиск по имени пользователя или отображаемому имени...",
       "minSearchLength": "Введите не менее 2 символов для поиска",
-      "searchFailed": "Не удалось найти пользователей. Пожалуйста, попробуйте еще раз.",
+      "searchFailed": "Не удалось найти пользователей. Пожалуйста, повторите попытку.",
       "allResultsAlreadyMembers": "Все найденные пользователи уже являются участниками этой беседы.",
       "noResults": "Пользователи, соответствующие вашему запросу, не найдены.",
-      "searchHint": "Ищите пользователей по их имени пользователя или отображаемому имени, чтобы пригласить их в эту беседу.",
+      "searchHint": "Ищите пользователей по имени пользователя или отображаемому имени, чтобы пригласить их в эту беседу.",
       "invite": "Пригласить",
       "inviting": "Приглашение...",
-      "inviteFailed": "Не удалось пригласить пользователя. Пожалуйста, попробуйте еще раз.",
+      "inviteFailed": "Не удалось пригласить пользователя. Пожалуйста, повторите попытку.",
       "inviteSuccess": "Пользователь успешно приглашен!"
     },
     "shareInvite": {
       "title": "Поделиться ссылкой-приглашением",
       "description": "Любой, у кого есть эта ссылка, может присоединиться к беседе.",
-      "generateFailed": "Не удалось сгенерировать ссылку-приглашение. Пожалуйста, попробуйте еще раз.",
-      "copy": "Копировать ссылку",
+      "generateFailed": "Не удалось сгенерировать ссылку-приглашение. Пожалуйста, повторите попытку.",
+      "copy": "Скопировать ссылку",
       "copied": "Скопировано!",
       "expiresIn": "Ссылка истекает через {{days}} дней"
     },
@@ -321,9 +337,9 @@
       "invalidLink": "Недействительная или отсутствующая ссылка-приглашение",
       "failed": "Не удалось присоединиться к беседе",
       "errorTitle": "Невозможно присоединиться",
-      "goHome": "Перейти на главную",
+      "goHome": "На главную",
       "alreadyMember": "Вы уже являетесь участником этой беседы",
-      "conversationFull": "Эта беседа достигла максимального количества пользователей"
+      "conversationFull": "Эта беседа достигла максимального числа пользователей"
     },
     "addParticipantModal": {
       "title": "Добавить участника",
@@ -334,26 +350,26 @@
       "assistantsTab": "ассистенты",
       "searchCharactersPlaceholder": "Поиск персонажей...",
       "searchAssistantsPlaceholder": "Поиск ассистентов...",
-      "noItemsForSearch": "Результаты для \"{{searchTerm}}\" не найдены",
+      "noItemsForSearch": "По запросу \"{{searchTerm}}\" ничего не найдено",
       "noItemsAvailable": "Нет доступных элементов",
-      "alreadyAddedMaybe": "(Все доступные элементы уже находятся в беседе)",
+      "alreadyAddedMaybe": "(Все доступные элементы уже добавлены в беседу)",
       "noDescription": "Описание отсутствует",
       "addToConversationButtonTitle": "Добавить в беседу",
       "maxParticipantsError": "Разрешено максимум {{max}} участников",
-      "connectionError": "Ошибка соединения. Пожалуйста, попробуйте еще раз."
+      "connectionError": "Ошибка подключения. Пожалуйста, повторите попытку."
     },
     "multiUser": {
       "label": "Многопользовательская беседа",
       "description": "Разрешить нескольким пользователям участвовать в этой беседе",
-      "maxUsers": "Максимальное количество пользователей",
+      "maxUsers": "Максимум пользователей",
       "maxUsersHint": "Могут присоединиться до 4 пользователей (плюс неограниченное количество персонажей)",
       "allowInvites": "Разрешить участникам приглашать",
-      "allowInvitesHint": "Участники могут приглашать других пользователей присоединиться",
+      "allowInvitesHint": "Участники могут приглашать других пользователей",
       "requireApproval": "Требовать одобрения для присоединения",
-      "requireApprovalHint": "Владелец должен одобрять новых участников, прежде чем они смогут участвовать",
+      "requireApprovalHint": "Владелец должен одобрить новых участников, прежде чем они смогут участвовать",
       "conversionWarning": "Это преобразует вашу индивидуальную беседу в многопользовательский режим. Вы станете владельцем с полным контролем.",
       "inviteLink": "Ссылка-приглашение",
-      "inviteLinkDescription": "Поделитесь этой ссылкой с пользователями, которых вы хотите пригласить:"
+      "inviteLinkDescription": "Поделитесь этой ссылкой с пользователями, которых хотите пригласить:"
     }
   }
 }

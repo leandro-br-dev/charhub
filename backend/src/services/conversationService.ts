@@ -71,8 +71,11 @@ const conversationInclude: any = {
           firstName: true,
           lastName: true,
           gender: true,
+          style: true,
           contentTags: true,
           personality: true,
+          physicalCharacteristics: true,
+          history: true,
           images: {
             where: {
               type: 'AVATAR',
@@ -98,8 +101,11 @@ const conversationInclude: any = {
           firstName: true,
           lastName: true,
           gender: true,
+          style: true,
           contentTags: true,
           personality: true,
+          physicalCharacteristics: true,
+          history: true,
           images: {
             where: {
               type: 'AVATAR',
@@ -237,6 +243,22 @@ export async function getConversationById(
       return null;
     }
 
+    // DEBUG: Log to verify configOverride is loaded
+    if (conversation.participants && conversation.participants.length > 0) {
+      // Check only ConversationParticipant types (not UserConversationMembership)
+      const botParticipants = conversation.participants.filter((p: any) => p.actingCharacterId || p.actingAssistantId);
+      const participantWithOverride = botParticipants.find((p: any) => p.configOverride);
+      const firstBot = botParticipants[0] as any;
+      logger.info({
+        conversationId,
+        participantCount: conversation.participants.length,
+        botParticipantCount: botParticipants.length,
+        hasConfigOverride: !!participantWithOverride,
+        firstBotId: firstBot?.id,
+        firstBotOverride: firstBot?.configOverride?.substring(0, 100) || null,
+      }, 'CONFIG_OVERRIDE_CHECK: Conversation participants loaded');
+    }
+
     // Check if user has access (owner OR active member for multi-user)
     const isOwner = conversation.userId === userId;
 
@@ -329,6 +351,8 @@ export async function listConversations(
                 id: true,
                 firstName: true,
                 lastName: true,
+                gender: true,
+                style: true,
                 images: {
                   where: {
                     type: 'AVATAR',
@@ -352,6 +376,8 @@ export async function listConversations(
                 id: true,
                 firstName: true,
                 lastName: true,
+                gender: true,
+                style: true,
                 images: {
                   where: {
                     type: 'AVATAR',
@@ -1035,6 +1061,7 @@ export async function discoverPublicConversations(query: DiscoverConversationsQu
                 firstName: true,
                 lastName: true,
                 gender: true,
+                style: true,
                 contentTags: true,
                 images: {
                   where: {
@@ -1060,6 +1087,7 @@ export async function discoverPublicConversations(query: DiscoverConversationsQu
                 firstName: true,
                 lastName: true,
                 gender: true,
+                style: true,
                 contentTags: true,
                 images: {
                   where: {

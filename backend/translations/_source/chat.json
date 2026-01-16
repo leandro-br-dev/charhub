@@ -122,8 +122,14 @@
       "configureAssistantTitle": "Configure assistant {{name}}",
       "configureUserRoleplayTitle": "Configure {{name}}'s roleplay",
       "participantNotFound": "Participant not found",
-      "specificInstructionsLabel": "Specific instructions",
-      "specificInstructionsPlaceholder": "Add details that should influence responses during this conversation",
+      "specificInstructionsLabel": "Specific Instructions for This Conversation",
+      "specificInstructionsPlaceholder": "Add custom behavior instructions for this character in this conversation only...",
+      "specificInstructionsHelp": "These instructions modify how the character behaves ONLY in this conversation. They don't affect the character's base definition.",
+      "specificInstructionsExamples": "Example Instructions",
+      "exampleInstruction1": "Be more playful and teasing in this conversation",
+      "exampleInstruction2": "Act nervous because this is a first date scenario",
+      "exampleInstruction3": "Speak formally as if in a royal court",
+      "promoteComingSoon": "This feature is coming soon",
       "assumePersonaLabel": "Assume persona",
       "changeVisualPersonaLabel": "Visual persona",
       "selectCharacterPlaceholder": "Select a character",
@@ -146,7 +152,16 @@
       "confirmReprocessUserMessage": "Are you sure you want to regenerate the response to this message?",
       "confirmReprocessBotMessage": "Are you sure you want to regenerate this message?",
       "regenerateButton": "Regenerate",
-      "conversationSettingsTitle": "Conversation Settings"
+      "conversationSettingsTitle": "Conversation Settings",
+      "userInstructionsLabel": "Instructions About Yourself",
+      "userInstructionsPlaceholder": "Tell characters about yourself for this conversation...",
+      "userInstructionsHelp": "Add details about yourself that characters should know in this conversation. Example: 'I am playing as a medieval knight' or 'I prefer formal language'.",
+      "genderOverrideLabel": "Gender for This Conversation",
+      "genderUseDefault": "Use my profile default",
+      "genderOverrideHelp": "Override your gender for this conversation only. This doesn't change your profile.",
+      "assumePersonaHelp": "Select a character to roleplay as. Other characters will address you by this persona's name and traits.",
+      "searchCharacterPlaceholder": "Search characters...",
+      "noPersonaFound": "No characters found"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "Unable to fetch personas.",
@@ -227,7 +242,8 @@
       "saving": "Saving...",
       "unknown": "Unknown",
       "search": "Search",
-      "searching": "Searching..."
+      "searching": "Searching...",
+      "comingSoon": "Coming Soon"
     },
     "displayAvatarParticipants": {
       "addParticipantPrompt": "Add participants to start the conversation.",

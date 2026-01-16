@@ -400,6 +400,58 @@ export const characterService = {
       console.error('[characterService] getSpeciesFilterOptions failed:', error);
       return [];
     }
+  },
+
+  /**
+   * Get characters available for user to assume as persona
+   * Returns: User's own characters + Public characters
+   */
+  async getAvailablePersonas(params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+  }): Promise<{
+    success: boolean;
+    data: Array<{
+      id: string;
+      firstName: string;
+      lastName: string | null;
+      avatar: string | null;
+      gender?: string;
+    }>;
+  }> {
+    try {
+      const { page = 1, limit = 20, search } = params || {};
+      const queryParams: Record<string, string | number> = { page, limit };
+      if (search) {
+        queryParams.search = search;
+      }
+
+      const response = await api.get<{
+        success: boolean;
+        data: Array<{
+          id: string;
+          firstName: string;
+          lastName: string | null;
+          images: Array<{ url: string; type: string }>;
+          gender?: string;
+        }>;
+      }>(`${BASE_PATH}/personas`, { params: queryParams });
+
+      const characters = response.data.data || [];
+      const formatted = characters.map((char) => ({
+        id: char.id,
+        firstName: char.firstName,
+        lastName: char.lastName,
+        avatar: char.images?.find((img) => img.type === 'AVATAR')?.url || null,
+        gender: char.gender,
+      }));
+
+      return { success: true, data: formatted };
+    } catch (error) {
+      console.error('[characterService] getAvailablePersonas failed:', error);
+      return { success: false, data: [] };
+    }
   }
 };
 

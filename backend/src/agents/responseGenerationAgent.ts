@@ -11,6 +11,38 @@ import { StyleGuideService } from './style-guides';
 import { calculateAge, getLanguageName } from '../utils/agentUtils';
 import { decryptMessage, isEncrypted } from '../services/encryption';
 
+/**
+ * Type for user config override (JSON stored in configOverride field for users)
+ */
+interface UserConfigOverride {
+  instructions?: string;
+  genderOverride?: string;
+}
+
+/**
+ * Helper function to parse user config from configOverride field
+ * Handles both JSON format (for users) and plain string format
+ */
+function parseUserConfig(configOverride: string | null | undefined): UserConfigOverride | null {
+  if (!configOverride) return null;
+
+  try {
+    // Try to parse as JSON first (for user configs)
+    const parsed = JSON.parse(configOverride);
+
+    // Validate it has the expected structure
+    if (typeof parsed === 'object' && parsed !== null) {
+      return parsed as UserConfigOverride;
+    }
+
+    // Not a valid object, treat as plain string
+    return { instructions: configOverride };
+  } catch {
+    // If JSON parsing fails, treat entire value as plain instructions
+    return { instructions: configOverride };
+  }
+}
+
 export class ResponseGenerationAgent {
   private styleGuideService = new StyleGuideService();
 
@@ -56,6 +88,90 @@ export class ResponseGenerationAgent {
     return contextParts.join('\n');
   }
 
+  /**
+   * Formats user information for context in prompts with persona support
+   * This method handles when a user is roleplaying as a character
+   */
+  private formatUserContextWithPersona(
+    user: User,
+    userParticipant: any,
+    personaCharacter?: {
+      id: string;
+      firstName: string;
+      lastName: string | null;
+      gender: string | null;
+      physicalCharacteristics: string | null;
+      personality: string | null;
+    } | null
+  ): string {
+    const contextParts: string[] = [];
+
+    // If user has assumed a persona, use that identity
+    if (personaCharacter) {
+      const personaName = personaCharacter.firstName +
+        (personaCharacter.lastName ? ` ${personaCharacter.lastName}` : '');
+
+      contextParts.push(`⚠️ USER IS ROLEPLAYING AS: ${personaName}`);
+      contextParts.push(`- Persona Name: ${personaName}`);
+
+      if (personaCharacter.physicalCharacteristics) {
+        contextParts.push(`- Persona Appearance: ${personaCharacter.physicalCharacteristics}`);
+      }
+      if (personaCharacter.personality) {
+        contextParts.push(`- Persona Personality: ${personaCharacter.personality}`);
+      }
+      if (personaCharacter.gender) {
+        contextParts.push(`- Persona Gender: ${personaCharacter.gender}`);
+      }
+
+      contextParts.push(`\n⚠️ IMPORTANT: Address this user as "${personaName}" and treat them according to the persona characteristics above.`);
+    } else {
+      // Standard user info
+      if (user.displayName) {
+        contextParts.push(`- Name: ${user.displayName}`);
+      }
+    }
+
+    // Parse configOverride for user-specific settings
+    const config = parseUserConfig(userParticipant?.configOverride);
+
+    // Gender: use override if set, otherwise user's default
+    const gender = config?.genderOverride || user.gender;
+    if (gender && !personaCharacter) {
+      // Only show gender if not using persona (persona has its own gender)
+      contextParts.push(`- Gender: ${gender}`);
+    }
+
+    // User instructions for this conversation
+    if (config?.instructions) {
+      contextParts.push(`\n📝 Additional User Instructions:\n${config.instructions}`);
+    }
+
+    // Birth date and age (if not using persona)
+    if (!personaCharacter && user.birthDate) {
+      const birthDate = new Date(user.birthDate);
+      const age = calculateAge(birthDate);
+      const formattedDate = birthDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      contextParts.push(`- Birth Date: ${formattedDate} (${age} years old)`);
+    }
+
+    // Preferred language
+    if (user.preferredLanguage) {
+      const languageName = getLanguageName(user.preferredLanguage);
+      contextParts.push(`- Preferred Language: ${languageName}`);
+    }
+
+    if (contextParts.length === 0) {
+      return '- No additional information available about the user';
+    }
+
+    return contextParts.join('\n');
+  }
+
   async execute(
     conversation: Conversation & { participants: any[]; messages: Message[] },
     user: User,
@@ -76,6 +192,36 @@ export class ResponseGenerationAgent {
     const { memoryService } = await import('../services/memoryService');
     const historyContext = await memoryService.buildContextWithMemory(conversation.id);
 
+    // Find user's participant entry and load persona if set
+    const userParticipant = conversation.participants.find(
+      p => p.userId === user.id
+    );
+
+    let personaCharacter = null;
+    if (userParticipant?.representingCharacterId) {
+      // Load persona character data
+      const { prisma } = await import('../config/database');
+      personaCharacter = await prisma.character.findUnique({
+        where: { id: userParticipant.representingCharacterId },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          gender: true,
+          physicalCharacteristics: true,
+          personality: true,
+        }
+      });
+
+      if (personaCharacter) {
+        logger.debug({
+          userId: user.id,
+          personaCharacterId: personaCharacter.id,
+          personaName: `${personaCharacter.firstName} ${personaCharacter.lastName || ''}`.trim(),
+        }, 'User has assumed a persona character');
+      }
+    }
+
     // Find the specific participant that should respond
     // If participantId is provided, use it; otherwise fall back to first bot
     const respondingParticipant = participantId
@@ -92,14 +238,18 @@ export class ResponseGenerationAgent {
       );
     }
 
+    // DEBUG: Log configOverride from respondingParticipant
     logger.debug(
       {
         conversationId: conversation.id,
         participantId: respondingParticipant.id,
         characterId: respondingParticipant.actingCharacterId,
-        assistantId: respondingParticipant.actingAssistantId
+        assistantId: respondingParticipant.actingAssistantId,
+        hasConfigOverride: !!respondingParticipant.configOverride,
+        configOverride: respondingParticipant.configOverride?.substring(0, 100) || null,
+        configOverrideLength: respondingParticipant.configOverride?.length || 0,
       },
-      'Selected participant for response'
+      'DEBUG: Selected participant for response - ConfigOverride check'
     );
 
     // Determine character for roleplay:
@@ -177,18 +327,59 @@ export class ResponseGenerationAgent {
     if (allUsers && allUsers.size > 1) {
       // Multi-user conversation: format all users
       const userContexts: string[] = [];
+
+      // First, load all personas in parallel (better performance than sequential in forEach)
+      const personaPromises: Array<Promise<{ userId: string; persona: any }>> = [];
+      for (const [userId] of allUsers) {
+        const thisUserParticipant = conversation.participants.find(p => p.userId === userId);
+        if (thisUserParticipant?.representingCharacterId) {
+          const promise = (async () => {
+            const { prisma } = await import('../config/database');
+            const persona = await prisma.character.findUnique({
+              where: { id: thisUserParticipant.representingCharacterId },
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                gender: true,
+                physicalCharacteristics: true,
+                personality: true,
+              }
+            });
+            return { userId, persona };
+          })();
+          personaPromises.push(promise);
+        }
+      }
+
+      // Wait for all personas to load
+      const loadedPersonas = await Promise.all(personaPromises);
+      const personaMap = new Map(loadedPersonas.map(p => [p.userId, p.persona]));
+
+      // Now format each user context
       allUsers.forEach((u, userId) => {
-        userContexts.push(`\n**${u.displayName || 'User'}** (ID: ${userId.slice(0, 8)}):\n${this.formatUserContext(u)}`);
+        const thisUserParticipant = conversation.participants.find(p => p.userId === userId);
+        const thisUserPersona = personaMap.get(userId) || null;
+
+        // Use persona-aware context for each user
+        userContexts.push(`\n**${u.displayName || 'User'}** (ID: ${userId.slice(0, 8)}):\n${this.formatUserContextWithPersona(u, thisUserParticipant, thisUserPersona)}`);
 
         // Check if this user sent the last message
         if (lastMessage.senderId === userId) {
-          lastMessageSender = u.displayName || 'User';
+          lastMessageSender = thisUserPersona
+            ? `${thisUserPersona.firstName}${thisUserPersona.lastName ? ' ' + thisUserPersona.lastName : ''}`
+            : (u.displayName || 'User');
         }
       });
       allUsersContext = '\n\nAll Users in this Conversation:' + userContexts.join('\n');
     } else {
-      // Solo conversation: use single user context
-      allUsersContext = '\n\nUser Information (Person you\'re talking to):\n' + this.formatUserContext(user);
+      // Solo conversation: use single user context with persona support
+      allUsersContext = '\n\nUser Information (Person you\'re talking to):\n' + this.formatUserContextWithPersona(user, userParticipant, personaCharacter);
+
+      // Update lastMessageSender to use persona name if user has one
+      if (personaCharacter) {
+        lastMessageSender = `${personaCharacter.firstName}${personaCharacter.lastName ? ' ' + personaCharacter.lastName : ''}`;
+      }
     }
 
     logger.debug({
@@ -206,7 +397,24 @@ export class ResponseGenerationAgent {
       contentFilters: character.contentTags,
     });
 
-    const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n${allUsersContext}\n\nAdditional Instructions for this Conversation (Override):\n${respondingParticipant.configOverride || ''}\n\nStyle Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. ${allUsers && allUsers.size > 1 ? `⚠️ CRITICAL - MULTI-USER CONVERSATION ⚠️\nThis conversation has MULTIPLE DIFFERENT PEOPLE. Each message in the history shows WHO sent it.\n- DO NOT assume all messages are from the same person\n- ALWAYS check the name before each message to know WHO is speaking\n- When responding, address the person who sent the LATEST message\n- Each user has their own profile information listed in "All Users in this Conversation" above` : `Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.`}\n4. You have access to information about ${allUsers && allUsers.size > 1 ? 'all users' : 'the user'} above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for other characters or users. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: The preferred language for this conversation is ${userLanguage}. You MUST respond in ${userLanguage} unless explicitly requested otherwise.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like "${characterName}:" or "Naruto:"). The UI already displays your name and avatar. Just write the response content directly.\n`;
+    // Build override section with visual emphasis
+    const overrideSection = respondingParticipant.configOverride
+      ? `\n⚠️ CRITICAL OVERRIDE INSTRUCTIONS FOR THIS CONVERSATION ⚠️\nThe following instructions take PRECEDENCE over the base character personality.\nApply these modifications to your behavior for THIS CONVERSATION ONLY:\n\n${respondingParticipant.configOverride}\n\n`
+      : '';
+
+    // DEBUG: Log override section details
+    logger.debug(
+      {
+        conversationId: conversation.id,
+        participantId: respondingParticipant.id,
+        hasOverrideSection: overrideSection.length > 0,
+        overrideSectionLength: overrideSection.length,
+        overrideSectionPreview: overrideSection ? overrideSection.substring(0, 200) : null,
+      },
+      'DEBUG: Override section built'
+    );
+
+    const systemPrompt = `You are roleplaying as the character: ${characterName}.\n\nCharacter Details:\n- Physical Characteristics: ${character.physicalCharacteristics || 'Not specified.'}\n- Personality: ${character.personality || 'Not specified.'}\n- Main Attire: Not specified.\n- History: ${character.history || 'No history provided.'}\n${allUsersContext}\n${overrideSection}Style Guide:\n${styleGuidePrompt}\n\nRelationship Memory (Current Context):\n// TODO: Implement memory\n\nRoleplay Guidelines:\n1. Stay true to the defined personality and history for ${characterName}.\n2. Your responses should be consistent with the information provided above and the conversation context.\n3. ${allUsers && allUsers.size > 1 ? `⚠️ CRITICAL - MULTI-USER CONVERSATION ⚠️\nThis conversation has MULTIPLE DIFFERENT PEOPLE. Each message in the history shows WHO sent it.\n- DO NOT assume all messages are from the same person\n- ALWAYS check the name before each message to know WHO is speaking\n- When responding, address the person who sent the LATEST message\n- Each user has their own profile information listed in "All Users in this Conversation" above` : `Interact with ${user.displayName || 'User'} naturally, engagingly, and believably as ${characterName}.`}\n4. You have access to information about ${allUsers && allUsers.size > 1 ? 'all users' : 'the user'} above. Use this knowledge naturally in conversation when appropriate.\n5. CRITICAL INSTRUCTION: YOU MUST ONLY generate responses and actions for YOURSELF (${characterName}). NEVER write, narrate, or describe actions or dialogue for other characters or users. Focus solely on your own character's part in the interaction.\n6. LANGUAGE INSTRUCTION: The preferred language for this conversation is ${userLanguage}. You MUST respond in ${userLanguage} unless explicitly requested otherwise.\n7. FORMATTING INSTRUCTION: DO NOT prefix your response with your character name (like "${characterName}:" or "Naruto:"). The UI already displays your name and avatar. Just write the response content directly.\n${overrideSection ? '8. OVERRIDE INSTRUCTION: If the override instructions above conflict with the base personality, PRIORITIZE the override instructions.\n' : ''}`;
 
     const userPromptText = `${conversationContext}\n\n🎯 LATEST MESSAGE TO RESPOND TO:\nFrom: **${lastMessageSender}**\nMessage: "${lastMessage.content}"\n\n${allUsers && allUsers.size > 1 ? `⚠️ IMPORTANT: You are responding to ${lastMessageSender}, NOT to any other person in the conversation. Make sure to address ${lastMessageSender} directly in your response.\n\n` : ''}Respond now as ${characterName}. Remember: DO NOT include "${characterName}:" at the start of your response.`;
 
@@ -269,7 +477,10 @@ export class ResponseGenerationAgent {
       systemPromptPreview: llmRequest.systemPrompt?.substring(0, 500) + '...',
       userPromptPreview: llmRequest.userPrompt?.substring(0, 500) + '...',
       fullSystemPrompt: llmRequest.systemPrompt,
-      fullUserPrompt: llmRequest.userPrompt
+      fullUserPrompt: llmRequest.userPrompt,
+      // DEBUG: Include override section info
+      overrideIncluded: !!overrideSection,
+      overrideLength: overrideSection.length,
     }, 'LLM Request Details');
 
     try {

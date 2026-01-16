@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { requireAuth } from '../../middleware/auth';
+import { translationMiddleware } from '../../middleware/translationMiddleware';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 import * as conversationService from '../../services/conversationService';
@@ -100,7 +101,7 @@ router.patch('/:id/participants/:participantId', requireAuth, async (req: Reques
  * GET /api/v1/conversations
  * List conversations for authenticated user
  */
-router.get('/', requireAuth, async (req: Request, res: Response) => {
+router.get('/', requireAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
@@ -191,7 +192,7 @@ router.get('/public', async (req: Request, res: Response) => {
  * GET /api/v1/conversations/:id
  * Get conversation by ID with messages
  */
-router.get('/:id', requireAuth, async (req: Request, res: Response) => {
+router.get('/:id', requireAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const userId = req.auth?.user?.id;

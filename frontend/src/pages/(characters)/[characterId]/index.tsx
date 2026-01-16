@@ -5,6 +5,7 @@ import { Button } from '../../../components/ui/Button';
 import { CachedImage } from '../../../components/ui/CachedImage';
 import { Tag as UITag, Dialog } from '../../../components/ui';
 import { AgeRatingBadge } from '../../../components/ui/AgeRatingBadge';
+import { ImageViewerModal } from '../../../components/ui/ImageViewerModal';
 import { useCharacterMutations, useCharacterQuery } from '../shared/hooks/useCharacterQueries';
 import { chatService } from '../../../services/chatService';
 import { useAuth } from '../../../hooks/useAuth';
@@ -35,6 +36,7 @@ export default function CharacterDetailPage(): JSX.Element {
   const [stats, setStats] = useState<CharacterStats | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [viewerImage, setViewerImage] = useState<{ url: string; title: string } | null>(null);
   const { addToast } = useToast();
 
   // Collapsible description state - MUST be before any conditional returns
@@ -235,16 +237,16 @@ export default function CharacterDetailPage(): JSX.Element {
           {/* Left side - Character card */}
           <div className="w-full space-y-4 md:w-full">
             {/* Character image with overlay stats */}
-            <div className="relative overflow-hidden rounded-none bg-card shadow-lg md:rounded-2xl">
-              <div ref={coverRef} className="relative h-[50vh] md:aspect-[2/3] md:h-auto">
+            <div className="relative overflow-hidden rounded-2xl bg-card shadow-lg border-2 border-border">
+              <div ref={coverRef} className="relative aspect-[3/4] md:aspect-[3/4] w-full rounded-2xl overflow-hidden">
                 {(() => { const cov = (data.images || []).find((i:any)=>i.type==='COVER' && i.isActive===true)?.url; return cov || data.avatar; })() ? (
                   <CachedImage
                     src={(data.images || []).find((i:any)=>i.type==='COVER' && i.isActive===true)?.url || data.avatar || ''}
                     alt={fullName}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover rounded-2xl"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20">
+                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-secondary/20 rounded-2xl">
                     <span className="material-symbols-outlined text-9xl text-muted/30">person</span>
                   </div>
                 )}
@@ -347,7 +349,7 @@ export default function CharacterDetailPage(): JSX.Element {
                 {/* Gender and species */}
                 {data.gender && (
                   <UITag
-                    label={t(`filters.genders.${data.gender.toLowerCase()}`, data.gender, { ns: 'dashboard' })}
+                    label={t(`filters.genders.${data.gender}`, data.gender, { ns: 'dashboard' })}
                     selected
                     icon={<span className="material-symbols-outlined text-sm">{resolveGenderIcon(data.gender)}</span>}
                     disabled
@@ -418,7 +420,8 @@ export default function CharacterDetailPage(): JSX.Element {
                   {galleryImages.map((img, i) => (
                     <div
                       key={img.id}
-                      className="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 transition-transform hover:scale-105"
+                      className="relative aspect-square overflow-hidden rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 transition-transform hover:scale-105 cursor-pointer"
+                      onClick={() => setViewerImage({ url: img.url, title: img.description || `${fullName} ${img.type.toLowerCase()} ${i + 1}` })}
                     >
                       <CachedImage
                         src={img.url}
@@ -560,6 +563,16 @@ export default function CharacterDetailPage(): JSX.Element {
           },
         ]}
       />
+
+      {/* Image Viewer Modal */}
+      {viewerImage && (
+        <ImageViewerModal
+          isOpen={true}
+          onClose={() => setViewerImage(null)}
+          src={viewerImage.url}
+          title={viewerImage.title}
+        />
+      )}
     </>
   );
 }

@@ -1,18 +1,18 @@
 {
   "description": "Chat and conversation interface translations",
   "resources": {
-    "title": "المحادثات",
+    "title": "محادثات",
     "newConversation": "محادثة جديدة",
-    "conversations": "المحادثات",
+    "conversations": "محادثات",
     "noConversations": "لا توجد محادثات بعد",
     "createFirst": "أنشئ محادثتك الأولى",
     "loading": "جارٍ التحميل...",
-    "error": "خطأ في تحميل المحادثة",
+    "error": "خطأ في تحميل الدردشة",
     "unknownParticipant": "غير معروف ({{id}})",
     "history": {
       "title": "سجل المحادثات",
-      "newChat": "محادثة جديدة",
-      "searchPlaceholder": "البحث في المحادثات...",
+      "newChat": "دردشة جديدة",
+      "searchPlaceholder": "ابحث في المحادثات...",
       "groupBy": "التجميع حسب:",
       "groupByDate": "التاريخ",
       "groupByName": "الاسم",
@@ -32,21 +32,21 @@
       "deleteSuccess": "تم حذف المحادثة بنجاح"
     },
     "conversation": {
-      "title": "المحادثة",
+      "title": "محادثة",
       "participants": "المشاركون",
       "addParticipant": "إضافة مشارك",
       "removeParticipant": "إزالة مشارك",
       "editTitle": "تعديل العنوان",
       "delete": "حذف المحادثة",
-      "archive": "أرشيف",
+      "archive": "أرشفة",
       "settings": "الإعدادات",
       "lastMessage": "آخر رسالة",
       "noMessages": "لا توجد رسائل بعد",
       "startTyping": "ابدأ الكتابة لبدء المحادثة",
       "justNow": "الآن",
-      "minutesAgo": "{{count}} د",
-      "hoursAgo": "{{count}} س",
-      "daysAgo": "{{count}} ي"
+      "minutesAgo": "{{count}}د",
+      "hoursAgo": "{{count}}س",
+      "daysAgo": "{{count}}ي"
     },
     "message": {
       "send": "إرسال",
@@ -66,7 +66,7 @@
       "assistant": "مساعد",
       "user": "مستخدم",
       "addCharacter": "إضافة شخصية",
-      "selectCharacter": "حدد شخصية لإضافتها",
+      "selectCharacter": "اختر شخصية للإضافة",
       "noCharacters": "لا توجد شخصيات متاحة",
       "removed": "تمت إزالة المشارك",
       "added": "تمت إضافة المشارك"
@@ -97,7 +97,7 @@
       "generateAiFailed": "فشل إنشاء الرد.",
       "addParticipantFailed": "فشل إضافة المشارك.",
       "removeParticipantFailed": "فشل إزالة المشارك.",
-      "cannotRemoveLastCharacter": "لا يمكن إزالة آخر شخصية من المحادثة. يجب أن يبقى على الأقل شخصية واحدة أو مساعد واحد.",
+      "cannotRemoveLastCharacter": "لا يمكن إزالة آخر شخصية من المحادثة. يجب أن يبقى مساعد أو شخصية واحدة على الأقل.",
       "updateConversationFailed": "فشل تحديث المحادثة.",
       "reprocessNotAvailable": "إعادة المعالجة غير متاحة بدون مشارك مساعد.",
       "imageGenerationUnavailable": "إنشاء الصور غير متاح بعد.",
@@ -106,7 +106,7 @@
       "audioPlaybackUnavailable": "تشغيل الصوت غير متاح بعد.",
       "reviewFileUnavailable": "مراجعة الملفات غير متاحة بعد.",
       "suggestionFailed": "فشل إنشاء اقتراح الرد.",
-      "developmentPlanProcessFailed": "خطأ في معالجة خطة التطوير. تعذر المتابعة."
+      "developmentPlanProcessFailed": "خطأ في معالجة خطة التطوير. لم يتمكن من المتابعة."
     },
     "success": {
       "created": "تم إنشاء المحادثة بنجاح",
@@ -121,17 +121,23 @@
       "configureBotTitle": "تكوين {{name}}",
       "configureAssistantTitle": "تكوين المساعد {{name}}",
       "configureUserRoleplayTitle": "تكوين لعب الأدوار لـ {{name}}",
-      "participantNotFound": "المشارك غير موجود",
-      "specificInstructionsLabel": "تعليمات محددة",
-      "specificInstructionsPlaceholder": "أضف تفاصيل يجب أن تؤثر على الردود خلال هذه المحادثة",
-      "assumePersonaLabel": "تبني شخصية",
-      "changeVisualPersonaLabel": "الشخصية المرئية",
+      "participantNotFound": "لم يتم العثور على المشارك",
+      "specificInstructionsLabel": "تعليمات محددة لهذه المحادثة",
+      "specificInstructionsPlaceholder": "أضف تعليمات سلوك مخصصة لهذه الشخصية في هذه المحادثة فقط...",
+      "specificInstructionsHelp": "هذه التعليمات تعدل سلوك الشخصية في هذه المحادثة فقط. لا تؤثر على تعريف الشخصية الأساسي.",
+      "specificInstructionsExamples": "أمثلة التعليمات",
+      "exampleInstruction1": "كن أكثر مرحًا ومداعبة في هذه المحادثة",
+      "exampleInstruction2": "تصرف بتوتر لأن هذا سيناريو موعد غرامي أول",
+      "exampleInstruction3": "تحدث رسميًا كما لو كنت في بلاط ملكي",
+      "promoteComingSoon": "هذه الميزة قادمة قريبًا",
+      "assumePersonaLabel": "تقمص شخصية",
+      "changeVisualPersonaLabel": "شخصية بصرية",
       "selectCharacterPlaceholder": "اختر شخصية",
       "loadingPersonas": "جارٍ تحميل الشخصيات...",
       "savingConfigurationButton": "جارٍ الحفظ...",
       "saveConfigurationButton": "حفظ التكوين",
       "promotingButton": "جارٍ الترقية...",
-      "promoteToAssistantButton": "ترقية إلى مساعد",
+      "promoteToAssistantButton": "الترقية إلى مساعد",
       "cloningButton": "جارٍ الاستنساخ...",
       "cloneButton": "استنساخ المساعد",
       "errorSavingConfig": "تعذر حفظ التكوين.",
@@ -145,8 +151,17 @@
       "confirmReprocessTitle": "تأكيد إعادة الإنشاء",
       "confirmReprocessUserMessage": "هل أنت متأكد أنك تريد إعادة إنشاء الرد على هذه الرسالة؟",
       "confirmReprocessBotMessage": "هل أنت متأكد أنك تريد إعادة إنشاء هذه الرسالة؟",
-      "regenerateButton": "إعادة الإنشاء",
-      "conversationSettingsTitle": "إعدادات المحادثة"
+      "regenerateButton": "إعادة إنشاء",
+      "conversationSettingsTitle": "إعدادات المحادثة",
+      "userInstructionsLabel": "تعليمات عن نفسك",
+      "userInstructionsPlaceholder": "أخبر الشخصيات عن نفسك لهذه المحادثة...",
+      "userInstructionsHelp": "أضف تفاصيل عن نفسك يجب أن تعرفها الشخصيات في هذه المحادثة. مثال: 'أنا ألعب دور فارس من العصور الوسطى' أو 'أفضل اللغة الرسمية'.",
+      "genderOverrideLabel": "الجنس لهذه المحادثة",
+      "genderUseDefault": "استخدام الإعداد الافتراضي لملفي الشخصي",
+      "genderOverrideHelp": "تجاوز جنسك لهذه المحادثة فقط. هذا لا يغير ملفك الشخصي.",
+      "assumePersonaHelp": "اختر شخصية لتقمص دورها. ستخاطبك الشخصيات الأخرى باسم وسمات هذه الشخصية.",
+      "searchCharacterPlaceholder": "ابحث عن شخصيات...",
+      "noPersonaFound": "لم يتم العثور على شخصيات"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "تعذر جلب الشخصيات.",
@@ -191,7 +206,7 @@
       "narrationBalanced": "متوازن",
       "narrationDescriptive": "وصفي",
       "narrationDialogue": "يركز على الحوار",
-      "viewOptionsTitle": "إعدادات العرض",
+      "viewOptionsTitle": "الإعدادات المرئية",
       "bgTypeLabel": "نوع الخلفية",
       "bgTypeAuto": "تلقائي (صورة غلاف الشخصية)",
       "bgTypeTheme": "استخدام السمة",
@@ -199,16 +214,16 @@
       "selectFromGalleryButton": "اختر من المعرض",
       "removeBgImageButton": "إزالة الصورة",
       "noImageSelected": "لم يتم تحديد خلفية",
-      "autoBackgroundInfo": "عند التمكين، ستُستخدم صورة غلاف الشخصية كخلفية للمحادثات الفردية.",
+      "autoBackgroundInfo": "عند التمكين، سيتم استخدام صورة غلاف الشخصية كخلفية للمحادثات الثنائية.",
       "errorLoadingGallery": "تعذر تحميل صور المعرض.",
       "galleryButton": "فتح المعرض",
       "imageGalleryTitle": "معرض الدردشة",
       "visibility": {
         "sectionTitle": "إعدادات الخصوصية",
         "label": "رؤية المحادثة",
-        "private": "خاصة",
-        "unlisted": "غير مدرجة",
-        "public": "عامة",
+        "private": "خاص",
+        "unlisted": "غير مدرج",
+        "public": "عام",
         "publicWarning": "ستكون هذه المحادثة مرئية للجميع وقابلة للاكتشاف في القوائم العامة.",
         "unlistedWarning": "يمكن الوصول إلى هذه المحادثة من قبل أي شخص لديه الرابط، ولكنها لن تظهر في القوائم العامة."
       }
@@ -227,7 +242,8 @@
       "saving": "جارٍ الحفظ...",
       "unknown": "غير معروف",
       "search": "بحث",
-      "searching": "جارٍ البحث..."
+      "searching": "جارٍ البحث...",
+      "comingSoon": "قريبًا"
     },
     "displayAvatarParticipants": {
       "addParticipantPrompt": "أضف مشاركين لبدء المحادثة.",
@@ -237,8 +253,8 @@
     },
     "messageInput": {
       "micNotSupportedError": "الميكروفون غير مدعوم.",
-      "transcriptionFailedError": "فشل النسخ.",
-      "transcriptionServiceError": "خطأ في خدمة النسخ.",
+      "transcriptionFailedError": "فشل النسخ الصوتي.",
+      "transcriptionServiceError": "خطأ في خدمة النسخ الصوتي.",
       "micAccessError": "تم رفض الوصول إلى الميكروفون.",
       "placeholderProcessingAudio": "جارٍ معالجة الصوت...",
       "placeholderRecording": "جارٍ التسجيل...",
@@ -247,18 +263,18 @@
       "placeholderDefault": "اكتب رسالة...",
       "configureUser": "تكوين {{name}}",
       "you": "أنت",
-      "actionsMenuTitle": "المزيد من الإجراءات",
+      "actionsMenuTitle": "إجراءات إضافية",
       "generateImageAction": "إنشاء صورة",
       "suggestReplyAction": "اقتراح رد",
-      "generatingSuggestion": "جارٍ إنشاء الاقتراح...",
+      "generatingSuggestion": "جارٍ إنشاء اقتراح...",
       "micButtonStopRecordingTitle": "إيقاف التسجيل",
       "micButtonProcessingTitle": "جارٍ المعالجة...",
-      "micButtonRecordTitle": "تسجيل الصوت"
+      "micButtonRecordTitle": "تسجيل صوتي"
     },
     "messageItem": {
       "generatingAudio": "جارٍ إنشاء الصوت...",
       "playingAudio": "جارٍ تشغيل الصوت...",
-      "audioErrorPrefix": "خطأ في الصوت",
+      "audioErrorPrefix": "خطأ صوتي",
       "playAudioCachedActionTitle": "تشغيل الصوت",
       "playAudioActionTitle": "إنشاء وتشغيل الصوت",
       "deleteActionTitle": "حذف الرسالة",
@@ -266,43 +282,43 @@
       "regenerateActionTitle": "إعادة إنشاء الرد",
       "youSender": "أنت",
       "unknownSender": "غير معروف",
-      "creditsUsedTitle": "{{count}} رصيد مستخدم",
+      "creditsUsedTitle": "تم استخدام {{count}} رصيد",
       "filesToReviewTitle": "ملفات للمراجعة:"
     },
     "chatActions": {
-      "actionConfirmedByUser": "أكد المستخدم الإجراء.",
-      "actionCancelledByUser": "ألغى المستخدم الإجراء."
+      "actionConfirmedByUser": "المستخدم أكد الإجراء.",
+      "actionCancelledByUser": "المستخدم ألغى الإجراء."
     },
     "memory": {
       "active": "الذاكرة نشطة (تم التحديث {{timeAgo}})",
-      "activeTooltip": "يتم ضغط سجل المحادثات تلقائيًا لحفظ السياق. يتم الاحتفاظ بالرسائل الحديثة بالكامل، ويتم تلخيص الرسائل القديمة.",
-      "compressing": "جارٍ ضغط سجل المحادثات...",
+      "activeTooltip": "يتم ضغط سجل المحادثة تلقائيًا لحفظ السياق. يتم الاحتفاظ بالرسائل الحديثة بالكامل، ويتم تلخيص الرسائل القديمة.",
+      "compressing": "جارٍ ضغط سجل المحادثة...",
       "compressingTooltip": "يتم تلخيص محادثتك لتحسين استخدام الذاكرة. قد يستغرق هذا بضع لحظات.",
       "compressionComplete": "تم ضغط السجل بنجاح"
     },
     "presence": {
-      "onlineTooltip": "{{count}} مستخدم(ين) آخر(ون) متصل(ون) في هذه المحادثة",
+      "onlineTooltip": "{{count}} مستخدم(ين) آخر(ين) متصل(ون) في هذه المحادثة",
       "oneOnline": "1 متصل",
-      "manyOnline": "{{count}} متصلون"
+      "manyOnline": "{{count}} متصلين"
     },
     "memberRole": {
       "owner": "المالك",
       "ownerTooltip": "مالك المحادثة - تحكم كامل في الإعدادات والأعضاء",
-      "moderator": "المشرف",
+      "moderator": "مشرف",
       "moderatorTooltip": "مشرف - يمكنه إدارة الأعضاء والإشراف على المحتوى",
       "member": "عضو",
       "memberTooltip": "عضو - يمكنه المشاركة في المحادثة",
-      "viewer": "مشاهد",
-      "viewerTooltip": "مشاهد - وصول للقراءة فقط إلى المحادثة"
+      "viewer": "عارض",
+      "viewerTooltip": "عارض - وصول للقراءة فقط إلى المحادثة"
     },
     "inviteUser": {
       "title": "دعوة مستخدم",
-      "searchPlaceholder": "البحث باسم المستخدم أو اسم العرض...",
+      "searchPlaceholder": "ابحث بالاسم المستعار أو اسم العرض...",
       "minSearchLength": "أدخل حرفين على الأقل للبحث",
       "searchFailed": "فشل البحث عن المستخدمين. يرجى المحاولة مرة أخرى.",
       "allResultsAlreadyMembers": "جميع المستخدمين الذين تم العثور عليهم هم بالفعل أعضاء في هذه المحادثة.",
       "noResults": "لم يتم العثور على مستخدمين يطابقون بحثك.",
-      "searchHint": "ابحث عن المستخدمين باسم المستخدم أو اسم العرض لدعوتهم إلى هذه المحادثة.",
+      "searchHint": "ابحث عن المستخدمين باسمهم المستعار أو اسم العرض لدعوتهم إلى هذه المحادثة.",
       "invite": "دعوة",
       "inviting": "جارٍ الدعوة...",
       "inviteFailed": "فشل دعوة المستخدم. يرجى المحاولة مرة أخرى.",
@@ -314,7 +330,7 @@
       "generateFailed": "فشل إنشاء رابط الدعوة. يرجى المحاولة مرة أخرى.",
       "copy": "نسخ الرابط",
       "copied": "تم النسخ!",
-      "expiresIn": "ينتهي صلاحية الرابط خلال {{days}} يومًا"
+      "expiresIn": "الرابط ينتهي صلاحيته في {{days}} أيام"
     },
     "joinChat": {
       "accepting": "جارٍ الانضمام إلى المحادثة...",
@@ -328,7 +344,7 @@
     "addParticipantModal": {
       "title": "إضافة مشارك",
       "charactersTab": "الشخصيات",
-      "myAssistantsTab": "مساعدي",
+      "myAssistantsTab": "مساعداتي",
       "publicAssistantsTab": "المساعدون العموميون",
       "usersTab": "المستخدمون",
       "assistantsTab": "مساعدون",
@@ -339,21 +355,21 @@
       "alreadyAddedMaybe": "(جميع العناصر المتاحة موجودة بالفعل في المحادثة)",
       "noDescription": "لا يوجد وصف متاح",
       "addToConversationButtonTitle": "إضافة إلى المحادثة",
-      "maxParticipantsError": "الحد الأقصى للمشاركين هو {{max}}",
+      "maxParticipantsError": "الحد الأقصى للمشاركين {{max}}",
       "connectionError": "خطأ في الاتصال. يرجى المحاولة مرة أخرى."
     },
     "multiUser": {
       "label": "محادثة متعددة المستخدمين",
       "description": "السماح لعدة مستخدمين بالمشاركة في هذه المحادثة",
       "maxUsers": "الحد الأقصى للمستخدمين",
-      "maxUsersHint": "يمكن لما يصل إلى 4 مستخدمين بشريين الانضمام (بالإضافة إلى شخصيات غير محدودة)",
+      "maxUsersHint": "يمكن لما يصل إلى 4 مستخدمين بشريين الانضمام (بالإضافة إلى عدد غير محدود من الشخصيات)",
       "allowInvites": "السماح للأعضاء بالدعوة",
       "allowInvitesHint": "يمكن للأعضاء دعوة مستخدمين آخرين للانضمام",
-      "requireApproval": "تتطلب موافقة للانضمام",
+      "requireApproval": "طلب موافقة للانضمام",
       "requireApprovalHint": "يجب على المالك الموافقة على الأعضاء الجدد قبل أن يتمكنوا من المشاركة",
       "conversionWarning": "سيؤدي هذا إلى تحويل محادثتك الفردية إلى وضع متعدد المستخدمين. ستصبح المالك وتتمتع بالتحكم الكامل.",
       "inviteLink": "رابط الدعوة",
-      "inviteLinkDescription": "شارك هذا الرابط مع المستخدمين الذين تريد دعوتهم:"
+      "inviteLinkDescription": "شارك هذا الرابط مع المستخدمين الذين ترغب في دعوتهم:"
     }
   }
 }
