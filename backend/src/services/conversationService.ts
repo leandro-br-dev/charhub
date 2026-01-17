@@ -227,6 +227,7 @@ export async function createConversation(
 
 /**
  * Get conversation by ID with messages
+ * Automatically creates a ConversationParticipant record for the authenticated user if one doesn't exist
  */
 export async function getConversationById(
   conversationId: string,
@@ -241,6 +242,84 @@ export async function getConversationById(
 
     if (!conversation) {
       return null;
+    }
+
+    // Check if user has access (owner OR active member for multi-user)
+    const isOwner = conversation.userId === userId;
+
+    let hasAccess = isOwner;
+
+    // If not owner, check if it's multi-user and user is an active member
+    if (!isOwner && conversation.isMultiUser) {
+      const membership = await prisma.userConversationMembership.findUnique({
+        where: {
+          conversationId_userId: {
+            conversationId,
+            userId
+          }
+        }
+      });
+
+      hasAccess = membership?.isActive || false;
+    }
+
+    // User doesn't have access
+    if (!hasAccess) {
+      return null;
+    }
+
+    // Check if user already has a ConversationParticipant record
+    const existingParticipant = conversation.participants?.find((p: any) => p.userId === userId);
+
+    // If user doesn't have a participant record, create one automatically
+    if (!existingParticipant) {
+      logger.info(
+        { conversationId, userId },
+        'Auto-creating ConversationParticipant for user accessing conversation'
+      );
+
+      // Use a transaction to ensure data consistency
+      await prisma.$transaction(async (tx) => {
+        // Create the user participant record
+        await tx.conversationParticipant.create({
+          data: {
+            conversationId: conversation.id,
+            userId: userId,
+            // No actingCharacterId or actingAssistantId (it's a USER participant)
+            // No configOverride initially (null)
+          },
+        });
+
+        logger.info(
+          { conversationId, userId },
+          'ConversationParticipant created successfully for user'
+        );
+      });
+
+      // Reload the conversation to include the new participant
+      const updatedConversation = await prisma.conversation.findUnique({
+        where: { id: conversationId },
+        include: conversationInclude,
+      });
+
+      if (updatedConversation) {
+        // DEBUG: Log to verify configOverride is loaded
+        if (updatedConversation.participants && updatedConversation.participants.length > 0) {
+          const botParticipants = updatedConversation.participants.filter((p: any) => p.actingCharacterId || p.actingAssistantId);
+          const participantWithOverride = botParticipants.find((p: any) => p.configOverride);
+          const firstBot = botParticipants[0] as any;
+          logger.info({
+            conversationId,
+            participantCount: updatedConversation.participants.length,
+            botParticipantCount: botParticipants.length,
+            hasConfigOverride: !!participantWithOverride,
+            firstBotId: firstBot?.id,
+            firstBotOverride: firstBot?.configOverride?.substring(0, 100) || null,
+          }, 'CONFIG_OVERRIDE_CHECK: Conversation participants loaded (after user participant creation)');
+        }
+      }
+
+      return updatedConversation;
     }
 
     // DEBUG: Log to verify configOverride is loaded
@@ -259,31 +338,7 @@ export async function getConversationById(
       }, 'CONFIG_OVERRIDE_CHECK: Conversation participants loaded');
     }
 
-    // Check if user has access (owner OR active member for multi-user)
-    const isOwner = conversation.userId === userId;
-
-    if (isOwner) {
-      return conversation;
-    }
-
-    // If not owner, check if it's multi-user and user is an active member
-    if (conversation.isMultiUser) {
-      const membership = await prisma.userConversationMembership.findUnique({
-        where: {
-          conversationId_userId: {
-            conversationId,
-            userId
-          }
-        }
-      });
-
-      if (membership?.isActive) {
-        return conversation;
-      }
-    }
-
-    // User doesn't have access
-    return null;
+    return conversation;
   } catch (error) {
     logger.error(
       { error, conversationId, userId },
