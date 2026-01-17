@@ -443,7 +443,7 @@ router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
  * Returns user's own characters + public characters
  * NOTE: Must be before /:id route to avoid route conflict
  */
-router.get('/personas', requireAuth, async (req: Request, res: Response) => {
+router.get('/personas', requireAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
     const userId = req.auth?.user?.id;
 

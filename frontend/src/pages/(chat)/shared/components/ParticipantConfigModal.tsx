@@ -517,26 +517,10 @@ const ParticipantConfigModal = ({
             </div>
           </div>
         </div>
-        <div className="flex justify-end gap-2 pt-4 border-t border-gray-700 mt-4">
-          <Button
-            variant="light"
-            onClick={onClose}
-            disabled={saving || cloning || promoting}
-          >
-            {t("common.cancel")}
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleSave}
-            disabled={saving || cloning || promoting}
-          >
-            {saving
-              ? t("chatPage.savingConfigurationButton")
-              : t("chatPage.saveConfigurationButton")}
-          </Button>
-        </div>
         {error && (
-          <p className="text-sm text-danger text-center mt-2">{error}</p>
+          <div className="mt-4">
+            <p className="text-sm text-danger text-center">{error}</p>
+          </div>
         )}
         <ImageGalleryModal
           isOpen={isGalleryOpen}
@@ -573,7 +557,25 @@ const ParticipantConfigModal = ({
       onClose={onClose}
       title={modalTitle}
       size="xl"
-      className="!max-w-3xl"
+      className="!max-w-4xl"
+      stickyFooter={
+        <div className="flex justify-end gap-2">
+          <Button
+            variant="secondary"
+            onClick={onClose}
+            disabled={saving || cloning || promoting}
+          >
+            {t("common.cancel")}
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={saving || cloning || promoting}
+          >
+            {saving ? t("common.saving") : t("common.save")}
+          </Button>
+        </div>
+      }
     >
       {renderContent()}
     </Modal>
