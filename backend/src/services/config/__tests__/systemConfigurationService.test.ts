@@ -5,7 +5,7 @@
  * and .env fallback for runtime parameters.
  */
 import { SystemConfigurationService } from '../systemConfigurationService';
-import { setupTestDatabase, cleanDatabase, teardownTestDatabase } from '../../../test-utils/database';
+import { setupTestDatabase, cleanDatabase, teardownTestDatabase, getTestDb } from '../../../test-utils/database';
 
 describe('SystemConfigurationService', () => {
   let service: SystemConfigurationService;
@@ -26,7 +26,7 @@ describe('SystemConfigurationService', () => {
 
   describe('get()', () => {
     it('should return database value when configuration exists in database', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configuration in database
       await db.systemConfiguration.create({
@@ -56,7 +56,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should use cache efficiently on subsequent calls', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configuration in database
       await db.systemConfiguration.create({
@@ -94,7 +94,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should prioritize cache over database', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configuration
       await db.systemConfiguration.create({
@@ -122,7 +122,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should prioritize database over .env', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Set environment variable
       process.env.PRIORITY_TEST = 'env-value';
@@ -148,7 +148,7 @@ describe('SystemConfigurationService', () => {
 
   describe('set()', () => {
     it('should upsert configuration to database', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await service.set('new.config', 'new-value', 'user-123');
 
@@ -162,7 +162,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should update existing configuration', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create initial configuration
       await db.systemConfiguration.create({
@@ -186,7 +186,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should update cache after setting value', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await service.set('cache.update', 'cached-value');
 
@@ -206,7 +206,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should allow setting without userId', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await service.set('no-user.test', 'value');
 
@@ -220,7 +220,7 @@ describe('SystemConfigurationService', () => {
 
   describe('getInt()', () => {
     it('should parse valid integer values', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -238,7 +238,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should return default value for non-integer strings', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -267,7 +267,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should parse negative integers', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -284,7 +284,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should parse floating point numbers as integers (truncates)', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -303,7 +303,7 @@ describe('SystemConfigurationService', () => {
 
   describe('getBool()', () => {
     it('should parse "true" as true', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -320,7 +320,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should parse "1" as true', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -337,7 +337,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should parse "yes" as true', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -354,7 +354,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should parse "false" as false', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -371,7 +371,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should parse "0" as false', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -388,7 +388,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should parse "no" as false', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -405,7 +405,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should be case insensitive', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -422,7 +422,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should trim whitespace', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -439,7 +439,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should return default value for invalid boolean strings', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -464,7 +464,7 @@ describe('SystemConfigurationService', () => {
 
   describe('getByCategory()', () => {
     beforeEach(async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Seed test configurations
       await db.systemConfiguration.createMany({
@@ -532,7 +532,7 @@ describe('SystemConfigurationService', () => {
 
   describe('getAll()', () => {
     beforeEach(async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Seed test configurations
       await db.systemConfiguration.createMany({
@@ -592,7 +592,7 @@ describe('SystemConfigurationService', () => {
 
   describe('delete()', () => {
     it('should remove configuration from database', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configuration
       await db.systemConfiguration.create({
@@ -616,7 +616,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should remove configuration from cache', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create and cache configuration
       await db.systemConfiguration.create({
@@ -647,7 +647,7 @@ describe('SystemConfigurationService', () => {
 
   describe('exists()', () => {
     it('should return true when key exists in cache', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configuration
       await db.systemConfiguration.create({
@@ -669,7 +669,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should return true when key exists in database', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configuration (don't cache it)
       await db.systemConfiguration.create({
@@ -705,7 +705,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should check cache first, then database, then .env', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create in database
       await db.systemConfiguration.create({
@@ -736,7 +736,7 @@ describe('SystemConfigurationService', () => {
 
   describe('getMany()', () => {
     beforeEach(async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Seed test configurations
       await db.systemConfiguration.createMany({
@@ -803,7 +803,7 @@ describe('SystemConfigurationService', () => {
 
   describe('setMany()', () => {
     it('should set multiple configuration values in transaction', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       const configs = {
         'many.one': 'value1',
@@ -849,7 +849,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should allow setting without userId', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await service.setMany({
         'no.user.many': 'value',
@@ -863,7 +863,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should rollback all changes on error', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create a configuration that will conflict
       await db.systemConfiguration.create({
@@ -899,7 +899,7 @@ describe('SystemConfigurationService', () => {
 
   describe('refreshCache()', () => {
     it('should clear and reload cache from database', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configurations
       await db.systemConfiguration.createMany({
@@ -951,7 +951,7 @@ describe('SystemConfigurationService', () => {
 
   describe('initializeCache()', () => {
     it('should only initialize cache once', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       // Create configurations
       await db.systemConfiguration.create({
@@ -989,7 +989,7 @@ describe('SystemConfigurationService', () => {
 
   describe('Edge Cases', () => {
     it('should handle special characters in keys', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -1006,7 +1006,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should handle very long values', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       const longValue = 'x'.repeat(10000);
 
@@ -1026,7 +1026,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should handle empty string values', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -1043,7 +1043,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should handle null category', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
@@ -1060,7 +1060,7 @@ describe('SystemConfigurationService', () => {
     });
 
     it('should handle concurrent get operations', async () => {
-      const db = require('../../../test-utils/database').getTestDb();
+      const db = getTestDb();
 
       await db.systemConfiguration.create({
         data: {
