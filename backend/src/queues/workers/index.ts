@@ -8,10 +8,13 @@ import { registerCharacterPopulationWorker } from './characterPopulationWorkerRe
 import { queueManager } from '../QueueManager';
 import { QueueName } from '../config';
 import { CreditsMonthlyJobData } from '../jobs/creditsMonthlyJob';
+import { systemConfigurationService } from '../../services/config/systemConfigurationService';
 import type {
   CharacterPopulationJobData,
   HourlyGenerationJobData,
-  DailyCurationJobData
+  DailyCurationJobData,
+  AvatarCorrectionJobData,
+  DataCompletenessCorrectionJobData
 } from '../jobs/characterPopulationJob';
 
 /**
@@ -157,6 +160,64 @@ export async function scheduleRecurringJobs(): Promise<void> {
       );
     } else {
       logger.info('Automated character population is disabled (set BATCH_GENERATION_ENABLED=true to enable)');
+    }
+
+    // Schedule avatar correction job (if enabled)
+    const correctionEnabled = await systemConfigurationService.getBool('correction.enabled', true);
+    if (correctionEnabled) {
+      const avatarDailyLimit = await systemConfigurationService.getInt('correction.avatar_daily_limit', 5);
+
+      // Schedule avatar correction - Daily at 4 AM UTC
+      await populationQueue.add(
+        'avatar-correction',
+        {
+          targetCount: avatarDailyLimit,
+        } as AvatarCorrectionJobData,
+        {
+          repeat: {
+            pattern: '0 4 * * *', // Daily at 4 AM UTC
+          },
+          removeOnComplete: {
+            age: 7 * 24 * 60 * 60,
+          },
+          removeOnFail: {
+            age: 30 * 24 * 60 * 60,
+          },
+        }
+      );
+
+      logger.info(
+        { dailyLimit: avatarDailyLimit },
+        'Avatar correction job scheduled to run daily at 4 AM UTC'
+      );
+
+      // Schedule data completeness correction - Daily at 5 AM UTC (after avatar correction)
+      const dataDailyLimit = await systemConfigurationService.getInt('correction.data_daily_limit', 10);
+
+      await populationQueue.add(
+        'data-completeness-correction',
+        {
+          targetCount: dataDailyLimit,
+        } as DataCompletenessCorrectionJobData,
+        {
+          repeat: {
+            pattern: '0 5 * * *', // Daily at 5 AM UTC
+          },
+          removeOnComplete: {
+            age: 7 * 24 * 60 * 60,
+          },
+          removeOnFail: {
+            age: 30 * 24 * 60 * 60,
+          },
+        }
+      );
+
+      logger.info(
+        { dailyLimit: dataDailyLimit },
+        'Data completeness correction job scheduled to run daily at 5 AM UTC'
+      );
+    } else {
+      logger.info('Correction flows are disabled (set correction.enabled=true to enable)');
     }
   } catch (error) {
     logger.error({ error }, 'Failed to schedule recurring jobs');

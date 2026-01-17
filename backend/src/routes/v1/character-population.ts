@@ -291,4 +291,161 @@ router.get('/settings', requireAuth, async (req, res) => {
   }
 });
 
+/**
+ * POST /api/v1/character-population/trigger-avatar-correction
+ * Trigger avatar correction job
+ */
+router.post('/trigger-avatar-correction', requireAuth, async (req, res) => {
+  try {
+    const user = req.auth?.user;
+
+    if (!requireAdmin(user, res)) {
+      return;
+    }
+
+    const { limit = 50 } = req.body;
+
+    // Validate limit
+    const parsedLimit = parseInt(limit, 10);
+    if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 500) {
+      res.status(400).json({ error: 'Limit must be between 1 and 500' });
+      return;
+    }
+
+    // Queue the job
+    const job = await queueManager.addJob(
+      QueueName.CHARACTER_POPULATION,
+      'avatar-correction',
+      { limit: parsedLimit },
+      { priority: 5 }
+    );
+
+    logger.info({ jobId: job.id, limit: parsedLimit }, 'Avatar correction job triggered');
+
+    res.json({
+      success: true,
+      jobId: job.id,
+      message: 'Avatar correction job started',
+      limit: parsedLimit,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Failed to trigger avatar correction');
+    res.status(500).json({ error: 'Failed to trigger avatar correction' });
+  }
+});
+
+/**
+ * POST /api/v1/character-population/trigger-data-correction
+ * Trigger data completeness correction job
+ */
+router.post('/trigger-data-correction', requireAuth, async (req, res) => {
+  try {
+    const user = req.auth?.user;
+
+    if (!requireAdmin(user, res)) {
+      return;
+    }
+
+    const { limit = 50 } = req.body;
+
+    // Validate limit
+    const parsedLimit = parseInt(limit, 10);
+    if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 500) {
+      res.status(400).json({ error: 'Limit must be between 1 and 500' });
+      return;
+    }
+
+    // Queue the job
+    const job = await queueManager.addJob(
+      QueueName.CHARACTER_POPULATION,
+      'data-correction',
+      { limit: parsedLimit },
+      { priority: 5 }
+    );
+
+    logger.info({ jobId: job.id, limit: parsedLimit }, 'Data correction job triggered');
+
+    res.json({
+      success: true,
+      jobId: job.id,
+      message: 'Data correction job started',
+      limit: parsedLimit,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Failed to trigger data correction');
+    res.status(500).json({ error: 'Failed to trigger data correction' });
+  }
+});
+
+/**
+ * GET /api/v1/character-population/correction-stats
+ * Get correction job statistics
+ */
+router.get('/correction-stats', requireAuth, async (req, res) => {
+  try {
+    const user = req.auth?.user;
+
+    if (!requireAdmin(user, res)) {
+      return;
+    }
+
+    // Get recent correction job logs from database
+    const recentLogs = await prisma.correctionJobLog.findMany({
+      orderBy: {
+        completedAt: 'desc',
+      },
+      take: 20,
+    });
+
+    // Calculate aggregate statistics
+    const stats = await prisma.correctionJobLog.aggregate({
+      _count: {
+        id: true,
+      },
+      _sum: {
+        targetCount: true,
+        successCount: true,
+        failureCount: true,
+        duration: true,
+      },
+    });
+
+    // Get breakdown by job type
+    const typeStats = await prisma.correctionJobLog.groupBy({
+      by: ['jobType'],
+      _count: {
+        id: true,
+      },
+      _sum: {
+        targetCount: true,
+        successCount: true,
+        failureCount: true,
+        duration: true,
+      },
+    });
+
+    res.json({
+      overview: {
+        totalJobs: stats._count.id,
+        totalTargets: stats._sum.targetCount || 0,
+        totalSuccesses: stats._sum.successCount || 0,
+        totalFailures: stats._sum.failureCount || 0,
+        totalDuration: stats._sum.duration || 0,
+      },
+      byType: typeStats.map(stat => ({
+        jobType: stat.jobType,
+        totalJobs: stat._count.id,
+        totalTargets: stat._sum.targetCount || 0,
+        totalSuccesses: stat._sum.successCount || 0,
+        totalFailures: stat._sum.failureCount || 0,
+        totalDuration: stat._sum.duration || 0,
+      })),
+      recentJobs: recentLogs,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Failed to get correction stats');
+    res.status(500).json({ error: 'Failed to get correction stats' });
+  }
+});
+
 export default router;
