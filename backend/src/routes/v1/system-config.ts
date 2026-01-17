@@ -106,7 +106,7 @@ router.post('/', requireAuth, async (req, res) => {
       return;
     }
 
-    const { key, value, category, _description } = req.body;
+    const { key, value, description, category } = req.body;
 
     // Validate required fields
     if (!key || value === undefined || value === null || value === '') {
@@ -135,21 +135,27 @@ router.post('/', requireAuth, async (req, res) => {
       return;
     }
 
-    // Create configuration
-    await systemConfigurationService.set(key, String(value), user?.id);
-
-    // Get created config
-    const config = await prisma.systemConfiguration.findUnique({
-      where: { key },
+    // Create configuration with description and category
+    await prisma.systemConfiguration.create({
+      data: {
+        key,
+        value: String(value),
+        description: description || null,
+        category: category || null,
+        updatedBy: user?.id,
+      },
     });
+
+    // Invalidate cache
+    await systemConfigurationService.refreshCache();
 
     logger.info({ key, userId: user?.id }, 'System configuration created');
 
     res.status(201).json({
       key,
       value,
-      category: config?.category || null,
-      updatedAt: config?.updatedAt,
+      description: description || null,
+      category: category || null,
       message: 'Configuration created successfully',
     });
   } catch (error) {
