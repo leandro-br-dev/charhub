@@ -119,6 +119,34 @@ When merging main into feature branch:
 
 ### Phase 3: Environment Health Check
 
+**Documentation Verification (CRITICAL)**
+
+Before proceeding, verify documentation for complex components:
+
+```bash
+# Check for .docs.md files in changed files
+git diff --name-only main...HEAD | while read file; do
+  # Check if .docs.md exists for .ts, .vue, or complex files
+  if [[ "$file" =~ \.(ts|vue)$ ]]; then
+    docs_file="${file%.*}.docs.md"
+    if [ -f "$docs_file" ]; then
+      echo "✓ Documentation exists: $docs_file"
+    else
+      echo "⚠ No documentation: $file (may need docs if complex)"
+    fi
+  fi
+done
+```
+
+**Documentation Requirements**:
+- Complex services/controllers/components SHOULD have `.docs.md` files
+- Documentation should be accurate and up-to-date
+- If complex code lacks docs, note this in PR (but don't block PR for it)
+
+**Note**: Documentation can be created/updated in follow-up commits. Just flag if missing.
+
+Then:
+
 1. **Verify Docker Containers**
    ```bash
    ./scripts/health-check.sh

@@ -26,7 +26,7 @@ You coordinate feature implementation by delegating specialized tasks to your su
 
 ## 🤖 Your Sub-Agents
 
-You have **7 specialized sub-agents** at your disposal. Each is an expert in their domain:
+You have **8 specialized sub-agents** at your disposal. Each is an expert in their domain:
 
 ### 1. backend-developer (green)
 **Use when**: Implementing backend features, API endpoints, database changes, NestJS services
@@ -90,6 +90,15 @@ You have **7 specialized sub-agents** at your disposal. Each is an expert in the
 - Working directory verification
 - Backup creation
 - Safe Git operations
+
+### 8. coder-doc-specialist (teal)
+**Use when**: Creating/updating documentation for complex components, services, or features
+
+**Delegates to**:
+- Distributed documentation creation (`.docs.md` files alongside code)
+- Documentation updates when code changes
+- Documentation compliance verification
+- Documentation quality checks
 
 ---
 
@@ -155,6 +164,9 @@ Need to create tests?
 Need to verify code quality?
 └─ Use code-quality-enforcer
 
+Need to create/update documentation?
+└─ Use coder-doc-specialist
+
 Need to run tests/verify implementation?
 └─ Use feature-tester
 
@@ -179,6 +191,8 @@ About to do ANY Git operation?
 | Write tests | `test-writer` |
 | Test feature implementation | `feature-tester` |
 | Verify code patterns | `code-quality-enforcer` |
+| Document complex component | `coder-doc-specialist` |
+| Update documentation | `coder-doc-specialist` |
 | Update branch with main | `git-safety-officer` → `pr-prep-deployer` |
 | Create Pull Request | `pr-prep-deployer` |
 | Switch Git branches | `git-safety-officer` |
@@ -215,9 +229,10 @@ About to do ANY Git operation?
 11. **Address review feedback promptly**
 12. **Follow existing code patterns and conventions**
 13. **Document API changes and new features**
-14. **Write ALL code and documentation in English (en-US)**
-15. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
-16. **Preserve database data** (use `docker compose down` WITHOUT `-v` flag for restarts)
+14. **Create/update documentation for complex components** (use coder-doc-specialist)
+15. **Write ALL code and documentation in English (en-US)**
+16. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
+17. **Preserve database data** (use `docker compose down` WITHOUT `-v` flag for restarts)
 
 ---
 
@@ -259,7 +274,8 @@ docs/agents/coder/
 │   ├── feature-tester.md          # Testing execution specialist
 │   ├── code-quality-enforcer.md   # Code quality standards enforcer
 │   ├── pr-prep-deployer.md        # PR preparation specialist
-│   └── git-safety-officer.md      # Git safety guardian
+│   ├── git-safety-officer.md      # Git safety guardian
+│   └── coder-doc-specialist.md    # Documentation specialist (teal)
 └── quick-reference.md             # Quick guide for sub-agent usage
 ```
 
@@ -354,14 +370,16 @@ open http://localhost:8082
 2. **Frontend work**: Delegate to `frontend-specialist`
 3. **Write tests**: Delegate to `test-writer`
 4. **Quality checks**: Delegate to `code-quality-enforcer`
-5. Update feature spec with progress
-6. Ask questions if spec unclear
+5. **Documentation**: Delegate to `coder-doc-specialist` for complex components
+6. Update feature spec with progress
+7. Ask questions if spec unclear
 
 ### Before Creating PR
 
-1. Delegate to `feature-tester` to run all tests
-2. Delegate to `git-safety-officer` for pre-merge safety
-3. Delegate to `pr-prep-deployer` for branch sync and PR creation
+1. Delegate to `coder-doc-specialist` to verify documentation is complete
+2. Delegate to `feature-tester` to run all tests
+3. Delegate to `git-safety-officer` for pre-merge safety
+4. Delegate to `pr-prep-deployer` for branch sync and PR creation
 
 ### When Receiving Feedback
 
@@ -384,6 +402,8 @@ open http://localhost:8082
 | Write tests for new feature | `test-writer` |
 | Test implementation | `feature-tester` |
 | Verify code quality | `code-quality-enforcer` |
+| Document complex component | `coder-doc-specialist` |
+| Update documentation | `coder-doc-specialist` |
 | Ready to create PR | `pr-prep-deployer` |
 | Switch Git branches | `git-safety-officer` |
 | Merge main into feature | `git-safety-officer` → `pr-prep-deployer` |
@@ -410,6 +430,9 @@ open http://localhost:8082
 
 ### "Tests failing"
 → Delegate to `feature-tester` for diagnosis and resolution
+
+### "Documentation needs updating"
+→ Delegate to `coder-doc-specialist` to update `.docs.md` files
 
 ### "PR got rejected"
 → Read feedback carefully, delegate to appropriate sub-agents for fixes

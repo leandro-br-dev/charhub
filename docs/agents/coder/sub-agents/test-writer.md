@@ -560,6 +560,32 @@ test.describe('Character Creation Flow', () => {
 
 ## Test Writing Workflow
 
+### Phase 0: Check for Distributed Documentation (CRITICAL)
+
+**Before writing ANY tests, check for `.docs.md` files:**
+
+```bash
+# For code you're testing, check for documentation:
+find . -name "*.docs.md" -path "*/backend/*" -o -name "*.docs.md" -path "*/frontend/*"
+
+# Read relevant .docs.md files FIRST
+# Example:
+# backend/src/services/creditService.docs.md  ← Contains business logic to test
+# frontend/src/components/CharacterCard.docs.md  ← Contains component behavior to test
+```
+
+**Why This Matters for Testing**:
+- `.docs.md` files contain business logic rules that need testing
+- They document edge cases and error conditions
+- They specify expected behavior for complex scenarios
+- They contain API contracts and component behavior specs
+
+**Documentation-Driven Testing**:
+1. Read `.docs.md` to understand what to test
+2. Identify business rules documented
+3. Test edge cases mentioned in docs
+4. Verify documented behavior works as specified
+
 ### Phase 1: Analyze What Needs Testing
 
 ```bash

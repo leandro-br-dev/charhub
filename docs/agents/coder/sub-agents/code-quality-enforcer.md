@@ -358,6 +358,49 @@ function CharacterList() {
 ## Quality Review Workflow
 
 ### 1. Code Inspection
+
+**CRITICAL: Check for Distributed Documentation**
+
+Before reviewing code quality, check for `.docs.md` files:
+
+```bash
+# Find all .docs.md files in modified paths
+git diff --name-only main...HEAD | while read file; do
+  docs_file="${file%.*}.docs.md"
+  if [ -f "$docs_file" ]; then
+    echo "Found documentation: $docs_file"
+    # Read documentation to understand architecture decisions
+  fi
+done
+
+# Or search broadly:
+find backend frontend -name "*.docs.md" -type f
+```
+
+**Documentation Quality Checks**:
+- [ ] Complex components/services have `.docs.md` files
+- [ ] Documentation follows the template structure
+- [ ] Documentation is accurate (matches code behavior)
+- [ ] Architecture decisions are documented
+- [ ] Code examples in docs are correct
+- [ ] Dependencies and integrations are documented
+
+**Quality Gate: Documentation**
+If complex code lacks documentation:
+```
+❌ CODE QUALITY REVIEW - DOCUMENTATION REQUIRED
+
+**Issue**: Complex component/service lacks .docs.md file
+**File**: [path to complex file]
+**Impact**: Future maintainers will struggle to understand this code
+
+**Required Action**:
+Use coder-doc-specialist to create documentation for this component
+
+**Documentation Template**: See coder-doc-specialist sub-agent
+```
+
+Then:
 - Read all modified files
 - Identify patterns used
 - Check for deviations from standards
