@@ -16,7 +16,7 @@
     "logout": "Esci",
     "logoutLoading": "Uscita in corso...",
     "authenticatedUser": "Utente autenticato",
-    "tokenStored": "Memorizzato in cookie solo HTTP",
+    "tokenStored": "Memorizzato in un cookie solo HTTP",
     "navDashboard": "Dashboard",
     "navCharacters": "Personaggi",
     "navTagline": "Demo OAuth sicura",
@@ -59,18 +59,18 @@
     "contentFilter": {
       "ariaLabel": "Filtro contenuti",
       "title": "Filtro Contenuti",
-      "ageRating": "Classificazione per età",
-      "blurNsfw": "Sfoca contenuti espliciti",
-      "none": "Nessun filtro",
-      "blur": "Sfoca sensibili",
-      "hidden": "Nascondi maturi",
+      "ageRating": "Fascia d'età",
+      "blurNsfw": "Sfoca Contenuti Espliciti",
+      "none": "Nessun Filtro",
+      "blur": "Sfoca Contenuti Sensibili",
+      "hidden": "Nascondi Contenuti Maturo",
       "descriptions": {
         "none": "Mostra tutti i contenuti senza restrizioni",
         "blur": "Applica sfocatura ai contenuti maturi",
         "hidden": "Nascondi completamente i contenuti maturi"
       },
       "ageRatings": {
-        "L": "Libero",
+        "L": "Liberi",
         "TEN": "10+",
         "TWELVE": "12+",
         "FOURTEEN": "14+",
@@ -79,7 +79,7 @@
       },
       "noBirthdateWarning": "⚠️ Età non registrata",
       "noBirthdateDescription": "Per accedere ai contenuti con restrizioni di età, aggiungi la tua data di nascita nelle impostazioni.",
-      "goToSettings": "Vai alle impostazioni",
+      "goToSettings": "Vai alle Impostazioni",
       "blocked": "(bloccato)"
     },
     "errors": {
@@ -89,6 +89,8 @@
     "character": "Personaggio",
     "seeMore": "Vedi altro",
     "seeMoreArrow": "Vedi altro →",
+    "showMore": "Mostra altro",
+    "showLess": "Mostra meno",
     "back": "Indietro",
     "credits": "crediti",
     "tryAgain": "Riprova",

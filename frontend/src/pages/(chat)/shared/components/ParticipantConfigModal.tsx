@@ -33,14 +33,40 @@ const parseUserConfig = (configOverride?: string | null): UserConfigOverride | n
 const InfoItem = ({ icon, label, value }: { icon: string, label: string, value: any }) => {
   if (!value) return null;
   return (
-    <div className="flex items-center space-x-2 p-2 bg-light rounded-lg">
-      <span className="material-symbols-outlined text-base text-primary">
+    <div className="flex items-center gap-2 px-3 py-2 bg-light rounded-lg">
+      <span className="material-symbols-outlined text-base text-primary flex-shrink-0">
         {icon}
       </span>
       <div className="flex items-baseline gap-1.5">
-        <span className="text-xs text-muted">{label}:</span>
-        <span className="text-sm font-semibold text-content">{value}</span>
+        <span className="text-xs text-muted whitespace-nowrap">{label}:</span>
+        <span className="text-sm font-semibold text-content whitespace-nowrap">{value}</span>
       </div>
+    </div>
+  );
+};
+
+// Component for expandable text description (3 lines max, with "see more")
+const ExpandableText = ({ text, className }: { text: string, className?: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { t } = useTranslation(['common']);
+
+  return (
+    <div className={className}>
+      <p
+        className={`text-sm text-description text-left p-3 bg-light rounded-md whitespace-pre-wrap ${
+          isExpanded ? '' : 'line-clamp-3'
+        }`}
+      >
+        {text}
+      </p>
+      {text.length > 150 && (
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-xs text-primary hover:underline mt-1 ml-3"
+        >
+          {isExpanded ? t('common.showLess', 'Ver menos') : t('common.showMore', 'Ver mais')}
+        </button>
+      )}
     </div>
   );
 };
@@ -84,6 +110,11 @@ const ParticipantConfigModal = ({
   const [error, setError] = useState<string | null>(null);
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [viewerImage, setViewerImage] = useState<{ src: string; title: string } | null>(null);
+
+  // Debug: log viewerImage changes
+  useEffect(() => {
+    console.log('[ParticipantConfigModal] viewerImage changed:', viewerImage);
+  }, [viewerImage]);
 
   useEffect(() => {
     if (isOpen && participant) {
@@ -452,9 +483,7 @@ const ParticipantConfigModal = ({
             </div>
 
             {combinedFeatures && (
-              <p className="text-sm text-description text-left p-3 bg-light rounded-md whitespace-pre-wrap">
-                {combinedFeatures}
-              </p>
+              <ExpandableText text={combinedFeatures} />
             )}
 
             <div className="pt-4 border-t border-gray-700 space-y-4">
@@ -533,12 +562,20 @@ const ParticipantConfigModal = ({
             name: rep.name || t('common.unknown'),
           })}
           onImageSelect={(url) => {
-            // Open image in ImageViewerModal when user clicks on it
-            setIsGalleryOpen(false); // Close gallery first
-            setViewerImage({
+            console.log('[ParticipantConfigModal] onImageSelect called with URL:', url);
+            console.log('[ParticipantConfigModal] rep.gallery:', rep.gallery);
+            // Set viewer image first, then close gallery
+            const newViewerImage = {
               src: url,
               title: rep.name || t('common.unknown'),
-            });
+            };
+            console.log('[ParticipantConfigModal] Setting viewerImage to:', newViewerImage);
+            setViewerImage(newViewerImage);
+            // Close gallery after a small delay to ensure viewer is ready
+            setTimeout(() => {
+              console.log('[ParticipantConfigModal] Closing gallery');
+              setIsGalleryOpen(false);
+            }, 100);
           }}
         />
         <ImageViewerModal
@@ -557,9 +594,11 @@ const ParticipantConfigModal = ({
       onClose={onClose}
       title={modalTitle}
       size="xl"
-      className="!max-w-4xl"
+      className="!max-w-3xl"
+      maxHeight="max-h-[90vh]"
+      maxContentHeight="max-h-[65vh]"
       stickyFooter={
-        <div className="flex justify-end gap-2">
+        <div className="flex gap-2">
           <Button
             variant="secondary"
             onClick={onClose}

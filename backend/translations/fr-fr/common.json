@@ -46,14 +46,14 @@
     "deleting": "Suppression...",
     "enabled": "Activé",
     "disabled": "Désactivé",
-    "selectOption": "Sélectionner une option",
+    "selectOption": "Sélectionnez une option",
     "noResults": "Aucune option trouvée.",
     "chat": {
       "with": "Discuter avec"
     },
     "messages": {
       "linkCopied": "Lien copié dans le presse-papiers !",
-      "chatStarted": "Chat démarré avec succès !",
+      "chatStarted": "Discussion démarrée avec succès !",
       "characterDeleted": "Personnage supprimé avec succès"
     },
     "contentFilter": {
@@ -63,19 +63,19 @@
       "blurNsfw": "Flouter le contenu explicite",
       "none": "Aucun filtre",
       "blur": "Flouter le contenu sensible",
-      "hidden": "Cacher le contenu mature",
+      "hidden": "Masquer le contenu mature",
       "descriptions": {
         "none": "Afficher tout le contenu sans restrictions",
         "blur": "Appliquer un flou au contenu mature",
-        "hidden": "Cacher complètement le contenu mature"
+        "hidden": "Masquer complètement le contenu mature"
       },
       "ageRatings": {
         "L": "Tout public",
-        "TEN": "10 ans et plus",
-        "TWELVE": "12 ans et plus",
-        "FOURTEEN": "14 ans et plus",
-        "SIXTEEN": "16 ans et plus",
-        "EIGHTEEN": "18 ans et plus"
+        "TEN": "10 ans et +",
+        "TWELVE": "12 ans et +",
+        "FOURTEEN": "14 ans et +",
+        "SIXTEEN": "16 ans et +",
+        "EIGHTEEN": "18 ans et +"
       },
       "noBirthdateWarning": "⚠️ Âge non enregistré",
       "noBirthdateDescription": "Pour accéder au contenu soumis à restriction d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
@@ -89,6 +89,8 @@
     "character": "Personnage",
     "seeMore": "Voir plus",
     "seeMoreArrow": "Voir plus →",
+    "showMore": "Afficher plus",
+    "showLess": "Afficher moins",
     "back": "Retour",
     "credits": "crédits",
     "tryAgain": "Réessayer",

@@ -54,6 +54,8 @@ export interface ModalProps {
   showCloseButton?: boolean;
   stickyFooter?: ReactNode | null;
   maxContentHeight?: string;
+  /** Maximum height of the modal (e.g., 'max-h-[70vh]', 'max-h-[90vh]') */
+  maxHeight?: string;
 }
 
 export function Modal({
@@ -65,7 +67,8 @@ export function Modal({
   size = 'md',
   showCloseButton = true,
   stickyFooter = null,
-  maxContentHeight = 'max-h-[50vh]'
+  maxContentHeight = 'max-h-[50vh]',
+  maxHeight
 }: ModalProps): JSX.Element | null {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(isOpen);
@@ -168,7 +171,7 @@ export function Modal({
 
   const modalClasses = `w-full ${SIZE_CLASSES[size]} rounded-2xl bg-normal shadow-xl focus:outline-none transform transition-all duration-200 ease-out relative z-[60] ${
     isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-  } ${className} ${stickyFooter ? 'flex flex-col max-h-[70vh]' : ''}`.trim();
+  } ${className} ${stickyFooter ? `flex flex-col ${maxHeight || 'max-h-[70vh]'}` : ''}`.trim();
 
   const modalContent = (
     <div
@@ -204,7 +207,7 @@ export function Modal({
             <div className={`flex-1 overflow-y-auto min-h-0 px-6 py-5 text-sm text-content custom-scrollbar ${maxContentHeight}`}>
               {children}
             </div>
-            <footer className="flex flex-shrink-0 border-t border-border px-6 py-4">
+            <footer className="flex flex-shrink-0 items-center justify-end border-t border-border px-6 py-4">
               {stickyFooter}
             </footer>
           </>
