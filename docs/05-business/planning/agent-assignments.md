@@ -12,6 +12,7 @@ O **Agent Reviewer** atualiza este arquivo **a cada segunda-feira** após revisa
 
 | ID | Tarefa | Agente | Status | Branch | ETA | Último Update |
 |---|--------|--------|--------|--------|-----|---------------|
+| DOCCLEAN-001 | **Phase 1: Structural Documentation Cleanup** | coder-doc-specialist (via Agent Coder) | 📋 Ativo | `feature/docclean-001-phase1-structural-cleanup` | 2026-01-24 | 2026-01-17 - Spec criada, ready para implementação |
 | T009 | **TypeScript ESLint 8.x Migration** | Agent Coder | ✅ Concluído | `feature/typescript-eslint-8-migration` | - | 28/12 - PR merged e movido para implemented |
 | T010 | **Prisma 7.x Migration** | Agent Coder | 📋 Em Revisão | `feature/prisma-7-migration` | 29/12/2025 | 28/12 - PR aberta aguardando review |
 | T016 | **Content Translation & Image Cache Fixes** | Agent Coder | 🔥 Urgente | `feature/translation-image-cache-fixes` | 30/12/2025 | 30/12 - Spec criada, ready para implementação |
