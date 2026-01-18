@@ -42,7 +42,7 @@ const AI_GENERATION_COSTS = {
 const TOTAL_AI_COST_WITH_IMAGE = Object.values(AI_GENERATION_COSTS).reduce((sum, cost) => sum + cost, 0); // 100 credits
 const TOTAL_AI_COST_WITHOUT_IMAGE = TOTAL_AI_COST_WITH_IMAGE - AI_GENERATION_COSTS.imageAnalysis; // 75 credits
 
-interface GeneratedCharacterData {
+export interface GeneratedCharacterData {
   firstName: string;
   lastName?: string;
   age?: number;

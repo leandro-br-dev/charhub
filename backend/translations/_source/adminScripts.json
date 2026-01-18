@@ -1,0 +1,41 @@
+{
+  "description": "Admin Scripts Management Interface",
+  "resources": {
+    "title": "Admin Scripts",
+    "header": {
+      "title": "Admin Scripts",
+      "description": "Manually execute data correction scripts and monitor system statistics."
+    },
+    "stats": {
+      "title": "Statistics",
+      "totalCharacters": "Total Characters",
+      "charactersWithAvatars": "Characters with Avatars",
+      "charactersWithCompleteData": "Characters with Complete Data",
+      "never": "Never",
+      "lastCorrections": "Last Corrections"
+    },
+    "scripts": {
+      "title": "Correction Scripts",
+      "avatar": {
+        "name": "Avatar Correction",
+        "description": "Fixes broken or missing avatar URLs for characters",
+        "success": "Avatar correction script started successfully",
+        "error": "Failed to start avatar correction script"
+      },
+      "data": {
+        "name": "Data Completeness Correction",
+        "description": "Ensures all required character fields are populated",
+        "success": "Data correction script started successfully",
+        "error": "Failed to start data correction script"
+      },
+      "lastRun": "Last Run",
+      "run": "Run Script",
+      "running": "Running...",
+      "moreComing": "More scripts coming soon...",
+      "records": "records"
+    },
+    "refresh": "Refresh Statistics",
+    "limit": "Record Limit",
+    "limitPlaceholder": "Number of records to process (1-1000)"
+  }
+}

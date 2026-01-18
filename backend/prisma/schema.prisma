@@ -1254,6 +1254,39 @@ model BatchGenerationLog {
 }
 
 // ============================================================================
+// SYSTEM CONFIGURATION AND CORRECTION LOGGING (FEATURE-011)
+// ============================================================================
+
+// System configuration key-value storage
+model SystemConfiguration {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String
+  description String?
+  category    String?  // e.g., "generation", "correction", "curation"
+  updatedAt   DateTime @updatedAt
+  updatedBy   String?  // User ID who last updated
+
+  @@index([category])
+}
+
+// Correction job execution log
+model CorrectionJobLog {
+  id            String   @id @default(uuid())
+  jobType       String   // "avatar-correction" or "data-completeness-correction"
+  targetCount   Int
+  successCount  Int
+  failureCount  Int
+  duration      Int?     // Duration in seconds
+  startedAt     DateTime @default(now())
+  completedAt   DateTime?
+  errors        Json?    // Array of {characterId, error}
+  metadata      Json?    // Additional job-specific data
+
+  @@index([jobType, startedAt])
+}
+
+// ============================================================================
 // LLM COST TRACKING SYSTEM
 // ============================================================================
 

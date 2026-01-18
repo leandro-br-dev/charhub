@@ -1,0 +1,41 @@
+{
+  "description": "Admin Scripts Management Interface",
+  "resources": {
+    "title": "管理スクリプト",
+    "header": {
+      "title": "管理スクリプト",
+      "description": "データ修正スクリプトを手動で実行し、システム統計を監視します。"
+    },
+    "stats": {
+      "title": "統計",
+      "totalCharacters": "総キャラクター数",
+      "charactersWithAvatars": "アバターを持つキャラクター数",
+      "charactersWithCompleteData": "データが完全なキャラクター数",
+      "never": "なし",
+      "lastCorrections": "最終修正"
+    },
+    "scripts": {
+      "title": "修正スクリプト",
+      "avatar": {
+        "name": "アバター修正",
+        "description": "キャラクターの破損または欠落しているアバターURLを修正します",
+        "success": "アバター修正スクリプトが正常に開始されました",
+        "error": "アバター修正スクリプトの開始に失敗しました"
+      },
+      "data": {
+        "name": "データ完全性修正",
+        "description": "必須のキャラクターフィールドがすべて入力されていることを確認します",
+        "success": "データ修正スクリプトが正常に開始されました",
+        "error": "データ修正スクリプトの開始に失敗しました"
+      },
+      "lastRun": "最終実行",
+      "run": "スクリプトを実行",
+      "running": "実行中...",
+      "moreComing": "他のスクリプトも近日公開予定です...",
+      "records": "レコード"
+    },
+    "refresh": "統計を更新",
+    "limit": "レコード制限",
+    "limitPlaceholder": "処理するレコード数（1-1000）"
+  }
+}

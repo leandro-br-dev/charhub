@@ -291,4 +291,170 @@ router.get('/settings', requireAuth, async (req, res) => {
   }
 });
 
+/**
+ * POST /api/v1/character-population/trigger-avatar-correction
+ * Trigger avatar correction job
+ */
+router.post('/trigger-avatar-correction', requireAuth, async (req, res) => {
+  try {
+    const user = req.auth?.user;
+
+    if (!requireAdmin(user, res)) {
+      return;
+    }
+
+    const { limit = 50 } = req.body;
+
+    // Validate limit
+    const parsedLimit = parseInt(limit, 10);
+    if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 500) {
+      res.status(400).json({ error: 'Limit must be between 1 and 500' });
+      return;
+    }
+
+    // Queue the job
+    const job = await queueManager.addJob(
+      QueueName.CHARACTER_POPULATION,
+      'avatar-correction',
+      { targetCount: parsedLimit },
+      { priority: 5 }
+    );
+
+    logger.info({ jobId: job.id, limit: parsedLimit }, 'Avatar correction job triggered');
+
+    res.json({
+      success: true,
+      jobId: job.id,
+      message: 'Avatar correction job started',
+      limit: parsedLimit,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Failed to trigger avatar correction');
+    res.status(500).json({ error: 'Failed to trigger avatar correction' });
+  }
+});
+
+/**
+ * POST /api/v1/character-population/trigger-data-correction
+ * Trigger data completeness correction job
+ */
+router.post('/trigger-data-correction', requireAuth, async (req, res) => {
+  try {
+    const user = req.auth?.user;
+
+    if (!requireAdmin(user, res)) {
+      return;
+    }
+
+    const { limit = 50 } = req.body;
+
+    // Validate limit
+    const parsedLimit = parseInt(limit, 10);
+    if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 500) {
+      res.status(400).json({ error: 'Limit must be between 1 and 500' });
+      return;
+    }
+
+    // Queue the job
+    const job = await queueManager.addJob(
+      QueueName.CHARACTER_POPULATION,
+      'data-completeness-correction',
+      { targetCount: parsedLimit },
+      { priority: 5 }
+    );
+
+    logger.info({ jobId: job.id, limit: parsedLimit }, 'Data correction job triggered');
+
+    res.json({
+      success: true,
+      jobId: job.id,
+      message: 'Data correction job started',
+      limit: parsedLimit,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Failed to trigger data correction');
+    res.status(500).json({ error: 'Failed to trigger data correction' });
+  }
+});
+
+/**
+ * GET /api/v1/character-population/correction-stats
+ * Get correction job statistics
+ */
+router.get('/correction-stats', requireAuth, async (req, res) => {
+  try {
+    const user = req.auth?.user;
+
+    if (!requireAdmin(user, res)) {
+      return;
+    }
+
+    // Get total character count
+    const totalCharacters = await prisma.character.count();
+
+    // Get characters with avatars
+    const charactersWithAvatars = await prisma.character.count({
+      where: {
+        images: {
+          some: {
+            type: 'AVATAR',
+            isActive: true,
+          },
+        },
+      },
+    });
+
+    // Get characters with complete data (speciesId is not null and firstName is not 'Character')
+    const charactersWithCompleteData = await prisma.character.count({
+      where: {
+        AND: [
+          {
+            speciesId: {
+              not: null,
+            },
+          },
+          {
+            firstName: {
+              not: 'Character',
+            },
+          },
+        ],
+      },
+    });
+
+    // Get last avatar correction job
+    const lastAvatarJob = await prisma.correctionJobLog.findFirst({
+      where: {
+        jobType: 'avatar-correction',
+      },
+      orderBy: {
+        completedAt: 'desc',
+      },
+    });
+
+    // Get last data correction job
+    const lastDataJob = await prisma.correctionJobLog.findFirst({
+      where: {
+        jobType: 'data-completeness-correction',
+      },
+      orderBy: {
+        completedAt: 'desc',
+      },
+    });
+
+    res.json({
+      totalCharacters,
+      charactersWithAvatars,
+      charactersWithoutAvatars: totalCharacters - charactersWithAvatars,
+      charactersWithCompleteData,
+      charactersWithIncompleteData: totalCharacters - charactersWithCompleteData,
+      lastAvatarCorrection: lastAvatarJob?.completedAt?.toISOString() || null,
+      lastDataCorrection: lastDataJob?.completedAt?.toISOString() || null,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Failed to get correction stats');
+    res.status(500).json({ error: 'Failed to get correction stats' });
+  }
+});
+
 export default router;

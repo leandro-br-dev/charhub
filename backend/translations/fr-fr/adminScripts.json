@@ -1,0 +1,41 @@
+{
+  "description": "Admin Scripts Management Interface",
+  "resources": {
+    "title": "Scripts d'administration",
+    "header": {
+      "title": "Scripts d'administration",
+      "description": "Exécutez manuellement des scripts de correction de données et surveillez les statistiques du système."
+    },
+    "stats": {
+      "title": "Statistiques",
+      "totalCharacters": "Total de personnages",
+      "charactersWithAvatars": "Personnages avec avatars",
+      "charactersWithCompleteData": "Personnages avec données complètes",
+      "never": "Jamais",
+      "lastCorrections": "Dernières corrections"
+    },
+    "scripts": {
+      "title": "Scripts de correction",
+      "avatar": {
+        "name": "Correction d'avatar",
+        "description": "Corrige les URL d'avatar cassées ou manquantes pour les personnages",
+        "success": "Le script de correction d'avatar a démarré avec succès",
+        "error": "Échec du démarrage du script de correction d'avatar"
+      },
+      "data": {
+        "name": "Correction de l'exhaustivité des données",
+        "description": "Garantit que tous les champs de personnage requis sont renseignés",
+        "success": "Le script de correction de données a démarré avec succès",
+        "error": "Échec du démarrage du script de correction de données"
+      },
+      "lastRun": "Dernière exécution",
+      "run": "Exécuter le script",
+      "running": "En cours d'exécution...",
+      "moreComing": "D'autres scripts seront bientôt disponibles...",
+      "records": "enregistrements"
+    },
+    "refresh": "Actualiser les statistiques",
+    "limit": "Limite d'enregistrements",
+    "limitPlaceholder": "Nombre d'enregistrements à traiter (1-1000)"
+  }
+}

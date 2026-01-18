@@ -28,6 +28,7 @@ import PlansPage from './pages/plans';
 import TasksPage from './pages/tasks';
 import DiscoverPage from './pages/(discover)';
 import AnalyticsPage from './pages/admin/analytics';
+import AdminScriptsPage from './pages/admin/scripts';
 
 function PublicShell(): JSX.Element {
   return (
@@ -92,6 +93,7 @@ export default function App(): JSX.Element {
         }
       >
         <Route path="/admin/analytics" element={<AnalyticsPage />} />
+        <Route path="/admin/scripts" element={<AdminScriptsPage />} />
       </Route>
     </Routes>
   );

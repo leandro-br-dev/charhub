@@ -1,0 +1,41 @@
+{
+  "description": "Admin Scripts Management Interface",
+  "resources": {
+    "title": "管理员脚本",
+    "header": {
+      "title": "管理员脚本",
+      "description": "手动执行数据校正脚本并监控系统统计信息。"
+    },
+    "stats": {
+      "title": "统计数据",
+      "totalCharacters": "总角色数",
+      "charactersWithAvatars": "有头像的角色",
+      "charactersWithCompleteData": "数据完整的角色",
+      "never": "从不",
+      "lastCorrections": "上次校正"
+    },
+    "scripts": {
+      "title": "校正脚本",
+      "avatar": {
+        "name": "头像校正",
+        "description": "修复角色损坏或缺失的头像URL",
+        "success": "头像校正脚本已成功启动",
+        "error": "启动头像校正脚本失败"
+      },
+      "data": {
+        "name": "数据完整性校正",
+        "description": "确保所有必需的角色字段都已填充",
+        "success": "数据校正脚本已成功启动",
+        "error": "启动数据校正脚本失败"
+      },
+      "lastRun": "上次运行",
+      "run": "运行脚本",
+      "running": "正在运行...",
+      "moreComing": "更多脚本即将推出...",
+      "records": "条记录"
+    },
+    "refresh": "刷新统计数据",
+    "limit": "记录限制",
+    "limitPlaceholder": "要处理的记录数量 (1-1000)"
+  }
+}

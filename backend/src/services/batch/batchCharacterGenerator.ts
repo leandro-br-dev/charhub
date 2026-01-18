@@ -18,6 +18,7 @@ import { createCharacter } from '../../services/characterService';
 import { generateStableDiffusionPrompt } from '../../controllers/automatedCharacterGenerationController';
 import type { ImageType } from '../../generated/prisma';
 import { multiStageCharacterGenerator } from '../image-generation/multiStageCharacterGenerator';
+import { systemConfigurationService } from '../config/systemConfigurationService';
 
 /**
  * Generation result
@@ -72,7 +73,11 @@ export class BatchCharacterGenerator {
     const startTime = Date.now();
     const { count, maxRetries = this.maxRetries, delayBetweenMs = this.delayBetweenMs, specificImageIds } = options;
 
-    logger.info({ count, specificImageIds }, 'Starting batch character generation with AI pipeline');
+    // Read batch size from configuration (default: 5)
+    const batchSizePerRun = await systemConfigurationService.getInt('batch.size_per_run', 5);
+    const effectiveCount = Math.min(count, batchSizePerRun);
+
+    logger.info({ count: effectiveCount, specificImageIds, batchSizePerRun }, 'Starting batch character generation with AI pipeline');
 
     // 1. Select diverse images from approved curated images (or use specific IDs if provided)
     let selectedImageIds: string[];
@@ -80,7 +85,7 @@ export class BatchCharacterGenerator {
       selectedImageIds = specificImageIds;
       logger.info({ selected: selectedImageIds.length }, 'Using specific image IDs for generation');
     } else {
-      selectedImageIds = await diversificationAlgorithm.selectImages({ count });
+      selectedImageIds = await diversificationAlgorithm.selectImages({ count: effectiveCount });
       logger.info({ selected: selectedImageIds.length }, 'Images selected for generation');
     }
 
@@ -98,7 +103,7 @@ export class BatchCharacterGenerator {
     const batchLog = await prisma.batchGenerationLog.create({
       data: {
         scheduledAt: new Date(),
-        targetCount: count,
+        targetCount: effectiveCount,
         selectedImages: selectedImageIds,
         generatedCharIds: [],
       },

@@ -56,6 +56,22 @@ export interface DailyCurationJobData {
 }
 
 /**
+ * Avatar correction job - generates missing AVATAR images
+ */
+export interface AvatarCorrectionJobData {
+  /** Number of characters to process (default: 5) */
+  targetCount?: number;
+}
+
+/**
+ * Data completeness correction job - fixes incomplete character data
+ */
+export interface DataCompletenessCorrectionJobData {
+  /** Number of characters to process (default: 10) */
+  targetCount?: number;
+}
+
+/**
  * Union type for all character population job data types
  */
 export type CharacterPopulationJobData =
@@ -63,4 +79,6 @@ export type CharacterPopulationJobData =
   | BatchGenerationJobData
   | FullPopulationJobData
   | HourlyGenerationJobData
-  | DailyCurationJobData;
+  | DailyCurationJobData
+  | AvatarCorrectionJobData
+  | DataCompletenessCorrectionJobData;

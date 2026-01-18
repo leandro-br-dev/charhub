@@ -1,0 +1,41 @@
+{
+  "description": "Admin Scripts Management Interface",
+  "resources": {
+    "title": "Admin-Skripte",
+    "header": {
+      "title": "Admin-Skripte",
+      "description": "Manuelles Ausführen von Datenkorrektur-Skripten und Überwachung von Systemstatistiken."
+    },
+    "stats": {
+      "title": "Statistiken",
+      "totalCharacters": "Gesamtzahl Charaktere",
+      "charactersWithAvatars": "Charaktere mit Avataren",
+      "charactersWithCompleteData": "Charaktere mit vollständigen Daten",
+      "never": "Nie",
+      "lastCorrections": "Letzte Korrekturen"
+    },
+    "scripts": {
+      "title": "Korrektur-Skripte",
+      "avatar": {
+        "name": "Avatar-Korrektur",
+        "description": "Behebt fehlerhafte oder fehlende Avatar-URLs für Charaktere",
+        "success": "Avatar-Korrektur-Skript erfolgreich gestartet",
+        "error": "Fehler beim Starten des Avatar-Korrektur-Skripts"
+      },
+      "data": {
+        "name": "Korrektur der Datenvollständigkeit",
+        "description": "Stellt sicher, dass alle erforderlichen Charakterfelder ausgefüllt sind",
+        "success": "Datenkorrektur-Skript erfolgreich gestartet",
+        "error": "Fehler beim Starten des Datenkorrektur-Skripts"
+      },
+      "lastRun": "Letzter Lauf",
+      "run": "Skript ausführen",
+      "running": "Wird ausgeführt...",
+      "moreComing": "Weitere Skripte folgen in Kürze...",
+      "records": "Einträge"
+    },
+    "refresh": "Statistiken aktualisieren",
+    "limit": "Eintragslimit",
+    "limitPlaceholder": "Anzahl der zu verarbeitenden Einträge (1-1000)"
+  }
+}
