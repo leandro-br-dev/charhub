@@ -259,6 +259,62 @@ git checkout main
 
 ---
 
+## 🚨 GIT FLOW: CRITICAL RULE
+
+**⚠️ CRITICAL**: Git flow direction is ALWAYS **main → feature**, NEVER **feature → main**.
+
+### The ONLY Correct Flow
+
+```
+┌─────────────┐         sync         ┌──────────────┐
+│     main    │ ───────────────────> │  feature/*   │
+│  (read-only)│                      │  (your work)  │
+└─────────────┘                      └──────────────┘
+       ▲                                        │
+       │                                        │ create PR
+       │                                        │
+       └────────────────────────────────────────┘
+           Agent Reviewer merges via PR
+```
+
+### ❌ FORBIDDEN Operations
+
+| Command | Why It's Forbidden |
+|---------|-------------------|
+| `git push origin main` | Only Agent Reviewer can push to main |
+| `git merge feature main` | Merges feature INTO main (wrong direction) |
+| `git checkout main && git merge feature` | Pushes feature code directly to main |
+| ANY git push to main | EVER - for any reason |
+
+### ✅ Correct Operations
+
+| Command | When to Use |
+|---------|-------------|
+| `git checkout main && git pull` | NEVER - you don't work in main |
+| `git checkout feature && git pull` | Only to update your feature branch |
+| `git merge main` (while in feature) | To sync feature with latest main changes |
+| `git checkout feature && git merge main` | To bring main changes INTO your feature |
+
+### The Golden Rule of Git Flow
+
+**"Main is READ-ONLY for Agent Coder. You PULL FROM main, you NEVER PUSH TO main."**
+
+### If You Accidentally Pushed to Main
+
+**STOP immediately** and inform Agent Reviewer. The incorrect commits must be reverted:
+1. Do NOT attempt to fix it yourself
+2. Do NOT push more commits to "fix" it
+3. Inform Agent Reviewer so they can properly revert via PR workflow
+
+### Remember
+
+- You work in `feature/*` branches ONLY
+- You bring changes FROM main TO your feature (main → feature)
+- You NEVER push your feature TO main directly
+- Feature → main happens ONLY via Pull Request reviewed by Agent Reviewer
+
+---
+
 ## 📚 Documentation Structure
 
 ### For Agent Coder (You)
