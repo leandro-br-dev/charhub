@@ -558,6 +558,135 @@ After significant development sessions, run quick cleanup:
 
 ---
 
+## 🔧 API Development Best Practices
+
+### i18n for API Responses (Future Improvement)
+
+**Current State**: API responses use hardcoded English strings (systemic pattern)
+
+**Future State**: All error messages must support internationalization
+
+```typescript
+// ❌ Current Pattern (to be replaced)
+res.status(403).json({ error: 'Admin access required' });
+res.status(500).json({ error: 'Failed to get system configurations' });
+```
+
+**Planned Implementation** (see [#129](https://github.com/leandro-br-dev/charhub/issues/129)):
+```typescript
+// ✅ Target Pattern (after implementation)
+import { apiT } from '../../utils/api-i18n';
+
+const message = await apiT(req, 'api.error.admin_required');
+res.status(403).json({ error: message });
+```
+
+**Guideline**: For now, use English error messages. When API i18n is implemented, you'll update all endpoints.
+
+### TypeScript Type Safety
+
+**Avoid `any` Types**: Use proper interfaces instead
+
+```typescript
+// ❌ BAD: Using 'any' loses type safety
+function requireAdmin(user: any, res: Response): boolean {
+  if (user?.role !== 'ADMIN') {
+    return false;
+  }
+  return true;
+}
+
+// ✅ GOOD: Define interface for type safety
+interface AuthUser {
+  id: string;
+  role: 'ADMIN' | 'BASIC' | 'PREMIUM' | 'BOT';
+}
+
+function requireAdmin(user: AuthUser | null, res: Response): boolean {
+  if (user?.role !== 'ADMIN') {
+    return false;
+  }
+  return true;
+}
+```
+
+### Input Validation with Zod
+
+**Use Zod schemas for API input validation** (recommended for new endpoints)
+
+```typescript
+import { z } from 'zod';
+
+// Define schema
+const createConfigSchema = z.object({
+  key: z.string().regex(/^[a-zA-Z0-9._-]+$/),
+  value: z.string().min(1),
+  description: z.string().optional(),
+  category: z.enum(['generation', 'correction', 'curation']).optional(),
+});
+
+// Use in route
+const validatedData = createConfigSchema.parse(req.body);
+```
+
+**Benefits**:
+- Automatic type inference
+- Clear error messages
+- Consistent validation across endpoints
+- Better than manual if/else checks
+
+### Database Migrations & Testing
+
+**Critical**: Always run migrations before testing
+
+```bash
+# Before running tests
+cd backend
+npx prisma migrate deploy
+
+# Then run tests
+npm test
+```
+
+**Why**: Tests fail if database schema doesn't match migrations.
+
+### Testing Prisma Queries
+
+**Don't use `expect.objectContaining` for Prisma `select` objects**
+
+```typescript
+// ❌ WRONG: Doesn't work with Prisma selects
+expect(mockPrisma.character.findMany).toHaveBeenCalledWith({
+  select: expect.objectContaining({
+    id: true,
+    firstName: true,
+  }),
+});
+
+// ✅ CORRECT: Use expect.anything() for Prisma selects
+expect(mockPrisma.character.findMany).toHaveBeenCalledWith({
+  select: expect.anything(), // Prisma handles validation
+});
+```
+
+**Reason**: Prisma `select` objects have complex structure with nested objects. The service logic is what matters, not the exact select shape.
+
+See [#130](https://github.com/leandro-br-dev/charhub/issues/130) for details.
+
+### Error Logging Best Practices
+
+```typescript
+// ✅ GOOD: Structured logging with context
+logger.info({ characterId, duration }, 'Avatar correction completed');
+
+// ❌ BAD: Plain string logging
+logger.info('Avatar correction completed');
+```
+
+**Why**: Structured logging enables better debugging and monitoring.
+
+---
+
 ## 📞 Getting Help
 
 1. **Consult sub-agents** - They are your team of specialists
