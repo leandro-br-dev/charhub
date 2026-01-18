@@ -18,6 +18,27 @@ import { useMembersQuery } from '../hooks/useMembership';
 import { chatService } from '../../../../services/chatService';
 import type { ConversationParticipant, Message } from '../../../../types/chat';
 
+// User config override interface
+interface UserConfigOverride {
+  instructions?: string;
+  nameOverride?: string;
+  ageOverride?: number;
+  genderOverride?: 'male' | 'female' | 'non-binary' | 'other' | null;
+  avatarOverride?: string;
+  descriptionOverride?: string;
+}
+
+// Helper to parse user config from configOverride string
+const parseUserConfig = (configOverride?: string | null): UserConfigOverride | null => {
+  if (!configOverride) return null;
+  try {
+    return JSON.parse(configOverride);
+  } catch {
+    // If not JSON, return null (for backward compatibility)
+    return null;
+  }
+};
+
 interface ProcessedParticipant {
   id: string;
   actorId: string;
@@ -35,6 +56,7 @@ interface ProcessedParticipant {
     age?: string | null;
   };
   raw: ConversationParticipant;
+  isSynthetic?: boolean;
 }
 
 function buildParticipantRepresentation(
@@ -42,15 +64,25 @@ function buildParticipantRepresentation(
 ): ProcessedParticipant | null {
   if (participant.userId) {
     const user = participant.user;
-    const name =
-      user?.displayName || `User ${participant.userId.slice(0, 4)}`;
+    const userConfig = parseUserConfig(participant.configOverride);
+
+    // Apply overrides if present, otherwise use original user data
+    const name = userConfig?.nameOverride || user?.displayName || `User ${participant.userId.slice(0, 4)}`;
+    const avatar = userConfig?.avatarOverride || user?.avatarUrl || null;
+    const age = userConfig?.ageOverride ? String(userConfig.ageOverride) : null;
+    const gender = userConfig?.genderOverride || null;
+
     return {
       id: participant.id,
       actorId: participant.userId,
       actorType: 'USER',
       representation: {
         name,
-        avatar: user?.avatarUrl || null,
+        avatar,
+        age,
+        gender,
+        // User-specific override for description (physical characteristics + personality)
+        physicalCharacteristics: userConfig?.descriptionOverride || null,
       },
       raw: participant,
     };
