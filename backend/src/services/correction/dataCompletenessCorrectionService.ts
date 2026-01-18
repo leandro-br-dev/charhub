@@ -203,15 +203,19 @@ class DataCompletenessCorrectionService {
       // Build user description from existing data
       // If firstName is "Character", pass empty string to trigger LLM name generation
       const needsNameGeneration = character.firstName === this.DEFAULT_FIRST_NAME;
-      const userDescription = needsNameGeneration
-        ? ''
-        : `${character.firstName} ${character.lastName || ''}. ${character.physicalCharacteristics || ''}`.trim();
+      let userDescription = '';
+      if (!needsNameGeneration) {
+        const parts = [character.firstName];
+        if (character.lastName) parts.push(character.lastName);
+        if (character.physicalCharacteristics) parts.push(character.physicalCharacteristics);
+        userDescription = parts.join('. ') + '.';
+      }
 
       // Compile new data using LLM
       // Pass null for imageAnalysis since we're not re-analyzing images
       // Pass null for user since this is a bot operation
       const compiledData = await compileCharacterDataWithLLM(
-        userDescription || null,
+        userDescription,
         null, // No image analysis
         textData,
         'en', // Bot characters default to English
