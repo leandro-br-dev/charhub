@@ -276,8 +276,12 @@ docs/
 
 ### Start Local Environment
 ```bash
-docker compose up -d --build
+# Docker Space-Aware: No --build unless dependencies changed
+docker compose up -d
 open http://localhost:8083
+
+# Use --build ONLY if Dockerfile/package.json changed
+# docker compose up -d --build frontend
 ```
 
 ### Create Design Branch

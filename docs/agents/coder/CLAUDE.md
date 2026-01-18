@@ -328,12 +328,32 @@ cat docs/05-business/planning/features/active/feature-name.md
 cat docs/04-architecture/system-overview.md
 ```
 
-### Local Testing
+### Local Testing (Docker Space-Aware)
+
+**⚠️ CRITICAL: Use `--build` ONLY when necessary to prevent cache explosion**
+
+#### Smart Restart (Recommended)
+
+Use the smart restart script that detects changes automatically:
 
 ```bash
-# Restart containers (preserves database data)
+# Auto-detects if rebuild is needed
+./scripts/docker-smart-restart.sh
+
+# Force rebuild specific service
+./scripts/docker-smart-restart.sh --build-backend
+./scripts/docker-smart-restart.sh --build-frontend
+
+# Force rebuild all (rarely needed)
+./scripts/docker-smart-restart.sh --force-build
+```
+
+#### Manual Restart (When NOT to use --build)
+
+```bash
+# DEFAULT: Simple restart - NO rebuild, uses existing image
 docker compose down
-docker compose up -d --build
+docker compose up -d
 
 # Check status
 docker compose ps
@@ -341,9 +361,52 @@ docker compose ps
 # View logs
 docker compose logs -f backend
 docker compose logs -f frontend
+```
 
-# Test frontend
-open http://localhost:8082
+#### When to REBUILD (with --build)
+
+Use `--build` **ONLY** when:
+1. **Dockerfile changed** - Any modification to backend/Dockerfile or frontend/Dockerfile
+2. **package.json changed** - New npm dependencies added/removed
+3. **package-lock.json changed** - Dependency versions updated
+4. **prisma/schema.prisma changed** - Database schema modified
+5. **Build errors occur** - Container fails to start due to stale image
+
+```bash
+# Rebuild specific service only (preferred - smaller cache impact)
+docker compose up -d --build backend
+docker compose up -d --build frontend
+
+# Rebuild all services (rarely needed)
+docker compose down
+docker compose up -d --build
+```
+
+#### Decision Tree
+
+```
+Did I change Dockerfile, package.json, package-lock.json, or prisma/schema.prisma?
+├─ YES → Use `docker compose up -d --build <service>`
+└─ NO → Use `docker compose up -d` (no --build)
+
+Is container failing to start?
+├─ YES → Check logs first, then try `--build` if stale image suspected
+└─ NO → Never use `--build` unnecessarily
+```
+
+#### Docker Maintenance (Weekly)
+
+After significant development sessions, run quick cleanup:
+
+```bash
+# Check current space usage
+./scripts/docker-space-check.sh
+
+# Quick cleanup - removes old cache, keeps recent
+./scripts/docker-cleanup-quick.sh
+
+# Emergency full cleanup (if disk is full)
+./scripts/docker-cleanup-full.sh
 ```
 
 **⚠️ IMPORTANT: Database Data Preservation**

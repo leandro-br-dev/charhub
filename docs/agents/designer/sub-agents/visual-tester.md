@@ -111,8 +111,12 @@ cat docs/05-business/planning/features/active/*.md
 # Check if design changes expected
 gh pr view --json title,body
 
-# Start local environment
-docker compose up -d --build
+# Start local environment (Docker Space-Aware)
+# DEFAULT: No --build unless dependencies changed
+docker compose up -d
+
+# Use --build ONLY if Dockerfile/package.json changed
+# docker compose up -d --build frontend
 ```
 
 **Key Questions**:
