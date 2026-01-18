@@ -259,6 +259,62 @@ git checkout main
 
 ---
 
+## 🚨 GIT FLOW: CRITICAL RULE
+
+**⚠️ CRITICAL**: Git flow direction is ALWAYS **main → feature**, NEVER **feature → main**.
+
+### The ONLY Correct Flow
+
+```
+┌─────────────┐         sync         ┌──────────────┐
+│     main    │ ───────────────────> │  feature/*   │
+│  (read-only)│                      │  (your work)  │
+└─────────────┘                      └──────────────┘
+       ▲                                        │
+       │                                        │ create PR
+       │                                        │
+       └────────────────────────────────────────┘
+           Agent Reviewer merges via PR
+```
+
+### ❌ FORBIDDEN Operations
+
+| Command | Why It's Forbidden |
+|---------|-------------------|
+| `git push origin main` | Only Agent Reviewer can push to main |
+| `git merge feature main` | Merges feature INTO main (wrong direction) |
+| `git checkout main && git merge feature` | Pushes feature code directly to main |
+| ANY git push to main | EVER - for any reason |
+
+### ✅ Correct Operations
+
+| Command | When to Use |
+|---------|-------------|
+| `git checkout main && git pull` | NEVER - you don't work in main |
+| `git checkout feature && git pull` | Only to update your feature branch |
+| `git merge main` (while in feature) | To sync feature with latest main changes |
+| `git checkout feature && git merge main` | To bring main changes INTO your feature |
+
+### The Golden Rule of Git Flow
+
+**"Main is READ-ONLY for Agent Coder. You PULL FROM main, you NEVER PUSH TO main."**
+
+### If You Accidentally Pushed to Main
+
+**STOP immediately** and inform Agent Reviewer. The incorrect commits must be reverted:
+1. Do NOT attempt to fix it yourself
+2. Do NOT push more commits to "fix" it
+3. Inform Agent Reviewer so they can properly revert via PR workflow
+
+### Remember
+
+- You work in `feature/*` branches ONLY
+- You bring changes FROM main TO your feature (main → feature)
+- You NEVER push your feature TO main directly
+- Feature → main happens ONLY via Pull Request reviewed by Agent Reviewer
+
+---
+
 ## 📚 Documentation Structure
 
 ### For Agent Coder (You)
@@ -499,6 +555,135 @@ After significant development sessions, run quick cleanup:
 
 ### "PR got rejected"
 → Read feedback carefully, delegate to appropriate sub-agents for fixes
+
+---
+
+## 🔧 API Development Best Practices
+
+### i18n for API Responses (Future Improvement)
+
+**Current State**: API responses use hardcoded English strings (systemic pattern)
+
+**Future State**: All error messages must support internationalization
+
+```typescript
+// ❌ Current Pattern (to be replaced)
+res.status(403).json({ error: 'Admin access required' });
+res.status(500).json({ error: 'Failed to get system configurations' });
+```
+
+**Planned Implementation** (see [#129](https://github.com/leandro-br-dev/charhub/issues/129)):
+```typescript
+// ✅ Target Pattern (after implementation)
+import { apiT } from '../../utils/api-i18n';
+
+const message = await apiT(req, 'api.error.admin_required');
+res.status(403).json({ error: message });
+```
+
+**Guideline**: For now, use English error messages. When API i18n is implemented, you'll update all endpoints.
+
+### TypeScript Type Safety
+
+**Avoid `any` Types**: Use proper interfaces instead
+
+```typescript
+// ❌ BAD: Using 'any' loses type safety
+function requireAdmin(user: any, res: Response): boolean {
+  if (user?.role !== 'ADMIN') {
+    return false;
+  }
+  return true;
+}
+
+// ✅ GOOD: Define interface for type safety
+interface AuthUser {
+  id: string;
+  role: 'ADMIN' | 'BASIC' | 'PREMIUM' | 'BOT';
+}
+
+function requireAdmin(user: AuthUser | null, res: Response): boolean {
+  if (user?.role !== 'ADMIN') {
+    return false;
+  }
+  return true;
+}
+```
+
+### Input Validation with Zod
+
+**Use Zod schemas for API input validation** (recommended for new endpoints)
+
+```typescript
+import { z } from 'zod';
+
+// Define schema
+const createConfigSchema = z.object({
+  key: z.string().regex(/^[a-zA-Z0-9._-]+$/),
+  value: z.string().min(1),
+  description: z.string().optional(),
+  category: z.enum(['generation', 'correction', 'curation']).optional(),
+});
+
+// Use in route
+const validatedData = createConfigSchema.parse(req.body);
+```
+
+**Benefits**:
+- Automatic type inference
+- Clear error messages
+- Consistent validation across endpoints
+- Better than manual if/else checks
+
+### Database Migrations & Testing
+
+**Critical**: Always run migrations before testing
+
+```bash
+# Before running tests
+cd backend
+npx prisma migrate deploy
+
+# Then run tests
+npm test
+```
+
+**Why**: Tests fail if database schema doesn't match migrations.
+
+### Testing Prisma Queries
+
+**Don't use `expect.objectContaining` for Prisma `select` objects**
+
+```typescript
+// ❌ WRONG: Doesn't work with Prisma selects
+expect(mockPrisma.character.findMany).toHaveBeenCalledWith({
+  select: expect.objectContaining({
+    id: true,
+    firstName: true,
+  }),
+});
+
+// ✅ CORRECT: Use expect.anything() for Prisma selects
+expect(mockPrisma.character.findMany).toHaveBeenCalledWith({
+  select: expect.anything(), // Prisma handles validation
+});
+```
+
+**Reason**: Prisma `select` objects have complex structure with nested objects. The service logic is what matters, not the exact select shape.
+
+See [#130](https://github.com/leandro-br-dev/charhub/issues/130) for details.
+
+### Error Logging Best Practices
+
+```typescript
+// ✅ GOOD: Structured logging with context
+logger.info({ characterId, duration }, 'Avatar correction completed');
+
+// ❌ BAD: Plain string logging
+logger.info('Avatar correction completed');
+```
+
+**Why**: Structured logging enables better debugging and monitoring.
 
 ---
 

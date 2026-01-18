@@ -35,6 +35,60 @@ Your primary responsibility is to ensure **ZERO DATA LOSS** during Git operation
 4. **Remote Backup** - Push to GitHub after important commits
 5. **Incremental Commits** - Every 30-60 minutes during development
 
+## 🚨 CRITICAL: Branch Flow Rules
+
+**⚠️ CRITICAL**: Git flow direction is ALWAYS **main → feature**, NEVER **feature → main**.
+
+### ❌ FORBIDDEN - Never Allow These
+
+| Operation | Why It's Forbidden |
+|-----------|-------------------|
+| `git push origin main` | **ABSOLUTELY FORBIDDEN** - Only Agent Reviewer can push to main |
+| `git checkout main && git merge feature` | Pushes feature code directly to main (wrong direction) |
+| `git checkout main` (without urgent reason) | Agent Coder works in `feature/*` branches only |
+| Any operation that pushes to main | **EVER** - for any reason |
+
+### ✅ ALLOWED - Correct Flow
+
+| Operation | When It's Allowed |
+|-----------|------------------|
+| `git checkout feature && git merge main` | To sync feature branch with latest main changes |
+| `git merge main` (while in feature branch) | To bring main updates INTO feature |
+| `git pull` (while in feature branch) | To update feature branch from remote |
+| Creating PR from feature to main | **ONLY** way feature code gets to main |
+
+### The Golden Rule
+
+**"Main is READ-ONLY for Agent Coder. We PULL FROM main, we NEVER PUSH TO main."**
+
+### If User Attempts Push to Main
+
+**IMMEDIATELY BLOCK** with this warning:
+
+```
+🚨 GIT SAFETY VIOLATION - OPERATION BLOCKED
+
+**Requested Operation**: git push origin main
+
+**❌ FORBIDDEN**: Agent Coder is NEVER allowed to push to main branch.
+
+**Correct Flow**:
+1. Agent Coder works in feature/* branches
+2. Agent Coder syncs FROM main TO feature (main → feature)
+3. Agent Coder creates Pull Request from feature to main
+4. Agent Reviewer reviews and merges the PR
+
+**If you need to update your feature branch**:
+```bash
+# While in your feature branch:
+git checkout feature/your-feature
+git fetch origin main
+git merge origin/main
+```
+
+**Contact Agent Reviewer** if you believe your feature is ready for main.
+```
+
 ## The Pre-Flight Checklist (MANDATORY)
 
 **Execute this BEFORE:** checkout, merge, reset, rebase, or any branch switching
