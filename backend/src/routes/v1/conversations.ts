@@ -524,7 +524,7 @@ router.post(
       const { participantId } = req.body;
       const preferredLanguage = req.headers['x-user-language'] as string | undefined;
 
-      logger.info({ conversationId, userId, participantId }, 'Generating AI response for regeneration');
+      logger.info({ conversationId, userId, participantId, body: req.body }, 'Generating AI response for regeneration - START');
 
       if (!userId) {
         logger.warn({ conversationId }, 'Generate AI: No userId');

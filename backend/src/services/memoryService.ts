@@ -160,10 +160,23 @@ class MemoryService {
       // Map para lookup rápido de nomes
       const participantNames = new Map<string, string>();
 
+      // Helper function to parse user config override
+      function parseUserConfig(configOverride: string | null): any {
+        if (!configOverride) return null;
+        try {
+          return JSON.parse(configOverride);
+        } catch {
+          return null;
+        }
+      }
+
       // 1. Mapear participantes (characters/assistants)
       conversation?.participants.forEach(p => {
         if (p.user) {
-          participantNames.set(p.user.id, (p.user.displayName || p.user.username) ?? 'User');
+          // Check for nameOverride in configOverride
+          const config = parseUserConfig(p.configOverride);
+          const displayName = config?.nameOverride ?? (p.user.displayName || p.user.username) ?? 'User';
+          participantNames.set(p.user.id, displayName);
         }
         if (p.representingCharacter) {
           participantNames.set(p.id, p.representingCharacter.firstName);
@@ -385,10 +398,23 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
       // Map para lookup rápido de nomes
       const participantNames = new Map<string, string>();
 
+      // Helper function to parse user config override
+      function parseUserConfig(configOverride: string | null): any {
+        if (!configOverride) return null;
+        try {
+          return JSON.parse(configOverride);
+        } catch {
+          return null;
+        }
+      }
+
       // 1. Mapear participantes (characters/assistants)
       conversation?.participants.forEach(p => {
         if (p.user) {
-          participantNames.set(p.user.id, (p.user.displayName || p.user.username) ?? 'User');
+          // Check for nameOverride in configOverride
+          const config = parseUserConfig(p.configOverride);
+          const displayName = config?.nameOverride ?? (p.user.displayName || p.user.username) ?? 'User';
+          participantNames.set(p.user.id, displayName);
         }
         if (p.representingCharacter) {
           participantNames.set(p.id, p.representingCharacter.firstName);
@@ -454,19 +480,21 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
       if (recentMessages.length > 0) {
         context += '[= RECENT MESSAGES (FULL CONTEXT) =]\n\n';
 
-        const { decryptMessage } = await import('./encryption');
+        const { decryptMessage, isEncrypted } = await import('./encryption');
 
         recentMessages.forEach(msg => {
           const senderName = participantNames.get(msg.senderId) ||
                             (msg.senderType === 'USER' ? 'User' : 'Character');
 
-          // Decrypt message content before adding to context
+          // Decrypt message content if encrypted, otherwise use as-is
           let decryptedContent = msg.content;
-          try {
-            decryptedContent = decryptMessage(msg.content);
-          } catch (error) {
-            logger.error({ error, messageId: msg.id }, 'Failed to decrypt message in memory context');
-            decryptedContent = '[Decryption failed]';
+          if (isEncrypted(msg.content)) {
+            try {
+              decryptedContent = decryptMessage(msg.content);
+            } catch (error) {
+              logger.error({ error, messageId: msg.id }, 'Failed to decrypt message in memory context');
+              decryptedContent = '[Decryption failed]';
+            }
           }
 
           // Use explicit format for multi-user conversations
@@ -491,15 +519,17 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
 
       fallbackMessages.reverse();
 
-      const { decryptMessage } = await import('./encryption');
+      const { decryptMessage, isEncrypted } = await import('./encryption');
 
       return fallbackMessages.map(msg => {
         let decryptedContent = msg.content;
-        try {
-          decryptedContent = decryptMessage(msg.content);
-        } catch (error) {
-          logger.error({ error, messageId: msg.id }, 'Failed to decrypt message in fallback');
-          decryptedContent = '[Decryption failed]';
+        if (isEncrypted(msg.content)) {
+          try {
+            decryptedContent = decryptMessage(msg.content);
+          } catch (error) {
+            logger.error({ error, messageId: msg.id }, 'Failed to decrypt message in fallback');
+            decryptedContent = '[Decryption failed]';
+          }
         }
         return `${msg.senderType === 'USER' ? 'User' : 'Character'}: ${decryptedContent}`;
       }).join('\n');

@@ -262,6 +262,8 @@ const ChatContainer = () => {
             conversationId: conversation.id,
             userId: actorId,
           } as ConversationParticipant,
+          // Mark synthetic participants to prevent editing
+          isSynthetic: true,
         });
       }
     };
@@ -655,6 +657,15 @@ const ChatContainer = () => {
       onConfigureParticipant={async (participantId: string, data: any) => {
         try {
           if (!conversationId) return false;
+
+          // Check if participant is synthetic - cannot edit synthetic participants
+          const participant = processedParticipants.find((p: any) => p.id === participantId);
+          if (participant?.isSynthetic) {
+            setManualError(t('errors.cannotEditSyntheticParticipant', {
+              defaultValue: 'Cannot edit this participant. Please refresh the page.'
+            }));
+            return false;
+          }
 
           const payload: { configOverride?: string | null; representingCharacterId?: string | null } = {};
           if (typeof data.config_override !== 'undefined') {

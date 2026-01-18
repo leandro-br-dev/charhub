@@ -104,6 +104,18 @@ class ModelRouterService {
       reasoning: 'System translation (SFW) - using Gemini 3 Flash',
     };
   }
+
+  /**
+   * Get fallback model for chat when primary model fails
+   * Used when Venice AI rate limits are hit
+   */
+  getChatFallbackModel(): ModelSelection {
+    return {
+      provider: 'grok',
+      model: 'grok-4-1-fast-non-reasoning',
+      reasoning: 'Chat - Venice AI rate limited, falling back to Grok 4-1 (non-reasoning)',
+    };
+  }
 }
 
 // Export singleton instance

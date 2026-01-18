@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../../../hooks/useAuth";
 import { Button } from "../../../../components/ui/Button";
-import { Avatar } from "../../../../components/ui/Avatar";
+import { Avatar, AvatarWithFallback } from "../../../../components/ui/Avatar";
 import { Modal } from "../../../../components/ui/Modal";
 import { Textarea } from "../../../../components/ui/Textarea";
 import { ImageViewerModal } from "../../../../components/ui/ImageViewerModal";
@@ -16,7 +16,11 @@ import { characterService } from "../../../../services/characterService";
 // Types for user config override
 interface UserConfigOverride {
   instructions?: string;
+  nameOverride?: string;
+  ageOverride?: number;
   genderOverride?: 'male' | 'female' | 'non-binary' | 'other' | null;
+  avatarOverride?: string;
+  descriptionOverride?: string;
 }
 
 // Helper to parse user config from configOverride string
@@ -95,10 +99,15 @@ const ParticipantConfigModal = ({
 
   // State for user instructions and config
   const [userInstructions, setUserInstructions] = useState("");
+  const [nameOverride, setNameOverride] = useState("");
+  const [ageOverride, setAgeOverride] = useState("");
   const [genderOverride, setGenderOverride] = useState("");
+  const [avatarOverride, setAvatarOverride] = useState("");
+  const [descriptionOverride, setDescriptionOverride] = useState("");
   const [selectedPersonaId, setSelectedPersonaId] = useState("");
   const [availablePersonas, setAvailablePersonas] = useState<any[]>([]);
   const [loadingPersonas, setLoadingPersonas] = useState(false);
+  const [personaCharacterData, setPersonaCharacterData] = useState<any>(null);
 
   // State for character/assistant config
   const [localConfigOverride, setLocalConfigOverride] = useState("");
@@ -130,7 +139,11 @@ const ParticipantConfigModal = ({
         // Parse user config from JSON
         const userConfig = parseUserConfig(rawParticipant.configOverride);
         setUserInstructions(userConfig?.instructions || "");
+        setNameOverride(userConfig?.nameOverride || "");
+        setAgeOverride(userConfig?.ageOverride ? String(userConfig.ageOverride) : "");
         setGenderOverride(userConfig?.genderOverride || "");
+        setAvatarOverride(userConfig?.avatarOverride || "");
+        setDescriptionOverride(userConfig?.descriptionOverride || "");
       } else {
         // For characters/assistants, use plain string
         setLocalConfigOverride(rawParticipant.configOverride || "");
@@ -148,10 +161,15 @@ const ParticipantConfigModal = ({
       }
     } else if (!isOpen) {
       setUserInstructions("");
+      setNameOverride("");
+      setAgeOverride("");
       setGenderOverride("");
+      setAvatarOverride("");
+      setDescriptionOverride("");
       setLocalConfigOverride("");
       setSelectedPersonaId("");
       setAvailablePersonas([]);
+      setPersonaCharacterData(null);
       setError(null);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -194,6 +212,62 @@ const ParticipantConfigModal = ({
     fetchAvailablePersonas(searchTerm);
   }, [fetchAvailablePersonas]);
 
+  // Handle persona selection and auto-populate fields
+  const handlePersonaChange = useCallback(async (personaId: string) => {
+    setSelectedPersonaId(personaId);
+
+    if (!personaId) {
+      // Clear fields if no persona selected
+      setPersonaCharacterData(null);
+      return;
+    }
+
+    try {
+      // Fetch full character data to get all details
+      const characterData = await characterService.getById(personaId);
+      setPersonaCharacterData(characterData);
+
+      // Auto-populate fields with character data
+      // Name: firstName + lastName
+      const fullName = characterData.lastName
+        ? `${characterData.firstName} ${characterData.lastName}`
+        : characterData.firstName;
+      setNameOverride(fullName);
+
+      // Age: use character's age directly if available
+      if (characterData.age) {
+        setAgeOverride(String(characterData.age));
+      }
+
+      // Gender
+      if (characterData.gender) {
+        setGenderOverride(characterData.gender);
+      }
+
+      // Avatar: use character's avatar or first avatar image
+      if (characterData.avatar) {
+        setAvatarOverride(characterData.avatar);
+      } else {
+        const avatarImage = characterData.images?.find((img: any) => img.type === 'AVATAR');
+        if (avatarImage?.url) {
+          setAvatarOverride(avatarImage.url);
+        }
+      }
+
+      // Description: combine physical characteristics and personality
+      const descriptionParts = [
+        characterData.physicalCharacteristics,
+        characterData.personality,
+      ].filter(Boolean);
+      if (descriptionParts.length > 0) {
+        setDescriptionOverride(descriptionParts.join('\n\n'));
+      }
+    } catch (err) {
+      console.error('[ParticipantConfigModal] Failed to fetch character details:', err);
+      setError(t("participantConfigModal.errorLoadingPersonas"));
+    }
+  }, [t]);
+
   const handleSave = async () => {
     if (!participant) return;
     setSaving(true);
@@ -205,15 +279,34 @@ const ParticipantConfigModal = ({
       const isUser = participant.actorType === "USER";
 
       if (isUser) {
-        // For users: combine instructions + gender override into JSON
+        // For users: combine instructions + all override fields into JSON
         const userConfig: UserConfigOverride = {};
 
         if (userInstructions.trim()) {
           userConfig.instructions = userInstructions.trim();
         }
 
+        if (nameOverride.trim()) {
+          userConfig.nameOverride = nameOverride.trim();
+        }
+
+        if (ageOverride.trim()) {
+          const ageNum = parseInt(ageOverride.trim(), 10);
+          if (!isNaN(ageNum) && ageNum > 0 && ageNum < 150) {
+            userConfig.ageOverride = ageNum;
+          }
+        }
+
         if (genderOverride) {
           userConfig.genderOverride = genderOverride as 'male' | 'female' | 'non-binary' | 'other';
+        }
+
+        if (avatarOverride.trim()) {
+          userConfig.avatarOverride = avatarOverride.trim();
+        }
+
+        if (descriptionOverride.trim()) {
+          userConfig.descriptionOverride = descriptionOverride.trim();
         }
 
         configData.config_override = Object.keys(userConfig).length > 0
@@ -308,22 +401,81 @@ const ParticipantConfigModal = ({
   // Render user-specific content
   const renderUserContent = () => {
     return (
-      <div className="space-y-4">
-        {/* User Instructions */}
-        <Textarea
-          label={t("chatPage.userInstructionsLabel")}
-          placeholder={t("chatPage.userInstructionsPlaceholder")}
-          value={userInstructions}
-          onChange={(e) => setUserInstructions(e.target.value)}
-          rows={3}
-          disabled={saving}
-          maxLength={1000}
-        />
-        <p className="text-xs text-muted">
-          {t("chatPage.userInstructionsHelp")}
-        </p>
+      <div className="space-y-5">
+        {/* Section header */}
+        <div className="pb-3 border-b border-border">
+          <h4 className="text-sm font-semibold text-content mb-1">
+            {t("chatPage.userConfigSectionTitle")}
+          </h4>
+          <p className="text-xs text-muted">
+            {t("chatPage.userConfigSectionHelp")}
+          </p>
+        </div>
 
-        {/* Gender Override for this Conversation */}
+        {/* Quick Setup: Character Selector */}
+        <div className="bg-light/50 p-4 rounded-lg border border-border">
+          <ComboboxSelect
+            label={t("chatPage.assumePersonaLabel")}
+            options={personaOptionsWithDefault}
+            value={selectedPersonaId}
+            onChange={handlePersonaChange}
+            placeholder={t("chatPage.searchCharacterPlaceholder")}
+            valueKey="value"
+            labelKey="label"
+            disabled={saving || loadingPersonas}
+            searchable
+            onSearch={handlePersonaSearch}
+          />
+          <p className="text-xs text-muted mt-2">
+            {t("chatPage.assumePersonaHelp")}
+          </p>
+          {loadingPersonas && (
+            <p className="text-xs text-primary mt-1">
+              {t("chatPage.loadingPersonas")}
+            </p>
+          )}
+        </div>
+
+        {/* Name Override */}
+        <div>
+          <label className="block text-sm font-medium text-content mb-2">
+            {t("chatPage.nameOverrideLabel")}
+          </label>
+          <input
+            type="text"
+            value={nameOverride}
+            onChange={(e) => setNameOverride(e.target.value)}
+            placeholder={t("chatPage.nameOverridePlaceholder")}
+            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
+            disabled={saving}
+            maxLength={100}
+          />
+          <p className="text-xs text-muted mt-1">
+            {t("chatPage.nameOverrideHelp")}
+          </p>
+        </div>
+
+        {/* Age Override */}
+        <div>
+          <label className="block text-sm font-medium text-content mb-2">
+            {t("chatPage.ageOverrideLabel")}
+          </label>
+          <input
+            type="number"
+            value={ageOverride}
+            onChange={(e) => setAgeOverride(e.target.value)}
+            placeholder={t("chatPage.ageOverridePlaceholder")}
+            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
+            disabled={saving}
+            min="1"
+            max="150"
+          />
+          <p className="text-xs text-muted mt-1">
+            {t("chatPage.ageOverrideHelp")}
+          </p>
+        </div>
+
+        {/* Gender Override */}
         <div>
           <label className="block text-sm font-medium text-content mb-2">
             {t("chatPage.genderOverrideLabel")}
@@ -345,28 +497,57 @@ const ParticipantConfigModal = ({
           </p>
         </div>
 
-        {/* Assume Persona */}
+        {/* Avatar Override */}
         <div>
-          <ComboboxSelect
-            label={t("chatPage.assumePersonaLabel")}
-            options={personaOptionsWithDefault}
-            value={selectedPersonaId}
-            onChange={setSelectedPersonaId}
-            placeholder={t("chatPage.searchCharacterPlaceholder")}
-            valueKey="value"
-            labelKey="label"
-            disabled={saving || loadingPersonas}
-            searchable
-            onSearch={handlePersonaSearch}
+          <label className="block text-sm font-medium text-content mb-2">
+            {t("chatPage.avatarOverrideLabel")}
+          </label>
+          <input
+            type="text"
+            value={avatarOverride}
+            onChange={(e) => setAvatarOverride(e.target.value)}
+            placeholder={t("chatPage.avatarOverridePlaceholder")}
+            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
+            disabled={saving}
+            maxLength={500}
           />
           <p className="text-xs text-muted mt-1">
-            {t("chatPage.assumePersonaHelp")}
+            {t("chatPage.avatarOverrideHelp")}
           </p>
-          {loadingPersonas && (
-            <p className="text-xs text-primary mt-1">
-              {t("chatPage.loadingPersonas")}
-            </p>
-          )}
+        </div>
+
+        {/* Description Override */}
+        <div>
+          <label className="block text-sm font-medium text-content mb-2">
+            {t("chatPage.descriptionOverrideLabel")}
+          </label>
+          <Textarea
+            value={descriptionOverride}
+            onChange={(e) => setDescriptionOverride(e.target.value)}
+            placeholder={t("chatPage.descriptionOverridePlaceholder")}
+            rows={4}
+            disabled={saving}
+            maxLength={2000}
+          />
+          <p className="text-xs text-muted mt-1">
+            {t("chatPage.descriptionOverrideHelp")}
+          </p>
+        </div>
+
+        {/* Additional Instructions */}
+        <div>
+          <Textarea
+            label={t("chatPage.userInstructionsLabel")}
+            placeholder={t("chatPage.userInstructionsPlaceholder")}
+            value={userInstructions}
+            onChange={(e) => setUserInstructions(e.target.value)}
+            rows={3}
+            disabled={saving}
+            maxLength={1000}
+          />
+          <p className="text-xs text-muted">
+            {t("chatPage.userInstructionsHelp")}
+          </p>
         </div>
       </div>
     );
@@ -392,14 +573,10 @@ const ParticipantConfigModal = ({
           <div className="md:col-span-1 flex flex-col items-center space-y-4">
             <div className="relative group">
               <div className="w-48 h-64 rounded-2xl border-2 border-border overflow-hidden shadow-lg bg-light">
-                <img
-                  src={rep.avatar || "/default-avatar.png"}
+                <AvatarWithFallback
+                  src={rep.avatar}
                   alt={rep.name || t("common.unknown")}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/default-avatar.png";
-                  }}
                 />
               </div>
               <Button
@@ -457,11 +634,13 @@ const ParticipantConfigModal = ({
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-              <InfoItem
-                icon="palette"
-                label={t("characters:form.fields.style")}
-                value={rep.style || "N/A"}
-              />
+              {!isUser && (
+                <InfoItem
+                  icon="palette"
+                  label={t("characters:form.fields.style")}
+                  value={rep.style || "N/A"}
+                />
+              )}
               <InfoItem
                 icon={
                   rep.gender === "male"
@@ -471,7 +650,13 @@ const ParticipantConfigModal = ({
                     : "transgender"
                 }
                 label={t("characters:form.fields.gender")}
-                value={rep.gender ? t(`dashboard:filters.genders.${rep.gender.toUpperCase()}`, rep.gender) : "N/A"}
+                value={
+                  rep.gender
+                    ? t(`dashboard:filters.genders.${rep.gender.toUpperCase()}`, rep.gender)
+                    : (isUser && loggedInUser?.gender
+                      ? t(`dashboard:filters.genders.${loggedInUser.gender.toUpperCase()}`, loggedInUser.gender)
+                      : "N/A")
+                }
               />
               {rep.age && (
                 <InfoItem
