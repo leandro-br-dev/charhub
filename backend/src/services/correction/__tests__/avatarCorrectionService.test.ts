@@ -5,7 +5,7 @@
  * their AVATAR images.
  */
 import { AvatarCorrectionService } from '../avatarCorrectionService';
-import { setupTestDatabase, cleanDatabase, teardownTestDatabase, getTestDb } from '../../../test-utils/database';
+import { setupTestDatabase, cleanDatabase, teardownTestDatabase } from '../../../test-utils/database';
 
 // Mock dependencies
 jest.mock('../../../config/logger', () => ({

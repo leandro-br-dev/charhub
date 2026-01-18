@@ -14,6 +14,7 @@ import { comfyuiService } from '../comfyui/comfyuiService';
 import { r2Service } from '../r2Service';
 import { promptAgent } from '../comfyui/promptAgent';
 import { convertToWebP } from '../../utils/imageUtils';
+import { multiStageCharacterGenerator } from '../image-generation/multiStageCharacterGenerator';
 
 /**
  * Result of batch correction operation
@@ -162,6 +163,7 @@ class AvatarCorrectionService {
    * 5. Converts to WebP
    * 6. Uploads to R2
    * 7. Saves to database
+   * 8. Generates 4 reference images (face, front, side, back)
    *
    * @param characterId - ID of the character to correct
    * @returns true if successful, false otherwise
@@ -303,6 +305,29 @@ class AvatarCorrectionService {
 
       const duration = Date.now() - startTime;
       logger.info({ characterId, duration, imageUrl: publicUrl }, 'Avatar correction completed successfully');
+
+      // Generate 4 reference images (face, front, side, back)
+      logger.info({ characterId }, 'Starting reference image generation');
+      try {
+        await multiStageCharacterGenerator.generateCharacterDataset({
+          characterId,
+          prompt: enhancedPrompt,
+          loras: promptPayload.loras,
+          userId: this.BOT_USER_ID,
+          userRole: 'ADMIN',
+          visualStyle: character.style as any,
+          contentType: this.detectContentType(character.species?.name, character.physicalCharacteristics, tagNames),
+          viewsToGenerate: ['face', 'front', 'side', 'back'],
+          onProgress: (stage, total, message) => {
+            logger.info({ characterId, stage, total, message }, 'Reference generation progress');
+          },
+        });
+
+        logger.info({ characterId }, 'All 4 reference images generated successfully');
+      } catch (refError) {
+        logger.error({ err: refError, characterId }, 'Reference image generation failed, but avatar was created');
+        // Don't fail the entire correction if references fail
+      }
 
       return true;
     } catch (error) {

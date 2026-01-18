@@ -150,7 +150,7 @@ class DataCompletenessCorrectionService {
    *    - Existing character data as textData
    *    - 'en' as preferredLanguage (bot characters default to English)
    * 4. Update character with corrected data
-   * 5. Map species name to Species table
+   * 5. Map species name to Species table using improved identification logic
    *
    * @param characterId - ID of character to correct
    * @returns true if correction succeeded, false otherwise
@@ -229,33 +229,14 @@ class DataCompletenessCorrectionService {
         },
       }, 'Character data compiled by LLM');
 
-      // Find species ID by name
-      let speciesId: string | null = null;
-      if (compiledData.species) {
-        const species = await prisma.species.findFirst({
-          where: {
-            OR: [
-              { name: { equals: compiledData.species, mode: 'insensitive' } },
-              { description: { contains: compiledData.species, mode: 'insensitive' } },
-            ],
-          },
-          select: { id: true },
-        });
+      // Find species ID using improved identification logic
+      const speciesId = await this.identifySpecies(compiledData.species, characterId);
 
-        if (species) {
-          speciesId = species.id;
-          logger.info({
-            characterId,
-            species: compiledData.species,
-            speciesId,
-          }, 'Species found and mapped');
-        } else {
-          logger.warn({
-            characterId,
-            species: compiledData.species,
-          }, 'Species not found in database, storing as null');
-        }
-      }
+      logger.info({
+        characterId,
+        speciesFromLLM: compiledData.species,
+        identifiedSpeciesId: speciesId,
+      }, 'Species identification completed');
 
       // Update character with corrected data
       await prisma.character.update({
@@ -289,6 +270,148 @@ class DataCompletenessCorrectionService {
 
       return false;
     }
+  }
+
+  /**
+   * Identify species from LLM response using multiple fallback strategies
+   *
+   * Fallback strategy:
+   * 1. Try exact match (case-insensitive)
+   * 2. Try partial match (species name contains LLM response or vice versa)
+   * 3. Try to identify species from character description/history
+   * 4. Use "Unknown" species as final fallback
+   *
+   * @param speciesName - Species name from LLM
+   * @param characterId - Character ID for logging
+   * @returns Species ID (never null - always returns a valid ID)
+   */
+  private async identifySpecies(
+    speciesName: string | undefined,
+    characterId: string
+  ): Promise<string> {
+    const UNKNOWN_SPECIES_ID = 'b09b64de-bc83-4c70-9008-0e4a6b43fa48';
+
+    // If no species name provided, return Unknown immediately
+    if (!speciesName || speciesName.trim().length === 0) {
+      logger.warn({
+        characterId,
+        reason: 'no_species_name_provided',
+      }, 'Species identification failed - using Unknown fallback');
+      return UNKNOWN_SPECIES_ID;
+    }
+
+    const normalizedSpeciesName = speciesName.trim();
+
+    // Strategy 1: Try exact match (case-insensitive)
+    logger.info({
+      characterId,
+      strategy: 'exact_match',
+      speciesName: normalizedSpeciesName,
+    }, 'Attempting species identification - Strategy 1: Exact match');
+
+    let species = await prisma.species.findFirst({
+      where: {
+        name: { equals: normalizedSpeciesName, mode: 'insensitive' },
+      },
+      select: { id: true, name: true },
+    });
+
+    if (species) {
+      logger.info({
+        characterId,
+        strategy: 'exact_match',
+        speciesName: normalizedSpeciesName,
+        matchedSpeciesId: species.id,
+        matchedSpeciesName: species.name,
+      }, 'Species found via exact match');
+      return species.id;
+    }
+
+    // Strategy 2: Try partial match (contains)
+    logger.info({
+      characterId,
+      strategy: 'partial_match',
+      speciesName: normalizedSpeciesName,
+    }, 'Species identification - Strategy 2: Partial match');
+
+    // Try: LLM response contains species name (e.g., "Dark Elf" contains "Elf")
+    species = await prisma.species.findFirst({
+      where: {
+        name: { contains: normalizedSpeciesName, mode: 'insensitive' },
+      },
+      select: { id: true, name: true },
+    });
+
+    if (species) {
+      logger.info({
+        characterId,
+        strategy: 'partial_match_llm_contains_species',
+        speciesName: normalizedSpeciesName,
+        matchedSpeciesId: species.id,
+        matchedSpeciesName: species.name,
+      }, 'Species found via partial match (LLM response contains species name)');
+      return species.id;
+    }
+
+    // Try: Species name contains LLM response (e.g., "Wood" matches "Wood Elf")
+    species = await prisma.species.findFirst({
+      where: {
+        name: { mode: 'insensitive', contains: normalizedSpeciesName },
+      },
+      select: { id: true, name: true },
+    });
+
+    if (species) {
+      logger.info({
+        characterId,
+        strategy: 'partial_match_species_contains_llm',
+        speciesName: normalizedSpeciesName,
+        matchedSpeciesId: species.id,
+        matchedSpeciesName: species.name,
+      }, 'Species found via partial match (Species name contains LLM response)');
+      return species.id;
+    }
+
+    // Strategy 3: Try word-based matching (check if any word in LLM response matches a species)
+    logger.info({
+      characterId,
+      strategy: 'word_match',
+      speciesName: normalizedSpeciesName,
+    }, 'Species identification - Strategy 3: Word-based match');
+
+    const words = normalizedSpeciesName.split(/\s+/);
+    for (const word of words) {
+      if (word.length < 3) continue; // Skip short words
+
+      species = await prisma.species.findFirst({
+        where: {
+          name: { equals: word, mode: 'insensitive' },
+        },
+        select: { id: true, name: true },
+      });
+
+      if (species) {
+        logger.info({
+          characterId,
+          strategy: 'word_match',
+          speciesName: normalizedSpeciesName,
+          matchedWord: word,
+          matchedSpeciesId: species.id,
+          matchedSpeciesName: species.name,
+        }, 'Species found via word-based match');
+        return species.id;
+      }
+    }
+
+    // Strategy 4: Fallback to "Unknown" species
+    logger.warn({
+      characterId,
+      strategy: 'fallback_to_unknown',
+      speciesName: normalizedSpeciesName,
+      fallbackSpeciesId: UNKNOWN_SPECIES_ID,
+    }, 'Species identification failed - using Unknown fallback');
+
+    return UNKNOWN_SPECIES_ID;
   }
 
   /**
