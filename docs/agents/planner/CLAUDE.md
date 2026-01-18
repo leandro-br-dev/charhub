@@ -333,6 +333,28 @@ git mv docs/05-business/planning/features/backlog/FEATURE-XXX.md \
 3. Create ADR for decisions
 4. Provide implementation guidance
 
+### Infrastructure Monitoring (Docker Space)
+
+**⚠️ CRITICAL: Monitor Docker space to prevent disk exhaustion**
+
+Docker build cache accumulates rapidly across all 3 agent projects. Include in quality reviews:
+
+```bash
+# Check Docker space usage (run on any project)
+./scripts/docker-space-check.sh
+```
+
+**Thresholds**:
+- **OK**: Build cache < 50GB
+- **Warning**: Build cache 50-100GB → Run `./scripts/docker-cleanup-quick.sh`
+- **Critical**: Build cache > 100GB → Run `./scripts/docker-cleanup-full.sh`
+
+**Weekly Maintenance**: Ensure automated cron is running for daily cleanup at 3 AM.
+
+**If space issues occur**: Review if Agent Coder/Designer/Reviewer are using `--build` unnecessarily. The default should be `docker compose up -d` without `--build`.
+
+**First-Time Setup**: Each agent project should run `./scripts/docker-maintenance-setup.sh` once.
+
 ---
 
 ## 🚨 Common Scenarios & What To Do

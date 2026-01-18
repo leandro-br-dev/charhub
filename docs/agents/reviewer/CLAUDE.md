@@ -417,6 +417,58 @@ curl https://charhub.app/api/v1/health
 
 ---
 
+## 🐳 Docker Space Management (Development Only)
+
+**⚠️ CRITICAL: Prevent cache explosion by using `--build` only when necessary**
+
+### The Problem
+
+Using `docker compose up -d --build` for every restart creates ~500MB-2GB of new cache layers. With multiple agents doing this daily, disk can fill within days.
+
+### When to Restart vs Rebuild (Local Testing)
+
+| Scenario | Command |
+|----------|---------|
+| Testing PR locally | `docker compose up -d` (no --build) |
+| Dockerfile changed in PR | `docker compose up -d --build <service>` |
+| package.json changed in PR | `docker compose up -d --build <service>` |
+| prisma schema changed | `docker compose up -d --build backend` |
+| Container won't start | Check logs first, then try `--build` |
+
+### Smart Restart (Recommended)
+
+```bash
+# Auto-detects if rebuild is needed
+./scripts/docker-smart-restart.sh
+```
+
+### Space Check & Cleanup
+
+```bash
+# Check current space usage
+./scripts/docker-space-check.sh
+
+# Quick cleanup (safe for daily use)
+./scripts/docker-cleanup-quick.sh
+```
+
+### First-Time Setup
+
+After pulling this repository, run once:
+```bash
+./scripts/docker-maintenance-setup.sh
+```
+
+This configures automated daily cleanup via cron (shared across all projects).
+
+### Note for Sub-Agents
+
+When delegating to `local-qa-tester`, ensure it follows Docker Space guidelines:
+- Default restart: `docker compose up -d` (no --build)
+- Rebuild only when dependencies changed
+
+---
+
 ## 🎓 Remember
 
 ### The Golden Rule

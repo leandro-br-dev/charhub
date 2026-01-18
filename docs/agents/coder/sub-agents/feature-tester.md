@@ -121,10 +121,17 @@ npm run build          # Vite build + TypeScript MUST succeed
    - All services must show as "healthy"
    - If any service is unhealthy: check logs and diagnose
 
-2. **Restart with Latest Code** (preserving database data)
+2. **Restart with Latest Code** (Docker Space-Aware)
    ```bash
+   # RECOMMENDED: Use smart restart (auto-detects if rebuild needed)
+   ./scripts/docker-smart-restart.sh
+
+   # OR manual restart (default - no --build)
    docker compose down      # NO -v flag!
-   docker compose up -d --build
+   docker compose up -d
+
+   # Use --build ONLY if Dockerfile/package.json/prisma changed
+   # docker compose up -d --build backend
    ```
 
 3. **Verify Containers Started**

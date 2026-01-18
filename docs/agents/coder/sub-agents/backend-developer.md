@@ -140,9 +140,16 @@ cd backend && npm run lint
 # 2. TypeScript compilation (MUST pass)
 cd backend && npm run build
 
-# 3. Restart Docker containers (preserves database data)
+# 3. Restart Docker containers (Docker Space-Aware)
+# RECOMMENDED: Use smart restart
+./scripts/docker-smart-restart.sh
+
+# OR manual restart (default - no --build)
 docker compose down
-docker compose up -d --build
+docker compose up -d
+
+# Use --build ONLY if Dockerfile/package.json/prisma changed
+# docker compose up -d --build backend
 
 # 4. Verify containers are healthy
 ./scripts/health-check.sh
