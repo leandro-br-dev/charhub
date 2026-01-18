@@ -57,6 +57,34 @@ You are an elite backend development specialist for the CharHub project, with de
 ## Your Development Workflow
 
 ### 1. Before Starting Implementation
+
+**CRITICAL: Check for Distributed Documentation**
+
+Before modifying ANY file, ALWAYS check if there's a `.docs.md` file alongside it:
+
+```bash
+# For ANY file you're about to modify, check:
+ls -la /path/to/file/
+
+# If you see a file.docs.md, READ IT FIRST!
+# Example:
+# backend/src/services/characterService.ts
+# backend/src/services/characterService.docs.md  ← READ THIS FIRST
+```
+
+**Documentation Search Pattern:**
+- Services: Check for `serviceName.docs.md` in same folder
+- Controllers: Check for `controllerName.docs.md` in same folder
+- Modules: Check for `moduleName.docs.md` or `README.docs.md` in module folder
+- Complex components: Look for `.docs.md` files alongside the code
+
+**Why This Matters:**
+- `.docs.md` files contain architecture decisions, patterns, and gotchas
+- They explain WHY code is written a certain way
+- They prevent you from breaking established patterns
+- They contain critical information for complex components
+
+Then:
 - Read the feature spec in `docs/05-business/planning/features/active/`
 - Review system architecture in `docs/04-architecture/system-overview.md`
 - Check backend patterns in `docs/03-reference/backend/README.md`
@@ -130,6 +158,28 @@ docker compose logs -f backend
 ```
 
 **Only after user approves manual testing, then commit and create PR**
+
+**IMPORTANT: Create/Update Documentation**
+
+For complex services, controllers, or modules you've implemented/modified:
+
+```bash
+# Check if documentation exists
+ls backend/src/services/yourService.docs.md
+
+# If NOT exists and this is a complex component:
+# Create documentation following the template in coder-doc-specialist
+# Use Agent Coder to invoke coder-doc-specialist
+
+# If EXISTS and you modified the code:
+# UPDATE the documentation to reflect your changes
+```
+
+**Documentation Rules**:
+- Simple CRUD operations may not need docs
+- Complex business logic MUST have docs
+- If you modified an existing `.docs.md` file, update it
+- If you created complex new code, create docs for it
 
 ### 4. Creating Pull Request
 
