@@ -24,12 +24,15 @@ const app = createTestApp();
 jest.setTimeout(60000);
 
 describe('Character-Specific Instructions Integration Tests', () => {
+  let sharedUser: any;
+  let sharedToken: string;
+
   beforeAll(async () => {
     await setupTestDatabase();
-  });
-
-  beforeEach(async () => {
-    await cleanDatabase();
+    // Create a shared user once for all tests
+    const authUser = await createAuthenticatedTestUser();
+    sharedUser = authUser.user;
+    sharedToken = authUser.token;
   });
 
   afterAll(async () => {
@@ -38,7 +41,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
 
   describe('GET /api/v1/conversations/:id', () => {
     it('should include style field in actingCharacter data', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       // Create character with style
       const character = await createTestCharacter(user.id, {
@@ -73,7 +78,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
     });
 
     it('should include all character fields (style, gender, personality, history)', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       // Create character with all fields
       const character = await createTestCharacter(user.id, {
@@ -108,7 +115,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
     });
 
     it('should handle null style gracefully', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       // Create character without style
       const character = await createTestCharacter(user.id, {
@@ -134,7 +143,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
 
   describe('PATCH /api/v1/conversations/:id/participants/:participantId', () => {
     it('should update character configOverride with plain text instructions', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, characterParticipants } = await createTestConversationWithParticipants(
@@ -167,7 +178,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
     });
 
     it('should clear configOverride when set to null', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, characterParticipants } = await createTestConversationWithParticipants(
@@ -225,7 +238,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
     });
 
     it('should handle very long instructions (up to 2000 characters)', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, characterParticipants } = await createTestConversationWithParticipants(
@@ -259,7 +274,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
 
   describe('Character Instruction Data Propagation', () => {
     it('should include character avatar in participant data', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation } = await createTestConversationWithParticipants(user.id, {
@@ -281,7 +298,9 @@ describe('Character-Specific Instructions Integration Tests', () => {
     });
 
     it('should load representingCharacter for persona-based participants', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       // Create two characters: one for acting, one for representing
       const actingChar = await createTestCharacter(user.id, {

@@ -24,12 +24,15 @@ const app = createTestApp();
 jest.setTimeout(60000);
 
 describe('User Persona and Instructions Integration Tests', () => {
+  let sharedUser: any;
+  let sharedToken: string;
+
   beforeAll(async () => {
     await setupTestDatabase();
-  });
-
-  beforeEach(async () => {
-    await cleanDatabase();
+    // Create a shared user once for all tests
+    const authUser = await createAuthenticatedTestUser();
+    sharedUser = authUser.user;
+    sharedToken = authUser.token;
   });
 
   afterAll(async () => {
@@ -38,7 +41,9 @@ describe('User Persona and Instructions Integration Tests', () => {
 
   describe('PATCH /api/v1/conversations/:id/participants/:participantId - User Config', () => {
     it('should save user config as JSON with instructions', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -72,7 +77,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should save user config with all override fields', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -110,7 +117,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should set representingCharacterId for user persona', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const personaChar = await createTestCharacter(user.id, {
@@ -145,7 +154,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should clear user config when set to null', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -183,7 +194,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should handle empty JSON object', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -212,7 +225,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should handle invalid JSON gracefully (treat as plain string)', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -244,7 +259,9 @@ describe('User Persona and Instructions Integration Tests', () => {
 
   describe('GET /api/v1/characters/personas - Available Personas', () => {
     it('should return users own characters for persona selection', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       // Create some characters
       await createTestCharacter(user.id, { firstName: 'MyChar1' });
@@ -325,7 +342,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should support search by character name', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       await createTestCharacter(user.id, { firstName: 'DragonKnight' });
       await createTestCharacter(user.id, { firstName: 'WizardMage' });
@@ -343,7 +362,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should paginate results', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       // Create multiple characters
       for (let i = 0; i < 25; i++) {
@@ -419,7 +440,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should save avatarOverride when provided', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -489,7 +512,9 @@ describe('User Persona and Instructions Integration Tests', () => {
 
   describe('Edge Cases', () => {
     it('should handle concurrent updates (last write wins)', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -530,7 +555,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should handle very long user instructions (up to 1000 characters)', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -562,7 +589,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should handle special characters in instructions', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -594,7 +623,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should handle malformed JSON in configOverride', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation, userParticipantId } = await createTestConversationWithParticipants(
@@ -628,7 +659,9 @@ describe('User Persona and Instructions Integration Tests', () => {
 
   describe('representingCharacter Loading', () => {
     it('should load representingCharacter data when user has persona', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const personaChar = await createTestCharacter(user.id, {
@@ -667,7 +700,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should return null representingCharacter when not set', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const { conversation } = await createTestConversationWithParticipants(user.id, {
@@ -689,7 +724,9 @@ describe('User Persona and Instructions Integration Tests', () => {
     });
 
     it('should clear representingCharacterId when set to null', async () => {
-      const { user, token } = await createAuthenticatedTestUser();
+      // Using shared user
+      const user = sharedUser;
+      const token = sharedToken;
 
       const character = await createTestCharacter(user.id);
       const personaChar = await createTestCharacter(user.id);
