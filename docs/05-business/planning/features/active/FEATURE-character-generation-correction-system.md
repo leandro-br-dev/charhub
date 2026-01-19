@@ -1,10 +1,11 @@
 # Feature: Character Generation Flow Adjustment & Correction System
 
-**Status**: Active
+**Status**: In Review
 **Priority**: High
 **Assigned To**: Agent Coder
 **Created**: 2026-01-17
 **Feature ID**: FEATURE-011
+**Pull Request**: https://github.com/leandro-br-dev/charhub/pull/128
 
 ---
 

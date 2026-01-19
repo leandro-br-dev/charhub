@@ -299,6 +299,145 @@ Before considering implementation complete, verify:
 - Verify environment variables
 - Check database connectivity
 
+## Common TypeScript Mistakes - CRITICAL LESSONS LEARNED
+
+### ❌ Forgotten Exports (Backend Compilation Failures)
+
+**The Mistake**: Creating interfaces/types but forgetting to export them when used across files.
+
+**Real Example** (FEATURE-011 Correction System):
+```typescript
+// ❌ WRONG - Interface created but NOT exported
+// File: src/queues/jobs/characterPopulationJob.ts
+interface AvatarCorrectionJobData {
+  targetCount?: number;
+}
+
+// File: src/queues/workers/index.ts
+import { AvatarCorrectionJobData } from '../jobs/characterPopulationJob';
+// ERROR: Module '"../jobs/characterPopulationJob"' has no exported member 'AvatarCorrectionJobData'
+```
+
+**✅ The Fix**: Always export interfaces used in other files:
+```typescript
+// File: src/queues/jobs/characterPopulationJob.ts
+export interface AvatarCorrectionJobData {
+  targetCount?: number;
+}
+```
+
+**Verification** (BEFORE committing):
+```bash
+# Check for non-exported interfaces that might be imported elsewhere
+grep -r "^interface " src/queues/jobs/ | grep -v "^export interface"
+
+# If any found, check if they're imported elsewhere:
+grep -r "import.*AvatarCorrectionJobData" src/
+
+# If imported elsewhere → MUST add export
+```
+
+**When to Export**:
+- ✅ Export: Interfaces in `src/queues/jobs/` used by workers
+- ✅ Export: Types in `src/types/` used across multiple files
+- ✅ Export: Service interfaces used by controllers
+- ❌ Don't export: Types only used within the same file
+
+### ❌ Wrong Migration Timestamp Year
+
+**The Mistake**: Manually creating migration folders with wrong year (2025 instead of 2026).
+
+**Real Example** (FEATURE-011):
+```
+❌ WRONG: 20250111133000_add_visual_style_reference_system
+           ↑ Year 2025 instead of 2026!
+
+✅ CORRECT: 20260111221500_add_visual_style_system
+            ↑ Correct year 2026
+```
+
+**The Fix**: NEVER manually create migration folders. Always use Prisma CLI:
+```bash
+# ✅ CORRECT - Let Prisma generate the timestamp
+npx prisma migrate dev --name add_system_configuration
+
+# Prisma will create: 20260119123456_add_system_configuration
+#                              ↑ Correct timestamp auto-generated
+```
+
+**Why This Matters**:
+- Migrations run in timestamp order
+- Wrong year (2025) causes migrations to run BEFORE 2026 migrations
+- This creates database conflicts and CI failures
+- Fixing requires deleting the wrong migration and recreating
+
+**Verification** (BEFORE committing):
+```bash
+# Check migration timestamps have correct year
+ls -la backend/prisma/migrations/ | grep "^d" | awk '{print $NF}' | cut -c1-4 | sort -u
+
+# Should only show: 2026
+# If you see: 2025, 2024, etc. → WRONG!
+```
+
+### ❌ Forgetting to Rebuild Backend After Code Changes
+
+**The Mistake**: Changing TypeScript code but not rebuilding the backend container.
+
+**Symptoms**:
+- Backend returns 502 errors
+- Code changes don't take effect
+- Old code still running
+
+**The Fix**: Know WHEN to rebuild:
+```bash
+# ✅ NO REBUILD NEEDED (default)
+docker compose up -d
+
+# ✅ REBUILD NEEDED (only when these change):
+docker compose up -d --build backend
+# ↑ Use --build ONLY when:
+#   - Dockerfile changed
+#   - package.json changed
+#   - prisma/schema.prisma changed
+#   - New npm dependencies added
+```
+
+**Quick Check**:
+```bash
+# Did you change any of these files?
+git diff --name-only | grep -E "(Dockerfile|package\.json|schema\.prisma)"
+
+# If output is empty → NO --build needed
+# If output shows files → --build needed
+```
+
+## Prevention Checklist - Use Before EVERY Commit
+
+Before committing backend changes, verify:
+
+```bash
+# 1. Check for forgotten exports
+grep -r "^interface " src/queues/jobs/ | grep -v "^export interface" && \
+  echo "⚠️  WARNING: Found non-exported interfaces!" || \
+  echo "✓ All interfaces properly exported"
+
+# 2. Check migration timestamps
+ls backend/prisma/migrations/ | grep "^2025" && \
+  echo "⚠️  WARNING: Found 2025 migrations! Should be 2026!" || \
+  echo "✓ Migration timestamps correct"
+
+# 3. Verify TypeScript compilation
+cd backend && npm run build > /dev/null 2>&1 && \
+  echo "✓ TypeScript compiles successfully" || \
+  echo "❌ TypeScript compilation failed!"
+
+# 4. Verify linting
+npm run lint > /dev/null 2>&1 && \
+  echo "✓ Linting passed" || \
+  echo "❌ Linting failed!"
+```
+
 ## Communication with User
 
 - User is Brazilian - communicate in Portuguese (pt-BR)

@@ -744,6 +744,200 @@ it('should call onDelete when delete clicked', async () => {
 });
 ```
 
+## Mock Isolation Patterns - CRITICAL LESSONS LEARNED
+
+### ❌ The Problem: Tests Pass Individually But Fail Together
+
+**Real Example** (FEATURE-011 Correction System - 10 tests skipped):
+- 10 tests passed when run individually: `npm test -- --testNamePattern="should detect FURRY"`
+- Same tests failed when run in full suite: `npm test`
+- Root cause: Mock state bleeding between tests
+
+**Symptoms to Identify Mock Interference**:
+```bash
+# Run specific test - PASSES
+npm test -- --testNamePattern="should detect FURRY"
+
+# Run full suite - FAILS
+npm test
+
+# If you see this pattern → Mock interference issue!
+```
+
+### ✅ Solution: Mock Isolation Strategies
+
+#### Strategy 1: Simple Mocks - Use `jest.clearAllMocks()`
+
+**When to use**: Simple tests with basic mocks
+
+```typescript
+describe('Feature', () => {
+  afterEach(() => {
+    jest.clearAllMocks(); // Clears call history, KEEPS mock implementations
+  });
+
+  it('should work correctly', () => {
+    const mockFn = jest.fn().mockReturnValue('default');
+    // Test code...
+  });
+
+  // Next test starts with clean call history but same implementations
+});
+```
+
+**What it does**:
+- ✅ Clears `.mock.calls`, `.mock.instances`
+- ✅ Resets call history
+- ❌ Does NOT reset mock implementations
+- ❌ Does NOT restore original implementations
+
+#### Strategy 2: Changed Implementations - Use `mockClear()` on Specific Mocks
+
+**When to use**: Tests that change mock implementations mid-test
+
+```typescript
+describe('Feature', () => {
+  beforeEach(() => {
+    // Clear specific mocks that get modified in tests
+    comfyuiService.generateAvatar.mockClear();
+    comfyuiService.applyVisualStyleToPrompt.mockClear();
+  });
+
+  it('should handle error gracefully', () => {
+    comfyuiService.applyVisualStyleToPrompt
+      .mockRejectedValueOnce(new Error('Style failed'));
+    // Test error handling...
+  });
+
+  // Next test has fresh mock, not the error state
+});
+```
+
+**What it does**:
+- ✅ Clears ONLY that specific mock's state
+- ✅ More targeted than `clearAllMocks()`
+- ✅ Useful when tests modify mock behavior
+
+#### Strategy 3: Complex Mocks - Use Fresh Mock Modules
+
+**When to use**: Tests with complex mock setups or interference from other test files
+
+```typescript
+describe('Feature', () => {
+  beforeEach(() => {
+    // Reset module registry for this describe block
+    jest.resetModules();
+    jest.clearAllMocks();
+
+    // Re-import to get fresh mocks
+    const { service } = require('./service');
+  });
+});
+```
+
+**What it does**:
+- ✅ Completely resets module cache
+- ✅ Fresh imports for each describe block
+- ⚠️ Slower but more reliable
+- ⚠️ Use sparingly - only when necessary
+
+#### Strategy 4: Prisma Transaction Mocks - Array-Based NOT Callback-Based
+
+**CRITICAL**: Prisma v5+ changed transaction API. Tests MUST use array-based mocking.
+
+```typescript
+// ❌ WRONG - Callback-based (old Prisma v4 pattern)
+mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
+
+// ✅ CORRECT - Array-based (current Prisma v5+ pattern)
+mockPrisma.$transaction.mockResolvedValue([
+  { count: 0 },                    // First operation result (e.g., updateMany)
+  { id: 'img-1', url: '...' },    // Second operation result (e.g., create)
+]);
+```
+
+**Real Example Impact** (FEATURE-011):
+- 16 tests fixed by changing from callback to array-based
+- Tests were expecting callback but implementation uses array
+- This mismatch caused test failures
+
+**Why This Matters**:
+```typescript
+// Implementation (Prisma v5+):
+await prisma.$transaction([
+  prisma.characterImage.updateMany({ where: { type: 'AVATAR' }, data: { isActive: false } }),
+  prisma.characterImage.create({ data: { type: 'AVATAR', url: '...' } }),
+]);
+
+// Test must match this structure:
+mockPrisma.$transaction.mockResolvedValue([
+  { count: 1 },  // updateMany result
+  { id: 'img-1' }, // create result
+]);
+```
+
+### Prevention Checklist - Use Before Writing Tests
+
+```bash
+# 1. Check if mock implementations persist
+npm test -- --testNamePattern="first test"
+npm test -- --testNamePattern="second test"
+# If second test fails → Mock state bleeding!
+
+# 2. Verify Prisma transaction mocks are array-based
+grep -r "\$transaction.*mockImplementation" backend/src
+# If found → WRONG! Should be mockResolvedValue with array
+
+# 3. Run tests in different orders
+npm test -- --testNamePattern="pattern1"
+npm test -- --testNamePattern="pattern2"
+# Then:
+npm test -- --testNamePattern="pattern2"
+npm test -- --testNamePattern="pattern1"
+# If order matters → Isolation problem!
+```
+
+### Quick Reference: Mock Reset Methods
+
+| Method | Clears Calls | Clears Impl. | Resets Modules | Use When |
+|--------|-------------|--------------|---------------|----------|
+| `jest.clearAllMocks()` | ✅ | ❌ | ❌ | Simple tests, preserve mocks |
+| `mockFn.mockClear()` | ✅ | ❌ | ❌ | Specific mock cleanup |
+| `jest.resetAllMocks()` | ✅ | ✅ | ❌ | Need to reset implementations |
+| `jest.restoreAllMocks()` | ✅ | ✅ | ❌ | Need to restore original (espies) |
+| `jest.resetModules()` | ❌ | ❌ | ✅ | Fresh module imports needed |
+
+### When Tests Fail in Suite But Pass Individually
+
+**Diagnostic Steps**:
+
+1. **Run tests in isolation**:
+```bash
+npm test -- --testNamePattern="failing test name"
+# If PASSES → Mock interference
+```
+
+2. **Check for shared state**:
+```bash
+# Look for:
+# - Shared mock objects across tests
+# - Mocks modified in beforeEach but not reset
+# - Global variables
+grep -n "mock\." test-file.spec.ts
+```
+
+3. **Fix Strategy**:
+```typescript
+// Add to describe block:
+beforeEach(() => {
+  // Reset all mocks in this scope
+  jest.clearAllMocks();
+
+  // Or reset specific problematic mocks
+  problematicMock.mockClear();
+});
+```
+
 ## Communication Style
 
 - **Be thorough**: Write tests that cover all scenarios

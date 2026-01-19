@@ -9,12 +9,17 @@ import { civitaiApiClient } from '../../services/civitai';
 import { curationQueue } from '../../services/curation';
 import { batchCharacterGenerator } from '../../services/batch';
 import { prisma } from '../../config/database';
+import { avatarCorrectionService } from '../../services/correction';
+import { dataCompletenessCorrectionService } from '../../services/correction';
+import { systemConfigurationService } from '../../services/config';
 import type {
   TriggerCurationJobData,
   BatchGenerationJobData,
   FullPopulationJobData,
   HourlyGenerationJobData,
-  DailyCurationJobData
+  DailyCurationJobData,
+  AvatarCorrectionJobData,
+  DataCompletenessCorrectionJobData,
 } from '../jobs/characterPopulationJob';
 
 /**
@@ -266,6 +271,94 @@ async function processDailyCuration(job: Job<DailyCurationJobData>): Promise<voi
 }
 
 /**
+ * Process avatar correction job
+ * Finds characters without avatars and generates AVATAR + 4 REFERENCE images
+ */
+async function processAvatarCorrection(job: Job<AvatarCorrectionJobData>): Promise<void> {
+  const { targetCount: targetCountFromJob } = job.data;
+  const targetCount = targetCountFromJob || 5;
+
+  logger.info({ targetCount }, 'Processing avatar correction job');
+
+  await job.updateProgress(10);
+
+  try {
+    const correctionEnabled = await systemConfigurationService.getBool('correction.enabled', true);
+    if (!correctionEnabled) {
+      logger.info('Correction is disabled via configuration, skipping job');
+      await job.updateProgress(100);
+      return;
+    }
+    await job.updateProgress(30);
+
+    const dailyLimit = await systemConfigurationService.getInt('correction.avatar_daily_limit', 5);
+    const countToProcess = Math.min(targetCount, dailyLimit);
+
+    logger.info({ countToProcess, dailyLimit }, 'Starting batch avatar correction');
+    const result = await avatarCorrectionService.runBatchCorrection(countToProcess);
+
+    await job.updateProgress(100);
+
+    logger.info(
+      {
+        targetCount: result.targetCount,
+        successCount: result.successCount,
+        failureCount: result.failureCount,
+        duration: result.duration,
+      },
+      'Avatar correction job completed'
+    );
+  } catch (error) {
+    logger.error({ error, jobData: job.data }, 'Avatar correction job failed');
+    throw error;
+  }
+}
+
+/**
+ * Process data completeness correction job
+ * Finds characters with incomplete data and fixes them
+ */
+async function processDataCompletenessCorrection(job: Job<DataCompletenessCorrectionJobData>): Promise<void> {
+  const { targetCount: targetCountFromJob } = job.data;
+  const targetCount = targetCountFromJob || 10;
+
+  logger.info({ targetCount }, 'Processing data completeness correction job');
+
+  await job.updateProgress(10);
+
+  try {
+    const correctionEnabled = await systemConfigurationService.getBool('correction.enabled', true);
+    if (!correctionEnabled) {
+      logger.info('Correction is disabled via configuration, skipping job');
+      await job.updateProgress(100);
+      return;
+    }
+    await job.updateProgress(30);
+
+    const dailyLimit = await systemConfigurationService.getInt('correction.data_daily_limit', 10);
+    const countToProcess = Math.min(targetCount, dailyLimit);
+
+    logger.info({ countToProcess, dailyLimit }, 'Starting batch data completeness correction');
+    const result = await dataCompletenessCorrectionService.runBatchCorrection(countToProcess);
+
+    await job.updateProgress(100);
+
+    logger.info(
+      {
+        targetCount: result.targetCount,
+        successCount: result.successCount,
+        failureCount: result.failureCount,
+        duration: result.duration,
+      },
+      'Data completeness correction job completed'
+    );
+  } catch (error) {
+    logger.error({ error, jobData: job.data }, 'Data completeness correction job failed');
+    throw error;
+  }
+}
+
+/**
  * Character Population Worker Processor
  */
 export async function characterPopulationProcessor(job: Job<any>): Promise<void> {
@@ -288,6 +381,12 @@ export async function characterPopulationProcessor(job: Job<any>): Promise<void>
       break;
     case 'daily-curation':
       await processDailyCuration(job as Job<DailyCurationJobData>);
+      break;
+    case 'avatar-correction':
+      await processAvatarCorrection(job as Job<AvatarCorrectionJobData>);
+      break;
+    case 'data-completeness-correction':
+      await processDataCompletenessCorrection(job as Job<DataCompletenessCorrectionJobData>);
       break;
     default:
       throw new Error(`Unknown job name: ${name}`);
