@@ -5,7 +5,7 @@
     "newConversation": "新しい会話",
     "conversations": "会話",
     "noConversations": "まだ会話がありません",
-    "createFirst": "最初の会話を作成する",
+    "createFirst": "最初の会話を作成しましょう",
     "loading": "読み込み中...",
     "error": "チャットの読み込みエラー",
     "unknownParticipant": "不明 ({{id}})",
@@ -13,7 +13,7 @@
       "title": "会話履歴",
       "newChat": "新しいチャット",
       "searchPlaceholder": "会話を検索...",
-      "groupBy": "グループ化:",
+      "groupBy": "グループ分け:",
       "groupByDate": "日付",
       "groupByName": "名前",
       "today": "今日",
@@ -21,15 +21,15 @@
       "last7Days": "過去7日間",
       "last30Days": "過去30日間",
       "invalidDate": "無効な日付",
-      "noResults": "会話が見つかりません",
+      "noResults": "会話が見つかりませんでした",
       "empty": "まだ会話がありません",
-      "untitled": "タイトルなしの会話",
+      "untitled": "無題の会話",
       "editTitle": "タイトルを編集",
       "deleteConversation": "会話を削除",
       "deleteConfirmTitle": "会話を削除",
       "deleteConfirmMessage": "「{{title}}」を削除してもよろしいですか？この操作は元に戻せません。",
       "thisConversation": "この会話",
-      "deleteSuccess": "会話を削除しました"
+      "deleteSuccess": "会話が正常に削除されました"
     },
     "conversation": {
       "title": "会話",
@@ -42,7 +42,7 @@
       "settings": "設定",
       "lastMessage": "最後のメッセージ",
       "noMessages": "まだメッセージがありません",
-      "startTyping": "入力して会話を開始する",
+      "startTyping": "入力を開始して会話を始めましょう",
       "justNow": "たった今",
       "minutesAgo": "{{count}}分前",
       "hoursAgo": "{{count}}時間前",
@@ -56,7 +56,7 @@
       "edit": "メッセージを編集",
       "copy": "コピー",
       "retry": "再試行",
-      "failed": "送信できませんでした",
+      "failed": "送信に失敗しました",
       "you": "あなた",
       "ai": "AI",
       "system": "システム"
@@ -66,8 +66,10 @@
       "assistant": "アシスタント",
       "user": "ユーザー",
       "addCharacter": "キャラクターを追加",
-      "selectCharacter": "追加するキャラクターを選択",
+      "selectCharacter": "キャラクターを選択",
       "noCharacters": "利用可能なキャラクターがいません",
+      "noCharactersFound": "キャラクターが見つかりませんでした",
+      "noCharactersAvailable": "利用可能なキャラクターがいません",
       "removed": "参加者が削除されました",
       "added": "参加者が追加されました"
     },
@@ -83,7 +85,7 @@
       "delete": "削除",
       "confirm": "確認",
       "close": "閉じる",
-      "goBack": "会話に戻る"
+      "goBack": "会話一覧に戻る"
     },
     "errors": {
       "loadFailed": "会話の読み込みに失敗しました",
@@ -92,12 +94,12 @@
       "deleteFailed": "削除に失敗しました",
       "updateFailed": "更新に失敗しました",
       "networkError": "ネットワークエラー。接続を確認してください。",
-      "unauthorized": "この操作を行う権限がありません",
-      "notFound": "会話が見つかりません",
+      "unauthorized": "これを行う権限がありません",
+      "notFound": "会話が見つかりませんでした",
       "generateAiFailed": "応答の生成に失敗しました。",
       "addParticipantFailed": "参加者の追加に失敗しました。",
       "removeParticipantFailed": "参加者の削除に失敗しました。",
-      "cannotRemoveLastCharacter": "会話から最後のキャラクターを削除できません。少なくとも1つのキャラクターまたはアシスタントが残っている必要があります。",
+      "cannotRemoveLastCharacter": "会話から最後のキャラクターを削除できません。少なくとも1つのキャラクターまたはアシスタントが必要です。",
       "updateConversationFailed": "会話の更新に失敗しました。",
       "reprocessNotAvailable": "アシスタント参加者がいない場合、再処理は利用できません。",
       "imageGenerationUnavailable": "画像生成はまだ利用できません。",
@@ -105,13 +107,13 @@
       "promoteCharacterUnavailable": "キャラクターの昇格はまだ利用できません。",
       "audioPlaybackUnavailable": "オーディオ再生はまだ利用できません。",
       "reviewFileUnavailable": "ファイルのレビューはまだ利用できません。",
-      "suggestionFailed": "返信の提案の生成に失敗しました。",
+      "suggestionFailed": "返信候補の生成に失敗しました。",
       "developmentPlanProcessFailed": "開発計画の処理中にエラーが発生しました。続行できませんでした。"
     },
     "success": {
-      "created": "会話を作成しました",
-      "updated": "更新しました",
-      "deleted": "削除しました",
+      "created": "会話が正常に作成されました",
+      "updated": "正常に更新されました",
+      "deleted": "正常に削除されました",
       "sent": "メッセージを送信しました"
     },
     "chatPage": {
@@ -122,15 +124,15 @@
       "configureAssistantTitle": "アシスタント{{name}}を設定",
       "configureUserRoleplayTitle": "{{name}}のロールプレイを設定",
       "participantNotFound": "参加者が見つかりません",
-      "specificInstructionsLabel": "この会話への具体的な指示",
-      "specificInstructionsPlaceholder": "この会話でのみ、このキャラクターのカスタム行動指示を追加します...",
+      "specificInstructionsLabel": "この会話に特化した指示",
+      "specificInstructionsPlaceholder": "この会話内でのみ、このキャラクターにカスタムの行動指示を追加します...",
       "specificInstructionsHelp": "これらの指示は、この会話内でのみキャラクターの行動を変更します。キャラクターの基本定義には影響しません。",
       "specificInstructionsExamples": "指示の例",
-      "exampleInstruction1": "この会話では、もっと遊び心があり、からかうような振る舞いをしてください",
+      "exampleInstruction1": "この会話では、もっと陽気でからかうように振る舞ってください",
       "exampleInstruction2": "初デートのシナリオなので、緊張しているように振る舞ってください",
-      "exampleInstruction3": "王宮にいるかのように、フォーマルに話してください",
+      "exampleInstruction3": "まるで王宮にいるかのように丁寧に話してください",
       "promoteComingSoon": "この機能は近日公開予定です",
-      "assumePersonaLabel": "クイック設定: キャラクターテンプレートを使用",
+      "assumePersonaLabel": "クイック設定：キャラクターテンプレートを使用",
       "changeVisualPersonaLabel": "ビジュアルペルソナ",
       "selectCharacterPlaceholder": "キャラクターを選択",
       "loadingPersonas": "ペルソナを読み込み中...",
@@ -145,7 +147,7 @@
       "errorPromotingCharacter": "このキャラクターを昇格できませんでした。",
       "savingConfiguration": "設定を保存中...",
       "loadingConversation": "会話を読み込み中...",
-      "addParticipantsPrompt": "参加者を追加して会話を開始してください。",
+      "addParticipantsPrompt": "会話を開始するには、参加者を追加してください。",
       "confirmDeleteTitle": "削除の確認",
       "confirmDeleteMessage": "このメッセージを削除してもよろしいですか？",
       "confirmReprocessTitle": "再生成の確認",
@@ -153,11 +155,11 @@
       "confirmReprocessBotMessage": "このメッセージを再生成してもよろしいですか？",
       "regenerateButton": "再生成",
       "conversationSettingsTitle": "会話設定",
-      "userInstructionsLabel": "あなた自身についての指示",
+      "userInstructionsLabel": "自分に関する指示",
       "userInstructionsPlaceholder": "この会話のために、キャラクターにあなたのことを伝えてください...",
-      "userInstructionsHelp": "この会話でキャラクターに知っておいてほしいあなた自身の詳細を追加します。例：「私は中世の騎士としてプレイしています」または「私は丁寧な言葉遣いを好みます」。",
+      "userInstructionsHelp": "この会話でキャラクターに知っておいてほしい、あなたに関する詳細を追加します。例：「私は中世の騎士を演じています」または「私は丁寧な言葉遣いを好みます」。",
       "userConfigSectionTitle": "この会話でのあなたのアイデンティティ",
-      "userConfigSectionHelp": "この会話でのあなたのアイデンティティを上書きします。これらの設定はあなたのプロフィールを変更しません。",
+      "userConfigSectionHelp": "この会話のためにあなたのアイデンティティを上書きします。これらの設定はあなたのプロフィールを変更しません。",
       "nameOverrideLabel": "表示名",
       "nameOverridePlaceholder": "表示名を入力...",
       "nameOverrideHelp": "この会話でキャラクターがあなたを呼ぶ際に使用する名前です。",
@@ -169,21 +171,24 @@
       "genderOverrideHelp": "この会話でのみ性別を上書きします。これはあなたのプロフィールを変更しません。",
       "avatarOverrideLabel": "アバターURL",
       "avatarOverridePlaceholder": "https://example.com/avatar.jpg",
-      "avatarOverrideHelp": "オプション: アバター画像のURLを入力してください。",
+      "avatarOverrideHelp": "任意：アバター画像のURLを入力してください。",
       "descriptionOverrideLabel": "あなたについて",
-      "descriptionOverridePlaceholder": "あなたの外見、性格、背景などを記述...",
-      "descriptionOverrideHelp": "ロールプレイに役立つ、あなたのキャラクターについての詳細。身体的特徴、性格、背景など。",
+      "descriptionOverridePlaceholder": "あなたの外見、性格、背景などを説明してください...",
+      "descriptionOverrideHelp": "ロールプレイに役立つ、あなたのキャラクターに関する詳細。身体的特徴、性格、背景など。",
       "assumePersonaHelp": "キャラクターを選択すると、すべてのフィールドが自動入力されます。他のキャラクターは、このペルソナの名前と特徴であなたに呼びかけます。",
       "searchCharacterPlaceholder": "キャラクターを検索...",
-      "noPersonaFound": "キャラクターが見つかりません",
-      "clearOverridesButton": "すべてのオーバーライドをクリア",
-      "clearOverridesConfirm": "この会話でのすべてのアイデンティティオーバーライドをクリアしてもよろしいですか？"
+      "noPersonaFound": "キャラクターが見つかりませんでした",
+      "clearOverridesButton": "すべての上書きをクリア",
+      "clearOverridesConfirm": "この会話でのあなたのアイデンティティの上書きをすべてクリアしてもよろしいですか？",
+      "quickSetupLabel": "クイック設定：キャラクターテンプレートを使用",
+      "removeAvatar": "アバターを削除",
+      "currentAvatar": "現在のアバター"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "ペルソナを取得できませんでした。",
       "errorLoadingPersonas": "ペルソナを読み込めませんでした。",
       "viewGalleryButton": "ギャラリーを開く",
-      "assistantDetails": "元のAアシスタント: {{name}}",
+      "assistantDetails": "元のアシスタント：{{name}}",
       "galleryTitle": "{{name}}のギャラリー"
     },
     "conversationSettings": {
@@ -191,7 +196,7 @@
       "tabs": {
         "general": "一般",
         "roleplay": "ロールプレイ",
-        "view": "表示",
+        "view": "外観",
         "multiuser": "マルチユーザー"
       },
       "interactionModeLabel": "インタラクションモード",
@@ -204,8 +209,8 @@
       "useEmojisLabel": "絵文字を使用",
       "useSlangLabel": "スラングを使用",
       "slangNone": "しない",
-      "slangLow": "たまに",
-      "slangMedium": "よく",
+      "slangLow": "時々",
+      "slangMedium": "頻繁に",
       "roleplaySpecificTitle": "ロールプレイの詳細",
       "scenarioGenreLabel": "シナリオジャンル",
       "genreNone": "なし",
@@ -214,23 +219,23 @@
       "genreModern": "現代",
       "genreCustom": "カスタム",
       "customGenreDetailsLabel": "カスタムシナリオの詳細",
-      "customGenrePlaceholder": "ロールプレイのカスタムシナリオを記述してください",
+      "customGenrePlaceholder": "ロールプレイのカスタムシナリオを説明してください",
       "allowNsfwLabel": "成人向けコンテンツを許可",
-      "nsfwGlobalDisabledWarning": "あなたのアカウントでは成人向けコンテンツは許可されていません。",
+      "nsfwGlobalDisabledWarning": "あなたのアカウントでは成人向けコンテンツが許可されていません。",
       "showThoughtsLabel": "アシスタントの思考を表示",
       "narrationStyleLabel": "ナレーションスタイル",
       "narrationBalanced": "バランス型",
-      "narrationDescriptive": "描写型",
-      "narrationDialogue": "会話重視型",
+      "narrationDescriptive": "記述的",
+      "narrationDialogue": "会話重視",
       "viewOptionsTitle": "表示設定",
       "bgTypeLabel": "背景タイプ",
-      "bgTypeAuto": "自動 (キャラクターカバー)",
+      "bgTypeAuto": "自動（キャラクターカバー）",
       "bgTypeTheme": "テーマを使用",
       "bgTypeImage": "画像を使用",
       "selectFromGalleryButton": "ギャラリーから選択",
       "removeBgImageButton": "画像を削除",
       "noImageSelected": "背景が選択されていません",
-      "autoBackgroundInfo": "有効にすると、1対1の会話でキャラクターのカバー画像が背景として使用されます。",
+      "autoBackgroundInfo": "有効にすると、1対1の会話ではキャラクターのカバー画像が背景として使用されます。",
       "errorLoadingGallery": "ギャラリー画像を読み込めませんでした。",
       "galleryButton": "ギャラリーを開く",
       "imageGalleryTitle": "チャットギャラリー",
@@ -240,7 +245,7 @@
         "private": "非公開",
         "unlisted": "限定公開",
         "public": "公開",
-        "publicWarning": "この会話は全員に表示され、公開リストで検索可能になります。",
+        "publicWarning": "この会話は誰でも閲覧でき、公開リストに表示されます。",
         "unlistedWarning": "この会話はリンクを知っている人なら誰でもアクセスできますが、公開リストには表示されません。"
       }
     },
@@ -262,15 +267,15 @@
       "comingSoon": "近日公開"
     },
     "displayAvatarParticipants": {
-      "addParticipantPrompt": "参加者を追加して会話を開始してください。",
+      "addParticipantPrompt": "会話を開始するには、参加者を追加してください。",
       "configureParticipantTitle": "{{name}}を設定",
       "removeParticipantTitle": "{{name}}を削除",
       "addParticipantButtonTitle": "参加者を追加"
     },
     "messageInput": {
       "micNotSupportedError": "マイクはサポートされていません。",
-      "transcriptionFailedError": "文字起こしに失敗しました。",
-      "transcriptionServiceError": "文字起こしサービスエラー。",
+      "transcriptionFailedError": "書き起こしに失敗しました。",
+      "transcriptionServiceError": "書き起こしサービスエラー。",
       "micAccessError": "マイクへのアクセスが拒否されました。",
       "placeholderProcessingAudio": "音声を処理中...",
       "placeholderRecording": "録音中...",
@@ -290,7 +295,7 @@
     "messageItem": {
       "generatingAudio": "音声を生成中...",
       "playingAudio": "音声を再生中...",
-      "audioErrorPrefix": "オーディオエラー",
+      "audioErrorPrefix": "音声エラー",
       "playAudioCachedActionTitle": "音声を再生",
       "playAudioActionTitle": "音声を生成して再生",
       "deleteActionTitle": "メッセージを削除",
@@ -299,23 +304,23 @@
       "youSender": "あなた",
       "unknownSender": "不明",
       "creditsUsedTitle": "{{count}}クレジット使用",
-      "filesToReviewTitle": "レビューするファイル:"
+      "filesToReviewTitle": "レビューするファイル："
     },
     "chatActions": {
       "actionConfirmedByUser": "ユーザーがアクションを確認しました。",
       "actionCancelledByUser": "ユーザーがアクションをキャンセルしました。"
     },
     "memory": {
-      "active": "メモリがアクティブです ({{timeAgo}}に更新)",
-      "activeTooltip": "会話履歴は、コンテキストを保存するために自動的に圧縮されています。最近のメッセージは完全な状態で保持され、古いメッセージは要約されます。",
+      "active": "メモリがアクティブです ({{timeAgo}}更新)",
+      "activeTooltip": "会話履歴はコンテキストを節約するために自動的に圧縮されています。最近のメッセージは完全に保持され、古いメッセージは要約されます。",
       "compressing": "会話履歴を圧縮中...",
-      "compressingTooltip": "メモリ使用量を最適化するために、会話が要約されています。これには数分かかる場合があります。",
-      "compressionComplete": "履歴の圧縮が完了しました"
+      "compressingTooltip": "メモリ使用量を最適化するために、会話が要約されています。これには数秒かかる場合があります。",
+      "compressionComplete": "履歴が正常に圧縮されました"
     },
     "presence": {
-      "onlineTooltip": "この会話に他に{{count}}人のユーザーがオンラインです",
-      "oneOnline": "1人がオンライン",
-      "manyOnline": "{{count}}人がオンライン"
+      "onlineTooltip": "この会話には他に{{count}}人のユーザーがオンラインです",
+      "oneOnline": "1人オンライン",
+      "manyOnline": "{{count}}人オンライン"
     },
     "memberRole": {
       "owner": "オーナー",
@@ -325,7 +330,7 @@
       "member": "メンバー",
       "memberTooltip": "メンバー - 会話に参加できます",
       "viewer": "閲覧者",
-      "viewerTooltip": "閲覧者 - 会話への読み取り専用アクセス"
+      "viewerTooltip": "閲覧者 - 会話を読み取り専用でアクセスできます"
     },
     "inviteUser": {
       "title": "ユーザーを招待",
@@ -338,7 +343,7 @@
       "invite": "招待",
       "inviting": "招待中...",
       "inviteFailed": "ユーザーの招待に失敗しました。もう一度お試しください。",
-      "inviteSuccess": "ユーザーを招待しました！"
+      "inviteSuccess": "ユーザーを正常に招待しました！"
     },
     "shareInvite": {
       "title": "招待リンクを共有",
@@ -350,7 +355,7 @@
     },
     "joinChat": {
       "accepting": "会話に参加中...",
-      "invalidLink": "無効な、または存在しない招待リンク",
+      "invalidLink": "招待リンクが無効または不足しています",
       "failed": "会話への参加に失敗しました",
       "errorTitle": "参加できません",
       "goHome": "ホームへ移動",
@@ -367,9 +372,9 @@
       "searchCharactersPlaceholder": "キャラクターを検索...",
       "searchAssistantsPlaceholder": "アシスタントを検索...",
       "noItemsForSearch": "「{{searchTerm}}」の検索結果は見つかりませんでした",
-      "noItemsAvailable": "利用可能なアイテムがありません",
-      "alreadyAddedMaybe": "(利用可能なすべてのアイテムはすでに会話に追加されています)",
-      "noDescription": "説明がありません",
+      "noItemsAvailable": "利用可能な項目がありません",
+      "alreadyAddedMaybe": "（利用可能な項目はすべてすでに会話に追加されています）",
+      "noDescription": "説明はありません",
       "addToConversationButtonTitle": "会話に追加",
       "maxParticipantsError": "最大{{max}}人の参加者が許可されています",
       "connectionError": "接続エラー。もう一度お試しください。"
@@ -378,14 +383,33 @@
       "label": "マルチユーザー会話",
       "description": "複数のユーザーがこの会話に参加できるようにする",
       "maxUsers": "最大ユーザー数",
-      "maxUsersHint": "最大4人の人間ユーザーが参加できます (キャラクターは無制限)",
+      "maxUsersHint": "最大4人の人間ユーザーが参加できます（無制限のキャラクターは除く）",
       "allowInvites": "メンバーによる招待を許可",
-      "allowInvitesHint": "メンバーは他のユーザーを招待して参加させることができます",
-      "requireApproval": "参加に承認が必要",
+      "allowInvitesHint": "メンバーが他のユーザーを招待できるようにする",
+      "requireApproval": "参加承認が必要",
       "requireApprovalHint": "オーナーは、新しいメンバーが参加する前に承認する必要があります",
       "conversionWarning": "これにより、ソロ会話がマルチユーザーモードに変換されます。あなたは完全な制御権を持つオーナーになります。",
       "inviteLink": "招待リンク",
-      "inviteLinkDescription": "招待したいユーザーとこのリンクを共有してください:"
+      "inviteLinkDescription": "招待したいユーザーとこのリンクを共有してください："
+    },
+    "characterSelector": {
+      "searchPlaceholder": "名前でキャラクターを検索...",
+      "filterByGender": "性別でフィルター",
+      "filterBySpecies": "種族でフィルター",
+      "filterByFavorites": "お気に入りだけを表示",
+      "allGenders": "すべて",
+      "genderMale": "男性",
+      "genderFemale": "女性",
+      "genderNonBinary": "ノンバイナリー",
+      "genderOther": "その他",
+      "allSpecies": "すべての種族",
+      "clearFilters": "フィルターをクリア",
+      "showingCount": "{{total}}体のキャラクター中{{count}}体を表示中",
+      "noCharactersFound": "キャラクターが見つかりませんでした",
+      "noCharactersMatchFilters": "フィルターに一致するキャラクターはいません",
+      "noCharactersAvailable": "利用可能なキャラクターがいません",
+      "loadingCharacters": "キャラクターを読み込み中...",
+      "favoriteTooltip": "お気に入り"
     }
   }
 }

@@ -66,8 +66,10 @@
       "assistant": "Assistant",
       "user": "User",
       "addCharacter": "Add Character",
-      "selectCharacter": "Select a character to add",
+      "selectCharacter": "Select a character",
       "noCharacters": "No characters available",
+      "noCharactersFound": "No characters found",
+      "noCharactersAvailable": "No characters available",
       "removed": "Participant removed",
       "added": "Participant added"
     },
@@ -178,7 +180,10 @@
       "searchCharacterPlaceholder": "Search characters...",
       "noPersonaFound": "No characters found",
       "clearOverridesButton": "Clear All Overrides",
-      "clearOverridesConfirm": "Are you sure you want to clear all your identity overrides for this conversation?"
+      "clearOverridesConfirm": "Are you sure you want to clear all your identity overrides for this conversation?",
+      "quickSetupLabel": "Quick Setup: Use Character Template",
+      "removeAvatar": "Remove avatar",
+      "currentAvatar": "Current avatar"
     },
     "participantConfigModal": {
       "errorFetchingPersonas": "Unable to fetch personas.",
@@ -387,6 +392,25 @@
       "conversionWarning": "This will convert your solo conversation to multi-user mode. You will become the owner with full control.",
       "inviteLink": "Invite Link",
       "inviteLinkDescription": "Share this link with users you want to invite:"
+    },
+    "characterSelector": {
+      "searchPlaceholder": "Search characters by name...",
+      "filterByGender": "Filter by gender",
+      "filterBySpecies": "Filter by species",
+      "filterByFavorites": "Show favorites only",
+      "allGenders": "All",
+      "genderMale": "Male",
+      "genderFemale": "Female",
+      "genderNonBinary": "Non-binary",
+      "genderOther": "Other",
+      "allSpecies": "All Species",
+      "clearFilters": "Clear filters",
+      "showingCount": "Showing {{count}} of {{total}} characters",
+      "noCharactersFound": "No characters found",
+      "noCharactersMatchFilters": "No characters match your filters",
+      "noCharactersAvailable": "No characters available",
+      "loadingCharacters": "Loading characters...",
+      "favoriteTooltip": "Favorite"
     }
   }
 }

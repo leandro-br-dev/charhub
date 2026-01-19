@@ -297,10 +297,10 @@ const MessageItem = memo(
           ]
         );
     const handleAvatarClickInternal = useCallback(() => {
-      if (!isSent && onAvatarClick) {
+      if (onAvatarClick) {
         onAvatarClick();
       }
-    }, [isSent, onAvatarClick]);
+    }, [onAvatarClick]);
 
     const displayName =
       sender?.name ||
@@ -356,12 +356,12 @@ const MessageItem = memo(
             }`}
           >
             <div
-              className={`flex-shrink-0 ${isSent ? "ml-2" : "mr-2"} ${ 
-                !isSent && onAvatarClick ? "cursor-pointer" : ""
+              className={`flex-shrink-0 ${isSent ? "ml-2" : "mr-2"} ${
+                onAvatarClick ? "cursor-pointer" : ""
               }`}
               onClick={handleAvatarClickInternal}
               title={
-                !isSent && onAvatarClick
+                onAvatarClick
                   ? t("displayAvatarParticipants.configureParticipantTitle", {
                       name: displayName,
                     })

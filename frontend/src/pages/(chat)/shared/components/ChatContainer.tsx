@@ -68,7 +68,8 @@ function buildParticipantRepresentation(
 
     // Apply overrides if present, otherwise use original user data
     const name = userConfig?.nameOverride || user?.displayName || `User ${participant.userId.slice(0, 4)}`;
-    const avatar = userConfig?.avatarOverride || user?.avatarUrl || null;
+    // Avatar: only use override if it's a non-empty string, otherwise fall back to user's avatar
+    const avatar = (userConfig?.avatarOverride && userConfig.avatarOverride.trim()) ? userConfig.avatarOverride : (user?.avatarUrl || null);
     const age = userConfig?.ageOverride ? String(userConfig.ageOverride) : null;
     const gender = userConfig?.genderOverride || null;
 

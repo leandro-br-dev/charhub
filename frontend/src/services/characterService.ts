@@ -443,7 +443,7 @@ export const characterService = {
         id: char.id,
         firstName: char.firstName,
         lastName: char.lastName,
-        avatar: char.images?.find((img) => img.type === 'AVATAR')?.url || null,
+        avatar: char.images?.[0]?.url || null, // Use first image as avatar (standard pattern)
         gender: char.gender,
       }));
 

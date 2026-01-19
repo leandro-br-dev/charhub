@@ -3,12 +3,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../../../hooks/useAuth";
-import { Button } from "../../../../components/ui/Button";
-import { Avatar, AvatarWithFallback } from "../../../../components/ui/Avatar";
+import { Button, Avatar, AvatarWithFallback, CharacterSelector } from "../../../../components/ui";
 import { Modal } from "../../../../components/ui/Modal";
 import { Textarea } from "../../../../components/ui/Textarea";
 import { ImageViewerModal } from "../../../../components/ui/ImageViewerModal";
-import ComboboxSelect from "./ComboboxSelect";
 import ImageGalleryModal from "./ImageGalleryModal";
 
 import { characterService } from "../../../../services/characterService";
@@ -101,10 +99,10 @@ const ParticipantConfigModal = ({
   const [userInstructions, setUserInstructions] = useState("");
   const [nameOverride, setNameOverride] = useState("");
   const [ageOverride, setAgeOverride] = useState("");
-  const [genderOverride, setGenderOverride] = useState("");
-  const [avatarOverride, setAvatarOverride] = useState("");
+  const [genderOverride, setGenderOverride] = useState("male");
+  const [avatarOverride, setAvatarOverride] = useState<string | null>(null);
   const [descriptionOverride, setDescriptionOverride] = useState("");
-  const [selectedPersonaId, setSelectedPersonaId] = useState("");
+  const [selectedPersonaId, setSelectedPersonaId] = useState<string | null>(null);
   const [availablePersonas, setAvailablePersonas] = useState<any[]>([]);
   const [loadingPersonas, setLoadingPersonas] = useState(false);
   const [personaCharacterData, setPersonaCharacterData] = useState<any>(null);
@@ -140,16 +138,25 @@ const ParticipantConfigModal = ({
         const userConfig = parseUserConfig(rawParticipant.configOverride);
         setUserInstructions(userConfig?.instructions || "");
         setNameOverride(userConfig?.nameOverride || "");
-        setAgeOverride(userConfig?.ageOverride ? String(userConfig.ageOverride) : "");
-        setGenderOverride(userConfig?.genderOverride || "");
-        setAvatarOverride(userConfig?.avatarOverride || "");
+
+        // Age: use override if available, otherwise calculate from birth date
+        if (userConfig?.ageOverride) {
+          setAgeOverride(String(userConfig.ageOverride));
+        } else {
+          const birthDate = (loggedInUser as any)?.birthDate || (loggedInUser as any)?.dateOfBirth;
+          const age = calculateAge(birthDate);
+          setAgeOverride(age ? String(age) : "");
+        }
+
+        setGenderOverride((userConfig?.genderOverride || loggedInUser?.gender || "male").toLowerCase());
+        setAvatarOverride(userConfig?.avatarOverride || null);
         setDescriptionOverride(userConfig?.descriptionOverride || "");
       } else {
         // For characters/assistants, use plain string
         setLocalConfigOverride(rawParticipant.configOverride || "");
       }
 
-      setSelectedPersonaId(rawParticipant.representingCharacterId || "");
+      setSelectedPersonaId(rawParticipant.representingCharacterId || null);
 
       if (
         participant.actorType === "ASSISTANT" ||
@@ -163,11 +170,11 @@ const ParticipantConfigModal = ({
       setUserInstructions("");
       setNameOverride("");
       setAgeOverride("");
-      setGenderOverride("");
-      setAvatarOverride("");
+      setGenderOverride("male");
+      setAvatarOverride(null);
       setDescriptionOverride("");
       setLocalConfigOverride("");
-      setSelectedPersonaId("");
+      setSelectedPersonaId(null);
       setAvailablePersonas([]);
       setPersonaCharacterData(null);
       setError(null);
@@ -183,7 +190,7 @@ const ParticipantConfigModal = ({
     try {
       const result = await characterService.getAvailablePersonas({
         page: 1,
-        limit: 20,
+        limit: 500, // Load all user's characters + public characters
         search,
       });
 
@@ -194,6 +201,8 @@ const ParticipantConfigModal = ({
             ? `${char.firstName} ${char.lastName}`
             : char.firstName,
           avatar: char.avatar || null,
+          gender: char.gender || null,
+          isFavorite: false, // TODO: Fetch favorite status from API
         }));
         setAvailablePersonas(personaOptions);
       } else {
@@ -212,8 +221,25 @@ const ParticipantConfigModal = ({
     fetchAvailablePersonas(searchTerm);
   }, [fetchAvailablePersonas]);
 
+  // Helper function to calculate age from birth date
+  const calculateAge = (birthDate: string | Date | null | undefined): number | null => {
+    if (!birthDate) return null;
+    try {
+      const dob = typeof birthDate === 'string' ? new Date(birthDate) : birthDate;
+      const today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      const monthDiff = today.getMonth() - dob.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+      }
+      return age;
+    } catch {
+      return null;
+    }
+  };
+
   // Handle persona selection and auto-populate fields
-  const handlePersonaChange = useCallback(async (personaId: string) => {
+  const handlePersonaChange = useCallback(async (personaId: string | null) => {
     setSelectedPersonaId(personaId);
 
     if (!personaId) {
@@ -237,22 +263,25 @@ const ParticipantConfigModal = ({
       // Age: use character's age directly if available
       if (characterData.age) {
         setAgeOverride(String(characterData.age));
+      } else {
+        setAgeOverride("");
       }
 
-      // Gender
-      if (characterData.gender) {
-        setGenderOverride(characterData.gender);
-      }
+      // Gender: always update, default to male if not set
+      // Normalize gender to lowercase to match select values
+      const newGender = (characterData.gender || "male").toLowerCase();
+      console.log('[ParticipantConfigModal] Setting gender to:', newGender, 'from characterData.gender:', characterData.gender);
+      setGenderOverride(newGender);
 
       // Avatar: use character's avatar or first avatar image
+      let newAvatar = "";
       if (characterData.avatar) {
-        setAvatarOverride(characterData.avatar);
-      } else {
-        const avatarImage = characterData.images?.find((img: any) => img.type === 'AVATAR');
-        if (avatarImage?.url) {
-          setAvatarOverride(avatarImage.url);
-        }
+        newAvatar = characterData.avatar;
+      } else if (characterData.images?.[0]?.url) {
+        newAvatar = characterData.images[0].url;
       }
+      console.log('[ParticipantConfigModal] Setting avatar to:', newAvatar, 'from characterData:', { avatar: characterData.avatar, hasImages: !!characterData.images?.length });
+      setAvatarOverride(newAvatar || null);
 
       // Description: combine physical characteristics and personality
       const descriptionParts = [
@@ -261,6 +290,8 @@ const ParticipantConfigModal = ({
       ].filter(Boolean);
       if (descriptionParts.length > 0) {
         setDescriptionOverride(descriptionParts.join('\n\n'));
+      } else {
+        setDescriptionOverride("");
       }
     } catch (err) {
       console.error('[ParticipantConfigModal] Failed to fetch character details:', err);
@@ -301,7 +332,7 @@ const ParticipantConfigModal = ({
           userConfig.genderOverride = genderOverride as 'male' | 'female' | 'non-binary' | 'other';
         }
 
-        if (avatarOverride.trim()) {
+        if (avatarOverride && avatarOverride.trim()) {
           userConfig.avatarOverride = avatarOverride.trim();
         }
 
@@ -324,9 +355,9 @@ const ParticipantConfigModal = ({
           participant.actorType === "ASSISTANT"
         ) {
           const currentRepresentationId =
-            rawParticipant.representingCharacterId || "";
+            rawParticipant.representingCharacterId || null;
           if (selectedPersonaId !== currentRepresentationId) {
-            configData.representing_character_id = selectedPersonaId || null;
+            configData.representing_character_id = selectedPersonaId;
           }
         }
       }
@@ -379,13 +410,42 @@ const ParticipantConfigModal = ({
     return t("chatPage.configureParticipantTitle");
   }, [participant, t]);
 
+  // Helper function to get the default "None" option with proper translation
+  const getNoneOption = useCallback(() => {
+    return { value: "", label: `- ${t("common.none")} -`, avatar: null };
+  }, [t]);
+
   const personaOptionsWithDefault = useMemo(
-    () => [
-      { value: "", label: `- ${t("common.none")} -`, avatar: null },
-      ...availablePersonas,
-    ],
-    [availablePersonas, t]
+    () => availablePersonas,
+    [availablePersonas]
   );
+
+  // Handle reset to default user values
+  const handleResetToDefault = useCallback(() => {
+    setSelectedPersonaId(null);
+    setPersonaCharacterData(null);
+
+    // Reset to user's default values
+    if (loggedInUser) {
+      setNameOverride(loggedInUser.displayName || loggedInUser.username || "");
+
+      // Calculate age from birth date if available
+      const birthDate = (loggedInUser as any).birthDate || (loggedInUser as any).dateOfBirth;
+      const age = calculateAge(birthDate);
+      setAgeOverride(age ? String(age) : "");
+
+      setGenderOverride((loggedInUser.gender || "male").toLowerCase());
+
+      // Clear avatar override (null will use the user's original photo)
+      setAvatarOverride(null);
+    } else {
+      setNameOverride("");
+      setAgeOverride("");
+      setGenderOverride("male");
+      setAvatarOverride(null);
+    }
+    setDescriptionOverride("");
+  }, [loggedInUser]);
 
   const combinedFeatures = useMemo(() => {
     if (!participant?.representation) return null;
@@ -401,153 +461,117 @@ const ParticipantConfigModal = ({
   // Render user-specific content
   const renderUserContent = () => {
     return (
-      <div className="space-y-5">
-        {/* Section header */}
-        <div className="pb-3 border-b border-border">
-          <h4 className="text-sm font-semibold text-content mb-1">
-            {t("chatPage.userConfigSectionTitle")}
-          </h4>
-          <p className="text-xs text-muted">
-            {t("chatPage.userConfigSectionHelp")}
-          </p>
-        </div>
-
+      <div className="space-y-3">
         {/* Quick Setup: Character Selector */}
-        <div className="bg-light/50 p-4 rounded-lg border border-border">
-          <ComboboxSelect
-            label={t("chatPage.assumePersonaLabel")}
-            options={personaOptionsWithDefault}
-            value={selectedPersonaId}
-            onChange={handlePersonaChange}
-            placeholder={t("chatPage.searchCharacterPlaceholder")}
-            valueKey="value"
-            labelKey="label"
-            disabled={saving || loadingPersonas}
-            searchable
-            onSearch={handlePersonaSearch}
-          />
-          <p className="text-xs text-muted mt-2">
-            {t("chatPage.assumePersonaHelp")}
-          </p>
-          {loadingPersonas && (
-            <p className="text-xs text-primary mt-1">
-              {t("chatPage.loadingPersonas")}
-            </p>
-          )}
+        <div className="bg-primary/5 p-3 rounded-lg border border-primary/20">
+          <label className="text-xs font-semibold text-primary mb-1.5 block flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-sm">auto_awesome</span>
+            {t("chatPage.assumePersonaLabel")}
+          </label>
+          <div className="flex gap-2">
+            <CharacterSelector
+              characters={personaOptionsWithDefault}
+              selectedId={selectedPersonaId ?? undefined}
+              onSelect={(character) => {
+                handlePersonaChange(character ? (character as any).value : null);
+              }}
+              placeholder={t("chatPage.searchCharacterPlaceholder")}
+              disabled={saving || loadingPersonas}
+              searchable
+              loading={loadingPersonas}
+              enableFilters={true}
+              className="flex-grow"
+            />
+            <button
+              type="button"
+              onClick={handleResetToDefault}
+              disabled={saving}
+              className="px-3 py-2 text-sm rounded-lg border border-border bg-light dark:bg-gray-700 text-content hover:bg-gray-100 dark:hover:bg-gray-600 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              title="Restaurar valores padrão do usuário"
+            >
+              <span className="material-symbols-outlined text-sm">restart_alt</span>
+            </button>
+          </div>
         </div>
 
-        {/* Name Override */}
-        <div>
-          <label className="block text-sm font-medium text-content mb-2">
-            {t("chatPage.nameOverrideLabel")}
-          </label>
-          <input
-            type="text"
-            value={nameOverride}
-            onChange={(e) => setNameOverride(e.target.value)}
-            placeholder={t("chatPage.nameOverridePlaceholder")}
-            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
-            disabled={saving}
-            maxLength={100}
-          />
-          <p className="text-xs text-muted mt-1">
-            {t("chatPage.nameOverrideHelp")}
-          </p>
-        </div>
+        {/* Compact Grid: Name, Age, Gender */}
+        <div className="grid grid-cols-3 gap-2">
+          {/* Name Override */}
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-muted pointer-events-none">badge</span>
+            <input
+              type="text"
+              value={nameOverride}
+              onChange={(e) => setNameOverride(e.target.value)}
+              placeholder={t("chatPage.nameOverridePlaceholder")}
+              disabled={saving}
+              className="w-full pl-8 pr-2 py-1.5 text-sm rounded-lg border border-border bg-light dark:bg-gray-700 text-content placeholder:text-muted focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            />
+          </div>
 
-        {/* Age Override */}
-        <div>
-          <label className="block text-sm font-medium text-content mb-2">
-            {t("chatPage.ageOverrideLabel")}
-          </label>
-          <input
-            type="number"
-            value={ageOverride}
-            onChange={(e) => setAgeOverride(e.target.value)}
-            placeholder={t("chatPage.ageOverridePlaceholder")}
-            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
-            disabled={saving}
-            min="1"
-            max="150"
-          />
-          <p className="text-xs text-muted mt-1">
-            {t("chatPage.ageOverrideHelp")}
-          </p>
-        </div>
+          {/* Age Override */}
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-muted pointer-events-none">cake</span>
+            <input
+              type="number"
+              value={ageOverride}
+              onChange={(e) => setAgeOverride(e.target.value)}
+              placeholder={t("chatPage.ageOverridePlaceholder")}
+              disabled={saving}
+              className="w-full pl-8 pr-2 py-1.5 text-sm rounded-lg border border-border bg-light dark:bg-gray-700 text-content placeholder:text-muted focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none"
+            />
+          </div>
 
-        {/* Gender Override */}
-        <div>
-          <label className="block text-sm font-medium text-content mb-2">
-            {t("chatPage.genderOverrideLabel")}
-          </label>
-          <select
-            value={genderOverride}
-            onChange={(e) => setGenderOverride(e.target.value)}
-            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
-            disabled={saving}
-          >
-            <option value="">{t("chatPage.genderUseDefault")}</option>
-            <option value="male">{t("dashboard:filters.genders.male")}</option>
-            <option value="female">{t("dashboard:filters.genders.female")}</option>
-            <option value="non-binary">{t("dashboard:filters.genders.nonBinary")}</option>
-            <option value="other">{t("dashboard:filters.genders.other")}</option>
-          </select>
-          <p className="text-xs text-muted mt-1">
-            {t("chatPage.genderOverrideHelp")}
-          </p>
-        </div>
-
-        {/* Avatar Override */}
-        <div>
-          <label className="block text-sm font-medium text-content mb-2">
-            {t("chatPage.avatarOverrideLabel")}
-          </label>
-          <input
-            type="text"
-            value={avatarOverride}
-            onChange={(e) => setAvatarOverride(e.target.value)}
-            placeholder={t("chatPage.avatarOverridePlaceholder")}
-            className="w-full bg-light border border-dark rounded-lg px-3 py-2 text-content"
-            disabled={saving}
-            maxLength={500}
-          />
-          <p className="text-xs text-muted mt-1">
-            {t("chatPage.avatarOverrideHelp")}
-          </p>
+          {/* Gender Override */}
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-sm text-muted pointer-events-none">wc</span>
+            <select
+              value={genderOverride}
+              onChange={(e) => setGenderOverride(e.target.value)}
+              disabled={saving}
+              className="w-full pl-8 pr-2 py-1.5 text-sm rounded-lg border border-border bg-light dark:bg-gray-700 text-content focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none appearance-none"
+            >
+              <option value="male">{t("dashboard:filters.genders.male")}</option>
+              <option value="female">{t("dashboard:filters.genders.female")}</option>
+              <option value="non-binary">{t("dashboard:filters.genders.nonBinary")}</option>
+              <option value="other">{t("dashboard:filters.genders.other")}</option>
+            </select>
+            <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted pointer-events-none">expand_more</span>
+          </div>
         </div>
 
         {/* Description Override */}
         <div>
-          <label className="block text-sm font-medium text-content mb-2">
+          <label className="text-xs font-medium text-muted mb-1 block flex items-center gap-1">
+            <span className="material-symbols-outlined text-sm">description</span>
             {t("chatPage.descriptionOverrideLabel")}
           </label>
           <Textarea
             value={descriptionOverride}
             onChange={(e) => setDescriptionOverride(e.target.value)}
             placeholder={t("chatPage.descriptionOverridePlaceholder")}
-            rows={4}
+            rows={2}
             disabled={saving}
             maxLength={2000}
+            className="text-sm"
           />
-          <p className="text-xs text-muted mt-1">
-            {t("chatPage.descriptionOverrideHelp")}
-          </p>
         </div>
 
         {/* Additional Instructions */}
         <div>
+          <label className="text-xs font-medium text-muted mb-1 block flex items-center gap-1">
+            <span className="material-symbols-outlined text-sm">edit_note</span>
+            {t("chatPage.userInstructionsLabel")}
+          </label>
           <Textarea
-            label={t("chatPage.userInstructionsLabel")}
-            placeholder={t("chatPage.userInstructionsPlaceholder")}
             value={userInstructions}
             onChange={(e) => setUserInstructions(e.target.value)}
-            rows={3}
+            placeholder={t("chatPage.userInstructionsPlaceholder")}
+            rows={2}
             disabled={saving}
             maxLength={1000}
+            className="text-sm"
           />
-          <p className="text-xs text-muted">
-            {t("chatPage.userInstructionsHelp")}
-          </p>
         </div>
       </div>
     );
@@ -574,7 +598,11 @@ const ParticipantConfigModal = ({
             <div className="relative group">
               <div className="w-48 h-64 rounded-2xl border-2 border-border overflow-hidden shadow-lg bg-light">
                 <AvatarWithFallback
-                  src={rep.avatar}
+                  src={
+                    isUser && avatarOverride && avatarOverride.trim()
+                      ? avatarOverride
+                      : (isUser ? (loggedInUser?.photo || rep.avatar) : rep.avatar)
+                  }
                   alt={rep.name || t("common.unknown")}
                   className="w-full h-full object-cover"
                 />
@@ -619,59 +647,11 @@ const ParticipantConfigModal = ({
           </div>
 
           <div className="md:col-span-2 space-y-4">
-            <div>
-              <h3 className="text-xl font-semibold text-content">
-                {rep.name || t("common.unknown")}
-              </h3>
-              {isAssistant && rep.id !== participant.actorId && (
-                <p className="text-sm text-muted">
-                  {t("participantConfigModal.assistantDetails", {
-                    name:
-                      assistantDetails?.name || t("common.nameNotAvailable"),
-                  })}
-                </p>
-              )}
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
-              {!isUser && (
-                <InfoItem
-                  icon="palette"
-                  label={t("characters:form.fields.style")}
-                  value={rep.style || "N/A"}
-                />
-              )}
-              <InfoItem
-                icon={
-                  rep.gender === "male"
-                    ? "male"
-                    : rep.gender === "female"
-                    ? "female"
-                    : "transgender"
-                }
-                label={t("characters:form.fields.gender")}
-                value={
-                  rep.gender
-                    ? t(`dashboard:filters.genders.${rep.gender.toUpperCase()}`, rep.gender)
-                    : (isUser && loggedInUser?.gender
-                      ? t(`dashboard:filters.genders.${loggedInUser.gender.toUpperCase()}`, loggedInUser.gender)
-                      : "N/A")
-                }
-              />
-              {rep.age && (
-                <InfoItem
-                  icon="cake"
-                  label={t("characters:form.fields.age")}
-                  value={rep.age}
-                />
-              )}
-            </div>
-
             {combinedFeatures && (
               <ExpandableText text={combinedFeatures} />
             )}
 
-            <div className="pt-4 border-t border-gray-700 space-y-4">
+            <div className="space-y-4">
               {/* User-specific configuration */}
               {isUser && renderUserContent()}
 
@@ -711,15 +691,20 @@ const ParticipantConfigModal = ({
               {/* Assistant persona selection */}
               {isAssistant && (
                 <div>
-                  <ComboboxSelect
-                    label={t("chatPage.changeVisualPersonaLabel")}
-                    options={personaOptionsWithDefault}
-                    value={selectedPersonaId}
-                    onChange={setSelectedPersonaId}
+                  <label className="block text-sm font-medium text-content mb-2">
+                    {t("chatPage.changeVisualPersonaLabel")}
+                  </label>
+                  <CharacterSelector
+                    characters={personaOptionsWithDefault}
+                    selectedId={selectedPersonaId ?? undefined}
+                    onSelect={(character) => {
+                      setSelectedPersonaId(character ? (character as any).value : null);
+                    }}
                     placeholder={t("chatPage.selectCharacterPlaceholder")}
-                    valueKey="value"
-                    labelKey="label"
                     disabled={saving || loadingPersonas}
+                    loading={loadingPersonas}
+                    enableFilters={true}
+                    searchable
                   />
                   {loadingPersonas && (
                     <p className="text-xs text-muted mt-1">

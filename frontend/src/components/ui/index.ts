@@ -12,7 +12,7 @@ export { ToastContainer } from './ToastContainer';
 export { Button } from './Button';
 export { Select } from './Select';
 export { CachedImage } from './CachedImage';
-export { Avatar } from './Avatar';
+export { Avatar, AvatarWithFallback } from './Avatar';
 export { DescriptiveSelector } from './DescriptiveSelector';
 export type { DescriptiveSelectorOption, DescriptiveSelectorProps } from './DescriptiveSelector';
 
@@ -24,3 +24,7 @@ export { ContentFilter } from './content-filter';
 export { Tag } from './Tag';
 export { PageHeader } from './PageHeader';
 export type { PageHeaderProps } from './PageHeader';
+
+// Character selector
+export { CharacterSelector } from './CharacterSelector';
+export type { CharacterOption, CharacterSelectorProps } from './CharacterSelector';

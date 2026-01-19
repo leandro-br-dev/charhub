@@ -227,6 +227,22 @@ const MessageList: React.FC<MessageListProps> = ({
           const participantForThisMessage = Array.isArray(participants)
             ? participants.find((p) => p.id === participantId)
             : undefined;
+
+          // If no participant found but this is a user message, create a synthetic participant
+          // so the avatar click works for user configuration
+          const participantForAvatarClick = participantForThisMessage || (
+            isSentByUser && senderInfo?.participantId
+              ? {
+                  id: senderInfo.participantId,
+                  actorId: senderId,
+                  actorType: 'USER',
+                  representation: {
+                    name: senderDetails.name,
+                    avatar: senderDetails.avatar,
+                  },
+                }
+              : participantForThisMessage
+          );
           let imageContentData = null;
           if (msg.senderType !== SenderType.USER) {
             imageContentData = checkAndParseImageContent(msg.content);
@@ -250,8 +266,8 @@ const MessageList: React.FC<MessageListProps> = ({
               timestamp={msg.timestamp}
               senderType={msg.senderType}
               onAvatarClick={() => {
-                if (participantForThisMessage && onAvatarClick) {
-                  onAvatarClick(participantForThisMessage);
+                if (participantForAvatarClick && onAvatarClick) {
+                  onAvatarClick(participantForAvatarClick);
                 }
               }}
               onDeleteRequest={onDeleteClick}
