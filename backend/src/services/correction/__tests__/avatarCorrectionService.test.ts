@@ -17,19 +17,25 @@ jest.mock('../../../config/logger', () => ({
   },
 }));
 
-jest.mock('../../comfyui/comfyuiService', () => ({
-  comfyuiService: {
-    applyVisualStyleToPrompt: jest.fn().mockResolvedValue({
-      positive: 'enhanced positive prompt',
-      negative: 'enhanced negative prompt',
-      loras: [],
-    }),
-    generateAvatar: jest.fn().mockResolvedValue({
-      imageBytes: Buffer.from('fake-image-data'),
-      metadata: { width: 512, height: 512 },
-    }),
-  },
-}));
+jest.mock('../../comfyui/comfyuiService', () => {
+  const mockApplyVisualStyle = jest.fn();
+  // Return loras that were passed in, with additional style loras
+  mockApplyVisualStyle.mockImplementation(async (_positive, _negative, _style, _contentType, loras) => ({
+    positive: 'enhanced positive prompt',
+    negative: 'enhanced negative prompt',
+    loras: loras || [], // Preserve passed loras
+  }));
+
+  return {
+    comfyuiService: {
+      applyVisualStyleToPrompt: mockApplyVisualStyle,
+      generateAvatar: jest.fn().mockResolvedValue({
+        imageBytes: Buffer.from('fake-image-data'),
+        metadata: { width: 512, height: 512 },
+      }),
+    },
+  };
+});
 
 jest.mock('../../comfyui/promptAgent', () => ({
   promptAgent: {
@@ -51,6 +57,12 @@ jest.mock('../../r2Service', () => ({
 
 jest.mock('../../../utils/imageUtils', () => ({
   convertToWebP: jest.fn().mockResolvedValue(Buffer.from('webp-data')),
+}));
+
+jest.mock('../../image-generation/multiStageCharacterGenerator', () => ({
+  multiStageCharacterGenerator: {
+    generateCharacterDataset: jest.fn().mockResolvedValue(undefined),
+  },
 }));
 
 // Mock prisma with a factory function to avoid hoisting issues
@@ -246,7 +258,11 @@ describe('AvatarCorrectionService', () => {
       // Reset mocks with default successful responses
       mockPrisma.character.findUnique.mockResolvedValue(mockCharacter);
       mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((callback: any) => callback(mockPrisma));
+      // Mock array-based transaction (not callback-based)
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 }, // updateMany result
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' }, // create result
+      ]);
     });
 
     it('should generate AVATAR image for character', async () => {
@@ -327,13 +343,11 @@ describe('AvatarCorrectionService', () => {
       const { comfyuiService } = require('../../comfyui/comfyuiService');
 
       expect(comfyuiService.applyVisualStyleToPrompt).toHaveBeenCalledWith(
-        expect.objectContaining({
-          positive: expect.any(String),
-          negative: expect.any(String),
-        }),
+        expect.any(String), // positive
+        expect.any(String), // negative
         'anime',
-        undefined,
-        undefined
+        undefined, // contentType
+        expect.any(Array) // loras array
       );
     });
 
@@ -345,6 +359,7 @@ describe('AvatarCorrectionService', () => {
       const callArgs = comfyuiService.generateAvatar.mock.calls[0];
       const promptPayload = callArgs[0];
 
+      // The loras are passed through applyVisualStyleToPrompt
       expect(promptPayload.loras).toEqual([
         {
           name: 'test-lora',
@@ -451,8 +466,10 @@ describe('AvatarCorrectionService', () => {
 
       expect(mockPrisma.$transaction).toHaveBeenCalled();
 
-      const transactionCallback = mockPrisma.$transaction.mock.calls[0][0];
-      expect(transactionCallback).toBeInstanceOf(Function);
+      // Array-based transaction - should be called with an array
+      const transactionArgs = mockPrisma.$transaction.mock.calls[0][0];
+      expect(Array.isArray(transactionArgs)).toBe(true);
+      expect(transactionArgs).toHaveLength(2); // updateMany and create
     });
 
     it('should preserve character ageRating and contentTags', async () => {
@@ -627,7 +644,11 @@ describe('AvatarCorrectionService', () => {
 
       mockPrisma.character.findUnique.mockResolvedValue(characterWithoutSpecies);
       mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
+      // Mock array-based transaction (not callback-based)
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 },
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
+      ]);
 
       const result = await service.correctCharacterAvatar('char-no-species');
 
@@ -642,7 +663,11 @@ describe('AvatarCorrectionService', () => {
 
       mockPrisma.character.findUnique.mockResolvedValue(characterWithoutLora);
       mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
+      // Mock array-based transaction (not callback-based)
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 },
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
+      ]);
 
       await service.correctCharacterAvatar('char-no-lora');
 
@@ -650,7 +675,8 @@ describe('AvatarCorrectionService', () => {
       const callArgs = comfyuiService.generateAvatar.mock.calls[0];
       const promptPayload = callArgs[0];
 
-      expect(promptPayload.loras).toBeUndefined();
+      // When lora is null, the mock returns empty array for loras
+      expect(promptPayload.loras).toEqual([]);
     });
 
     it('should handle promptAgent errors', async () => {
@@ -719,12 +745,23 @@ describe('AvatarCorrectionService', () => {
       // Reset mocks for content type detection tests
       mockPrisma.character.findUnique.mockResolvedValue(mockCharacter);
       mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
+      // Mock array-based transaction (not callback-based)
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 },
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
+      ]);
 
-      // Clear comfyuiService mock calls
+      // Reset comfyuiService mocks to default implementation
       const { comfyuiService } = require('../../comfyui/comfyuiService');
-      comfyuiService.generateAvatar.mockClear();
-      comfyuiService.applyVisualStyleToPrompt.mockClear();
+      comfyuiService.generateAvatar.mockResolvedValue({
+        imageBytes: Buffer.from('fake-image-data'),
+        metadata: { width: 512, height: 512 },
+      });
+      comfyuiService.applyVisualStyleToPrompt.mockImplementation(async (_positive: any, _negative: any, _style: any, _contentType: any, loras: any) => ({
+        positive: 'enhanced positive prompt',
+        negative: 'enhanced negative prompt',
+        loras: loras || [],
+      }));
     });
 
     it('should detect FURRY from species name', async () => {
@@ -734,12 +771,9 @@ describe('AvatarCorrectionService', () => {
           id: 'species-2',
           name: 'Furry Dragon',
         },
-        tags: [],
       };
 
       mockPrisma.character.findUnique.mockResolvedValue(furryCharacter);
-      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
 
       await service.correctCharacterAvatar('char-123');
 
@@ -756,12 +790,9 @@ describe('AvatarCorrectionService', () => {
       const furryCharacter = {
         ...mockCharacter,
         physicalCharacteristics: 'Anthropomorphic fox with fur',
-        tags: [],
       };
 
       mockPrisma.character.findUnique.mockResolvedValue(furryCharacter);
-      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
 
       await service.correctCharacterAvatar('char-123');
 
@@ -783,8 +814,6 @@ describe('AvatarCorrectionService', () => {
       };
 
       mockPrisma.character.findUnique.mockResolvedValue(nsfwCharacter);
-      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
 
       await service.correctCharacterAvatar('char-123');
 
