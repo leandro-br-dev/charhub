@@ -131,7 +131,6 @@ describe('AvatarCorrectionService', () => {
   beforeEach(async () => {
     await cleanDatabase();
     service = new AvatarCorrectionService();
-    jest.clearAllMocks();
   });
 
   afterAll(async () => {
@@ -293,6 +292,10 @@ describe('AvatarCorrectionService', () => {
     });
 
     it('should skip characters that already have active avatar', async () => {
+      // Clear generateAvatar mock to ensure clean state
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
+      comfyuiService.generateAvatar.mockClear();
+
       mockPrisma.characterImage.findFirst.mockResolvedValue({
         id: 'avatar-1',
         url: 'existing-avatar.jpg',
@@ -302,7 +305,6 @@ describe('AvatarCorrectionService', () => {
 
       expect(result).toBe(true);
       // Should not call generateAvatar
-      const { comfyuiService } = require('../../comfyui/comfyuiService');
       expect(comfyuiService.generateAvatar).not.toHaveBeenCalled();
     });
 
@@ -656,6 +658,10 @@ describe('AvatarCorrectionService', () => {
     });
 
     it('should handle character without LoRA', async () => {
+      // Reset mocks for this test
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
+      comfyuiService.generateAvatar.mockClear();
+
       const characterWithoutLora = {
         ...mockCharacter,
         lora: null,
@@ -671,7 +677,6 @@ describe('AvatarCorrectionService', () => {
 
       await service.correctCharacterAvatar('char-no-lora');
 
-      const { comfyuiService } = require('../../comfyui/comfyuiService');
       const callArgs = comfyuiService.generateAvatar.mock.calls[0];
       const promptPayload = callArgs[0];
 
@@ -713,10 +718,21 @@ describe('AvatarCorrectionService', () => {
     });
 
     it('should handle visual style application errors gracefully', async () => {
+      // Reset mocks for this test
       const { comfyuiService } = require('../../comfyui/comfyuiService');
+      comfyuiService.generateAvatar.mockClear();
+      comfyuiService.applyVisualStyleToPrompt.mockClear();
       comfyuiService.applyVisualStyleToPrompt.mockRejectedValue(
         new Error('Style application failed')
       );
+
+      mockPrisma.character.findUnique.mockResolvedValue(mockCharacter);
+      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
+      // Mock array-based transaction (not callback-based)
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 },
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
+      ]);
 
       // Should still complete, using base prompt
       const result = await service.correctCharacterAvatar('char-123');
@@ -725,6 +741,10 @@ describe('AvatarCorrectionService', () => {
     });
 
     it('should handle character with no tags', async () => {
+      // Reset mocks for this test
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
+      comfyuiService.generateAvatar.mockClear();
+
       const characterWithoutTags = {
         ...mockCharacter,
         tags: [],
@@ -732,7 +752,11 @@ describe('AvatarCorrectionService', () => {
 
       mockPrisma.character.findUnique.mockResolvedValue(characterWithoutTags);
       mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
+      // Mock array-based transaction (not callback-based)
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 },
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
+      ]);
 
       const result = await service.correctCharacterAvatar('char-123');
 
