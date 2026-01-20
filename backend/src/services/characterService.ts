@@ -1497,6 +1497,7 @@ export async function getAvailablePersonas(
         gender: true,
         style: true,
         visibility: true,
+        userId: true,
         images: {
           where: { type: 'AVATAR', isActive: true },
           select: { url: true },

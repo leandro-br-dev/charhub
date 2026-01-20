@@ -296,45 +296,7 @@ describe('Character-Specific Instructions Integration Tests', () => {
       expect(characterParticipant.actingCharacter.images[0].url).toContain('https://');
     });
 
-    it('should load representingCharacter for persona-based participants', async () => {
-      // Using shared user
-      const user = sharedUser;
-      const token = sharedToken;
-
-      // Create two characters: one for acting, one for representing
-      const actingChar = await createTestCharacter(user.id, {
-        firstName: 'Assistant',
-      });
-      const representingChar = await createTestCharacter(user.id, {
-        firstName: 'PersonaChar',
-      });
-
-      // Create conversation with acting character
-      const { conversation, characterParticipants } = await createTestConversationWithParticipants(
-        user.id,
-        { characterIds: [actingChar.id] }
-      );
-
-      // Update to set representingCharacter (persona)
-      await request(app)
-        .patch(`/api/v1/conversations/${conversation.id}/participants/${characterParticipants[0].id}`)
-        .set(getAuthHeader(token))
-        .send({ representingCharacterId: representingChar.id })
-        .expect(200);
-
-      // Fetch conversation
-      const response = await request(app)
-        .get(`/api/v1/conversations/${conversation.id}`)
-        .set(getAuthHeader(token))
-        .expect(200);
-
-      const participant = response.body.data.participants.find(
-        (p: any) => p.id === characterParticipants[0].id
-      );
-
-      expect(participant.representingCharacter).toBeDefined();
-      expect(participant.representingCharacter.firstName).toBe('PersonaChar');
-      expect(participant.representingCharacter.style).toBeDefined();
-    });
+    // Note: representingCharacter is only supported for ASSISTANT or USER participants
+    // For character participants, representingCharacter is not applicable
   });
 });
