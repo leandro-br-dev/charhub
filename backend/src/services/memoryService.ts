@@ -106,6 +106,16 @@ class MemoryService {
    * Compacta TODAS as mensagens não compactadas, exceto as últimas RECENT_MESSAGES_COUNT
    */
   async generateMemory(conversationId: string): Promise<GeneratedMemory | null> {
+    // Helper function to parse user config override
+    function parseUserConfig(configOverride: string | null): any {
+      if (!configOverride) return null;
+      try {
+        return JSON.parse(configOverride);
+      } catch {
+        return null;
+      }
+    }
+
     try {
       // Buscar última memória para saber onde parar
       const lastMemory = await prisma.conversationMemory.findFirst({
@@ -159,16 +169,6 @@ class MemoryService {
 
       // Map para lookup rápido de nomes
       const participantNames = new Map<string, string>();
-
-      // Helper function to parse user config override
-      function parseUserConfig(configOverride: string | null): any {
-        if (!configOverride) return null;
-        try {
-          return JSON.parse(configOverride);
-        } catch {
-          return null;
-        }
-      }
 
       // 1. Mapear participantes (characters/assistants)
       conversation?.participants.forEach(p => {
@@ -357,6 +357,16 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
     conversationId: string,
     recentMessageLimit: number = RECENT_MESSAGES_COUNT
   ): Promise<string> {
+    // Helper function to parse user config override
+    function parseUserConfig(configOverride: string | null): any {
+      if (!configOverride) return null;
+      try {
+        return JSON.parse(configOverride);
+      } catch {
+        return null;
+      }
+    }
+
     try {
       // Buscar todas as memórias (resumos compactados)
       const memories = await this.getConversationMemories(conversationId);
@@ -397,16 +407,6 @@ Focus ONLY on story-critical information. Discard everything else. Be EXTREMELY 
 
       // Map para lookup rápido de nomes
       const participantNames = new Map<string, string>();
-
-      // Helper function to parse user config override
-      function parseUserConfig(configOverride: string | null): any {
-        if (!configOverride) return null;
-        try {
-          return JSON.parse(configOverride);
-        } catch {
-          return null;
-        }
-      }
 
       // 1. Mapear participantes (characters/assistants)
       conversation?.participants.forEach(p => {
