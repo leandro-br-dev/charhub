@@ -104,7 +104,15 @@ class MockRedis extends EventEmitter {
   }
 
   // Pipeline support
-  pipeline() {
+  pipeline(): {
+    exec: () => Promise<unknown[]>;
+    get: (_key: string) => any;
+    set: (_key: string, _value: string) => any;
+    del: (..._keys: string[]) => any;
+    hget: (_key: string, _field: string) => any;
+    hset: (_key: string, _field: string, _value: string) => any;
+    expire: (_key: string, _seconds: number) => any;
+  } {
     return {
       exec: () => Promise.resolve([]),
       get: (_key: string) => this,
@@ -117,7 +125,7 @@ class MockRedis extends EventEmitter {
   }
 
   // Multi support
-  multi() {
+  multi(): any {
     return this.pipeline();
   }
 
@@ -130,12 +138,20 @@ class MockRedis extends EventEmitter {
   duplicate(): MockRedis {
     return new MockRedis();
   }
-
-  static Cluster = class extends MockRedis {
-    constructor(_options?: any) {
-      super(_options);
-    }
-  };
 }
+
+// Define Cluster as a separate class to avoid TypeScript issues
+class MockRedisCluster extends MockRedis {
+  constructor(_options?: any) {
+    super(_options);
+  }
+}
+
+// Add Cluster as a static property using Object.defineProperty
+Object.defineProperty(MockRedis, 'Cluster', {
+  value: MockRedisCluster,
+  writable: false,
+  configurable: false,
+});
 
 export default MockRedis;
