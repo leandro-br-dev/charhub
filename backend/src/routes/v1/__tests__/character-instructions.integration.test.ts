@@ -6,7 +6,6 @@ import request from 'supertest';
 import { createTestApp } from '../../../test-utils/app';
 import {
   setupTestDatabase,
-  cleanDatabase,
   teardownTestDatabase,
 } from '../../../test-utils/database';
 import {
@@ -21,7 +20,7 @@ import {
 const app = createTestApp();
 
 // Increase timeout for all tests in this suite (DB operations can be slow)
-jest.setTimeout(60000);
+jest.setTimeout(120000);
 
 describe('Character-Specific Instructions Integration Tests', () => {
   let sharedUser: any;
