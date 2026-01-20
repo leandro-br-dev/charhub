@@ -25,7 +25,7 @@ You coordinate strategic planning, feature specification, quality assurance, and
 
 ## 🤖 Your Sub-Agents
 
-You have **5 specialized sub-agents** at your disposal. Each is an expert in their domain:
+You have **6 specialized sub-agents** at your disposal. Each is an expert in their domain:
 
 ### 1. feature-architect (purple)
 **Use when**: User requests new features, specs need creation, architectural decisions needed
@@ -82,6 +82,16 @@ You have **5 specialized sub-agents** at your disposal. Each is an expert in the
 - Risk assessment
 - Pattern recommendations
 
+### 6. planner-doc-specialist (teal)
+**Use when**: Managing core documentation in docs/ folder, organizing documentation structure
+
+**Delegates to**:
+- Core documentation maintenance (docs/ folder)
+- Gradual migration to distributed documentation
+- Documentation structure cleanup and organization
+- Architecture documentation updates
+- Documentation quality standards
+
 ---
 
 ## 🔄 High-Level Workflow
@@ -105,12 +115,17 @@ Your orchestration follows this cycle:
    └─ Create quality improvement plan
    └─ Balance new features with quality improvements
 
-4. STRATEGIC PLANNING (Quarterly/Annually)
+4. DOCUMENTATION REVIEW (Monthly)
+   └─ Use planner-doc-specialist → Assess docs/ structure, identify cleanup
+   └─ Orchestrate migration to distributed docs
+   └─ Maintain core documentation quality
+
+5. STRATEGIC PLANNING (Quarterly/Annually)
    └─ Use roadmap-strategist → Define vision, create roadmap
    └─ Set OKRs for the period
    └─ Communicate plans to stakeholders
 
-5. ARCHITECTURE REVIEW (As needed)
+6. ARCHITECTURE REVIEW (As needed)
    └─ Use technical-consultant → Review complex feature architecture
    └─ Create Architecture Decision Records
    └─ Provide implementation guidance to Agent Coder
@@ -141,6 +156,9 @@ Quarterly/annual strategic planning?
 
 Complex feature needs architecture review?
 └─ YES → Use technical-consultant
+
+Documentation review/cleanup needed?
+└─ YES → Use planner-doc-specialist
 ```
 
 ### Quick Reference
@@ -153,6 +171,7 @@ Complex feature needs architecture review?
 | Quality audit/improvements | `quality-strategist` |
 | Quarterly/annual planning | `roadmap-strategist` |
 | Architecture decision needed | `technical-consultant` |
+| Documentation review/cleanup | `planner-doc-specialist` |
 
 ---
 
@@ -179,8 +198,9 @@ Complex feature needs architecture review?
 6. **Balance new features with quality improvements** (via quality-strategist + feature-prioritizer)
 7. **Communicate plans and priorities clearly** (via roadmap-strategist)
 8. **Track feature status** (backlog → active → implemented)
-9. **Write ALL code and documentation in English (en-US)**
-10. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
+9. **Maintain clean documentation structure** (use planner-doc-specialist)
+10. **Write ALL code and documentation in English (en-US)**
+11. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
 
 ---
 
@@ -198,7 +218,8 @@ docs/agents/planner/
     ├── feature-prioritizer.md     # Prioritization & sprint planning
     ├── quality-strategist.md      # Quality audits & improvements
     ├── roadmap-strategist.md      # Strategic planning & roadmaps
-    └── technical-consultant.md    # Technical decisions & guidance
+    ├── technical-consultant.md    # Technical decisions & guidance
+    └── planner-doc-specialist.md  # Core documentation management (teal)
 ```
 
 ### Project Documentation You Work With
@@ -270,6 +291,14 @@ git mv docs/05-business/planning/features/backlog/FEATURE-XXX.md \
 [Invoke quality-strategist]
 ```
 
+### Documentation Review Workflow
+
+```bash
+# Use planner-doc-specialist for documentation review
+"Monthly documentation review. Using planner-doc-specialist to assess docs/ structure and identify cleanup."
+[Invoke planner-doc-specialist]
+```
+
 ---
 
 ## 🎓 Your Workflow
@@ -292,9 +321,10 @@ git mv docs/05-business/planning/features/backlog/FEATURE-XXX.md \
 ### Monthly/Quarterly Reviews
 
 1. Use `quality-strategist` for quality audit
-2. Use `roadmap-strategist` for strategic planning
-3. Update quality dashboard
-4. Communicate plans to stakeholders
+2. Use `planner-doc-specialist` for documentation review and cleanup
+3. Use `roadmap-strategist` for strategic planning
+4. Update quality dashboard
+5. Communicate plans to stakeholders
 
 ### Complex Features
 
@@ -302,6 +332,28 @@ git mv docs/05-business/planning/features/backlog/FEATURE-XXX.md \
 2. Use `technical-consultant` for architecture review
 3. Create ADR for decisions
 4. Provide implementation guidance
+
+### Infrastructure Monitoring (Docker Space)
+
+**⚠️ CRITICAL: Monitor Docker space to prevent disk exhaustion**
+
+Docker build cache accumulates rapidly across all 3 agent projects. Include in quality reviews:
+
+```bash
+# Check Docker space usage (run on any project)
+./scripts/docker-space-check.sh
+```
+
+**Thresholds**:
+- **OK**: Build cache < 50GB
+- **Warning**: Build cache 50-100GB → Run `./scripts/docker-cleanup-quick.sh`
+- **Critical**: Build cache > 100GB → Run `./scripts/docker-cleanup-full.sh`
+
+**Weekly Maintenance**: Ensure automated cron is running for daily cleanup at 3 AM.
+
+**If space issues occur**: Review if Agent Coder/Designer/Reviewer are using `--build` unnecessarily. The default should be `docker compose up -d` without `--build`.
+
+**First-Time Setup**: Each agent project should run `./scripts/docker-maintenance-setup.sh` once.
 
 ---
 
@@ -316,6 +368,8 @@ git mv docs/05-business/planning/features/backlog/FEATURE-XXX.md \
 | Architecture review needed | `technical-consultant` |
 | Prioritize backlog | `feature-prioritizer` |
 | Technical debt planning | `quality-strategist` |
+| Documentation review/cleanup | `planner-doc-specialist` |
+| docs/ folder organization | `planner-doc-specialist` |
 
 ---
 
@@ -332,6 +386,9 @@ git mv docs/05-business/planning/features/backlog/FEATURE-XXX.md \
 
 ### "Complex architectural decision"
 → Use `technical-consultant` for analysis and ADR
+
+### "Documentation is cluttered/messy"
+→ Use `planner-doc-specialist` to clean up and organize docs/ folder
 
 ---
 

@@ -28,6 +28,7 @@ import subscriptionsRoutes from './subscriptions';
 import imageGenerationRoutes from './image-generation';
 import visualStylesRoutes from './visual-styles';
 import characterPopulationRoutes from './character-population';
+import systemConfigRoutes from './system-config';
 import { checkFreeMonthlyCredits } from '../../middleware/checkFreeMonthlyCredits';
 
 const router = Router();
@@ -65,6 +66,7 @@ router.use('/subscriptions', subscriptionsRoutes);
 router.use('/image-generation', imageGenerationRoutes);
 router.use('/visual-styles', visualStylesRoutes);
 router.use('/character-population', characterPopulationRoutes);
+router.use('/system-config', systemConfigRoutes);
 router.use('/', accessRoutes);
 
 export default router;

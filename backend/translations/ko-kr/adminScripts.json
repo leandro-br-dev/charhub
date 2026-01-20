@@ -1,0 +1,41 @@
+{
+  "description": "Admin Scripts Management Interface",
+  "resources": {
+    "title": "관리자 스크립트",
+    "header": {
+      "title": "관리자 스크립트",
+      "description": "데이터 보정 스크립트를 수동으로 실행하고 시스템 통계를 모니터링합니다."
+    },
+    "stats": {
+      "title": "통계",
+      "totalCharacters": "총 캐릭터 수",
+      "charactersWithAvatars": "아바타가 있는 캐릭터",
+      "charactersWithCompleteData": "데이터가 완전한 캐릭터",
+      "never": "없음",
+      "lastCorrections": "최근 보정 내역"
+    },
+    "scripts": {
+      "title": "보정 스크립트",
+      "avatar": {
+        "name": "아바타 보정",
+        "description": "캐릭터의 손상되거나 누락된 아바타 URL을 수정합니다",
+        "success": "아바타 보정 스크립트가 성공적으로 시작되었습니다",
+        "error": "아바타 보정 스크립트 시작에 실패했습니다"
+      },
+      "data": {
+        "name": "데이터 완전성 보정",
+        "description": "필수 캐릭터 필드가 모두 채워져 있는지 확인합니다",
+        "success": "데이터 보정 스크립트가 성공적으로 시작되었습니다",
+        "error": "데이터 보정 스크립트 시작에 실패했습니다"
+      },
+      "lastRun": "최근 실행",
+      "run": "스크립트 실행",
+      "running": "실행 중...",
+      "moreComing": "더 많은 스크립트가 곧 추가될 예정입니다...",
+      "records": "건"
+    },
+    "refresh": "통계 새로고침",
+    "limit": "기록 제한",
+    "limitPlaceholder": "처리할 기록 수 (1-1000)"
+  }
+}

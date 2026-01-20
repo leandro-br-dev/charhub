@@ -110,13 +110,19 @@ npm run build
 
 ### Phase 3: Docker Environment Setup
 
-```bash
-# Restart containers (preserving database data)
-docker compose down
-docker compose up -d --build
+**⚠️ Docker Space-Aware: Use `--build` ONLY when necessary**
 
-# Wait for services to be ready
-sleep 30
+```bash
+# RECOMMENDED: Use smart restart (auto-detects if rebuild needed)
+./scripts/docker-smart-restart.sh
+
+# OR manual restart (default - no --build)
+docker compose down
+docker compose up -d
+
+# Use --build ONLY if Dockerfile/package.json/prisma changed in PR
+# docker compose up -d --build backend
+# docker compose up -d --build frontend
 
 # Verify all containers are healthy
 ./scripts/health-check.sh

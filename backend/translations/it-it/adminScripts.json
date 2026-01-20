@@ -1,0 +1,41 @@
+{
+  "description": "Admin Scripts Management Interface",
+  "resources": {
+    "title": "Script Amministrativi",
+    "header": {
+      "title": "Script Amministrativi",
+      "description": "Esegui manualmente script di correzione dati e monitora le statistiche del sistema."
+    },
+    "stats": {
+      "title": "Statistiche",
+      "totalCharacters": "Personaggi Totali",
+      "charactersWithAvatars": "Personaggi con Avatar",
+      "charactersWithCompleteData": "Personaggi con Dati Completi",
+      "never": "Mai",
+      "lastCorrections": "Ultime Correzioni"
+    },
+    "scripts": {
+      "title": "Script di Correzione",
+      "avatar": {
+        "name": "Correzione Avatar",
+        "description": "Correggi URL di avatar rotti o mancanti per i personaggi",
+        "success": "Script di correzione avatar avviato con successo",
+        "error": "Impossibile avviare lo script di correzione avatar"
+      },
+      "data": {
+        "name": "Correzione Completezza Dati",
+        "description": "Garantisce che tutti i campi personaggio richiesti siano popolati",
+        "success": "Script di correzione dati avviato con successo",
+        "error": "Impossibile avviare lo script di correzione dati"
+      },
+      "lastRun": "Ultima Esecuzione",
+      "run": "Esegui Script",
+      "running": "In esecuzione...",
+      "moreComing": "Altri script in arrivo...",
+      "records": "record"
+    },
+    "refresh": "Aggiorna Statistiche",
+    "limit": "Limite Record",
+    "limitPlaceholder": "Numero di record da elaborare (1-1000)"
+  }
+}

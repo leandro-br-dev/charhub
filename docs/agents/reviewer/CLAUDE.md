@@ -417,6 +417,228 @@ curl https://charhub.app/api/v1/health
 
 ---
 
+## 🐳 Docker Space Management (Development Only)
+
+**⚠️ CRITICAL: Prevent cache explosion by using `--build` only when necessary**
+
+### The Problem
+
+Using `docker compose up -d --build` for every restart creates ~500MB-2GB of new cache layers. With multiple agents doing this daily, disk can fill within days.
+
+### When to Restart vs Rebuild (Local Testing)
+
+| Scenario | Command |
+|----------|---------|
+| Testing PR locally | `docker compose up -d` (no --build) |
+| Dockerfile changed in PR | `docker compose up -d --build <service>` |
+| package.json changed in PR | `docker compose up -d --build <service>` |
+| prisma schema changed | `docker compose up -d --build backend` |
+| Container won't start | Check logs first, then try `--build` |
+
+### Smart Restart (Recommended)
+
+```bash
+# Auto-detects if rebuild is needed
+./scripts/docker-smart-restart.sh
+```
+
+### Space Check & Cleanup
+
+```bash
+# Check current space usage
+./scripts/docker-space-check.sh
+
+# Quick cleanup (safe for daily use)
+./scripts/docker-cleanup-quick.sh
+```
+
+### First-Time Setup
+
+After pulling this repository, run once:
+```bash
+./scripts/docker-maintenance-setup.sh
+```
+
+This configures automated daily cleanup via cron (shared across all projects).
+
+### Note for Sub-Agents
+
+When delegating to `local-qa-tester`, ensure it follows Docker Space guidelines:
+- Default restart: `docker compose up -d` (no --build)
+- Rebuild only when dependencies changed
+
+---
+
+## 📚 Lessons Learned - Real Production Issues
+
+### FEATURE-011: Character Generation Correction System (Jan 2026)
+
+#### ❌ Errors That Made It Through Review
+
+**1. TypeScript Compilation Failure (502 Error)**
+- **Error**: Agent Coder created interfaces but forgot to export them
+- **Impact**: Backend wouldn't compile, returned 502 errors
+- **Root Cause**: No verification step to check exports before approving PR
+- **Fix Applied**: Manually added `export` keyword to interfaces
+- **Prevention**: Add `npm run build` verification before PR approval
+
+**Files Affected**:
+```typescript
+// ❌ What was committed
+interface AvatarCorrectionJobData { targetCount?: number; }
+interface DataCompletenessCorrectionJobData { targetCount?: number; }
+
+// ✅ What was needed
+export interface AvatarCorrectionJobData { targetCount?: number; }
+export interface DataCompletenessCorrectionJobData { targetCount?: number; }
+```
+
+**Lesson**: Always verify backend compiles locally before approving any PR.
+
+---
+
+**2. Duplicate Migration with Wrong Timestamp**
+- **Error**: Migration created with year 2025 instead of 2026
+- **Impact**: CI failed with database conflict error 42704
+- **Root Cause**: Manual migration folder creation instead of using Prisma CLI
+- **Fix Applied**: Deleted duplicate migration, recreated with Prisma CLI
+- **Prevention**: Never manually create migration folders
+
+**Migration Error**:
+```
+❌ WRONG: 20250111133000_add_visual_style_reference_system
+✅ CORRECT: 20260111221500_add_visual_style_system
+```
+
+**Lesson**: Verify all migrations have correct current year (2026) before merging.
+
+---
+
+**3. 26 Tests Failing - Mock Pattern Mismatch**
+- **Error**: Tests used callback-based transaction mocks, implementation uses array-based
+- **Impact**: CI failed with 26 failing tests (68% pass rate)
+- **Root Cause**: Outdated test patterns not matching Prisma v5+ API
+- **Fix Applied**: Converted 16 tests from callback to array-based mocking
+- **Remaining**: 10 tests skipped due to mock interference (not fixed)
+
+**Mock Pattern Error**:
+```typescript
+// ❌ WRONG - 16 tests had this pattern
+mockPrisma.$transaction.mockImplementation((cb: any) => cb(mockPrisma));
+
+// ✅ CORRECT - What implementation actually uses
+mockPrisma.$transaction.mockResolvedValue([
+  { count: 0 },
+  { id: 'img-1', url: '...' },
+]);
+```
+
+**Lesson**: Review test patterns match actual implementation. Prisma v5+ uses array-based transactions.
+
+---
+
+**4. Test Expectations Mismatch**
+- **Error**: Tests expected `expect.anything()` but implementation returned specific values
+- **Impact**: Additional test failures beyond mock pattern issues
+- **Root Cause**: Tests written without verifying actual implementation behavior
+- **Fix Applied**: Updated test expectations to match implementation
+
+**Expectation Error**:
+```typescript
+// ❌ WRONG - What test expected
+expect(compileCharacterDataWithLLM).toHaveBeenCalledWith(
+  expect.anything(),  // Expected "anything"
+  null,
+  ...
+);
+
+// ✅ CORRECT - What implementation actually returns
+expect(compileCharacterDataWithLLM).toHaveBeenCalledWith(
+  "",  // Returns empty string when firstName is "Character"
+  null,
+  ...
+);
+```
+
+**Lesson**: Test expectations must match actual implementation, not assumptions.
+
+---
+
+#### ⚠️ Reviewer Mistakes (Self-Correction)
+
+**1. Didn't Use pr-conflict-resolver First**
+- **Mistake**: Started code review directly without pre-flight verification
+- **Impact**: Could have missed merge conflicts or feature loss
+- **Corrective Action**: Always use pr-conflict-resolver BEFORE pr-code-reviewer
+- **Rule Updated**: Added to CRITICAL RULES section
+
+**2. Skipped Tests Instead of Fixing Root Cause**
+- **Mistake**: Used `test.skip()` for 10 failing tests instead of fixing mock interference
+- **Impact**: 12% test coverage lost, technical debt created
+- **Justification**: User requested "fastest solution" for CI to pass
+- **Corrective Action**: Should have created follow-up issue for proper fix
+- **Lesson**: Speed vs quality trade-off must be documented and tracked
+
+**3. Didn't Verify Backend Locally Before Review**
+- **Mistake**: Reviewed code without running local build
+- **Impact**: TypeScript errors only discovered during CI run
+- **Corrective Action**: Always rebuild backend locally when TypeScript changes are made
+- **Lesson**: Local verification catches issues before CI cycle
+
+---
+
+### Prevention Checklist for Future Reviews
+
+Before approving ANY PR, verify:
+
+```bash
+# 1. Check TypeScript compiles (CRITICAL!)
+cd backend && npm run build
+# If fails → DO NOT APPROVE → Request fix
+
+# 2. Check for forgotten exports
+grep -r "^interface " backend/src/queues/jobs/ | grep -v "^export interface"
+# If found → Alert Agent Coder
+
+# 3. Check migration timestamps
+ls backend/prisma/migrations/ | grep "^2025"
+# If found → WRONG YEAR! Should be 2026
+
+# 4. Verify Prisma transaction mocks
+grep -r "\$transaction.*mockImplementation" backend/src
+# If found → WRONG pattern! Should be array-based
+
+# 5. Run tests locally
+cd backend && npm test
+# Check for skipped tests (test.skip) → These represent technical debt
+```
+
+---
+
+### Red Flags to Watch For
+
+**When reviewing Agent Coder PRs**:
+
+1. **New queue job types added** → Check interfaces are exported
+2. **New migrations added** → Verify timestamp year is 2026
+3. **Test files have many changes** → Review test mock patterns
+4. **Tests use `test.skip()`** → Ask for follow-up issue if present
+5. **Backend TypeScript files changed** → Verify local build passes
+
+---
+
+### Action Items for Agent Reviewer
+
+Based on lessons learned from FEATURE-011:
+
+1. ✅ **Always use pr-conflict-resolver first** (already documented)
+2. ✅ **Always rebuild backend when TS changes** (add to workflow)
+3. ⚠️ **Create follow-up issues for skipped tests** (process improvement)
+4. ✅ **Verify exports in job files** (add to checklist)
+5. ✅ **Check migration timestamps** (add to checklist)
+
+---
+
 ## 🎓 Remember
 
 ### The Golden Rule

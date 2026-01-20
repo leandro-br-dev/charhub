@@ -249,15 +249,21 @@ docs/
 
 ### For Visual Testing
 ```bash
-# Start local environment
-docker compose up -d --build
+# Start local environment (Docker Space-Aware)
+# DEFAULT: Use simple restart (no --build) unless dependencies changed
+docker compose up -d
 open http://localhost:8083
+
+# Use --build ONLY when Dockerfile or package.json changed
+docker compose up -d --build frontend
 
 # Test on different screen sizes (browser DevTools)
 # - Mobile: 375px, 414px
 # - Tablet: 768px, 1024px
 # - Desktop: 1280px, 1920px
 ```
+
+**⚠️ IMPORTANT**: See "Docker Space Management" section below for when to use `--build`.
 
 ### For Small UI Fixes
 ```bash
@@ -437,6 +443,51 @@ Issue found
   - Via Pull Requests (like Agent Coder)
   - They test and deploy your changes
   - You verify in production after deployment
+
+---
+
+## 🐳 Docker Space Management (Development Only)
+
+**⚠️ CRITICAL: Prevent cache explosion by using `--build` only when necessary**
+
+### The Problem
+
+Using `docker compose up -d --build` for every restart creates ~500MB-2GB of new cache layers. With multiple agents doing this daily, disk can fill within days.
+
+### When to Restart vs Rebuild
+
+| Scenario | Command |
+|----------|---------|
+| Testing visual changes | `docker compose up -d` (no --build) |
+| Dockerfile changed | `docker compose up -d --build frontend` |
+| package.json changed | `docker compose up -d --build frontend` |
+| Container won't start | Check logs first, then try `--build` |
+
+### Smart Restart (Recommended)
+
+```bash
+# Auto-detects if rebuild is needed
+./scripts/docker-smart-restart.sh
+```
+
+### Space Check & Cleanup
+
+```bash
+# Check current space usage
+./scripts/docker-space-check.sh
+
+# Quick cleanup (safe for daily use)
+./scripts/docker-cleanup-quick.sh
+```
+
+### First-Time Setup
+
+After pulling this repository, run once:
+```bash
+./scripts/docker-maintenance-setup.sh
+```
+
+This configures automated daily cleanup via cron (shared across all projects).
 
 ---
 

@@ -57,6 +57,34 @@ You are an elite backend development specialist for the CharHub project, with de
 ## Your Development Workflow
 
 ### 1. Before Starting Implementation
+
+**CRITICAL: Check for Distributed Documentation**
+
+Before modifying ANY file, ALWAYS check if there's a `.docs.md` file alongside it:
+
+```bash
+# For ANY file you're about to modify, check:
+ls -la /path/to/file/
+
+# If you see a file.docs.md, READ IT FIRST!
+# Example:
+# backend/src/services/characterService.ts
+# backend/src/services/characterService.docs.md  ← READ THIS FIRST
+```
+
+**Documentation Search Pattern:**
+- Services: Check for `serviceName.docs.md` in same folder
+- Controllers: Check for `controllerName.docs.md` in same folder
+- Modules: Check for `moduleName.docs.md` or `README.docs.md` in module folder
+- Complex components: Look for `.docs.md` files alongside the code
+
+**Why This Matters:**
+- `.docs.md` files contain architecture decisions, patterns, and gotchas
+- They explain WHY code is written a certain way
+- They prevent you from breaking established patterns
+- They contain critical information for complex components
+
+Then:
 - Read the feature spec in `docs/05-business/planning/features/active/`
 - Review system architecture in `docs/04-architecture/system-overview.md`
 - Check backend patterns in `docs/03-reference/backend/README.md`
@@ -112,9 +140,16 @@ cd backend && npm run lint
 # 2. TypeScript compilation (MUST pass)
 cd backend && npm run build
 
-# 3. Restart Docker containers (preserves database data)
+# 3. Restart Docker containers (Docker Space-Aware)
+# RECOMMENDED: Use smart restart
+./scripts/docker-smart-restart.sh
+
+# OR manual restart (default - no --build)
 docker compose down
-docker compose up -d --build
+docker compose up -d
+
+# Use --build ONLY if Dockerfile/package.json/prisma changed
+# docker compose up -d --build backend
 
 # 4. Verify containers are healthy
 ./scripts/health-check.sh
@@ -130,6 +165,28 @@ docker compose logs -f backend
 ```
 
 **Only after user approves manual testing, then commit and create PR**
+
+**IMPORTANT: Create/Update Documentation**
+
+For complex services, controllers, or modules you've implemented/modified:
+
+```bash
+# Check if documentation exists
+ls backend/src/services/yourService.docs.md
+
+# If NOT exists and this is a complex component:
+# Create documentation following the template in coder-doc-specialist
+# Use Agent Coder to invoke coder-doc-specialist
+
+# If EXISTS and you modified the code:
+# UPDATE the documentation to reflect your changes
+```
+
+**Documentation Rules**:
+- Simple CRUD operations may not need docs
+- Complex business logic MUST have docs
+- If you modified an existing `.docs.md` file, update it
+- If you created complex new code, create docs for it
 
 ### 4. Creating Pull Request
 
@@ -241,6 +298,145 @@ Before considering implementation complete, verify:
 - Check Docker logs: `docker compose logs -f backend`
 - Verify environment variables
 - Check database connectivity
+
+## Common TypeScript Mistakes - CRITICAL LESSONS LEARNED
+
+### ❌ Forgotten Exports (Backend Compilation Failures)
+
+**The Mistake**: Creating interfaces/types but forgetting to export them when used across files.
+
+**Real Example** (FEATURE-011 Correction System):
+```typescript
+// ❌ WRONG - Interface created but NOT exported
+// File: src/queues/jobs/characterPopulationJob.ts
+interface AvatarCorrectionJobData {
+  targetCount?: number;
+}
+
+// File: src/queues/workers/index.ts
+import { AvatarCorrectionJobData } from '../jobs/characterPopulationJob';
+// ERROR: Module '"../jobs/characterPopulationJob"' has no exported member 'AvatarCorrectionJobData'
+```
+
+**✅ The Fix**: Always export interfaces used in other files:
+```typescript
+// File: src/queues/jobs/characterPopulationJob.ts
+export interface AvatarCorrectionJobData {
+  targetCount?: number;
+}
+```
+
+**Verification** (BEFORE committing):
+```bash
+# Check for non-exported interfaces that might be imported elsewhere
+grep -r "^interface " src/queues/jobs/ | grep -v "^export interface"
+
+# If any found, check if they're imported elsewhere:
+grep -r "import.*AvatarCorrectionJobData" src/
+
+# If imported elsewhere → MUST add export
+```
+
+**When to Export**:
+- ✅ Export: Interfaces in `src/queues/jobs/` used by workers
+- ✅ Export: Types in `src/types/` used across multiple files
+- ✅ Export: Service interfaces used by controllers
+- ❌ Don't export: Types only used within the same file
+
+### ❌ Wrong Migration Timestamp Year
+
+**The Mistake**: Manually creating migration folders with wrong year (2025 instead of 2026).
+
+**Real Example** (FEATURE-011):
+```
+❌ WRONG: 20250111133000_add_visual_style_reference_system
+           ↑ Year 2025 instead of 2026!
+
+✅ CORRECT: 20260111221500_add_visual_style_system
+            ↑ Correct year 2026
+```
+
+**The Fix**: NEVER manually create migration folders. Always use Prisma CLI:
+```bash
+# ✅ CORRECT - Let Prisma generate the timestamp
+npx prisma migrate dev --name add_system_configuration
+
+# Prisma will create: 20260119123456_add_system_configuration
+#                              ↑ Correct timestamp auto-generated
+```
+
+**Why This Matters**:
+- Migrations run in timestamp order
+- Wrong year (2025) causes migrations to run BEFORE 2026 migrations
+- This creates database conflicts and CI failures
+- Fixing requires deleting the wrong migration and recreating
+
+**Verification** (BEFORE committing):
+```bash
+# Check migration timestamps have correct year
+ls -la backend/prisma/migrations/ | grep "^d" | awk '{print $NF}' | cut -c1-4 | sort -u
+
+# Should only show: 2026
+# If you see: 2025, 2024, etc. → WRONG!
+```
+
+### ❌ Forgetting to Rebuild Backend After Code Changes
+
+**The Mistake**: Changing TypeScript code but not rebuilding the backend container.
+
+**Symptoms**:
+- Backend returns 502 errors
+- Code changes don't take effect
+- Old code still running
+
+**The Fix**: Know WHEN to rebuild:
+```bash
+# ✅ NO REBUILD NEEDED (default)
+docker compose up -d
+
+# ✅ REBUILD NEEDED (only when these change):
+docker compose up -d --build backend
+# ↑ Use --build ONLY when:
+#   - Dockerfile changed
+#   - package.json changed
+#   - prisma/schema.prisma changed
+#   - New npm dependencies added
+```
+
+**Quick Check**:
+```bash
+# Did you change any of these files?
+git diff --name-only | grep -E "(Dockerfile|package\.json|schema\.prisma)"
+
+# If output is empty → NO --build needed
+# If output shows files → --build needed
+```
+
+## Prevention Checklist - Use Before EVERY Commit
+
+Before committing backend changes, verify:
+
+```bash
+# 1. Check for forgotten exports
+grep -r "^interface " src/queues/jobs/ | grep -v "^export interface" && \
+  echo "⚠️  WARNING: Found non-exported interfaces!" || \
+  echo "✓ All interfaces properly exported"
+
+# 2. Check migration timestamps
+ls backend/prisma/migrations/ | grep "^2025" && \
+  echo "⚠️  WARNING: Found 2025 migrations! Should be 2026!" || \
+  echo "✓ Migration timestamps correct"
+
+# 3. Verify TypeScript compilation
+cd backend && npm run build > /dev/null 2>&1 && \
+  echo "✓ TypeScript compiles successfully" || \
+  echo "❌ TypeScript compilation failed!"
+
+# 4. Verify linting
+npm run lint > /dev/null 2>&1 && \
+  echo "✓ Linting passed" || \
+  echo "❌ Linting failed!"
+```
 
 ## Communication with User
 

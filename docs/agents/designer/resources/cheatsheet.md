@@ -4,8 +4,12 @@
 
 ### Visual Testing
 ```bash
-# Start local environment
-docker compose up -d --build
+# Start local environment (Docker Space-Aware)
+# DEFAULT: No --build unless dependencies changed
+docker compose up -d
+
+# Use --build ONLY if Dockerfile/package.json changed
+# docker compose up -d --build frontend
 
 # Open website
 open http://localhost:8083
