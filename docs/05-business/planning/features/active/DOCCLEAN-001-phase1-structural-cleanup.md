@@ -2,10 +2,11 @@
 
 **Type**: Documentation Migration
 **Priority**: High (Immediate)
-**Status**: Active
+**Status**: In Review
 **Assigned To**: coder-doc-specialist (via Agent Coder)
 **Created**: 2026-01-17
 **Target Completion**: 2026-01-24
+**Pull Request**: [PR #144](https://github.com/leandro-br-dev/charhub/pull/144)
 
 ---
 
