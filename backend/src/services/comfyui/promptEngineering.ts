@@ -149,7 +149,7 @@ SD Tags:`;
 
     return {
       positive: this.joinPromptParts(positiveParts),
-      negative: STANDARD_NEGATIVE_PROMPT,
+      negative: AVATAR_NEGATIVE_PROMPT,
       loras,
     };
   }

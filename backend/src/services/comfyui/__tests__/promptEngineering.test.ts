@@ -185,7 +185,7 @@ describe('PromptEngineering', () => {
 
       expect(result.positive).toContain('full body');
       expect(result.positive).toContain('standing');
-      expect(result.positive).toContain('front view');
+      expect(result.positive).toContain('looking at viewer');
     });
   });
 

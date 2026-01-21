@@ -45,8 +45,18 @@ describe('NameFrequencyService', () => {
 
       expect(result.topFirstNames).toHaveLength(3);
       expect(result.topFirstNames[0]).toEqual({ name: 'Maria', count: 2 });
-      expect(result.topFirstNames[1]).toEqual({ name: 'Joao', count: 1 });
-      expect(result.topFirstNames[2]).toEqual({ name: 'Ana', count: 1 });
+      // Order is not guaranteed for items with equal count - use arrayContaining
+      expect(result.topFirstNames).toEqual(
+        expect.arrayContaining([
+          { name: 'Maria', count: 2 },
+          expect.objectContaining({ count: 1, name: expect.any(String) }),
+          expect.objectContaining({ count: 1, name: expect.any(String) }),
+        ])
+      );
+      // Verify we have the right names
+      const names = result.topFirstNames.map(item => item.name);
+      expect(names).toContain('Joao');
+      expect(names).toContain('Ana');
     });
 
     it('should return top last names ordered by frequency', async () => {
@@ -77,18 +87,24 @@ describe('NameFrequencyService', () => {
       const femaleResult = await nameFrequencyService.getTopNames({ gender: CharacterGender.FEMALE });
 
       expect(femaleResult.topFirstNames).toHaveLength(2);
-      expect(femaleResult.topFirstNames).toEqual([
-        { name: 'Maria', count: 1 },
-        { name: 'Ana', count: 1 },
-      ]);
+      // Order is not guaranteed for items with equal count
+      expect(femaleResult.topFirstNames).toEqual(
+        expect.arrayContaining([
+          { name: 'Maria', count: 1 },
+          { name: 'Ana', count: 1 },
+        ])
+      );
 
       const maleResult = await nameFrequencyService.getTopNames({ gender: CharacterGender.MALE });
 
       expect(maleResult.topFirstNames).toHaveLength(2);
-      expect(maleResult.topFirstNames).toEqual([
-        { name: 'Joao', count: 1 },
-        { name: 'Pedro', count: 1 },
-      ]);
+      // Order is not guaranteed for items with equal count
+      expect(maleResult.topFirstNames).toEqual(
+        expect.arrayContaining([
+          { name: 'Joao', count: 1 },
+          { name: 'Pedro', count: 1 },
+        ])
+      );
     });
 
     it('should respect limit parameter', async () => {
