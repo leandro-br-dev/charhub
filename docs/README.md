@@ -29,14 +29,12 @@ Start here if you're new to the project:
 Step-by-step instructions for common tasks:
 - **[Development](./02-guides/development/)** - Local development, code style, Git workflow, contributing
 - **[Deployment](./02-guides/deployment/)** - Deploy to production, infrastructure setup, database operations
-- **[Troubleshooting](./02-guides/troubleshooting/)** - Common issues and solutions
 
 ### 📚 [03. Reference](./03-reference/)
 Technical specifications and API documentation:
 - **Backend** - Service documentation is distributed in code folders (see `.docs.md` files)
 - **Frontend** - Component documentation is distributed in code folders (see `.docs.md` files)
 - **[API](./03-reference/api/)** - API documentation
-- **[CLI](./03-reference/cli/)** - Command-line tools (gcloud, docker)
 - **[Workflows](./03-reference/workflows/)** - GitHub Actions workflows
 - **[Scripts](./03-reference/scripts/)** - Automation scripts documentation
 
