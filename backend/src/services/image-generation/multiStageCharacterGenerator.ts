@@ -70,28 +70,28 @@ const REFERENCE_VIEWS: ReferenceView[] = [
     width: 768,
     height: 768,
     promptPrefix: 'portrait, headshot, face focus, detailed facial features,',
-    promptNegative: 'full body, multiple views, wide angle,',
+    promptNegative: 'full body, multiple views, wide angle, (body:1.2), (shoulders:1.1), (chest:1.1),',
   },
   {
     content: 'front',
     width: 768,
     height: 1152,
     promptPrefix: 'full body, standing, front view, looking at camera,',
-    promptNegative: 'cropped, headshot only, side view, back view,',
+    promptNegative: 'cropped, headshot only, side view, back view, (from behind:1.3), (back view:1.3),',
   },
   {
     content: 'side',
     width: 768,
     height: 1152,
     promptPrefix: 'full body, standing, side view, profile,',
-    promptNegative: 'front view, back view, looking at camera,',
+    promptNegative: 'front view, back view, looking at camera, (from front:1.2), (from behind:1.2), (multiple views:1.3),',
   },
   {
     content: 'back',
     width: 768,
     height: 1152,
     promptPrefix: 'full body, standing, back view, rear view,',
-    promptNegative: 'front view, face visible, looking at camera,',
+    promptNegative: 'front view, face visible, looking at camera, (face:1.3), (from front:1.3),',
   },
 ];
 

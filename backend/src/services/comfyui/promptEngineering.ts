@@ -17,7 +17,19 @@ const STANDARD_NEGATIVE_PROMPT =
   '(worst quality, bad quality, jpeg artifacts:1.2), sketch, signature, watermark, username, ' +
   '(censored, bar_censor, mosaic_censor:1.2), simple background, conjoined, bad anatomy, bad hands, ' +
   'bad mouth, bad tongue, bad arms, extra arms, bad eyes, extra limbs, speech bubble, dialogue bubble, ' +
-  'emoji, icon, text box';
+  'emoji, icon, text box' +
+  // Facial artifact inhibitors (FEATURE-013)
+  ', (water droplets:1.3), (tear drops:1.3), (sweat drops:1.3), (rain on face:1.3), (liquid on face:1.3), ' +
+  '(facial scars:1.2), (face marks:1.2), (blemishes:1.2), (freckles:1.1), (moles:1.1), ' +
+  '(skin imperfections:1.1), (wounds:1.2), (bruises:1.2), (cuts:1.2), ' +
+  '(dirt on face:1.2), (grime:1.1), (blood on face:1.3), ' +
+  '(asymmetrical face features:1.1), (misaligned eyes:1.2)';
+
+// Avatar-specific negative prompt (face-only generation)
+const AVATAR_NEGATIVE_PROMPT = `${STANDARD_NEGATIVE_PROMPT}, (body:1.2), (shoulders:1.1), (chest:1.1)`;
+
+// Reference image negative prompt (full body views)
+const REFERENCE_NEGATIVE_PROMPT = STANDARD_NEGATIVE_PROMPT;
 
 interface CharacterPromptData {
   name: string;
@@ -310,6 +322,9 @@ SD Tags:`;
     return basePrompt;
   }
 }
+
+// Export negative prompt constants for use by other services
+export { STANDARD_NEGATIVE_PROMPT, AVATAR_NEGATIVE_PROMPT, REFERENCE_NEGATIVE_PROMPT };
 
 // Singleton instance
 export const promptEngineering = new PromptEngineering();
