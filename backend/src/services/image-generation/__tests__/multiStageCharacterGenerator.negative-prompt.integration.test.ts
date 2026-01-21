@@ -5,7 +5,7 @@
  * This test suite validates that negative prompts are correctly
  * applied during multi-stage reference image generation.
  */
-import { setupTestDatabase, cleanDatabase, teardownTestDatabase } from '../../../test-utils/database';
+import { setupTestDatabase, teardownTestDatabase } from '../../../test-utils/database';
 import { createTestUser, createTestCharacter } from '../../../test-utils/factories';
 import { multiStageCharacterGenerator } from '../multiStageCharacterGenerator';
 import { comfyuiService } from '../../comfyui/comfyuiService';
@@ -41,7 +41,6 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
   });
 
   afterAll(async () => {
-    await cleanDatabase();
     await teardownTestDatabase();
   });
 
