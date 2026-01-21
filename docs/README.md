@@ -27,8 +27,7 @@ Start here if you're new to the project:
 
 ### 📖 [02. Guides](./02-guides/)
 Step-by-step instructions for common tasks:
-- **[Deployment](./02-guides/deployment/)** - Deploy to production, manage infrastructure
-- **[Infrastructure](./02-guides/infrastructure/)** - Database, SSH, GCP setup
+- **[Deployment](./02-guides/deployment/)** - Deploy to production, infrastructure setup, database operations
 - **[Development](./02-guides/development/)** - Git workflow, testing, code review
 - **[Troubleshooting](./02-guides/troubleshooting/)** - Common issues and solutions
 
@@ -58,7 +57,7 @@ Product roadmap, planning, and metrics:
 SRE, monitoring, and incident response:
 - **[Monitoring](./06-operations/monitoring/)** - Health checks, logging, alerting
 - **[Incident Response](./06-operations/incident-response/)** - Runbooks and postmortems
-- **[Maintenance](./06-operations/maintenance/)** - Backup, restore, database maintenance
+- **[Operational Guides](./06-operations/)** - ComfyUI setup, R2 configuration, quality dashboard
 
 ### 🤝 [07. Contributing](./07-contributing/)
 Guidelines for contributors:
