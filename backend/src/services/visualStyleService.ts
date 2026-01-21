@@ -6,7 +6,8 @@
  */
 
 import { prisma } from '../config/database';
-import type { VisualStyle, ContentType } from '../generated/prisma';
+import { logger } from '../config/logger';
+import type { VisualStyle, ContentType, Theme } from '../generated/prisma';
 
 export interface LoRAConfig {
   id: string;
@@ -44,12 +45,14 @@ export interface VisualStyleConfiguration {
  * Get visual style configuration for image generation
  *
  * @param style - The visual style (ANIME, REALISTIC, etc)
- * @param contentType - Optional content type for checkpoint override (FURRY, HENTAI, etc)
+ * @param contentType - Optional content type for checkpoint override (FURRY, HENTAI, etc) - DEPRECATED, use theme instead
+ * @param theme - Optional theme for Style + Theme combination (DARK_FANTASY, FANTASY, FURRY, etc)
  * @returns Visual style configuration or null if not found
  */
 export async function getVisualStyleConfiguration(
   style: VisualStyle,
-  contentType?: ContentType
+  contentType?: ContentType,
+  theme?: Theme
 ): Promise<VisualStyleConfiguration | null> {
   // Fetch the visual style config with all relations
   const styleConfig = await prisma.visualStyleConfig.findUnique({
@@ -59,6 +62,12 @@ export async function getVisualStyleConfiguration(
       contentCheckpoints: {
         include: {
           checkpoint: true
+        }
+      },
+      themeCheckpoints: {
+        include: {
+          checkpoint: true,
+          loraOverride: true
         }
       },
       styleLoras: {
@@ -80,8 +89,19 @@ export async function getVisualStyleConfiguration(
   let checkpoint = styleConfig.defaultCheckpoint;
   let checkpointConfig = styleConfig.defaultCheckpoint?.config as Record<string, any> | null;
 
-  // Check for content-type override
-  if (contentType) {
+  // Priority 1: Check for Theme-based override (NEW system)
+  if (theme) {
+    const themeOverride = styleConfig.themeCheckpoints.find(
+      tc => tc.theme === theme
+    );
+    if (themeOverride) {
+      checkpoint = themeOverride.checkpoint;
+      checkpointConfig = themeOverride.checkpoint?.config as Record<string, any> | null;
+    }
+  }
+
+  // Priority 2: Check for content-type override (LEGACY system - deprecated)
+  if (!theme && contentType) {
     const contentOverride = styleConfig.contentCheckpoints.find(
       cc => cc.contentType === contentType
     );
@@ -96,7 +116,7 @@ export async function getVisualStyleConfiguration(
   }
 
   // Build LoRA configurations
-  const loras: LoRAConfig[] = styleConfig.styleLoras
+  let loras: LoRAConfig[] = styleConfig.styleLoras
     .filter(lora => lora.lora.isActive)
     .map(mapping => ({
       id: mapping.lora.id,
@@ -108,6 +128,29 @@ export async function getVisualStyleConfiguration(
       weight: mapping.weight ?? mapping.lora.weight,
       priority: mapping.priority
     }));
+
+  // If theme has a LoRA override, use it instead of style LoRAs
+  if (theme) {
+    const themeOverride = styleConfig.themeCheckpoints.find(
+      tc => tc.theme === theme
+    );
+
+    if (themeOverride?.loraOverride) {
+      loras = [{
+        id: themeOverride.loraOverride.id,
+        name: themeOverride.loraOverride.name,
+        filename: themeOverride.loraOverride.filename,
+        path: themeOverride.loraOverride.path,
+        filepathRelative: themeOverride.loraOverride.filepathRelative,
+        triggerWords: themeOverride.loraOverride.triggerWords,
+        weight: themeOverride.loraStrength ?? themeOverride.loraOverride.weight,
+        priority: 0
+      }];
+    } else if (themeOverride && !themeOverride.loraOverride) {
+      // Theme explicitly has no LoRA (checkpoint-only)
+      loras = [];
+    }
+  }
 
   return {
     style: styleConfig.style,
@@ -310,4 +353,118 @@ export async function isValidVisualStyle(style: VisualStyle): Promise<boolean> {
   });
 
   return config?.isActive ?? false;
+}
+
+// ============================================================================
+// STYLE + THEME SYSTEM
+// ============================================================================
+
+export interface StyleThemeCombination {
+  style: VisualStyle;
+  theme: Theme;
+  checkpoint: {
+    id: string;
+    name: string;
+    filename: string;
+    path: string;
+  };
+  lora?: {
+    id: string;
+    name: string;
+    filename: string;
+    filepathRelative: string;
+    strength: number;
+  };
+}
+
+/**
+ * Get checkpoint + LoRA configuration for a Style + Theme combination
+ *
+ * @param style - The visual style (ANIME, REALISTIC, etc)
+ * @param theme - The theme (DARK_FANTASY, FANTASY, FURRY, etc)
+ * @returns Style + Theme combination or null if not found
+ */
+export async function getStyleThemeCombination(
+  style: VisualStyle,
+  theme: Theme
+): Promise<StyleThemeCombination | null> {
+  try {
+    const combo = await prisma.styleThemeCheckpoint.findUnique({
+      where: {
+        styleId_theme: {
+          styleId: (await getStyleConfigId(style)),
+          theme,
+        },
+      },
+      include: {
+        checkpoint: true,
+        loraOverride: true,
+      },
+    });
+
+    if (!combo) {
+      logger.warn({ style, theme }, 'Style + Theme combination not found');
+      return null;
+    }
+
+    return {
+      style,
+      theme,
+      checkpoint: {
+        id: combo.checkpoint.id,
+        name: combo.checkpoint.name,
+        filename: combo.checkpoint.filename,
+        path: combo.checkpoint.path,
+      },
+      lora: combo.loraOverride ? {
+        id: combo.loraOverride.id,
+        name: combo.loraOverride.name,
+        filename: combo.loraOverride.filename,
+        filepathRelative: combo.loraOverride.filepathRelative!,
+        strength: combo.loraStrength ?? combo.loraOverride.weight,
+      } : undefined,
+    };
+  } catch (error) {
+    logger.error({ error, style, theme }, 'Failed to get Style + Theme combination');
+    return null;
+  }
+}
+
+/**
+ * Get all available themes for a style
+ *
+ * @param style - The visual style
+ * @returns Array of available themes
+ */
+export async function getAvailableThemesForStyle(style: VisualStyle): Promise<Theme[]> {
+  try {
+    const styleConfig = await prisma.visualStyleConfig.findUnique({
+      where: { style },
+      select: { supportedThemes: true },
+    });
+
+    return styleConfig?.supportedThemes ?? [];
+  } catch (error) {
+    logger.error({ error, style }, 'Failed to get available themes');
+    return [];
+  }
+}
+
+/**
+ * Get style config ID from enum
+ *
+ * @param style - The visual style
+ * @returns The style config ID
+ */
+async function getStyleConfigId(style: VisualStyle): Promise<string> {
+  const styleConfig = await prisma.visualStyleConfig.findUnique({
+    where: { style },
+    select: { id: true },
+  });
+
+  if (!styleConfig) {
+    throw new Error(`Style config not found for: ${style}`);
+  }
+
+  return styleConfig.id;
 }

@@ -20,7 +20,7 @@ import type {
   LoraConfig,
 } from './types';
 import { ImageGenerationType } from './types';
-import type { VisualStyle, ContentType } from '../../generated/prisma';
+import type { VisualStyle, ContentType, Theme } from '../../generated/prisma';
 import {
   getVisualStyleConfiguration,
   buildComfyUIPayload,
@@ -722,15 +722,17 @@ export class ComfyUIService {
    *
    * @param workflow - ComfyUI workflow to modify
    * @param style - Visual style to apply
-   * @param contentType - Optional content type for checkpoint override
+   * @param contentType - Optional content type for checkpoint override (DEPRECATED, use theme)
+   * @param theme - Optional theme for Style + Theme combination
    * @returns Modified workflow with style applied
    */
   async applyVisualStyleToWorkflow(
     workflow: ComfyWorkflow,
     style: VisualStyle,
-    contentType?: ContentType
+    contentType?: ContentType,
+    theme?: Theme
   ): Promise<ComfyWorkflow> {
-    const config = await getVisualStyleConfiguration(style, contentType);
+    const config = await getVisualStyleConfiguration(style, contentType, theme);
 
     if (!config) {
       logger.warn({ style }, 'No visual style configuration found, workflow unchanged');

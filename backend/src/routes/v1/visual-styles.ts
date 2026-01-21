@@ -14,8 +14,10 @@ import {
   getVisualStyleConfiguration,
   getCheckpointOverrides,
   isValidVisualStyle,
+  getStyleThemeCombination,
+  getAvailableThemesForStyle,
 } from '../../services/visualStyleService';
-import { VisualStyle, ContentType } from '../../generated/prisma';
+import { VisualStyle, ContentType, Theme } from '../../generated/prisma';
 
 const router = Router();
 
@@ -160,6 +162,95 @@ router.post('/validate', async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Failed to validate visual style',
+    });
+  }
+});
+
+// ============================================================================
+// STYLE + THEME ENDPOINTS
+// ============================================================================
+
+/**
+ * GET /api/v1/visual-styles/:style/themes
+ *
+ * Get all available themes for a style
+ */
+router.get('/:style/themes', async (req, res) => {
+  try {
+    const { style } = req.params;
+
+    // Validate style enum
+    if (!Object.values(VisualStyle).includes(style as VisualStyle)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid visual style: ${style}. Valid values: ${Object.values(VisualStyle).join(', ')}`,
+      });
+    }
+
+    const themes = await getAvailableThemesForStyle(style as VisualStyle);
+
+    return res.json({
+      success: true,
+      data: {
+        style,
+        themes,
+      },
+    });
+  } catch (error) {
+    logger.error({ err: error }, 'Failed to get available themes');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get available themes',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/visual-styles/:style/themes/:theme
+ *
+ * Get checkpoint + LoRA configuration for a Style + Theme combination
+ */
+router.get('/:style/themes/:theme', async (req, res) => {
+  try {
+    const { style, theme } = req.params;
+
+    // Validate style enum
+    if (!Object.values(VisualStyle).includes(style as VisualStyle)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid visual style: ${style}. Valid values: ${Object.values(VisualStyle).join(', ')}`,
+      });
+    }
+
+    // Validate theme enum
+    if (!Object.values(Theme).includes(theme as Theme)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid theme: ${theme}. Valid values: ${Object.values(Theme).join(', ')}`,
+      });
+    }
+
+    const combination = await getStyleThemeCombination(
+      style as VisualStyle,
+      theme as Theme
+    );
+
+    if (!combination) {
+      return res.status(404).json({
+        success: false,
+        message: `Style + Theme combination not found: ${style} + ${theme}`,
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: combination,
+    });
+  } catch (error) {
+    logger.error({ err: error, style: req.params.style, theme: req.params.theme }, 'Failed to get Style + Theme combination');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get Style + Theme combination',
     });
   }
 });

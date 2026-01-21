@@ -23,7 +23,7 @@ import { prisma } from '../../config/database';
 import type { ReferenceImage } from '../comfyui/types';
 import type { UserRole } from '../../types';
 import { logger } from '../../config/logger';
-import type { ContentType, VisualStyle } from '../../generated/prisma';
+import type { ContentType, VisualStyle, Theme } from '../../generated/prisma';
 import { ImageType } from '../../generated/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
@@ -51,7 +51,8 @@ export interface MultiStageGenerationOptions {
   userId: string;
   userRole?: UserRole;
   visualStyle?: VisualStyle;
-  contentType?: ContentType;
+  contentType?: ContentType; // DEPRECATED: Use theme instead
+  theme?: Theme; // NEW: Style + Theme system
   onProgress?: (stage: number, total: number, message: string, completedImages?: Array<{ content: string; url: string }>) => void;
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to generate
 }
@@ -120,7 +121,7 @@ export class MultiStageCharacterGenerator {
    * New simplified flow with cumulative references in a single folder
    */
   async generateCharacterDataset(options: MultiStageGenerationOptions): Promise<void> {
-    const { characterId, prompt, userSamples = [], userId, userRole, visualStyle, contentType, onProgress, viewsToGenerate } = options;
+    const { characterId, prompt, userSamples = [], userId, userRole, visualStyle, contentType, theme: themeOption, onProgress, viewsToGenerate } = options;
 
     // Filter views to generate if specified
     const viewsToProcess = viewsToGenerate && viewsToGenerate.length > 0
@@ -351,6 +352,7 @@ export class MultiStageCharacterGenerator {
           referencePath: prepareResponse.referencePath,
           visualStyle,
           contentType,
+          theme: themeOption,
         });
 
         // Upload the new reference to R2
@@ -412,8 +414,9 @@ export class MultiStageCharacterGenerator {
     referencePath: string;
     visualStyle?: 'ANIME' | 'REALISTIC' | 'SEMI_REALISTIC' | 'CARTOON' | 'MANGA' | 'MANHWA' | 'COMIC' | 'CHIBI' | 'PIXEL_ART' | 'THREE_D';
     contentType?: ContentType;
+    theme?: Theme;
   }): Promise<{ imageBytes: Buffer; filename: string }> {
-    const { view, prompt, loras, referencePath, visualStyle, contentType } = options;
+    const { view, prompt, loras, referencePath, visualStyle, contentType, theme } = options;
 
     // Adjust prompt for this view
     const adjustedPrompt = {
@@ -461,8 +464,9 @@ export class MultiStageCharacterGenerator {
     // Apply visual style if provided (swaps checkpoint and applies style LoRAs)
     let finalWorkflow = workflowTemplate;
     if (visualStyle) {
-      finalWorkflow = await comfyuiService.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, contentType);
-      logger.info({ view: view.content, visualStyle, contentType }, 'Applied visual style to reference workflow');
+      // Prefer theme over contentType (new Style + Theme system)
+      finalWorkflow = await comfyuiService.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, contentType, theme);
+      logger.info({ view: view.content, visualStyle, contentType, theme }, 'Applied visual style to reference workflow');
     }
 
     // Execute workflow
