@@ -32,7 +32,7 @@ function ensureInitialized() {
   if (responseQueue && responseWorker) return true;
   queueConnection = createRedisClient();
   responseQueue = new Queue<ResponseJobData>(QUEUE_NAME, {
-    connection: queueConnection,
+    connection: queueConnection as any, // Type assertion for ioredis/bullmq compatibility
     defaultJobOptions: {
       attempts: 3,
       backoff: { type: 'exponential', delay: 2000 },
@@ -296,7 +296,7 @@ function ensureInitialized() {
       throw error;
     }
     },
-    { connection: workerConnection, concurrency: 5 }
+    { connection: workerConnection as any, concurrency: 5 } // Type assertion for ioredis/bullmq compatibility
   );
 
   // Attach events
