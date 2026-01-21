@@ -996,7 +996,7 @@ GET /api/v1/characters/:id
 - **Status**: ✅ **CONCLUÍDO E DEPLOYED**
 - **Objetivo**: Implementar onboarding guiado + sistema robusto de restrições de conteúdo por idade
 - **Resultado**: Sistema de welcome flow ativo em produção com validação de idade
-- **Arquivo de spec**: `docs/05-business/planning/features/implemented/welcome-flow-and-content-restrictions.md` (movido para implemented)
+- **Arquivo de spec**: `docs/05-business/planning/features/archive/welcome-flow-and-content-restrictions.md` (arquivado)
 
 ### Semana de 14-20 Dezembro
 
@@ -1009,7 +1009,7 @@ GET /api/v1/characters/:id
 - **Objetivo**: Habilitar pagamentos reais em produção com Stripe
 - **Abordagem**: Payment Provider Adapter Pattern implementado
 - **Resultado**: Sistema de pagamentos ativo em produção
-- **Arquivo de spec**: `docs/05-business/planning/features/implemented/stripe-payment-integration.md` (movido para implemented)
+- **Arquivo de spec**: `docs/05-business/planning/features/archive/stripe-payment-integration.md` (arquivado)
 
 ### Semana de 23-29 Novembro
 

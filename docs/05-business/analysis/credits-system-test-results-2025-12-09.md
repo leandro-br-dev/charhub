@@ -279,8 +279,8 @@ process.env.DATABASE_URL = 'postgresql://charhub:charhub_dev_password@localhost:
 ## 🔗 Related Documents
 
 **Feature Specs**:
-- [Credits System Implementation](../../planning/features/implemented/credits-system.md)
-- [Credits System TODO](../../planning/features/implemented/todo-credits-system.md)
+- [Credits System Implementation](../../planning/features/archive/credits-system.md)
+- [Credits System TODO](../../planning/features/archive/todo-credits-system.md)
 
 **Usage Guide**:
 - [Credits System Usage Guide](../../../backend/src/services/.docs.md)

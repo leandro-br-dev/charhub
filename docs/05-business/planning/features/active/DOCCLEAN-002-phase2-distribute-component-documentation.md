@@ -317,7 +317,7 @@ After completion:
 2. **Create summary** of distributed documentation locations
 3. **Train agents** - Ensure backend-developer and frontend-specialist know to check `.docs.md` before modifying code
 4. **Update coder-doc-specialist** guidelines if needed
-5. **Move to `/docs/05-business/planning/features/implemented/`**
+5. **Move to `/docs/05-business/planning/features/archive/`**
 
 ---
 

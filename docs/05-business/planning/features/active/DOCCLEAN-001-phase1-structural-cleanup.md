@@ -381,7 +381,7 @@ SRE, monitoring, and incident response:
 After completion:
 
 1. **Update this spec** - Mark all tasks as complete
-2. **Move to `/docs/05-business/planning/features/implemented/`**
+2. **Move to `/docs/05-business/planning/features/archive/`**
 3. **Create Phase 2 spec** for distributing component documentation
 4. **Update `/docs/05-business/analysis/documentation-migration-analysis-2026-01-17.md`** with progress
 
