@@ -1,6 +1,6 @@
 # Feature Implementation Archive
 
-This archive contains **40 feature specifications** that have been implemented and deployed to production.
+This archive contains **44 feature specifications** that have been implemented and deployed to production, plus **4 documentation cleanup specifications**.
 
 ## Purpose
 
@@ -13,6 +13,8 @@ These documents are preserved for:
 ## Archive Statistics
 
 - **Total Features**: 40
+- **Documentation Specs**: 4 (DOCCLEAN-001 through DOCCLEAN-004)
+- **Total Archived**: 44
 - **Archive Date**: 2026-01-21
 - **Date Range**: 2024-12-25 to 2026-01-21
 - **Status**: Read-only (all features in production)
@@ -148,6 +150,24 @@ These documents are preserved for:
 - **[LLM Cost Tracking System](llm-cost-tracking-system.md)** - Cost monitoring
   - Track LLM API costs
 
+### Documentation (4 specifications)
+
+- **[DOCCLEAN-001: Phase 1 - Structural Cleanup](DOCCLEAN-001-phase1-structural-cleanup.md)** (13,951 bytes)
+  - Implemented: 2026-01-17
+  - Removed orphaned folders, consolidated documentation
+
+- **[DOCCLEAN-002: Phase 2 - Distributed Documentation](DOCCLEAN-002-phase2-distribute-component-documentation.md)** (9,279 bytes)
+  - Implemented: 2026-01-19
+  - Created `.docs.md` files alongside code
+
+- **[DOCCLEAN-003: Phase 3 - Archive and Cleanup](DOCCLEAN-003-phase3-archive-cleanup.md)** (16,080 bytes)
+  - Implemented: 2026-01-20
+  - Archived 37 implemented specs, cleaned up large files
+
+- **[DOCCLEAN-004: Phase 4 - Final Navigation and Standards](DOCCLEAN-004-phase4-final-navigation.md)** (16,275 bytes)
+  - Implemented: 2026-01-21
+  - Created documentation standards, validated navigation, completed migration
+
 ### Notifications & Communication (2 features)
 
 - **[Notification System TODO](todo-notification-system.md)** - Notification features
@@ -178,6 +198,8 @@ If you need to reference an archived feature:
 
 **Features archived**: 2026-01-21
 **Total features**: 40
+**Documentation specs**: 4 (DOCCLEAN-001 through DOCCLEAN-004)
+**Total archived**: 44
 **Archive maintained by**: Agent Planner (via planner-doc-specialist)
 
 ---
