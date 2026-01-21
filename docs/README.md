@@ -1,6 +1,6 @@
 # CharHub Documentation
 
-**Last Updated**: 2025-12-05
+**Last Updated**: 2026-01-21
 **Project**: CharHub - AI Character Chat Platform
 **Repository**: https://github.com/leandro-br-dev/charhub
 
@@ -33,7 +33,9 @@ Step-by-step instructions for common tasks:
 
 ### 📚 [03. Reference](./03-reference/)
 Technical specifications and API documentation:
-- **[API](./03-reference/api/)** - Backend API reference
+- **Backend** - Service documentation is distributed in code folders (see `.docs.md` files)
+- **Frontend** - Component documentation is distributed in code folders (see `.docs.md` files)
+- **[API](./03-reference/api/)** - API documentation
 - **[CLI](./03-reference/cli/)** - Command-line tools (gcloud, docker)
 - **[Workflows](./03-reference/workflows/)** - GitHub Actions workflows
 - **[Scripts](./03-reference/scripts/)** - Automation scripts documentation
@@ -48,9 +50,11 @@ System design and technical decisions:
 
 ### 💼 [05. Business](./05-business/)
 Product roadmap, planning, and metrics:
+- **[Active Features](./05-business/planning/features/active/)** - Currently being implemented
+- **[Backlog](./05-business/planning/features/backlog/)** - Planned features
+- **[Archive](./05-business/planning/features/archive/)** - Historical implementation records (40 specs)
 - **[Roadmap](./05-business/roadmap/)** - Feature planning and implementation status
 - **[Planning](./05-business/planning/)** - Sprint planning and agent assignments
-- **[Metrics](./05-business/metrics/)** - Analytics, KPIs, and reports
 - **[Analysis](./05-business/analysis/)** - Business analysis and insights
 
 ### ⚙️ [06. Operations](./06-operations/)
@@ -85,7 +89,8 @@ Feature development, bug fixes, and code implementation:
 - ✅ **Deploy to production** → [02. Guides / Deployment](./02-guides/deployment/)
 - ✅ **Set up local environment** → [01. Getting Started](./01-getting-started/)
 - ✅ **Understand the architecture** → [04. Architecture](./04-architecture/)
-- ✅ **Check project metrics** → [05. Business / Metrics](./05-business/metrics/)
+- ✅ **Check active features** → [05. Business / Active Features](./05-business/planning/features/active/)
+- ✅ **Research implemented features** → [05. Business / Archive](./05-business/planning/features/archive/)
 - ✅ **Fix a production issue** → [06. Operations / Incident Response](./06-operations/incident-response/)
 - ✅ **Learn about CI/CD** → [03. Reference / Workflows](./03-reference/workflows/)
 - ✅ **Understand agent workflow** → [Agents](./agents/)
