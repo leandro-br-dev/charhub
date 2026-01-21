@@ -438,6 +438,45 @@ router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
 });
 
 /**
+ * GET /api/v1/characters/personas
+ * Get characters available for persona selection
+ * Returns user's own characters + public characters
+ * NOTE: Must be before /:id route to avoid route conflict
+ */
+router.get('/personas', requireAuth, translationMiddleware(), async (req: Request, res: Response) => {
+  try {
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    const { page, limit, search } = req.query;
+
+    const characters = await characterService.getAvailablePersonas(userId, {
+      page: page ? parseInt(page as string, 10) : 1,
+      limit: limit ? parseInt(limit as string, 10) : 20,
+      search: search as string | undefined,
+    });
+
+    return res.json({
+      success: true,
+      data: characters,
+      count: characters.length,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting available personas');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get available personas',
+    });
+  }
+});
+
+/**
  * GET /api/v1/characters/:id
  * Get character by ID
  */

@@ -117,3 +117,118 @@ export async function createTestTransaction(userId: string, overrides: any = {})
     data: defaultData,
   });
 }
+
+/**
+ * Create test character
+ */
+export async function createTestCharacter(creatorId: string, overrides: any = {}) {
+  const db = getTestDb();
+  const timestamp = Date.now();
+
+  const defaultData = {
+    userId: creatorId,  // Changed from creatorId to userId
+    firstName: `TestChar${timestamp}`,
+    lastName: 'Character',
+    gender: 'FEMALE',  // Use enum value
+    visibility: 'PUBLIC',
+    ageRating: 'TWELVE',  // Valid AgeRating enum value
+    personality: 'A test character personality',
+    physicalCharacteristics: 'Test appearance',
+    history: 'Test background story',
+    ...overrides,
+  };
+
+  const character = await db.character.create({
+    data: defaultData,
+  });
+
+  // Create avatar image
+  await db.characterImage.create({
+    data: {
+      characterId: character.id,
+      type: 'AVATAR',
+      url: `https://example.com/character-${character.id}.jpg`,
+      isActive: true,
+    },
+  });
+
+  return character;
+}
+
+/**
+ * Create test conversation with participants
+ */
+export async function createTestConversationWithParticipants(
+  userId: string,
+  participantConfig: {
+    characterIds?: string[];
+    includeUser?: boolean;
+  } = {}
+) {
+  const db = getTestDb();
+  const { characterIds = [], includeUser = true } = participantConfig;
+
+  // Create conversation
+  const conversation = await db.conversation.create({
+    data: {
+      userId,
+      title: 'Test Conversation',
+    },
+  });
+
+  // Add user participant if requested
+  let userParticipantId = null;
+  if (includeUser) {
+    const userParticipant = await db.conversationParticipant.create({
+      data: {
+        conversationId: conversation.id,
+        userId,
+      },
+    });
+    userParticipantId = userParticipant.id;
+  }
+
+  // Add character participants
+  const characterParticipants = [];
+  for (const characterId of characterIds) {
+    const participant = await db.conversationParticipant.create({
+      data: {
+        conversationId: conversation.id,
+        actingCharacterId: characterId,
+      },
+    });
+    characterParticipants.push(participant);
+  }
+
+  return {
+    conversation,
+    userParticipantId,
+    characterParticipants,
+  };
+}
+
+/**
+ * Create test message
+ */
+export async function createTestMessage(
+  conversationId: string,
+  senderId: string,
+  senderType: 'USER' | 'CHARACTER' | 'ASSISTANT',
+  content: string,
+  overrides: any = {}
+) {
+  const db = getTestDb();
+
+  const defaultData = {
+    conversationId,
+    senderId,
+    senderType,
+    content,
+    timestamp: new Date(),
+    ...overrides,
+  };
+
+  return await db.message.create({
+    data: defaultData,
+  });
+}

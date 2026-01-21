@@ -1456,3 +1456,77 @@ export async function getNewestCharacters(options?: {
     throw error;
   }
 }
+
+/**
+ * Get characters available for user to assume as persona
+ * Returns: User's own characters + Public characters
+ * Used for persona selection in conversations
+ *
+ * @param userId - The user's ID
+ * @param options - Query options (page, limit, search)
+ * @returns Array of characters available for persona selection
+ */
+export async function getAvailablePersonas(
+  userId: string,
+  options: { page?: number; limit?: number; search?: string }
+): Promise<CharacterWithRelations[]> {
+  try {
+    const { page = 1, limit = 20, search } = options;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.CharacterWhereInput = {
+      isSystemCharacter: false,
+      OR: [
+        { userId: userId },  // User's own characters
+        { visibility: Visibility.PUBLIC }  // Public characters
+      ],
+      ...(search && {
+        OR: [
+          { firstName: { contains: search, mode: 'insensitive' } },
+          { lastName: { contains: search, mode: 'insensitive' } }
+        ]
+      })
+    };
+
+    const characters = await prisma.character.findMany({
+      where,
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        gender: true,
+        style: true,
+        visibility: true,
+        userId: true,
+        images: {
+          where: { type: 'AVATAR', isActive: true },
+          select: { url: true },
+          take: 1,
+        },
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+          }
+        }
+      },
+      orderBy: [
+        { userId: userId ? 'desc' : 'asc' },  // Own characters first
+        { firstName: 'asc' }
+      ],
+      skip,
+      take: limit,
+    });
+
+    logger.debug(
+      { userId, count: characters.length, search, page },
+      'Available personas fetched'
+    );
+
+    return characters as unknown as CharacterWithRelations[];
+  } catch (error) {
+    logger.error({ error, userId, options }, 'Error getting available personas');
+    throw error;
+  }
+}

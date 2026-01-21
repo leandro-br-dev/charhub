@@ -117,6 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const [isPhotoCached, setIsPhotoCached] = useState(false);
 
   useEffect(() => {
+    // Only cache photo once when user has a photo URL and hasn't been cached yet
     if (user?.photo && user.photo.startsWith('http') && !isPhotoCached) {
       toDataURL(user.photo)
         .then(dataUrl => {
@@ -125,9 +126,11 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
         })
         .catch(error => {
           console.warn('[auth] failed to cache photo', error);
+          // Mark as cached even on error to prevent retry loop
+          setIsPhotoCached(true);
         });
     }
-  }, [user, isPhotoCached]);
+  }, [user?.photo, isPhotoCached]); // Only depend on photo URL, not entire user object
 
   useEffect(() => {
     if (typeof window === 'undefined') {

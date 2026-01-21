@@ -12,7 +12,7 @@
     "account": "Konto",
     "continueGoogle": "Mit Google fortfahren",
     "continueFacebook": "Mit Facebook fortfahren",
-    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzerklärung zu und autorisieren CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
+    "privacy": "Indem Sie fortfahren, stimmen Sie unserer Datenschutzrichtlinie zu und ermächtigen CharHub, auf Ihre grundlegenden Profilinformationen zuzugreifen.",
     "logout": "Abmelden",
     "logoutLoading": "Melde ab...",
     "authenticatedUser": "Authentifizierter Benutzer",
@@ -39,17 +39,17 @@
     "cancel": "Abbrechen",
     "save": "Speichern",
     "saving": "Wird gespeichert...",
-    "loading": "Lädt...",
+    "loading": "Wird geladen...",
     "use": "Verwenden",
     "add": "Hinzufügen",
     "delete": "Löschen",
     "deleting": "Wird gelöscht...",
     "enabled": "Aktiviert",
     "disabled": "Deaktiviert",
-    "selectOption": "Wählen Sie eine Option",
+    "selectOption": "Option auswählen",
     "noResults": "Keine Optionen gefunden.",
     "chat": {
-      "with": "Chat mit"
+      "with": "Chatten mit"
     },
     "messages": {
       "linkCopied": "Link in die Zwischenablage kopiert!",
@@ -62,23 +62,23 @@
       "ageRating": "Altersfreigabe",
       "blurNsfw": "Explizite Inhalte unscharf machen",
       "none": "Kein Filter",
-      "blur": "Sensible Inhalte unscharf machen",
-      "hidden": "Nicht jugendfreie Inhalte ausblenden",
+      "blur": "Sensible Inhalte unscharf",
+      "hidden": "Mature Inhalte ausblenden",
       "descriptions": {
         "none": "Alle Inhalte ohne Einschränkungen anzeigen",
-        "blur": "Nicht jugendfreie Inhalte unscharf machen",
-        "hidden": "Nicht jugendfreie Inhalte vollständig ausblenden"
+        "blur": "Unschärfe auf mature Inhalte anwenden",
+        "hidden": "Mature Inhalte vollständig ausblenden"
       },
       "ageRatings": {
         "L": "Freigegeben",
-        "TEN": "10+",
-        "TWELVE": "12+",
-        "FOURTEEN": "14+",
-        "SIXTEEN": "16+",
-        "EIGHTEEN": "18+"
+        "TEN": "Ab 10 Jahren",
+        "TWELVE": "Ab 12 Jahren",
+        "FOURTEEN": "Ab 14 Jahren",
+        "SIXTEEN": "Ab 16 Jahren",
+        "EIGHTEEN": "Ab 18 Jahren"
       },
       "noBirthdateWarning": "⚠️ Alter nicht registriert",
-      "noBirthdateDescription": "Um auf altersbeschränkte Inhalte zuzugreifen, fügen Sie bitte Ihr Geburtsdatum in den Einstellungen hinzu.",
+      "noBirthdateDescription": "Um auf altersbeschränkte Inhalte zuzugreifen, fügen Sie Ihr Geburtsdatum in den Einstellungen hinzu.",
       "goToSettings": "Zu den Einstellungen",
       "blocked": "(blockiert)"
     },
@@ -89,11 +89,13 @@
     "character": "Charakter",
     "seeMore": "Mehr anzeigen",
     "seeMoreArrow": "Mehr anzeigen →",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
     "back": "Zurück",
     "credits": "Credits",
     "tryAgain": "Erneut versuchen",
     "generate": "Generieren",
-    "generating": "Generiert...",
+    "generating": "Wird generiert...",
     "generateAgain": "Erneut generieren",
     "regenerate": "Regenerieren",
     "close": "Schließen",

@@ -12,11 +12,11 @@
     "account": "アカウント",
     "continueGoogle": "Googleで続行",
     "continueFacebook": "Facebookで続行",
-    "privacy": "続行することにより、当社のプライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを許可します。",
-    "logout": "ログアウト",
-    "logoutLoading": "ログアウト中...",
+    "privacy": "続行することにより、お客様は当社のプライバシーポリシーに同意し、CharHubがお客様の基本的なプロフィール情報にアクセスすることを許可するものとします。",
+    "logout": "サインアウト",
+    "logoutLoading": "サインアウト中...",
     "authenticatedUser": "認証済みユーザー",
-    "tokenStored": "HTTP-onlyクッキーに保存済み",
+    "tokenStored": "HTTP専用Cookieに保存済み",
     "navDashboard": "ダッシュボード",
     "navCharacters": "キャラクター",
     "navTagline": "安全なOAuthデモ",
@@ -35,26 +35,26 @@
     },
     "none": "なし",
     "unknown": "不明",
-    "nameNotAvailable": "名前は利用できません",
+    "nameNotAvailable": "名前が利用できません",
     "cancel": "キャンセル",
     "save": "保存",
     "saving": "保存中...",
     "loading": "読み込み中...",
-    "use": "使用",
+    "use": "使用する",
     "add": "追加",
     "delete": "削除",
     "deleting": "削除中...",
     "enabled": "有効",
     "disabled": "無効",
     "selectOption": "オプションを選択",
-    "noResults": "オプションが見つかりません。",
+    "noResults": "オプションが見つかりませんでした。",
     "chat": {
-      "with": "とチャット"
+      "with": "チャット相手："
     },
     "messages": {
       "linkCopied": "リンクをクリップボードにコピーしました！",
-      "chatStarted": "チャットが正常に開始されました！",
-      "characterDeleted": "キャラクターが正常に削除されました"
+      "chatStarted": "チャットを開始しました！",
+      "characterDeleted": "キャラクターを削除しました"
     },
     "contentFilter": {
       "ariaLabel": "コンテンツフィルター",
@@ -62,12 +62,12 @@
       "ageRating": "年齢制限",
       "blurNsfw": "露骨なコンテンツをぼかす",
       "none": "フィルターなし",
-      "blur": "デリケートな内容をぼかす",
-      "hidden": "アダルトコンテンツを非表示",
+      "blur": "センシティブな内容をぼかす",
+      "hidden": "成人向けを非表示",
       "descriptions": {
-        "none": "制限なくすべてのコンテンツを表示",
-        "blur": "アダルトコンテンツにぼかしを適用する",
-        "hidden": "アダルトコンテンツを完全に非表示にする"
+        "none": "制限なしで全てのコンテンツを表示",
+        "blur": "成人向けコンテンツにぼかしを適用する",
+        "hidden": "成人向けコンテンツを完全に非表示にする"
       },
       "ageRatings": {
         "L": "全年齢",
@@ -80,7 +80,7 @@
       "noBirthdateWarning": "⚠️ 年齢が未登録です",
       "noBirthdateDescription": "年齢制限のあるコンテンツにアクセスするには、設定で生年月日を追加してください。",
       "goToSettings": "設定へ移動",
-      "blocked": "(ブロック済み)"
+      "blocked": "（ブロック済み）"
     },
     "errors": {
       "generic": "エラーが発生しました。もう一度お試しください。",
@@ -89,6 +89,8 @@
     "character": "キャラクター",
     "seeMore": "もっと見る",
     "seeMoreArrow": "もっと見る →",
+    "showMore": "さらに表示",
+    "showLess": "閉じる",
     "back": "戻る",
     "credits": "クレジット",
     "tryAgain": "もう一度試す",

@@ -72,24 +72,46 @@ function appendMessageToCache(
   conversationId: string,
   message: Message
 ) {
-  queryClient.setQueryData<{ items: Message[]; total: number }>(
-    messageKeys.list(conversationId),
-    (current) => {
-      if (!current) {
-        return { items: [message], total: 1 };
-      }
+  // Get all query keys that match this conversation's messages
+  const queryCache = queryClient.getQueryCache();
+  const matchingQueries = queryCache.findAll({
+    queryKey: messageKeys.lists(),
+  });
 
-      const alreadyExists = current.items.some((item) => item.id === message.id);
-      if (alreadyExists) {
-        return current;
-      }
+  console.log('[useChatSocket] appendMessageToCache', {
+    conversationId,
+    messageId: message.id,
+    matchingQueriesCount: matchingQueries.length,
+    matchingQueryKeys: matchingQueries.map(q => q.queryKey),
+  });
 
-      return {
-        items: [...current.items, message],
-        total: current.total + 1,
-      };
+  // Update all matching query keys to handle different query parameter combinations
+  matchingQueries.forEach((query) => {
+    const queryKey = query.queryKey;
+
+    // Check if this query is for the right conversation
+    // Format: ['messages', 'list', conversationId, query?]
+    if (queryKey.length >= 3 && queryKey[2] === conversationId) {
+      queryClient.setQueryData<{ items: Message[]; total: number }>(
+        queryKey,
+        (current) => {
+          if (!current) {
+            return { items: [message], total: 1 };
+          }
+
+          const alreadyExists = current.items.some((item) => item.id === message.id);
+          if (alreadyExists) {
+            return current;
+          }
+
+          return {
+            items: [...current.items, message],
+            total: current.total + 1,
+          };
+        }
+      );
     }
-  );
+  });
 
   queryClient.setQueryData(
     conversationKeys.detail(conversationId),
@@ -112,6 +134,8 @@ function appendMessageToCache(
     }
   );
 
+  // Invalidate to trigger re-render
+  queryClient.invalidateQueries({ queryKey: messageKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
 }
 
@@ -377,20 +401,35 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
         deletedCount: payload.deletedCount
       });
 
-      // Remove deleted message(s) from cache
-      queryClient.setQueryData<{ items: Message[]; total: number }>(
-        messageKeys.list(payload.conversationId),
-        (current) => {
-          if (!current) return current;
+      // Remove deleted message(s) from all matching query caches
+      const queryCache = queryClient.getQueryCache();
+      const matchingQueries = queryCache.findAll({
+        queryKey: messageKeys.lists(),
+      });
 
-          // If multiple messages were deleted (message + subsequent), filter them out
-          // For simplicity, we invalidate the query to refetch from server
-          return current;
+      matchingQueries.forEach((query) => {
+        const queryKey = query.queryKey;
+
+        // Check if this query is for the right conversation
+        // Format: ['messages', 'list', conversationId, query?]
+        if (queryKey.length >= 3 && queryKey[2] === payload.conversationId) {
+          queryClient.setQueryData<{ items: Message[]; total: number }>(
+            queryKey,
+            (current) => {
+              if (!current) return current;
+
+              // Filter out the deleted message(s)
+              // For simplicity, we'll invalidate the query to refetch from server
+              // since we don't know which messages were cascade deleted
+              return current;
+            }
+          );
         }
-      );
+      });
 
       // Invalidate queries to refetch fresh data
       queryClient.invalidateQueries({ queryKey: messageKeys.list(payload.conversationId) });
+      queryClient.invalidateQueries({ queryKey: messageKeys.lists() });
       queryClient.invalidateQueries({ queryKey: conversationKeys.detail(payload.conversationId) });
 
       console.log('[useChatSocket] Message deletion handled, queries invalidated');

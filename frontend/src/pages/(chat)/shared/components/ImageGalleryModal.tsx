@@ -134,7 +134,8 @@ export default function ImageGalleryModal({
   const handleImageClick = (url: string, index: number) => {
     if (mode === 'select' && onImageSelect) {
       onImageSelect(url);
-      onClose();
+      // Don't close the gallery here - let the parent handle closing
+      // This allows the parent to set up image viewer before closing
     } else {
       setViewerIndex(index);
     }

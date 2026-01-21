@@ -11,6 +11,39 @@ const SIZE_CLASSES: Record<'sm' | 'md' | 'lg' | 'xl', string> = {
 
 const ANIMATION_DURATION = 200;
 
+// Inject custom scrollbar styles
+if (typeof document !== 'undefined') {
+  const styleId = 'modal-custom-scrollbar-styles';
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style');
+    style.id = styleId;
+    style.textContent = `
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(0, 0, 0, 0.3);
+      }
+      @media (prefers-color-scheme: dark) {
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.3);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -19,6 +52,10 @@ export interface ModalProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showCloseButton?: boolean;
+  stickyFooter?: ReactNode | null;
+  maxContentHeight?: string;
+  /** Maximum height of the modal (e.g., 'max-h-[70vh]', 'max-h-[90vh]') */
+  maxHeight?: string;
 }
 
 export function Modal({
@@ -28,7 +65,10 @@ export function Modal({
   children,
   className = '',
   size = 'md',
-  showCloseButton = true
+  showCloseButton = true,
+  stickyFooter = null,
+  maxContentHeight = 'max-h-[50vh]',
+  maxHeight
 }: ModalProps): JSX.Element | null {
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isVisible, setIsVisible] = useState(isOpen);
@@ -125,13 +165,13 @@ export function Modal({
     return null;
   }
 
-  const overlayClasses = `fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-10 transition-opacity duration-200 ease-out ${
+  const overlayClasses = `fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 py-10 transition-opacity duration-200 ease-out ${
     isVisible ? 'opacity-100' : 'opacity-0'
   }`;
 
-  const modalClasses = `w-full ${SIZE_CLASSES[size]} rounded-2xl bg-normal shadow-xl focus:outline-none transform transition-all duration-200 ease-out ${
+  const modalClasses = `w-full ${SIZE_CLASSES[size]} rounded-2xl bg-normal shadow-xl focus:outline-none transform transition-all duration-200 ease-out relative z-[60] ${
     isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
-  } ${className}`.trim();
+  } ${className} ${stickyFooter ? `flex flex-col ${maxHeight || 'max-h-[70vh]'}` : ''}`.trim();
 
   const modalContent = (
     <div
@@ -150,7 +190,7 @@ export function Modal({
         className={modalClasses}
         onMouseDown={event => event.stopPropagation()}
       >
-        <header className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
+        <header className="flex flex-shrink-0 items-center justify-between gap-4 border-b border-border px-6 py-4">
           <h2 className="text-lg font-semibold text-title">{title}</h2>
           {showCloseButton && (
             <Button
@@ -162,9 +202,20 @@ export function Modal({
             />
           )}
         </header>
-        <div className="max-h-[70vh] overflow-y-auto px-6 py-5 text-sm text-content">
-          {children}
-        </div>
+        {stickyFooter ? (
+          <>
+            <div className={`flex-1 overflow-y-auto min-h-0 px-6 py-5 text-sm text-content custom-scrollbar ${maxContentHeight}`}>
+              {children}
+            </div>
+            <footer className="flex flex-shrink-0 items-center justify-end border-t border-border px-6 py-4">
+              {stickyFooter}
+            </footer>
+          </>
+        ) : (
+          <div className="max-h-[70vh] overflow-y-auto px-6 py-5 text-sm text-content">
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );

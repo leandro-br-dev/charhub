@@ -3,6 +3,9 @@
  * Runs before all tests
  */
 
+// Mock ioredis to prevent Redis connection attempts during tests
+jest.mock('ioredis');
+
 // Extend Jest timeout for database operations
 jest.setTimeout(10000);
 

@@ -18,15 +18,45 @@ import { useMembersQuery } from '../hooks/useMembership';
 import { chatService } from '../../../../services/chatService';
 import type { ConversationParticipant, Message } from '../../../../types/chat';
 
+// User config override interface
+interface UserConfigOverride {
+  instructions?: string;
+  nameOverride?: string;
+  ageOverride?: number;
+  genderOverride?: 'male' | 'female' | 'non-binary' | 'other' | null;
+  avatarOverride?: string;
+  descriptionOverride?: string;
+}
+
+// Helper to parse user config from configOverride string
+const parseUserConfig = (configOverride?: string | null): UserConfigOverride | null => {
+  if (!configOverride) return null;
+  try {
+    return JSON.parse(configOverride);
+  } catch {
+    // If not JSON, return null (for backward compatibility)
+    return null;
+  }
+};
+
 interface ProcessedParticipant {
   id: string;
   actorId: string;
   actorType: 'USER' | 'CHARACTER' | 'ASSISTANT';
   representation: {
+    id?: string | null;
     name: string;
     avatar?: string | null;
+    style?: string | null;
+    gender?: string | null;
+    physicalCharacteristics?: string | null;
+    personality?: string | null;
+    history?: string | null;
+    gallery?: string[];
+    age?: string | null;
   };
   raw: ConversationParticipant;
+  isSynthetic?: boolean;
 }
 
 function buildParticipantRepresentation(
@@ -34,15 +64,26 @@ function buildParticipantRepresentation(
 ): ProcessedParticipant | null {
   if (participant.userId) {
     const user = participant.user;
-    const name =
-      user?.displayName || `User ${participant.userId.slice(0, 4)}`;
+    const userConfig = parseUserConfig(participant.configOverride);
+
+    // Apply overrides if present, otherwise use original user data
+    const name = userConfig?.nameOverride || user?.displayName || `User ${participant.userId.slice(0, 4)}`;
+    // Avatar: only use override if it's a non-empty string, otherwise fall back to user's avatar
+    const avatar = (userConfig?.avatarOverride && userConfig.avatarOverride.trim()) ? userConfig.avatarOverride : (user?.avatarUrl || null);
+    const age = userConfig?.ageOverride ? String(userConfig.ageOverride) : null;
+    const gender = userConfig?.genderOverride || null;
+
     return {
       id: participant.id,
       actorId: participant.userId,
       actorType: 'USER',
       representation: {
         name,
-        avatar: user?.avatarUrl || null,
+        avatar,
+        age,
+        gender,
+        // User-specific override for description (physical characteristics + personality)
+        physicalCharacteristics: userConfig?.descriptionOverride || null,
       },
       raw: participant,
     };
@@ -60,8 +101,15 @@ function buildParticipantRepresentation(
       actorId: participant.actingCharacterId,
       actorType: 'CHARACTER',
       representation: {
+        id: character?.id || null,
         name,
         avatar: character?.images?.[0]?.url || null,
+        style: character?.style || null,
+        gender: character?.gender || null,
+        physicalCharacteristics: character?.physicalCharacteristics || null,
+        personality: character?.personality || null,
+        history: character?.history || null,
+        gallery: character?.images?.map(img => img.url) || [],
       },
       raw: participant,
     };
@@ -77,8 +125,15 @@ function buildParticipantRepresentation(
       actorId: participant.actingAssistantId,
       actorType: 'ASSISTANT',
       representation: {
+        id: persona?.id || null,
         name,
         avatar,
+        style: persona?.style || null,
+        gender: persona?.gender || null,
+        physicalCharacteristics: persona?.physicalCharacteristics || null,
+        personality: persona?.personality || null,
+        history: persona?.history || null,
+        gallery: persona?.images?.map(img => img.url) || [],
       },
       raw: participant,
     };
@@ -98,23 +153,49 @@ function appendMessageToCache(
   conversationId: string,
   message: Message
 ) {
-  const key = messageKeys.list(conversationId);
-  queryClient.setQueryData<{ items: Message[]; total: number }>(key, (previous) => {
-    if (!previous) {
-      return { items: [message], total: 1 };
-    }
-
-    const alreadyExists = previous.items.some((item) => item.id === message.id);
-    if (alreadyExists) {
-      return previous;
-    }
-
-    return {
-      items: [...previous.items, message],
-      total: previous.total + 1,
-    };
+  // Get all query keys that match this conversation's messages
+  const queryCache = queryClient.getQueryCache();
+  const matchingQueries = queryCache.findAll({
+    queryKey: messageKeys.lists(),
   });
 
+  console.log('[ChatContainer] appendMessageToCache', {
+    conversationId,
+    messageId: message.id,
+    matchingQueriesCount: matchingQueries.length,
+    matchingQueryKeys: matchingQueries.map(q => q.queryKey),
+  });
+
+  // Update all matching query keys to handle different query parameter combinations
+  matchingQueries.forEach((query) => {
+    const queryKey = query.queryKey;
+
+    // Check if this query is for the right conversation
+    // Format: ['messages', 'list', conversationId, query?]
+    if (queryKey.length >= 3 && queryKey[2] === conversationId) {
+      queryClient.setQueryData<{ items: Message[]; total: number }>(
+        queryKey,
+        (previous) => {
+          if (!previous) {
+            return { items: [message], total: 1 };
+          }
+
+          const alreadyExists = previous.items.some((item) => item.id === message.id);
+          if (alreadyExists) {
+            return previous;
+          }
+
+          return {
+            items: [...previous.items, message],
+            total: previous.total + 1,
+          };
+        }
+      );
+    }
+  });
+
+  // Invalidate to trigger re-render
+  queryClient.invalidateQueries({ queryKey: messageKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.detail(conversationId) });
 }
@@ -124,23 +205,49 @@ function removeMessageFromCache(
   conversationId: string,
   messageId: string
 ) {
-  const key = messageKeys.list(conversationId);
-  queryClient.setQueryData<{ items: Message[]; total: number }>(key, (previous) => {
-    if (!previous) {
-      return previous;
-    }
-
-    const filtered = previous.items.filter((item) => item.id !== messageId);
-    if (filtered.length === previous.items.length) {
-      return previous;
-    }
-
-    return {
-      items: filtered,
-      total: Math.max(previous.total - 1, 0),
-    };
+  // Get all query keys that match this conversation's messages
+  const queryCache = queryClient.getQueryCache();
+  const matchingQueries = queryCache.findAll({
+    queryKey: messageKeys.lists(),
   });
 
+  console.log('[ChatContainer] removeMessageFromCache', {
+    conversationId,
+    messageId,
+    matchingQueriesCount: matchingQueries.length,
+    matchingQueryKeys: matchingQueries.map(q => q.queryKey),
+  });
+
+  // Update all matching query keys to handle different query parameter combinations
+  matchingQueries.forEach((query) => {
+    const queryKey = query.queryKey;
+
+    // Check if this query is for the right conversation
+    // Format: ['messages', 'list', conversationId, query?]
+    if (queryKey.length >= 3 && queryKey[2] === conversationId) {
+      queryClient.setQueryData<{ items: Message[]; total: number }>(
+        queryKey,
+        (previous) => {
+          if (!previous) {
+            return previous;
+          }
+
+          const filtered = previous.items.filter((item) => item.id !== messageId);
+          if (filtered.length === previous.items.length) {
+            return previous;
+          }
+
+          return {
+            items: filtered,
+            total: Math.max(previous.total - 1, 0),
+          };
+        }
+      );
+    }
+  });
+
+  // Invalidate to trigger re-render
+  queryClient.invalidateQueries({ queryKey: messageKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.lists() });
   queryClient.invalidateQueries({ queryKey: conversationKeys.detail(conversationId) });
 }
@@ -188,6 +295,8 @@ const ChatContainer = () => {
             conversationId: conversation.id,
             userId: actorId,
           } as ConversationParticipant,
+          // Mark synthetic participants to prevent editing
+          isSynthetic: true,
         });
       }
     };
@@ -581,6 +690,15 @@ const ChatContainer = () => {
       onConfigureParticipant={async (participantId: string, data: any) => {
         try {
           if (!conversationId) return false;
+
+          // Check if participant is synthetic - cannot edit synthetic participants
+          const participant = processedParticipants.find((p: any) => p.id === participantId);
+          if (participant?.isSynthetic) {
+            setManualError(t('errors.cannotEditSyntheticParticipant', {
+              defaultValue: 'Cannot edit this participant. Please refresh the page.'
+            }));
+            return false;
+          }
 
           const payload: { configOverride?: string | null; representingCharacterId?: string | null } = {};
           if (typeof data.config_override !== 'undefined') {

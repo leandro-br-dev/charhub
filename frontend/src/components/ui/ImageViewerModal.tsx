@@ -41,8 +41,14 @@ export function ImageViewerModal({
   const [isVisible, setIsVisible] = useState(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
+  // Debug: log props changes
+  useEffect(() => {
+    console.log('[ImageViewerModal] Props changed:', { isOpen, src, title });
+  }, [isOpen, src, title]);
+
   // Handle open/close animation
   useEffect(() => {
+    console.log('[ImageViewerModal] isOpen changed:', isOpen);
     if (isOpen) {
       setIsVisible(true);
     } else {
@@ -160,12 +166,20 @@ export function ImageViewerModal({
     setIsDragging(false);
   }, []);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    console.log('[ImageViewerModal] Returning null because isOpen is false');
+    return null;
+  }
+
+  console.log('[ImageViewerModal] Rendering overlay with src:', src);
 
   const overlayContent = (
-    <div className={`fixed inset-0 z-50 flex flex-col bg-black transition-opacity duration-200 ${
-      isVisible ? 'opacity-100' : 'opacity-0'
-    }`}>
+    <div
+      className={`fixed inset-0 z-50 flex flex-col bg-black transition-opacity duration-200 ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      }`}
+      style={{ zIndex: 9999 }}
+    >
       {/* Close button - OUTSIDE, top right, matching modal background */}
       <button
         onClick={onClose}

@@ -393,6 +393,15 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
     });
 
     socket.on('send_message', async (rawPayload, callback) => {
+      // DEBUG LOG 1: Very start of handler - before ANY parsing
+      logger.debug({
+        socketId: socket.id,
+        userId: user?.id,
+        rawPayloadType: typeof rawPayload,
+        rawPayloadKeys: rawPayload ? Object.keys(rawPayload) : null,
+        callbackExists: typeof callback === 'function',
+      }, 'DEBUG [1]: send_message event START - handler triggered');
+
       logger.info({
         socketId: socket.id,
         userId: user?.id,
@@ -400,7 +409,22 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
       }, 'send_message event received');
 
       try {
+        // DEBUG LOG 2: About to parse payload
+        logger.debug({
+          rawPayload,
+        }, 'DEBUG [2]: About to parse payload with sendMessageSchema');
+
         const payload = sendMessageSchema.parse(rawPayload);
+
+        // DEBUG LOG 3: Payload parsed successfully
+        logger.debug({
+          conversationId: payload.conversationId,
+          userId: user.id,
+          contentLength: payload.content?.length || 0,
+          contentPreview: payload.content?.substring(0, 50),
+          hasAttachments: !!payload.attachments,
+          hasMetadata: !!payload.metadata,
+        }, 'DEBUG [3]: Payload parsed successfully');
 
         logger.info({
           conversationId: payload.conversationId,
@@ -409,6 +433,12 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         }, 'sendMessage payload parsed');
 
         await ensureConversationAccess(payload.conversationId, user.id);
+
+        // DEBUG LOG 4: Conversation access verified
+        logger.debug({
+          conversationId: payload.conversationId,
+          userId: user.id,
+        }, 'DEBUG [4]: Conversation access verified');
 
         // Step 1: Save user message
         const message = await messageService.createMessage({
@@ -423,6 +453,15 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         const serialized = serializeMessage(message);
         const room = getRoomName(payload.conversationId);
 
+        // DEBUG LOG 5: Message saved, about to broadcast
+        logger.debug({
+          messageId: message.id,
+          conversationId: payload.conversationId,
+          room,
+          senderId: message.senderId,
+          senderType: message.senderType,
+        }, 'DEBUG [5]: Message saved successfully, about to broadcast');
+
         // Step 2: Broadcast user message to room
         io.to(room).emit('message_received', serialized);
 
@@ -432,12 +471,26 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
           user.id
         );
 
+        // DEBUG LOG 6: Conversation fetched
+        logger.debug({
+          conversationId: payload.conversationId,
+          conversationExists: !!conversation,
+          messageCount: conversation?.messages?.length || 0,
+        }, 'DEBUG [6]: Conversation fetched successfully');
+
         if (!conversation) {
           throw new Error('Conversation not found');
         }
 
         // Step 4: Use ConversationManagerAgent to determine which bots should respond
         const conversationManager = agentService.getConversationManagerAgent();
+
+        // DEBUG LOG 7: About to call ConversationManagerAgent
+        logger.debug({
+          conversationId: payload.conversationId,
+          messageId: message.id,
+        }, 'DEBUG [7]: About to call ConversationManagerAgent.execute()');
+
         const managerResult = await conversationManager.execute(
           conversation as any,
           message
@@ -445,6 +498,14 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
 
         const respondingParticipantIds = managerResult.participantIds;
         const isNSFW = managerResult.isNSFW;
+
+        // DEBUG LOG 8: ConversationManagerAgent result
+        logger.debug({
+          conversationId: payload.conversationId,
+          respondingParticipantIds,
+          respondingBotsCount: respondingParticipantIds.length,
+          isNSFW,
+        }, 'DEBUG [8]: ConversationManagerAgent completed successfully');
 
         logger.info(
           {
@@ -461,6 +522,14 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
 
         const serviceType = isNSFW ? 'LLM_CHAT_NSFW' : 'LLM_CHAT_SAFE';
 
+        // DEBUG LOG 9: About to check credits
+        logger.debug({
+          conversationId: payload.conversationId,
+          userId: user.id,
+          serviceType,
+          respondingBotsCount: respondingParticipantIds.length,
+        }, 'DEBUG [9]: About to check credits');
+
         // Estimate ~1000 tokens per AI response (500 input + 500 output)
         const estimatedTokensPerBot = 1000;
         const totalEstimatedTokens = estimatedTokensPerBot * respondingParticipantIds.length;
@@ -473,10 +542,29 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         const creditsPerThousandTokens = serviceCost?.creditsPerUnit || (isNSFW ? 3 : 2);
         const estimatedCreditCost = Math.ceil((totalEstimatedTokens / 1000) * creditsPerThousandTokens);
 
+        // DEBUG LOG 10: Credit cost calculated
+        logger.debug({
+          conversationId: payload.conversationId,
+          userId: user.id,
+          estimatedTokensPerBot,
+          totalEstimatedTokens,
+          creditsPerThousandTokens,
+          estimatedCreditCost,
+        }, 'DEBUG [10]: Credit cost calculated, about to verify balance');
+
         // Check if user (who sent the message) has enough credits
         // Rule: whoever triggers the AI response pays for it
         const balance = await getCurrentBalance(user.id);
         const hasCredits = await hasEnoughCredits(user.id, estimatedCreditCost);
+
+        // DEBUG LOG 11: Credit check result
+        logger.debug({
+          conversationId: payload.conversationId,
+          userId: user.id,
+          currentBalance: balance,
+          estimatedCost: estimatedCreditCost,
+          hasCredits,
+        }, 'DEBUG [11]: Credit check completed');
 
         if (!hasCredits) {
           // Insufficient credits - return error to user
@@ -521,10 +609,25 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
             respondingBots: respondingParticipantIds,
             estimatedCreditCost, // Send cost estimate to frontend
           });
+
+          // DEBUG LOG 12: Callback sent successfully
+          logger.debug({
+            conversationId: payload.conversationId,
+            userId: user.id,
+            respondingBotsCount: respondingParticipantIds.length,
+            respondingBots: respondingParticipantIds,
+          }, 'DEBUG [12]: Success callback sent to frontend');
         }
 
         // Step 6: Emit typing indicators for all responding bots
         emitTypingForBots(io, payload.conversationId, respondingParticipantIds, true);
+
+        // DEBUG LOG 13: Typing indicators emitted
+        logger.debug({
+          conversationId: payload.conversationId,
+          respondingBotsCount: respondingParticipantIds.length,
+          respondingBots: respondingParticipantIds,
+        }, 'DEBUG [13]: Typing indicators emitted for responding bots');
 
         // Step 7: Check if memory compression is needed (async, non-blocking)
         if (isQueuesEnabled()) {
@@ -553,10 +656,29 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         }
 
         // Step 8: Queue AI response generation for each bot
-        if (isQueuesEnabled()) {
+        const queuesEnabled = isQueuesEnabled();
+
+        // DEBUG LOG 14: Checking queue status
+        logger.debug({
+          conversationId: payload.conversationId,
+          queuesEnabled,
+          respondingBotsCount: respondingParticipantIds.length,
+        }, 'DEBUG [14]: Queue system status checked');
+
+        if (queuesEnabled) {
           // Use queue system if enabled
           const preferredLanguage = socket.data.preferredLanguage;
           const costPerBot = estimatedCreditCost / respondingParticipantIds.length;
+
+          // DEBUG LOG 15: About to queue AI responses
+          logger.debug({
+            conversationId: payload.conversationId,
+            messageId: message.id,
+            messageCount: conversation.messages.length,
+            respondingBots: respondingParticipantIds.length,
+            isNSFW,
+            costPerBot,
+          }, 'DEBUG [15]: About to queue AI response jobs');
 
           logger.info({
             conversationId: payload.conversationId,
@@ -577,6 +699,14 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
               requestingUserId: user.id, // Pass who sent the message (who pays)
             });
 
+            // DEBUG LOG 16: Individual bot job queued
+            logger.debug({
+              conversationId: payload.conversationId,
+              participantId,
+              messageId: message.id,
+              jobId,
+            }, 'DEBUG [16]: AI response job queued successfully');
+
             logger.info({
               conversationId: payload.conversationId,
               participantId,
@@ -584,18 +714,40 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
               jobId,
             }, 'AI response job queued');
           }
+
+          // DEBUG LOG 17: All bots queued
+          logger.debug({
+            conversationId: payload.conversationId,
+            totalJobsQueued: respondingParticipantIds.length,
+          }, 'DEBUG [17]: All AI response jobs queued successfully');
         } else {
           // Fallback: generate responses directly without queues
+          // DEBUG LOG 18: Taking fallback path
           logger.debug(
             { conversationId: payload.conversationId, botCount: respondingParticipantIds.length },
-            'Generating AI responses directly (queues disabled)'
+            'DEBUG [18]: Generating AI responses directly (queues disabled) - FALLBACK PATH'
           );
 
           const { sendAIMessage } = await import('../services/assistantService');
           const costPerBot = estimatedCreditCost / respondingParticipantIds.length;
 
+          // DEBUG LOG 19: Starting direct generation loop
+          logger.debug({
+            conversationId: payload.conversationId,
+            botCount: respondingParticipantIds.length,
+            costPerBot,
+          }, 'DEBUG [19]: Starting direct AI response generation loop');
+
           for (const participantId of respondingParticipantIds) {
             try {
+              // DEBUG LOG 20: About to generate for specific bot
+              logger.debug({
+                conversationId: payload.conversationId,
+                participantId,
+                botIndex: respondingParticipantIds.indexOf(participantId) + 1,
+                totalBots: respondingParticipantIds.length,
+              }, 'DEBUG [20]: About to generate AI response for bot');
+
               const preferredLanguage = socket.data.preferredLanguage;
               const aiMessage = await sendAIMessage(
                 payload.conversationId,
@@ -604,6 +756,14 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
                 costPerBot,
                 isNSFW
               );
+
+              // DEBUG LOG 21: AI message generated successfully
+              logger.debug({
+                conversationId: payload.conversationId,
+                participantId,
+                aiMessageId: aiMessage.id,
+                aiMessageContentLength: aiMessage.content?.length || 0,
+              }, 'DEBUG [21]: AI message generated successfully, about to charge credits');
 
               // Charge credits for this bot's response
               if (costPerBot > 0) {
@@ -635,17 +795,40 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
                 }
               }
 
+              // DEBUG LOG 22: About to broadcast AI message
+              logger.debug({
+                conversationId: payload.conversationId,
+                participantId,
+                aiMessageId: aiMessage.id,
+                room,
+              }, 'DEBUG [22]: About to broadcast AI message to room');
+
               // Broadcast the AI response to the room
               io.to(room).emit('message_received', serializeMessage(aiMessage));
 
               // Stop typing indicator
               emitTypingForBots(io, payload.conversationId, [participantId], false);
 
+              // DEBUG LOG 23: Bot response completed
+              logger.debug({
+                conversationId: payload.conversationId,
+                participantId,
+                aiMessageId: aiMessage.id,
+                typingStopped: true,
+              }, 'DEBUG [23]: Bot response completed and broadcasted, typing stopped');
+
               logger.info(
                 { conversationId: payload.conversationId, messageId: aiMessage.id, participantId },
                 'AI response generated and broadcasted'
               );
             } catch (aiError) {
+              // DEBUG LOG 24: Bot response failed
+              logger.debug({
+                conversationId: payload.conversationId,
+                participantId,
+                error: aiError instanceof Error ? aiError.message : 'Unknown error',
+              }, 'DEBUG [24]: Failed to generate AI response for bot');
+
               logger.error(
                 { error: aiError, conversationId: payload.conversationId, participantId },
                 'Failed to generate AI response'
@@ -661,9 +844,32 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
               });
             }
           }
+
+          // DEBUG LOG 25: All bot responses completed
+          logger.debug({
+            conversationId: payload.conversationId,
+            totalBotsProcessed: respondingParticipantIds.length,
+          }, 'DEBUG [25]: All bot responses processed in fallback path');
         }
 
+        // DEBUG LOG 26: send_message handler completed successfully
+        logger.debug({
+          conversationId: payload.conversationId,
+          userId: user.id,
+          messageId: message.id,
+          queuesEnabled,
+          pathTaken: queuesEnabled ? 'queue' : 'fallback',
+        }, 'DEBUG [26]: send_message handler completed successfully');
+
       } catch (error) {
+        // DEBUG LOG 27: Handler encountered error
+        logger.debug({
+          conversationId: rawPayload?.conversationId || 'unknown',
+          userId: user?.id,
+          error: error instanceof Error ? error.message : 'Unknown error',
+          errorStack: error instanceof Error ? error.stack : undefined,
+        }, 'DEBUG [27]: send_message handler encountered error');
+
         logger.error({ error }, 'send_message_failed');
 
         if (typeof callback === 'function') {
