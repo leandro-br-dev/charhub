@@ -343,6 +343,6 @@ For implementation details, see `backend/src/agents/style-guides/README.md`.
 - **[LLM Providers](../api/llm-providers.md)** - Full API documentation for AI providers (Gemini, OpenAI, Grok)
 - **[LLM Tool-Calling](../api/llm-tools.md)** - Web search and tool integration for LLMs
 - **[Translation System](translation-system.md)** - Complete translation workflow
-- **[ComfyUI Setup](../../02-guides/operations/comfyui-setup.md)** - ComfyUI middleware configuration and deployment
+- **[ComfyUI Setup](../../06-operations/comfyui-setup.md)** - ComfyUI middleware configuration and deployment
 - **Style Guides**: `backend/src/agents/style-guides/README.md` - AI response customization
 - **[Development Operations](../../02-guides/development/dev-operations.md)** - Environment setup and deployment

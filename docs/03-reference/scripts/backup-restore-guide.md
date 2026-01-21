@@ -307,9 +307,9 @@ docker compose logs -f backend
 
 ## 🔗 Related Documentation
 
-- [Infrastructure Guide](../../02-guides/infrastructure/database-connection.md)
-- [Operations - Maintenance](../../06-operations/maintenance/)
-- [Deployment Guide](../../02-guides/deployment/)
+- [Database Connection Guide](../../02-guides/deployment/database-connection.md) - Database setup and configuration
+- [Operations - Maintenance](../../06-operations/) - SRE and operational procedures
+- [Deployment Guide](../../02-guides/deployment/) - Production deployment procedures
 
 ---
 

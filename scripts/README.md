@@ -133,9 +133,8 @@ log() {
 - [Archive README](./archive/README.md) - Why scripts were archived
 
 ### Related Guides
-- [Infrastructure Guide](../docs/02-guides/infrastructure/)
-- [Operations Guide](../docs/06-operations/)
-- [Deployment Guide](../docs/02-guides/deployment/)
+- [Deployment Guide](../docs/02-guides/deployment/) - Infrastructure setup and deployment
+- [Operations Guide](../docs/06-operations/) - SRE, monitoring, and incident response
 
 ---
 
