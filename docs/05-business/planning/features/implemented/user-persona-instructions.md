@@ -1,7 +1,8 @@
 # Feature: User Persona and Instructions in Conversations
 
-**Status**: Active - Ready for Development
+**Status**: Implemented
 **Created**: 2026-01-14
+**Deployed**: 2026-01-21
 **Priority**: High
 **Estimated Complexity**: Large (L)
 
@@ -682,3 +683,33 @@ describe('User Persona Integration', () => {
 - Extending it to users is a natural progression
 - JSON config in `configOverride` provides flexibility without migration
 - Persona feature adds significant roleplay depth for users
+
+---
+
+## 11. Deployment
+
+**Deployed**: 2026-01-21 01:07 UTC
+**Commit**: 3a48eed86181c05cb916f1ba6403f9e334634fdf
+**PR**: #142
+**Deployed by**: Agent Reviewer (deploy-coordinator)
+
+### Deployment Summary
+- Deployment completed successfully in 23m55s
+- All CI/CD checks passed
+- Production health endpoint responding normally
+- All features working as expected
+
+### Production Verification
+- Health endpoint: https://charhub.app/api/v1/health - OK
+- Frontend: https://charhub.app - OK
+- API endpoints: All responding normally
+- No errors in deployment logs
+- Docker cleanup completed successfully (2.9GB reclaimed)
+
+### Features Deployed
+1. User persona system with character assumption
+2. User instructions per conversation
+3. Gender override per conversation
+4. Persona selection from user's characters + public characters
+5. AI context integration for user personas
+6. Full i18n support (en-US and pt-BR)
