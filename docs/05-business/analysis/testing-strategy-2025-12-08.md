@@ -608,8 +608,8 @@ global.localStorage = localStorageMock as any;
 - [ ] `backend/src/test-utils/README.md` - Test utilities documentation
 
 **Existing**:
-- [Contributing Guide](./07-contributing/README.md) - General contribution
-- [Code Style](./07-contributing/CODE_STYLE.md) - Code standards
+- [Development Guide](../../02-guides/development/) - Contributing, code style, Git workflow
+- [Code Style](../../02-guides/development/code-style.md) - Code standards
 
 ---
 
