@@ -1,12 +1,13 @@
 # FEATURE-014: Style Diversification - Theme System for Visual Variety
 
-**Status**: 📋 Backlog (Ready for Implementation)
+**Status**: 🔍 In Review (PR #147)
 **Version**: 1.0.0
 **Date Created**: 2026-01-21
 **Last Updated**: 2026-01-21
 **Priority**: High
 **Assigned To**: Agent Coder
 **GitHub Issue**: TBD
+**Pull Request**: [PR #147](https://github.com/leandro-br-dev/charhub/pull/147)
 **Epic**: Visual Style System Enhancement
 
 ---
