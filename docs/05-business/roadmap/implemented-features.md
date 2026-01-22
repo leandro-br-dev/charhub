@@ -17,11 +17,11 @@ This document provides a **quality dashboard** for features already in productio
 - ✅ Priority for testing/documentation work
 
 **What this does NOT show**:
-- Technical implementation details → See `../planning/features/implemented/`
+- Technical implementation details → See `../planning/features/archive/`
 - How to use features → See `../../03-reference/[area]/[feature]-guide.md`
 - Features not yet implemented → See `missing-features.md`
 
-**For detailed technical specs**: See `../planning/features/implemented/[feature-name].md`
+**For detailed technical specs**: See `../planning/features/archive/[feature-name].md`
 
 ---
 
@@ -447,9 +447,9 @@ npm run build:translations  # From backend directory
 - ✅ Customer metadata tracking
 
 **Reference**:
-- Spec: `docs/05-business/planning/features/implemented/stripe-payment-integration.md`
+- Spec: `docs/05-business/planning/features/archive/stripe-payment-integration.md`
 - Guide: `docs/02-guides/development/stripe-integration.md`
-- API: `docs/03-reference/backend/payments-guide.md`
+- API: `backend/src/services/payments/.docs.md`
 - Tests: `backend/src/services/payments/__tests__/README.md`
 
 **Quality Status**:
@@ -548,10 +548,10 @@ npm run build:translations  # From backend directory
 - [Roadmap Overview](./README.md) - Strategic roadmap guide
 
 **Technical Details**:
-- [Implemented Specs](../planning/features/implemented/) - Technical implementation details
-- [Backend Reference](../../03-reference/backend/) - Backend usage guides
-- [Frontend Reference](../../03-reference/frontend/) - Frontend usage guides
-- [API Reference](../../03-reference/api/) - API documentation
+- [Implemented Specs](../planning/features/archive/) - Technical implementation details
+- [Backend Reference](../../03-reference/backend/) - Backend overview (distributed docs in code folders)
+- [Frontend Reference](../../03-reference/frontend/) - Frontend overview (distributed docs in code folders)
+- [API Reference](../../03-reference/api/) - API documentation (now in `backend/src/services/llm/.docs.md`)
 
 ---
 

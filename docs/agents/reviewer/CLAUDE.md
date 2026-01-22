@@ -263,7 +263,7 @@ docs/
 ├── 05-business/                   # Business & planning
 │   └── planning/                 # Feature specs
 │       ├── features/active/     # Features being reviewed
-│       └── features/implemented/ # Deployed features (you move here)
+│       └── features/archive/ # Deployed features (you move here)
 ├── 06-operations/                 # Operational docs
 │   └── incident-response/        # Incident reports (you create)
 └── agents/                        # Agent documentation

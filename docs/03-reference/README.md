@@ -1,6 +1,6 @@
 # Technical Reference
 
-**Last Updated**: 2025-12-05
+**Last Updated**: 2026-01-21
 
 ---
 
@@ -8,27 +8,33 @@
 
 This section contains technical specifications, API documentation, and reference materials for CharHub.
 
+**🎉 Documentation Distribution**: Component and service documentation is now distributed alongside code for better AI agent discoverability. Look for `.docs.md` files in code directories.
+
 ---
 
 ## 📂 Sections
 
 ### 🔌 [API](./api/)
-API specifications and integration guides:
-- [LLM Providers](./api/llm-providers.md) - Using Gemini, OpenAI, and Grok providers
-- [LLM Tools](./api/llm-tools.md) - Tool-calling system (web search, etc.)
+API documentation has been distributed to code locations:
+- **[LLM Service](../../backend/src/services/llm/.docs.md)** - Multi-provider LLM management
+- **[LLM Tool-Calling](../../backend/src/services/llm/tools/.docs.md)** - Web search and tool integration
 
 ### 💻 [Backend](./backend/)
-Backend technical reference:
-- [Backend Overview](./backend/README.md)
-- [Translation System](./backend/translation-system.md)
-- [Tags System](./backend/tags-system.md)
+Backend documentation is distributed alongside services:
+- **[Backend Overview](./backend/README.md)** - Runtime, API overview, and commands
 
-**Usage Guides** (how to use backend features):
-- [Credits Guide](./backend/credits-guide.md) - Integrate credits system into features
+**Distributed Service Documentation**:
+- **[Tag System](../../backend/src/data/tags/.docs.md)** - Content classification, age ratings, content warnings
+- **[Payment Service](../../backend/src/services/payments/.docs.md)** - Stripe and PayPal integration
+- **[Credits Service](../../backend/src/services/.docs.md)** - Credit-based monetization
+- **[Translation Service](../../backend/src/services/translation/.docs.md)** - Automatic translation with caching
+- **[LLM Service](../../backend/src/services/llm/.docs.md)** - Multi-provider LLM (Gemini, OpenAI, Grok)
+- **[LLM Tools](../../backend/src/services/llm/tools/.docs.md)** - Tool-calling system
 
 ### 🎨 [Frontend](./frontend/)
-Frontend technical reference:
-- [Frontend Overview](./frontend/README.md)
+Frontend documentation with distributed component guides:
+- **[Frontend Overview](./frontend/README.md)** - Architecture, tooling, and patterns
+- Component documentation is in `frontend/src/components/*/` folders
 
 ### ⚙️ [CLI](./cli/)
 Command-line tools reference:
@@ -48,9 +54,36 @@ Automation scripts:
 ## 🎯 Quick Links
 
 **Most Used References**:
-- [Backend API](./backend/README.md)
-- [Frontend Components](./frontend/README.md)
+- [Backend API Overview](./backend/README.md)
+- [Frontend Overview](./frontend/README.md)
+- [LLM Service](../../backend/src/services/llm/.docs.md)
+- [Tag System](../../backend/src/data/tags/.docs.md)
 - [Backup Scripts](./scripts/backup-restore-guide.md)
+
+---
+
+## 📖 Distributed Documentation
+
+**Why `.docs.md` files?**
+
+Placing documentation alongside code enables:
+- ✅ AI agents find documentation immediately when accessing code folders
+- ✅ Documentation stays synchronized with code changes
+- ✅ Easier onboarding for developers working on specific components
+- ✅ Better discoverability via `find . -name "*.docs.md"`
+
+**Finding Documentation**:
+
+```bash
+# Find all .docs.md files
+find . -name ".docs.md" -o -name "*.docs.md"
+
+# Search for specific service docs
+find backend/src/services -name ".docs.md"
+
+# Search for component docs
+find frontend/src/components -name ".docs.md"
+```
 
 ---
 

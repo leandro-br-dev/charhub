@@ -35,7 +35,7 @@ Successfully migrated CharHub backend from ComfyUI Middleware **v1.0** to **v2.0
 
 ### 2. Documentation Updated
 
-**File**: `docs/02-guides/operations/comfyui-setup.md`
+**File**: `docs/06-operations/comfyui-setup.md`
 
 **Changes**:
 - ✅ Added v2.0 version notice

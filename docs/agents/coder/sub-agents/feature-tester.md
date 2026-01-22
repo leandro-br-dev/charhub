@@ -274,7 +274,11 @@ Remember: A feature that passes all your tests will likely sail through Agent Re
 - System architecture: `docs/04-architecture/system-overview.md`
 - Backend patterns: `docs/03-reference/backend/README.md`
 - Frontend patterns: `docs/03-reference/frontend/README.md`
-- Translation system: `docs/03-reference/backend/translation-system.md`
+- Translation service: `backend/src/services/translation/.docs.md`
+- Tag system: `backend/src/data/tags/.docs.md`
+- Credits service: `backend/src/services/.docs.md`
+- Payment service: `backend/src/services/payments/.docs.md`
+- LLM service: `backend/src/services/llm/.docs.md`
 
 Consult these resources when you encounter issues or need clarification on testing standards.
 

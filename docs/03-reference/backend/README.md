@@ -338,11 +338,20 @@ For implementation details, see `backend/src/agents/style-guides/README.md`.
 
 ## Related Documentation
 
-- **[Tag System](tags-system.md)** - Content classification and filtering with tags
-- **[Credit Verification](../../02-guides/development/credit-verification.md)** - Guide for credit system integration
-- **[LLM Providers](../api/llm-providers.md)** - Full API documentation for AI providers (Gemini, OpenAI, Grok)
-- **[LLM Tool-Calling](../api/llm-tools.md)** - Web search and tool integration for LLMs
-- **[Translation System](translation-system.md)** - Complete translation workflow
-- **[ComfyUI Setup](../../02-guides/operations/comfyui-setup.md)** - ComfyUI middleware configuration and deployment
+Backend documentation is now distributed alongside code for better discoverability:
+
+### Service Documentation
+- **[Tag Classification System](../../../backend/src/data/tags/.docs.md)** - Content classification, age ratings, and content warnings
+- **[Payment Service](../../../backend/src/services/payments/.docs.md)** - Stripe and PayPal integration
+- **[Credits Service](../../../backend/src/services/.docs.md)** - Credit-based monetization system
+- **[Translation Service](../../../backend/src/services/translation/.docs.md)** - Automatic content translation with caching
+
+### LLM Documentation
+- **[LLM Service](../../../backend/src/services/llm/.docs.md)** - Multi-provider LLM management (Gemini, OpenAI, Grok)
+- **[LLM Tool-Calling](../../../backend/src/services/llm/tools/.docs.md)** - Web search and tool integration
+
+### Other Reference
+- **[Credit Verification Guide](../../02-guides/development/credit-verification.md)** - Integration patterns for credits
+- **[ComfyUI Setup](../../06-operations/comfyui-setup.md)** - ComfyUI middleware configuration
 - **Style Guides**: `backend/src/agents/style-guides/README.md` - AI response customization
 - **[Development Operations](../../02-guides/development/dev-operations.md)** - Environment setup and deployment
