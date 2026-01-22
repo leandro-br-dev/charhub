@@ -18,6 +18,13 @@ export type CharacterImageAnalysisResult = {
     distinctiveFeatures?: string[]; // e.g., ["scars on face", "pointed ears", "wings"]
   };
 
+  // Ethnicity Classification (for name generation guidance)
+  ethnicity?: {
+    primary: string; // Primary ethnicity classification
+    confidence?: 'high' | 'medium' | 'low'; // Confidence level in classification
+    features?: string[]; // Visual features that support the classification
+  };
+
   // Visual Style
   visualStyle: {
     artStyle?: 'anime' | 'realistic' | 'semi-realistic' | 'cartoon' | 'chibi' | 'pixel art' | 'other';
@@ -61,6 +68,11 @@ function buildSystemPrompt(): string {
     '    "species": "string (e.g., human, elf, demon, android) (optional)",',
     '    "distinctiveFeatures": ["string array of notable features"] (optional)',
     '  },',
+    '  "ethnicity": {',
+    '    "primary": "string (Japanese|East Asian|Southeast Asian|South Asian|Middle Eastern|African|European|Latin American|Indigenous|Fantasy/Non-Human|Unknown)",',
+    '    "confidence": "high|medium|low (optional, based on visual clarity)",',
+    '    "features": ["array of visual features that support classification (e.g., skin tone, facial features, hair, clothing)"] (optional)',
+    '  },',
     '  "visualStyle": {',
     '    "artStyle": "anime|realistic|semi-realistic|cartoon|chibi|pixel art|other (optional)",',
     '    "colorPalette": "string description (optional)",',
@@ -85,6 +97,19 @@ function buildSystemPrompt(): string {
     '- For arrays, limit to 3-5 most prominent items',
     '- Use en-US for all text',
     '- Return ONLY valid JSON, no markdown, no commentary',
+    '- ETHNICITY CLASSIFICATION: Base ethnicity on VISUAL FEATURES (skin tone, facial features, hair, clothing, cultural markers)',
+    '  - Japanese: East Asian features with Japanese cultural elements',
+    '  - East Asian: Chinese, Korean, or general East Asian features',
+    '  - Southeast Asian: Thai, Vietnamese, Filipino, Indonesian features',
+    '  - South Asian: Indian, Pakistani, Bangladeshi features',
+    '  - Middle Eastern: Arab, Persian, Turkish features',
+    '  - African: Sub-Saharan African features',
+    '  - European: Caucasian features (various regions)',
+    '  - Latin American: Hispanic/Latino features (mixed heritage)',
+    '  - Indigenous: Native/Aboriginal features',
+    '  - Fantasy/Non-Human: Clearly non-human species (elf, alien, etc.)',
+    '  - Unknown: Cannot determine or mixed/ambiguous features',
+    '- CONFIDENCE LEVELS: "high" (clear features), "medium" (somewhat clear), "low" (unclear or ambiguous)',
     '- If you cannot identify a character or the image is unclear, set overallDescription to "Unable to analyze character from image" and leave other fields empty',
   ].join('\n');
 }
@@ -134,6 +159,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
       // Validate and sanitize the response
       const result: CharacterImageAnalysisResult = {
         physicalCharacteristics: parsed.physicalCharacteristics || {},
+        ethnicity: parsed.ethnicity, // Optional field, don't provide default
         visualStyle: parsed.visualStyle || {},
         clothing: parsed.clothing || {},
         suggestedTraits: parsed.suggestedTraits || {},
@@ -151,6 +177,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
       // Return minimal valid result
       return {
         physicalCharacteristics: {},
+        ethnicity: undefined,
         visualStyle: {},
         clothing: {},
         suggestedTraits: {},
@@ -164,6 +191,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
     // Return minimal valid result on error
     return {
       physicalCharacteristics: {},
+      ethnicity: undefined,
       visualStyle: {},
       clothing: {},
       suggestedTraits: {},
