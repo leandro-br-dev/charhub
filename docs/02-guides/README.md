@@ -18,12 +18,12 @@ Production deployment guides:
 - [VM Setup & Recovery](./deployment/vm-setup-recovery.md)
 - [Deployment Overview](./deployment/README.md)
 
-### 🏗️ [Infrastructure](./infrastructure/)
+### 🏗️ [Infrastructure](./deployment/)
 Infrastructure setup and management:
-- [Database Connection](./infrastructure/database-connection.md)
-- [Database Operations](./infrastructure/database-operations.md)
-- [SSH Key Setup](./infrastructure/ssh-key-setup.md)
-- [Tag System Setup](./infrastructure/tag-system-setup.md)
+- [Database Connection](./deployment/database-connection.md)
+- [Database Operations](./deployment/database-operations.md)
+- [SSH Key Setup](./deployment/ssh-key-setup.md)
+- [Tag System Setup](./deployment/tag-system-setup.md)
 
 ### 💻 [Development](./development/)
 Development workflows:
@@ -41,7 +41,7 @@ Common issues and solutions:
 
 **Most Used Guides**:
 - [Deploy to Production](./deployment/cd-deploy-guide.md)
-- [Setup Database](./infrastructure/database-operations.md)
+- [Setup Database](./deployment/database-operations.md)
 - [Git Workflow](./development/git-github-actions.md)
 
 ---
