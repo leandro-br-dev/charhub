@@ -2,17 +2,17 @@
   "description": "Characters module strings for hub, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledCharacter": "未命名角色",
+      "untitledCharacter": "无名角色",
       "updatedAt": "更新于 {{date}}",
       "public": "公开",
-      "private": "私人",
+      "private": "私有",
       "identifier": "角色ID：{{id}}",
-      "unsavedChanges": "未保存的更改",
+      "unsavedChanges": "有未保存的更改",
       "allSaved": "所有更改已保存",
       "submitting": "正在保存..."
     },
     "ageRatings": {
-      "L": "全年龄",
+      "L": "免费",
       "TEN": "10+",
       "TWELVE": "12+",
       "FOURTEEN": "14+",
@@ -33,20 +33,32 @@
     },
     "visualStyleDescriptions": {
       "ANIME": "日式Anime风格",
-      "REALISTIC": "超写实或写实艺术",
+      "REALISTIC": "照片级或写实艺术",
       "SEMI_REALISTIC": "半写实艺术风格",
-      "CARTOON": "欧美卡通风格",
+      "CARTOON": "西式卡通风格",
       "MANGA": "日式Manga/漫画风格",
       "MANHWA": "韩式Manhwa/网络漫画风格",
-      "COMIC": "欧美漫画风格",
-      "CHIBI": "Q版/可爱风格",
+      "COMIC": "西式漫画书风格",
+      "CHIBI": "超萌/可爱风格",
       "PIXEL_ART": "像素艺术/复古游戏风格",
       "THREE_D": "3D渲染风格"
+    },
+    "themes": {
+      "DARK_FANTASY": "黑暗奇幻",
+      "FANTASY": "奇幻",
+      "FURRY": "兽人",
+      "SCI_FI": "科幻",
+      "GENERAL": "通用",
+      "DARK_FANTASY.description": "带有成人主题和阴郁氛围的黑暗奇幻",
+      "FANTASY.description": "明亮、魔法的奇幻，包含高度奇幻元素",
+      "FURRY.description": "拟人化动物角色",
+      "SCI_FI.description": "科幻和未来设定",
+      "GENERAL.description": "通用目的，无特定主题"
     },
     "contentTags": {
       "VIOLENCE": "暴力",
       "GORE": "血腥",
-      "SEXUAL": "色情",
+      "SEXUAL": "性相关",
       "NUDITY": "裸露",
       "LANGUAGE": "粗俗语言",
       "DRUGS": "毒品",
@@ -59,34 +71,34 @@
     },
     "contentTagHints": {
       "VIOLENCE": "战斗、打斗或攻击性冲突。",
-      "GORE": "血腥的伤口和露骨的细节。",
-      "SEXUAL": "成人主题或暗示。",
+      "GORE": "血肉模糊的伤害和露骨细节。",
+      "SEXUAL": "成人主题或影射。",
       "NUDITY": "部分或完全裸露。",
-      "LANGUAGE": "露骨或粗俗的语言。",
-      "DRUGS": "毒品使用或相关内容。",
-      "ALCOHOL": "饮酒。",
-      "HORROR": "令人不安或恐怖的画面。",
+      "LANGUAGE": "露骨或粗俗语言。",
+      "DRUGS": "毒品使用或提及。",
+      "ALCOHOL": "酒精消费。",
+      "HORROR": "令人不安或恐怖的图像。",
       "PSYCHOLOGICAL": "心理健康或心理紧张。",
       "DISCRIMINATION": "仇恨言论或偏见。",
       "CRIME": "犯罪活动主题。",
-      "GAMBLING": "投注或赌博相关内容。"
+      "GAMBLING": "投注或赌博提及。"
     },
     "accessibility": {
-      "addToFavorites": "添加到收藏",
-      "removeFromFavorites": "从收藏中移除"
+      "addToFavorites": "添加到收藏夹",
+      "removeFromFavorites": "从收藏夹中移除"
     },
     "stats": {
       "conversations": "对话",
       "messages": "消息",
       "favorites": "收藏",
-      "conversationsShort": "{{count}}K 对话",
-      "conversationsShort_plural": "{{count}}K 对话",
-      "favoritesShort": "{{count}}K 收藏",
-      "favoritesShort_plural": "{{count}}K 收藏"
+      "conversationsShort": "{{count}}K 次对话",
+      "conversationsShort_plural": "{{count}}K 次对话",
+      "favoritesShort": "{{count}}K 次收藏",
+      "favoritesShort_plural": "{{count}}K 次收藏"
     },
     "hub": {
       "title": "角色",
-      "subtitle": "创建、组织和发展为您的故事、聊天代理和AI体验提供支持的角色阵容。",
+      "subtitle": "创建、组织并发展您的故事、聊天代理和AI体验中的角色阵容。",
       "actions": {
         "newCharacter": "新角色",
         "createCharacter": "创建角色",
@@ -100,8 +112,8 @@
       },
       "filters": {
         "searchPlaceholder": "按名称或风格搜索",
-        "allAgeRatings": "所有年龄分级",
-        "noFilter": "任何"
+        "allAgeRatings": "所有年龄评级",
+        "noFilter": "任意"
       },
       "states": {
         "loading": "正在加载您的角色...",
@@ -109,13 +121,13 @@
         "empty": "暂无可用角色。",
         "empty_private": "您尚未创建任何角色。",
         "empty_public": "没有公共角色符合您的筛选条件。",
-        "emptyHint": "开始创建档案或调整您的筛选条件。",
+        "emptyHint": "从创建个人资料或调整筛选条件开始。",
         "emptySearchHint": "调整您的筛选条件或清除搜索以查看更多结果。"
       },
       "labels": {
         "total": "有 {{count}} 个角色可用",
         "total_plural": "有 {{count}} 个角色可用",
-        "quickCreateLink": "直接开始创建"
+        "quickCreateLink": "直接进入创建"
       }
     },
     "sidebar": {
@@ -128,64 +140,67 @@
         "identity": "身份",
         "identityHint": "定义人们如何一眼发现和识别此角色。",
         "profile": "叙事档案",
-        "profileHint": "描述个性、特质和背景故事以指导AI。",
+        "profileHint": "描述个性、特征和背景故事以指导AI。",
         "configuration": "可用性与审核",
         "configurationHint": "控制角色如何显示、谁可以访问以及应用哪些保护措施。",
-        "contentTagsHint": "标记可能敏感的主题。用户可以根据自己的偏好将其过滤掉。",
-        "contentTagsCharacterHint": "这些主题定义了角色在选定年龄分级下可以讨论的内容。",
-        "contentTagsUserHint": "选择您想要包含的主题。未勾选的任何内容将在此分级下被阻止。",
-        "contentTagLocked": "在更高年龄分级下解锁。"
+        "contentTagsHint": "标记潜在敏感主题。用户可以根据自己的偏好筛选掉它们。",
+        "contentTagsCharacterHint": "这些主题定义了角色在所选年龄评级下可以讨论的内容。",
+        "contentTagsUserHint": "选择您要包含的主题。任何未勾选的内容都将在此评级下被阻止。",
+        "contentTagLocked": "在更高的年龄评级下解锁。"
       },
       "fields": {
         "firstName": "名字",
         "lastName": "姓氏",
         "age": "年龄",
         "gender": "性别",
-        "species": "物种 / 来源",
+        "species": "种族/起源",
         "style": "视觉风格",
-        "reference": "参考 / 来源",
+        "theme": "主题",
+        "reference": "参考/来源",
         "physicalCharacteristics": "外貌特征",
-        "personality": "性格",
+        "personality": "个性",
         "history": "背景故事",
         "isPublic": "可见性",
-        "ageRating": "年龄分级",
+        "ageRating": "年龄评级",
         "originalLanguageCode": "原始语言",
         "contentTags": "内容警告",
         "visibility": "可见性"
       },
       "placeholders": {
         "style": "选择视觉风格",
-        "reference": "示例：海贼王，漫威漫画，原创",
+        "theme": "选择主题",
+        "selectStyleFirst": "请先选择一种风格",
+        "reference": "例如：海贼王，漫威漫画，原创",
         "genderSelect": "选择性别",
-        "speciesSelect": "选择物种"
+        "speciesSelect": "选择种族"
       },
       "labels": {
         "unsavedChanges": "您有未保存的更改",
         "allSaved": "更改已保存",
         "submitting": "正在保存...",
         "visibilityPublic": "公开",
-        "visibilityPrivate": "私人"
+        "visibilityPrivate": "私有"
       },
       "avatar": {
         "upload": "上传图片",
         "change": "更改图片",
         "remove": "移除",
         "uploading": "正在上传...",
-        "helperCreate": "现在选择一个头像，我们将在您填写其余表格时保留它。",
-        "helperEdit": "您可以随时更新头像。更改会在您保存后立即生效。",
+        "helperCreate": "现在选择一个头像，我们会在您填写完其余表单时保留它。",
+        "helperEdit": "随时更新头像。更改会在您保存后立即生效。",
         "error": "无法上传此图片。请尝试另一个文件。",
         "previewAlt": "角色头像预览",
-        "invalidUrl": "请输入有效的图片URL (http/https)。",
-        "saveFirst": "请先保存角色再生成头像",
-        "insufficientCredits": "积分不足。您需要 {{required}} 积分，但您只有 {{current}}。",
+        "invalidUrl": "请输入有效的图片URL（http/https）。",
+        "saveFirst": "请先保存角色，然后再生成头像",
+        "insufficientCredits": "积分不足。您需要 {{required}} 积分，但只有 {{current}}。",
         "generationStarted": "头像生成已开始！这可能需要一分钟。请查看“图片”选项卡以获取结果。",
         "generationComplete": "头像生成成功！",
         "generationFailed": "头像生成失败。请重试。",
-        "generationError": "启动头像生成失败。请重试。"
+        "generationError": "未能开始头像生成。请重试。"
       },
       "images": {
         "coverHeader": "角色封面",
-        "coverDescription": "用作角色封面的肖像方向图片。",
+        "coverDescription": "用作角色封面的纵向图片。",
         "upload": "上传封面",
         "change": "更改封面",
         "uploading": "正在上传...",
@@ -194,15 +209,25 @@
         "previewAlt": "角色封面预览"
       },
       "tags": {
-        "searchPlaceholder": "搜索标签（例如：VTuber，女仆）",
+        "searchPlaceholder": "搜索标签（例如：VTuber, 女仆）",
         "selected": "已选标签",
         "none": "未选择标签",
         "suggestions": "建议",
         "loading": "正在加载...",
         "noResults": "无结果",
-        "incompatibleToast": "某些选定的标签与当前年龄分级不兼容。请检查。",
-        "incompatibleHint": "高亮显示的标签与选定的年龄分级不兼容。请移除它们以继续。",
-        "incompatibleChip": "与当前年龄分级不兼容"
+        "incompatibleToast": "某些选定的标签与当前的年龄评级不兼容。请审查。",
+        "incompatibleHint": "高亮显示的标签与所选年龄评级不兼容。请移除它们以继续。",
+        "incompatibleChip": "与当前年龄评级不兼容"
+      },
+      "styleThemePreview": {
+        "title": "当前配置",
+        "checkpoint": "检查点",
+        "lora": "LoRA",
+        "strength": "强度",
+        "noLora": "无（仅检查点）",
+        "loading": "正在加载配置...",
+        "combinationNotFound": "未找到风格 + 主题组合",
+        "loadError": "加载配置失败"
       },
       "tabs": {
         "identity": "身份",
@@ -218,20 +243,20 @@
       "subtitle": "结合叙事背景、视觉风格和审核设置。您稍后可以完善所有内容。",
       "avatar": {
         "header": "角色头像",
-        "description": "您角色的视觉呈现。"
+        "description": "您的角色的视觉呈现。"
       },
       "saveButton": "保存角色",
       "cancelButton": "取消并返回",
       "chooseMethod": {
-        "title": "您想如何创建您的角色？",
+        "title": "您想如何创建角色？",
         "subtitle": "选择最适合您需求的方法",
         "manual": {
           "title": "手动创建",
-          "description": "一步步创建您的角色，完全掌控每个细节",
+          "description": "逐步创建您的角色，完全掌控每个细节",
           "features": [
             "完全自定义",
             "手动填写所有字段",
-            "适合详细的角色"
+            "适合详细角色"
           ],
           "button": "手动创建",
           "cost": "免费"
@@ -246,9 +271,9 @@
           ],
           "button": "用AI创建",
           "cost": "{{credits}} 积分",
-          "costWithoutImage": "{{credits}} 积分（不含图片）",
+          "costWithoutImage": "{{credits}} 积分（无图片）",
           "costBreakdown": {
-            "title": "积分费用明细",
+            "title": "积分消耗明细",
             "imageAnalysis": "图片分析：{{credits}} 积分（仅当上传图片时）",
             "textAnalysis": "文本分析：{{credits}} 积分",
             "characterEnrichment": "角色丰富：{{credits}} 积分",
@@ -263,7 +288,7 @@
       "subtitle": "正在更新 {{name}}",
       "avatar": {
         "header": "角色头像",
-        "description": "您角色的视觉呈现。"
+        "description": "您的角色的视觉呈现。"
       },
       "saveButton": "更新角色",
       "cancelButton": "放弃更改",
@@ -273,13 +298,13 @@
       "accessDenied": {
         "title": "访问被拒绝",
         "message": "只有管理员才能编辑官方角色。",
-        "backButton": "返回档案"
+        "backButton": "返回个人资料"
       }
     },
     "detail": {
       "states": {
         "loading": "正在加载角色详情...",
-        "notFound": "无法找到此角色。"
+        "notFound": "找不到此角色。"
       },
       "actions": {
         "backToHub": "返回中心",
@@ -292,45 +317,45 @@
       },
       "confirmDelete": {
         "title": "删除角色？",
-        "message": "此操作无法撤销。与此角色相关的所有数据将永久删除。",
+        "message": "此操作无法撤销。与此角色相关的所有数据将被永久删除。",
         "confirm": "永久删除",
         "cancel": "取消"
       },
       "labels": {
         "public": "公开",
-        "private": "私人",
+        "private": "私有",
         "createdAt": "创建于",
         "createdBy": "创建者",
         "updatedAt": "上次更新",
         "identifier": "角色ID：{{id}}",
         "messageCount": "{{count}} 条消息",
         "messageCount_plural": "{{count}} 条消息",
-        "favoriteCount": "{{count}} 个收藏",
-        "favoriteCount_plural": "{{count}} 个收藏",
+        "favoriteCount": "{{count}} 次收藏",
+        "favoriteCount_plural": "{{count}} 次收藏",
         "stats": "统计数据"
       },
       "sampleImages": "示例图片",
       "sections": {
         "physicalCharacteristics": "外貌",
-        "personality": "性格",
+        "personality": "个性",
         "history": "背景故事",
         "contentTags": "内容警告",
         "metadata": "标签",
         "introduction": "介绍",
-        "updateNotes": "更新记录"
+        "updateNotes": "更新说明"
       }
     },
     "images": {
       "saveFirst": "请先保存角色以管理图片",
-      "gallery": "已生成图片",
+      "gallery": "生成的图片",
       "avatarHeader": "生成头像",
-      "avatarDescription": "使用AI生成新头像。您可以提供额外上下文和一张参考图片作为风格参考。",
+      "avatarDescription": "使用AI生成新头像。您可以提供额外的上下文和样本图片作为风格参考。",
       "coverHeader": "生成封面图片",
-      "coverDescription": "使用AI生成肖像方向的封面图片。提供额外上下文和一张参考图片作为风格参考。",
+      "coverDescription": "使用AI生成纵向封面图片。提供额外的上下文和样本图片作为风格参考。",
       "generateNew": "生成新{{type}}",
-      "onlyAvatarSupported": "目前只支持生成头像",
+      "onlyAvatarSupported": "目前仅支持头像生成",
       "startingGeneration": "正在开始生成...",
-      "generatingImage": "正在生成图片... 这可能需要长达1分钟",
+      "generatingImage": "正在生成图片... 这可能需要最多1分钟",
       "processing": "正在用AI处理图片...",
       "generationComplete": "生成完成！",
       "imageGeneratedSuccess": "图片生成成功！",
@@ -345,27 +370,27 @@
       "delete": "删除",
       "scrollToZoom": "滚动缩放",
       "dragToPan": "拖动平移（放大时）",
-      "generatingInfo": "这通常需要30-60秒。请不要关闭此窗口。",
+      "generatingInfo": "这通常需要30-60秒。请勿关闭此窗口。",
       "generationSuccessMessage": "您的图片已生成并保存！",
-      "coverAspectInfo": "封面图片使用3:4的肖像纵横比。",
+      "coverAspectInfo": "封面图片使用3:4的纵向宽高比。",
       "setAsActive": "设为活动",
-      "noImagesYet": "暂无图片生成"
+      "noImagesYet": "尚未生成任何图片"
     },
     "imageGeneration": {
       "multiStage": {
-        "@deprecated": "请使用referenceImages代替 - multiStage为向后兼容保留",
+        "@deprecated": "请使用 referenceImages 代替 - multiStage 保留以兼容旧版本",
         "title": "多阶段参考数据集",
-        "description": "生成4张参考图片（头像、正面、侧面、背面），以实现角色生成的一致性",
+        "description": "生成4张参考图片（头像、正面、侧面、背面），用于一致的角色生成",
         "costInfo": "生成费用",
         "costDescription": "多阶段参考数据集（4张图片）：",
         "stages": {
-          "face": "面部（肖像）",
+          "face": "脸部（肖像）",
           "front": "身体正面",
           "side": "身体侧面",
           "back": "身体背面"
         },
         "startButton": "生成数据集",
-        "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
+        "startButtonWithCost": "{{button}} ({{cost}} 积分)",
         "insufficientCredits": "积分不足（需要 {{cost}}）",
         "generating": "正在生成数据集...",
         "ready": "准备生成",
@@ -375,31 +400,31 @@
         "generationComplete": "生成完成！",
         "allStagesCompleted": "所有4张参考图片已生成。",
         "errors": {
-          "startFailed": "启动生成失败",
+          "startFailed": "未能开始生成",
           "generationFailed": "生成失败",
-          "pollFailed": "检查生成状态失败"
+          "pollFailed": "未能检查生成状态"
         },
         "progress": {
-          "stage": "阶段 {{stage}} / {{total}}",
+          "stage": "阶段 {{stage}}/{{total}}",
           "message": "{{message}}"
         }
       },
       "referenceImages": {
         "title": "多阶段参考数据集",
-        "description": "生成4张参考图片（头像、正面、侧面、背面），以实现角色生成的一致性",
-        "shortDescription": "用于角色一致性生成的多视图参考数据集",
+        "description": "生成4张参考图片（头像、正面、侧面、背面），用于一致的角色生成",
+        "shortDescription": "用于一致角色生成的多视图参考数据集",
         "costInfo": "生成费用",
         "costDescription": "多阶段参考数据集（4张图片）：",
         "selectViews": "选择要生成的视图",
         "selectAtLeastOne": "至少选择一个视图进行生成",
         "stages": {
-          "face": "面部（肖像）",
+          "face": "脸部（肖像）",
           "front": "身体正面",
           "side": "身体侧面",
           "back": "身体背面"
         },
         "startButton": "生成数据集",
-        "startButtonWithCost": "{{button}} ({{cost}} {{credits}})",
+        "startButtonWithCost": "{{button}} ({{cost}} 积分)",
         "insufficientCredits": "积分不足（需要 {{cost}}）",
         "generating": "正在生成数据集...",
         "ready": "准备生成",
@@ -409,12 +434,12 @@
         "generationComplete": "生成完成！",
         "allStagesCompleted": "所有4张参考图片已生成。",
         "errors": {
-          "startFailed": "启动生成失败",
+          "startFailed": "未能开始生成",
           "generationFailed": "生成失败",
-          "pollFailed": "检查生成状态失败"
+          "pollFailed": "未能检查生成状态"
         },
         "progress": {
-          "stage": "阶段 {{stage}} / {{total}}",
+          "stage": "阶段 {{stage}}/{{total}}",
           "message": "{{message}}"
         }
       },
@@ -434,17 +459,17 @@
         "imageActivated": "图片已设为活动",
         "avatarSection": {
           "title": "头像",
-          "description": "代表您角色的个人资料图片",
+          "description": "代表您的角色的个人资料图片",
           "shortDescription": "个人资料图片"
         },
         "coverSection": {
           "title": "封面图片",
-          "description": "肖像方向全身图片",
-          "shortDescription": "肖像全身"
+          "description": "纵向全身图片",
+          "shortDescription": "纵向全身"
         },
         "referenceSection": {
           "title": "参考图片",
-          "description": "用于AI一致性生成的4视图参考数据集",
+          "description": "用于一致AI生成的4视图参考数据集",
           "shortDescription": "4视图参考数据集"
         },
         "buttons": {
@@ -455,10 +480,10 @@
           "setActive": "设为活动"
         },
         "modals": {
-          "promptLabel": "上下文/提示",
+          "promptLabel": "上下文/提示词",
           "promptPlaceholder": "描述额外的上下文或风格...",
           "sampleImageLabel": "参考图片（可选）",
-          "sampleImageHint": "上传一张示例图片作为风格参考",
+          "sampleImageHint": "上传样本图片作为风格参考",
           "generating": "正在生成...",
           "uploading": "正在上传..."
         }
@@ -468,8 +493,8 @@
       "title": "AI角色生成器",
       "subtitle": "描述您的角色或上传图片，AI将为您生成详细信息",
       "descriptionLabel": "角色描述",
-      "descriptionPlaceholder": "描述您的角色...（例如：“一位身披银甲、心怀高尚的勇敢骑士”）",
-      "descriptionHint": "描述越详细，结果越好",
+      "descriptionPlaceholder": "描述您的角色...（例如：“一位身披银甲，心怀高贵的勇敢骑士”）",
+      "descriptionHint": "您的描述越详细，结果越好",
       "imageLabel": "角色图片",
       "uploadPrompt": "点击上传角色图片",
       "uploadHint": "PNG, JPEG, WEBP, GIF (最大10MB)",
@@ -478,11 +503,11 @@
       "howItWorks": "工作原理",
       "step1": "提供文本描述和/或上传图片",
       "step2": "AI分析您的输入并生成角色详细信息",
-      "step3": "在保存前检查和编辑生成的角色",
+      "step3": "保存前审查并编辑生成的角色",
       "step4": "将自动为您生成一个头像",
       "loading": {
         "creatingCharacter": "正在创建您的角色",
-        "analyzingEssence": "正在分析其精髓...",
+        "analyzingEssence": "正在分析本质...",
         "threadsOfFate": "命运的丝线正在编织...",
         "gatheringMagic": "正在汇聚古老魔法...",
         "shapingDestiny": "正在塑造他们的命运...",
@@ -490,21 +515,21 @@
       },
       "progress": {
         "uploadingImage": "正在上传您的构想",
-        "analyzingImage": "正在分析其精髓",
+        "analyzingImage": "正在分析本质",
         "extractingDescription": "正在读取角色",
-        "generatingDetails": "正在锻造他们的身份",
+        "generatingDetails": "正在铸造他们的身份",
         "generatingHistory": "正在编织他们的故事",
         "creatingCharacter": "正在赋予他们生命",
         "queuingAvatar": "正在准备视觉形象",
         "generatingAvatar": "正在绘制他们的肖像",
         "queuingMultiStage": "正在准备参考数据集（4视图）",
-        "completed": "您的英雄已就绪",
+        "completed": "您的英雄正在等待",
         "error": "一个意想不到的转折",
         "preparing": "正在准备您的冒险"
       },
       "reveal": {
-        "heroEmerges": "一位英雄诞生",
-        "personalityTitle": "性格",
+        "heroEmerges": "一位英雄登场",
+        "personalityTitle": "个性",
         "backstoryTitle": "他们的故事",
         "successBanner": "角色创建成功！"
       },
@@ -525,7 +550,7 @@
       "createFailed": "无法创建角色。请重试。",
       "updateFailed": "无法更新角色。",
       "deleteFailed": "无法删除角色。",
-      "detailUnavailable": "目前无法加载角色详情。",
+      "detailUnavailable": "当前无法加载角色详情。",
       "descriptionOrImageRequired": "请提供描述或图片",
       "imageTooLarge": "图片必须小于10MB",
       "invalidImageType": "图片必须是PNG、JPEG、WEBP或GIF格式",

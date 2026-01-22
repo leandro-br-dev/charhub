@@ -121,7 +121,7 @@ export class MultiStageCharacterGenerator {
    * New simplified flow with cumulative references in a single folder
    */
   async generateCharacterDataset(options: MultiStageGenerationOptions): Promise<void> {
-    const { characterId, prompt, userSamples = [], userId, userRole, visualStyle, contentType, theme: themeOption, onProgress, viewsToGenerate } = options;
+    const { characterId, prompt, userSamples = [], userId, userRole, visualStyle, contentType, theme, onProgress, viewsToGenerate } = options;
 
     // Filter views to generate if specified
     const viewsToProcess = viewsToGenerate && viewsToGenerate.length > 0
@@ -352,7 +352,7 @@ export class MultiStageCharacterGenerator {
           referencePath: prepareResponse.referencePath,
           visualStyle,
           contentType,
-          theme: themeOption,
+          theme,
         });
 
         // Upload the new reference to R2
