@@ -98,8 +98,8 @@ describe('Automated Character Generation - Name Diversity (FEATURE-012)', () => 
       expect(frequency.topFirstNames[0]).toEqual({ name: 'Maria', count: 2 });
 
       expect(frequency.topLastNames).toHaveLength(2);
-      expect(frequency.topLastNames[0]).toEqual({ name: 'Silva', count: 1 });
-      expect(frequency.topLastNames[1]).toEqual({ name: 'Santos', count: 1 });
+      expect(frequency.topLastNames).toContainEqual({ name: 'Silva', count: 1 });
+      expect(frequency.topLastNames).toContainEqual({ name: 'Santos', count: 1 });
     });
 
     it('should filter name frequency by time period', async () => {

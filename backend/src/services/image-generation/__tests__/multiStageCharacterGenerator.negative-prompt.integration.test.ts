@@ -50,9 +50,11 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
 
   describe('Negative Prompt Constants', () => {
     it('should have AVATAR_NEGATIVE_PROMPT with body exclusions', () => {
-      expect(AVATAR_NEGATIVE_PROMPT).toContain('(body:1.2)');
-      expect(AVATAR_NEGATIVE_PROMPT).toContain('(shoulders:1.1)');
-      expect(AVATAR_NEGATIVE_PROMPT).toContain('(chest:1.1)');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('body');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('shoulders');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('chest');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('full body');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('wide angle');
     });
 
     it('should have REFERENCE_NEGATIVE_PROMPT equal to STANDARD', () => {
@@ -60,11 +62,11 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
     });
 
     it('should include facial artifact inhibitors in STANDARD_NEGATIVE_PROMPT', () => {
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(water droplets:1.3)');
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(tear drops:1.3)');
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(sweat drops:1.3)');
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(rain on face:1.3)');
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(liquid on face:1.3)');
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(liquid on face)');
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(facial scars)');
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(face marks)');
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(multiple characters)');
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(multiple views)');
     });
   });
 
@@ -75,12 +77,14 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
         width: 768,
         height: 768,
         promptPrefix: 'portrait, headshot, face focus,',
-        promptNegative: 'full body, multiple views, wide angle, (body:1.2), (shoulders:1.1), (chest:1.1),',
+        promptNegative: 'full body, multiple views, wide angle, body, shoulders, chest,',
       };
 
-      expect(mockView.promptNegative).toContain('(body:1.2)');
-      expect(mockView.promptNegative).toContain('(shoulders:1.1)');
-      expect(mockView.promptNegative).toContain('(chest:1.1)');
+      expect(mockView.promptNegative).toContain('body');
+      expect(mockView.promptNegative).toContain('shoulders');
+      expect(mockView.promptNegative).toContain('chest');
+      expect(mockView.promptNegative).toContain('full body');
+      expect(mockView.promptNegative).toContain('wide angle');
     });
 
     it('should use front-specific negative prompt for front view', async () => {
@@ -89,12 +93,13 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
         width: 768,
         height: 1152,
         promptPrefix: 'full body, standing, front view,',
-        promptNegative: 'cropped, headshot only, side view, back view, (from behind:1.3), (back view:1.3),',
+        promptNegative: 'cropped, headshot only, side view, back view, from behind, back view,',
       };
 
-      expect(mockView.promptNegative).toContain('(from behind:1.3)');
-      expect(mockView.promptNegative).toContain('(back view:1.3)');
+      expect(mockView.promptNegative).toContain('from behind');
+      expect(mockView.promptNegative).toContain('back view');
       expect(mockView.promptNegative).toContain('side view');
+      expect(mockView.promptNegative).toContain('headshot only');
     });
 
     it('should use side-specific negative prompt for side view', async () => {

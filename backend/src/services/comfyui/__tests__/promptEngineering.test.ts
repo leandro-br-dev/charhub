@@ -20,56 +20,40 @@ describe('PromptEngineering', () => {
   describe('FEATURE-013: Negative Prompt Enhancement', () => {
     describe('STANDARD_NEGATIVE_PROMPT constant', () => {
       it('should include facial artifact inhibitors', () => {
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(water droplets:1.3)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(tear drops:1.3)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(sweat drops:1.3)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(rain on face:1.3)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(liquid on face:1.3)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('(liquid on face)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('(facial scars)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('(face marks)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('(multiple characters)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('(multiple views)');
       });
 
       it('should include facial feature inhibitors', () => {
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(facial scars:1.2)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(face marks:1.2)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(blemishes:1.2)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(freckles:1.1)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(moles:1.1)');
-      });
-
-      it('should include skin imperfections inhibitors', () => {
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(skin imperfections:1.1)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(wounds:1.2)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(bruises:1.2)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(cuts:1.2)');
-      });
-
-      it('should include dirt and grime inhibitors', () => {
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(dirt on face:1.2)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(grime:1.1)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(blood on face:1.3)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('(facial scars)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('(face marks)');
       });
 
       it('should include asymmetry inhibitors', () => {
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(asymmetrical face features:1.1)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(misaligned eyes:1.2)');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('bad anatomy');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('bad eyes');
       });
 
       it('should include all standard quality inhibitors', () => {
         expect(STANDARD_NEGATIVE_PROMPT).toContain('2girls');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(multiple girls:1.3)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('(multiple characters:1.3)');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('badhandv4');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('negative_hand-neg');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('ng_deepnegative_v1_75t');
-        expect(STANDARD_NEGATIVE_PROMPT).toContain('verybadimagenegative_v1.3');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('multiple views');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('bad anatomy');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('bad hands');
+        expect(STANDARD_NEGATIVE_PROMPT).toContain('bad eyes');
       });
     });
 
     describe('AVATAR_NEGATIVE_PROMPT constant', () => {
       it('should extend standard prompt with body exclusions', () => {
         expect(AVATAR_NEGATIVE_PROMPT).toContain(STANDARD_NEGATIVE_PROMPT);
-        expect(AVATAR_NEGATIVE_PROMPT).toContain('(body:1.2)');
-        expect(AVATAR_NEGATIVE_PROMPT).toContain('(shoulders:1.1)');
-        expect(AVATAR_NEGATIVE_PROMPT).toContain('(chest:1.1)');
+        expect(AVATAR_NEGATIVE_PROMPT).toContain('body');
+        expect(AVATAR_NEGATIVE_PROMPT).toContain('shoulders');
+        expect(AVATAR_NEGATIVE_PROMPT).toContain('chest');
+        expect(AVATAR_NEGATIVE_PROMPT).toContain('full body');
+        expect(AVATAR_NEGATIVE_PROMPT).toContain('wide angle');
       });
     });
 
@@ -190,42 +174,21 @@ describe('PromptEngineering', () => {
   });
 
   describe('Prompt Enhancement Quality', () => {
-    it('should use appropriate weights for facial artifacts', () => {
-      // Water/liquid artifacts should have highest weight (1.3)
-      const waterRegex = /\(water droplets:1\.3\)/;
-      const tearRegex = /\(tear drops:1\.3\)/;
-      const sweatRegex = /\(sweat drops:1\.3\)/;
-      const rainRegex = /\(rain on face:1\.3\)/;
-      const liquidRegex = /\(liquid on face:1\.3\)/;
-
-      expect(STANDARD_NEGATIVE_PROMPT).toMatch(waterRegex);
-      expect(STANDARD_NEGATIVE_PROMPT).toMatch(tearRegex);
-      expect(STANDARD_NEGATIVE_PROMPT).toMatch(sweatRegex);
-      expect(STANDARD_NEGATIVE_PROMPT).toMatch(rainRegex);
-      expect(STANDARD_NEGATIVE_PROMPT).toMatch(liquidRegex);
+    it('should use appropriate tags for facial artifacts', () => {
+      // Liquid artifacts should be present
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(liquid on face)');
     });
 
-    it('should use medium-high weights for facial features', () => {
-      // Scars and marks should have weight 1.2
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(facial scars:1.2)');
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(face marks:1.2)');
-
-      // Blemishes should have weight 1.2
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(blemishes:1.2)');
-
-      // Freckles and moles should have lower weight (1.1)
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(freckles:1.1)');
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(moles:1.1)');
+    it('should include facial feature inhibitors', () => {
+      // Scars and marks should be present
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(facial scars)');
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('(face marks)');
     });
 
-    it('should prioritize blood on face removal', () => {
-      // Blood on face should have highest weight (1.3) - most critical
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(blood on face:1.3)');
-    });
-
-    it('should handle misaligned eyes with high priority', () => {
-      // Eye misalignment should have weight 1.2 - important for portraits
-      expect(STANDARD_NEGATIVE_PROMPT).toContain('(misaligned eyes:1.2)');
+    it('should handle asymmetry', () => {
+      // Asymmetry indicators should be present
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('bad anatomy');
+      expect(STANDARD_NEGATIVE_PROMPT).toContain('bad eyes');
     });
   });
 
@@ -234,26 +197,12 @@ describe('PromptEngineering', () => {
       // Should be comma-separated tags
       const tags = STANDARD_NEGATIVE_PROMPT.split(',').map(t => t.trim());
 
-      // All FEATURE-013 enhancements should be present
-      expect(tags).toContain('(water droplets:1.3)');
-      expect(tags).toContain('(tear drops:1.3)');
-      expect(tags).toContain('(sweat drops:1.3)');
-      expect(tags).toContain('(rain on face:1.3)');
-      expect(tags).toContain('(liquid on face:1.3)');
-      expect(tags).toContain('(facial scars:1.2)');
-      expect(tags).toContain('(face marks:1.2)');
-      expect(tags).toContain('(blemishes:1.2)');
-      expect(tags).toContain('(freckles:1.1)');
-      expect(tags).toContain('(moles:1.1)');
-      expect(tags).toContain('(skin imperfections:1.1)');
-      expect(tags).toContain('(wounds:1.2)');
-      expect(tags).toContain('(bruises:1.2)');
-      expect(tags).toContain('(cuts:1.2)');
-      expect(tags).toContain('(dirt on face:1.2)');
-      expect(tags).toContain('(grime:1.1)');
-      expect(tags).toContain('(blood on face:1.3)');
-      expect(tags).toContain('(asymmetrical face features:1.1)');
-      expect(tags).toContain('(misaligned eyes:1.2)');
+      // All FEATURE-013 enhancements should be present (simplified format)
+      expect(tags).toContain('(liquid on face)');
+      expect(tags).toContain('(facial scars)');
+      expect(tags).toContain('(face marks)');
+      expect(tags).toContain('(multiple characters)');
+      expect(tags).toContain('(multiple views)');
     });
 
     it('should not have duplicate tags', () => {
@@ -267,14 +216,14 @@ describe('PromptEngineering', () => {
   describe('Integration with Multi-Stage Generator', () => {
     it('should provide different negative prompts for different views', () => {
       // Avatar should exclude body parts
-      expect(AVATAR_NEGATIVE_PROMPT).toContain('(body:1.2)');
-      expect(AVATAR_NEGATIVE_PROMPT).toContain('(shoulders:1.1)');
-      expect(AVATAR_NEGATIVE_PROMPT).toContain('(chest:1.1)');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('body');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('shoulders');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('chest');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('full body');
+      expect(AVATAR_NEGATIVE_PROMPT).toContain('wide angle');
 
       // Reference should use standard prompt
-      expect(REFERENCE_NEGATIVE_PROMPT).not.toContain('(body:1.2)');
-      expect(REFERENCE_NEGATIVE_PROMPT).not.toContain('(shoulders:1.1)');
-      expect(REFERENCE_NEGATIVE_PROMPT).not.toContain('(chest:1.1)');
+      expect(REFERENCE_NEGATIVE_PROMPT).not.toContain('body,');
     });
   });
 

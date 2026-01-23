@@ -78,6 +78,9 @@ jest.mock('../../../config/database', () => {
       updateMany: jest.fn(),
       create: jest.fn(),
     },
+    correctionJobLog: {
+      create: jest.fn(),
+    },
     $transaction: jest.fn(),
   };
   return {
@@ -394,13 +397,13 @@ describe('AvatarCorrectionService', () => {
       );
     });
 
-    it('should detect HENTAI content type', async () => {
-      const nsfwCharacter = {
+    it('should pass character theme to generateAvatar', async () => {
+      const characterWithTheme = {
         ...mockCharacter,
-        tags: [{ id: 'tag-1', name: 'nsfw' }],
+        theme: 'anime' as const,
       };
 
-      mockPrisma.character.findUnique.mockResolvedValue(nsfwCharacter);
+      mockPrisma.character.findUnique.mockResolvedValue(characterWithTheme);
 
       await service.correctCharacterAvatar('char-123');
 
@@ -409,7 +412,7 @@ describe('AvatarCorrectionService', () => {
       expect(comfyuiService.generateAvatar).toHaveBeenCalledWith(
         expect.any(Object),
         expect.any(String),
-        'HENTAI'
+        'anime'
       );
     });
 
@@ -509,6 +512,12 @@ describe('AvatarCorrectionService', () => {
       jest
         .spyOn(service, 'findCharactersWithoutAvatars')
         .mockResolvedValue(mockCharacters as any);
+
+      // Mock correctionJobLog.create to avoid database errors
+      mockPrisma.correctionJobLog.create.mockResolvedValue({
+        id: 'log-1',
+        jobType: 'avatar-correction',
+      });
     });
 
     it('should process all characters without avatars', async () => {
