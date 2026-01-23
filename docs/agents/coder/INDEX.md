@@ -99,9 +99,14 @@ As Agent Coder, you also work with these project-wide documentation:
 ### Architecture & Technical Reference
 - `docs/04-architecture/system-overview.md` - System architecture (READ FIRST)
 - `docs/04-architecture/database-schema.md` - Database design
-- `docs/03-reference/backend/README.md` - Backend patterns
-- `docs/03-reference/frontend/README.md` - Frontend patterns
-- `docs/03-reference/backend/translation-system.md` - i18n system
+- `docs/03-reference/backend/README.md` - Backend patterns (overview)
+- `docs/03-reference/frontend/README.md` - Frontend patterns (overview)
+- `backend/src/services/translation/.docs.md` - Translation service (distributed docs)
+- `backend/src/data/tags/.docs.md` - Tag classification system (distributed docs)
+- `backend/src/services/payments/.docs.md` - Payment service (distributed docs)
+- `backend/src/services/.docs.md` - Credits service (distributed docs)
+- `backend/src/services/llm/.docs.md` - LLM service (distributed docs)
+- `backend/src/services/llm/tools/.docs.md` - LLM tools (distributed docs)
 
 ### Business & Planning
 - `docs/05-business/planning/features/active/` - Your feature assignments

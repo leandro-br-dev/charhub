@@ -13,6 +13,23 @@ CharHub usa **GitHub Actions** para deploy automático em produção. Quando voc
 4. ✅ Faz rollback automático se falhar
 5. ✅ Notifica o resultado
 
+## 📋 Infrastructure Setup
+
+> **Note**: These guides cover initial infrastructure setup and configuration.
+
+### Database Setup
+- **[Database Connection Guide](./database-connection.md)** - Configure database connections, SSL certificates, and connection pooling
+- **[Database Operations Guide](./database-operations.md)** - Database maintenance, backups, migrations, and troubleshooting
+
+### Infrastructure Configuration
+- **[SSH Key Setup](./ssh-key-setup.md)** - Configure SSH keys for secure server access
+- **[Tag System Setup](./tag-system-setup.md)** - Configure the content tagging system infrastructure
+
+### Deployment Guides
+- **[CD Deploy Guide](./cd-deploy-guide.md)** - Continuous Deployment pipeline configuration
+- **[CD Status Monitoring](./cd-status.md)** - Monitor deployment status and health checks
+- **[VM Setup Recovery](./vm-setup-recovery.md)** - VM recovery and reconfiguration procedures
+
 ## Fluxo de Deployment
 
 ```

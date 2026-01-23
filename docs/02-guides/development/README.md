@@ -1,34 +1,18 @@
-# Contributing to CharHub
+# Development Guide
 
-**Welcome!** 🎉
-
-Thank you for your interest in contributing to CharHub. This guide will help you understand our development process and how to contribute effectively.
+This guide covers local development, code style, Git workflow, and contributing to CharHub.
 
 ---
 
 ## 📋 Table of Contents
 
-- [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
 - [Development Workflow](#development-workflow)
 - [Code Style](#code-style)
+- [Git Workflow](#git-workflow)
 - [Documentation Standards](#documentation-standards)
 - [Testing Guidelines](#testing-guidelines)
 - [Submitting Changes](#submitting-changes)
-
----
-
-## 🤝 Code of Conduct
-
-### Our Pledge
-
-We are committed to providing a welcoming and inspiring community for all. Please:
-
-- ✅ Be respectful and inclusive
-- ✅ Welcome diverse perspectives
-- ✅ Accept constructive criticism gracefully
-- ✅ Focus on what is best for the community
-- ❌ Do not harass, discriminate, or be disrespectful
 
 ---
 
@@ -44,10 +28,6 @@ We are committed to providing a welcoming and inspiring community for all. Pleas
 ### Local Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/charhub.git
-cd charhub
-
 # Install dependencies
 cd backend && npm install
 cd ../frontend && npm install
@@ -56,11 +36,15 @@ cd ../frontend && npm install
 docker compose up -d
 
 # Access application
-# Frontend: http://localhost:8081
-# Backend: http://localhost:3001
+# Frontend: http://localhost:8082
+# Backend: http://localhost:8002
 ```
 
-For detailed setup instructions, see [Development Guides](../02-guides/development/).
+For detailed setup instructions, see:
+- [Credit Verification](./credit-verification.md)
+- [Development Operations](./dev-operations.md)
+- [Docker Override](./docker-override.md)
+- [Stripe Integration](./stripe-integration.md)
 
 ---
 
@@ -91,8 +75,6 @@ docs/documentation-area  # Documentation updates
 refactor/component-name  # Code refactoring
 test/test-area          # Test additions
 ```
-
-For detailed Git workflow, see [GIT_WORKFLOW.md](./GIT_WORKFLOW.md).
 
 ---
 
@@ -151,7 +133,31 @@ export class Button extends React.Component {
 }
 ```
 
-For complete style guide, see [CODE_STYLE.md](./CODE_STYLE.md).
+For complete style guide, see [code-style.md](./code-style.md).
+
+---
+
+## 🔀 Git Workflow
+
+### Multi-Agent System
+
+CharHub uses a specialized multi-agent workflow:
+
+- **Agent Coder** works in `feature/*` branches
+- **Agent Reviewer** reviews PRs and deploys to `main`
+- **Agent Planner** creates feature specifications
+
+### Branch Rules
+
+- **NEVER** push directly to `main` (only Agent Reviewer)
+- **ALWAYS** work in `feature/*` branches
+- **USE** `git-safety-officer` before any Git operations
+
+For complete Git workflow, see [git-workflow.md](./git-workflow.md).
+
+Also see:
+- [Git Best Practices](./git-best-practices.md)
+- [Git & GitHub Actions](./git-github-actions.md)
 
 ---
 
@@ -168,7 +174,7 @@ For complete style guide, see [CODE_STYLE.md](./CODE_STYLE.md).
 
 Follow the **Diátaxis Framework**:
 
-- **Tutorials** (learning-oriented) → `docs/01-tutorials/`
+- **Tutorials** (learning-oriented) → `docs/01-getting-started/`
 - **How-To Guides** (problem-oriented) → `docs/02-guides/`
 - **Reference** (information-oriented) → `docs/03-reference/`
 - **Explanation** (understanding-oriented) → `docs/04-architecture/`
@@ -193,7 +199,7 @@ Follow the **Diátaxis Framework**:
 [Links](./relative-path.md) use relative paths.
 ```
 
-For complete documentation standards, see [DOCUMENTATION_STANDARDS.md](./DOCUMENTATION_STANDARDS.md).
+For complete documentation standards, see [documentation-standards.md](./documentation-standards.md).
 
 ---
 
@@ -284,60 +290,27 @@ docs(module): brief description
 - `fix(auth): resolve OAuth token refresh issue`
 - `docs(api): update LLM provider documentation`
 
-### PR Description Template
-
-```markdown
-## Summary
-Brief description of what this PR does.
-
-## Changes Made
-- Backend: [list backend changes]
-- Frontend: [list frontend changes]
-- Database: [schema changes if any]
-
-## Testing Done
-- [x] Local testing complete
-- [x] TypeScript compilation successful
-- [x] No console errors
-- [x] Database migrations tested
-
-## How to Test
-1. Check out this branch
-2. Run `docker compose up -d --build`
-3. Navigate to [URL]
-4. Test [specific scenarios]
-
-## Migration Required
-- [ ] Yes - Run: `npm run prisma:migrate:deploy`
-- [x] No
-
-## Screenshots
-[If UI changes, add screenshots]
-```
-
 ---
 
-## 🔍 Finding Work
+## 🤝 Code of Conduct
 
-### Good First Issues
+### Our Pledge
 
-Look for issues labeled `good-first-issue` - these are beginner-friendly.
+We are committed to providing a welcoming and inspiring community for all. Please:
 
-### High Priority Features
-
-Check [Missing Features](../05-business/roadmap/missing-features.md) for prioritized features.
-
-### Feature Requests
-
-User feature requests are tracked in [User Feature Notes](../05-business/planning/user-feature-notes.md).
+- ✅ Be respectful and inclusive
+- ✅ Welcome diverse perspectives
+- ✅ Accept constructive criticism gracefully
+- ✅ Focus on what is best for the community
+- ❌ Do not harass, discriminate, or be disrespectful
 
 ---
 
 ## 📞 Getting Help
 
-- **Documentation**: Start with [README.md](../README.md)
-- **Architecture**: See [System Overview](../04-architecture/system-overview.md)
-- **Development**: Check [Development Guides](../02-guides/development/)
+- **Documentation**: Start with [README.md](../../README.md)
+- **Architecture**: See [System Overview](../../04-architecture/system-overview.md)
+- **Development Guides**: Check [other guides](../)
 - **Questions**: Open a GitHub Discussion
 
 ---
@@ -346,11 +319,11 @@ User feature requests are tracked in [User Feature Notes](../05-business/plannin
 
 | Document | Purpose |
 |----------|---------|
-| [CODE_STYLE.md](./CODE_STYLE.md) | Code style standards |
-| [GIT_WORKFLOW.md](./GIT_WORKFLOW.md) | Git and PR workflow |
-| [DOCUMENTATION_STANDARDS.md](./DOCUMENTATION_STANDARDS.md) | How to write docs |
-| [System Overview](../04-architecture/system-overview.md) | Architecture |
-| [Development Setup](../02-guides/development/) | Setup instructions |
+| [code-style.md](./code-style.md) | Code style standards |
+| [git-workflow.md](./git-workflow.md) | Git and PR workflow |
+| [documentation-standards.md](./documentation-standards.md) | How to write docs |
+| [System Overview](../../04-architecture/system-overview.md) | Architecture |
+| [Development Setup](../../01-getting-started/) | Setup instructions |
 
 ---
 
@@ -367,4 +340,4 @@ Your contributions make CharHub better for everyone. Whether it's:
 
 ---
 
-[← Back to Documentation Home](../README.md)
+[← Back to Guides](../README.md) | [Back to Documentation Home](../../README.md)

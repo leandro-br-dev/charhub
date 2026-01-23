@@ -1232,7 +1232,7 @@ STRIPE_WEBHOOK_SECRET=whsec_xxx
 
 - `backend/src/services/subscriptionService.ts` - Service atual PayPal
 - `backend/src/routes/webhooks/paypal.ts` - Webhooks PayPal
-- `docs/05-business/planning/features/implemented/credits-system.md` - Sistema de créditos
+- `docs/05-business/planning/features/archive/credits-system.md` - Sistema de créditos
 
 ---
 

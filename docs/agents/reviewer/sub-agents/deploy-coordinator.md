@@ -209,12 +209,12 @@ docker compose ps
 **Move feature spec to implemented**:
 
 ```bash
-# 1. Move spec from active to implemented
+# 1. Move spec from active to archive
 git mv docs/05-business/planning/features/active/feature-name.md \
-         docs/05-business/planning/features/implemented/
+         docs/05-business/planning/features/archive/
 
 # 2. Update spec with deployment info
-vim docs/05-business/planning/features/implemented/feature-name.md
+vim docs/05-business/planning/features/archive/feature-name.md
 
 # Add at bottom:
 ## Deployment

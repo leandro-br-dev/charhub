@@ -97,7 +97,7 @@ Key Results:
 cat docs/06-operations/quality-dashboard.md
 
 # Review completed features
-ls docs/05-business/planning/features/implemented/
+ls docs/05-business/planning/features/archive/
 
 # Review current roadmap
 cat docs/05-business/roadmap/current-quarter.md

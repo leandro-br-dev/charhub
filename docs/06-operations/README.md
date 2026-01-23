@@ -39,6 +39,23 @@ Production monitoring, health checks, and alerting.
 
 ---
 
+### 📖 Operational Guides
+Step-by-step procedures for common operational tasks.
+
+**Contents**:
+- **[Quality Dashboard](./quality-dashboard.md)** - Quality metrics dashboard and monitoring
+- **[ComfyUI Setup](./comfyui-setup.md)** - ComfyUI middleware configuration and setup
+- **[R2 CORS Configuration](./r2-cors-configuration.md)** - Cloudflare R2 CORS setup procedures
+- **[ComfyUI Middleware Test Results](./COMFYUI_MIDDLEWARE_TEST_RESULTS.md)** - Test results and validation
+- **[Middleware V2 Migration](./MIDDLEWARE_V2_MIGRATION_COMPLETE.md)** - Migration completion report
+
+**When to use**:
+- Setting up or configuring operational services
+- Troubleshooting middleware and infrastructure issues
+- Reviewing test results and migration status
+
+---
+
 ### 🚨 [incident-response/](./incident-response/)
 Incident management, runbooks, and postmortems.
 

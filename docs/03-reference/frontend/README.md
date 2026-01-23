@@ -2,6 +2,8 @@
 
 The frontend is a React 18 + TypeScript single-page application built with Vite. It focuses on authentication, localization, and preparing the groundwork for future modular game experiences.
 
+> **Note**: Detailed component documentation is distributed alongside the code. See individual component folders for `.docs.md` files.
+
 ## Tooling & Libraries
 
 - **React 18** with hooks and functional components.
@@ -81,5 +83,14 @@ The frontend is a React 18 + TypeScript single-page application built with Vite.
 - Language switcher with 12 locales and Cloudflare R2-ready dataset.
 - Theme toggle with dropdown & iconography.
 - User menu showing avatar/initials and logout action (no profile editing yet).
+
+## Component Documentation
+
+Complex components have detailed documentation alongside the code:
+
+- **Welcome Flow** - `frontend/src/components/welcome/.docs.md` - Multi-step onboarding
+- **Payment Components** - `frontend/src/components/payments/.docs.md` - Stripe checkout
+
+For simple components (UI widgets, forms), documentation is in the form of TypeScript types and JSDoc comments within the component files.
 
 See `docs/TODO.md` for pending UI tasks (dashboards, premium features, responsive improvements) and `docs/DEV_OPERATIONS.md` for tunnel setup plus shared environment configuration.

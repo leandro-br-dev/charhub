@@ -19,23 +19,23 @@ Features currently being developed by Agent Coder.
 
 **When to use**: Agent Reviewer moves specs here when assigning to Agent Coder
 
-### ✅ [implemented/](./implemented/)
-Features already deployed to production.
+### 📦 [archive/](./archive/)
+Features already deployed to production (historical records).
 
-**Status**: Live in production, may have TODOs for improvements
+**Status**: Live in production, preserved for historical context
 
 **Contents**:
-- Detailed specs of implemented features
-- TODO lists for enhancements/improvements
-- Reference documentation
+- 40 implemented feature specifications
+- Historical implementation details
+- Technical reference for postmortems
+- Onboarding material
 
-**Current Features**:
-- Credits System
-- Multi-User Chat
-- Chat Improvements (TODO)
-- Chat Invite Links (TODO)
-- Notification System (TODO)
-- Image Generation (TODO)
+**Archive Statistics**:
+- Total features: 40
+- Date range: 2024-12-25 to 2026-01-21
+- Status: Read-only (all features in production)
+
+**See**: [Archive README](./archive/README.md) for complete categorized index
 
 ### 📋 [backlog/](./backlog/)
 Features planned for future development.
@@ -43,12 +43,12 @@ Features planned for future development.
 **Status**: Not yet assigned, awaiting prioritization
 
 **Contents**:
-- Story Generation
-- Game Modules
+- Chat Improvements (phased implementation)
+- Game Modules (2D games system)
 - Memory System
-- Chat Improvements (future enhancements)
 - CI/CD Improvements
 - Deploy Improvements
+- Various feature enhancements
 
 ---
 
@@ -77,7 +77,7 @@ Agent Reviewer tests and deploys:
 
 ### 5. Completed Phase
 Feature is live:
-- Moves spec from `active/` → `implemented/`
+- Moves spec from `active/` → `archive/`
 - Adds entry to [`../../CHANGELOG.md`](../../CHANGELOG.md)
 - Updates [`../../roadmap/implemented-features.md`](../../roadmap/implemented-features.md)
 - Deletes original request from `user-feature-notes.md`

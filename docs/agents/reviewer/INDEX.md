@@ -106,7 +106,7 @@ As Agent Reviewer, you also work with these project-wide documentation:
 
 ### Business & Planning
 - `docs/05-business/planning/features/active/` - Features being reviewed
-- `docs/05-business/planning/features/implemented/` - Deployed features (you move specs here)
+- `docs/05-business/planning/features/archive/` - Deployed features (you move specs here)
 
 ### Operations
 - `docs/06-operations/incident-response/` - Incident reports (you create these)
