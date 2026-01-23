@@ -43,7 +43,7 @@ export interface StyleThemeCombinationResponse {
  */
 export async function getAvailableThemes(style: VisualStyle): Promise<Theme[]> {
   try {
-    const response = await api.get<AvailableThemesResponse>(`/visual-styles/${style}/themes`);
+    const response = await api.get<AvailableThemesResponse>(`/api/v1/visual-styles/${style}/themes`);
     return response.data.data.themes;
   } catch (error) {
     console.error('Failed to get available themes:', error);
@@ -60,7 +60,7 @@ export async function getStyleThemeCombination(
 ): Promise<StyleThemeCombination | null> {
   try {
     const response = await api.get<StyleThemeCombinationResponse>(
-      `/visual-styles/${style}/themes/${theme}`
+      `/api/v1/visual-styles/${style}/themes/${theme}`
     );
     return response.data.data;
   } catch (error) {

@@ -19,40 +19,120 @@ interface ImageMetadata {
   [key: string]: any;
 }
 
+interface ConvertToWebPOptions {
+  quality?: number;
+  maxSize?: number; // Maximum target size in KB
+  lossless?: boolean; // Override lossless detection
+}
+
 /**
  * Convert image to WebP format with optional metadata
+ *
+ * @param imageBuffer - Input image buffer
+ * @param metadata - Optional metadata to embed
+ * @param options - Conversion options
+ * @returns Compressed WebP buffer
  */
 export async function convertToWebP(
   imageBuffer: Buffer,
-  metadata?: ImageMetadata,
-  quality: number = 85
+  metadata?: ImageMetadata | ConvertToWebPOptions,
+  optionsOrQuality?: number | ConvertToWebPOptions
 ): Promise<Buffer> {
+  let quality = 85;
+  let maxSize: number | undefined;
+  let overrideLossless: boolean | undefined;
+  let actualMetadata: ImageMetadata | undefined;
+
+  // Handle different parameter combinations
+  if (typeof metadata === 'object' && metadata !== null) {
+    // Check if it's ConvertToWebPOptions (has quality or maxSize)
+    if ('quality' in metadata || 'maxSize' in metadata || 'lossless' in metadata) {
+      const opts = metadata as ConvertToWebPOptions;
+      quality = opts.quality ?? 85;
+      maxSize = opts.maxSize;
+      overrideLossless = opts.lossless;
+    } else {
+      // It's ImageMetadata
+      actualMetadata = metadata as ImageMetadata;
+    }
+  }
+
+  // Handle third parameter
+  if (typeof optionsOrQuality === 'number') {
+    quality = optionsOrQuality;
+  } else if (typeof optionsOrQuality === 'object') {
+    quality = optionsOrQuality.quality ?? quality;
+    maxSize = optionsOrQuality.maxSize;
+    overrideLossless = optionsOrQuality.lossless;
+  }
+
   try {
     const image = sharp(imageBuffer);
     const imageMetadata = await image.metadata();
 
-    const webpOptions: sharp.WebpOptions = { quality };
+    // Determine if we should use lossless compression
+    // By default, images with alpha channel use lossless, but this can be overridden
+    const hasAlpha = imageMetadata.hasAlpha ?? false;
+    const useLossless = overrideLossless !== undefined ? overrideLossless : hasAlpha;
 
-    // If image has alpha channel, use lossless compression
-    if (imageMetadata.hasAlpha) {
+    // For images with alpha channel (transparency), we might want to use
+    // lossy compression with near-lossless quality to reduce file size
+    // This is especially important for larger images like REFERENCE (768x1152)
+    const webpOptions: sharp.WebpOptions = {};
+
+    if (useLossless && !maxSize) {
       webpOptions.lossless = true;
       logger.debug('Image has alpha channel, using lossless WebP compression');
+    } else {
+      // Use lossy compression with specified quality
+      // For near-lossless with alpha, use quality near 100 but not exactly 100
+      const effectiveQuality = useLossless ? 95 : quality;
+      webpOptions.quality = effectiveQuality;
+      logger.debug({ quality: effectiveQuality, hasAlpha, useLossless }, 'Using lossy WebP compression');
     }
 
-    // Convert to WebP
+    // If maxSize is specified, iteratively reduce quality until target size is met
+    if (maxSize) {
+      const targetBytes = maxSize * 1024; // Convert KB to bytes
+      let currentQuality = webpOptions.quality ?? 85;
+      let webpBuffer = await image.webp({ ...webpOptions, quality: currentQuality }).toBuffer();
+
+      // Reduce quality until we meet the target size (minimum quality 50)
+      while (webpBuffer.length > targetBytes && currentQuality > 50) {
+        currentQuality -= 5;
+        webpBuffer = await image.webp({ ...webpOptions, quality: currentQuality }).toBuffer();
+        logger.debug({ currentQuality, size: webpBuffer.length, targetBytes }, 'Reducing quality to meet target size');
+      }
+
+      logger.info({
+        originalSize: imageBuffer.length,
+        webpSize: webpBuffer.length,
+        finalQuality: currentQuality,
+        targetSize: targetBytes,
+        compressionRatio: ((1 - webpBuffer.length / imageBuffer.length) * 100).toFixed(2) + '%'
+      }, 'Image converted to WebP with size target');
+
+      return webpBuffer;
+    }
+
+    // Convert to WebP without size constraint
     const pipeline = image.webp(webpOptions);
 
     // Add EXIF metadata if provided
-    if (metadata) {
+    if (actualMetadata) {
       // Sharp doesn't support custom EXIF easily, so we'll embed it as a comment
-      const metadataString = JSON.stringify(metadata);
+      const metadataString = JSON.stringify(actualMetadata);
       // Note: For full EXIF support, we'd need piexif or exiftool
       // For now, we'll just log it and convert without custom metadata
       logger.debug({ metadata: metadataString }, 'Converting image with metadata');
     }
 
     const webpBuffer = await pipeline.toBuffer();
-    logger.info({ originalSize: imageBuffer.length, webpSize: webpBuffer.length }, 'Image converted to WebP');
+    logger.info({
+      originalSize: imageBuffer.length,
+      webpSize: webpBuffer.length,
+      compressionRatio: ((1 - webpBuffer.length / imageBuffer.length) * 100).toFixed(2) + '%'
+    }, 'Image converted to WebP');
 
     return webpBuffer;
   } catch (error) {

@@ -11,22 +11,21 @@ import { callGemini } from '../llm/gemini';
 const AESTHETIC_SCORE_TAGS = 'score_9, score_8_up, score_7_up';
 
 // Standard negative prompt to avoid common issues
+// Simplified with: no numerical weights, max 5 parenthetical tags, no unused embeddings
 const STANDARD_NEGATIVE_PROMPT =
-  '2girls, (multiple girls:1.3), (multiple characters:1.3), multiple views, grid layout, chibi, miniature, ' +
-  'clone, duplicate, cropped, badhandv4, negative_hand-neg, ng_deepnegative_v1_75t, verybadimagenegative_v1.3, ' +
-  '(worst quality, bad quality, jpeg artifacts:1.2), sketch, signature, watermark, username, ' +
-  '(censored, bar_censor, mosaic_censor:1.2), simple background, conjoined, bad anatomy, bad hands, ' +
+  '2girls, multiple views, grid layout, chibi, miniature, ' +
+  'clone, duplicate, cropped, ' +
+  'worst quality, bad quality, jpeg artifacts, sketch, signature, watermark, username, ' +
+  'censored, bar_censor, mosaic_censor, simple background, conjoined, bad anatomy, bad hands, ' +
   'bad mouth, bad tongue, bad arms, extra arms, bad eyes, extra limbs, speech bubble, dialogue bubble, ' +
-  'emoji, icon, text box' +
-  // Facial artifact inhibitors (FEATURE-013)
-  ', (water droplets:1.3), (tear drops:1.3), (sweat drops:1.3), (rain on face:1.3), (liquid on face:1.3), ' +
-  '(facial scars:1.2), (face marks:1.2), (blemishes:1.2), (freckles:1.1), (moles:1.1), ' +
-  '(skin imperfections:1.1), (wounds:1.2), (bruises:1.2), (cuts:1.2), ' +
-  '(dirt on face:1.2), (grime:1.1), (blood on face:1.3), ' +
-  '(asymmetrical face features:1.1), (misaligned eyes:1.2)';
+  'emoji, icon, text box, ' +
+  // Facial artifact inhibitors (FEATURE-013) - simplified to essential tags only
+  '(liquid on face), (facial scars), (face marks), (multiple characters), (multiple views)';
 
 // Avatar-specific negative prompt (face-only generation)
-const AVATAR_NEGATIVE_PROMPT = `${STANDARD_NEGATIVE_PROMPT}, (body:1.2), (shoulders:1.1), (chest:1.1)`;
+const AVATAR_NEGATIVE_PROMPT =
+  STANDARD_NEGATIVE_PROMPT +
+  ', body, shoulders, chest, full body, wide angle';
 
 // Reference image negative prompt (full body views)
 const REFERENCE_NEGATIVE_PROMPT = STANDARD_NEGATIVE_PROMPT;
@@ -129,10 +128,10 @@ SD Tags:`;
       `(${AESTHETIC_SCORE_TAGS})`,
       'masterpiece, best quality, ultra-detailed, cinematic lighting',
       character.style ? `(${character.style})` : null,
-      '(close-up portrait:1.2), (detailed face:1.1), looking at viewer, headshot',
+      '(close-up portrait), (detailed face), looking at viewer, headshot',
       'solo',
       genderTag,
-      `(${loraName}:1.2)`,
+      loraName,
       physicalTags,
       attireTags,
     ];
@@ -256,10 +255,10 @@ SD Tags:`;
       `(${AESTHETIC_SCORE_TAGS})`,
       'masterpiece, best quality, ultra-detailed, cinematic lighting',
       character.style ? `(${character.style})` : null,
-      '(full body:1.2), (detailed body:1.1), standing, looking at viewer',
+      '(full body), (detailed body), standing, looking at viewer',
       'solo',
       genderTag,
-      `(${loraName}:1.2)`,
+      loraName,
       physicalTags,
       attireTags,
       // User prompt tags - LLM already returns them with individual ((parentheses))

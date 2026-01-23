@@ -7,7 +7,7 @@
 import { Job } from 'bullmq';
 import { prisma } from '../../config/database';
 import { logger } from '../../config/logger';
-import { comfyuiService, promptEngineering, promptAgent, ImageGenerationType } from '../../services/comfyui';
+import { comfyuiService, promptEngineering, promptAgent, ImageGenerationType, AVATAR_NEGATIVE_PROMPT, STANDARD_NEGATIVE_PROMPT } from '../../services/comfyui';
 import type { ReferenceImage } from '../../services/comfyui/types';
 import { r2Service } from '../../services/r2Service';
 import { convertToWebP, getContrastingChromaKey } from '../../utils/imageUtils';
@@ -24,7 +24,7 @@ import type {
   MultiStageDatasetGenerationJobData,
   MultiStageGenerationResult,
 } from '../jobs/imageGenerationJob';
-import { StickerStatus, ContentType } from '../../generated/prisma';
+import { StickerStatus, Theme } from '../../generated/prisma';
 
 /**
  * Execute operation with credit management
@@ -64,71 +64,24 @@ async function executeWithCredits<T>(
 }
 
 /**
- * Detect content type based on character species and other attributes
- * This enables automatic checkpoint overrides for specific content types
- */
-function detectContentType(
-  speciesName?: string | null,
-  physicalCharacteristics?: string | null,
-  tags?: string[] | null
-): ContentType | undefined {
-  if (!speciesName && !physicalCharacteristics && !tags) {
-    return undefined;
-  }
-
-  const lowerSpecies = speciesName?.toLowerCase() || '';
-  const lowerPhysical = physicalCharacteristics?.toLowerCase() || '';
-  const lowerTags = tags?.map(t => t.toLowerCase()).join(' ') || '';
-
-  const combinedText = `${lowerSpecies} ${lowerPhysical} ${lowerTags}`;
-
-  // Detect FURRY content
-  if (
-    combinedText.includes('furry') ||
-    combinedText.includes('anthro') ||
-    combinedText.includes('anthropomorphic') ||
-    combinedText.includes('kemono') ||
-    combinedText.includes('werewolf') ||
-    combinedText.includes('kitsune') ||
-    combinedText.includes('dragon')
-  ) {
-    return ContentType.FURRY;
-  }
-
-  // HENTAI content is explicitly set by user (NSFW flag), not auto-detected
-  // This is a safety measure to avoid misclassification
-
-  // Additional content types can be added here
-  // FANTASY, SCI_FI, etc.
-
-  return undefined;
-}
-
-/**
  * Apply visual style to prompt based on character configuration
  * This is the centralized integration point for the Visual Style Reference System
  */
 async function applyVisualStyleToPrompt(
   prompt: { positive: string; negative: string; loras?: any[]; referenceImagePath?: string },
-  characterStyle: string | null,
-  speciesName?: string | null,
-  physicalCharacteristics?: string | null,
-  tags?: string[] | null
+  characterStyle: string | null
 ): Promise<{ positive: string; negative: string; loras?: any[]; referenceImagePath?: string }> {
   if (!characterStyle) {
     return prompt; // No style set, return prompt as-is
   }
 
   try {
-    // Detect content type for checkpoint overrides
-    const contentType = detectContentType(speciesName, physicalCharacteristics, tags);
-
     // Apply visual style using ComfyUI service integration
     const enhancedPrompt = await comfyuiService.applyVisualStyleToPrompt(
       prompt.positive,
       prompt.negative,
       characterStyle as any, // VisualStyle enum
-      contentType,
+      undefined, // contentType - DEPRECATED, use theme instead
       prompt.loras // Preserve existing LoRAs
     );
 
@@ -140,7 +93,6 @@ async function applyVisualStyleToPrompt(
 
     logger.info({
       style: characterStyle,
-      contentType,
       loraCount: result.loras?.length || 0,
     }, 'Visual style applied to prompt');
 
@@ -261,10 +213,11 @@ async function processAvatarGeneration(
     // Build prompt based on image type
     let prompt: any;
     if (isCover) {
-      // For cover: use promptAgent to generate both positive and negative prompts
+      // For cover: use promptAgent to generate positive prompt only
+      // Use STANDARD_NEGATIVE_PROMPT with facial artifact inhibitors (FEATURE-013)
       logger.info({ characterId, providedPrompt }, 'Building cover prompts with promptAgent');
 
-      const { positive, negative: neg } = await promptAgent.generatePrompts({
+      const { positive } = await promptAgent.generatePrompts({
         character: {
           name: `${character.firstName} ${character.lastName || ''}`.trim(),
           gender: character.gender || undefined,
@@ -274,6 +227,9 @@ async function processAvatarGeneration(
           personality: character.personality || undefined,
           defaultAttire: character.mainAttire?.description || undefined,
           style: character.style || undefined,
+          // FEATURE-014: Add visualStyle and theme
+          visualStyle: character.style || undefined,
+          theme: character.theme || undefined,
         },
         generation: {
           type: 'COVER',
@@ -285,11 +241,17 @@ async function processAvatarGeneration(
         } : undefined,
         hasReferenceImages: !!referencePath,
         referenceImageCount: referenceCount,
+        // FEATURE-014: Add style and theme names for LLM
+        overrides: {
+          styleName: character.style ? formatStyleName(character.style) : undefined,
+          themeName: character.theme ? formatThemeName(character.theme) : undefined,
+        },
       });
 
       prompt = {
         positive,
-        negative: neg,
+        // STANDARD_NEGATIVE_PROMPT includes facial artifact inhibitors (FEATURE-013)
+        negative: STANDARD_NEGATIVE_PROMPT,
       };
 
       // Add LoRAs if available
@@ -332,10 +294,11 @@ async function processAvatarGeneration(
         }
       }
 
-      // Use promptAgent to generate prompts for avatar
+      // Use promptAgent to generate positive prompt for avatar
+      // Use AVATAR_NEGATIVE_PROMPT with facial artifact inhibitors (FEATURE-013)
       logger.info({ characterId, providedPrompt }, 'Building avatar prompts with promptAgent');
 
-      const { positive, negative: neg } = await promptAgent.generatePrompts({
+      const { positive } = await promptAgent.generatePrompts({
         character: {
           name: `${character.firstName} ${character.lastName || ''}`.trim(),
           gender: character.gender || undefined,
@@ -345,6 +308,8 @@ async function processAvatarGeneration(
           personality: character.personality || undefined,
           defaultAttire: character.mainAttire?.description || undefined,
           style: character.style || undefined,
+          // FEATURE-014: Add visualStyle
+          visualStyle: character.style || undefined,
         },
         generation: {
           type: 'AVATAR',
@@ -355,11 +320,18 @@ async function processAvatarGeneration(
           isAdditive: true, // Avatar user prompt is usually additive (adds details)
         } : undefined,
         hasReferenceImages: !!referenceImageFilename,
+        // FEATURE-014: Add style name for LLM
+        overrides: {
+          styleName: character.style ? formatStyleName(character.style) : undefined,
+          themeName: undefined, // Avatar doesn't use theme
+        },
       });
 
       prompt = {
         positive,
-        negative: neg,
+        // AVATAR_NEGATIVE_PROMPT includes facial artifact inhibitors (FEATURE-013)
+        // and body exclusions for face-only generation
+        negative: AVATAR_NEGATIVE_PROMPT,
         referenceImagePath: referenceImageFilename,
       };
 
@@ -378,39 +350,23 @@ async function processAvatarGeneration(
     // Automatically applies checkpoint, LoRAs, and prompt modifiers based on character.style
     // ============================================================================
     // Get character tags for content type detection
-    const characterTags = await prisma.tag.findMany({
-      where: {
-        characters: {
-          some: { id: characterId }
-        }
-      },
-      select: { name: true },
-    });
-    const tagNames = characterTags.map(t => t.name);
-
-    // Detect content type for checkpoint overrides
-    const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
-
     // Apply visual style to prompt (for prompt modifiers)
     // Note: LoRAs and checkpoint are handled in comfyuiService via workflow
     prompt = await applyVisualStyleToPrompt(
       prompt,
-      character.style,
-      character.species?.name,
-      character.physicalCharacteristics,
-      tagNames
+      character.style
     );
     // ============================================================================
 
     logger.info({ characterId, imageType, prompt: prompt.positive, hasReferences: !!referencePath }, `${imageTypeName} prompt ready`);
 
     // Generate image with ComfyUI
-    // Pass visual style for automatic checkpoint and LoRA swap
+    // Pass visual style and theme for automatic checkpoint and LoRA swap (FEATURE-014)
     const result = isCover
       ? (referencePath
-          ? await comfyuiService.generateCoverWithReferences(referencePath, prompt, character.style as any, contentType)
-          : await comfyuiService.generateCover(prompt, character.style as any, contentType))
-      : await comfyuiService.generateAvatar(prompt, character.style as any, contentType);
+          ? await comfyuiService.generateCoverWithReferences(referencePath, prompt, character.style as any, character.theme ?? undefined)
+          : await comfyuiService.generateCover(prompt, character.style as any, character.theme ?? undefined))
+      : await comfyuiService.generateAvatar(prompt, character.style as any, character.theme ?? undefined);
 
     // Convert to WebP
     const webpBuffer = await convertToWebP(result.imageBytes, {
@@ -536,10 +492,11 @@ async function processStickerGeneration(
       }
     }
 
-    // Use promptAgent to generate prompts for sticker
+    // Use promptAgent to generate positive prompt for sticker
+    // Use STANDARD_NEGATIVE_PROMPT with facial artifact inhibitors (FEATURE-013)
     logger.info({ characterId, emotion, actionTag }, 'Building sticker prompts with promptAgent');
 
-    const { positive, negative: neg } = await promptAgent.generatePrompts({
+    const { positive } = await promptAgent.generatePrompts({
       character: {
         name: `${character.firstName} ${character.lastName || ''}`.trim(),
         gender: character.gender || undefined,
@@ -566,7 +523,8 @@ async function processStickerGeneration(
 
     let prompt: any = {
       positive,
-      negative: neg,
+      // STANDARD_NEGATIVE_PROMPT includes facial artifact inhibitors (FEATURE-013)
+      negative: STANDARD_NEGATIVE_PROMPT,
     };
 
     // Add LoRAs if available
@@ -583,27 +541,11 @@ async function processStickerGeneration(
     // Automatically applies checkpoint, LoRAs, and prompt modifiers for stickers too
     // ============================================================================
     // Get character tags for content type detection
-    const characterTags = await prisma.tag.findMany({
-      where: {
-        characters: {
-          some: { id: characterId }
-        }
-      },
-      select: { name: true },
-    });
-    const tagNames = characterTags.map(t => t.name);
-
-    // Detect content type for checkpoint overrides
-    const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
-
     // Apply visual style to prompt (for prompt modifiers)
     // Note: LoRAs and checkpoint are handled in comfyuiService via workflow
     prompt = await applyVisualStyleToPrompt(
       prompt,
-      character.style,
-      character.species?.name,
-      character.physicalCharacteristics,
-      tagNames
+      character.style
     );
     // ============================================================================
 
@@ -611,7 +553,7 @@ async function processStickerGeneration(
 
     // Generate image with ComfyUI
     // Pass visual style for automatic checkpoint and LoRA swap
-    const result = await comfyuiService.generateSticker(prompt, character.style as any, contentType);
+    const result = await comfyuiService.generateSticker(prompt, character.style as any, character.theme ?? undefined);
 
     // Convert to WebP (stickers have transparency)
     const webpBuffer = await convertToWebP(result.imageBytes, {
@@ -803,18 +745,12 @@ async function processMultiStageDatasetGeneration(
     throw new Error(`Character ${characterId} not found`);
   }
 
-  // Get character tags for content type detection
-  const tagNames = character.tags?.map(t => t.name) || [];
-
-  // Detect content type for checkpoint overrides
-  const contentType = detectContentType(character.species?.name, character.physicalCharacteristics, tagNames);
-
   // Calculate cost - adjust based on number of views being generated
   const viewsCount = viewsToGenerate?.length || 4;
   const baseCost = getImageGenerationCost('multi-stage-dataset');
   const cost = Math.ceil(baseCost * (viewsCount / 4)); // Proportional cost
 
-  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost, viewsToGenerate, visualStyle: character.style, contentType }, 'Processing multi-stage dataset generation');
+  logger.info({ jobId: job.id, characterId, userSamples: referenceImages?.length || 0, cost, viewsToGenerate, visualStyle: character.style, theme: character.theme }, 'Processing multi-stage dataset generation');
 
   // Update job progress
   job.updateProgress({ stage: 0, total: viewsCount, message: 'Starting multi-stage generation...' });
@@ -830,7 +766,7 @@ async function processMultiStageDatasetGeneration(
       userId,
       userRole,
       visualStyle: character.style as any,
-      contentType,
+      theme: character.theme as any,
       viewsToGenerate,
       onProgress: (stage, total, message, completedImages) => {
         // Include completedImages in progress for real-time UI updates
@@ -845,4 +781,34 @@ async function processMultiStageDatasetGeneration(
     success: true,
     characterId,
   };
+}
+
+/**
+ * Format style enum to display name
+ */
+function formatStyleName(style?: string | null): string | undefined {
+  if (!style) return undefined;
+  const styleMap: Record<string, string> = {
+    'ANIME': 'Anime',
+    'REALISTIC': 'Realistic',
+    'SEMI_REALISTIC': 'Semi-Realistic',
+    'CARTOON': 'Cartoon',
+    'CHIBI': 'Chibi',
+    'PIXEL_ART': 'Pixel Art',
+  };
+  return styleMap[style] || style;
+}
+
+/**
+ * Format theme enum to display name
+ */
+function formatThemeName(theme?: Theme | null): string | undefined {
+  if (!theme) return undefined;
+  const themeMap: Record<string, string> = {
+    'DARK_FANTASY': 'Dark Fantasy',
+    'FANTASY': 'Fantasy',
+    'FURRY': 'Furry',
+    'HENTAI': 'Hentai',
+  };
+  return themeMap[theme] || theme;
 }

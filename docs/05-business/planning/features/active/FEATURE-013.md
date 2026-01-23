@@ -67,10 +67,10 @@ Improve avatar and reference image generation quality by adding negative prompts
 **So that** my character looks consistent and professional
 
 **Acceptance Criteria**:
-- [ ] Avatar images generate without random facial droplets
-- [ ] Avatar images generate without unintended scars or marks
-- [ ] Clean face generation works across all visual styles
-- [ ] Negative prompts don't interfere with intentional character features
+- [x] Avatar images generate without random facial droplets
+- [x] Avatar images generate without unintended scars or marks
+- [x] Clean face generation works across all visual styles
+- [x] Negative prompts don't interfere with intentional character features
 
 ### US-2: Consistent Reference Images
 **As** a user generating multi-stage reference images
@@ -78,10 +78,10 @@ Improve avatar and reference image generation quality by adding negative prompts
 **So that** I can use the character in multiple contexts
 
 **Acceptance Criteria**:
-- [ ] All 4 reference views have matching facial features
-- [ ] No random droplets appear in some views but not others
-- [ ] Scars/marks only appear if intentionally part of character design
-- [ ] Negative prompts applied consistently across multi-stage generation
+- [x] All 4 reference views have matching facial features
+- [x] No random droplets appear in some views but not others
+- [x] Scars/marks only appear if intentionally part of character design
+- [x] Negative prompts applied consistently across multi-stage generation
 
 ### US-3: Optional Intentional Features
 **As** a user who wants a character with scars
@@ -89,10 +89,10 @@ Improve avatar and reference image generation quality by adding negative prompts
 **So that** negative prompts don't block intentional character design
 
 **Acceptance Criteria**:
-- [ ] User-provided prompts can override negative prompts
-- [ ] Explicit scar/facial mark descriptions are respected
-- [ ] Positive prompt emphasis ((double parentheses)) overrides negative
-- [ ] Documentation explains how to add intentional facial features
+- [x] User-provided prompts can override negative prompts
+- [x] Explicit scar/facial mark descriptions are respected
+- [x] Positive prompt emphasis ((double parentheses)) overrides negative
+- [x] Documentation explains how to add intentional facial features
 
 ---
 

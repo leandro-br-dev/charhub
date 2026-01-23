@@ -17,6 +17,7 @@
  */
 
 import { comfyuiService } from '../comfyui/comfyuiService';
+import { REFERENCE_NEGATIVE_PROMPT } from '../comfyui/promptEngineering';
 import { r2Service } from '../r2Service';
 import { canEditCharacter } from '../../middleware/authorization';
 import { prisma } from '../../config/database';
@@ -27,6 +28,7 @@ import type { ContentType, VisualStyle, Theme } from '../../generated/prisma';
 import { ImageType } from '../../generated/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { convertToWebP } from '../../utils/imageUtils';
 
 // Load workflow JSON files using fs.readFileSync
 const multiRefFaceWorkflow = JSON.parse(
@@ -322,6 +324,9 @@ export class MultiStageCharacterGenerator {
             personality: fullCharacter.personality || undefined,
             defaultAttire: fullCharacter.mainAttire?.description || undefined,
             style: fullCharacter.style || undefined,
+            // FEATURE-014: Add visualStyle and theme for prompt generation
+            visualStyle: visualStyle || undefined,
+            theme: theme || contentType || undefined,
           },
           generation: {
             type: generationType,
@@ -333,6 +338,11 @@ export class MultiStageCharacterGenerator {
           } : undefined,
           hasReferenceImages: userSamples.length > 0 || i > 0, // Has references if samples exist or we have previous views
           referenceImageCount: userSamples.length + i,
+          // FEATURE-014: Add style and theme display names for LLM
+          overrides: {
+            styleName: visualStyle ? this.formatStyleName(visualStyle) : undefined,
+            themeName: theme || contentType ? this.formatThemeName(theme || contentType) : undefined,
+          },
         });
 
         // Use generated prompts for this specific view
@@ -357,15 +367,30 @@ export class MultiStageCharacterGenerator {
 
         // Upload the new reference to R2
         // Use timestamp in key to ensure unique files (avoid cache issues)
+        // First, compress the image to reduce file size (REFERENCE images can be 1MB+)
+        // Target max size of 200KB for reference images to balance quality and storage
+        const compressedImage = await convertToWebP(result.imageBytes, {
+          maxSize: 200, // 200KB target max size
+          lossless: false, // Use lossy compression for better size reduction
+        });
+
         const r2Key = `characters/${characterId}/references/${view.content}_${batchTimestamp}.webp`;
         const { publicUrl } = await r2Service.uploadObject({
           key: r2Key,
-          body: result.imageBytes,
+          body: compressedImage,
           contentType: 'image/webp',
           cacheControl: 'public, max-age=3600', // 1 hour cache instead of 1 year
         });
 
-        logger.info({ stage: stageNumber, view: view.content, r2Key, publicUrl }, 'Uploading reference image to R2');
+        logger.info({
+          stage: stageNumber,
+          view: view.content,
+          originalSize: result.imageBytes.length,
+          compressedSize: compressedImage.length,
+          compressionRatio: ((1 - compressedImage.length / result.imageBytes.length) * 100).toFixed(2) + '%',
+          r2Key,
+          publicUrl
+        }, 'Compressed and uploading reference image to R2');
 
         // Save to database with content field
         await prisma.characterImage.create({
@@ -376,7 +401,7 @@ export class MultiStageCharacterGenerator {
             key: r2Key,
             width: view.width,
             height: view.height,
-            sizeBytes: result.imageBytes.length,
+            sizeBytes: compressedImage.length, // Use compressed size
             contentType: 'image/webp',
             isActive: true,
             content: view.content, // Store the view in content field
@@ -419,9 +444,13 @@ export class MultiStageCharacterGenerator {
     const { view, prompt, loras, referencePath, visualStyle, contentType, theme } = options;
 
     // Adjust prompt for this view
+    // Use REFERENCE_NEGATIVE_PROMPT with facial artifact inhibitors (FEATURE-013)
+    // Combined with view-specific negative prompts
     const adjustedPrompt = {
       positive: `${view.promptPrefix} ${prompt.positive}`,
-      negative: `${prompt.negative}, ${view.promptNegative}`,
+      // REFERENCE_NEGATIVE_PROMPT includes facial artifact inhibitors (FEATURE-013)
+      // Combined with view-specific negatives for each reference view
+      negative: `${REFERENCE_NEGATIVE_PROMPT}, ${view.promptNegative}`,
       loras,
     };
 
@@ -471,6 +500,37 @@ export class MultiStageCharacterGenerator {
 
     // Execute workflow
     return comfyuiService.executeWorkflow(finalWorkflow);
+  }
+
+  /**
+   * Format style enum to display name
+   */
+  private formatStyleName(style?: string): string {
+    if (!style) return 'Unknown';
+    const styleMap: Record<string, string> = {
+      'ANIME': 'Anime',
+      'REALISTIC': 'Realistic',
+      'SEMI_REALISTIC': 'Semi-Realistic',
+      'CARTOON': 'Cartoon',
+      'CHIBI': 'Chibi',
+      'PIXEL_ART': 'Pixel Art',
+    };
+    return styleMap[style] || style;
+  }
+
+  /**
+   * Format theme enum to display name
+   */
+  private formatThemeName(theme?: string): string {
+    if (!theme) return 'Unknown';
+    const themeMap: Record<string, string> = {
+      'DARK_FANTASY': 'Dark Fantasy',
+      'FANTASY': 'Fantasy',
+      'FURRY': 'Furry',
+      'SCI_FI': 'Sci-Fi',
+      'GENERAL': 'General',
+    };
+    return themeMap[theme] || theme;
   }
 }
 

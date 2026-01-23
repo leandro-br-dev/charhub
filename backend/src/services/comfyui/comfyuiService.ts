@@ -203,14 +203,14 @@ export class ComfyUIService {
   async generateAvatar(
     prompt: SDPrompt,
     visualStyle?: VisualStyle,
-    contentType?: ContentType
+    theme?: Theme
   ): Promise<ImageGenerationResult> {
-    logger.info({ visualStyle, contentType }, 'Starting avatar generation');
+    logger.info({ visualStyle, theme }, 'Starting avatar generation');
     let workflow = this.prepareWorkflow(ImageGenerationType.AVATAR, prompt);
 
-    // Apply visual style if provided
+    // Apply visual style if provided (FEATURE-014: prefer theme over contentType)
     if (visualStyle) {
-      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, contentType);
+      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, undefined, theme);
     }
 
     return this.executeWorkflow(workflow);
@@ -222,14 +222,14 @@ export class ComfyUIService {
   async generateSticker(
     prompt: SDPrompt,
     visualStyle?: VisualStyle,
-    contentType?: ContentType
+    theme?: Theme
   ): Promise<ImageGenerationResult> {
-    logger.info({ visualStyle, contentType }, 'Starting sticker generation');
+    logger.info({ visualStyle, theme }, 'Starting sticker generation');
     let workflow = this.prepareWorkflow(ImageGenerationType.STICKER, prompt);
 
-    // Apply visual style if provided
+    // Apply visual style if provided (FEATURE-014: prefer theme over contentType)
     if (visualStyle) {
-      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, contentType);
+      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, undefined, theme);
     }
 
     return this.executeWorkflow(workflow);
@@ -241,14 +241,14 @@ export class ComfyUIService {
   async generateCover(
     prompt: SDPrompt,
     visualStyle?: VisualStyle,
-    contentType?: ContentType
+    theme?: Theme
   ): Promise<ImageGenerationResult> {
-    logger.info({ visualStyle, contentType }, 'Starting cover generation');
+    logger.info({ visualStyle, theme }, 'Starting cover generation');
     let workflow = this.prepareWorkflow(ImageGenerationType.COVER, prompt);
 
-    // Apply visual style if provided
+    // Apply visual style if provided (FEATURE-014: prefer theme over contentType)
     if (visualStyle) {
-      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, contentType);
+      workflow = await this.applyVisualStyleToWorkflow(workflow, visualStyle, undefined, theme);
     }
 
     return this.executeWorkflow(workflow);
@@ -509,9 +509,9 @@ export class ComfyUIService {
     referencePath: string,
     prompt: SDPrompt,
     visualStyle?: VisualStyle,
-    contentType?: ContentType
+    theme?: Theme
   ): Promise<ImageGenerationResult> {
-    logger.info({ referencePath, visualStyle, contentType }, 'Starting cover generation with references');
+    logger.info({ referencePath, visualStyle, theme }, 'Starting cover generation with references');
 
     const workflowTemplate = JSON.parse(JSON.stringify(coverWithReferencesWorkflow));
 
@@ -535,7 +535,7 @@ export class ComfyUIService {
 
     // Apply visual style if provided
     if (visualStyle) {
-      const styledWorkflow = await this.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, contentType);
+      const styledWorkflow = await this.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, undefined, theme);
       // Replace @REFERENCE_PATH@ placeholder with actual path (in case it was modified)
       if (styledWorkflow['43']) {
         styledWorkflow['43'].inputs.directory = referencePath;
@@ -573,7 +573,7 @@ export class ComfyUIService {
    * @param basePrompt - Base positive prompt
    * @param baseNegative - Base negative prompt
    * @param style - Visual style (ANIME, REALISTIC, etc)
-   * @param contentType - Optional content type for checkpoint override
+   * @param theme - Optional theme for Style + Theme combination
    * @param existingLoras - Optional existing LoRAs to merge with style
    * @returns Enhanced SDPrompt with style applied
    */
@@ -581,7 +581,7 @@ export class ComfyUIService {
     basePrompt: string,
     baseNegative: string,
     style: VisualStyle,
-    contentType?: ContentType,
+    theme?: Theme,
     existingLoras?: LoraConfig[]
   ): Promise<SDPrompt> {
     // Validate style
@@ -596,7 +596,7 @@ export class ComfyUIService {
     }
 
     // Get visual style configuration
-    const config = await getVisualStyleConfiguration(style, contentType);
+    const config = await getVisualStyleConfiguration(style, undefined, theme);
     if (!config) {
       logger.warn({ style }, 'No visual style configuration found, using base prompt');
       return {
@@ -609,7 +609,8 @@ export class ComfyUIService {
     // Build enhanced prompts
     const { positive, negative } = await this.applyVisualStyleToPrompts(
       style,
-      contentType,
+      undefined,
+      theme,
       basePrompt,
       baseNegative
     );
@@ -651,12 +652,12 @@ export class ComfyUIService {
    * Get visual style configuration for external use
    *
    * @param style - Visual style to query
-   * @param contentType - Optional content type for checkpoint override
+   * @param theme - Optional theme for Style + Theme combination
    * @returns Style configuration or null
    */
   async getVisualStyleConfig(
     style: VisualStyle,
-    contentType?: ContentType
+    theme?: Theme
   ): Promise<{
     checkpoint: string;
     checkpointConfig: {
@@ -671,7 +672,8 @@ export class ComfyUIService {
   } | null> {
     return buildComfyUIPayload(
       style,
-      contentType,
+      undefined,
+      theme,
       '', // Base prompt will be added by caller
       ''
     );
@@ -683,10 +685,11 @@ export class ComfyUIService {
   private async applyVisualStyleToPrompts(
     style: VisualStyle,
     contentType: ContentType | undefined,
+    theme: Theme | undefined,
     basePositive: string,
     baseNegative: string
   ): Promise<{ positive: string; negative: string }> {
-    const config = await getVisualStyleConfiguration(style, contentType);
+    const config = await getVisualStyleConfiguration(style, contentType, theme);
 
     if (!config) {
       return { positive: basePositive, negative: baseNegative };

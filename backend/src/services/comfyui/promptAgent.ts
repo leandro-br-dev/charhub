@@ -21,7 +21,9 @@ export interface PromptAgentInput {
     physicalCharacteristics?: string;
     personality?: string;
     defaultAttire?: string;
-    style?: string;
+    style?: string; // Visual style: ANIME, REALISTIC, etc.
+    visualStyle?: string; // Visual style (alternate name, same as style)
+    theme?: string; // Theme: DARK_FANTASY, FANTASY, FURRY, etc. (FEATURE-014)
   };
 
   // Generation context
@@ -47,6 +49,9 @@ export interface PromptAgentInput {
     composition?: string;
     background?: string;
     lighting?: string;
+    // Style and theme overrides (FEATURE-014)
+    styleName?: string; // Display name of the style (e.g., "Anime", "Realistic")
+    themeName?: string; // Display name of the theme (e.g., "Dark Fantasy", "Fantasy", "Furry")
   };
 }
 
@@ -305,6 +310,7 @@ If user provides clothing/scene descriptions, they OVERRIDE defaults. Use ((doub
 - Be specific but concise
 - Use emphasis parentheses: (tag), ((tag)) for emphasis
 - DO NOT use numerical weights: no :1.2, :1.3, :1.4, etc.
+- CRITICAL: DO NOT repeat tags - each tag should appear only ONCE in the prompt
 ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by context' : '- Keep content SFW unless explicitly requested'}${refInfo}`;
   }
 
@@ -331,8 +337,15 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
     if (character.defaultAttire) {
       prompt += `Default Attire: ${character.defaultAttire}\n`;
     }
-    if (character.style) {
-      prompt += `Style: ${character.style}\n`;
+
+    // Visual Style and Theme (FEATURE-014)
+    if (character.visualStyle || character.style) {
+      const styleName = overrides?.styleName || this.formatStyleName(character.visualStyle || character.style);
+      prompt += `Visual Style: ${styleName}\n`;
+    }
+    if (character.theme) {
+      const themeName = overrides?.themeName || this.formatThemeName(character.theme);
+      prompt += `Theme: ${themeName}\n`;
     }
 
     // Generation type
@@ -361,6 +374,39 @@ ${generation.isNsfw ? '- NSFW content is ALLOWED when requested or implied by co
     prompt += `\nGenerate the POSITIVE and NEGATIVE prompts following the specified format.`;
 
     return prompt;
+  }
+
+  /**
+   * Format style enum to display name
+   */
+  private formatStyleName(style?: string): string {
+    if (!style) return 'Unknown';
+    // Convert ANIME -> "Anime", REALISTIC -> "Realistic", etc.
+    const styleMap: Record<string, string> = {
+      'ANIME': 'Anime',
+      'REALISTIC': 'Realistic',
+      'SEMI_REALISTIC': 'Semi-Realistic',
+      'CARTOON': 'Cartoon',
+      'CHIBI': 'Chibi',
+      'PIXEL_ART': 'Pixel Art',
+    };
+    return styleMap[style] || style;
+  }
+
+  /**
+   * Format theme enum to display name
+   */
+  private formatThemeName(theme?: string): string {
+    if (!theme) return 'Unknown';
+    // Convert DARK_FANTASY -> "Dark Fantasy", FANTASY -> "Fantasy", etc.
+    const themeMap: Record<string, string> = {
+      'DARK_FANTASY': 'Dark Fantasy',
+      'FANTASY': 'Fantasy',
+      'FURRY': 'Furry',
+      'SCI_FI': 'Sci-Fi',
+      'GENERAL': 'General',
+    };
+    return themeMap[theme] || theme;
   }
 
   /**

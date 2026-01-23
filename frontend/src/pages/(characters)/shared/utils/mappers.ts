@@ -16,6 +16,8 @@ export function characterToFormValues(character: Character): CharacterFormValues
     gender: character.gender ?? null,
     species: speciesValue,
     style: character.style ?? null,
+    theme: character.theme ?? null,
+    reference: character.reference ?? null,
     avatar: character.avatar ?? null,
     physicalCharacteristics: character.physicalCharacteristics ?? null,
     personality: character.personality ?? null,

@@ -89,11 +89,15 @@ export async function getVisualStyleConfiguration(
   let checkpoint = styleConfig.defaultCheckpoint;
   let checkpointConfig = styleConfig.defaultCheckpoint?.config as Record<string, any> | null;
 
+  // DEBUG: Log input parameters
+  logger.info({ style, contentType, theme, defaultCheckpoint: checkpoint?.filename }, 'getVisualStyleConfiguration: Input params');
+
   // Priority 1: Check for Theme-based override (NEW system)
   if (theme) {
     const themeOverride = styleConfig.themeCheckpoints.find(
       tc => tc.theme === theme
     );
+    logger.info({ theme, themeOverrideFound: !!themeOverride, themeOverrideCheckpoint: themeOverride?.checkpoint?.filename, allThemeCheckpoints: styleConfig.themeCheckpoints.map(tc => ({ theme: tc.theme, checkpoint: tc.checkpoint?.filename })) }, 'getVisualStyleConfiguration: Theme-based check');
     if (themeOverride) {
       checkpoint = themeOverride.checkpoint;
       checkpointConfig = themeOverride.checkpoint?.config as Record<string, any> | null;
@@ -110,6 +114,9 @@ export async function getVisualStyleConfiguration(
       checkpointConfig = contentOverride.checkpoint?.config as Record<string, any> | null;
     }
   }
+
+  // DEBUG: Log final checkpoint selection
+  logger.info({ style, contentType, theme, finalCheckpoint: checkpoint?.filename, finalCheckpointName: checkpoint?.name }, 'getVisualStyleConfiguration: Final checkpoint selected');
 
   if (!checkpoint) {
     return null;
@@ -244,13 +251,14 @@ export async function getCheckpointOverrides(
 export async function applyVisualStyleToPrompts(
   style: VisualStyle,
   contentType: ContentType | undefined,
+  theme: Theme | undefined,
   basePositive: string,
   baseNegative: string
 ): Promise<{
   positive: string;
   negative: string;
 }> {
-  const config = await getVisualStyleConfiguration(style, contentType);
+  const config = await getVisualStyleConfiguration(style, contentType, theme);
 
   if (!config) {
     return { positive: basePositive, negative: baseNegative };
@@ -284,7 +292,8 @@ export async function applyVisualStyleToPrompts(
  * Build ComfyUI API payload with visual style
  *
  * @param style - The visual style
- * @param contentType - Optional content type for checkpoint override
+ * @param contentType - Optional content type for checkpoint override (DEPRECATED, use theme)
+ * @param theme - Optional theme for Style + Theme combination
  * @param basePrompt - Base positive prompt
  * @param negativePrompt - Negative prompt
  * @returns ComfyUI API payload with checkpoint and LoRAs
@@ -292,6 +301,7 @@ export async function applyVisualStyleToPrompts(
 export async function buildComfyUIPayload(
   style: VisualStyle,
   contentType: ContentType | undefined,
+  theme: Theme | undefined,
   basePrompt: string,
   negativePrompt: string
 ): Promise<{
@@ -319,6 +329,7 @@ export async function buildComfyUIPayload(
   const { positive, negative } = await applyVisualStyleToPrompts(
     style,
     contentType,
+    theme,
     basePrompt,
     negativePrompt
   );
