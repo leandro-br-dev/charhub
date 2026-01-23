@@ -7,7 +7,7 @@
 **Priority**: High
 **Assigned To**: Agent Coder
 **GitHub Issue**: TBD
-**Pull Request**: [PR #147](https://github.com/leandro-br-dev/charhub/pull/147)
+**Pull Request**: [PR #148](https://github.com/leandro-br-dev/charhub/pull/148)
 **Epic**: Visual Style System Enhancement
 
 ---

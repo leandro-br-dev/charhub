@@ -1,6 +1,7 @@
 # FEATURE-013: Avatar Generation Image Improvement - Negative Prompt Enhancement
 
 **Status**: ✅ Implemented
+**Pull Request**: [PR #148](https://github.com/leandro-br-dev/charhub/pull/148)
 **Version**: 1.0.0
 **Date Created**: 2026-01-21
 **Last Updated**: 2026-01-21
