@@ -21,6 +21,20 @@ jest.mock('../../services/r2Service');
 jest.mock('../../queues/QueueManager');
 jest.mock('../../agents/imageClassificationAgent');
 jest.mock('../../websocket/characterGenerationHandler');
+// Mock translationService to prevent real API calls during tests
+jest.mock('../../services/translation/translationService', () => ({
+  translationService: {
+    translate: jest.fn().mockImplementation(() => Promise.resolve({
+      translatedText: 'Translated text',
+      provider: 'test',
+      model: 'test',
+      translationTimeMs: 0,
+      cached: true,
+      source: 'redis',
+    })),
+    invalidateTranslations: jest.fn().mockImplementation(() => Promise.resolve()),
+  },
+}));
 
 describe('Automated Character Generation - Name Diversity (FEATURE-012)', () => {
   let testUser: any;

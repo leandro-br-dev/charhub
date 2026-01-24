@@ -22,6 +22,20 @@ jest.mock('../../services/creditService');
 jest.mock('../../services/r2Service');
 jest.mock('../../websocket/storyGenerationHandler');
 jest.mock('../../queues/QueueManager');
+// Mock translationService to prevent real API calls during tests
+jest.mock('../../services/translation/translationService', () => ({
+  translationService: {
+    translate: jest.fn().mockImplementation(() => Promise.resolve({
+      translatedText: 'Translated text',
+      provider: 'test',
+      model: 'test',
+      translationTimeMs: 0,
+      cached: true,
+      source: 'redis',
+    })),
+    invalidateTranslations: jest.fn().mockImplementation(() => Promise.resolve()),
+  },
+}));
 
 describe('Automated Story Generation Controller - Integration Tests', () => {
   let app: express.Application;

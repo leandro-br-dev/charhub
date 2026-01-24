@@ -17,6 +17,21 @@ import {
   createTestConversationWithParticipants,
 } from '../../../test-utils/factories';
 
+// Mock translationService to prevent real API calls during tests
+jest.mock('../../../services/translation/translationService', () => ({
+  translationService: {
+    translate: jest.fn().mockImplementation(() => Promise.resolve({
+      translatedText: 'Translated text',
+      provider: 'test',
+      model: 'test',
+      translationTimeMs: 0,
+      cached: true,
+      source: 'redis',
+    })),
+    invalidateTranslations: jest.fn().mockImplementation(() => Promise.resolve()),
+  },
+}));
+
 const app = createTestApp();
 
 // Increase timeout for all tests in this suite (DB operations can be slow)

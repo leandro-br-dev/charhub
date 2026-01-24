@@ -17,6 +17,20 @@ jest.mock('../../comfyui/comfyuiService');
 jest.mock('../../r2Service');
 jest.mock('../../../queues/QueueManager');
 jest.mock('../../comfyui/promptAgent');
+// Mock translationService to prevent real API calls during tests
+jest.mock('../../../services/translation/translationService', () => ({
+  translationService: {
+    translate: jest.fn().mockImplementation(() => Promise.resolve({
+      translatedText: 'Translated text',
+      provider: 'test',
+      model: 'test',
+      translationTimeMs: 0,
+      cached: true,
+      source: 'redis',
+    })),
+    invalidateTranslations: jest.fn().mockImplementation(() => Promise.resolve()),
+  },
+}));
 
 describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE-013)', () => {
   let testUser: any;
