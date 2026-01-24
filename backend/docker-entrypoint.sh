@@ -20,6 +20,10 @@ echo "✅ Migrations completed!"
 echo "🌱 Running database seeds..."
 npx tsx src/scripts/seed.ts || echo "⚠️  Seeds failed or already populated"
 
+# Run Style + Themes seed (FEATURE-014)
+echo "🎨 Running Style + Themes seed..."
+npx tsx prisma/seed-style-themes.ts || echo "⚠️  Style + Themes seed failed"
+
 echo "✅ Seeds completed!"
 
 # Start the application
