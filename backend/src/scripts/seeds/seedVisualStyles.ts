@@ -431,5 +431,90 @@ export async function seedVisualStyles(options?: SeedVisualStylesOptions) {
     }
   });
 
-  console.log('✅ Visual styles seeded successfully');
+  // ========================================
+  // STYLE + THEME COMBINATIONS (FEATURE-014)
+  // ========================================
+
+  const { Theme } = await import('../../generated/prisma');
+
+  // Update ANIME style to support themes
+  const animeStyleWithThemes = await prisma.visualStyleConfig.upsert({
+    where: { style: VisualStyle.ANIME },
+    update: {
+      supportedThemes: [Theme.DARK_FANTASY, Theme.FANTASY, Theme.FURRY],
+    },
+    create: {
+      style: VisualStyle.ANIME,
+      name: 'Anime',
+      description: 'Japanese anime art style',
+      supportedThemes: [Theme.DARK_FANTASY, Theme.FANTASY, Theme.FURRY],
+    },
+  });
+
+  // Wai Illustrious SDXL checkpoint (for FANTASY theme)
+  const waiIllustriousCheckpoint = await prisma.styleCheckpoint.upsert({
+    where: { filename: 'waiIllustriousSDXL_v160.safetensors' },
+    update: {},
+    create: {
+      name: 'waiIllustriousSDXL',
+      filename: 'waiIllustriousSDXL_v160.safetensors',
+      path: '/models/checkpoints/waiIllustriousSDXL_v160.safetensors',
+      modelType: ModelType.CHECKPOINT,
+      isActive: true,
+    },
+  });
+
+  // ANIME + DARK_FANTASY = ramthrustsNSFWPINK + iLLMythD4rkL1nesV2
+  await prisma.styleThemeCheckpoint.upsert({
+    where: {
+      styleId_theme: {
+        styleId: animeStyleWithThemes.id,
+        theme: Theme.DARK_FANTASY,
+      },
+    },
+    update: {},
+    create: {
+      styleId: animeStyleWithThemes.id,
+      checkpointId: animeCheckpoint.id,
+      theme: Theme.DARK_FANTASY,
+      loraId: animeLora.id,
+      loraStrength: 1.0,
+    },
+  });
+
+  // ANIME + FANTASY = waiIllustriousSDXL (no LoRA)
+  await prisma.styleThemeCheckpoint.upsert({
+    where: {
+      styleId_theme: {
+        styleId: animeStyleWithThemes.id,
+        theme: Theme.FANTASY,
+      },
+    },
+    update: {},
+    create: {
+      styleId: animeStyleWithThemes.id,
+      checkpointId: waiIllustriousCheckpoint.id,
+      theme: Theme.FANTASY,
+      loraId: null,
+    },
+  });
+
+  // ANIME + FURRY = novaFurryXL (no LoRA)
+  await prisma.styleThemeCheckpoint.upsert({
+    where: {
+      styleId_theme: {
+        styleId: animeStyleWithThemes.id,
+        theme: Theme.FURRY,
+      },
+    },
+    update: {},
+    create: {
+      styleId: animeStyleWithThemes.id,
+      checkpointId: furryCheckpoint.id,
+      theme: Theme.FURRY,
+      loraId: null,
+    },
+  });
+
+  console.log('✅ Visual styles seeded successfully (including Style + Theme combinations)');
 }

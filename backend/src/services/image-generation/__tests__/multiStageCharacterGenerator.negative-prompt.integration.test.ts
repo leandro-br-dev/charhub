@@ -62,6 +62,7 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
     });
 
     it('should include facial artifact inhibitors in STANDARD_NEGATIVE_PROMPT', () => {
+      // FEATURE-013: Simplified format - no numerical weights, max 5 parenthetical tags
       expect(STANDARD_NEGATIVE_PROMPT).toContain('(liquid on face)');
       expect(STANDARD_NEGATIVE_PROMPT).toContain('(facial scars)');
       expect(STANDARD_NEGATIVE_PROMPT).toContain('(face marks)');
@@ -103,16 +104,17 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
     });
 
     it('should use side-specific negative prompt for side view', async () => {
+      // FEATURE-013: Simplified format - no numerical weights in mock data
       const mockView = {
         content: 'side',
         width: 768,
         height: 1152,
         promptPrefix: 'full body, standing, side view,',
-        promptNegative: 'front view, back view, looking at camera, (from front:1.2), (from behind:1.2),',
+        promptNegative: 'front view, back view, looking at camera, (from front), (from behind),',
       };
 
-      expect(mockView.promptNegative).toContain('(from front:1.2)');
-      expect(mockView.promptNegative).toContain('(from behind:1.2)');
+      expect(mockView.promptNegative).toContain('(from front)');
+      expect(mockView.promptNegative).toContain('(from behind)');
       expect(mockView.promptNegative).toContain('front view');
       expect(mockView.promptNegative).toContain('back view');
     });
@@ -123,11 +125,12 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
         width: 768,
         height: 1152,
         promptPrefix: 'full body, standing, back view,',
-        promptNegative: 'front view, face visible, looking at camera, (face:1.3), (from front:1.3),',
+        promptNegative: 'front view, face visible, looking at camera, (face), (from front),',
       };
 
-      expect(mockView.promptNegative).toContain('(face:1.3)');
-      expect(mockView.promptNegative).toContain('(from front:1.3)');
+      // FEATURE-013: Simplified format - no numerical weights
+      expect(mockView.promptNegative).toContain('(face)');
+      expect(mockView.promptNegative).toContain('(from front)');
       expect(mockView.promptNegative).toContain('face visible');
     });
   });
@@ -145,6 +148,15 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
         success: true,
         message: 'Cleanup successful',
       });
+
+      // Mock applyVisualStyleToWorkflow to return a workflow with node '7'
+      jest.spyOn(comfyuiService, 'applyVisualStyleToWorkflow').mockResolvedValue({
+        '7': {
+          inputs: {
+            text: STANDARD_NEGATIVE_PROMPT,
+          },
+        },
+      } as any);
 
       jest.spyOn(comfyuiService, 'executeWorkflow').mockResolvedValue({
         imageBytes: Buffer.from('test-image-data'),
@@ -195,9 +207,9 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
       // Verify negative prompt includes facial artifact inhibitors
       const negativePrompt = workflow['7']?.inputs?.text;
       expect(negativePrompt).toBeDefined();
-      expect(negativePrompt).toContain('(water droplets:1.3)');
-      expect(negativePrompt).toContain('(tear drops:1.3)');
-      expect(negativePrompt).toContain('(sweat drops:1.3)');
+      // FEATURE-013: Simplified format - essential parenthetical tags only
+      expect(negativePrompt).toContain('(liquid on face)');
+      expect(negativePrompt).toContain('(facial scars)');
     });
 
     it('should generate front view with view-specific negative prompt', async () => {
@@ -222,8 +234,9 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
 
       const negativePrompt = workflow['7']?.inputs?.text;
       expect(negativePrompt).toBeDefined();
-      expect(negativePrompt).toContain('(from behind:1.3)');
-      expect(negativePrompt).toContain('(back view:1.3)');
+      // FEATURE-013: Simplified format - no numerical weights
+      expect(negativePrompt).toContain('(from behind)');
+      expect(negativePrompt).toContain('(back view)');
     });
 
     it('should generate all views with appropriate negative prompts', async () => {
@@ -249,34 +262,37 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
       // Face view should exclude body parts
       const faceWorkflow = calls[0][0];
       const faceNegative = faceWorkflow['7']?.inputs?.text;
-      expect(faceNegative).toContain('(body:1.2)');
+      // FEATURE-013: Simplified format - body exclusions added to AVATAR_NEGATIVE_PROMPT
+      expect(faceNegative).toContain('body');
+      expect(faceNegative).toContain('shoulders');
 
       // Front view should exclude back/side views
       const frontWorkflow = calls[1][0];
       const frontNegative = frontWorkflow['7']?.inputs?.text;
-      expect(frontNegative).toContain('(from behind:1.3)');
+      // FEATURE-013: Simplified format - no numerical weights
+      expect(frontNegative).toContain('(from behind)');
 
       // Side view should exclude front/back views
       const sideWorkflow = calls[2][0];
       const sideNegative = sideWorkflow['7']?.inputs?.text;
-      expect(sideNegative).toContain('(from front:1.2)');
+      // FEATURE-013: Simplified format - no numerical weights
+      expect(sideNegative).toContain('(from front)');
 
       // Back view should exclude face
       const backWorkflow = calls[3][0];
       const backNegative = backWorkflow['7']?.inputs?.text;
-      expect(backNegative).toContain('(face:1.3)');
+      // FEATURE-013: Simplified format - no numerical weights
+      expect(backNegative).toContain('(face)');
     });
   });
 
   describe('Negative Prompt Enhancement Quality', () => {
-    it('should prioritize facial artifact removal with weight 1.3', () => {
+    it('should prioritize facial artifact removal with parenthetical tags', () => {
+      // FEATURE-013: Simplified format - essential tags only, no numerical weights
       const criticalArtifacts = [
-        '(water droplets:1.3)',
-        '(tear drops:1.3)',
-        '(sweat drops:1.3)',
-        '(rain on face:1.3)',
-        '(liquid on face:1.3)',
-        '(blood on face:1.3)',
+        '(liquid on face)',
+        '(facial scars)',
+        '(face marks)',
       ];
 
       criticalArtifacts.forEach(artifact => {
@@ -284,58 +300,38 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
       });
     });
 
-    it('should use high weight (1.2) for facial features', () => {
-      const highWeightFeatures = [
-        '(facial scars:1.2)',
-        '(face marks:1.2)',
-        '(blemishes:1.2)',
-        '(wounds:1.2)',
-        '(bruises:1.2)',
-        '(cuts:1.2)',
-        '(dirt on face:1.2)',
-        '(misaligned eyes:1.2)',
-      ];
-
-      highWeightFeatures.forEach(feature => {
-        expect(STANDARD_NEGATIVE_PROMPT).toContain(feature);
-      });
+    it('should have maximum 5 parenthetical tags', () => {
+      // FEATURE-013: Requirement - max 5 parenthetical tags in simplified format
+      const parentheticalTags = STANDARD_NEGATIVE_PROMPT.match(/\([^)]+\)/g) || [];
+      expect(parentheticalTags.length).toBeLessThanOrEqual(5);
     });
 
-    it('should use medium weight (1.1) for minor features', () => {
-      const mediumWeightFeatures = [
-        '(freckles:1.1)',
-        '(moles:1.1)',
-        '(skin imperfections:1.1)',
-        '(grime:1.1)',
-        '(asymmetrical face features:1.1)',
-      ];
-
-      mediumWeightFeatures.forEach(feature => {
-        expect(STANDARD_NEGATIVE_PROMPT).toContain(feature);
-      });
+    it('should not contain numerical weights', () => {
+      // FEATURE-013: Simplified format - no numerical weights like (tag:1.3)
+      const hasWeights = /\([^:]+:\d+\.\d+\)/.test(STANDARD_NEGATIVE_PROMPT);
+      expect(hasWeights).toBe(false);
     });
 
     it('should maintain all standard quality inhibitors', () => {
+      // FEATURE-013: Simplified format - removed unused embeddings, no numerical weights
       const standardInhibitors = [
         '2girls',
-        '(multiple girls:1.3)',
-        '(multiple characters:1.3)',
-        'badhandv4',
-        'negative_hand-neg',
-        'ng_deepnegative_v1_75t',
-        'verybadimagenegative_v1.3',
-        '(worst quality, bad quality',
+        'multiple views',
+        'grid layout',
+        'chibi',
+        'worst quality',
+        'bad quality',
+        'jpeg artifacts',
         'sketch',
         'signature',
         'watermark',
         'username',
-        '(censored, bar_censor',
+        'censored',
         'simple background',
         'conjoined',
         'bad anatomy',
         'bad hands',
         'bad mouth',
-        'bad tongue',
         'bad arms',
         'extra arms',
         'bad eyes',
@@ -356,13 +352,14 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
   describe('Integration with Prompt Engineering', () => {
     it('should combine base negative prompt with view-specific additions', async () => {
       const baseNegative = STANDARD_NEGATIVE_PROMPT;
-      const viewNegative = 'full body, multiple views, (body:1.2)';
+      // FEATURE-013: Simplified format - view additions without numerical weights
+      const viewNegative = 'full body, multiple views, (body)';
 
       const combined = `${baseNegative}, ${viewNegative}`;
 
       // Should contain both base and view-specific prompts
-      expect(combined).toContain('(water droplets:1.3)'); // from base
-      expect(combined).toContain('(body:1.2)'); // from view
+      expect(combined).toContain('(liquid on face)'); // from base
+      expect(combined).toContain('(body)'); // from view
     });
 
     it('should not duplicate negative prompt tags', () => {
@@ -386,6 +383,15 @@ describe('Multi-Stage Character Generator - Negative Prompt Enhancement (FEATURE
         success: true,
         message: 'Cleanup successful',
       });
+
+      // Mock applyVisualStyleToWorkflow to return a workflow with node '7'
+      jest.spyOn(comfyuiService, 'applyVisualStyleToWorkflow').mockResolvedValue({
+        '7': {
+          inputs: {
+            text: STANDARD_NEGATIVE_PROMPT,
+          },
+        },
+      } as any);
 
       jest.spyOn(comfyuiService, 'executeWorkflow').mockResolvedValue({
         imageBytes: Buffer.from('test-image-data'),
