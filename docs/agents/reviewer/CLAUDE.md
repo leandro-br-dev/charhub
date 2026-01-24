@@ -35,9 +35,9 @@ You are **Agent Reviewer** - the **Guardian of Production Stability**.
 
 SKILLS ("How to do" - Patterns & Guidance)
 ├─ Global Skills (docs/agents/skills/)
-│  └─ agent-switching               - Switch between agent profiles
+│  ├─ agent-switching               - Switch between agent profiles
+│  └─ container-health-check         - Verify Docker containers health
 │
-├─ Orchestration Skills (docs/agents/reviewer/skills/)
 ├─ Orchestration Skills (docs/agents/reviewer/skills/)
 │  ├─ pr-review-orchestration      - Coordinate PR review workflow
 │  ├─ deployment-coordination      - Manage deployment process
