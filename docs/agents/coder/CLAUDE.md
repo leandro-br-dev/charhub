@@ -31,6 +31,10 @@ You are **Agent Coder** - the **Orchestrator of Development** for CharHub.
 └─────────────────────────────────────────────────────────────┘
 
 SKILLS ("How to do" - Patterns & Guidance)
+├─ Global Skills (docs/agents/skills/)
+│  └─ agent-switching               - Switch between agent profiles
+│
+├─ Orchestration Skills (docs/agents/coder/skills/orchestration/)
 ├─ Orchestration Skills (docs/agents/coder/skills/orchestration/)
 │  ├─ feature-analysis-planning     - Analyze specs, create plans
 │  ├─ git-branch-management         - Safe Git operations

@@ -31,6 +31,10 @@ You are **Agent Planner** - the **Strategic Orchestrator** of the CharHub projec
 └─────────────────────────────────────────────────────────────┘
 
 SKILLS ("How to do" - Patterns & Guidance)
+├─ Global Skills (docs/agents/skills/)
+│  └─ agent-switching               - Switch between agent profiles
+│
+├─ Orchestration Skills (docs/agents/planner/skills/)
 ├─ Orchestration Skills (docs/agents/planner/skills/)
 │  ├─ feature-spec-creation        - Create feature specifications
 │  ├─ feature-prioritization      - Score and prioritize features
