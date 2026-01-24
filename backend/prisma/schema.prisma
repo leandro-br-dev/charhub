@@ -103,6 +103,15 @@ enum ContentType {
   SCI_FI      // Science fiction themes
 }
 
+// Theme enum for style + theme combinations
+enum Theme {
+  DARK_FANTASY  // Dark fantasy content (current default)
+  FANTASY       // High fantasy, bright, magical
+  FURRY         // Anthropomorphic characters
+  SCI_FI        // Science fiction
+  GENERAL       // General purpose
+}
+
 model User {
   id                String       @id @default(uuid())
   provider          AuthProvider
@@ -266,12 +275,18 @@ model VisualStyleConfig {
   description String? // User-facing description
   isActive Boolean @default(true)
 
+  // Theme support
+  supportedThemes Theme[] // Themes this style supports
+
   // Default checkpoint for this style
   defaultCheckpointId String?
   defaultCheckpoint StyleCheckpoint? @relation("DefaultCheckpoint", fields: [defaultCheckpointId], references: [id])
 
   // Content-specific overrides
   contentCheckpoints StyleContentCheckpoint[]
+
+  // Theme-specific checkpoint overrides
+  themeCheckpoints StyleThemeCheckpoint[]
 
   // LoRAs to apply for this style
   styleLoras StyleLoraMapping[]
@@ -296,6 +311,7 @@ model StyleCheckpoint {
   // What styles use this checkpoint?
   defaultForStyles VisualStyleConfig[] @relation("DefaultCheckpoint")
   contentMappings StyleContentCheckpoint[]
+  themeMappings StyleThemeCheckpoint[]
 
   // Configuration
   config Json? // { sampler: "DPM++ 2M Karras", cfg: 6, steps: 30 }
@@ -323,6 +339,7 @@ model StyleLora {
 
   // What styles use this LoRA?
   styleMappings StyleLoraMapping[]
+  themeOverrides StyleThemeCheckpoint[] @relation("ThemeLora")
 
   // Configuration
   weight Float @default(1.0) // Default weight (0.0-1.5)
@@ -371,6 +388,31 @@ model StyleContentCheckpoint {
   @@unique([styleId, contentType])
   @@index([styleId])
   @@index([contentType])
+  @@index([checkpointId])
+}
+
+// Theme-specific checkpoint overrides for Style + Theme combinations
+model StyleThemeCheckpoint {
+  id   String @id @default(uuid())
+
+  styleId String
+  styleConfig VisualStyleConfig @relation(fields: [styleId], references: [id], onDelete: Cascade)
+
+  checkpointId String
+  checkpoint StyleCheckpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
+
+  theme Theme // DARK_FANTASY, FANTASY, FURRY, etc
+
+  // Optional: LoRA override for this theme
+  loraId String?
+  loraOverride StyleLora? @relation("ThemeLora", fields: [loraId], references: [id], onDelete: SetNull)
+
+  // Configuration
+  loraStrength Float? // Override default LoRA strength
+
+  @@unique([styleId, theme])
+  @@index([styleId])
+  @@index([theme])
   @@index([checkpointId])
 }
 
@@ -489,6 +531,7 @@ model Character {
   speciesId String? // Reference to Species table
   species   Species? @relation(fields: [speciesId], references: [id], onDelete: SetNull)
   style     VisualStyle? @default(ANIME) // Visual art style preference
+  theme     Theme? @default(DARK_FANTASY) // Content type/theme
   reference String? // Source reference (e.g., "One Piece", "Marvel Comics")
 
   // Visual and descriptive

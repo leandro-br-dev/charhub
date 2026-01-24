@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type UseCharacterFormReturn } from '../hooks/useCharacterForm';
-import { GENDER_OPTIONS, VISUAL_STYLE_OPTIONS } from '../utils/constants';
+import { GENDER_OPTIONS } from '../utils/constants';
 import { useSpeciesOptions } from '../hooks/useSpeciesOptions';
+import { StyleThemeSelector } from '../../../../components/features/visualStyles';
 
 interface IdentityTabProps {
   form: UseCharacterFormReturn;
@@ -130,25 +131,14 @@ export function IdentityTab({ form }: IdentityTabProps): JSX.Element {
             </select>
           )}
         </label>
+      </div>
 
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium text-content">
-            {t('characters:form.fields.style')}
-          </span>
-          <select
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-content shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-            value={values.style ?? ''}
-            onChange={handleSelectChange('style')}
-          >
-            <option value="">{t('characters:form.placeholders.style')}</option>
-            {VISUAL_STYLE_OPTIONS.map(option => (
-              <option key={option} value={option}>
-                {t(`characters:visualStyles.${option}`)}
-              </option>
-            ))}
-          </select>
-        </label>
+      {/* Style + Theme Selector - on separate line */}
+      <div className="mt-4">
+        <StyleThemeSelector form={form} />
+      </div>
 
+      <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-2 text-sm sm:col-span-2">
           <span className="font-medium text-content">
             {t('characters:form.fields.reference')}

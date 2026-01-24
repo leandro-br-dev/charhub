@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { AgeRating, ContentTag, Visibility, VisualStyle } from '../generated/prisma';
+import { AgeRating, ContentTag, Visibility, VisualStyle, Theme } from '../generated/prisma';
 
 /**
  * Character Validators
@@ -15,6 +15,7 @@ const characterBaseSchema = z.object({
   gender: z.string().max(50).optional().nullable(),
   species: z.string().max(100).optional().nullable(),
   style: z.nativeEnum(VisualStyle).default(VisualStyle.ANIME).optional().nullable(),
+  theme: z.nativeEnum(Theme).default(Theme.DARK_FANTASY).optional().nullable(),
   reference: z.string().max(200).optional().nullable(),
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),
@@ -43,6 +44,7 @@ export const updateCharacterSchema = z.object({
   gender: z.string().max(50).optional().nullable(),
   species: z.string().max(100).optional().nullable(),
   style: z.nativeEnum(VisualStyle).optional().nullable(),
+  theme: z.nativeEnum(Theme).optional().nullable(),
   reference: z.string().max(200).optional().nullable(),
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),

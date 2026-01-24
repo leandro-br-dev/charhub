@@ -9,7 +9,7 @@
 
 import { prisma } from '../../config/database';
 import { logger } from '../../config/logger';
-import { ImageType, ContentType } from '../../generated/prisma';
+import { ImageType } from '../../generated/prisma';
 import { comfyuiService } from '../comfyui/comfyuiService';
 import { r2Service } from '../r2Service';
 import { promptAgent } from '../comfyui/promptAgent';
@@ -73,75 +73,28 @@ class AvatarCorrectionService {
   }
 
   /**
-   * Detect content type from character data
-   * Used for checkpoint selection in visual style system
-   */
-  private detectContentType(
-    speciesName?: string | null,
-    physicalCharacteristics?: string | null,
-    tags?: string[] | null
-  ): ContentType | undefined {
-    if (!speciesName && !physicalCharacteristics && !tags) {
-      return undefined;
-    }
-
-    const lowerSpecies = speciesName?.toLowerCase() || '';
-    const lowerPhysical = physicalCharacteristics?.toLowerCase() || '';
-    const lowerTags = tags?.map(t => t.toLowerCase()).join(' ') || '';
-
-    const combinedText = `${lowerSpecies} ${lowerPhysical} ${lowerTags}`;
-
-    // Detect FURRY content
-    if (
-      combinedText.includes('furry') ||
-      combinedText.includes('anthro') ||
-      combinedText.includes('anthropomorphic') ||
-      combinedText.includes('kemono')
-    ) {
-      return 'FURRY';
-    }
-
-    // Detect HENTAI content
-    if (
-      combinedText.includes('nsfw') ||
-      combinedText.includes('explicit') ||
-      combinedText.includes('ecchi')
-    ) {
-      return 'HENTAI';
-    }
-
-    return undefined;
-  }
-
-  /**
    * Apply visual style to prompt
    * Uses ComfyUI service to add style-specific LoRAs and prompt modifiers
    */
   private async applyVisualStyleToPrompt(
     prompt: { positive: string; negative: string; loras?: any[] },
-    characterStyle: string | null,
-    speciesName?: string | null,
-    physicalCharacteristics?: string | null,
-    tags?: string[] | null
+    characterStyle: string | null
   ): Promise<{ positive: string; negative: string; loras?: any[] }> {
     if (!characterStyle) {
       return prompt;
     }
 
     try {
-      const contentType = this.detectContentType(speciesName, physicalCharacteristics, tags);
-
       const enhancedPrompt = await comfyuiService.applyVisualStyleToPrompt(
         prompt.positive,
         prompt.negative,
         characterStyle as any,
-        contentType,
+        undefined, // contentType - DEPRECATED, use theme instead
         prompt.loras
       );
 
       logger.info({
         style: characterStyle,
-        contentType,
         loraCount: enhancedPrompt.loras?.length || 0,
       }, 'Visual style applied to prompt');
 
@@ -209,9 +162,6 @@ class AvatarCorrectionService {
         return true;
       }
 
-      // Get character tags for content type detection
-      const tagNames = character.tags.map(t => t.name);
-
       // Generate prompts for avatar
       const { positive, negative } = await promptAgent.generatePrompts({
         character: {
@@ -250,10 +200,7 @@ class AvatarCorrectionService {
       // Apply visual style to prompt
       const enhancedPrompt = await this.applyVisualStyleToPrompt(
         promptPayload,
-        character.style,
-        character.species?.name,
-        character.physicalCharacteristics,
-        tagNames
+        character.style
       );
 
       // Execute ComfyUI workflow for avatar generation
@@ -261,7 +208,7 @@ class AvatarCorrectionService {
       const workflowResult = await comfyuiService.generateAvatar(
         enhancedPrompt,
         character.style as any,
-        this.detectContentType(character.species?.name, character.physicalCharacteristics, tagNames)
+        character.theme ?? undefined
       );
 
       // Convert to WebP
@@ -316,7 +263,7 @@ class AvatarCorrectionService {
           userId: this.BOT_USER_ID,
           userRole: 'ADMIN',
           visualStyle: character.style as any,
-          contentType: this.detectContentType(character.species?.name, character.physicalCharacteristics, tagNames),
+          theme: character.theme ?? undefined,
           viewsToGenerate: ['face', 'front', 'side', 'back'],
           onProgress: (stage, total, message) => {
             logger.info({ characterId, stage, total, message }, 'Reference generation progress');
@@ -418,6 +365,19 @@ class AvatarCorrectionService {
       failureCount: result.failureCount,
       duration,
     }, 'Batch avatar correction completed');
+
+    // Log to database for admin dashboard tracking
+    await prisma.correctionJobLog.create({
+      data: {
+        jobType: 'avatar-correction',
+        targetCount: result.targetCount,
+        successCount: result.successCount,
+        failureCount: result.failureCount,
+        duration: Math.round(duration / 1000), // Convert to seconds
+        completedAt: new Date(),
+        errors: result.errors.length > 0 ? result.errors : undefined,
+      },
+    });
 
     return result;
   }

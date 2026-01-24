@@ -47,7 +47,12 @@ export async function cleanDatabase(): Promise<void> {
 
   // Order matters due to foreign key constraints
   // Delete in reverse dependency order
-  await db.userPlan.deleteMany({});
+  try {
+    await db.userPlan.deleteMany({});
+  } catch (error) {
+    // Ignore Prisma errors during cleanup
+    console.warn('Warning: Failed to delete userPlan records:', error);
+  }
   await db.creditTransaction.deleteMany({});
   await db.userMonthlyBalance.deleteMany({});
   await db.userPlusAccess.deleteMany({});

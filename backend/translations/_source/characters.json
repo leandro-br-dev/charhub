@@ -43,6 +43,18 @@
       "PIXEL_ART": "Pixel art/retro game style",
       "THREE_D": "3D rendered style"
     },
+    "themes": {
+      "DARK_FANTASY": "Dark Fantasy",
+      "FANTASY": "Fantasy",
+      "FURRY": "Furry",
+      "SCI_FI": "Sci-Fi",
+      "GENERAL": "General",
+      "DARK_FANTASY.description": "Dark fantasy with mature themes and moody atmosphere",
+      "FANTASY.description": "Bright, magical fantasy with high fantasy elements",
+      "FURRY.description": "Anthropomorphic animal characters",
+      "SCI_FI.description": "Science fiction and futuristic settings",
+      "GENERAL.description": "General purpose, no specific theme"
+    },
     "contentTags": {
       "VIOLENCE": "Violence",
       "GORE": "Gore",
@@ -143,6 +155,7 @@
         "gender": "Gender",
         "species": "Species / origin",
         "style": "Visual style",
+        "theme": "Theme",
         "reference": "Reference / source",
         "physicalCharacteristics": "Physical description",
         "personality": "Personality",
@@ -155,6 +168,8 @@
       },
       "placeholders": {
         "style": "Select visual style",
+        "theme": "Select theme",
+        "selectStyleFirst": "Select a style first",
         "reference": "Ex: One Piece, Marvel Comics, Original",
         "genderSelect": "Select gender",
         "speciesSelect": "Select species"
@@ -203,6 +218,16 @@
         "incompatibleToast": "Some selected tags are incompatible with the current age rating. Please review.",
         "incompatibleHint": "Tags highlighted are incompatible with the selected age rating. Remove them to continue.",
         "incompatibleChip": "Incompatible with current age rating"
+      },
+      "styleThemePreview": {
+        "title": "Current Configuration",
+        "checkpoint": "Checkpoint",
+        "lora": "LoRA",
+        "strength": "Strength",
+        "noLora": "None (checkpoint-only)",
+        "loading": "Loading configuration...",
+        "combinationNotFound": "Style + Theme combination not found",
+        "loadError": "Failed to load configuration"
       },
       "tabs": {
         "identity": "Identity",

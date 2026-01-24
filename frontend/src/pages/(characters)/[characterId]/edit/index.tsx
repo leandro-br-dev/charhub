@@ -7,6 +7,7 @@ import { characterToFormValues } from '../../shared';
 import { CharacterFormLayout } from '../../shared/components';
 import { useAuth } from '../../../../hooks/useAuth';
 import { useAdmin } from '../../../../hooks/useAdmin';
+import { useToast } from '../../../../contexts/ToastContext';
 import { Button } from '../../../../components/ui/Button';
 
 /**
@@ -22,6 +23,7 @@ export default function CharacterEditPage(): JSX.Element {
   const characterId = params.characterId ?? '';
   const { user } = useAuth();
   const { isAdmin } = useAdmin();
+  const { addToast } = useToast();
 
   const { data, isLoading, isError } = useCharacterQuery(characterId);
   const { updateMutation } = useCharacterMutations();
@@ -53,7 +55,10 @@ export default function CharacterEditPage(): JSX.Element {
     setError(null);
     try {
       await updateMutation.mutateAsync({ characterId, payload: form.values });
-      navigate(`/characters/${characterId}`);
+      // Show success toast and stay on page
+      addToast(t('characters:edit.saveSuccess', 'Character saved successfully'), 'success', 3000);
+      // Update the form's initial snapshot to mark as not dirty
+      form.reset(form.values);
     } catch (mutationError) {
       const fallbackKey = 'characters:errors.updateFailed';
       const messageKey = mutationError instanceof Error ? mutationError.message : fallbackKey;
