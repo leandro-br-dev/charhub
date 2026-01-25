@@ -670,10 +670,36 @@ model CorrectionJobLog {
 **Commit**: 1e44edc - "fix(validator): change default theme from DARK_FANTASY to FANTASY"
 **Impact**: All new auto-generated characters will now use FANTASY as the default theme instead of DARK_FANTASY
 
-### Phase 2: Theme Detection
-1. Add theme detection to image analysis agent
-2. Update character generation to use detected theme
-3. Test with diverse images
+### Phase 2: Theme Detection ✅ COMPLETED
+1. ~~Add theme detection to image analysis agent~~ ✅ DONE (2026-01-25)
+2. Update character generation to use detected theme - PENDING
+3. Test with diverse images - PENDING
+
+**Implementation**: Modified `backend/src/agents/characterImageAnalysisAgent.ts`
+**Commit**: c13024d - "feat(agents): add theme detection to image analysis agent"
+
+**Changes Made**:
+- Added `themeClassification` field to `CharacterImageAnalysisResult` type
+  - `theme`: FANTASY, DARK_FANTASY, FURRY, SCI_FI, or GENERAL
+  - `confidence`: high, medium, or low
+  - `reasoning`: string explanation for classification
+- Updated system prompt with comprehensive theme detection guidelines:
+  - FANTASY: Bright colors, magical elements, medieval/high fantasy setting
+  - DARK_FANTASY: Dark palette, gothic elements, demons, vampires, dark magic
+  - FURRY: Anthropomorphic animals, kemono style, beast-people
+  - SCI_FI: Futuristic, cybernetic, robots, space themes, technology
+  - GENERAL: Modern/contemporary, no strong thematic elements
+- Analysis considers: color palette, setting, character type, mood, clothing
+- Added confidence level guidelines (high/medium/low)
+- Updated response parsing to include themeClassification
+
+**Quality Checks**:
+- Lint: PASSED (zero errors)
+- Build: PASSED (TypeScript compilation successful)
+
+**Next Steps**:
+- Update automated character generation controller to use detected theme
+- Test with diverse character images to verify accuracy
 
 ### Phase 3: Species Resolution
 1. Add synonym mapping
