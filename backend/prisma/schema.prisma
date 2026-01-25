@@ -578,6 +578,9 @@ model Character {
   actingParticipations       ConversationParticipant[] @relation("ParticipantActingCharacter")
   representingParticipations ConversationParticipant[] @relation("ParticipantRepresentingCharacter")
 
+  // Correction tracking
+  correctionJobLogs CorrectionJobLog[] @relation("CharacterCorrections")
+
   @@index([userId])
   @@index([visibility])
   @@index([isSystemCharacter])
@@ -1315,18 +1318,27 @@ model SystemConfiguration {
 
 // Correction job execution log
 model CorrectionJobLog {
-  id            String   @id @default(uuid())
-  jobType       String   // "avatar-correction" or "data-completeness-correction"
-  targetCount   Int
-  successCount  Int
-  failureCount  Int
-  duration      Int?     // Duration in seconds
-  startedAt     DateTime @default(now())
-  completedAt   DateTime?
-  errors        Json?    // Array of {characterId, error}
-  metadata      Json?    // Additional job-specific data
+  id              String   @id @default(uuid())
+  jobType         String   // "avatar-correction" or "data-completeness-correction"
+  targetCount     Int
+  successCount    Int
+  failureCount    Int
+  duration        Int?     // Duration in seconds
+  startedAt       DateTime @default(now())
+  completedAt     DateTime?
+  errors          Json?    // Array of {characterId, error}
+  metadata        Json?    // Additional job-specific data
+
+  // Individual correction tracking (for per-character corrections)
+  characterId     String?  // Character ID (for individual corrections)
+  fieldsCorrected String[] // Array of field names corrected (e.g., ["speciesId", "gender", "theme"])
+  details         Json?    // Additional correction metadata (before/after values, etc.)
 
   @@index([jobType, startedAt])
+  @@index([characterId])
+
+  // Relation to Character (optional, for individual corrections)
+  character Character? @relation("CharacterCorrections", fields: [characterId], references: [id], onDelete: SetNull)
 }
 
 // ============================================================================

@@ -6,8 +6,17 @@
  * Addresses issues where:
  * - firstName is "Character" (LLM fallback default)
  * - speciesId is NULL (missing species classification)
+ * - gender is "UNKNOWN" (for humanoid species)
+ * - theme is "DARK_FANTASY" (needs re-evaluation)
+ * - contentTags is empty (for non-L ratings)
  *
  * Uses existing compileCharacterDataWithLLM to regenerate missing data.
+ *
+ * Phase 6 Improvements:
+ * - Expanded reprocessing criteria (all incomplete fields)
+ * - Random selection instead of oldest-first
+ * - 7-day cooldown per character
+ * - Track which fields were corrected in logs
  */
 
 import { prisma } from '../../config/database';
@@ -245,10 +254,17 @@ class DataCompletenessCorrectionService {
   /**
    * Find bot-generated characters with incomplete data
    *
-   * Query criteria:
+   * Expanded query criteria (Phase 6):
    * - userId = BOT_USER_ID (bot user only)
-   * - speciesId IS NULL OR firstName = 'Character' (LLM fallback)
-   * - Order by createdAt (oldest first)
+   * - NOT corrected in last 7 days (cooldown)
+   * - Any of these conditions:
+   *   - speciesId IS NULL
+   *   - firstName = 'Character' (LLM fallback)
+   *   - gender = 'UNKNOWN' (for humanoid species)
+   *   - theme = 'DARK_FANTASY' AND created after 2026-01-20
+   *   - contentTags = '{}' AND ageRating != 'L'
+   *
+   * Selection: Random instead of oldest-first
    *
    * @param limit - Maximum number of characters to return
    * @returns Array of characters needing correction
@@ -257,18 +273,45 @@ class DataCompletenessCorrectionService {
     try {
       logger.info({ limit }, 'Finding characters with incomplete data');
 
-      const characters = await prisma.character.findMany({
+      // Calculate 7 days ago for cooldown
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+      // Get 2x limit to allow for cooldown filtering and randomization
+      const candidates = await prisma.character.findMany({
         where: {
           userId: this.BOT_USER_ID,
+          // Cooldown: not corrected in last 7 days
+          NOT: {
+            correctionJobLogs: {
+              some: {
+                jobType: 'data-completeness-correction',
+                startedAt: { gte: sevenDaysAgo },
+              },
+            },
+          },
+          // Expanded reprocessing criteria
           OR: [
             { speciesId: null },
             { firstName: this.DEFAULT_FIRST_NAME },
+            { gender: 'UNKNOWN' },
+            {
+              // Theme needs evaluation if DARK_FANTASY and created after feature
+              theme: 'DARK_FANTASY',
+              createdAt: { gte: new Date('2026-01-20') },
+            },
+            {
+              // Empty content tags for non-L ratings
+              contentTags: { equals: [] },
+              ageRating: { not: 'L' },
+            },
           ],
         },
-        orderBy: {
-          createdAt: 'asc', // Oldest first
-        },
-        take: limit,
+        // Use raw query for random ordering (PostgreSQL-specific)
+        orderBy: [
+          { id: 'asc' }, // Fallback ordering
+        ],
+        take: limit * 2, // Get more to shuffle and filter
         select: {
           id: true,
           firstName: true,
@@ -277,6 +320,7 @@ class DataCompletenessCorrectionService {
           gender: true,
           speciesId: true,
           style: true,
+          theme: true,
           physicalCharacteristics: true,
           personality: true,
           history: true,
@@ -304,9 +348,16 @@ class DataCompletenessCorrectionService {
         },
       });
 
+      // Shuffle array for random selection
+      const shuffled = this.shuffleArray(candidates);
+
+      // Take only the requested limit
+      const characters = shuffled.slice(0, limit);
+
       logger.info({
         count: characters.length,
         limit,
+        totalCandidates: candidates.length,
       }, 'Found characters with incomplete data');
 
       return characters;
@@ -314,6 +365,21 @@ class DataCompletenessCorrectionService {
       logger.error({ error }, 'Error finding characters with incomplete data');
       return [];
     }
+  }
+
+  /**
+   * Shuffle array using Fisher-Yates algorithm
+   *
+   * @param array - Array to shuffle
+   * @returns Shuffled array
+   */
+  private shuffleArray<T>(array: T[]): T[] {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 
   /**
@@ -332,6 +398,7 @@ class DataCompletenessCorrectionService {
    *
    * @param characterId - ID of character to correct
    * @returns true if correction succeeded, false otherwise
+   * @deprecated Use correctCharacter() instead for Phase 6 improvements
    */
   async correctCharacterData(characterId: string): Promise<boolean> {
     const startTime = Date.now();
@@ -555,16 +622,18 @@ class DataCompletenessCorrectionService {
 
     const fuzzyResults = fuse.search(speciesName);
     if (fuzzyResults.length > 0 && fuzzyResults[0].score && fuzzyResults[0].score < 0.3) {
-      species = fuzzyResults[0].item;
-      logger.info({
-        characterId,
-        strategy: 'fuzzy_search',
-        speciesName: normalizedSpeciesName,
-        matchedSpeciesId: species.id,
-        matchedSpeciesName: species.name,
-        score: fuzzyResults[0].score,
-      }, 'Species found via fuzzy search');
-      return species.id;
+      const fuzzySpecies = fuzzyResults[0].item;
+      if (fuzzySpecies) {
+        logger.info({
+          characterId,
+          strategy: 'fuzzy_search',
+          speciesName: normalizedSpeciesName,
+          matchedSpeciesId: fuzzySpecies.id,
+          matchedSpeciesName: fuzzySpecies.name,
+          score: fuzzyResults[0].score,
+        }, 'Species found via fuzzy search');
+        return fuzzySpecies.id;
+      }
     }
 
     // Strategy 4: Try partial match (contains)
@@ -655,6 +724,402 @@ class DataCompletenessCorrectionService {
   }
 
   /**
+   * Resolve species ID from species name using improved fuzzy matching
+   *
+   * @param speciesName - Species name from LLM or character data
+   * @param characterId - Character ID for logging
+   * @returns Species ID (never null - always returns a valid ID)
+   */
+  async resolveSpeciesId(speciesName: string, characterId: string): Promise<string> {
+    if (!speciesName || speciesName.trim().length === 0) {
+      logger.warn({
+        characterId,
+        reason: 'no_species_name_provided',
+      }, 'Species resolution failed - using Unknown fallback');
+      return 'b09b64de-bc83-4c70-9008-0e4a6b43fa48'; // Unknown species ID
+    }
+
+    return await this.identifySpecies(speciesName, characterId);
+  }
+
+  /**
+   * Infer gender from description for humanoid characters
+   *
+   * @param physicalCharacteristics - Physical description text
+   * @param speciesId - Species ID to check if humanoid
+   * @returns Inferred gender (or UNKNOWN if cannot infer)
+   */
+  private async inferGenderFromDescription(
+    physicalCharacteristics: string | null,
+    speciesId: string | null
+  ): Promise<CharacterGender> {
+    if (!physicalCharacteristics) {
+      return 'UNKNOWN' as CharacterGender;
+    }
+
+    // Check if species is humanoid
+    if (speciesId) {
+      const species = await prisma.species.findUnique({
+        where: { id: speciesId },
+        select: { name: true, category: true },
+      });
+
+      if (species) {
+        const humanoidCategories = ['humanoid', 'human', 'elf', 'demon', 'angel', 'vampire'];
+        const isHumanoid = humanoidCategories.some(cat =>
+          species.category?.toLowerCase().includes(cat) ||
+          species.name.toLowerCase().includes(cat)
+        );
+
+        if (!isHumanoid) {
+          // Not humanoid, UNKNOWN is acceptable
+          return 'UNKNOWN' as CharacterGender;
+        }
+      }
+    }
+
+    // Infer from pronouns in description
+    const desc = physicalCharacteristics.toLowerCase();
+    if (desc.includes(' she ') || desc.includes(' her ') || desc.includes('female') || desc.includes('woman')) {
+      return 'FEMALE' as CharacterGender;
+    }
+    if (desc.includes(' he ') || desc.includes(' his ') || desc.includes('male') || desc.includes('man')) {
+      return 'MALE' as CharacterGender;
+    }
+    if (desc.includes(' they ') || desc.includes(' them ') || desc.includes('non-binary')) {
+      return 'NON_BINARY' as CharacterGender;
+    }
+
+    // Default humanoids to FEMALE (most common in anime)
+    return 'FEMALE' as CharacterGender;
+  }
+
+  /**
+   * Infer theme from character data
+   *
+   * @param character - Character data
+   * @returns Inferred theme
+   */
+  private async inferThemeFromCharacter(character: IncompleteCharacter): Promise<string> {
+    const desc = (
+      (character.physicalCharacteristics || '') +
+      ' ' +
+      (character.personality || '') +
+      ' ' +
+      (character.history || '')
+    ).toLowerCase();
+
+    // Check for theme indicators
+    if (desc.includes('furry') || desc.includes('anthropomorphic') || desc.includes('animal') || desc.includes('beast')) {
+      return 'FURRY';
+    }
+    if (desc.includes('robot') || desc.includes('cyborg') || desc.includes('android') || desc.includes('mecha') || desc.includes('sci-fi') || desc.includes('futuristic')) {
+      return 'SCI_FI';
+    }
+    if (desc.includes('dark') || desc.includes('gothic') || desc.includes('demon') || desc.includes('vampire') || desc.includes('horror')) {
+      return 'DARK_FANTASY';
+    }
+    if (desc.includes('magic') || desc.includes('fantasy') || desc.includes('medieval') || desc.includes('wizard') || desc.includes('elf')) {
+      return 'FANTASY';
+    }
+
+    // Default to FANTASY
+    return 'FANTASY';
+  }
+
+  /**
+   * Infer content tags from text
+   *
+   * @param personality - Personality text
+   * @param history - History text
+   * @param physicalCharacteristics - Physical description
+   * @param ageRating - Age rating to respect
+   * @returns Inferred content tags
+   */
+  private async inferContentTagsFromText(
+    personality: string | null,
+    history: string | null,
+    physicalCharacteristics: string | null,
+    ageRating: string
+  ): Promise<string[]> {
+    // Don't add tags for L-rated content
+    if (ageRating === 'L') {
+      return [];
+    }
+
+    const combinedText = `${personality || ''} ${history || ''} ${physicalCharacteristics || ''}`.toLowerCase();
+    const tags: string[] = [];
+
+    // Define tag patterns with minimum age rating
+    const tagPatterns: Array<{ tag: string; patterns: string[]; minRating: string }> = [
+      {
+        tag: 'VIOLENCE',
+        patterns: ['fight', 'battle', 'war', 'combat', 'blood', 'weapon', 'sword', 'warrior', 'attack'],
+        minRating: 'TWELVE',
+      },
+      {
+        tag: 'SEXUAL',
+        patterns: ['love', 'romantic', 'affection', 'relationship', 'attractive'],
+        minRating: 'TEN',
+      },
+      {
+        tag: 'HORROR',
+        patterns: ['terror', 'nightmare', 'creepy', 'horror', 'fear', 'haunted', 'scary'],
+        minRating: 'FOURTEEN',
+      },
+      {
+        tag: 'PSYCHOLOGICAL',
+        patterns: ['trauma', 'mental', 'psychological', 'mind', 'insanity'],
+        minRating: 'FOURTEEN',
+      },
+      {
+        tag: 'LANGUAGE',
+        patterns: ['profanity', 'swearing', 'curse'],
+        minRating: 'TWELVE',
+      },
+    ];
+
+    // Age rating order (from least to most mature)
+    const ratingOrder = ['L', 'TEN', 'TWELVE', 'FOURTEEN', 'SIXTEEN', 'EIGHTEEN'];
+    const currentRatingIndex = ratingOrder.indexOf(ageRating);
+
+    for (const { tag, patterns, minRating } of tagPatterns) {
+      // Check if pattern matches
+      if (patterns.some(p => combinedText.includes(p))) {
+        // Check if tag is allowed for this age rating
+        const minRatingIndex = ratingOrder.indexOf(minRating);
+        if (currentRatingIndex >= minRatingIndex) {
+          tags.push(tag);
+        }
+      }
+    }
+
+    return tags;
+  }
+
+  /**
+   * Correct all incomplete fields for a character (Phase 6)
+   *
+   * Process:
+   * 1. Identify which fields are incomplete
+   * 2. Fix each incomplete field:
+   *    - speciesId: use resolveSpeciesId()
+   *    - firstName: recompile with LLM if generic
+   *    - gender: infer from description for humanoids
+   *    - theme: infer from character data
+   *    - contentTags: infer from text if empty and non-L rating
+   * 3. Track which fields were corrected
+   * 4. Log correction with fields corrected
+   *
+   * @param characterId - ID of character to correct
+   * @returns Object with success status and corrected fields
+   */
+  async correctCharacter(characterId: string): Promise<{ success: boolean; fieldsCorrected: string[]; error?: string }> {
+    const startTime = Date.now();
+    const fieldsCorrected: string[] = [];
+
+    try {
+      logger.info({ characterId }, 'Starting comprehensive character correction');
+
+      // Retrieve character with existing data
+      const character = await prisma.character.findUnique({
+        where: { id: characterId },
+        include: {
+          images: {
+            where: { type: 'SAMPLE' },
+            orderBy: { createdAt: 'desc' },
+            take: 1,
+          },
+        },
+      });
+
+      if (!character) {
+        logger.warn({ characterId }, 'Character not found for correction');
+        return { success: false, fieldsCorrected: [], error: 'Character not found' };
+      }
+
+      // Verify this is a bot character
+      if (character.userId !== this.BOT_USER_ID) {
+        logger.warn({
+          characterId,
+          userId: character.userId,
+        }, 'Character is not owned by bot user, skipping correction');
+        return { success: false, fieldsCorrected: [], error: 'Not a bot character' };
+      }
+
+      const updates: any = {};
+      const before: any = {
+        speciesId: character.speciesId,
+        firstName: character.firstName,
+        gender: character.gender,
+        theme: character.theme,
+        contentTags: character.contentTags,
+      };
+
+      // 1. Fix speciesId if NULL
+      if (!character.speciesId) {
+        // Try to get species from character data or use LLM
+        let speciesName = 'Unknown';
+        if (character.history || character.physicalCharacteristics) {
+          // Use existing data to infer species
+          const textData = await compileCharacterDataWithLLM(
+            '',
+            null,
+            {
+              species: undefined,
+              firstName: character.firstName,
+              lastName: character.lastName || undefined,
+              age: character.age || undefined,
+              gender: character.gender || undefined,
+            },
+            'en',
+            undefined
+          );
+          speciesName = textData.species || 'Unknown';
+        }
+
+        const speciesId = await this.resolveSpeciesId(speciesName, characterId);
+        if (speciesId) {
+          updates.speciesId = speciesId;
+          fieldsCorrected.push('speciesId');
+          logger.info({ characterId, speciesId }, 'Fixed speciesId');
+        }
+      }
+
+      // 2. Fix firstName if generic
+      if (character.firstName === this.DEFAULT_FIRST_NAME) {
+        // Recompile with LLM to get a proper name
+        const compiledData = await compileCharacterDataWithLLM(
+          '', // Empty description to trigger LLM creativity
+          null, // No image analysis
+          {
+            firstName: character.firstName,
+            lastName: character.lastName || undefined,
+            age: character.age || undefined,
+            gender: character.gender || undefined,
+            species: character.speciesId ? 'existing' : undefined,
+          },
+          'en',
+          undefined
+        );
+
+        if (compiledData.firstName && compiledData.firstName !== this.DEFAULT_FIRST_NAME) {
+          updates.firstName = compiledData.firstName;
+          fieldsCorrected.push('firstName');
+          logger.info({ characterId, firstName: compiledData.firstName }, 'Fixed firstName');
+        }
+      }
+
+      // 3. Fix gender if UNKNOWN (for humanoids)
+      if (character.gender === 'UNKNOWN') {
+        const gender = await this.inferGenderFromDescription(
+          character.physicalCharacteristics,
+          character.speciesId
+        );
+        if (gender !== 'UNKNOWN') {
+          updates.gender = gender;
+          fieldsCorrected.push('gender');
+          logger.info({ characterId, gender }, 'Fixed gender');
+        }
+      }
+
+      // 4. Fix theme if DARK_FANTASY (created after 2026-01-20)
+      if (character.theme === 'DARK_FANTASY' && character.createdAt >= new Date('2026-01-20')) {
+        const theme = await this.inferThemeFromCharacter(character);
+        if (theme !== 'DARK_FANTASY') {
+          updates.theme = theme as any;
+          fieldsCorrected.push('theme');
+          logger.info({ characterId, theme }, 'Fixed theme');
+        }
+      }
+
+      // 5. Fix contentTags if empty and non-L rating
+      if (character.contentTags.length === 0 && character.ageRating !== 'L') {
+        const tags = await this.inferContentTagsFromText(
+          character.personality,
+          character.history,
+          character.physicalCharacteristics,
+          character.ageRating
+        );
+        if (tags.length > 0) {
+          updates.contentTags = tags;
+          fieldsCorrected.push('contentTags');
+          logger.info({ characterId, tags }, 'Fixed contentTags');
+        }
+      }
+
+      // Apply updates if any
+      if (Object.keys(updates).length > 0) {
+        await prisma.character.update({
+          where: { id: characterId },
+          data: updates,
+        });
+
+        const duration = Date.now() - startTime;
+        logger.info({
+          characterId,
+          fieldsCorrected,
+          duration,
+        }, 'Character correction completed successfully');
+
+        // Log individual correction
+        await prisma.correctionJobLog.create({
+          data: {
+            jobType: 'data-completeness-correction',
+            targetCount: 1,
+            successCount: 1,
+            failureCount: 0,
+            duration: Math.floor(duration / 1000),
+            completedAt: new Date(),
+            characterId: characterId,
+            fieldsCorrected: fieldsCorrected,
+            details: {
+              before,
+              after: updates,
+              timestamp: new Date().toISOString(),
+            },
+          },
+        });
+
+        return { success: true, fieldsCorrected };
+      } else {
+        logger.info({ characterId }, 'No corrections needed');
+        return { success: true, fieldsCorrected: [] };
+      }
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error({
+        characterId,
+        error: errorMessage,
+        duration,
+      }, 'Character correction failed');
+
+      // Log failed correction
+      await prisma.correctionJobLog.create({
+        data: {
+          jobType: 'data-completeness-correction',
+          targetCount: 1,
+          successCount: 0,
+          failureCount: 1,
+          duration: Math.floor(duration / 1000),
+          completedAt: new Date(),
+          characterId: characterId,
+          fieldsCorrected: [],
+          details: {
+            error: errorMessage,
+            timestamp: new Date().toISOString(),
+          },
+        },
+      }).catch(logError => {
+        logger.error({ error: logError }, 'Failed to log correction failure');
+      });
+
+      return { success: false, fieldsCorrected, error: errorMessage };
+    }
+  }
+
+  /**
    * Run batch correction on multiple characters
    *
    * Process:
@@ -716,19 +1181,28 @@ class DataCompletenessCorrectionService {
       // Process each character
       for (const character of characters) {
         try {
-          const success = await this.correctCharacterData(character.id);
+          const result = await this.correctCharacter(character.id);
 
-          if (success) {
-            successCount++;
-            logger.info({
-              characterId: character.id,
-              progress: `${successCount}/${targetCount}`,
-            }, 'Character corrected successfully');
+          if (result.success) {
+            if (result.fieldsCorrected.length > 0) {
+              successCount++;
+              logger.info({
+                characterId: character.id,
+                fieldsCorrected: result.fieldsCorrected,
+                progress: `${successCount}/${targetCount}`,
+              }, 'Character corrected successfully');
+            } else {
+              // No corrections needed (character already complete)
+              logger.info({
+                characterId: character.id,
+                progress: `${successCount}/${targetCount}`,
+              }, 'Character already complete, no corrections needed');
+            }
           } else {
             failureCount++;
             errors.push({
               characterId: character.id,
-              error: 'Correction returned false (check logs for details)',
+              error: result.error || 'Correction failed (check logs for details)',
             });
             logger.warn({
               characterId: character.id,
