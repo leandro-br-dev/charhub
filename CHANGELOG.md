@@ -17,11 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Image generation now fully operational with GPU support (NVIDIA GeForce RTX 3060 Ti)
 
 - **Automated Environment Sync System**
-  - New script `scripts/ops/sync-production-env.sh` to automate `.env` deployment
-  - Syncs both root `.env.production` and `frontend/.env.production` files
+  - New scripts `scripts/ops/env-compare.sh` and `scripts/ops/env-sync-production.sh` to automate `.env` deployment
+  - Syncs root `.env.production`, `backend/.env.production`, and `frontend/.env.production` files
   - Automated backup creation with timestamps before each sync
   - MD5 verification to ensure successful sync
-  - Dry-run and verify modes for safe operations
+  - Dry-run and backup-only modes for safe operations
   - Established `.env.production` as source of truth principle
 
 - **Deployment Documentation**

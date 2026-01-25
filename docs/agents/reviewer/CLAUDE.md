@@ -42,6 +42,7 @@ SKILLS ("How to do" - Patterns & Guidance)
 ├─ Orchestration Skills (docs/agents/reviewer/skills/)
 │  ├─ pr-review-orchestration      - Coordinate PR review workflow
 │  ├─ deployment-coordination      - Manage deployment process
+│  ├─ production-env-sync          - Validate and sync production environment
 │  ├─ incident-response-protocol   - Handle production incidents
 │  └─ production-monitoring         - Monitor production health
 
@@ -125,15 +126,16 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 
 #### ✅ Checklist 2.1: Environment Validation
 
-**Use skill**: `deployment-coordination`
+**Use skill**: `deployment-coordination`, `production-env-sync`
 **Use sub-agent**: `env-guardian`
 
 - [ ] Use env-guardian FIRST (CRITICAL!)
+- [ ] Run `env-compare.sh` to check for missing keys
 - [ ] Check for new environment variables
 - [ ] Validate all required variables exist
 - [ ] Verify secrets are set
 - [ ] Document any new variables
-- [ ] Synchronize environment if needed
+- [ ] Sync to production if needed using `env-sync-production.sh`
 
 #### ✅ Checklist 2.2: Pre-Deploy Verification
 
