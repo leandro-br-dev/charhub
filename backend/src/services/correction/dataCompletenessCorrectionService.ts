@@ -16,6 +16,184 @@ import { CHARHUB_OFFICIAL_ID } from '../characterService';
 import { compileCharacterDataWithLLM } from '../../controllers/automatedCharacterGenerationController';
 import type { GeneratedCharacterData } from '../../controllers/automatedCharacterGenerationController';
 import { CharacterGender, Prisma } from '../../generated/prisma';
+import Fuse from 'fuse.js';
+
+/**
+ * Species synonym mapping
+ * Maps common species name variations to canonical species names
+ */
+const SPECIES_SYNONYMS: Record<string, string> = {
+  // Japanese/Asian mythological creatures
+  'wolf yokai': 'Yokai',
+  'fox spirit': 'Kitsune',
+  'fox yokai': 'Kitsune',
+  'cat girl': 'Nekomimi',
+  'catgirl': 'Nekomimi',
+  'cat person': 'Nekomimi',
+  'nekomimi': 'Nekomimi',
+  'dog girl': 'Inumimi',
+  'doggirl': 'Inumimi',
+  'dog person': 'Inumimi',
+  'inumimi': 'Inumimi',
+  'rabbit girl': 'Usagimimi',
+  'rabbitgirl': 'Usagimimi',
+  'rabbit person': 'Usagimimi',
+  'usagimimi': 'Usagimimi',
+  'bunnygirl': 'Usagimimi',
+  'tanuki': 'Tanuki',
+  'kappa': 'Kappa',
+  'tengu': 'Tengu',
+  'oni': 'Oni',
+  'slime': 'Slime',
+  'slime girl': 'Slime',
+  'slime person': 'Slime',
+
+  // Robot/Android variants
+  'android': 'Robot',
+  'cyborg': 'Robot',
+  'gynoid': 'Robot',
+  'mec': 'Robot',
+  'mecha': 'Robot',
+  'machine': 'Robot',
+  'automaton': 'Robot',
+  'ai': 'Robot',
+
+  // Elf variants
+  'half-elf': 'Elf',
+  'half elf': 'Elf',
+  'dark elf': 'Elf',
+  'darkelf': 'Elf',
+  'drow': 'Elf',
+  'high elf': 'Elf',
+  'highelf': 'Elf',
+  'wood elf': 'Elf',
+  'woodelf': 'Elf',
+  'night elf': 'Elf',
+  'nightelf': 'Elf',
+  'santa elf': 'Elf',
+
+  // Demon/Vampire variants
+  'succubus': 'Demon',
+  'incubus': 'Demon',
+  'devil': 'Demon',
+  'archdemon': 'Demon',
+  'arch demon': 'Demon',
+  'imp': 'Demon',
+  'hellspawn': 'Demon',
+  'demon girl': 'Demon',
+  'demongirl': 'Demon',
+  'demon person': 'Demon',
+
+  'vampire': 'Vampire',
+  'vampiress': 'Vampire',
+  'dhampir': 'Vampire',
+  'nosferatu': 'Vampire',
+
+  // Dragon variants
+  'dragon girl': 'Dragon',
+  'dragonborn': 'Dragon',
+  'dragon person': 'Dragon',
+  'dracokin': 'Dragon',
+  'half-dragon': 'Dragon',
+  'wyrm': 'Dragon',
+  'drake': 'Dragon',
+
+  // Spirit/Ghost variants
+  'ghost': 'Spirit',
+  'phantom': 'Spirit',
+  'wraith': 'Spirit',
+  'specter': 'Spirit',
+  'poltergeist': 'Spirit',
+  'soul': 'Spirit',
+  'will-o-wisp': 'Spirit',
+  'spirit girl': 'Spirit',
+  'spirit person': 'Spirit',
+
+  // Angel variants
+  'angel': 'Angel',
+  'seraph': 'Angel',
+  'cherub': 'Angel',
+  'archangel': 'Angel',
+  'fallen angel': 'Demon',
+  'fallenangel': 'Demon',
+
+  // Human variants
+  'humanoid': 'Human',
+  'demihuman': 'Human',
+  'semi-human': 'Human',
+  'person': 'Human',
+  'mortal': 'Human',
+
+  // Animal/Beast variants
+  'werewolf': 'Werewolf',
+  'wolf man': 'Werewolf',
+  'wolfman': 'Werewolf',
+  'wolfgirl': 'Werewolf',
+  'lycan': 'Werewolf',
+  'lycanthrope': 'Werewolf',
+
+  'mermaid': 'Merfolk',
+  'merman': 'Merfolk',
+  'merperson': 'Merfolk',
+  'merfolk': 'Merfolk',
+  'fish person': 'Merfolk',
+
+  'centaur': 'Centaur',
+  'minotaur': 'Minotaur',
+  'satyr': 'Satyr',
+  'faun': 'Satyr',
+
+  'fairy': 'Fairy',
+  'faerie': 'Fairy',
+  'pixie': 'Fairy',
+  'sprite': 'Fairy',
+  'nymph': 'Fairy',
+
+  'gnome': 'Gnome',
+  'halfling': 'Halfling',
+  'hobbit': 'Halfling',
+  'dwarf': 'Dwarf',
+  'dwarven': 'Dwarf',
+
+  // Monster variants
+  'orc': 'Orc',
+  'goblin': 'Goblin',
+  'hobgoblin': 'Goblin',
+  'ogre': 'Ogre',
+  'troll': 'Troll',
+  'giant': 'Giant',
+  'cyclops': 'Giant',
+
+  // Aliens
+  'alien': 'Alien',
+  'extraterrestrial': 'Alien',
+  'martian': 'Alien',
+  'space alien': 'Alien',
+
+  // Other common variants
+  'harpy': 'Harpy',
+  'siren': 'Harpy',
+  'lamia': 'Lamia',
+  'naga': 'Lamia',
+  'arachne': 'Arachne',
+  'spider girl': 'Arachne',
+  'spidergirl': 'Arachne',
+
+  'kobold': 'Kobold',
+  'lizard person': 'Reptilian',
+  'lizardfolk': 'Reptilian',
+  'reptilian': 'Reptilian',
+
+  // Compound girl variants (foxgirl, wolfgirl already handled above)
+  'foxgirl': 'Kitsune',
+
+  // Furry/Anthro variants
+  'anthro': 'Unknown',
+  'anthropomorphic': 'Unknown',
+  'furry': 'Unknown',
+  'feral': 'Unknown',
+  'kemono': 'Unknown',
+};
 
 /**
  * Result of a batch correction operation
@@ -279,11 +457,14 @@ class DataCompletenessCorrectionService {
   /**
    * Identify species from LLM response using multiple fallback strategies
    *
-   * Fallback strategy:
-   * 1. Try exact match (case-insensitive)
-   * 2. Try partial match (species name contains LLM response or vice versa)
-   * 3. Try to identify species from character description/history
-   * 4. Use "Unknown" species as final fallback
+   * Enhanced fallback strategy with fuzzy matching and synonym resolution:
+   * 1. Check synonym mapping for common species variations
+   * 2. Try exact match (case-insensitive)
+   * 3. Try fuzzy search with Fuse.js (Levenshtein distance)
+   * 4. Try partial match (species name contains LLM response or vice versa)
+   * 5. Try word-based matching (any word matches a species)
+   * 6. Fallback to Human if humanoid terms present
+   * 7. Use "Unknown" species as final fallback
    *
    * @param speciesName - Species name from LLM
    * @param characterId - Character ID for logging
@@ -304,21 +485,48 @@ class DataCompletenessCorrectionService {
       return UNKNOWN_SPECIES_ID;
     }
 
-    const normalizedSpeciesName = speciesName.trim();
+    const normalizedSpeciesName = speciesName.trim().toLowerCase();
 
-    // Strategy 1: Try exact match (case-insensitive)
+    // Fetch all species once for multiple matching attempts
+    const allSpecies = await prisma.species.findMany({
+      select: { id: true, name: true },
+    });
+
+    // Strategy 1: Check synonym mapping first (highest priority)
+    logger.info({
+      characterId,
+      strategy: 'synonym_mapping',
+      speciesName: normalizedSpeciesName,
+    }, 'Attempting species identification - Strategy 1: Synonym mapping');
+
+    const canonicalName = SPECIES_SYNONYMS[normalizedSpeciesName];
+    if (canonicalName) {
+      const species = allSpecies.find(
+        s => s.name.toLowerCase() === canonicalName.toLowerCase()
+      );
+      if (species) {
+        logger.info({
+          characterId,
+          strategy: 'synonym_mapping',
+          speciesName: normalizedSpeciesName,
+          canonicalName,
+          matchedSpeciesId: species.id,
+          matchedSpeciesName: species.name,
+        }, 'Species found via synonym mapping');
+        return species.id;
+      }
+    }
+
+    // Strategy 2: Try exact match (case-insensitive)
     logger.info({
       characterId,
       strategy: 'exact_match',
       speciesName: normalizedSpeciesName,
-    }, 'Attempting species identification - Strategy 1: Exact match');
+    }, 'Attempting species identification - Strategy 2: Exact match');
 
-    let species = await prisma.species.findFirst({
-      where: {
-        name: { equals: normalizedSpeciesName, mode: 'insensitive' },
-      },
-      select: { id: true, name: true },
-    });
+    let species = allSpecies.find(
+      s => s.name.toLowerCase() === normalizedSpeciesName
+    );
 
     if (species) {
       logger.info({
@@ -331,68 +539,74 @@ class DataCompletenessCorrectionService {
       return species.id;
     }
 
-    // Strategy 2: Try partial match (contains)
+    // Strategy 3: Try fuzzy search with Fuse.js
+    logger.info({
+      characterId,
+      strategy: 'fuzzy_search',
+      speciesName: normalizedSpeciesName,
+    }, 'Attempting species identification - Strategy 3: Fuzzy search');
+
+    const fuse = new Fuse(allSpecies, {
+      keys: ['name'],
+      threshold: 0.4, // Allow 40% difference (0.0 = perfect, 1.0 = match anything)
+      includeScore: true,
+      ignoreLocation: true, // Better for multi-word species names
+    });
+
+    const fuzzyResults = fuse.search(speciesName);
+    if (fuzzyResults.length > 0 && fuzzyResults[0].score && fuzzyResults[0].score < 0.3) {
+      species = fuzzyResults[0].item;
+      logger.info({
+        characterId,
+        strategy: 'fuzzy_search',
+        speciesName: normalizedSpeciesName,
+        matchedSpeciesId: species.id,
+        matchedSpeciesName: species.name,
+        score: fuzzyResults[0].score,
+      }, 'Species found via fuzzy search');
+      return species.id;
+    }
+
+    // Strategy 4: Try partial match (contains)
     logger.info({
       characterId,
       strategy: 'partial_match',
       speciesName: normalizedSpeciesName,
-    }, 'Species identification - Strategy 2: Partial match');
+    }, 'Attempting species identification - Strategy 4: Partial match');
 
     // Try: LLM response contains species name (e.g., "Dark Elf" contains "Elf")
-    species = await prisma.species.findFirst({
-      where: {
-        name: { contains: normalizedSpeciesName, mode: 'insensitive' },
-      },
-      select: { id: true, name: true },
-    });
+    species = allSpecies.find(s =>
+      normalizedSpeciesName.includes(s.name.toLowerCase()) ||
+      s.name.toLowerCase().includes(normalizedSpeciesName)
+    );
 
     if (species) {
       logger.info({
         characterId,
-        strategy: 'partial_match_llm_contains_species',
+        strategy: 'partial_match',
         speciesName: normalizedSpeciesName,
         matchedSpeciesId: species.id,
         matchedSpeciesName: species.name,
-      }, 'Species found via partial match (LLM response contains species name)');
+      }, 'Species found via partial match');
       return species.id;
     }
 
-    // Try: Species name contains LLM response (e.g., "Wood" matches "Wood Elf")
-    species = await prisma.species.findFirst({
-      where: {
-        name: { mode: 'insensitive', contains: normalizedSpeciesName },
-      },
-      select: { id: true, name: true },
-    });
-
-    if (species) {
-      logger.info({
-        characterId,
-        strategy: 'partial_match_species_contains_llm',
-        speciesName: normalizedSpeciesName,
-        matchedSpeciesId: species.id,
-        matchedSpeciesName: species.name,
-      }, 'Species found via partial match (Species name contains LLM response)');
-      return species.id;
-    }
-
-    // Strategy 3: Try word-based matching (check if any word in LLM response matches a species)
+    // Strategy 5: Try word-based matching (check if any word in LLM response matches a species)
     logger.info({
       characterId,
       strategy: 'word_match',
       speciesName: normalizedSpeciesName,
-    }, 'Species identification - Strategy 3: Word-based match');
+    }, 'Attempting species identification - Strategy 5: Word-based match');
 
     const words = normalizedSpeciesName.split(/\s+/);
     for (const word of words) {
       if (word.length < 3) continue; // Skip short words
 
-      species = await prisma.species.findFirst({
-        where: {
-          name: { equals: word, mode: 'insensitive' },
-        },
-        select: { id: true, name: true },
-      });
+      species = allSpecies.find(s =>
+        s.name.toLowerCase() === word ||
+        s.name.toLowerCase().includes(word) ||
+        word.includes(s.name.toLowerCase())
+      );
 
       if (species) {
         logger.info({
@@ -407,7 +621,29 @@ class DataCompletenessCorrectionService {
       }
     }
 
-    // Strategy 4: Fallback to "Unknown" species
+    // Strategy 6: Fallback to Human if humanoid terms present
+    logger.info({
+      characterId,
+      strategy: 'humanoid_fallback',
+      speciesName: normalizedSpeciesName,
+    }, 'Attempting species identification - Strategy 6: Humanoid fallback');
+
+    const humanoidTerms = ['girl', 'boy', 'woman', 'man', 'person', 'human', 'humanoid'];
+    if (humanoidTerms.some(term => normalizedSpeciesName.includes(term))) {
+      species = allSpecies.find(s => s.name.toLowerCase() === 'human');
+      if (species) {
+        logger.info({
+          characterId,
+          strategy: 'humanoid_fallback',
+          speciesName: normalizedSpeciesName,
+          matchedSpeciesId: species.id,
+          matchedSpeciesName: species.name,
+        }, 'Species found via humanoid fallback (Human)');
+        return species.id;
+      }
+    }
+
+    // Strategy 7: Final fallback to "Unknown" species
     logger.warn({
       characterId,
       strategy: 'fallback_to_unknown',

@@ -8,6 +8,7 @@
 import type { Request, Response } from 'express';
 import type { Server } from 'socket.io';
 import { logger } from '../config/logger';
+import { prisma } from '../config/database';
 import { analyzeCharacterImage, type CharacterImageAnalysisResult } from '../agents/characterImageAnalysisAgent';
 import { callLLM } from '../services/llm';
 import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
@@ -566,6 +567,13 @@ export async function compileCharacterDataWithLLM(
       ? await buildNameDiversityContext(imageAnalysis)
       : '';
 
+    // Fetch valid species from database for LLM prompt
+    const validSpecies = await prisma.species.findMany({
+      select: { name: true },
+      orderBy: { name: 'asc' },
+    });
+    const speciesNames = validSpecies.map(s => s.name).join(', ');
+
     const compilationPrompt = [
       'You are a creative character profile generator. Create a complete, engaging character profile.',
       '',
@@ -587,6 +595,15 @@ export async function compileCharacterDataWithLLM(
       }, null, 2) : '(No text analysis data)',
       '',
       nameDiversityContext, // Add name diversity context if available
+      `=== VALID SPECIES LIST ===`,
+      `IMPORTANT: For the "species" field, you MUST use one of these exact values:`,
+      speciesNames,
+      ``,
+      `If the character doesn't match any species exactly, choose the closest match.`,
+      `For human-like characters, use "Human".`,
+      `For animal-based characters, use the most appropriate animal species.`,
+      `For completely unknown/unclear species, use "Unknown".`,
+      ``,
       `=== TASK ===`,
       hasImage
         ? 'Create a COMPLETE character profile with ALL fields filled, incorporating the visual details from the image analysis.'
@@ -599,7 +616,7 @@ export async function compileCharacterDataWithLLM(
       `  "lastName": "string - MUST be a surname, NEVER null or empty",`,
       `  "age": number - MUST be a number between 18-100, not null",`,
       `  "gender": "string - MUST be: MALE, FEMALE, NON_BINARY, OTHER, or UNKNOWN (uppercase)",`,
-      `  "species": "string - Species name in English (human, elf, robot, etc.)",`,
+      `  "species": "string - MUST be one of the valid species listed above",`,
       `  "physicalCharacteristics": "string - ONE paragraph describing appearance${hasImage ? ', based on image analysis' : ', BE CREATIVE - expand from user description with specific details like hair color, eye color, height, build, clothing style'}",`,
       `  "personality": "string - 2-3 sentences describing personality, NEVER generic phrases",`,
       `  "history": "string - 1-2 paragraphs of backstory, NEVER generic phrases",`,
