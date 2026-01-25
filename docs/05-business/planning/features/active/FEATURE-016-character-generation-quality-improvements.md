@@ -750,11 +750,88 @@ model CorrectionJobLog {
 2. Add age rating restrictions
 3. Integrate into character creation
 
-### Phase 6: Reprocessing Improvements
-1. Expand reprocessing criteria
-2. Add random selection
-3. Implement 7-day cooldown
-4. Add correction job logging
+### Phase 6: Reprocessing Improvements ✅ COMPLETED
+1. ~~Expand reprocessing criteria~~ ✅ DONE (2026-01-25)
+2. ~~Add random selection~~ ✅ DONE (2026-01-25)
+3. ~~Implement 7-day cooldown~~ ✅ DONE (2026-01-25)
+4. ~~Add correction job logging~~ ✅ DONE (2026-01-25)
+
+**Implementation**: Modified `backend/src/services/correction/dataCompletenessCorrectionService.ts` and `backend/prisma/schema.prisma`
+**Commit**: 3d5a49e - "feat(services): improve reprocessing logic with random selection and cooldown"
+
+**Changes Made**:
+
+1. **Expanded Reprocessing Criteria**:
+   - speciesId IS NULL
+   - firstName = 'Character' (LLM fallback)
+   - gender = 'UNKNOWN' (for humanoid species)
+   - theme = 'DARK_FANTASY' AND createdAt >= 2026-01-20
+   - contentTags = '{}' AND ageRating != 'L'
+
+2. **Random Selection**:
+   - Implemented Fisher-Yates shuffle algorithm (`shuffleArray()`)
+   - Take limit * 2 records and shuffle, then return limit
+   - No more oldest-first bias
+
+3. **7-Day Cooldown**:
+   - Check CorrectionJobLog for recent corrections
+   - Skip characters corrected in last 7 days
+   - Uses `correctionJobLogs` relation in query
+
+4. **Enhanced Correction Job Logging**:
+   - Added `fieldsCorrected: String[]` to CorrectionJobLog model
+   - Added `details: Json` for before/after values and metadata
+   - Added relation between Character and CorrectionJobLog
+   - Tracks which fields were corrected in each run
+
+5. **New Methods**:
+   - `correctCharacter()`: Comprehensive correction of all incomplete fields
+   - `resolveSpeciesId()`: Resolve species ID with fuzzy matching
+   - `inferGenderFromDescription()`: Infer gender for humanoid characters
+   - `inferThemeFromCharacter()`: Infer theme from character data
+   - `inferContentTagsFromText()`: Infer content tags from text
+   - `shuffleArray()`: Fisher-Yates shuffle algorithm
+
+**Database Schema Changes**:
+
+```prisma
+model CorrectionJobLog {
+  // ... existing fields ...
+
+  // Individual correction tracking (for per-character corrections)
+  characterId     String?  // Character ID (for individual corrections)
+  fieldsCorrected String[] // Array of field names corrected (e.g., ["speciesId", "gender", "theme"])
+  details         Json?    // Additional correction metadata (before/after values, etc.)
+
+  // Relation to Character (optional, for individual corrections)
+  character Character? @relation("CharacterCorrections", fields: [characterId], references: [id], onDelete: SetNull)
+
+  @@index([characterId])
+}
+
+model Character {
+  // ... existing fields ...
+
+  // Correction tracking
+  correctionJobLogs CorrectionJobLog[] @relation("CharacterCorrections")
+}
+```
+
+**Quality Checks**:
+- Lint: PASSED (zero errors)
+- Build: PASSED (TypeScript compilation successful)
+- Docker Backend: HEALTHY
+- Database Schema: Updated with `prisma db push`
+
+**Impact**:
+- Characters are now selected randomly for reprocessing (no bias toward oldest)
+- Each character has a 7-day cooldown between corrections
+- All incomplete fields are corrected in a single pass
+- Correction logs track exactly which fields were modified
+- Better species resolution with fuzzy matching and synonym mapping
+- Improved gender inference for humanoid characters
+- Theme re-evaluation for DARK_FANTASY characters
+- Content tags inference for non-L rated characters
 
 ---
 
