@@ -433,6 +433,75 @@ function mapGenderToEnum(gender?: string): CharacterGender {
 }
 
 /**
+ * Finalize gender for humanoid characters with intelligent inference
+ *
+ * Rules:
+ * - For humanoid species: If gender is UNKNOWN/ambiguous, infer from context
+ * - Check pronouns in description (she/her → FEMALE, he/his → MALE)
+ * - Default humanoid characters to FEMALE (most common in anime)
+ * - For non-humanoids: Return the detected gender as-is (may be UNKNOWN)
+ */
+function finalizeGender(
+  detectedGender: string | undefined,
+  species: string | undefined,
+  physicalDescription: string | undefined
+): CharacterGender {
+  const mappedGender = mapGenderToEnum(detectedGender);
+
+  // List of humanoid species that should have a determinable gender
+  const humanoidSpecies = [
+    'human',
+    'elf',
+    'demon',
+    'angel',
+    'vampire',
+    'yokai',
+    'kitsune',
+    'nekomimi',
+    'inumimi',
+    'usagimimi',
+    'dragon',
+    'fairy',
+    'succubus',
+    'incubus',
+  ];
+
+  // Check if species is humanoid
+  const isHumanoid = species && humanoidSpecies.some(s =>
+    species.toLowerCase().includes(s)
+  );
+
+  // If gender is UNKNOWN and character is humanoid, try to infer
+  if (mappedGender === CharacterGender.UNKNOWN && isHumanoid) {
+    const desc = (physicalDescription || '').toLowerCase();
+
+    // Infer from pronouns in description
+    if (desc.includes(' she ') || desc.includes(' her ') || desc.includes(' hers ') ||
+        desc.includes(' herself ') || desc.includes(', she') || desc.includes(', her')) {
+      return CharacterGender.FEMALE;
+    }
+    if (desc.includes(' he ') || desc.includes(' his ') || desc.includes(' him ') ||
+        desc.includes(' himself ') || desc.includes(', he') || desc.includes(', his')) {
+      return CharacterGender.MALE;
+    }
+
+    // Infer from gendered keywords
+    if (desc.includes(' female') || desc.includes(' woman') || desc.includes(' girl')) {
+      return CharacterGender.FEMALE;
+    }
+    if (desc.includes(' male') || desc.includes(' man') || desc.includes(' boy')) {
+      return CharacterGender.MALE;
+    }
+
+    // Default humanoid characters to FEMALE (most common in anime)
+    return CharacterGender.FEMALE;
+  }
+
+  // For non-humanoids or when gender is already determined, return as-is
+  return mappedGender;
+}
+
+/**
  * Build name diversity context for LLM prompt
  * This includes ethnicity guidance and name exclusion lists
  */
@@ -713,6 +782,20 @@ export async function compileCharacterDataWithLLM(
         compiledData.style = (styleMap[visualStyle.artStyle] || 'ANIME') as any;
       }
 
+      // Finalize gender for humanoid characters with intelligent inference
+      const finalizedGender = finalizeGender(
+        compiledData.gender,
+        compiledData.species,
+        compiledData.physicalCharacteristics
+      );
+      compiledData.gender = finalizedGender;
+
+      logger.info({
+        originalGender: compiledData.gender,
+        finalizedGender,
+        species: compiledData.species,
+      }, 'gender_finalized_for_humanoid_characters');
+
       return compiledData;
     }
 
@@ -924,6 +1007,20 @@ async function simpleMergeAnalysisResults(
     };
     merged.style = styleMap[visualStyle.artStyle] || VisualStyle.ANIME;
   }
+
+  // Finalize gender for humanoid characters
+  const finalizedGender = finalizeGender(
+    merged.gender,
+    merged.species,
+    merged.physicalCharacteristics
+  );
+  merged.gender = finalizedGender;
+
+  logger.info({
+    originalGender: merged.gender,
+    finalizedGender,
+    species: merged.species,
+  }, 'gender_finalized_in_simple_merge');
 
   return merged;
 }

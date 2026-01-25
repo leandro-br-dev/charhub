@@ -1139,6 +1139,127 @@ export async function isCharacterFavorited(
 }
 
 /**
+ * Infer content tags from generated text (personality, history, physicalCharacteristics)
+ * This function analyzes text content to extract thematic content tags
+ * Tags are only added if they respect age rating restrictions
+ *
+ * @param personality - Character personality text
+ * @param history - Character history/background text
+ * @param physicalCharacteristics - Physical description text
+ * @param ageRating - Character age rating
+ * @returns Array of ContentTag enum values
+ *
+ * Phase 5 of FEATURE-016: Content Tags Inference
+ */
+export async function inferContentTagsFromText(
+  personality: string | null | undefined,
+  history: string | null | undefined,
+  physicalCharacteristics: string | null | undefined,
+  ageRating: AgeRating
+): Promise<ContentTag[]> {
+  // Don't add tags for L-rated content (all ages content should have no warnings)
+  if (ageRating === 'L') {
+    return [];
+  }
+
+  // Combine all text fields for analysis
+  const combinedText = [
+    personality || '',
+    history || '',
+    physicalCharacteristics || ''
+  ].join(' ').toLowerCase();
+
+  const inferredTags: ContentTag[] = [];
+
+  // Define tag patterns with their corresponding ContentTag enum values
+  // Maps conceptual themes to actual database ContentTag enum values
+  const tagPatterns: Array<{
+    tag: ContentTag;
+    patterns: string[];
+    minRating: AgeRating;
+  }> = [
+    {
+      tag: 'VIOLENCE',
+      patterns: ['fight', 'battle', 'war', 'combat', 'blood', 'weapon', 'sword', 'warrior', 'attack', 'violent'],
+      minRating: 'TWELVE',
+    },
+    {
+      tag: 'HORROR',
+      patterns: ['terror', 'nightmare', 'creepy', 'horror', 'fear', 'haunted', 'scary', 'frightening', 'dark'],
+      minRating: 'FOURTEEN',
+    },
+    {
+      tag: 'PSYCHOLOGICAL',
+      patterns: ['trauma', 'suffering', 'pain', 'mental', 'psychological', 'depression', 'anxiety', 'stress'],
+      minRating: 'FOURTEEN',
+    },
+    {
+      tag: 'LANGUAGE',
+      patterns: ['profane', 'curse', 'swear', 'vulgar', 'explicit'],
+      minRating: 'SIXTEEN',
+    },
+    {
+      tag: 'ALCOHOL',
+      patterns: ['alcohol', 'drunk', 'drinking', 'beer', 'wine', 'liquor', 'bar', 'pub'],
+      minRating: 'SIXTEEN',
+    },
+  ];
+
+  // Check each tag pattern
+  for (const { tag, patterns, minRating } of tagPatterns) {
+    // Check if any pattern matches in the combined text
+    const hasMatch = patterns.some(pattern => combinedText.includes(pattern));
+
+    if (hasMatch) {
+      // Verify tag is allowed for this age rating
+      if (isTagAllowedForRating(ageRating, minRating)) {
+        inferredTags.push(tag);
+      }
+    }
+  }
+
+  logger.debug(
+    { ageRating, inferredTags, textLength: combinedText.length },
+    'Content tags inferred from text'
+  );
+
+  return inferredTags;
+}
+
+/**
+ * Check if a content tag is allowed for a given age rating
+ * Uses a minimum rating threshold system where tags are allowed
+ * if the character's age rating meets or exceeds the minimum requirement
+ *
+ * Rating order (most permissive to least):
+ * L < TEN < TWELVE < FOURTEEN < SIXTEEN < EIGHTEEN
+ *
+ * @param characterRating - The character's age rating
+ * @param minimumRating - The minimum required rating for this tag
+ * @returns true if tag is allowed, false otherwise
+ */
+function isTagAllowedForRating(
+  characterRating: AgeRating,
+  minimumRating: AgeRating
+): boolean {
+  // Define rating hierarchy (higher number = more mature content allowed)
+  const ratingLevel: Record<AgeRating, number> = {
+    'L': 0,
+    'TEN': 1,
+    'TWELVE': 2,
+    'FOURTEEN': 3,
+    'SIXTEEN': 4,
+    'EIGHTEEN': 5,
+  };
+
+  // Tag is allowed if character rating meets or exceeds minimum requirement
+  const characterLevel = ratingLevel[characterRating];
+  const minimumLevel = ratingLevel[minimumRating];
+
+  return characterLevel >= minimumLevel;
+}
+
+/**
  * Get popular characters sorted by conversation count
  * Characters with more conversations appear first
  */
