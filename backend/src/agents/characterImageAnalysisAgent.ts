@@ -14,6 +14,7 @@ export type CharacterImageAnalysisResult = {
     build?: 'slim' | 'average' | 'athletic' | 'muscular' | 'heavyset';
     age?: 'child' | 'teenager' | 'young adult' | 'adult' | 'middle-aged' | 'elderly';
     gender?: 'male' | 'female' | 'non-binary' | 'ambiguous';
+    genderConfidence?: 'high' | 'medium' | 'low'; // Confidence in gender detection
     species?: string; // e.g., "human", "elf", "demon", "android", etc.
     distinctiveFeatures?: string[]; // e.g., ["scars on face", "pointed ears", "wings"]
   };
@@ -72,6 +73,7 @@ function buildSystemPrompt(): string {
     '    "build": "slim|average|athletic|muscular|heavyset (optional)",',
     '    "age": "child|teenager|young adult|adult|middle-aged|elderly (optional)",',
     '    "gender": "male|female|non-binary|ambiguous (optional)",',
+    '    "genderConfidence": "high|medium|low (optional, confidence in gender detection)",',
     '    "species": "string (e.g., human, elf, demon, android) (optional)",',
     '    "distinctiveFeatures": ["string array of notable features"] (optional)',
     '  },',
@@ -109,6 +111,28 @@ function buildSystemPrompt(): string {
     '- For arrays, limit to 3-5 most prominent items',
     '- Use en-US for all text',
     '- Return ONLY valid JSON, no markdown, no commentary',
+    '',
+    'GENDER CLASSIFICATION GUIDELINES:',
+    '- For humanoid characters (humans, elves, demons, angels, vampires, yokai, kitsune, etc.):',
+    '  - You MUST choose one of: "male", "female", or "non-binary"',
+    '  - NEVER use "ambiguous" for humanoid characters',
+    '  - If uncertain, make your BEST GUESS based on visual cues',
+    '- For non-humanoid characters (animals, creatures, monsters, robots, slimes, abstract beings):',
+    '  - Use "ambiguous" if gender cannot be determined',
+    '  - For creatures with clear sexual dimorphism, use "male" or "female"',
+    '',
+    'When determining gender for humanoids, consider:',
+    '1. Facial structure (jawline, cheekbones, eye shape)',
+    '2. Body proportions (shoulder width, hip width, height)',
+    '3. Clothing and styling choices',
+    '4. Breast presence or absence (for visible anatomy)',
+    '5. Overall presentation and expression',
+    '',
+    'If gender is not immediately obvious but the character is clearly humanoid:',
+    '- Look for subtle cues in facial features',
+    '- Consider anime/manga art style conventions',
+    '- Make a confident determination rather than using "ambiguous"',
+    '- When in doubt for humanoid characters, lean toward "female" (most common in anime art)',
     '',
     'THEME CLASSIFICATION GUIDELINES:',
     '- FANTASY: Bright colors, magical elements, medieval/high fantasy setting, elves, wizards, nature spirits, enchanted forests',
