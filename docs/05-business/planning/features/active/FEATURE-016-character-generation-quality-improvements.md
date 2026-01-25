@@ -1,11 +1,12 @@
 # FEATURE-016: Character Auto-Generation Quality Improvements
 
-**Status**: Backlog
+**Status**: In Review
 **Priority**: High
-**Assigned To**: TBD
+**Assigned To**: Agent Coder
 **Created**: 2026-01-25
 **Last Updated**: 2026-01-25
 **Epic**: Automated Character Population System
+**Pull Request**: [PR #152](https://github.com/leandro-br-dev/charhub/pull/152)
 
 ---
 
