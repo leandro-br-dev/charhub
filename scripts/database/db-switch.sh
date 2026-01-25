@@ -6,7 +6,16 @@ set -euo pipefail
 # Usage: ./scripts/db-switch.sh <mode>
 # Modes: clean, populated
 #
-# CRITICAL: This script NOW preserves data via backup/restore (Issue #113 fix)
+# CHANGES:
+# - v2: Uses docker compose exec (works in ANY multi-agent environment)
+# - v2: Loads credentials from .env file
+# - v1: Preserves data via backup/restore (Issue #113 fix)
+#
+# IMPORTANT: This script now works correctly in ALL environments:
+# - charhub-agent-01 (port 5401)
+# - charhub-agent-02 (port 5402)
+# - charhub-agent-03 (port 5403)
+# No more hardcoded port issues!
 
 # Colors for output
 RED='\033[0;31m'
@@ -14,6 +23,22 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# ============================================================================
+# Load Environment Variables
+# ============================================================================
+
+# Load from .env file if exists
+if [ -f .env ]; then
+  set -a  # Automatically export all variables
+  source .env
+  set +a
+fi
+
+# Fallback defaults if .env not loaded or variables missing
+POSTGRES_USER="${POSTGRES_USER:-charhub}"
+POSTGRES_PASSWORD="${POSTGRES_PASSWORD:-charhub_dev_password}"
+POSTGRES_DB="${POSTGRES_DB:-charhub_db}"
 
 # ============================================================================
 # Configuration
@@ -45,6 +70,10 @@ if [ -z "$MODE" ]; then
   echo "  - First time 'clean': Creates backup, then switches to empty DB"
   echo "  - 'populated': Restores from backup"
   echo "  - You can switch back and forth without data loss!"
+  echo ""
+  echo "Environment:"
+  echo "  - Loads POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB from .env"
+  echo "  - Works in any multi-agent environment (agent-01, agent-02, agent-03)"
   exit 1
 fi
 
@@ -84,7 +113,7 @@ create_backup() {
   echo -e "${BLUE}💾 Creating backup of current database...${NC}"
 
   # Check if database has data worth backing up
-  USER_COUNT=$(PGPASSWORD=charhub_dev_password psql -h localhost -p 5401 -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"User\";" 2>/dev/null | tr -d ' ' || echo "0")
+  USER_COUNT=$(docker compose exec -T postgres psql -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -t -c "SELECT COUNT(*) FROM \"User\";" 2>/dev/null | tr -d ' ' || echo "0")
 
   if [ "$USER_COUNT" -eq 0 ]; then
     echo -e "${YELLOW}⚠️  Database is empty, no backup needed${NC}"
@@ -94,12 +123,10 @@ create_backup() {
   echo "  Users in database: ${USER_COUNT}"
   echo "  Backup location: ${BACKUP_FILE}"
 
-  # Create backup using pg_dump
-  PGPASSWORD=charhub_dev_password pg_dump \
-    -h localhost \
-    -p 5401 \
-    -U charhub \
-    -d charhub_db \
+  # Create backup using pg_dump via docker compose exec
+  docker compose exec -T postgres pg_dump \
+    -U "${POSTGRES_USER}" \
+    -d "${POSTGRES_DB}" \
     --clean \
     --if-exists \
     --no-owner \
@@ -128,17 +155,15 @@ restore_backup() {
   BACKUP_SIZE=$(du -h "${BACKUP_FILE}" | cut -f1)
   echo "  Backup size: ${BACKUP_SIZE}"
 
-  # Restore using psql
-  PGPASSWORD=charhub_dev_password psql \
-    -h localhost \
-    -p 5401 \
-    -U charhub \
-    -d charhub_db \
+  # Restore using psql via docker compose exec
+  docker compose exec -T postgres psql \
+    -U "${POSTGRES_USER}" \
+    -d "${POSTGRES_DB}" \
     < "${BACKUP_FILE}" 2>&1 | grep -v "^DROP\|^CREATE\|^ALTER\|^COPY" | tail -20
 
   # Verify restoration
-  RESTORED_USERS=$(PGPASSWORD=charhub_dev_password psql -h localhost -p 5401 -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"User\";" | tr -d ' ')
-  RESTORED_CHARS=$(PGPASSWORD=charhub_dev_password psql -h localhost -p 5401 -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"Character\";" | tr -d ' ')
+  RESTORED_USERS=$(docker compose exec -T postgres psql -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -t -c "SELECT COUNT(*) FROM \"User\";" | tr -d ' ')
+  RESTORED_CHARS=$(docker compose exec -T postgres psql -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" -t -c "SELECT COUNT(*) FROM \"Character\";" | tr -d ' ')
 
   echo ""
   echo -e "${GREEN}✓ Restore completed${NC}"
