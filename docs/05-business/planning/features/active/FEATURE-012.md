@@ -1,6 +1,7 @@
 # FEATURE-012: Character Generation Text Improvement - Name Diversity & Ethnicity Classification
 
-**Status**: 📋 Backlog (Ready for Implementation)
+**Status**: ✅ Implemented
+**Pull Request**: [PR #148](https://github.com/leandro-br-dev/charhub/pull/148)
 **Version**: 1.0.0
 **Date Created**: 2026-01-21
 **Last Updated**: 2026-01-21
@@ -70,10 +71,10 @@ Improve automated character generation text quality by reducing name repetition 
 **So that** the AI can avoid repeating them in new generations
 
 **Acceptance Criteria**:
-- [ ] System captures top 30 first names and 30 last names used in the past 30 days
-- [ ] Query excludes system/hidden characters (only counts visible characters)
-- [ ] Frequency data is refreshed before each generation batch
-- [ ] Tracking is gender-aware (separate lists for male, female, non-binary)
+- [x] System captures top 30 first names and 30 last names used in the past 30 days
+- [x] Query excludes system/hidden characters (only counts visible characters)
+- [x] Frequency data is refreshed before each generation batch
+- [x] Tracking is gender-aware (separate lists for male, female, non-binary)
 
 ### US-2: Recent Character Exclusion
 **As** an automated generation system
@@ -81,10 +82,10 @@ Improve automated character generation text quality by reducing name repetition 
 **So that** names feel more diverse in recent generations
 
 **Acceptance Criteria**:
-- [ ] Query fetches last 10 characters with `userId = '00000000-0000-0000-0000-000000000001'` (bot)
-- [ ] Results filtered by the same gender as the character being generated
-- [ ] Names from these characters are added to the exclusion list
-- [ ] Exclusion list is passed to LLM prompt as "DO NOT USE" examples
+- [x] Query fetches last 10 characters with `userId = '00000000-0000-0000-0000-000000000001'` (bot)
+- [x] Results filtered by the same gender as the character being generated
+- [x] Names from these characters are added to the exclusion list
+- [x] Exclusion list is passed to LLM prompt as "DO NOT USE" examples
 
 ### US-3: Ethnicity Classification from Image
 **As** a character generation system
@@ -92,10 +93,10 @@ Improve automated character generation text quality by reducing name repetition 
 **So that** generated names match the character's visual appearance
 
 **Acceptance Criteria**:
-- [ ] Image analysis LLM prompt updated to return `ethnicity` field
-- [ ] Ethnicity categories: "Japanese", "East Asian", "Southeast Asian", "South Asian", "Middle Eastern", "African", "European", "Latin American", "Indigenous", "Fantasy/Non-Human"
-- [ ] Classification based on visual features (skin tone, facial features, hair, clothing)
-- [ ] Fallback to "Unknown" if ethnicity cannot be determined
+- [x] Image analysis LLM prompt updated to return `ethnicity` field
+- [x] Ethnicity categories: "Japanese", "East Asian", "Southeast Asian", "South Asian", "Middle Eastern", "African", "European", "Latin American", "Indigenous", "Fantasy/Non-Human"
+- [x] Classification based on visual features (skin tone, facial features, hair, clothing)
+- [x] Fallback to "Unknown" if ethnicity cannot be determined
 
 ### US-4: Ethnically-Aware Name Generation
 **As** a character generation system
@@ -505,19 +506,19 @@ However, for debugging/admin purposes, you may want to add:
 
 ### Core Functionality
 
-- [ ] **Name Frequency Tracking**: System queries top 30 first/last names from past 30 days
-- [ ] **Recent Character Exclusion**: System fetches last 10 bot-generated characters of same gender
-- [ ] **Ethnicity Classification**: Image analysis returns ethnicity with confidence level
-- [ ] **Name Generation**: LLM prompt includes exclusion lists and ethnicity guidelines
-- [ ] **Cultural Matching**: Generated names match classified ethnicity (when confidence > low)
+- [x] **Name Frequency Tracking**: System queries top 30 first/last names from past 30 days
+- [x] **Recent Character Exclusion**: System fetches last 10 bot-generated characters of same gender
+- [x] **Ethnicity Classification**: Image analysis returns ethnicity with confidence level
+- [x] **Name Generation**: LLM prompt includes exclusion lists and ethnicity guidelines
+- [x] **Cultural Matching**: Generated names match classified ethnicity (when confidence > low)
 
 ### Data Quality
 
-- [ ] Queries exclude system/hidden characters
-- [ ] Gender-aware frequency tracking (separate lists per gender)
-- [ ] Exclusion lists passed correctly to LLM
-- [ ] Ethnicity fallback to "Unknown" when classification fails
-- [ ] Species takes priority over ethnicity for fantasy races
+- [x] Queries exclude system/hidden characters
+- [x] Gender-aware frequency tracking (separate lists per gender)
+- [x] Exclusion lists passed correctly to LLM
+- [x] Ethnicity fallback to "Unknown" when classification fails
+- [x] Species takes priority over ethnicity for fantasy races
 
 ### Performance
 

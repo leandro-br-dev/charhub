@@ -19,7 +19,7 @@ import { QueueName } from '../queues/config';
 import { ImageGenerationType } from '../services/comfyui';
 import type { AvatarGenerationJobData, MultiStageDatasetGenerationJobData } from '../queues/jobs/imageGenerationJob';
 import { r2Service } from '../services/r2Service';
-import { AgeRating, VisualStyle, Visibility } from '../generated/prisma';
+import { AgeRating, VisualStyle, Visibility, CharacterGender } from '../generated/prisma';
 import type { ImageType } from '../generated/prisma';
 import { classifyImageViaLLM } from '../agents/imageClassificationAgent';
 import { parseJsonSafe } from '../utils/json';
@@ -30,6 +30,8 @@ import { randomUUID } from 'crypto';
 import { createTransaction } from '../services/creditService';
 import { CreditTransactionType } from '../generated/prisma';
 import type { User } from '../generated/prisma';
+import { nameFrequencyService } from '../services/nameFrequencyService';
+import { recentCharactersService } from '../services/recentCharactersService';
 
 // AI Generation Credit Costs
 const AI_GENERATION_COSTS = {
@@ -418,6 +420,109 @@ export async function generateStableDiffusionPrompt(
 }
 
 /**
+ * Helper function to map string gender to CharacterGender enum
+ */
+function mapGenderToEnum(gender?: string): CharacterGender {
+  if (!gender) return CharacterGender.UNKNOWN;
+  const normalized = gender.toLowerCase();
+  if (normalized === 'male') return CharacterGender.MALE;
+  if (normalized === 'female') return CharacterGender.FEMALE;
+  if (normalized === 'non-binary') return CharacterGender.NON_BINARY;
+  return CharacterGender.OTHER;
+}
+
+/**
+ * Build name diversity context for LLM prompt
+ * This includes ethnicity guidance and name exclusion lists
+ */
+export async function buildNameDiversityContext(
+  imageAnalysis: CharacterImageAnalysisResult | null
+): Promise<string> {
+  const gender = imageAnalysis?.physicalCharacteristics?.gender;
+  const prismaGender = mapGenderToEnum(gender);
+
+  try {
+    // Fetch name frequency data and recent characters in parallel
+    const [frequencyData, recentCharacters] = await Promise.all([
+      nameFrequencyService.getTopNames({ gender: prismaGender }),
+      recentCharactersService.getRecentCharacters(prismaGender),
+    ]);
+
+    const ethnicity = imageAnalysis?.ethnicity?.primary || 'Unknown';
+    const species = imageAnalysis?.physicalCharacteristics?.species || 'Human';
+    const confidence = imageAnalysis?.ethnicity?.confidence || 'low';
+
+    // Only use ethnicity if confidence is medium or high
+    const shouldUseEthnicity = confidence !== 'low';
+
+    // Build exclusion lists
+    const frequentFirstNames = frequencyData.topFirstNames.slice(0, 30).map(n => n.name);
+    const frequentLastNames = frequencyData.topLastNames.slice(0, 30).map(n => n.name);
+    const recentFirstNames = recentCharacters.firstNames;
+    const recentLastNames = recentCharacters.lastNames;
+
+    // Build ethnicity guidelines
+    const ethnicityGuidelines: Record<string, string> = {
+      'Japanese': 'Use Japanese names (e.g., Hiroshi, Tanaka, Sakura, Yamamoto)',
+      'East Asian': 'Use Chinese/Korean names (e.g., Wei, Kim, Min-jun, Chen, Park)',
+      'Southeast Asian': 'Use Thai/Vietnamese/Indonesian names (e.g., Nguyen, Somchai, Putri, Sombat)',
+      'South Asian': 'Use Indian/Pakistani names (e.g., Priya, Sharma, Arjun, Patel, Singh)',
+      'Middle Eastern': 'Use Arabic/Persian/Turkish names (e.g., Fatima, Ahmed, Omar, Hassan, Layla)',
+      'African': 'Use African names from various regions (e.g., Kwame, Amina, Okafor, Zola, Malik)',
+      'European': 'Use European names (e.g., Hans, Schmidt, Sofia, Dubois, Silva, Muller)',
+      'Latin American': 'Use Hispanic/Latino names (e.g., Carlos, Garcia, Maria, Rodriguez, Lopez)',
+      'Indigenous': 'Use indigenous/native names (e.g., Kachina, Tala, Sitting Bull, Winona)',
+      'Fantasy/Non-Human': 'Use fantasy names (e.g., Elarian, Thornweave, Zephyr, Moonwhisper)',
+      'Unknown': 'Use diverse international names from any culture',
+    };
+
+    const selectedEthnicity = shouldUseEthnicity ? ethnicity : 'Unknown';
+    const ethnicityGuideline = ethnicityGuidelines[selectedEthnicity] || ethnicityGuidelines['Unknown'];
+
+    // Build the context string
+    const contextParts = [
+      '',
+      '=== NAME GENERATION GUIDELINES ===',
+      `- Ethnicity: ${selectedEthnicity}`,
+      `- Species: ${species}`,
+      `- Gender: ${gender || 'Unknown'}`,
+      '',
+      'ETHNICITY-SPECIFIC NAME GUIDELINES:',
+      ethnicityGuideline,
+      '',
+      'OVERUSED NAMES TO AVOID (Top 30 from last 30 days):',
+      frequentFirstNames.length > 0
+        ? `First names: ${frequentFirstNames.join(', ')}`
+        : 'First names: (none)',
+      frequentLastNames.length > 0
+        ? `Last names: ${frequentLastNames.join(', ')}`
+        : 'Last names: (none)',
+      '',
+      'RECENT CHARACTER NAMES TO AVOID (Last 10 bot-generated):',
+      recentFirstNames.length > 0
+        ? `First names: ${recentFirstNames.join(', ')}`
+        : 'First names: (none)',
+      recentLastNames.length > 0
+        ? `Last names: ${recentLastNames.join(', ')}`
+        : 'Last names: (none)',
+      '',
+      'CRITICAL NAME GENERATION RULES:',
+      '1. DO NOT use any names from the "OVERUSED" list',
+      '2. DO NOT use any names from the "RECENT" list',
+      '3. Choose a name that matches the ethnicity/species guidelines above',
+      '4. For fantasy species (Elf, Dwarf, Alien), use fantasy-appropriate names regardless of ethnicity',
+      '5. Make the name UNIQUE and CREATIVE',
+      '',
+    ];
+
+    return contextParts.join('\n');
+  } catch (error) {
+    logger.warn({ error, gender }, 'Failed to build name diversity context, using empty context');
+    return '';
+  }
+}
+
+/**
  * Compile character data from user description and image analysis using LLM
  * This ensures all fields are coherent and in the user's preferred language
  */
@@ -456,6 +561,11 @@ export async function compileCharacterDataWithLLM(
   try {
     const hasImage = !!imageAnalysis;
 
+    // Build name diversity context (if image analysis is available)
+    const nameDiversityContext = hasImage
+      ? await buildNameDiversityContext(imageAnalysis)
+      : '';
+
     const compilationPrompt = [
       'You are a creative character profile generator. Create a complete, engaging character profile.',
       '',
@@ -476,6 +586,7 @@ export async function compileCharacterDataWithLLM(
         history: textData.history,
       }, null, 2) : '(No text analysis data)',
       '',
+      nameDiversityContext, // Add name diversity context if available
       `=== TASK ===`,
       hasImage
         ? 'Create a COMPLETE character profile with ALL fields filled, incorporating the visual details from the image analysis.'
@@ -512,11 +623,7 @@ export async function compileCharacterDataWithLLM(
       `- history: "Nascida em uma pequena cidade costeira, ela sempre sonhou em explorar o mundo. Aos 18 anos, mudou-se para a grande cidade em busca de novas oportunidades e aventuras. Agora trabalha como exploradora, documentando ruínas antigas e culturas esquecidas."`,
       `- history: "Órfão desde cedo, ele aprendeu a sobreviver nas ruas da capital. Suas habilidades de combate foram aperfeiçoadas ao longo de anos de lutas clandestinas. Hoje, ele usa seus talentos para proteger os que não podem se defender, embora seu passado ainda o persiga em pesadelos."`,
       ``,
-      `NAME GENERATION RULES:`,
-      `- Anime style: Japanese names (Sakura Yamamoto, Kenji Takahashi)`,
-      `- Fantasy: Fantasy names (Elara Moonwhisper, Theron Blackwood)`,
-      `- Modern Western: Western names (Emma Wilson, Jack Thompson)`,
-      `- NEVER mix cultural origins (Japanese firstName + Brazilian lastName)`,
+      `IMPORTANT: Follow the NAME GENERATION GUIDELINES above if provided. If no guidelines are present, use culturally appropriate names based on the character's appearance.`,
       ``,
       `Return ONLY valid JSON, no markdown, no commentary.`,
     ].join('\n');

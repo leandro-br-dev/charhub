@@ -34,6 +34,13 @@ export type VisualStyle =
   | 'PIXEL_ART'
   | 'THREE_D';
 
+export type Theme =
+  | 'DARK_FANTASY'
+  | 'FANTASY'
+  | 'FURRY'
+  | 'SCI_FI'
+  | 'GENERAL';
+
 export type StickerStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'FAILED';
 
 export type TagType = 'CHARACTER' | 'STORY';
@@ -110,6 +117,7 @@ export interface CharacterCore {
   gender?: string | null;
   species?: string | { id: string; name: string } | null;
   style?: VisualStyle | null;
+  theme?: Theme | null;
   reference?: string | null;
   avatar?: string | null;
   physicalCharacteristics?: string | null;
@@ -193,6 +201,7 @@ export interface CharacterPayload {
   gender?: string | null;
   species?: string | null;
   style?: VisualStyle | null;
+  theme?: Theme | null;
   reference?: string | null;
   avatar?: string | null;
   physicalCharacteristics?: string | null;
@@ -239,6 +248,7 @@ export const EMPTY_CHARACTER_FORM: CharacterFormValues = {
   gender: null,
   species: null,
   style: 'ANIME',
+  theme: 'DARK_FANTASY',
   reference: null,
   avatar: null,
   physicalCharacteristics: null,

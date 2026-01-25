@@ -17,16 +17,18 @@
  */
 
 import { comfyuiService } from '../comfyui/comfyuiService';
+import { REFERENCE_NEGATIVE_PROMPT } from '../comfyui/promptEngineering';
 import { r2Service } from '../r2Service';
 import { canEditCharacter } from '../../middleware/authorization';
 import { prisma } from '../../config/database';
 import type { ReferenceImage } from '../comfyui/types';
 import type { UserRole } from '../../types';
 import { logger } from '../../config/logger';
-import type { ContentType, VisualStyle } from '../../generated/prisma';
+import type { ContentType, VisualStyle, Theme } from '../../generated/prisma';
 import { ImageType } from '../../generated/prisma';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { convertToWebP } from '../../utils/imageUtils';
 
 // Load workflow JSON files using fs.readFileSync
 const multiRefFaceWorkflow = JSON.parse(
@@ -51,7 +53,8 @@ export interface MultiStageGenerationOptions {
   userId: string;
   userRole?: UserRole;
   visualStyle?: VisualStyle;
-  contentType?: ContentType;
+  contentType?: ContentType; // DEPRECATED: Use theme instead
+  theme?: Theme; // NEW: Style + Theme system
   onProgress?: (stage: number, total: number, message: string, completedImages?: Array<{ content: string; url: string }>) => void;
   viewsToGenerate?: ('face' | 'front' | 'side' | 'back')[]; // Optional: specific views to generate
 }
@@ -70,28 +73,28 @@ const REFERENCE_VIEWS: ReferenceView[] = [
     width: 768,
     height: 768,
     promptPrefix: 'portrait, headshot, face focus, detailed facial features,',
-    promptNegative: 'full body, multiple views, wide angle,',
+    promptNegative: 'full body, multiple views, wide angle, (body:1.2), (shoulders:1.1), (chest:1.1),',
   },
   {
     content: 'front',
     width: 768,
     height: 1152,
     promptPrefix: 'full body, standing, front view, looking at camera,',
-    promptNegative: 'cropped, headshot only, side view, back view,',
+    promptNegative: 'cropped, headshot only, side view, back view, (from behind:1.3), (back view:1.3),',
   },
   {
     content: 'side',
     width: 768,
     height: 1152,
     promptPrefix: 'full body, standing, side view, profile,',
-    promptNegative: 'front view, back view, looking at camera,',
+    promptNegative: 'front view, back view, looking at camera, (from front:1.2), (from behind:1.2), (multiple views:1.3),',
   },
   {
     content: 'back',
     width: 768,
     height: 1152,
     promptPrefix: 'full body, standing, back view, rear view,',
-    promptNegative: 'front view, face visible, looking at camera,',
+    promptNegative: 'front view, face visible, looking at camera, (face:1.3), (from front:1.3),',
   },
 ];
 
@@ -120,7 +123,7 @@ export class MultiStageCharacterGenerator {
    * New simplified flow with cumulative references in a single folder
    */
   async generateCharacterDataset(options: MultiStageGenerationOptions): Promise<void> {
-    const { characterId, prompt, userSamples = [], userId, userRole, visualStyle, contentType, onProgress, viewsToGenerate } = options;
+    const { characterId, prompt, userSamples = [], userId, userRole, visualStyle, contentType, theme, onProgress, viewsToGenerate } = options;
 
     // Filter views to generate if specified
     const viewsToProcess = viewsToGenerate && viewsToGenerate.length > 0
@@ -321,6 +324,9 @@ export class MultiStageCharacterGenerator {
             personality: fullCharacter.personality || undefined,
             defaultAttire: fullCharacter.mainAttire?.description || undefined,
             style: fullCharacter.style || undefined,
+            // FEATURE-014: Add visualStyle and theme for prompt generation
+            visualStyle: visualStyle || undefined,
+            theme: theme || contentType || undefined,
           },
           generation: {
             type: generationType,
@@ -332,6 +338,11 @@ export class MultiStageCharacterGenerator {
           } : undefined,
           hasReferenceImages: userSamples.length > 0 || i > 0, // Has references if samples exist or we have previous views
           referenceImageCount: userSamples.length + i,
+          // FEATURE-014: Add style and theme display names for LLM
+          overrides: {
+            styleName: visualStyle ? this.formatStyleName(visualStyle) : undefined,
+            themeName: theme || contentType ? this.formatThemeName(theme || contentType) : undefined,
+          },
         });
 
         // Use generated prompts for this specific view
@@ -351,19 +362,35 @@ export class MultiStageCharacterGenerator {
           referencePath: prepareResponse.referencePath,
           visualStyle,
           contentType,
+          theme,
         });
 
         // Upload the new reference to R2
         // Use timestamp in key to ensure unique files (avoid cache issues)
+        // First, compress the image to reduce file size (REFERENCE images can be 1MB+)
+        // Target max size of 200KB for reference images to balance quality and storage
+        const compressedImage = await convertToWebP(result.imageBytes, {
+          maxSize: 200, // 200KB target max size
+          lossless: false, // Use lossy compression for better size reduction
+        });
+
         const r2Key = `characters/${characterId}/references/${view.content}_${batchTimestamp}.webp`;
         const { publicUrl } = await r2Service.uploadObject({
           key: r2Key,
-          body: result.imageBytes,
+          body: compressedImage,
           contentType: 'image/webp',
           cacheControl: 'public, max-age=3600', // 1 hour cache instead of 1 year
         });
 
-        logger.info({ stage: stageNumber, view: view.content, r2Key, publicUrl }, 'Uploading reference image to R2');
+        logger.info({
+          stage: stageNumber,
+          view: view.content,
+          originalSize: result.imageBytes.length,
+          compressedSize: compressedImage.length,
+          compressionRatio: ((1 - compressedImage.length / result.imageBytes.length) * 100).toFixed(2) + '%',
+          r2Key,
+          publicUrl
+        }, 'Compressed and uploading reference image to R2');
 
         // Save to database with content field
         await prisma.characterImage.create({
@@ -374,7 +401,7 @@ export class MultiStageCharacterGenerator {
             key: r2Key,
             width: view.width,
             height: view.height,
-            sizeBytes: result.imageBytes.length,
+            sizeBytes: compressedImage.length, // Use compressed size
             contentType: 'image/webp',
             isActive: true,
             content: view.content, // Store the view in content field
@@ -412,13 +439,18 @@ export class MultiStageCharacterGenerator {
     referencePath: string;
     visualStyle?: 'ANIME' | 'REALISTIC' | 'SEMI_REALISTIC' | 'CARTOON' | 'MANGA' | 'MANHWA' | 'COMIC' | 'CHIBI' | 'PIXEL_ART' | 'THREE_D';
     contentType?: ContentType;
+    theme?: Theme;
   }): Promise<{ imageBytes: Buffer; filename: string }> {
-    const { view, prompt, loras, referencePath, visualStyle, contentType } = options;
+    const { view, prompt, loras, referencePath, visualStyle, contentType, theme } = options;
 
     // Adjust prompt for this view
+    // Use REFERENCE_NEGATIVE_PROMPT with facial artifact inhibitors (FEATURE-013)
+    // Combined with view-specific negative prompts
     const adjustedPrompt = {
       positive: `${view.promptPrefix} ${prompt.positive}`,
-      negative: `${prompt.negative}, ${view.promptNegative}`,
+      // REFERENCE_NEGATIVE_PROMPT includes facial artifact inhibitors (FEATURE-013)
+      // Combined with view-specific negatives for each reference view
+      negative: `${REFERENCE_NEGATIVE_PROMPT}, ${view.promptNegative}`,
       loras,
     };
 
@@ -461,12 +493,44 @@ export class MultiStageCharacterGenerator {
     // Apply visual style if provided (swaps checkpoint and applies style LoRAs)
     let finalWorkflow = workflowTemplate;
     if (visualStyle) {
-      finalWorkflow = await comfyuiService.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, contentType);
-      logger.info({ view: view.content, visualStyle, contentType }, 'Applied visual style to reference workflow');
+      // Prefer theme over contentType (new Style + Theme system)
+      finalWorkflow = await comfyuiService.applyVisualStyleToWorkflow(workflowTemplate, visualStyle, contentType, theme);
+      logger.info({ view: view.content, visualStyle, contentType, theme }, 'Applied visual style to reference workflow');
     }
 
     // Execute workflow
     return comfyuiService.executeWorkflow(finalWorkflow);
+  }
+
+  /**
+   * Format style enum to display name
+   */
+  private formatStyleName(style?: string): string {
+    if (!style) return 'Unknown';
+    const styleMap: Record<string, string> = {
+      'ANIME': 'Anime',
+      'REALISTIC': 'Realistic',
+      'SEMI_REALISTIC': 'Semi-Realistic',
+      'CARTOON': 'Cartoon',
+      'CHIBI': 'Chibi',
+      'PIXEL_ART': 'Pixel Art',
+    };
+    return styleMap[style] || style;
+  }
+
+  /**
+   * Format theme enum to display name
+   */
+  private formatThemeName(theme?: string): string {
+    if (!theme) return 'Unknown';
+    const themeMap: Record<string, string> = {
+      'DARK_FANTASY': 'Dark Fantasy',
+      'FANTASY': 'Fantasy',
+      'FURRY': 'Furry',
+      'SCI_FI': 'Sci-Fi',
+      'GENERAL': 'General',
+    };
+    return themeMap[theme] || theme;
   }
 }
 
