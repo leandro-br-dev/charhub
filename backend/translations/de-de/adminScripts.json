@@ -28,11 +28,18 @@
         "success": "Datenkorrektur-Skript erfolgreich gestartet",
         "error": "Fehler beim Starten des Datenkorrektur-Skripts"
       },
+      "generation": {
+        "name": "Charakter-Generierung",
+        "description": "Generiert Charaktere automatisch aus ausgewählten Bildern",
+        "success": "Charakter-Generierung erfolgreich gestartet",
+        "error": "Fehler beim Starten der Charakter-Generierung"
+      },
       "lastRun": "Letzter Lauf",
       "run": "Skript ausführen",
       "running": "Wird ausgeführt...",
       "moreComing": "Weitere Skripte folgen in Kürze...",
-      "records": "Einträge"
+      "records": "Einträge",
+      "characters": "Charaktere"
     },
     "refresh": "Statistiken aktualisieren",
     "limit": "Eintragslimit",

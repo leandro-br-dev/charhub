@@ -28,11 +28,18 @@
         "success": "Script de corrección de datos iniciado con éxito",
         "error": "Fallo al iniciar el script de corrección de datos"
       },
+      "generation": {
+        "name": "Generación de Personajes",
+        "description": "Genera personajes automáticamente a partir de imágenes seleccionadas",
+        "success": "Generación de personajes iniciada con éxito",
+        "error": "Fallo al iniciar la generación de personajes"
+      },
       "lastRun": "Última Ejecución",
       "run": "Ejecutar Script",
       "running": "Ejecutando...",
       "moreComing": "Más scripts próximamente...",
-      "records": "registros"
+      "records": "registros",
+      "characters": "personajes"
     },
     "refresh": "Actualizar Estadísticas",
     "limit": "Límite de Registros",
