@@ -48,11 +48,31 @@ Your implementation work follows patterns defined in these technical skills:
 - Follow existing code patterns and conventions exactly
 - Write ALL code and documentation in English (en-US)
 
-### Database Safety
-- Use Prisma for all database operations
-- Create migrations for schema changes
-- NEVER use `docker compose down -v` (deletes data) without explicit user authorization
+### Database Safety (CRITICAL - READ CAREFULLY)
+
+**FORBIDDEN DESTRUCTIVE COMMANDS**:
+- **NEVER** use `docker compose down -v` (DESTROYS ALL database data)
+- **NEVER** use `prisma migrate reset` (WIPES database)
+- **NEVER** use `prisma db push --force-reset` (WIPES database)
+- **NEVER** use `docker volume rm` on database volumes
+- **NEVER** modify PostgreSQL data directories directly
+
+**SAFE DATABASE OPERATIONS**:
+- Use `prisma migrate dev` for creating migrations (safe - preserves data)
+- Use `prisma db push` ONLY for local development (safe - applies schema changes)
 - Use `docker compose down` (without `-v`) for normal restarts
+- Use `./scripts/database/db-switch.sh clean` for testing (CREATES BACKUP FIRST)
+- Use `./scripts/database/db-switch.sh restore` to restore data
+
+**DATABASE SCRIPTS**:
+- `./scripts/database/db-switch.sh clean` - Switch to empty database (backs up first)
+- `./scripts/database/db-switch.sh restore` - Restore from backup
+- `./scripts/database/db-copy-from-env.sh` - Copy from another environment
+
+**BEFORE ANY DATABASE OPERATION**:
+1. Check if data will be preserved
+2. Verify backup exists if needed
+3. Use safe alternatives when available
 
 ### Git Safety
 - ALWAYS verify working directory is clean with `git status` before `git checkout`

@@ -39,26 +39,36 @@ Your test writing follows patterns defined in these technical skills:
 
 ## Critical Rules
 
-### ❌ NEVER Write These Tests
+### ❌ NEVER Do These
 
-1. **Brittle tests** that break with refactoring (test implementation details, not behavior)
-2. **Slow tests** unnecessarily (use mocks for external dependencies)
-3. **Flaky tests** that sometimes fail (non-deterministic timing, async issues)
-4. **Tests without assertions** (tests that always pass)
-5. **Over-mocked tests** that don't verify real behavior
-6. **Tests testing the test framework** (testing Jest/Vitest features)
-7. **E2E tests for trivial functionality** (unit tests are better)
+1. **DESTRUCTIVE DATABASE COMMANDS (FORBIDDEN)**:
+   - NEVER use `docker compose down -v` (destroys database data)
+   - NEVER use `prisma migrate reset` (wipes database)
+   - NEVER use `prisma db push --force-reset` (wipes database)
+   - NEVER modify Docker volumes directly
+
+2. **Brittle tests** that break with refactoring (test implementation details, not behavior)
+3. **Slow tests** unnecessarily (use mocks for external dependencies)
+4. **Flaky tests** that sometimes fail (non-deterministic timing, async issues)
+5. **Tests without assertions** (tests that always pass)
+6. **Over-mocked tests** that don't verify real behavior
+7. **Tests testing the test framework** (testing Jest/Vitest features)
+8. **E2E tests for trivial functionality** (unit tests are better)
+9. **Skip database mode switching before running tests**
 
 ### ✅ ALWAYS Write These Tests
 
-1. **Behavior-focused tests** that verify what users see, not how code works
-2. **Fast tests** that run quickly (mock external dependencies)
-3. **Isolated tests** that don't depend on each other
-4. **Descriptive tests** with clear names showing what is being tested
-5. **Arrange-Act-Assert** pattern for test structure
-6. **Tests that fail when functionality breaks**
-7. **Tests for edge cases and error conditions**
-8. **Tests that serve as documentation**
+1. **BEFORE running tests: `./scripts/database/db-switch.sh clean`**
+2. **AFTER running tests: `./scripts/database/db-switch.sh restore`**
+3. **Use clean database mode for all automated testing**
+4. **Behavior-focused tests** that verify what users see, not how code works
+5. **Fast tests** that run quickly (mock external dependencies)
+6. **Isolated tests** that don't depend on each other
+7. **Descriptive tests** with clear names showing what is being tested
+8. **Arrange-Act-Assert** pattern for test structure
+9. **Tests that fail when functionality breaks**
+10. **Tests for edge cases and error conditions**
+11. **Tests that serve as documentation**
 
 ## Test Writing Workflow
 
