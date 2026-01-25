@@ -25,6 +25,13 @@ export type CharacterImageAnalysisResult = {
     features?: string[]; // Visual features that support the classification
   };
 
+  // Theme Classification (for character theme detection)
+  themeClassification?: {
+    theme: 'FANTASY' | 'DARK_FANTASY' | 'FURRY' | 'SCI_FI' | 'GENERAL';
+    confidence: 'high' | 'medium' | 'low';
+    reasoning: string;
+  };
+
   // Visual Style
   visualStyle: {
     artStyle?: 'anime' | 'realistic' | 'semi-realistic' | 'cartoon' | 'chibi' | 'pixel art' | 'other';
@@ -84,9 +91,14 @@ function buildSystemPrompt(): string {
     '    "accessories": ["string array"] (optional)',
     '  },',
     '  "suggestedTraits": {',
-    '    "personality": ["string array of personality traits"] (optional)",',
+    '    "personality": ["string array of personality traits"] (optional),',
     '    "archetype": "string (e.g., warrior, mage, scholar) (optional)",',
     '    "suggestedOccupation": "string (optional)"',
+    '  },',
+    '  "themeClassification": {',
+    '    "theme": "FANTASY|DARK_FANTASY|FURRY|SCI_FI|GENERAL (optional)",',
+    '    "confidence": "high|medium|low (optional)",',
+    '    "reasoning": "string explanation for theme classification (optional)"',
     '  },',
     '  "overallDescription": "2-3 sentence description in en-US"',
     '}',
@@ -97,7 +109,27 @@ function buildSystemPrompt(): string {
     '- For arrays, limit to 3-5 most prominent items',
     '- Use en-US for all text',
     '- Return ONLY valid JSON, no markdown, no commentary',
-    '- ETHNICITY CLASSIFICATION: Base ethnicity on VISUAL FEATURES (skin tone, facial features, hair, clothing, cultural markers)',
+    '',
+    'THEME CLASSIFICATION GUIDELINES:',
+    '- FANTASY: Bright colors, magical elements, medieval/high fantasy setting, elves, wizards, nature spirits, enchanted forests',
+    '- DARK_FANTASY: Dark color palette, gothic elements, demons, vampires, dark magic, horror undertones, shadows, corrupted aesthetics',
+    '- FURRY: Anthropomorphic animal characters, kemono style, beast-people, animal-human hybrids with fur/feathers/scales',
+    '- SCI_FI: Futuristic elements, cybernetic enhancements, robots, androids, space themes, advanced technology, holographic displays',
+    '- GENERAL: Modern/contemporary setting, casual clothing, no strong thematic elements, everyday scenarios',
+    '',
+    'When analyzing theme, consider:',
+    '1. Color palette (dark vs bright, saturated vs muted)',
+    '2. Setting and background elements (castles, forests, cities, space, etc.)',
+    '3. Character type (human, fantasy creature, robot, animal-human hybrid)',
+    '4. Mood and atmosphere (whimsical, ominous, futuristic, ordinary)',
+    '5. Clothing and equipment style (armor, robes, tech wear, casual)',
+    '',
+    'Confidence levels:',
+    '- high: Multiple clear visual indicators match the theme',
+    '- medium: Some visual indicators present, theme is likely but not certain',
+    '- low: Few or ambiguous indicators, theme is a tentative guess',
+    '',
+    'ETHNICITY CLASSIFICATION: Base ethnicity on VISUAL FEATURES (skin tone, facial features, hair, clothing, cultural markers)',
     '  - Japanese: East Asian features with Japanese cultural elements',
     '  - East Asian: Chinese, Korean, or general East Asian features',
     '  - Southeast Asian: Thai, Vietnamese, Filipino, Indonesian features',
@@ -160,6 +192,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
       const result: CharacterImageAnalysisResult = {
         physicalCharacteristics: parsed.physicalCharacteristics || {},
         ethnicity: parsed.ethnicity, // Optional field, don't provide default
+        themeClassification: parsed.themeClassification, // Optional field, don't provide default
         visualStyle: parsed.visualStyle || {},
         clothing: parsed.clothing || {},
         suggestedTraits: parsed.suggestedTraits || {},
@@ -178,6 +211,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
       return {
         physicalCharacteristics: {},
         ethnicity: undefined,
+        themeClassification: undefined,
         visualStyle: {},
         clothing: {},
         suggestedTraits: {},
@@ -192,6 +226,7 @@ export async function analyzeCharacterImage(imageUrl: string): Promise<Character
     return {
       physicalCharacteristics: {},
       ethnicity: undefined,
+      themeClassification: undefined,
       visualStyle: {},
       clothing: {},
       suggestedTraits: {},
