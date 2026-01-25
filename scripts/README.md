@@ -1,12 +1,12 @@
 # CharHub Scripts
 
-**Last Updated**: 2025-12-05
+**Last Updated**: 2025-01-25
 
 ---
 
 ## 📋 Overview
 
-This directory contains automation scripts for CharHub infrastructure and maintenance tasks.
+This directory contains automation scripts for CharHub infrastructure, organized by category and purpose.
 
 ---
 
@@ -14,141 +14,174 @@ This directory contains automation scripts for CharHub infrastructure and mainte
 
 ```
 scripts/
+├── agents/              # Agent setup and infrastructure scripts
+│   ├── setup-agent.sh           # Setup Claude Code agent profiles
+│   └── setup-infrastructure.sh  # Setup agent infrastructure
+│
 ├── backup/              # Database backup and restore scripts
-│   ├── backup-database.sh
-│   ├── restore-database.sh
-│   ├── list-backups.sh
-│   ├── setup-backup-cron.sh
-│   ├── charhub-backup.service
-│   └── charhub-backup.timer
-└── archive/             # Deprecated scripts (historical reference)
-    └── legacy/          # Old PowerShell deployment scripts
+│   ├── backup-database.sh       # Create PostgreSQL backup
+│   ├── restore-database.sh      # Restore from backup
+│   ├── list-backups.sh          # List available backups
+│   └── setup-backup-cron.sh     # Configure automated backups
+│
+├── database/            # Database management scripts
+│   ├── db-switch.sh             # Switch between clean/populated database
+│   └── db-copy-from-env.sh      # Copy database from environment
+│
+├── docker/              # Docker maintenance scripts
+│   ├── docker-smart-restart.sh       # Smart container restart
+│   ├── docker-cleanup-quick.sh       # Quick Docker cleanup
+│   ├── docker-cleanup-full.sh        # Full Docker cleanup
+│   ├── docker-space-check.sh         # Check Docker disk usage
+│   ├── docker-maintenance-setup.sh   # Setup maintenance cron
+│   └── docker-maintenance-cron.sh    # Maintenance cron job
+│
+└── ops/                 # Operational scripts (production)
+    ├── health-check.sh             # Service health checks
+    ├── env-compare.sh              # Compare .env keys
+    ├── env-sync-production.sh      # Sync .env to production
+    ├── monitor-disk-space.sh       # Monitor disk usage
+    ├── backup-database.sh          # Production backup
+    ├── restore-database-backup.sh  # Production restore
+    ├── cleanup-docker.sh           # Production Docker cleanup
+    └── install-native-docker.sh    # Install Docker on server
 ```
 
 ---
 
-## 🚀 Active Scripts
+## 🚀 Scripts by Category
 
-### 📦 Backup Scripts (`/backup/`)
+### 🤖 Agent Setup (`/agents/`)
 
-**Purpose**: Automated database backup and restore
+**Purpose**: Setup and maintain Claude Code agent infrastructure
 
-**Key Scripts**:
-- **`backup-database.sh`** - Create compressed PostgreSQL backup
-- **`restore-database.sh`** - Restore database from backup
-- **`list-backups.sh`** - List all available backups
+| Script | Description | Usage |
+|--------|-------------|-------|
+| `setup-agent.sh` | Install/update agent profiles | `./scripts/agents/setup-agent.sh` |
+| `setup-infrastructure.sh` | Setup agent infrastructure | `./scripts/agents/setup-infrastructure.sh` |
+
+**Used by**: Agent development workflow
+
+**Documentation**: [Agent Setup Guide](../docs/05-business/planning/agents/)
+
+---
+
+### 📦 Database Backup (`/backup/`)
+
+**Purpose**: Local development database backup and restore
+
+| Script | Description | Usage |
+|--------|-------------|-------|
+| `backup-database.sh` | Create compressed backup | `sudo ./scripts/backup/backup-database.sh` |
+| `restore-database.sh` | Restore from backup | `sudo ./scripts/backup/restore-database.sh <file>` |
+| `list-backups.sh` | List available backups | `sudo ./scripts/backup/list-backups.sh` |
+| `setup-backup-cron.sh` | Configure automated backups | `sudo ./scripts/backup/setup-backup-cron.sh` |
+
+**Used by**: Local development
 
 **Documentation**: [Backup & Restore Guide](../docs/03-reference/scripts/backup-restore-guide.md)
 
-**Quick Start**:
-```bash
-# Create backup
-sudo ./scripts/backup/backup-database.sh
-
-# List backups
-sudo ./scripts/backup/list-backups.sh
-
-# Restore from backup
-sudo ./scripts/backup/restore-database.sh /path/to/backup.sql.gz
-```
-
-**Status**: ✅ **Tested and Production Ready**
-
-**Requirements**:
-- PostgreSQL container running
-- Docker access
-- `gsutil` for GCS upload (optional)
+**Status**: ✅ Tested and Production Ready
 
 ---
 
-## 📚 Script Categories
+### 🗄️ Database Management (`/database/`)
 
-### Database Management
-- **Backup**: `/backup/backup-database.sh`
-- **Restore**: `/backup/restore-database.sh`
-- **List**: `/backup/list-backups.sh`
+**Purpose**: Database state management for testing
 
-### Deployment
-- **Current**: GitHub Actions (`.github/workflows/deploy-production.yml`)
-- **Legacy**: Archived PowerShell scripts (see `/archive/legacy/`)
+| Script | Description | Usage |
+|--------|-------------|-------|
+| `db-switch.sh` | Switch clean/populated DB | `./scripts/database/db-switch.sh [clean\|restore]` |
+| `db-copy-from-env.sh` | Copy DB from environment | `./scripts/database/db-copy-from-env.sh` |
 
-### Monitoring
-- **Health Checks**: Integrated in GitHub Actions workflow
-- **Manual Check**: `curl https://charhub.app/api/v1/health`
+**Used by**: Testing workflow, feature-tester agent
+
+**Global Skill**: `database-switch`
 
 ---
 
-## 🔧 Script Development Guidelines
+### 🐳 Docker Maintenance (`/docker/`)
 
-### Creating New Scripts
+**Purpose**: Docker container maintenance and cleanup
 
-1. **Choose Category**: backup, deployment, monitoring, or maintenance
-2. **Follow Naming**: `action-target.sh` (e.g., `backup-database.sh`)
-3. **Add Documentation**: Update this README and create guide in `/docs/03-reference/scripts/`
-4. **Include Header**:
-```bash
-#!/bin/bash
-# ============================================
-# Script Name and Purpose
-# ============================================
-# Description
-# Usage: ./script-name.sh [options]
-# ============================================
+| Script | Description | Usage |
+|--------|-------------|-------|
+| `docker-smart-restart.sh` | Smart container restart | `./scripts/docker/docker-smart-restart.sh` |
+| `docker-cleanup-quick.sh` | Quick cleanup (images, volumes) | `./scripts/docker/docker-cleanup-quick.sh` |
+| `docker-cleanup-full.sh` | Full cleanup (including system) | `./scripts/docker/docker-cleanup-full.sh` |
+| `docker-space-check.sh` | Check Docker disk usage | `./scripts/docker/docker-space-check.sh` |
+| `docker-maintenance-setup.sh` | Setup maintenance cron | `sudo ./scripts/docker/docker-maintenance-setup.sh` |
+| `docker-maintenance-cron.sh` | Maintenance cron job | (called by cron) |
 
-set -e  # Exit on error
-```
+**Used by**: Development and production maintenance
 
-5. **Error Handling**:
-```bash
-error_exit() {
-    echo "[ERROR] $1" >&2
-    exit 1
-}
-```
-
-6. **Logging**:
-```bash
-log() {
-    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$timestamp] $1"
-}
-```
-
-### Testing Scripts
-
-1. **Test in non-production first**
-2. **Dry-run mode** when possible
-3. **Document test results**
-4. **Verify error handling**
-5. **Check permissions**
+**Global Skill**: `container-health-check`
 
 ---
 
-## 📖 Documentation
+### ⚙️ Operations (`/ops/`)
 
-### Active Scripts Documentation
-- [Backup & Restore Guide](../docs/03-reference/scripts/backup-restore-guide.md)
+**Purpose**: Production server operations and environment management
 
-### Archived Scripts
-- [Archive README](./archive/README.md) - Why scripts were archived
+| Script | Description | Usage |
+|--------|-------------|-------|
+| `health-check.sh` | Check service health | `./scripts/ops/health-check.sh` |
+| `env-compare.sh` | Compare .env keys | `./scripts/ops/env-compare.sh` |
+| `env-sync-production.sh` | Sync .env to production | `./scripts/ops/env-sync-production.sh [--dry-run]` |
+| `monitor-disk-space.sh` | Monitor disk usage | `./scripts/ops/monitor-disk-space.sh` |
+| `backup-database.sh` | Production backup | `./scripts/ops/backup-database.sh` |
+| `restore-database-backup.sh` | Production restore | `./scripts/ops/restore-database-backup.sh <file>` |
+| `cleanup-docker.sh` | Production Docker cleanup | `./scripts/ops/cleanup-docker.sh` |
+| `install-native-docker.sh` | Install Docker | `sudo ./scripts/ops/install-native-docker.sh` |
 
-### Related Guides
-- [Deployment Guide](../docs/02-guides/deployment/) - Infrastructure setup and deployment
-- [Operations Guide](../docs/06-operations/) - SRE, monitoring, and incident response
+**Used by**: Agent Reviewer, env-guardian sub-agent
+
+**Skill**: `production-env-sync`
+
+---
+
+## 🔧 Script Usage by Agent
+
+### Agent Coder (Development)
+
+Uses scripts for local development and testing:
+- `database/db-switch.sh` - Switch database modes
+- `docker/docker-smart-restart.sh` - Restart containers
+
+### Agent Reviewer (Operations)
+
+Uses scripts for production operations:
+- `ops/env-compare.sh` - Before deployment
+- `ops/env-sync-production.sh` - Sync to production
+- `ops/health-check.sh` - Verify deployment
 
 ---
 
 ## 🔐 Permissions
 
-Scripts require specific permissions:
+### Development Scripts (No sudo required)
+- `database/*` - Database switching
+- `docker/*` - Docker operations (if user in docker group)
 
-| Script | Permission Required | Why |
-|--------|-------------------|-----|
-| `backup-database.sh` | sudo | Docker exec, file write to `/mnt/stateful_partition` |
-| `restore-database.sh` | sudo | Docker exec, database drop/create |
-| `list-backups.sh` | sudo | Read `/mnt/stateful_partition`, gsutil access |
+### Production Scripts (Sudo required)
+- `ops/*` - Production operations
+- `backup/*` - Backup operations
 
-**Best Practice**: Use `sudo` only when necessary, run as normal user when possible.
+**Best Practice**: Use `sudo` only when necessary.
+
+---
+
+## 📖 Documentation
+
+### Script Documentation
+- [Production Env Sync](../docs/agents/reviewer/skills/production-env-sync/SKILL.md)
+- [Backup & Restore Guide](../docs/03-reference/scripts/backup-restore-guide.md)
+- [Agent Setup](../docs/05-business/planning/agents/)
+
+### Agent Documentation
+- [Agent Coder](../docs/agents/coder/CLAUDE.md)
+- [Agent Reviewer](../docs/agents/reviewer/CLAUDE.md)
+- [env-guardian Sub-Agent](../docs/agents/reviewer/sub-agents/env-guardian.md)
 
 ---
 
@@ -156,31 +189,30 @@ Scripts require specific permissions:
 
 ### For Agent Reviewer
 - ✅ Can run all scripts
-- ✅ Responsible for backup schedule
-- ✅ Should test restore procedure monthly
-- ⚠️ Always create backup before major changes
+- ✅ Responsible for production operations
+- ✅ Should verify health after operations
+- ⚠️ Always use `env-compare.sh` before deployment
 
 ### For Agent Coder
-- ℹ️ Should know scripts exist
-- ℹ️ Can read documentation
-- ❌ Should not modify scripts (Agent Reviewer's responsibility)
-- ℹ️ Report script issues to Agent Reviewer
+- ✅ Can use `db-switch.sh` for testing
+- ✅ Can use `docker-smart-restart.sh` for development
+- ❌ Should NOT run production scripts (`ops/*`)
+- ℹ️ Report production issues to Agent Reviewer
 
 ---
 
 ## 📊 Maintenance Schedule
 
 ### Daily (Automated)
-- Database backup (via systemd timer)
+- Database backup (via systemd timer on production)
 
-### Weekly (Manual)
-- Verify backups exist
-- Check backup log
+### As Needed
+- `health-check.sh` - Before/after deployments
+- `env-compare.sh` - Before every deployment
+- `env-sync-production.sh` - When environment changes
 
-### Monthly (Manual)
-- Test restore procedure
-- Verify GCS access
-- Check disk usage
+### Weekly
+- `docker-cleanup-quick.sh` - Free up Docker space
 
 ---
 
@@ -189,42 +221,42 @@ Scripts require specific permissions:
 ### Script Fails to Execute
 ```bash
 # Check permissions
-ls -la scripts/backup/
+ls -la scripts/
 
 # Make executable
-chmod +x scripts/backup/*.sh
-
-# Check she bang
-head -1 scripts/backup/backup-database.sh
-# Should be: #!/bin/bash
+chmod +x scripts/category/script.sh
 ```
 
 ### Permission Denied
 ```bash
-# Run with sudo
-sudo ./scripts/backup/backup-database.sh
+# Run with sudo (for production scripts)
+sudo ./scripts/ops/script.sh
 
-# Or fix ownership
-sudo chown -R $(whoami):$(whoami) scripts/
+# Add user to docker group (for Docker scripts)
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
-### Docker Not Found
+### Health Check Fails
 ```bash
-# Scripts expect Docker to be available
-docker --version
+# Run diagnostics
+./scripts/ops/health-check.sh
 
-# If not found, install Docker
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
+# Check container status
+docker ps -a
+
+# Smart restart
+./scripts/docker/docker-smart-restart.sh
 ```
 
 ---
 
-## 📞 Support
+## 🔗 Related Skills
 
-- **Script Issues**: See individual script documentation
-- **Backup Issues**: [Backup & Restore Guide](../docs/03-reference/scripts/backup-restore-guide.md)
-- **General Questions**: [GitHub Discussions](https://github.com/leandro-br-dev/charhub/discussions)
+Global skills that use these scripts:
+- `database-switch` - Uses `database/db-switch.sh`
+- `container-health-check` - Uses `ops/health-check.sh`
+- `production-env-sync` - Uses `ops/env-compare.sh` and `ops/env-sync-production.sh`
 
 ---
 

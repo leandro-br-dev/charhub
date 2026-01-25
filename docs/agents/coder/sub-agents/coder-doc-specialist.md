@@ -86,7 +86,7 @@ When other agents (backend-developer, frontend-specialist) work on code:
 
 # Examples:
 characterService.ts → characterService.docs.md
-ChatInterface.vue → ChatInterface.docs.md
+ChatInterface.tsx → ChatInterface.docs.md
 
 # For folders
 {foldername}.docs.md or README.docs.md
@@ -102,7 +102,7 @@ backend/src/services/
 └── characterService.docs.md          # Service documentation
 
 frontend/src/components/features/chat/
-├── ChatInterface.vue
+├── ChatInterface.tsx
 └── ChatInterface.docs.md            # Component documentation
 ```
 

@@ -169,6 +169,8 @@ sudo journalctl -u charhub-frontend -f
 
 ### Phase 4: Post-Deploy Verification
 
+**Refer to global skill**: `container-health-check` for container health verification procedures.
+
 **After deployment completes successfully**:
 
 ```bash

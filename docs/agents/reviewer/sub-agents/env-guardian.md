@@ -62,33 +62,84 @@ Deploying without environment validation causes:
 ## Environment Files Structure
 
 ```
-charhub-agent-01/
-├── .env.example          # Template of all required vars
-├── .env                  # Local development (gitignored)
-├── backend/.env          # Backend local vars
-├── frontend/.env         # Frontend local vars
+Local (charhub-agent-02/):
+├── .env.example              # Template of all required vars
+├── .env                      # Local development (gitignored)
+├── .env.production           # Production variables (versioned)
+├── backend/.env              # Backend local vars (gitignored)
+├── backend/.env.production   # Backend production variables (versioned)
+├── frontend/.env             # Frontend local vars (gitignored)
+└── frontend/.env.production  # Frontend production variables (versioned)
 
 Production (GCP VM):
-├── /home/.../charhub/.env  # Production env vars
+├── /mnt/stateful_partition/charhub/.env              # Root env vars
+├── /mnt/stateful_partition/charhub/backend/.env      # Backend env vars
+├── /mnt/stateful_partition/charhub/frontend/.env.production  # Frontend env vars
 ├── systemd service environment
 └── GCP Secret Manager (if configured)
+```
+
+**Key Points**:
+- `.env.production` files are versioned in git (with placeholder values for secrets)
+- `env-compare.sh` compares 3 file pairs before deployment
+- `env-sync-production.sh` syncs all 3 files to production server
+
+## Orchestration Skills You Use
+
+- **production-env-sync**: Validate and sync production environment variables
+  - Use `env-compare.sh` to check for missing keys in `.env.production`, `backend/.env.production`, and `frontend/.env.production`
+  - Use `env-sync-production.sh` to sync environment to production server
+
+**Quick Reference**:
+```bash
+# Compare keys (local check)
+./scripts/ops/env-compare.sh
+
+# Sync to production (dry-run first)
+./scripts/ops/env-sync-production.sh --dry-run
+
+# Live sync
+./scripts/ops/env-sync-production.sh
 ```
 
 ## Your Workflow
 
 ### Phase 1: Detect Environment Changes
 
+**Use production-env-sync skill**: Run `env-compare.sh` to check for missing keys
+
 ```bash
-# 1. Checkout PR branch
+# 1. Run env-compare.sh to check all 3 file pairs
+./scripts/ops/env-compare.sh
+
+# Expected output:
+# ✅ .env found
+# ✅ .env.production found
+# ✅ backend/.env.production found
+# ✅ frontend/.env.production found
+#
+# Then shows comparison for each pair...
+```
+
+**What env-compare.sh checks**:
+- `.env` ↔ `.env.production` (root)
+- `backend/.env` ↔ `backend/.env.production`
+- `frontend/.env` ↔ `frontend/.env.production`
+
+**If keys are missing**: The script will report which keys are missing and suggest actions.
+
+**Additional manual checks**:
+```bash
+# 2. Checkout PR branch
 gh pr checkout <PR-number>
 
-# 2. Find all .env* files in the branch
+# 3. Find all .env* files changed in the branch
 git diff main...HEAD --name-only | grep "\.env"
 
-# 3. Check for new env vars in code
+# 4. Check for new env vars in code
 git diff main...HEAD | grep "process\.env"
 
-# 4. Check .env.example for changes
+# 5. Check .env.example for changes
 git diff main...HEAD .env.example
 ```
 
@@ -122,7 +173,22 @@ R2_PUBLIC_URL=https://pub-xxxx.r2.dev
 
 ### Phase 3: Check Production Environment
 
-**Connect to production**:
+**Option A: Use env-sync-production.sh (Recommended)**
+
+```bash
+# 1. Dry run first to see what would change
+./scripts/ops/env-sync-production.sh --dry-run
+
+# 2. If satisfied, proceed with live sync
+./scripts/ops/env-sync-production.sh
+
+# This syncs:
+# - .env.production → /mnt/stateful_partition/charhub/.env
+# - backend/.env.production → /mnt/stateful_partition/charhub/backend/.env
+# - frontend/.env.production → /mnt/stateful_partition/charhub/frontend/.env.production
+```
+
+**Option B: Manual Check**
 
 ```bash
 # SSH to production VM
@@ -212,19 +278,24 @@ This deployment requires the following new environment variables:
 Before approving ANY deployment:
 
 ```bash
-# 1. List all env vars in .env.example
-cat .env.example | grep "^[A-Z]" | cut -d= -f1 | sort > /tmp/required.txt
+# 1. Run env-compare.sh to check for missing keys
+./scripts/ops/env-compare.sh
 
-# 2. List all env vars in production
-ssh production "cat .env | grep '^[A-Z]' | cut -d= -f1 | sort" > /tmp/production.txt
+# Expected: All checks passed
 
-# 3. Find missing vars
-comm -23 /tmp/required.txt /tmp/production.txt
+# 2. If missing keys found, fix .env.production files
 
-# 4. If any missing: STOP DEPLOYMENT!
+# 3. Dry-run sync to production
+./scripts/ops/env-sync-production.sh --dry-run
+
+# 4. If satisfied, sync to production
+./scripts/ops/env-sync-production.sh
+
+# 5. Verify services restart successfully
 ```
 
 **Checklist**:
+- [ ] `env-compare.sh` passed (all keys match)
 - [ ] All new env vars documented in `.env.example`
 - [ ] All required vars exist in production
 - [ ] Var values are correct for environment
