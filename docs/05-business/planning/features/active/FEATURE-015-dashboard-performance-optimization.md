@@ -1,11 +1,12 @@
 # FEATURE-015: Dashboard Performance Optimization
 
-**Status**: Backlog
+**Status**: In Review
 **Priority**: High
-**Assigned To**: TBD
+**Assigned To**: Agent Coder
 **Created**: 2026-01-25
 **Last Updated**: 2026-01-25
 **Epic**: Performance Optimization
+**PR**: [PR #151](https://github.com/leandro-br-dev/charhub/pull/151)
 
 ---
 
