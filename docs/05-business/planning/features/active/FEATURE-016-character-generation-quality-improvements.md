@@ -707,10 +707,43 @@ model CorrectionJobLog {
 3. Add valid species list to LLM prompt
 4. Test species resolution accuracy
 
-### Phase 4: Gender Improvements
-1. Enhance image analysis gender detection
-2. Add post-processing for humanoid characters
-3. Infer from pronouns in description
+### Phase 4: Gender Improvements ✅ COMPLETED
+1. ~~Enhance image analysis gender detection~~ ✅ DONE (2026-01-25)
+2. ~~Add post-processing for humanoid characters~~ ✅ DONE (already implemented in previous commit)
+3. ~~Infer from pronouns in description~~ ✅ DONE (already implemented in previous commit)
+
+**Implementation**: Modified `backend/src/agents/characterImageAnalysisAgent.ts`
+**Commit**: d0e7d26 - "feat(agents): improve gender classification for humanoid characters"
+
+**Changes Made**:
+1. Added `genderConfidence` field to `CharacterImageAnalysisResult` type
+   - Tracks confidence level: high, medium, or low
+   - Helps identify when gender detection is uncertain
+
+2. Enhanced gender classification guidelines in system prompt:
+   - For humanoid characters: MUST choose MALE, FEMALE, or NON_BINARY (not UNKNOWN)
+   - Only use AMBIGUOUS for truly genderless entities (robots, slimes, abstract beings)
+   - Provide clear guidance on how to determine gender from visual cues:
+     * Facial structure (jawline, cheekbones, eye shape)
+     * Body proportions (shoulder width, hip width, height)
+     * Clothing and styling choices
+     * Breast presence or absence (for visible anatomy)
+     * Overall presentation and expression
+   - When uncertain but humanoid, make best guess based on cues
+   - Default to FEMALE for ambiguous humanoids (most common in anime)
+
+**Note**: The `finalizeGender()` function in `automatedCharacterGenerationController.ts` was already implemented in a previous commit (461c82b). It includes:
+- Humanoid species detection (human, elf, demon, angel, vampire, yokai, kitsune, etc.)
+- Pronoun inference from description (she/her → FEMALE, he/his → MALE)
+- Default to FEMALE for humanoid characters when gender is UNKNOWN
+
+**Quality Checks**:
+- Lint: PASSED (0 errors, 482 warnings - all pre-existing)
+- Build: PASSED (TypeScript compilation successful)
+
+**Next Steps**:
+- Test with diverse character images to verify gender detection accuracy
+- Monitor gender classification rates in auto-generated characters
 
 ### Phase 5: Content Tags
 1. Implement text-based tag inference
