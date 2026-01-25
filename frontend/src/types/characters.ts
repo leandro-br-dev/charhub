@@ -147,6 +147,11 @@ export interface Character extends CharacterCore {
     displayName: string | null;
     avatarUrl: string | null;
   } | null;
+  stats?: {
+    conversationCount: number;
+    favoriteCount: number;
+    isFavoritedByUser: boolean;
+  } | null;
 }
 
 export interface CharacterSummary extends CharacterCore {
@@ -185,6 +190,8 @@ export interface CharacterListParams {
   limit?: number;
   page?: number;
   public?: boolean; // When false, returns only user's own characters
+  includeStats?: boolean; // Include stats in response
+  fields?: string; // Comma-separated field list for response optimization
 }
 
 export interface CharacterListResponse {

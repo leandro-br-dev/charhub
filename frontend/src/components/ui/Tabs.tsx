@@ -18,12 +18,19 @@ export function useTabs(): TabsContextProps {
 interface TabsProps {
   children: ReactNode;
   defaultTab: string;
+  onTabChange?: (tab: string) => void;
 }
 
-export function Tabs({ children, defaultTab }: TabsProps) {
+export function Tabs({ children, defaultTab, onTabChange }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultTab);
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    onTabChange?.(tab);
+  };
+
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+    <TabsContext.Provider value={{ activeTab, setActiveTab: handleTabChange }}>
       <div className="flex w-full flex-col h-full">{children}</div>
     </TabsContext.Provider>
   );

@@ -266,6 +266,66 @@ export const characterService = {
   },
 
   /**
+   * Get characters optimized for dashboard display
+   * Includes stats and only relevant fields for card display
+   */
+  async getCharactersForDashboard(params: {
+    skip?: number;
+    limit?: number;
+    sortBy?: 'popular' | 'newest' | 'favorites';
+    ageRatings?: AgeRating[];
+    genders?: string[];
+    species?: string[];
+    includeStats?: boolean;
+  }): Promise<CharacterListResult> {
+    try {
+      const {
+        skip = 0,
+        limit = 20,
+        sortBy = 'popular',
+        ageRatings,
+        genders,
+        species,
+        includeStats = true,
+      } = params;
+
+      const query: Record<string, unknown> = {
+        skip,
+        limit,
+        sortBy,
+        includeStats,
+        fields: 'id,firstName,lastName,avatar,ageRating,style,theme,creator',
+      };
+
+      if (ageRatings) {
+        query.ageRatings = ageRatings;
+      }
+      if (genders) {
+        query.gender = genders;
+      }
+      if (species) {
+        query.species = species;
+      }
+
+      const response = await api.get<{
+        success: boolean;
+        data: Character[];
+        total: number;
+        hasMore: boolean;
+      }>(BASE_PATH, { params: query });
+
+      return {
+        characters: response.data.data || [],
+        total: response.data.total || 0,
+        hasMore: response.data.hasMore || false,
+      };
+    } catch (error) {
+      console.error('[characterService] getCharactersForDashboard failed:', error);
+      return { characters: [], total: 0, hasMore: false };
+    }
+  },
+
+  /**
    * Toggle favorite status for a character
    */
   async toggleFavorite(characterId: string, isFavorite: boolean): Promise<{ success: boolean }> {
