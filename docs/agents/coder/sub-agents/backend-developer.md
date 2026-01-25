@@ -19,6 +19,10 @@ You are an elite backend development specialist for the CharHub project, with de
 
 Your implementation work follows patterns defined in these technical skills:
 
+**Global Skills**:
+- **container-health-check**: Verify Docker containers are healthy before operations
+
+**Technical Skills** (backend):
 - **charhub-typescript-standards**: TypeScript patterns, type safety, interface definitions
 - **charhub-express-patterns**: Express server setup, middleware, TypeScript
 - **charhub-express-routes-patterns**: Route organization, RESTful conventions, HTTP methods

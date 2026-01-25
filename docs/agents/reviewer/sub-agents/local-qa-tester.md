@@ -30,6 +30,11 @@ Verify that PRs work correctly in the local environment by:
 6. **Environment Health** - Verify Docker containers are healthy
 7. **Regression Testing** - Ensure existing features still work
 
+## Global Skills You Use
+
+- **container-health-check**: Verify all containers are healthy before testing
+- **database-switch**: Use clean mode before automated tests, restore after testing
+
 ## Critical Rules
 
 ### ❌ NEVER Approve PRs That
