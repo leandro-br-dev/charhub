@@ -14,7 +14,7 @@ interface ScriptState {
   result: string | null;
 }
 
-type ScriptType = 'avatar' | 'data';
+type ScriptType = 'avatar' | 'data' | 'generation';
 
 export default function AdminScriptsPage(): JSX.Element {
   const { t } = useTranslation(['adminScripts', 'common']);
@@ -33,11 +33,13 @@ export default function AdminScriptsPage(): JSX.Element {
   const [scripts, setScripts] = useState<Record<ScriptType, ScriptState>>({
     avatar: { isLoading: false, lastRun: null, result: null },
     data: { isLoading: false, lastRun: null, result: null },
+    generation: { isLoading: false, lastRun: null, result: null },
   });
 
   const [limits, setLimits] = useState<Record<ScriptType, number>>({
     avatar: 100,
     data: 100,
+    generation: 10,
   });
 
   // Fetch correction stats
@@ -102,7 +104,9 @@ export default function AdminScriptsPage(): JSX.Element {
       const response =
         type === 'avatar'
           ? await adminScriptsService.triggerAvatarCorrection(limit)
-          : await adminScriptsService.triggerDataCorrection(limit);
+          : type === 'data'
+            ? await adminScriptsService.triggerDataCorrection(limit)
+            : await adminScriptsService.triggerCharacterGeneration(limit);
 
       setScripts((prev) => ({
         ...prev,
@@ -378,6 +382,69 @@ export default function AdminScriptsPage(): JSX.Element {
                       : 'bg-success/10 text-success'
                   }`}>
                     {scripts.data.result}
+                  </div>
+                )}
+              </div>
+
+              {/* Character Generation Script */}
+              <div className="bg-normal rounded-lg p-4 border border-border">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-medium text-title mb-1">
+                      {t('adminScripts:scripts.generation.name')}
+                    </h3>
+                    <p className="text-sm text-muted mb-2">
+                      {t('adminScripts:scripts.generation.description')}
+                    </p>
+                    {scripts.generation.lastRun && (
+                      <div className="text-xs text-muted">
+                        {t('adminScripts:scripts.lastRun')}: {formatDate(scripts.generation.lastRun)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col">
+                      <label className="text-xs text-muted mb-1">
+                        {t('adminScripts:scripts.limit')}:
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          min="1"
+                          max="100"
+                          value={limits.generation}
+                          onChange={(e) => setLimits((prev) => ({ ...prev, generation: parseInt(e.target.value) || 10 }))}
+                          className="w-24 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
+                          disabled={scripts.generation.isLoading}
+                          placeholder={t('adminScripts:scripts.limitPlaceholder')}
+                        />
+                        <span className="text-xs text-muted whitespace-nowrap">
+                          {t('adminScripts:scripts.characters')}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => triggerScript('generation')}
+                      disabled={scripts.generation.isLoading}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                        scripts.generation.isLoading
+                          ? 'bg-muted text-muted cursor-not-allowed'
+                          : 'bg-primary text-black hover:bg-primary/80'
+                      }`}
+                    >
+                      {scripts.generation.isLoading
+                        ? t('adminScripts:scripts.running')
+                        : t('adminScripts:scripts.run')}
+                    </button>
+                  </div>
+                </div>
+                {scripts.generation.result && (
+                  <div className={`mt-3 p-3 rounded text-sm ${
+                    scripts.generation.result.includes('Failed') || scripts.generation.result.includes('Error')
+                      ? 'bg-error/10 text-error'
+                      : 'bg-success/10 text-success'
+                  }`}>
+                    {scripts.generation.result}
                   </div>
                 )}
               </div>

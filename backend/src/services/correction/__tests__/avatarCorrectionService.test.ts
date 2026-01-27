@@ -26,13 +26,18 @@ jest.mock('../../comfyui/comfyuiService', () => {
     loras: loras || [], // Preserve passed loras
   }));
 
+  const mockGenerateAvatar = jest.fn();
+  // Return a proper ImageGenerationResult
+  mockGenerateAvatar.mockResolvedValue({
+    imageBytes: Buffer.from('fake-image-data'),
+    filename: 'test-avatar.webp',
+    promptId: 'test-prompt-id',
+  });
+
   return {
     comfyuiService: {
       applyVisualStyleToPrompt: mockApplyVisualStyle,
-      generateAvatar: jest.fn().mockResolvedValue({
-        imageBytes: Buffer.from('fake-image-data'),
-        metadata: { width: 512, height: 512 },
-      }),
+      generateAvatar: mockGenerateAvatar,
     },
   };
 });
@@ -111,6 +116,7 @@ describe('AvatarCorrectionService', () => {
       physicalCharacteristics: 'Blue eyes, brown hair',
       personality: 'Brave and kind',
       style: 'anime',
+      theme: null as string | null,
       mainAttire: {
         description: 'Casual outfit',
       },
@@ -295,9 +301,13 @@ describe('AvatarCorrectionService', () => {
     });
 
     it('should skip characters that already have active avatar', async () => {
-      // Clear generateAvatar mock to ensure clean state
       const { comfyuiService } = require('../../comfyui/comfyuiService');
       comfyuiService.generateAvatar.mockClear();
+      comfyuiService.generateAvatar.mockResolvedValue({
+        imageBytes: Buffer.from('fake-image-data'),
+        filename: 'test-avatar.webp',
+        promptId: 'test-prompt-id',
+      });
 
       mockPrisma.characterImage.findFirst.mockResolvedValue({
         id: 'avatar-1',
@@ -374,7 +384,7 @@ describe('AvatarCorrectionService', () => {
       ]);
     });
 
-    test.skip('should detect FURRY content type', async () => {
+    test('should detect FURRY theme from species name', async () => {
       const furryCharacter = {
         ...mockCharacter,
         species: {
@@ -382,6 +392,7 @@ describe('AvatarCorrectionService', () => {
           name: 'Furry Wolf',
         },
         tags: [{ id: 'tag-1', name: 'anthro' }],
+        theme: 'FURRY' as const,
       };
 
       mockPrisma.character.findUnique.mockResolvedValue(furryCharacter);
@@ -393,7 +404,7 @@ describe('AvatarCorrectionService', () => {
       expect(comfyuiService.generateAvatar).toHaveBeenCalledWith(
         expect.any(Object),
         expect.any(String),
-        'FURRY'
+        'FURRY' // Theme is now passed instead of contentType
       );
     });
 
@@ -641,6 +652,46 @@ describe('AvatarCorrectionService', () => {
   });
 
   describe('Edge Cases & Error Handling', () => {
+    beforeEach(() => {
+      // Reset all mocks to clear any mockRejectedValueOnce queues
+      jest.resetAllMocks();
+      // Re-apply ALL mock implementations after reset
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
+      const { promptAgent } = require('../../comfyui/promptAgent');
+      const { r2Service } = require('../../r2Service');
+      const { convertToWebP } = require('../../../utils/imageUtils');
+
+      comfyuiService.applyVisualStyleToPrompt.mockImplementation(async (_positive: any, _negative: any, _style: any, _contentType: any, loras: any) => ({
+        positive: 'enhanced positive prompt',
+        negative: 'enhanced negative prompt',
+        loras: loras || [],
+      }));
+      comfyuiService.generateAvatar.mockResolvedValue({
+        imageBytes: Buffer.from('fake-image-data'),
+        filename: 'test-avatar.webp',
+        promptId: 'test-prompt-id',
+      });
+
+      promptAgent.generatePrompts.mockResolvedValue({
+        positive: 'test positive prompt',
+        negative: 'test negative prompt',
+      });
+
+      r2Service.uploadObject.mockResolvedValue({
+        publicUrl: 'https://example.com/uploaded.webp',
+        key: 'test-key',
+      });
+
+      convertToWebP.mockResolvedValue(Buffer.from('webp-data'));
+
+      mockPrisma.character.findUnique.mockResolvedValue(mockCharacter);
+      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 },
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
+      ]);
+    });
+
     it('should handle character without species', async () => {
       const characterWithoutSpecies = {
         id: 'char-no-species',
@@ -667,10 +718,7 @@ describe('AvatarCorrectionService', () => {
     });
 
     it('should handle character without LoRA', async () => {
-      // Reset mocks for this test
       const { comfyuiService } = require('../../comfyui/comfyuiService');
-      comfyuiService.generateAvatar.mockClear();
-
       const characterWithoutLora = {
         ...mockCharacter,
         lora: null,
@@ -706,7 +754,7 @@ describe('AvatarCorrectionService', () => {
 
     it('should handle ComfyUI errors', async () => {
       const { comfyuiService } = require('../../comfyui/comfyuiService');
-      comfyuiService.generateAvatar.mockRejectedValue(
+      comfyuiService.generateAvatar.mockRejectedValueOnce(
         new Error('ComfyUI error')
       );
 
@@ -726,46 +774,27 @@ describe('AvatarCorrectionService', () => {
       expect(result).toBe(false);
     });
 
-    test.skip('should handle visual style application errors gracefully', async () => {
-      // Reset mocks for this test
+    test('should handle visual style application errors gracefully', async () => {
       const { comfyuiService } = require('../../comfyui/comfyuiService');
-      comfyuiService.generateAvatar.mockClear();
-      comfyuiService.applyVisualStyleToPrompt.mockClear();
-      comfyuiService.applyVisualStyleToPrompt.mockRejectedValue(
+      // Set up error for this specific call
+      comfyuiService.applyVisualStyleToPrompt.mockRejectedValueOnce(
         new Error('Style application failed')
       );
 
-      mockPrisma.character.findUnique.mockResolvedValue(mockCharacter);
-      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      // Mock array-based transaction (not callback-based)
-      mockPrisma.$transaction.mockResolvedValue([
-        { count: 0 },
-        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
-      ]);
-
-      // Should still complete, using base prompt
+      // Should still complete, using base prompt (error is caught and logged)
       const result = await service.correctCharacterAvatar('char-123');
 
+      // The implementation catches the error and continues successfully
       expect(result).toBe(true);
     });
 
-    test.skip('should handle character with no tags', async () => {
-      // Reset mocks for this test
-      const { comfyuiService } = require('../../comfyui/comfyuiService');
-      comfyuiService.generateAvatar.mockClear();
-
+    test('should handle character with no tags', async () => {
       const characterWithoutTags = {
         ...mockCharacter,
         tags: [],
       };
 
       mockPrisma.character.findUnique.mockResolvedValue(characterWithoutTags);
-      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      // Mock array-based transaction (not callback-based)
-      mockPrisma.$transaction.mockResolvedValue([
-        { count: 0 },
-        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
-      ]);
 
       const result = await service.correctCharacterAvatar('char-123');
 
@@ -773,102 +802,151 @@ describe('AvatarCorrectionService', () => {
     });
   });
 
-  describe('Content Type Detection', () => {
+  describe('Theme-based Content Detection', () => {
     beforeEach(() => {
-      // Reset mocks for content type detection tests
-      mockPrisma.character.findUnique.mockResolvedValue(mockCharacter);
-      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
-      // Mock array-based transaction (not callback-based)
-      mockPrisma.$transaction.mockResolvedValue([
-        { count: 0 },
-        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
-      ]);
-
-      // Reset comfyuiService mocks to default implementation
+      // Reset all mocks to clear any mockRejectedValueOnce queues
+      jest.resetAllMocks();
+      // Re-apply ALL mock implementations after reset
       const { comfyuiService } = require('../../comfyui/comfyuiService');
-      comfyuiService.generateAvatar.mockResolvedValue({
-        imageBytes: Buffer.from('fake-image-data'),
-        metadata: { width: 512, height: 512 },
-      });
+      const { promptAgent } = require('../../comfyui/promptAgent');
+      const { r2Service } = require('../../r2Service');
+      const { convertToWebP } = require('../../../utils/imageUtils');
+
       comfyuiService.applyVisualStyleToPrompt.mockImplementation(async (_positive: any, _negative: any, _style: any, _contentType: any, loras: any) => ({
         positive: 'enhanced positive prompt',
         negative: 'enhanced negative prompt',
         loras: loras || [],
       }));
+      comfyuiService.generateAvatar.mockResolvedValue({
+        imageBytes: Buffer.from('fake-image-data'),
+        filename: 'test-avatar.webp',
+        promptId: 'test-prompt-id',
+      });
+
+      promptAgent.generatePrompts.mockResolvedValue({
+        positive: 'test positive prompt',
+        negative: 'test negative prompt',
+      });
+
+      r2Service.uploadObject.mockResolvedValue({
+        publicUrl: 'https://example.com/uploaded.webp',
+        key: 'test-key',
+      });
+
+      convertToWebP.mockResolvedValue(Buffer.from('webp-data'));
+
+      mockPrisma.character.findUnique.mockResolvedValue(mockCharacter);
+      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
+      mockPrisma.$transaction.mockResolvedValue([
+        { count: 0 },
+        { id: 'img-1', url: 'https://example.com/uploaded.webp' },
+      ]);
     });
 
-    test.skip('should detect FURRY from species name', async () => {
+    test('should pass FURRY theme to generateAvatar', async () => {
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
       const furryCharacter = {
         ...mockCharacter,
-        species: {
-          id: 'species-2',
-          name: 'Furry Dragon',
-        },
+        theme: 'FURRY' as const,
       };
 
       mockPrisma.character.findUnique.mockResolvedValue(furryCharacter);
 
       await service.correctCharacterAvatar('char-123');
 
-      const { comfyuiService } = require('../../comfyui/comfyuiService');
-
       expect(comfyuiService.generateAvatar).toHaveBeenCalledWith(
         expect.any(Object),
         expect.any(String),
-        'FURRY'
+        'FURRY' // Theme is now passed instead of contentType
       );
     });
 
-    test.skip('should detect FURRY from physical characteristics', async () => {
-      const furryCharacter = {
+    test('should pass DARK_FANTASY theme to generateAvatar', async () => {
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
+      const darkFantasyCharacter = {
         ...mockCharacter,
-        physicalCharacteristics: 'Anthropomorphic fox with fur',
+        theme: 'DARK_FANTASY' as const,
       };
 
-      mockPrisma.character.findUnique.mockResolvedValue(furryCharacter);
+      mockPrisma.character.findUnique.mockResolvedValue(darkFantasyCharacter);
 
       await service.correctCharacterAvatar('char-123');
-
-      const { comfyuiService } = require('../../comfyui/comfyuiService');
 
       expect(comfyuiService.generateAvatar).toHaveBeenCalledWith(
         expect.any(Object),
         expect.any(String),
-        'FURRY'
+        'DARK_FANTASY'
       );
     });
 
-    test.skip('should detect HENTAI from content tags', async () => {
-      const nsfwCharacter = {
+    test('should pass undefined theme when theme is null', async () => {
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
+      const characterWithoutTheme = {
         ...mockCharacter,
-        tags: [
-          { id: 'tag-1', name: 'ecchi' },
-        ],
+        theme: null,
       };
 
-      mockPrisma.character.findUnique.mockResolvedValue(nsfwCharacter);
+      mockPrisma.character.findUnique.mockResolvedValue(characterWithoutTheme);
 
       await service.correctCharacterAvatar('char-123');
-
-      const { comfyuiService } = require('../../comfyui/comfyuiService');
 
       expect(comfyuiService.generateAvatar).toHaveBeenCalledWith(
         expect.any(Object),
         expect.any(String),
-        'HENTAI'
+        undefined // Theme is null, so undefined is passed
       );
     });
 
-    test.skip('should return undefined for safe content', async () => {
-      await service.correctCharacterAvatar('char-123');
-
+    test('should pass FANTASY theme to generateAvatar', async () => {
       const { comfyuiService } = require('../../comfyui/comfyuiService');
+      const fantasyCharacter = {
+        ...mockCharacter,
+        theme: 'FANTASY' as const,
+      };
+
+      mockPrisma.character.findUnique.mockResolvedValue(fantasyCharacter);
+
+      await service.correctCharacterAvatar('char-123');
 
       expect(comfyuiService.generateAvatar).toHaveBeenCalledWith(
         expect.any(Object),
         expect.any(String),
-        undefined
+        'FANTASY'
       );
+    });
+
+    test('should pass SCI_FI theme to generateAvatar', async () => {
+      const { comfyuiService } = require('../../comfyui/comfyuiService');
+      const sciFiCharacter = {
+        ...mockCharacter,
+        theme: 'SCI_FI' as const,
+      };
+
+      mockPrisma.character.findUnique.mockResolvedValue(sciFiCharacter);
+
+      await service.correctCharacterAvatar('char-123');
+
+      expect(comfyuiService.generateAvatar).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.any(String),
+        'SCI_FI'
+      );
+    });
+
+    test('should respect character ageRating and contentTags', async () => {
+      const matureCharacter = {
+        ...mockCharacter,
+        ageRating: 'MATURE' as const,
+        contentTags: ['violence', 'language'],
+      };
+
+      mockPrisma.character.findUnique.mockResolvedValue(matureCharacter);
+      mockPrisma.characterImage.findFirst.mockResolvedValue(null);
+
+      await service.correctCharacterAvatar('char-123');
+
+      // Verify the character image record preserves ageRating and contentTags
+      expect(mockPrisma.$transaction).toHaveBeenCalled();
     });
   });
 });

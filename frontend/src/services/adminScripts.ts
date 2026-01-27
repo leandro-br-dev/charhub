@@ -53,4 +53,12 @@ export const adminScriptsService = {
     const response = await api.get(`${API_PREFIX}/correction-stats`);
     return { data: response.data };
   },
+
+  /**
+   * Trigger character generation script
+   */
+  async triggerCharacterGeneration(count: number): Promise<{ data: TriggerScriptResponse }> {
+    const response = await api.post(`${API_PREFIX}/trigger-batch`, { count });
+    return { data: response.data };
+  },
 };

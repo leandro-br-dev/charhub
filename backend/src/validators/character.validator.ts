@@ -15,7 +15,7 @@ const characterBaseSchema = z.object({
   gender: z.string().max(50).optional().nullable(),
   species: z.string().max(100).optional().nullable(),
   style: z.nativeEnum(VisualStyle).default(VisualStyle.ANIME).optional().nullable(),
-  theme: z.nativeEnum(Theme).default(Theme.DARK_FANTASY).optional().nullable(),
+  theme: z.nativeEnum(Theme).default(Theme.FANTASY).optional().nullable(),
   reference: z.string().max(200).optional().nullable(),
   physicalCharacteristics: z.string().max(5000).optional().nullable(),
   personality: z.string().max(5000).optional().nullable(),

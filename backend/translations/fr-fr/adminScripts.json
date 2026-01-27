@@ -28,14 +28,21 @@
         "success": "Le script de correction de données a démarré avec succès",
         "error": "Échec du démarrage du script de correction de données"
       },
+      "generation": {
+        "name": "Génération de Personnages",
+        "description": "Génère des personnages automatiquement à partir d'images sélectionnées",
+        "success": "Génération de personnages démarrée avec succès",
+        "error": "Échec du démarrage de la génération de personnages"
+      },
       "lastRun": "Dernière exécution",
       "run": "Exécuter le script",
       "running": "En cours d'exécution...",
       "moreComing": "D'autres scripts seront bientôt disponibles...",
-      "records": "enregistrements"
+      "records": "enregistrements",
+      "characters": "personnages",
+      "limit": "Limite d'enregistrements",
+      "limitPlaceholder": "Nombre d'enregistrements à traiter (1-1000)"
     },
-    "refresh": "Actualiser les statistiques",
-    "limit": "Limite d'enregistrements",
-    "limitPlaceholder": "Nombre d'enregistrements à traiter (1-1000)"
+    "refresh": "Actualiser les statistiques"
   }
 }
