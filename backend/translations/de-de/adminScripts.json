@@ -39,10 +39,10 @@
       "running": "Wird ausgeführt...",
       "moreComing": "Weitere Skripte folgen in Kürze...",
       "records": "Einträge",
-      "characters": "Charaktere"
+      "characters": "Charaktere",
+      "limit": "Eintragslimit",
+      "limitPlaceholder": "Anzahl der zu verarbeitenden Einträge (1-1000)"
     },
-    "refresh": "Statistiken aktualisieren",
-    "limit": "Eintragslimit",
-    "limitPlaceholder": "Anzahl der zu verarbeitenden Einträge (1-1000)"
+    "refresh": "Statistiken aktualisieren"
   }
 }

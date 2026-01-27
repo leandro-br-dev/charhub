@@ -39,10 +39,10 @@
       "running": "実行中...",
       "moreComing": "他のスクリプトも近日公開予定です...",
       "records": "レコード",
-      "characters": "キャラクター"
+      "characters": "キャラクター",
+      "limit": "レコード制限",
+      "limitPlaceholder": "処理するレコード数（1-1000）"
     },
-    "refresh": "統計を更新",
-    "limit": "レコード制限",
-    "limitPlaceholder": "処理するレコード数（1-1000）"
+    "refresh": "統計を更新"
   }
 }

@@ -39,10 +39,10 @@
       "running": "Running...",
       "moreComing": "More scripts coming soon...",
       "records": "records",
-      "characters": "characters"
+      "characters": "characters",
+      "limit": "Record Limit",
+      "limitPlaceholder": "Number of records to process (1-1000)"
     },
-    "refresh": "Refresh Statistics",
-    "limit": "Record Limit",
-    "limitPlaceholder": "Number of records to process (1-1000)"
+    "refresh": "Refresh Statistics"
   }
 }

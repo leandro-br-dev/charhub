@@ -531,7 +531,7 @@ model Character {
   speciesId String? // Reference to Species table
   species   Species? @relation(fields: [speciesId], references: [id], onDelete: SetNull)
   style     VisualStyle? @default(ANIME) // Visual art style preference
-  theme     Theme? @default(DARK_FANTASY) // Content type/theme
+  theme     Theme? @default(FANTASY) // Content type/theme
   reference String? // Source reference (e.g., "One Piece", "Marvel Comics")
 
   // Visual and descriptive

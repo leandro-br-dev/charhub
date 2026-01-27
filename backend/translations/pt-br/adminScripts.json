@@ -39,10 +39,10 @@
       "running": "Executando...",
       "moreComing": "Mais scripts em breve...",
       "records": "registros",
-      "characters": "personagens"
+      "characters": "personagens",
+      "limit": "Limite de Registros",
+      "limitPlaceholder": "Número de registros para processar (1-1000)"
     },
-    "refresh": "Atualizar Estatísticas",
-    "limit": "Limite de Registros",
-    "limitPlaceholder": "Número de registros para processar (1-1000)"
+    "refresh": "Atualizar Estatísticas"
   }
 }

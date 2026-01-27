@@ -39,10 +39,10 @@
       "running": "正在运行...",
       "moreComing": "更多脚本即将推出...",
       "records": "条记录",
-      "characters": "个角色"
+      "characters": "个角色",
+      "limit": "记录限制",
+      "limitPlaceholder": "要处理的记录数量 (1-1000)"
     },
-    "refresh": "刷新统计数据",
-    "limit": "记录限制",
-    "limitPlaceholder": "要处理的记录数量 (1-1000)"
+    "refresh": "刷新统计数据"
   }
 }

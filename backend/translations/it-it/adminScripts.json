@@ -39,10 +39,10 @@
       "running": "In esecuzione...",
       "moreComing": "Altri script in arrivo...",
       "records": "record",
-      "characters": "personaggi"
+      "characters": "personaggi",
+      "limit": "Limite Record",
+      "limitPlaceholder": "Numero di record da elaborare (1-1000)"
     },
-    "refresh": "Aggiorna Statistiche",
-    "limit": "Limite Record",
-    "limitPlaceholder": "Numero di record da elaborare (1-1000)"
+    "refresh": "Aggiorna Statistiche"
   }
 }

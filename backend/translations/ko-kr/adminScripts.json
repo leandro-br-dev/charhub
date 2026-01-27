@@ -39,10 +39,10 @@
       "running": "실행 중...",
       "moreComing": "더 많은 스크립트가 곧 추가될 예정입니다...",
       "records": "건",
-      "characters": "캐릭터"
+      "characters": "캐릭터",
+      "limit": "기록 제한",
+      "limitPlaceholder": "처리할 기록 수 (1-1000)"
     },
-    "refresh": "통계 새로고침",
-    "limit": "기록 제한",
-    "limitPlaceholder": "처리할 기록 수 (1-1000)"
+    "refresh": "통계 새로고침"
   }
 }
