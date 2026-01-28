@@ -3,8 +3,21 @@ import { render, screen } from '@testing-library/react';
 import Dashboard from '../index';
 import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import i18n from 'i18next';
 import { ToastProvider } from '../../../contexts/ToastContext';
+
+// Create QueryClient for tests
+const createQueryClient = () => new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
 
 // Create test i18n instance
 const testI18n = i18n.createInstance();
@@ -30,13 +43,41 @@ vi.mock('../../../hooks/useAuth', () => ({
   useAuth: () => mockUseAuth(),
 }));
 
+// Mock characterService to avoid actual API calls
+vi.mock('../../../services/characterService', () => ({
+  characterService: {
+    getCharactersForDashboard: vi.fn(() => Promise.resolve({
+      characters: [],
+      hasMore: false,
+      totalCount: 0,
+    })),
+    getSpeciesFilterOptions: vi.fn(() => Promise.resolve([])),
+    getGenderFilterOptions: vi.fn(() => Promise.resolve([])),
+    getTagFilterOptions: vi.fn(() => Promise.resolve([])),
+    getAgeRatingFilterOptions: vi.fn(() => Promise.resolve([])),
+  },
+}));
+
+// Mock react-router-dom's navigation
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => vi.fn(),
+    useLocation: () => ({ pathname: '/' }),
+  };
+});
+
 const renderWithProviders = (component: React.ReactElement) => {
+  const queryClient = createQueryClient();
   return render(
-    <BrowserRouter>
-      <I18nextProvider i18n={testI18n}>
-        <ToastProvider>{component}</ToastProvider>
-      </I18nextProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <I18nextProvider i18n={testI18n}>
+          <ToastProvider>{component}</ToastProvider>
+        </I18nextProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 };
 
