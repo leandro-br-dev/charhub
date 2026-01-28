@@ -67,42 +67,31 @@ fi
 
 echo -e "${GREEN}✓ Source database accessible${NC}"
 
-# Verify source has data
+# Verify source has data (both users AND characters)
 echo "Verifying source has data..."
 USER_COUNT=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$SOURCE_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"User\";" 2>/dev/null | tr -d ' ')
+CHAR_COUNT=$(PGPASSWORD=charhub_dev_password psql -h localhost -p "$SOURCE_PORT" -U charhub -d charhub_db -t -c "SELECT COUNT(*) FROM \"Character\";" 2>/dev/null | tr -d ' ')
 
-if [ -z "$USER_COUNT" ] || [ "$USER_COUNT" -eq 0 ]; then
-  echo -e "${YELLOW}⚠️  WARNING: Source database appears to be empty (0 users)${NC}"
-  read -p "Continue anyway? (y/N): " -n 1 -r
-  echo
-  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo "Aborted."
-    exit 1
-  fi
-else
-  echo -e "${GREEN}✓ Source has ${USER_COUNT} users${NC}"
-fi
+echo -e "${GREEN}✓ Source has ${USER_COUNT} users and ${CHAR_COUNT} characters${NC}"
 
-echo ""
-
-# ============================================================================
-# Confirm with User
-# ============================================================================
-
-echo -e "${YELLOW}⚠️  WARNING: This will REPLACE all data in ${DEST_ENV} database${NC}"
-echo ""
-echo "Source: ${SOURCE_ENV} (localhost:${SOURCE_PORT})"
-echo "Destination: ${DEST_ENV} (${DEST_PROJECT_PATH})"
-echo ""
-echo "Current ${DEST_ENV} data will be lost!"
-echo ""
-read -p "Continue? (yes/NO): " -r
-
-if [ "$REPLY" != "yes" ]; then
-  echo "Aborted."
+# Check if database has enough data (minimum 10 characters)
+if [ "$CHAR_COUNT" -lt 10 ]; then
+  echo ""
+  echo -e "${RED}❌ ERROR: Source database is incomplete (${CHAR_COUNT} characters < 10 minimum)${NC}"
+  echo ""
+  echo "This likely means the source environment is in 'test' mode."
+  echo "Please switch the source to 'populated' mode first:"
+  echo "  cd /root/projects/charhub-${SOURCE_ENV}"
+  echo "  ./scripts/database/db-switch.sh populated"
+  echo ""
+  echo "Minimum requirements for a valid populated database:"
+  echo "  • 10+ characters"
+  echo "  • 2+ users"
+  echo ""
   exit 1
 fi
 
+echo -e "${GREEN}✓ Database is complete and ready to copy${NC}"
 echo ""
 
 # ============================================================================
