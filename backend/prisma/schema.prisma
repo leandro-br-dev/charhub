@@ -62,16 +62,16 @@ enum Visibility {
 
 // Visual style options for characters
 enum VisualStyle {
-  ANIME        // Japanese anime style (default)
-  REALISTIC    // Realistic/photorealistic style
+  ANIME // Japanese anime style (default)
+  REALISTIC // Realistic/photorealistic style
   SEMI_REALISTIC // Semi-realistic art style
-  CARTOON      // Western cartoon style
-  MANGA        // Japanese manga/comic style
-  MANHWA       // Korean manhwa/webtoon style
-  COMIC        // Western comic book style
-  CHIBI        // Super deformed/cute style
-  PIXEL_ART    // Pixel art/retro game style
-  THREE_D      // 3D rendered style
+  CARTOON // Western cartoon style
+  MANGA // Japanese manga/comic style
+  MANHWA // Korean manhwa/webtoon style
+  COMIC // Western comic book style
+  CHIBI // Super deformed/cute style
+  PIXEL_ART // Pixel art/retro game style
+  THREE_D // 3D rendered style
 }
 
 // Character gender options (standardized in English)
@@ -89,27 +89,27 @@ enum CharacterGender {
 
 // Model type for style resources (checkpoints and LoRAs)
 enum ModelType {
-  CHECKPOINT     // Base model (SDXL, SD1.5, etc)
-  LORA_STYLE     // Style enhancement LoRA (anime screencap, realistic, etc)
-  LORA_CONTENT   // Content-specific LoRA (furry, hentai, etc)
+  CHECKPOINT // Base model (SDXL, SD1.5, etc)
+  LORA_STYLE // Style enhancement LoRA (anime screencap, realistic, etc)
+  LORA_CONTENT // Content-specific LoRA (furry, hentai, etc)
 }
 
 // Content type for checkpoint overrides
 enum ContentType {
-  GENERAL     // Default content
-  FURRY       // Anthropomorphic characters
-  HENTAI      // Adult anime content
-  FANTASY     // Fantasy themes
-  SCI_FI      // Science fiction themes
+  GENERAL // Default content
+  FURRY // Anthropomorphic characters
+  HENTAI // Adult anime content
+  FANTASY // Fantasy themes
+  SCI_FI // Science fiction themes
 }
 
 // Theme enum for style + theme combinations
 enum Theme {
-  DARK_FANTASY  // Dark fantasy content (current default)
-  FANTASY       // High fantasy, bright, magical
-  FURRY         // Anthropomorphic characters
-  SCI_FI        // Science fiction
-  GENERAL       // General purpose
+  DARK_FANTASY // Dark fantasy content (current default)
+  FANTASY // High fantasy, bright, magical
+  FURRY // Anthropomorphic characters
+  SCI_FI // Science fiction
+  GENERAL // General purpose
 }
 
 model User {
@@ -140,32 +140,32 @@ model User {
 
   // Relations
   createdCharacters Character[] @relation("CharacterCreator")
-  stories           Story[]      @relation("StoryAuthor")
+  stories           Story[]     @relation("StoryAuthor")
   createdAttires    Attire[]    @relation("AttireCreator")
 
   // Chat system relations
-  assistants            Assistant[]               @relation("UserAssistants")
-  conversations         Conversation[]            @relation("UserConversations")
+  assistants                 Assistant[]               @relation("UserAssistants")
+  conversations              Conversation[]            @relation("UserConversations")
   conversationParticipations ConversationParticipant[] @relation("UserParticipations")
 
   // Multi-user chat relations
-  ownedConversations  Conversation[] @relation("ConversationOwner")
-  memberships         UserConversationMembership[] @relation("ConversationMemberships")
-  sentInvites         UserConversationMembership[] @relation("SentInvites")
+  ownedConversations Conversation[]               @relation("ConversationOwner")
+  memberships        UserConversationMembership[] @relation("ConversationMemberships")
+  sentInvites        UserConversationMembership[] @relation("SentInvites")
 
   // Favorites
   favoriteCharacters FavoriteCharacter[] @relation("UserFavoriteCharacters")
-  storyFavorites      StoryFavorite[]     @relation("UserStoryFavorites")
+  storyFavorites     StoryFavorite[]     @relation("UserStoryFavorites")
 
   // Credit and subscription relations
-  creditTransactions CreditTransaction[] @relation("UserCreditTransactions")
-  usageLogs          UsageLog[]          @relation("UserUsageLogs")
+  creditTransactions CreditTransaction[]  @relation("UserCreditTransactions")
+  usageLogs          UsageLog[]           @relation("UserUsageLogs")
   monthlyBalances    UserMonthlyBalance[] @relation("UserMonthlyBalances")
-  userPlans          UserPlan[]          @relation("UserSubscriptionPlans")
-  plusAccessGrants   UserPlusAccess[]    @relation("UserPlusAccessGrants")
+  userPlans          UserPlan[]           @relation("UserSubscriptionPlans")
+  plusAccessGrants   UserPlusAccess[]     @relation("UserPlusAccessGrants")
 
   // LLM cost tracking relations
-  llmUsageLogs       LLMUsageLog[]       @relation("UserLLMUsageLogs")
+  llmUsageLogs LLMUsageLog[] @relation("UserLLMUsageLogs")
 
   @@unique([provider, providerAccountId])
 }
@@ -209,12 +209,12 @@ enum StickerStatus {
 
 // Types of images associated with a character
 enum ImageType {
-  AVATAR     // Profile picture (square) - primary character image
-  COVER      // Featured portrait image
-  SAMPLE     // User-provided reference image for generation
-  STICKER    // Expression images with transparent background
-  OTHER      // Miscellaneous images
-  REFERENCE  // AI-generated reference image (content field describes view: avatar, front, side, back)
+  AVATAR // Profile picture (square) - primary character image
+  COVER // Featured portrait image
+  SAMPLE // User-provided reference image for generation
+  STICKER // Expression images with transparent background
+  OTHER // Miscellaneous images
+  REFERENCE // AI-generated reference image (content field describes view: avatar, front, side, back)
 }
 
 // Tag type classification
@@ -269,18 +269,18 @@ model Lora {
 
 // Visual Style Configuration - manages checkpoints and LoRAs per visual style
 model VisualStyleConfig {
-  id   String      @id @default(uuid())
-  style VisualStyle @unique // ANIME, REALISTIC, etc
-  name String // Display name
+  id          String      @id @default(uuid())
+  style       VisualStyle @unique // ANIME, REALISTIC, etc
+  name        String // Display name
   description String? // User-facing description
-  isActive Boolean @default(true)
+  isActive    Boolean     @default(true)
 
   // Theme support
   supportedThemes Theme[] // Themes this style supports
 
   // Default checkpoint for this style
   defaultCheckpointId String?
-  defaultCheckpoint StyleCheckpoint? @relation("DefaultCheckpoint", fields: [defaultCheckpointId], references: [id])
+  defaultCheckpoint   StyleCheckpoint? @relation("DefaultCheckpoint", fields: [defaultCheckpointId], references: [id])
 
   // Content-specific overrides
   contentCheckpoints StyleContentCheckpoint[]
@@ -301,22 +301,22 @@ model VisualStyleConfig {
 
 // Stable Diffusion Checkpoints for visual styles
 model StyleCheckpoint {
-  id   String   @id @default(uuid())
-  name String // e.g., "RAMTHRUST'S-NSFW-PINK-ALCHEMY-MIX"
-  filename String @unique // e.g., "ramthrustsNSFWPINK_alchemyMix176.safetensors"
-  path String // Full path in ComfyUI
+  id         String    @id @default(uuid())
+  name       String // e.g., "RAMTHRUST'S-NSFW-PINK-ALCHEMY-MIX"
+  filename   String    @unique // e.g., "ramthrustsNSFWPINK_alchemyMix176.safetensors"
+  path       String // Full path in ComfyUI
   civitaiUrl String? // Reference URL
-  modelType ModelType // CHECKPOINT
+  modelType  ModelType // CHECKPOINT
 
   // What styles use this checkpoint?
-  defaultForStyles VisualStyleConfig[] @relation("DefaultCheckpoint")
-  contentMappings StyleContentCheckpoint[]
-  themeMappings StyleThemeCheckpoint[]
+  defaultForStyles VisualStyleConfig[]      @relation("DefaultCheckpoint")
+  contentMappings  StyleContentCheckpoint[]
+  themeMappings    StyleThemeCheckpoint[]
 
   // Configuration
   config Json? // { sampler: "DPM++ 2M Karras", cfg: 6, steps: 30 }
 
-  isActive Boolean @default(true)
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -326,25 +326,25 @@ model StyleCheckpoint {
 
 // LoRA Models for visual styles
 model StyleLora {
-  id   String   @id @default(uuid())
-  name String // e.g., "Velvet's Mythic Fantasy Styles"
-  filename String @unique // e.g., "iLLMythD4rkL1nesV2.safetensors"
-  path String // Full path in ComfyUI (legacy, for reference)
+  id               String    @id @default(uuid())
+  name             String // e.g., "Velvet's Mythic Fantasy Styles"
+  filename         String    @unique // e.g., "iLLMythD4rkL1nesV2.safetensors"
+  path             String // Full path in ComfyUI (legacy, for reference)
   filepathRelative String? // Relative path from models/ folder, e.g., "loras/Illustrious/Style/xxx.safetensors"
-  civitaiUrl String?
-  modelType ModelType // LORA_STYLE or LORA_CONTENT
+  civitaiUrl       String?
+  modelType        ModelType // LORA_STYLE or LORA_CONTENT
 
   // Trigger words (comma-separated)
   triggerWords String? // e.g., "D4rkL1nes"
 
   // What styles use this LoRA?
-  styleMappings StyleLoraMapping[]
+  styleMappings  StyleLoraMapping[]
   themeOverrides StyleThemeCheckpoint[] @relation("ThemeLora")
 
   // Configuration
   weight Float @default(1.0) // Default weight (0.0-1.5)
 
-  isActive Boolean @default(true)
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -354,13 +354,13 @@ model StyleLora {
 
 // Maps LoRAs to Visual Styles
 model StyleLoraMapping {
-  id   String @id @default(uuid())
+  id String @id @default(uuid())
 
-  styleId String
+  styleId     String
   styleConfig VisualStyleConfig @relation(fields: [styleId], references: [id], onDelete: Cascade)
 
   loraId String
-  lora StyleLora @relation(fields: [loraId], references: [id], onDelete: Cascade)
+  lora   StyleLora @relation(fields: [loraId], references: [id], onDelete: Cascade)
 
   // Override default weight for this style
   weight Float?
@@ -375,13 +375,13 @@ model StyleLoraMapping {
 
 // Content-specific checkpoint overrides
 model StyleContentCheckpoint {
-  id   String @id @default(uuid())
+  id String @id @default(uuid())
 
-  styleId String
+  styleId     String
   styleConfig VisualStyleConfig @relation(fields: [styleId], references: [id], onDelete: Cascade)
 
   checkpointId String
-  checkpoint StyleCheckpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
+  checkpoint   StyleCheckpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
 
   contentType ContentType // FURRY, HENTAI, etc
 
@@ -393,18 +393,18 @@ model StyleContentCheckpoint {
 
 // Theme-specific checkpoint overrides for Style + Theme combinations
 model StyleThemeCheckpoint {
-  id   String @id @default(uuid())
+  id String @id @default(uuid())
 
-  styleId String
+  styleId     String
   styleConfig VisualStyleConfig @relation(fields: [styleId], references: [id], onDelete: Cascade)
 
   checkpointId String
-  checkpoint StyleCheckpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
+  checkpoint   StyleCheckpoint @relation(fields: [checkpointId], references: [id], onDelete: Cascade)
 
   theme Theme // DARK_FANTASY, FANTASY, FURRY, etc
 
   // Optional: LoRA override for this theme
-  loraId String?
+  loraId       String?
   loraOverride StyleLora? @relation("ThemeLora", fields: [loraId], references: [id], onDelete: SetNull)
 
   // Configuration
@@ -457,10 +457,10 @@ model Attire {
 
 // Tag system for categorization
 model Tag {
-  id   String  @id @default(uuid())
-  name String // Tag name in English (used for search/filtering)
+  id          String  @id @default(uuid())
+  name        String // Tag name in English (used for search/filtering)
   description String? @db.Text // Description of the tag
-  type TagType // What this tag classifies (character, story, asset, etc.)
+  type        TagType // What this tag classifies (character, story, asset, etc.)
 
   // Content classification (mandatory age rating)
   ageRating AgeRating @default(L) // Minimum age rating required
@@ -490,23 +490,23 @@ model Tag {
 
 // Species system for character classification
 model Species {
-  id   String  @id @default(uuid())
-  name String  @unique // Species name in English (used for search/filtering)
+  id   String @id @default(uuid())
+  name String @unique // Species name in English (used for search/filtering)
 
   // Content classification (optional, for species that might be restricted)
-  ageRating AgeRating @default(L) // Minimum age rating required
+  ageRating   AgeRating    @default(L) // Minimum age rating required
   contentTags ContentTag[] // Additional content warnings if needed
 
   // Categorization for filtering
   category String? // e.g., "humanoid", "beast", "elemental", "undead", "mythical", "robot"
 
   // Translation and metadata
-  description String? @db.Text // Description of the species
+  description          String? @db.Text // Description of the species
   originalLanguageCode String? // Language code if translated from another language
-  weight      Int     @default(1) // Priority/popularity weight
+  weight               Int     @default(1) // Priority/popularity weight
 
   // Search optimization
-  searchable  Boolean @default(true) // Whether this species appears in searches
+  searchable Boolean @default(true) // Whether this species appears in searches
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -566,12 +566,12 @@ model Character {
   updatedAt DateTime @updatedAt
 
   // Relations
-  storyCharacters StoryCharacter[] @relation("StoryCharacters")
+  storyCharacters StoryCharacter[]   @relation("StoryCharacters")
   attires         Attire[]           @relation("CharacterAttires")
   tags            Tag[]
   stickers        CharacterSticker[]
   images          CharacterImage[]
-  curatedFrom CuratedImage? // Source curated image if auto-generated
+  curatedFrom     CuratedImage? // Source curated image if auto-generated
 
   // Chat system relations
   assistantsUsingAsDefault   Assistant[]               @relation("AssistantDefaultCharacter")
@@ -611,9 +611,9 @@ model CharacterSticker {
 
 // Character images with per-image content classification
 model CharacterImage {
-  id          String      @id @default(uuid())
+  id          String    @id @default(uuid())
   characterId String
-  character   Character   @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
 
   type        ImageType
   url         String
@@ -625,7 +625,7 @@ model CharacterImage {
 
   // Content field for REFERENCE type: describes the view (avatar, front, side, back)
   // Can also be used for other types to store additional metadata
-  content     String?     @db.Text
+  content String? @db.Text
 
   // Per-image classification
   ageRating   AgeRating    @default(L)
@@ -633,7 +633,7 @@ model CharacterImage {
   description String?      @db.Text
 
   // Active image flag - only one active per type per character
-  isActive    Boolean      @default(false)
+  isActive Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -646,16 +646,16 @@ model CharacterImage {
 
 // Story-Character join model with role distinction
 model StoryCharacter {
-  id         String             @id @default(uuid())
-  storyId    String
-  story      Story              @relation("StoryCharacters", fields: [storyId], references: [id], onDelete: Cascade)
+  id          String             @id @default(uuid())
+  storyId     String
+  story       Story              @relation("StoryCharacters", fields: [storyId], references: [id], onDelete: Cascade)
   characterId String
-  character  Character          @relation("StoryCharacters", fields: [characterId], references: [id], onDelete: Cascade)
-  role       StoryCharacterRole @default(SECONDARY) // MAIN = played by user, SECONDARY = played by AI
-  order      Int                @default(0) // For ordering characters in the story
+  character   Character          @relation("StoryCharacters", fields: [characterId], references: [id], onDelete: Cascade)
+  role        StoryCharacterRole @default(SECONDARY) // MAIN = played by user, SECONDARY = played by AI
+  order       Int                @default(0) // For ordering characters in the story
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([storyId, characterId])
   @@index([storyId])
@@ -664,27 +664,27 @@ model StoryCharacter {
 }
 
 model Story {
-  id            String       @id @default(uuid())
-  title         String
-  synopsis      String?      @db.Text
-  initialText   String?      @db.Text
-  coverImage    String?
-  objectives    Json?
-  authorId      String
-  author        User         @relation("StoryAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  id              String           @id @default(uuid())
+  title           String
+  synopsis        String?          @db.Text
+  initialText     String?          @db.Text
+  coverImage      String?
+  objectives      Json?
+  authorId        String
+  author          User             @relation("StoryAuthor", fields: [authorId], references: [id], onDelete: Cascade)
   storyCharacters StoryCharacter[] @relation("StoryCharacters")
-  storyFavorites StoryFavorite[] @relation("StoryFavorites")
-  tags          Tag[]
-  ageRating     AgeRating    @default(L)
-  contentTags   ContentTag[]
-  visibility    Visibility   @default(PRIVATE)
+  storyFavorites  StoryFavorite[]  @relation("StoryFavorites")
+  tags            Tag[]
+  ageRating       AgeRating        @default(L)
+  contentTags     ContentTag[]
+  visibility      Visibility       @default(PRIVATE)
 
   // Translation versioning
-  contentVersion Int @default(1) // Increments when translatable content changes
+  contentVersion       Int     @default(1) // Increments when translatable content changes
   originalLanguageCode String? // ISO 639-1 code of original language
 
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   conversations Conversation[]
@@ -699,8 +699,8 @@ model StoryFavorite {
   storyId   String
   createdAt DateTime @default(now())
 
-  user      User     @relation("UserStoryFavorites", fields: [userId], references: [id], onDelete: Cascade)
-  story     Story    @relation("StoryFavorites", fields: [storyId], references: [id], onDelete: Cascade)
+  user  User  @relation("UserStoryFavorites", fields: [userId], references: [id], onDelete: Cascade)
+  story Story @relation("StoryFavorites", fields: [storyId], references: [id], onDelete: Cascade)
 
   @@unique([userId, storyId])
   @@index([userId])
@@ -763,8 +763,8 @@ model Conversation {
   settings Json? // Will store: { view, llm_settings, roleplay_specific, etc. }
 
   // Timestamps
-  lastMessageAt     DateTime? // Timestamp of last message (for sorting)
-  titleLastUpdatedAt DateTime? // When title was last changed
+  lastMessageAt       DateTime? // Timestamp of last message (for sorting)
+  titleLastUpdatedAt  DateTime? // When title was last changed
   memoryLastUpdatedAt DateTime? // When conversation memory was last updated
 
   createdAt DateTime @default(now())
@@ -775,12 +775,12 @@ model Conversation {
   owner  User   @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
 
   // Multi-user support
-  isMultiUser      Boolean @default(false)
-  maxUsers         Int     @default(1) // Limite de usuários humanos (1-4)
-  ownerUserId      String?
-  conversationOwner User?  @relation("ConversationOwner", fields: [ownerUserId], references: [id])
-  allowUserInvites Boolean @default(false) // Membros podem convidar?
-  requireApproval  Boolean @default(false) // Owner precisa aprovar joins?
+  isMultiUser       Boolean @default(false)
+  maxUsers          Int     @default(1) // Limite de usuários humanos (1-4)
+  ownerUserId       String?
+  conversationOwner User?   @relation("ConversationOwner", fields: [ownerUserId], references: [id])
+  allowUserInvites  Boolean @default(false) // Membros podem convidar?
+  requireApproval   Boolean @default(false) // Owner precisa aprovar joins?
 
   // Relations
   participants ConversationParticipant[]
@@ -806,31 +806,31 @@ enum SenderType {
 
 // Membership roles for multi-user conversations
 enum MembershipRole {
-  OWNER      // Criador, controle total
-  MODERATOR  // Pode kick, mute, invite
-  MEMBER     // Pode enviar mensagens
-  VIEWER     // Read-only
+  OWNER // Criador, controle total
+  MODERATOR // Pode kick, mute, invite
+  MEMBER // Pode enviar mensagens
+  VIEWER // Read-only
 }
 
 // User membership in multi-user conversations
 model UserConversationMembership {
-  id             String         @id @default(uuid())
+  id             String       @id @default(uuid())
   conversationId String
-  conversation   Conversation   @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   userId         String
-  user           User           @relation("ConversationMemberships", fields: [userId], references: [id], onDelete: Cascade)
+  user           User         @relation("ConversationMemberships", fields: [userId], references: [id], onDelete: Cascade)
 
   // Role and permissions
-  role           MembershipRole @default(MEMBER)
-  canWrite       Boolean        @default(true)  // Pode enviar mensagens?
-  canInvite      Boolean        @default(false) // Pode convidar outros?
-  canModerate    Boolean        @default(false) // Pode kick/mute?
+  role        MembershipRole @default(MEMBER)
+  canWrite    Boolean        @default(true) // Pode enviar mensagens?
+  canInvite   Boolean        @default(false) // Pode convidar outros?
+  canModerate Boolean        @default(false) // Pode kick/mute?
 
   // Membership metadata
-  joinedAt       DateTime       @default(now())
-  invitedBy      String?
-  inviter        User?          @relation("SentInvites", fields: [invitedBy], references: [id])
-  isActive       Boolean        @default(true)  // false = kicked/left
+  joinedAt  DateTime @default(now())
+  invitedBy String?
+  inviter   User?    @relation("SentInvites", fields: [invitedBy], references: [id])
+  isActive  Boolean  @default(true) // false = kicked/left
 
   @@unique([conversationId, userId])
   @@index([userId])
@@ -842,7 +842,7 @@ model UserConversationMembership {
 // ConversationParticipant represents an entity participating in a conversation
 // Can be: User, Character (acting directly), or Assistant (acting as a character)
 model ConversationParticipant {
-  id             String   @id @default(uuid())
+  id             String       @id @default(uuid())
   conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
@@ -867,7 +867,7 @@ model ConversationParticipant {
   // Optional: JSON config override for this specific participant in this conversation
   configOverride String? @db.Text // JSON string
 
-  joinedAt  DateTime @default(now())
+  joinedAt DateTime @default(now())
 
   @@index([conversationId])
   @@index([userId])
@@ -880,12 +880,12 @@ model ConversationParticipant {
 
 // Message represents a single message in a conversation
 model Message {
-  id             String   @id @default(uuid())
+  id             String       @id @default(uuid())
   conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   // Sender identification
-  senderId   String     // ID of the sender (User, Character, or Assistant)
+  senderId   String // ID of the sender (User, Character, or Assistant)
   senderType SenderType // Type of sender
 
   // Content
@@ -912,8 +912,8 @@ model Message {
 model FavoriteCharacter {
   id String @id @default(uuid())
 
-  userId      String
-  user        User      @relation("UserFavoriteCharacters", fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation("UserFavoriteCharacters", fields: [userId], references: [id], onDelete: Cascade)
 
   characterId String
   // Note: We don't add a relation to Character model to avoid circular dependency issues
@@ -932,11 +932,11 @@ model FavoriteCharacter {
 
 // Translation status for content translations
 enum TranslationStatus {
-  PENDING     // Translation in progress
-  ACTIVE      // Translation active and available
-  OUTDATED    // Original content was updated
-  FAILED      // Translation failed
-  REVIEWED    // Reviewed by human moderator
+  PENDING // Translation in progress
+  ACTIVE // Translation active and available
+  OUTDATED // Original content was updated
+  FAILED // Translation failed
+  REVIEWED // Reviewed by human moderator
 }
 
 // ContentTranslation stores translations of user-generated content
@@ -958,7 +958,7 @@ model ContentTranslation {
   // Translation metadata
   translationProvider String? // "gemini", "openai", "grok", "human"
   translationModel    String? // Model used: "gemini-2.5-flash-lite", etc.
-  confidence          Float?  // Confidence score (0-1)
+  confidence          Float? // Confidence score (0-1)
 
   // Quality control
   status     TranslationStatus @default(ACTIVE)
@@ -994,9 +994,9 @@ model ConversationMemory {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   // Memory content
-  summary        String       @db.Text // Resumo em prosa das mensagens compactadas
-  keyEvents      Json         // Array de eventos importantes estruturados
-  messageCount   Int          // Quantas mensagens foram resumidas neste snapshot
+  summary      String @db.Text // Resumo em prosa das mensagens compactadas
+  keyEvents    Json // Array de eventos importantes estruturados
+  messageCount Int // Quantas mensagens foram resumidas neste snapshot
 
   // Range of messages summarized
   startMessageId String? // ID da primeira mensagem resumida
@@ -1015,16 +1015,16 @@ model ConversationMemory {
 
 // Credit transactions log
 model CreditTransaction {
-  id                   String                @id @default(uuid())
-  userId               String
-  user                 User                  @relation("UserCreditTransactions", fields: [userId], references: [id], onDelete: Cascade)
-  transactionType      CreditTransactionType
-  amountCredits        Float
-  balanceAfter         Float?
-  notes                String?
-  relatedUsageLogId    String?
-  relatedPlanId        String?
-  timestamp            DateTime              @default(now())
+  id                String                @id @default(uuid())
+  userId            String
+  user              User                  @relation("UserCreditTransactions", fields: [userId], references: [id], onDelete: Cascade)
+  transactionType   CreditTransactionType
+  amountCredits     Float
+  balanceAfter      Float?
+  notes             String?
+  relatedUsageLogId String?
+  relatedPlanId     String?
+  timestamp         DateTime              @default(now())
 
   @@index([userId])
   @@index([userId, timestamp])
@@ -1034,32 +1034,32 @@ model CreditTransaction {
 
 // Subscription plans
 model Plan {
-  id                   String          @id @default(uuid())
-  tier                 PlanTier        @unique
-  name                 String
-  priceMonthly         Float
-  creditsPerMonth      Int
-  description          String?
-  features             Json?
-  isActive             Boolean         @default(true)
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  id              String   @id @default(uuid())
+  tier            PlanTier @unique
+  name            String
+  priceMonthly    Float
+  creditsPerMonth Int
+  description     String?
+  features        Json?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   // Translation support
-  originalLanguageCode String          @default("en-US")
-  contentVersion       Int             @default(1)
+  originalLanguageCode String @default("en-US")
+  contentVersion       Int    @default(1)
 
   // Multi-provider support
-  paymentProvider      PaymentProvider @default(STRIPE)
+  paymentProvider PaymentProvider @default(STRIPE)
 
   // PayPal (existing)
-  paypalPlanId         String?         @unique
+  paypalPlanId String? @unique
 
   // Stripe (new)
-  stripePriceId        String?         @unique
-  stripeProductId      String?
+  stripePriceId   String? @unique
+  stripeProductId String?
 
-  userPlans         UserPlan[]      @relation("PlanSubscriptions")
+  userPlans UserPlan[] @relation("PlanSubscriptions")
 
   @@index([tier])
   @@index([isActive])
@@ -1082,23 +1082,23 @@ model ServiceCreditCost {
 
 // Usage logs for tracking service consumption
 model UsageLog {
-  id                  String      @id @default(uuid())
+  id                  String    @id @default(uuid())
   userId              String
-  user                User        @relation("UserUsageLogs", fields: [userId], references: [id], onDelete: Cascade)
+  user                User      @relation("UserUsageLogs", fields: [userId], references: [id], onDelete: Cascade)
   conversationId      String?
-  serviceType         String      // Service identifier (e.g., "llm_chat_safe", "image_generation")
-  providerName        String?     // Provider (e.g., "openai", "gemini")
-  modelName           String?     // Model name (e.g., "gpt-4", "gemini-2.0-flash-exp")
+  serviceType         String // Service identifier (e.g., "llm_chat_safe", "image_generation")
+  providerName        String? // Provider (e.g., "openai", "gemini")
+  modelName           String? // Model name (e.g., "gpt-4", "gemini-2.0-flash-exp")
   inputTokens         Int?
   outputTokens        Int?
-  charactersProcessed Int?        // For TTS/STT services
+  charactersProcessed Int? // For TTS/STT services
   imagesProcessed     Int?
-  costUsd             Float?      // Cost in USD from provider
+  costUsd             Float? // Cost in USD from provider
   creditsConsumed     Float?
-  additionalMetadata  Json?       // Additional metadata
-  processed           Boolean     @default(false)
+  additionalMetadata  Json? // Additional metadata
+  processed           Boolean   @default(false)
   processedAt         DateTime?
-  timestamp           DateTime    @default(now())
+  timestamp           DateTime  @default(now())
 
   @@index([userId])
   @@index([userId, processed])
@@ -1128,30 +1128,30 @@ model UserMonthlyBalance {
 
 // User subscription to plans
 model UserPlan {
-  id                    String             @id @default(uuid())
-  userId                String
-  user                  User               @relation("UserSubscriptionPlans", fields: [userId], references: [id], onDelete: Cascade)
-  planId                String
-  plan                  Plan               @relation("PlanSubscriptions", fields: [planId], references: [id])
-  status                SubscriptionStatus @default(ACTIVE)
+  id     String             @id @default(uuid())
+  userId String
+  user   User               @relation("UserSubscriptionPlans", fields: [userId], references: [id], onDelete: Cascade)
+  planId String
+  plan   Plan               @relation("PlanSubscriptions", fields: [planId], references: [id])
+  status SubscriptionStatus @default(ACTIVE)
 
   // Multi-provider support
-  paymentProvider       PaymentProvider?
+  paymentProvider PaymentProvider?
 
   // PayPal (existing)
-  paypalSubscriptionId  String?            @unique
+  paypalSubscriptionId String? @unique
 
   // Stripe (new)
-  stripeSubscriptionId  String?            @unique
-  stripeCustomerId      String?
+  stripeSubscriptionId String? @unique
+  stripeCustomerId     String?
 
-  currentPeriodStart    DateTime
-  currentPeriodEnd      DateTime
-  cancelAtPeriodEnd     Boolean            @default(false)
-  canceledAt            DateTime?
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
-  lastCreditsGrantedAt  DateTime?
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean   @default(false)
+  canceledAt           DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  lastCreditsGrantedAt DateTime?
 
   @@index([userId])
   @@index([planId])
@@ -1204,7 +1204,7 @@ enum PlanTier {
 
 enum SubscriptionStatus {
   ACTIVE
-  CANCELLED    // British spelling to match code
+  CANCELLED // British spelling to match code
   EXPIRED
   PAYMENT_FAILED
 }
@@ -1221,50 +1221,50 @@ enum PaymentProvider {
 
 // Status of a curated image in the curation pipeline
 enum CurationStatus {
-  PENDING      // Awaiting classification
-  APPROVED     // Approved for generation
-  REJECTED     // Rejected (inappropriate content)
-  PROCESSING   // In generation
-  COMPLETED    // Character generated successfully
-  FAILED       // Generation failed
+  PENDING // Awaiting classification
+  APPROVED // Approved for generation
+  REJECTED // Rejected (inappropriate content)
+  PROCESSING // In generation
+  COMPLETED // Character generated successfully
+  FAILED // Generation failed
 }
 
 // Curated image from external sources (Civitai, etc.) for character generation
 model CuratedImage {
-  id              String   @id @default(uuid())
-  sourceUrl       String   @unique
-  sourceId        String?  // Civitai image ID
-  sourcePlatform  String   @default("civitai")
+  id             String  @id @default(uuid())
+  sourceUrl      String  @unique
+  sourceId       String? // Civitai image ID
+  sourcePlatform String  @default("civitai")
 
   // Metadata from source
-  tags            String[] // Source tags (e.g., Civitai tags)
-  sourceRating    Float?   // Rating original (1-5)
-  author          String?  // Artist original
-  license         String?  // License info
+  tags         String[] // Source tags (e.g., Civitai tags)
+  sourceRating Float? // Rating original (1-5)
+  author       String? // Artist original
+  license      String? // License info
 
   // Curation
-  status          CurationStatus @default(PENDING)
-  ageRating       AgeRating?
-  qualityScore    Float?   // Quality assessment (0-5)
-  contentTags     ContentTag[] // AI-generated content tags
-  description     String?  @db.Text // AI-generated description
+  status       CurationStatus @default(PENDING)
+  ageRating    AgeRating?
+  qualityScore Float? // Quality assessment (0-5)
+  contentTags  ContentTag[] // AI-generated content tags
+  description  String?        @db.Text // AI-generated description
 
   // Diversity tracking (for improved character generation variety)
-  gender          String?  // "male", "female", "non-binary", "unknown"
-  species         String?  // "human", "elf", "robot", "furry", "demon", "angel", etc.
+  gender  String? // "male", "female", "non-binary", "unknown"
+  species String? // "human", "elf", "robot", "furry", "demon", "angel", etc.
 
   // Storage
-  localPath       String?  // Temp storage path
-  uploadedToR2    Boolean  @default(false)
-  r2Url           String?
-  r2Key           String?
+  localPath    String? // Temp storage path
+  uploadedToR2 Boolean @default(false)
+  r2Url        String?
+  r2Key        String?
 
   // Processing
-  generatedCharId String?  @unique
+  generatedCharId String?    @unique
   generatedChar   Character? @relation(fields: [generatedCharId], references: [id], onDelete: SetNull)
 
   // Audit
-  createdAt       DateTime @default(now())
+  createdAt       DateTime  @default(now())
   processedAt     DateTime?
   rejectedAt      DateTime?
   rejectionReason String?
@@ -1276,24 +1276,24 @@ model CuratedImage {
 
 // Batch generation log for tracking automated character generation runs
 model BatchGenerationLog {
-  id                String   @id @default(uuid())
-  scheduledAt       DateTime
-  executedAt        DateTime @default(now())
-  completedAt       DateTime?
+  id          String    @id @default(uuid())
+  scheduledAt DateTime
+  executedAt  DateTime  @default(now())
+  completedAt DateTime?
 
   // Stats
-  targetCount       Int      // How many should be generated
-  successCount      Int      @default(0)
-  failureCount      Int      @default(0)
+  targetCount  Int // How many should be generated
+  successCount Int @default(0)
+  failureCount Int @default(0)
 
   // Details
-  selectedImages    String[] // IDs of the curated images selected
-  generatedCharIds  String[] // IDs of the characters generated
-  errors            Json?    // Errors encountered
+  selectedImages   String[] // IDs of the curated images selected
+  generatedCharIds String[] // IDs of the characters generated
+  errors           Json? // Errors encountered
 
   // Metrics
-  duration          Int?     // Seconds
-  costEstimate      Float?   // USD
+  duration     Int? // Seconds
+  costEstimate Float? // USD
 
   @@index([scheduledAt])
   @@index([executedAt])
@@ -1309,9 +1309,9 @@ model SystemConfiguration {
   key         String   @unique
   value       String
   description String?
-  category    String?  // e.g., "generation", "correction", "curation"
+  category    String? // e.g., "generation", "correction", "curation"
   updatedAt   DateTime @updatedAt
-  updatedBy   String?  // User ID who last updated
+  updatedBy   String? // User ID who last updated
 
   @@index([category])
 }
@@ -1368,18 +1368,18 @@ enum FeatureType {
 
 // LLM Usage Log - tracks all LLM API calls for cost analysis
 model LLMUsageLog {
-  id          String   @id @default(uuid())
+  id String @id @default(uuid())
 
   // Context
-  userId      String?
-  user        User?    @relation("UserLLMUsageLogs", fields: [userId], references: [id], onDelete: SetNull)
-  feature     FeatureType // CHARACTER_GEN, STORY_GEN, TRANSLATION, CHAT, etc
-  featureId   String?  // ID of character, story, etc (for drill-down)
+  userId    String?
+  user      User?       @relation("UserLLMUsageLogs", fields: [userId], references: [id], onDelete: SetNull)
+  feature   FeatureType // CHARACTER_GEN, STORY_GEN, TRANSLATION, CHAT, etc
+  featureId String? // ID of character, story, etc (for drill-down)
 
   // LLM Details
-  provider    LLMProvider // GEMINI, OPENAI, GROK, etc
-  model       String   // e.g., "gemini-2.5-flash-lite", "gpt-4o-mini"
-  operation   String?  // e.g., "character_analysis", "translation", "chat_response"
+  provider  LLMProvider // GEMINI, OPENAI, GROK, etc
+  model     String // e.g., "gemini-2.5-flash-lite", "gpt-4o-mini"
+  operation String? // e.g., "character_analysis", "translation", "chat_response"
 
   // Token Usage
   inputTokens  Int
@@ -1387,18 +1387,18 @@ model LLMUsageLog {
   totalTokens  Int
 
   // Cost Calculation (in USD)
-  inputCost    Decimal  @db.Decimal(10, 6)
-  outputCost   Decimal  @db.Decimal(10, 6)
-  totalCost    Decimal  @db.Decimal(10, 6)
+  inputCost  Decimal @db.Decimal(10, 6)
+  outputCost Decimal @db.Decimal(10, 6)
+  totalCost  Decimal @db.Decimal(10, 6)
 
   // Timing
-  latency      Int?     // Response time in ms
-  cached       Boolean  @default(false) // Was response cached?
+  latency Int? // Response time in ms
+  cached  Boolean @default(false) // Was response cached?
 
   // Metadata
-  metadata     Json?    // Additional context
+  metadata Json? // Additional context
 
-  createdAt    DateTime @default(now())
+  createdAt DateTime @default(now())
 
   @@index([userId, feature, createdAt])
   @@index([feature, createdAt])
@@ -1408,26 +1408,26 @@ model LLMUsageLog {
 
 // LLM Pricing Configuration - stores pricing data for LLM models
 model LLMPricing {
-  id          String   @id @default(uuid())
+  id String @id @default(uuid())
 
-  provider    LLMProvider
-  model       String   // e.g., "gemini-2.5-flash-lite"
+  provider LLMProvider
+  model    String // e.g., "gemini-2.5-flash-lite"
 
   // Pricing per 1M tokens (USD)
   inputPricePerMillion  Decimal @db.Decimal(10, 4)
   outputPricePerMillion Decimal @db.Decimal(10, 4)
 
   // Effective date range
-  effectiveFrom DateTime @default(now())
+  effectiveFrom DateTime  @default(now())
   effectiveTo   DateTime?
 
   // Metadata
-  source      String?  // e.g., "https://ai.google.dev/pricing"
-  notes       String?  @db.Text
+  source String? // e.g., "https://ai.google.dev/pricing"
+  notes  String? @db.Text
 
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([provider, model, effectiveFrom])
   @@index([provider, model])

@@ -273,7 +273,7 @@ WRONG ORDER:
 find . -name "*.docs.md"
 
 # [ ] Prepare test environment
-./scripts/db-switch.sh clean
+./scripts/database/db-switch.sh clean
 
 # [ ] Write unit tests
 # [ ] Write integration tests
@@ -282,7 +282,7 @@ find . -name "*.docs.md"
 npm test
 
 # [ ] Restore development database
-./scripts/db-switch.sh restore
+./scripts/database/db-switch.sh populated
 ```
 
 #### ✅ Checklist 3.3: Automated Testing

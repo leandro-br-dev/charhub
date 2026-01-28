@@ -164,8 +164,8 @@ curl -I http://localhost:3000/
 
 **Verify development database is active**:
 ```bash
-./scripts/db-switch.sh status
-# Expected: "Current database: development"
+./scripts/database/db-switch.sh status
+# Expected: "Current database: POPULATED"
 ```
 
 **Verify**:
@@ -173,7 +173,7 @@ curl -I http://localhost:3000/
 - [ ] Test database preserved: YES (for future use)
 
 **If wrong database is active**:
-- Run: `./scripts/db-switch.sh restore`
+- Run: `./scripts/database/db-switch.sh populated`
 - Verify status again
 
 ### 6. Git State Verification
@@ -423,7 +423,7 @@ docker compose logs backend | tail -20
 curl http://localhost:3001/
 
 # Database state
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 
 # Git state
 git branch --show-current

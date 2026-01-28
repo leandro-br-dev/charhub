@@ -58,7 +58,7 @@ PHASE 3: TESTING
 │   ├─ Wait for BOTH to complete
 │   │
 │   ├─→ 3.3. TEST ENVIRONMENT (test-environment-preparation)
-│   │   └─ Prepare: ./scripts/db-switch.sh clean
+│   │   └─ Prepare: ./scripts/database/db-switch.sh clean
 │   │
 │   ├─→ 3.4. RUN AUTOMATED TESTS
 │   │   ├─ cd backend && npm test
@@ -72,7 +72,7 @@ PHASE 3: TESTING
 │   │   └─ ALL PASS? → Proceed
 │   │
 │   └─→ 3.5. RESTORE DATABASE
-│       └─ ./scripts/db-switch.sh restore
+│       └─ ./scripts/database/db-switch.sh populated
 │
 PHASE 4: PULL REQUEST
 │
@@ -135,13 +135,13 @@ PHASE 4: PULL REQUEST
 - [ ] User found issues? → Route back to Phase 2
 - [ ] **ONLY AFTER User Confirms**: delegate to test-writer AND coder-doc-specialist
 - [ ] Wait for BOTH to complete
-- [ ] **Prepare Test Environment**: `./scripts/db-switch.sh clean`
+- [ ] **Prepare Test Environment**: `./scripts/database/db-switch.sh clean`
 - [ ] **Run Tests**: `npm test` (backend + frontend)
 - [ ] **All tests pass?** → Continue
 - [ ] **Test failures?**
   - [ ] Code bug → Route back to Phase 2
   - [ ] Test bug → Delegate back to test-writer
-- [ ] **Restore Database**: `./scripts/db-switch.sh restore`
+- [ ] **Restore Database**: `./scripts/database/db-switch.sh populated`
 
 ### ✅ Phase 4: Pull Request
 

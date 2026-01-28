@@ -18,12 +18,30 @@ export function useTabs(): TabsContextProps {
 interface TabsProps {
   children: ReactNode;
   defaultTab: string;
+  value?: string; // Controlled mode
+  onValueChange?: (tab: string) => void; // Controlled mode callback
+  onTabChange?: (tab: string) => void; // Deprecated - use onValueChange
 }
 
-export function Tabs({ children, defaultTab }: TabsProps) {
-  const [activeTab, setActiveTab] = useState(defaultTab);
+export function Tabs({ children, defaultTab, value, onValueChange, onTabChange }: TabsProps) {
+  // Support both controlled and uncontrolled modes
+  const [internalActiveTab, setInternalActiveTab] = useState(defaultTab);
+  const activeTab = value !== undefined ? value : internalActiveTab;
+
+  const handleTabChange = (tab: string) => {
+    if (value !== undefined) {
+      // Controlled mode - parent manages state
+      onValueChange?.(tab);
+      onTabChange?.(tab); // For backwards compatibility
+    } else {
+      // Uncontrolled mode - component manages state
+      setInternalActiveTab(tab);
+      onTabChange?.(tab);
+    }
+  };
+
   return (
-    <TabsContext.Provider value={{ activeTab, setActiveTab }}>
+    <TabsContext.Provider value={{ activeTab, setActiveTab: handleTabChange }}>
       <div className="flex w-full flex-col h-full">{children}</div>
     </TabsContext.Provider>
   );

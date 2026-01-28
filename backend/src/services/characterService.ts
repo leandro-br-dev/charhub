@@ -91,6 +91,11 @@ function mapGenderToEnum(gender: string): CharacterGender | null {
     'Other': 'OTHER',
     'Unknown': null,
     'unknown': null,
+    // Support uppercase variants (from query params)
+    'MALE': 'MALE',
+    'FEMALE': 'FEMALE',
+    'NON_BINARY': 'NON_BINARY',
+    'OTHER': 'OTHER',
   };
   return genderMap[gender] ?? (gender as CharacterGender);
 }
@@ -1107,7 +1112,7 @@ export async function getFavoriteCharacters(
     });
 
     logger.debug({ userId, count: characters.length }, 'Favorite characters fetched');
-    return characters as any;
+    return enrichCharactersWithAvatar(characters as any);
   } catch (error) {
     logger.error({ error, userId }, 'Error getting favorite characters');
     throw error;

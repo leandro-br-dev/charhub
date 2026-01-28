@@ -24,16 +24,15 @@ Prepare the test environment for automated testing by managing database state us
 
 ## The db-switch.sh Script
 
-**Location**: `./scripts/db-switch.sh`
+**Location**: `./scripts/database/db-switch.sh`
 
 **Purpose**: Manage database states for development and testing
 
 **Available commands**:
 ```bash
-./scripts/db-switch.sh clean    # Create clean test database
-./scripts/db-switch.sh status   # Check current database state
-./scripts/db-switch.sh restore  # Restore development database
-./scripts/db-switch.sh backup   # Backup current database
+./scripts/database/db-switch.sh clean      # Create clean test database
+./scripts/database/db-switch.sh populated  # Restore development database from backup
+./scripts/database/db-switch.sh status     # Check current database state
 ```
 
 ## Environment Preparation Workflow
@@ -42,7 +41,7 @@ Prepare the test environment for automated testing by managing database state us
 
 **Check what database is currently active**:
 ```bash
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 ```
 
 **Expected output examples**:
@@ -61,7 +60,7 @@ or
 
 **ALWAYS backup before switching to test database**:
 ```bash
-./scripts/db-switch.sh backup
+./scripts/database/db-switch.sh backup
 ```
 
 **What this does**:
@@ -79,7 +78,7 @@ ls -la ./backups/db/
 
 **Switch to clean test database**:
 ```bash
-./scripts/db-switch.sh clean
+./scripts/database/db-switch.sh clean
 ```
 
 **What this does**:
@@ -97,7 +96,7 @@ Database is ready for testing."
 
 **Verify test database is active**:
 ```bash
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 # Should show: "Current database: test"
 ```
 
@@ -142,7 +141,7 @@ npx prisma migrate status
 **Quick verification that everything is ready**:
 ```bash
 # Test database active
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 
 # Containers running
 docker compose ps
@@ -184,7 +183,7 @@ cd backend && npx prisma migrate status
 
 **Switch back to development database**:
 ```bash
-./scripts/db-switch.sh restore
+./scripts/database/db-switch.sh populated
 ```
 
 **What this does**:
@@ -194,7 +193,7 @@ cd backend && npx prisma migrate status
 
 **Verify restoration**:
 ```bash
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 # Should show: "Current database: development"
 ```
 
@@ -227,13 +226,13 @@ This skill is used **DURING** the parallel-tasks-execution phase:
    │   └─→ test-writer + coder-doc-specialist
    │
    ├─→ 6b. TEST ENVIRONMENT PREPARATION (THIS SKILL)
-   │   └─→ ./scripts/db-switch.sh clean
+   │   └─→ ./scripts/database/db-switch.sh clean
    │
    ├─→ 6c. Run automated tests
    │   └─→ npm test (backend + frontend)
    │
    └─→ 6d. Restore development database
-       └─→ ./scripts/db-switch.sh restore
+       └─→ ./scripts/database/db-switch.sh populated
    ↓
 7. pr-readiness-checklist
 ```
@@ -242,7 +241,7 @@ This skill is used **DURING** the parallel-tasks-execution phase:
 
 ### Issue: db-switch.sh command not found
 
-**Symptom**: `bash: ./scripts/db-switch.sh: No such file or directory`
+**Symptom**: `bash: ./scripts/database/db-switch.sh: No such file or directory`
 
 **Fixes**:
 1. Verify script exists: `ls -la scripts/db-switch.sh`
@@ -251,7 +250,7 @@ This skill is used **DURING** the parallel-tasks-execution phase:
 
 ### Issue: Backup creation fails
 
-**Symptom**: Error when running `./scripts/db-switch.sh backup`
+**Symptom**: Error when running `./scripts/database/db-switch.sh backup`
 
 **Possible causes**:
 - Disk space full
@@ -265,7 +264,7 @@ This skill is used **DURING** the parallel-tasks-execution phase:
 
 ### Issue: Test database creation fails
 
-**Symptom**: Error when running `./scripts/db-switch.sh clean`
+**Symptom**: Error when running `./scripts/database/db-switch.sh clean`
 
 **Possible causes**:
 - Development database has issues
@@ -370,16 +369,16 @@ Development environment ready."
 
 ```bash
 # Check current database
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 
 # Backup development database
-./scripts/db-switch.sh backup
+./scripts/database/db-switch.sh backup
 
 # Create clean test database
-./scripts/db-switch.sh clean
+./scripts/database/db-switch.sh clean
 
 # Restore development database
-./scripts/db-switch.sh restore
+./scripts/database/db-switch.sh populated
 
 # List backups
 ls -la ./backups/db/

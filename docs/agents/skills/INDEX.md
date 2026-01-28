@@ -10,6 +10,7 @@ Global skills are available to all agents (Coder, Reviewer, Planner). These prov
 |-------|-------------|--------------|
 | **agent-switching** | Switch between agent profiles (coder/reviewer/planner) | All Agents |
 | **container-health-check** | Verify Docker containers are healthy before operations | Coder, Reviewer |
+| **database-copy** | Safely copy database between environments | Coder, Reviewer |
 | **database-switch** | Switch between clean and populated database modes | Coder, Reviewer |
 | **database-schema-management** | **CRITICAL**: Rules for schema changes and migrations | Coder, Reviewer |
 
@@ -79,6 +80,47 @@ Global skills are available to all agents (Coder, Reviewer, Planner). These prov
 - Before creating Pull Request (test in clean, then restore)
 
 **Multi-Agent Compatible**: Works correctly in all environments (agent-01, agent-02, agent-03)
+
+---
+
+### database-copy
+
+**Purpose**: Safely copy database from another environment (agent-01, agent-02, agent-03, reviewer) to your current environment using PostgreSQL network operations.
+
+**Usage**:
+```bash
+./scripts/database/db-copy-from-env.sh <source-env> <source-port> <dest-env> <dest-port>
+
+# Examples
+./scripts/database/db-copy-from-env.sh agent-03 5403 agent-02 5402   # Copy from agent-03 to agent-02
+./scripts/database/db-copy-from-env.sh reviewer 5404 agent-01 5401   # Copy from reviewer to agent-01
+```
+
+**Environment Ports**:
+- agent-01: 5401
+- agent-02: 5402
+- agent-03: 5403
+- reviewer: 5404
+
+**Safety Features**:
+- Read-only source access (never modifies source database)
+- Automatic verification (minimum 10 characters required)
+- Data integrity checks (counts before and after)
+- Network-based (no volume mounting)
+
+**Documentation**: [database-copy/SKILL.md](database-copy/SKILL.md)
+
+**When to Use**:
+- After running tests (restore populated data)
+- Recovering from accidental data loss
+- Syncing environments
+- Setting up new environment
+- Testing with production-like data
+
+**Important Notes**:
+- Use `db-switch.sh` for local backup/restore within same environment
+- Use `db-copy-from-env.sh` for copying between different environments
+- Never use `docker compose down -v` (deletes data)
 
 ---
 

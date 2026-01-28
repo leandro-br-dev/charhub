@@ -531,6 +531,8 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
  * - limit: number - Pagination limit
  * - userId: string - Filter by specific user ID
  * - public: boolean - If 'false', show only user's own characters
+ * - includeStats: boolean - If 'true', include stats (conversationCount, favoriteCount, isFavoritedByUser)
+ * - fields: string - Comma-separated field list for payload optimization (e.g., "id,firstName,lastName,avatar,stats")
  */
 router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res: Response) => {
   try {
@@ -538,7 +540,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
     const {
       search,
       tags,
-      genders,
+      gender,
       species,
       skip,
       limit,
@@ -546,6 +548,8 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       public: publicOnly,
       ageRatings,
       sortBy,
+      includeStats,
+      fields,
     } = req.query;
 
     let result;
@@ -604,10 +608,10 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
         : typeof tags === 'string'
           ? [tags]
           : undefined,
-      gender: Array.isArray(genders)
-        ? genders.map(String)
-        : typeof genders === 'string'
-          ? [genders]
+      gender: Array.isArray(gender)
+        ? gender.map(String)
+        : typeof gender === 'string'
+          ? [gender]
           : undefined,
       species: Array.isArray(species)
         ? species.map(String)
@@ -657,9 +661,73 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       result = await characterService.getPublicCharacters(commonOptions);
     }
 
+    // Handle includeStats parameter - batch fetch stats for all characters
+    let characters = result.characters;
+    const shouldIncludeStats = includeStats === 'true' || includeStats === '1';
+
+    if (shouldIncludeStats && characters.length > 0) {
+      const characterIds = characters.map((c: any) => c.id);
+      const statsMap = await characterStatsService.getBatchCharacterStatsOptimized(
+        characterIds,
+        userId
+      );
+
+      // Merge stats into character objects
+      characters = characters.map((char: any) => {
+        const stats = statsMap.get(char.id);
+        return {
+          ...char,
+          stats: stats ? {
+            conversationCount: stats.conversationCount,
+            favoriteCount: stats.favoriteCount,
+            isFavoritedByUser: stats.isFavoritedByUser,
+            imageCount: stats.imageCount,
+          } : undefined,
+        };
+      });
+    }
+
+    // Handle fields parameter - filter response to only requested fields
+    if (fields && typeof fields === 'string') {
+      let requestedFields = fields.split(',').map(f => f.trim()).filter(Boolean);
+
+      // Auto-include 'stats' in fields when includeStats is true
+      if (shouldIncludeStats) {
+        requestedFields = Array.from(new Set([...requestedFields, 'stats']));
+      }
+
+      // Always include 'id' field
+      const fieldsToInclude = Array.from(new Set(['id', ...requestedFields]));
+
+      // Filter each character object to only include requested fields
+      characters = characters.map((char: any) => {
+        const filtered: any = {};
+        for (const field of fieldsToInclude) {
+          // Handle nested fields like 'creator.username'
+          if (field.includes('.')) {
+            const parts = field.split('.');
+            if (parts.length === 2 && parts[0] === 'creator') {
+              if (!filtered.creator) {
+                filtered.creator = {};
+              }
+              if (char.creator && char.creator[parts[1]] !== undefined) {
+                filtered.creator[parts[1]] = char.creator[parts[1]];
+              }
+            }
+          } else if (field === 'stats' && char.stats) {
+            // Include entire stats object if requested
+            filtered.stats = char.stats;
+          } else if (char[field] !== undefined) {
+            filtered[field] = char[field];
+          }
+        }
+        return filtered;
+      });
+    }
+
     return res.json({
       success: true,
-      data: result.characters,
+      data: characters,
       total: result.total,
       hasMore: result.hasMore,
     });

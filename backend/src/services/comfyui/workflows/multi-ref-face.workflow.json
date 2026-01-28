@@ -19,7 +19,7 @@
   },
   "4": {
     "inputs": {
-      "ckpt_name": "waiNSFWIllustrious_v130.safetensors"
+      "ckpt_name": "waiIllustriousSDXL_v160.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {

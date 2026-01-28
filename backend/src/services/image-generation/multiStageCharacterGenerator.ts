@@ -130,7 +130,7 @@ export class MultiStageCharacterGenerator {
       ? REFERENCE_VIEWS.filter(v => viewsToGenerate.includes(v.content))
       : REFERENCE_VIEWS;
 
-    logger.info({ characterId, userSamples: userSamples.length, viewsToGenerate: viewsToProcess.map(v => v.content) }, 'Starting multi-stage character generation (simplified)');
+    logger.info({ characterId, userSamples: userSamples.length, viewsToGenerate: viewsToProcess.map(v => v.content), visualStyle, contentType, theme }, 'Starting multi-stage character generation (simplified)');
 
     // Import promptAgent dynamically to avoid circular dependencies
     const { promptAgent } = await import('../comfyui/promptAgent');

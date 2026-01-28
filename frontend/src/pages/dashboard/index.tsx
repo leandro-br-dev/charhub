@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import { HorizontalScroller } from '../../components/ui/horizontal-scroller';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tabs';
 import { CharacterCard } from '../(characters)/shared/components';
@@ -8,7 +9,6 @@ import { DashboardCarousel, RecentConversations, StoryCard } from './components'
 import { useContentFilter } from './hooks';
 import { useContentFilter as useGlobalContentFilter } from '../../contexts/ContentFilterContext';
 import { dashboardService, characterService, storyService, chatService } from '../../services';
-import { characterStatsService, type CharacterStats } from '../../services/characterStatsService';
 import type { Character } from '../../types/characters';
 import type { CarouselHighlight } from '../../services/dashboardService';
 import type { Story } from '../../types/story';
@@ -44,6 +44,12 @@ function DashboardContent(): JSX.Element {
   const { shouldHideContent } = useGlobalContentFilter();
   const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
+
+  // Local state for active tab (managed by Tabs component)
+  const [activeTab, setActiveTab] = useState<string>('discover');
+
+  // Track which tabs have been loaded for lazy loading
+  const [loadedTabs, setLoadedTabs] = useState<Set<string>>(new Set(['discover']));
 
   // Helper function to build story context for chat
   const buildStoryContext = (story: Story): string => {
@@ -84,14 +90,10 @@ function DashboardContent(): JSX.Element {
   const [favoriteCharacters, setFavoriteCharacters] = useState<Character[]>([]);
   const [discoverView, setDiscoverView] = useState<'popular' | 'newest' | 'favorites'>('popular');
   const [favoriteCharacterIds, setFavoriteCharacterIds] = useState<Set<string>>(new Set());
-  const [statsById, setStatsById] = useState<Record<string, CharacterStats | undefined>>({});
-  const [imagesById, setImagesById] = useState<Record<string, number>>({});
   const [popularStories, setPopularStories] = useState<Story[]>([]);
   const [myStories, setMyStories] = useState<Story[]>([]);
   const [storyView, setStoryView] = useState<'my' | 'popular'>('my');
   const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
-  const [isLoadingCharacters, setIsLoadingCharacters] = useState(true);
-  const [isLoadingStories, setIsLoadingStories] = useState(true);
 
   // Infinite scroll state
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -161,98 +163,104 @@ function DashboardContent(): JSX.Element {
   }, []);
 
   // Fetch popular characters with infinite scroll
+  // Using React Query for better caching and cache key management
+  // ONLY fetch the currently active sort view to avoid unnecessary requests
+  const popularCharactersQuery = useQuery({
+    queryKey: ['dashboard', 'characters', 'popular', ageRatings, characterFilters.genders, characterFilters.species],
+    queryFn: () => characterService.getCharactersForDashboard({
+      skip: 0,
+      limit: initialLimit,
+      sortBy: 'popular',
+      ageRatings,
+      genders: characterFilters.genders,
+      species: characterFilters.species,
+      includeStats: true,
+    }),
+    enabled: activeTab === 'discover' && discoverView === 'popular',
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  const newestCharactersQuery = useQuery({
+    queryKey: ['dashboard', 'characters', 'newest', ageRatings, characterFilters.genders, characterFilters.species],
+    queryFn: () => characterService.getCharactersForDashboard({
+      skip: 0,
+      limit: initialLimit,
+      sortBy: 'newest',
+      ageRatings,
+      genders: characterFilters.genders,
+      species: characterFilters.species,
+      includeStats: true,
+    }),
+    enabled: activeTab === 'discover' && discoverView === 'newest',
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  const favoritesQuery = useQuery({
+    queryKey: ['dashboard', 'characters', 'favorites', ageRatings, characterFilters.genders, characterFilters.species],
+    queryFn: async () => {
+      const result = await characterService.getCharactersForDashboard({
+        skip: 0,
+        limit: initialLimit,
+        sortBy: 'favorites',
+        ageRatings,
+        genders: characterFilters.genders,
+        species: characterFilters.species,
+        includeStats: true,
+      });
+
+      // Extract favorite IDs from the result
+      const favoriteIds = new Set(result.characters.map(char => char.id));
+      setFavoriteCharacterIds(favoriteIds);
+
+      return result.characters;
+    },
+    enabled: isAuthenticated && activeTab === 'discover' && discoverView === 'favorites',
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  // Stories query - lazy loaded
+  const storiesQuery = useQuery({
+    queryKey: ['dashboard', 'stories'],
+    queryFn: async () => {
+      const popular = await storyService.getPopular(8);
+      setPopularStories(popular);
+      return popular;
+    },
+    enabled: activeTab === 'story' || loadedTabs.has('story'),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  const myStoriesQuery = useQuery({
+    queryKey: ['dashboard', 'myStories'],
+    queryFn: async () => {
+      const myStoriesData = await storyService.getMyStories({ limit: 8 });
+      setMyStories(myStoriesData.items);
+      return myStoriesData.items;
+    },
+    enabled: isAuthenticated && (activeTab === 'story' || loadedTabs.has('story')),
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+  // Update state from query results
   useEffect(() => {
-    const fetchCharacters = async () => {
-      setInitialLoading(true);
-      try {
-        // Fetch initial batch with dynamic limit based on screen size
-        const result = await characterService.getPopularWithPagination({
-          skip: 0,
-          limit: initialLimit,
-          ageRatings,
-          genders: characterFilters.genders,
-          species: characterFilters.species,
-        });
+    if (popularCharactersQuery.data) {
+      setPopularCharacters(popularCharactersQuery.data.characters);
+      setHasMore(popularCharactersQuery.data.hasMore);
+      setInitialLoading(false);
+    }
+  }, [popularCharactersQuery.data]);
 
-        setPopularCharacters(result.characters);
-        setHasMore(result.hasMore);
+  useEffect(() => {
+    if (newestCharactersQuery.data) {
+      setNewestCharacters(newestCharactersQuery.data.characters);
+    }
+  }, [newestCharactersQuery.data]);
 
-        // Fetch newest characters
-        try {
-          const newestResult = await characterService.getNewestWithPagination({
-            skip: 0,
-            limit: initialLimit,
-            ageRatings,
-            genders: characterFilters.genders,
-            species: characterFilters.species,
-          });
-          setNewestCharacters(newestResult.characters);
-        } catch (error) {
-          console.warn('[Dashboard] Failed to fetch newest characters:', error);
-          setNewestCharacters([]);
-        }
-
-        // Fetch favorites if authenticated (for the favorite tab)
-        if (isAuthenticated) {
-          try {
-            const favorites = await characterService.getFavorites(initialLimit);
-            setFavoriteCharacters(favorites);
-            const favoriteIds = new Set(favorites.map(char => char.id));
-            setFavoriteCharacterIds(favoriteIds);
-          } catch (error) {
-            console.warn('[Dashboard] Failed to fetch favorites:', error);
-          }
-        }
-
-        // Fetch stats and image counts for the loaded characters
-        const ids = result.characters.map(c => c.id);
-        if (ids.length > 0) {
-          try {
-            const results = await Promise.all(
-              ids.map(async (id) => {
-                try {
-                  const s = await characterStatsService.getStats(id);
-                  return [id, s] as const;
-                } catch (_err) {
-                  return [id, undefined] as const;
-                }
-              })
-            );
-            setStatsById(prev => {
-              const next = { ...prev } as Record<string, CharacterStats | undefined>;
-              for (const [id, s] of results) next[id] = s;
-              return next;
-            });
-            // Fetch image counts in parallel
-            const imgResults = await Promise.all(
-              ids.map(async (id) => {
-                try {
-                  const count = await characterService.getImageCount(id);
-                  return [id, count] as const;
-                } catch (_e) {
-                  return [id, 0] as const;
-                }
-              })
-            );
-            setImagesById(prev => {
-              const next = { ...prev } as Record<string, number>;
-              for (const [id, count] of imgResults) next[id] = count;
-              return next;
-            });
-          } catch (e) {
-            console.warn('[Dashboard] Failed to fetch some character stats', e);
-          }
-        }
-      } catch (error) {
-        console.error('[Dashboard] Failed to fetch characters:', error);
-      } finally {
-        setInitialLoading(false);
-        setIsLoadingCharacters(false);
-      }
-    };
-
-    fetchCharacters();
-  }, [ageRatings, isAuthenticated, initialLimit, characterFilters.genders, characterFilters.species]);
+  useEffect(() => {
+    if (favoritesQuery.data) {
+      setFavoriteCharacters(favoritesQuery.data);
+    }
+  }, [favoritesQuery.data]);
 
   // Load more characters when infinite scroll triggers
   const loadMore = useCallback(async () => {
@@ -260,62 +268,27 @@ function DashboardContent(): JSX.Element {
 
     setIsLoadingMore(true);
     try {
-      const result = await characterService.getPopularWithPagination({
+      const result = await characterService.getCharactersForDashboard({
         skip: popularCharacters.length,
         limit: batchSize,
+        sortBy: 'popular',
         ageRatings,
         genders: characterFilters.genders,
         species: characterFilters.species,
+        includeStats: true,
       });
 
       setPopularCharacters(prev => [...prev, ...result.characters]);
       setHasMore(result.hasMore);
 
-      // Fetch stats and image counts for the new characters
-      const newIds = result.characters.map(c => c.id);
-      if (newIds.length > 0) {
-        try {
-          const results = await Promise.all(
-            newIds.map(async (id) => {
-              try {
-                const s = await characterStatsService.getStats(id);
-                return [id, s] as const;
-              } catch (_err) {
-                return [id, undefined] as const;
-              }
-            })
-          );
-          setStatsById(prev => {
-            const next = { ...prev } as Record<string, CharacterStats | undefined>;
-            for (const [id, s] of results) next[id] = s;
-            return next;
-          });
-          // Fetch image counts in parallel
-          const imgResults = await Promise.all(
-            newIds.map(async (id) => {
-              try {
-                const count = await characterService.getImageCount(id);
-                return [id, count] as const;
-              } catch (_e) {
-                return [id, 0] as const;
-              }
-            })
-          );
-          setImagesById(prev => {
-            const next = { ...prev } as Record<string, number>;
-            for (const [id, count] of imgResults) next[id] = count;
-            return next;
-          });
-        } catch (e) {
-          console.warn('[Dashboard] Failed to fetch some character stats', e);
-        }
-      }
+      // Stats are now included in the response, no need to fetch individually
+      // The stats are embedded in each character object
     } catch (error) {
       console.error('[Dashboard] Failed to load more characters:', error);
     } finally {
       setIsLoadingMore(false);
     }
-  }, [isLoadingMore, hasMore, popularCharacters.length, batchSize, ageRatings]);
+  }, [isLoadingMore, hasMore, popularCharacters.length, batchSize, ageRatings, characterFilters.genders, characterFilters.species]);
 
   // Setup infinite scroll observer
   const { loadMoreRef, isIntersecting } = useInfiniteScroll({
@@ -329,32 +302,6 @@ function DashboardContent(): JSX.Element {
       loadMore();
     }
   }, [isIntersecting, initialLoading, discoverView, hasMore, loadMore]);
-
-  // Fetch popular stories and user's stories
-  useEffect(() => {
-    const fetchStories = async () => {
-      setIsLoadingStories(true);
-      try {
-        // Fetch popular stories for everyone
-        const popular = await storyService.getPopular(8);
-        setPopularStories(popular);
-
-        // Only fetch user's stories if authenticated
-        if (isAuthenticated) {
-          const myStoriesData = await storyService.getMyStories({ limit: 8 });
-          setMyStories(myStoriesData.items);
-        } else {
-          setMyStories([]);
-        }
-      } catch (error) {
-        console.error('[Dashboard] Failed to fetch stories:', error);
-      } finally {
-        setIsLoadingStories(false);
-      }
-    };
-
-    fetchStories();
-  }, [isAuthenticated]);
 
   // Handlers
   // Age rating selection moved to header via PageHeader
@@ -448,22 +395,6 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
-  }).filter((c) => {
-    // Apply gender filter
-    if (characterFilters.genders.length > 0) {
-      const gender = (c as any).gender;
-      if (!gender || !characterFilters.genders.includes(gender)) {
-        return false;
-      }
-    }
-    // Apply species filter
-    if (characterFilters.species.length > 0) {
-      const species = (c as any).speciesId || (c as any).species?.id;
-      if (!species || !characterFilters.species.includes(species)) {
-        return false;
-      }
-    }
-    return true;
   });
 
   const filteredNewestCharacters = newestCharacters.filter((c) => {
@@ -475,22 +406,6 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
-  }).filter((c) => {
-    // Apply gender filter
-    if (characterFilters.genders.length > 0) {
-      const gender = (c as any).gender;
-      if (!gender || !characterFilters.genders.includes(gender)) {
-        return false;
-      }
-    }
-    // Apply species filter
-    if (characterFilters.species.length > 0) {
-      const species = (c as any).speciesId || (c as any).species?.id;
-      if (!species || !characterFilters.species.includes(species)) {
-        return false;
-      }
-    }
-    return true;
   });
 
   const filteredFavoriteCharacters = favoriteCharacters.filter((c) => {
@@ -501,22 +416,6 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
-  }).filter((c) => {
-    // Apply gender filter
-    if (characterFilters.genders.length > 0) {
-      const gender = (c as any).gender;
-      if (!gender || !characterFilters.genders.includes(gender)) {
-        return false;
-      }
-    }
-    // Apply species filter
-    if (characterFilters.species.length > 0) {
-      const species = (c as any).speciesId || (c as any).species?.id;
-      if (!species || !characterFilters.species.includes(species)) {
-        return false;
-      }
-    }
-    return true;
   });
 
   const filteredPopularStories = popularStories.filter((s) => {
@@ -555,7 +454,10 @@ function DashboardContent(): JSX.Element {
 
       {/* Tabs Navigation and Content */}
       <div className="w-full mb-6 overflow-hidden">
-        <Tabs defaultTab="discover">
+        <Tabs defaultTab="discover" value={activeTab} onValueChange={(tab) => {
+          setActiveTab(tab);
+          setLoadedTabs(prev => new Set(prev).add(tab));
+        }}>
           <TabList>
             <Tab label="discover">{t('dashboard:tabs.discover')}</Tab>
             {/* Hide Chat tab for non-authenticated users */}
@@ -628,9 +530,9 @@ function DashboardContent(): JSX.Element {
                           isFavorite={favoriteCharacterIds.has(character.id)}
                           clickAction={discoverView === 'popular' || discoverView === 'newest' ? 'view' : 'chat'}
                           blurNsfw={blurNsfw}
-                          chatCount={statsById[character.id]?.conversationCount}
-                          favoriteCount={statsById[character.id]?.favoriteCount}
-                          imageCount={imagesById[character.id]}
+                          chatCount={(character as any).stats?.conversationCount}
+                          favoriteCount={(character as any).stats?.favoriteCount}
+                          imageCount={(character as any).stats?.imageCount}
                           onFavoriteToggle={handleFavoriteToggle}
                         />
                       ))}
@@ -723,7 +625,7 @@ function DashboardContent(): JSX.Element {
                     </div>
                   )}
                 </div>
-                {isLoadingStories ? (
+                {storiesQuery.isLoading || myStoriesQuery.isLoading ? (
                   <div className="h-64 bg-light animate-pulse rounded-lg" />
                 ) : (
                   <>
@@ -733,7 +635,7 @@ function DashboardContent(): JSX.Element {
                       ))}
                     </div>
                     {/* CTA at the end of stories list */}
-                    {!isLoadingStories && (storyView === 'my' ? filteredMyStories : filteredPopularStories).length > 0 && (
+                    {!storiesQuery.isLoading && !myStoriesQuery.isLoading && (storyView === 'my' ? filteredMyStories : filteredPopularStories).length > 0 && (
                       <div className="text-center py-8">
                         <p className="text-muted mb-2">
                           {t('dashboard:endOfList.stories.message', 'Want more?')}
@@ -751,7 +653,7 @@ function DashboardContent(): JSX.Element {
                     )}
                   </>
                 )}
-                {!isLoadingStories && filteredMyStories.length === 0 && filteredPopularStories.length === 0 && (
+                {!storiesQuery.isLoading && !myStoriesQuery.isLoading && filteredMyStories.length === 0 && filteredPopularStories.length === 0 && (
                   <div className="text-center py-12">
                     <p className="text-muted mb-4">
                       {t('dashboard:noStories')}

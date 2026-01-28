@@ -735,7 +735,19 @@ export class ComfyUIService {
     contentType?: ContentType,
     theme?: Theme
   ): Promise<ComfyWorkflow> {
+    logger.info({ style, contentType, theme, caller: new Error().stack?.split('\n')[2]?.trim() }, 'applyVisualStyleToWorkflow: Called with parameters');
+
     const config = await getVisualStyleConfiguration(style, contentType, theme);
+
+    logger.info({
+      style,
+      contentType,
+      theme,
+      configFound: !!config,
+      checkpoint: config?.checkpoint?.filename,
+      checkpointName: config?.checkpoint?.name,
+      loraCount: config?.loras?.length
+    }, 'applyVisualStyleToWorkflow: Configuration retrieved');
 
     if (!config) {
       logger.warn({ style }, 'No visual style configuration found, workflow unchanged');
@@ -834,6 +846,21 @@ export class ComfyUIService {
         'Applied visual style LoRAs to workflow'
       );
     }
+
+    // Log final checkpoint in workflow for verification
+    const finalCheckpoint = Object.values(modifiedWorkflow).find(
+      (node: any) => node.class_type === 'CheckpointLoaderSimple'
+    ) as any;
+    logger.info(
+      {
+        style,
+        contentType,
+        theme,
+        finalCheckpointInWorkflow: finalCheckpoint?.inputs?.ckpt_name,
+        configCheckpoint: config?.checkpoint?.filename
+      },
+      'applyVisualStyleToWorkflow: Final checkpoint in workflow'
+    );
 
     return modifiedWorkflow;
   }
