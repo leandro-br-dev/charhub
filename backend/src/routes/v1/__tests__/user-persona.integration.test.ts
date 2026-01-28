@@ -20,8 +20,8 @@ import {
 // Mock translationService to prevent real API calls during tests
 jest.mock('../../../services/translation/translationService', () => ({
   translationService: {
-    translate: jest.fn().mockImplementation(() => Promise.resolve({
-      translatedText: 'Translated text',
+    translate: jest.fn().mockImplementation((request: any) => Promise.resolve({
+      translatedText: request.originalText, // Return original text instead of 'Translated text'
       provider: 'test',
       model: 'test',
       translationTimeMs: 0,

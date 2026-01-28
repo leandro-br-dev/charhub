@@ -68,11 +68,23 @@ export async function cleanDatabase(): Promise<void> {
  */
 export async function teardownTestDatabase(): Promise<void> {
   if (testDb) {
-    await testDb.$disconnect();
+    try {
+      await testDb.$disconnect();
+    } catch (error: any) {
+      // Ignore Prisma WASM memory access errors (known issue #149)
+      // The tests have already passed, this is just a cleanup error
+      if (!error.message?.includes('memory access out of bounds')) {
+        console.warn('Warning: Database disconnect error:', error.message);
+      }
+    }
     testDb = null;
   }
   if (testPool) {
-    await testPool.end();
+    try {
+      await testPool.end();
+    } catch (error: any) {
+      console.warn('Warning: Pool end error:', error.message);
+    }
     testPool = null;
   }
 }
