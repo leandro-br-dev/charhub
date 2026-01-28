@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { HorizontalScroller } from '../../components/ui/horizontal-scroller';
-import { Tabs, TabList, Tab, TabPanels, TabPanel, useTabs } from '../../components/ui/Tabs';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../components/ui/Tabs';
 import { CharacterCard } from '../(characters)/shared/components';
 import { DashboardCarousel, RecentConversations, StoryCard } from './components';
 import { useContentFilter } from './hooks';
@@ -44,7 +44,9 @@ function DashboardContent(): JSX.Element {
   const { shouldHideContent } = useGlobalContentFilter();
   const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
-  const { activeTab, setActiveTab } = useTabs();
+
+  // Local state for active tab (managed by Tabs component)
+  const [activeTab, setActiveTab] = useState<string>('discover');
 
   // Track which tabs have been loaded for lazy loading
   const [loadedTabs, setLoadedTabs] = useState<Set<string>>(new Set(['discover']));
@@ -88,7 +90,6 @@ function DashboardContent(): JSX.Element {
   const [favoriteCharacters, setFavoriteCharacters] = useState<Character[]>([]);
   const [discoverView, setDiscoverView] = useState<'popular' | 'newest' | 'favorites'>('popular');
   const [favoriteCharacterIds, setFavoriteCharacterIds] = useState<Set<string>>(new Set());
-  const [imagesById, setImagesById] = useState<Record<string, number>>({});
   const [popularStories, setPopularStories] = useState<Story[]>([]);
   const [myStories, setMyStories] = useState<Story[]>([]);
   const [storyView, setStoryView] = useState<'my' | 'popular'>('my');
@@ -163,6 +164,7 @@ function DashboardContent(): JSX.Element {
 
   // Fetch popular characters with infinite scroll
   // Using React Query for better caching and cache key management
+  // ONLY fetch the currently active sort view to avoid unnecessary requests
   const popularCharactersQuery = useQuery({
     queryKey: ['dashboard', 'characters', 'popular', ageRatings, characterFilters.genders, characterFilters.species],
     queryFn: () => characterService.getCharactersForDashboard({
@@ -174,7 +176,7 @@ function DashboardContent(): JSX.Element {
       species: characterFilters.species,
       includeStats: true,
     }),
-    enabled: activeTab === 'discover' || loadedTabs.has('discover'),
+    enabled: activeTab === 'discover' && discoverView === 'popular',
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -189,19 +191,30 @@ function DashboardContent(): JSX.Element {
       species: characterFilters.species,
       includeStats: true,
     }),
-    enabled: activeTab === 'discover' || loadedTabs.has('discover'),
+    enabled: activeTab === 'discover' && discoverView === 'newest',
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
   const favoritesQuery = useQuery({
     queryKey: ['dashboard', 'characters', 'favorites', ageRatings, characterFilters.genders, characterFilters.species],
     queryFn: async () => {
-      const favorites = await characterService.getFavorites(initialLimit);
-      const favoriteIds = new Set(favorites.map(char => char.id));
+      const result = await characterService.getCharactersForDashboard({
+        skip: 0,
+        limit: initialLimit,
+        sortBy: 'favorites',
+        ageRatings,
+        genders: characterFilters.genders,
+        species: characterFilters.species,
+        includeStats: true,
+      });
+
+      // Extract favorite IDs from the result
+      const favoriteIds = new Set(result.characters.map(char => char.id));
       setFavoriteCharacterIds(favoriteIds);
-      return favorites;
+
+      return result.characters;
     },
-    enabled: isAuthenticated && (activeTab === 'discover' || loadedTabs.has('discover')),
+    enabled: isAuthenticated && activeTab === 'discover' && discoverView === 'favorites',
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
@@ -293,12 +306,6 @@ function DashboardContent(): JSX.Element {
   // Handlers
   // Age rating selection moved to header via PageHeader
 
-  // Handle tab change with lazy loading
-  const handleTabChange = useCallback((tab: string) => {
-    setActiveTab(tab);
-    setLoadedTabs(prev => new Set(prev).add(tab));
-  }, [setActiveTab]);
-
   const handleCharacterClick = useCallback(
     (character: Character, action: 'view' | 'chat') => {
       if (action === 'chat') {
@@ -388,22 +395,6 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
-  }).filter((c) => {
-    // Apply gender filter
-    if (characterFilters.genders.length > 0) {
-      const gender = (c as any).gender;
-      if (!gender || !characterFilters.genders.includes(gender)) {
-        return false;
-      }
-    }
-    // Apply species filter
-    if (characterFilters.species.length > 0) {
-      const species = (c as any).speciesId || (c as any).species?.id;
-      if (!species || !characterFilters.species.includes(species)) {
-        return false;
-      }
-    }
-    return true;
   });
 
   const filteredNewestCharacters = newestCharacters.filter((c) => {
@@ -415,22 +406,6 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
-  }).filter((c) => {
-    // Apply gender filter
-    if (characterFilters.genders.length > 0) {
-      const gender = (c as any).gender;
-      if (!gender || !characterFilters.genders.includes(gender)) {
-        return false;
-      }
-    }
-    // Apply species filter
-    if (characterFilters.species.length > 0) {
-      const species = (c as any).speciesId || (c as any).species?.id;
-      if (!species || !characterFilters.species.includes(species)) {
-        return false;
-      }
-    }
-    return true;
   });
 
   const filteredFavoriteCharacters = favoriteCharacters.filter((c) => {
@@ -441,22 +416,6 @@ function DashboardContent(): JSX.Element {
       return true;
     }
     return false;
-  }).filter((c) => {
-    // Apply gender filter
-    if (characterFilters.genders.length > 0) {
-      const gender = (c as any).gender;
-      if (!gender || !characterFilters.genders.includes(gender)) {
-        return false;
-      }
-    }
-    // Apply species filter
-    if (characterFilters.species.length > 0) {
-      const species = (c as any).speciesId || (c as any).species?.id;
-      if (!species || !characterFilters.species.includes(species)) {
-        return false;
-      }
-    }
-    return true;
   });
 
   const filteredPopularStories = popularStories.filter((s) => {
@@ -495,7 +454,10 @@ function DashboardContent(): JSX.Element {
 
       {/* Tabs Navigation and Content */}
       <div className="w-full mb-6 overflow-hidden">
-        <Tabs defaultTab="discover" onTabChange={handleTabChange}>
+        <Tabs defaultTab="discover" value={activeTab} onValueChange={(tab) => {
+          setActiveTab(tab);
+          setLoadedTabs(prev => new Set(prev).add(tab));
+        }}>
           <TabList>
             <Tab label="discover">{t('dashboard:tabs.discover')}</Tab>
             {/* Hide Chat tab for non-authenticated users */}
@@ -570,7 +532,7 @@ function DashboardContent(): JSX.Element {
                           blurNsfw={blurNsfw}
                           chatCount={(character as any).stats?.conversationCount}
                           favoriteCount={(character as any).stats?.favoriteCount}
-                          imageCount={imagesById[character.id]}
+                          imageCount={(character as any).stats?.imageCount}
                           onFavoriteToggle={handleFavoriteToggle}
                         />
                       ))}

@@ -18,12 +18,17 @@ export async function createTestUser(overrides: any = {}) {
     delete cleanedOverrides.blockedTags; // Omit field, will use schema default (empty array)
   }
 
+  // Set a default birthdate to avoid age filtering issues
+  const eighteenYearsAgo = new Date();
+  eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
+
   const defaultData = {
     email: `test-${timestamp}@example.com`,
     displayName: 'Test User',
     avatarUrl: 'https://example.com/avatar.jpg',
     provider: 'GOOGLE',
     providerAccountId: `account_${timestamp}`,
+    birthDate: eighteenYearsAgo, // User is 18+ years old
     ...cleanedOverrides,
   };
 

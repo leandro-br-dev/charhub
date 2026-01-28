@@ -540,7 +540,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
     const {
       search,
       tags,
-      genders,
+      gender,
       species,
       skip,
       limit,
@@ -608,10 +608,10 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
         : typeof tags === 'string'
           ? [tags]
           : undefined,
-      gender: Array.isArray(genders)
-        ? genders.map(String)
-        : typeof genders === 'string'
-          ? [genders]
+      gender: Array.isArray(gender)
+        ? gender.map(String)
+        : typeof gender === 'string'
+          ? [gender]
           : undefined,
       species: Array.isArray(species)
         ? species.map(String)
@@ -681,6 +681,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
             conversationCount: stats.conversationCount,
             favoriteCount: stats.favoriteCount,
             isFavoritedByUser: stats.isFavoritedByUser,
+            imageCount: stats.imageCount,
           } : undefined,
         };
       });
@@ -688,7 +689,12 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
 
     // Handle fields parameter - filter response to only requested fields
     if (fields && typeof fields === 'string') {
-      const requestedFields = fields.split(',').map(f => f.trim()).filter(Boolean);
+      let requestedFields = fields.split(',').map(f => f.trim()).filter(Boolean);
+
+      // Auto-include 'stats' in fields when includeStats is true
+      if (shouldIncludeStats) {
+        requestedFields = Array.from(new Set([...requestedFields, 'stats']));
+      }
 
       // Always include 'id' field
       const fieldsToInclude = Array.from(new Set(['id', ...requestedFields]));

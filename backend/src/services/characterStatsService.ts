@@ -7,6 +7,7 @@ export interface CharacterStats {
   messageCount: number;
   favoriteCount: number;
   isFavoritedByUser: boolean;
+  imageCount: number;
 }
 
 export const characterStatsService = {
@@ -64,13 +65,58 @@ export const characterStatsService = {
   },
 
   /**
+   * Get image count for a character (excluding AVATAR)
+   */
+  async getImageCount(characterId: string): Promise<number> {
+    const count = await prisma.characterImage.count({
+      where: {
+        characterId,
+        type: { not: 'AVATAR' }, // Exclude avatar images
+      },
+    });
+
+    return count;
+  },
+
+  /**
+    // Get all conversations where this character participates
+    const participations = await prisma.conversationParticipant.findMany({
+      where: {
+        OR: [
+          { actingCharacterId: characterId },
+          { representingCharacterId: characterId }
+        ]
+      },
+      select: { conversationId: true }
+    });
+
+    const conversationIds = participations.map((p: { conversationId: string }) => p.conversationId);
+
+    if (conversationIds.length === 0) {
+      return 0;
+    }
+
+    // Count messages in those conversations where the sender is this character
+    const count = await prisma.message.count({
+      where: {
+        conversationId: { in: conversationIds },
+        senderId: characterId,
+        senderType: 'CHARACTER'
+      }
+    });
+
+    return count;
+  },
+
+  /**
    * Get complete stats for a character
    */
   async getCharacterStats(characterId: string, userId?: string): Promise<CharacterStats> {
-    const [conversationCount, messageCount, favoriteStats] = await Promise.all([
+    const [conversationCount, messageCount, favoriteStats, imageCount] = await Promise.all([
       this.getConversationCount(characterId),
       this.getMessageCount(characterId),
-      favoriteService.getFavoriteStats(characterId, userId)
+      favoriteService.getFavoriteStats(characterId, userId),
+      this.getImageCount(characterId)
     ]);
 
     return {
@@ -78,7 +124,8 @@ export const characterStatsService = {
       conversationCount,
       messageCount,
       favoriteCount: favoriteStats.favoriteCount,
-      isFavoritedByUser: favoriteStats.isFavoritedByUser
+      isFavoritedByUser: favoriteStats.isFavoritedByUser,
+      imageCount
     };
   },
 
@@ -167,7 +214,24 @@ export const characterStatsService = {
       favCountMap.set(item.characterId, item._count._all);
     }
 
-    // Batch query 3: User favorites (if authenticated) using single findMany
+    // Batch query 3: Image counts (excluding AVATAR) using groupBy
+    const imageCounts = await prisma.characterImage.groupBy({
+      by: ['characterId'],
+      where: {
+        characterId: { in: uniqueIds },
+        type: { not: 'AVATAR' }, // Exclude avatar images
+      },
+      _count: {
+        _all: true,
+      },
+    });
+
+    const imageCountMap = new Map<string, number>();
+    for (const item of imageCounts) {
+      imageCountMap.set(item.characterId, item._count._all);
+    }
+
+    // Batch query 4: User favorites (if authenticated) using single findMany
     let userFavoritesSet = new Set<string>();
     if (userId) {
       const userFavorites = await prisma.favoriteCharacter.findMany({
@@ -193,6 +257,7 @@ export const characterStatsService = {
         messageCount: 0, // Omit for list view (expensive query), use 0 as default
         favoriteCount: favCountMap.get(id) || 0,
         isFavoritedByUser: userFavoritesSet.has(id),
+        imageCount: imageCountMap.get(id) || 0,
       });
     }
 

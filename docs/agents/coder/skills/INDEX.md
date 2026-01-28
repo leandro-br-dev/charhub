@@ -131,7 +131,7 @@ Phase 3: TESTING & QUALITY
 │   │   └─ db-switch.sh clean
 │   │
 │   ├─→ Run automated tests
-│   └─→ db-switch.sh restore
+│   └─→ ./scripts/database/db-switch.sh populated
 │
 Phase 4: PR PREPARATION
 │

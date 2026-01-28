@@ -57,8 +57,9 @@ export function ContentFilterProvider({ children }: { children: ReactNode }) {
       const ratingLevel = AGE_RATING_LEVELS[ageRating] ?? 0;
       if (ratingLevel >= AGE_RATING_LEVELS.SIXTEEN) return true;
 
-      // Check sensitive tags
-      const hasSensitiveTags = contentTags.some((tag) => SENSITIVE_TAGS.includes(tag));
+      // Check sensitive tags (defensive check for undefined/null)
+      const tags = contentTags || [];
+      const hasSensitiveTags = tags.some((tag) => SENSITIVE_TAGS.includes(tag));
       return hasSensitiveTags;
     },
     [filterMode]
@@ -72,8 +73,9 @@ export function ContentFilterProvider({ children }: { children: ReactNode }) {
       const ratingLevel = AGE_RATING_LEVELS[ageRating] ?? 0;
       if (ratingLevel >= AGE_RATING_LEVELS.SIXTEEN) return true;
 
-      // Hide if has sensitive tags
-      const hasSensitiveTags = contentTags.some((tag) => SENSITIVE_TAGS.includes(tag));
+      // Hide if has sensitive tags (defensive check for undefined/null)
+      const tags = contentTags || [];
+      const hasSensitiveTags = tags.some((tag) => SENSITIVE_TAGS.includes(tag));
       return hasSensitiveTags;
     },
     [filterMode]

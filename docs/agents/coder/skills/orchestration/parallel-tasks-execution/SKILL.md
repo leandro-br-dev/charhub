@@ -125,7 +125,7 @@ Wait for both to complete. Report when both are done."
 **Use db-switch script** to create clean test database:
 ```bash
 # Create clean test database copy
-./scripts/db-switch.sh clean
+./scripts/database/db-switch.sh clean
 
 # This creates a test database that can be restored later
 ```
@@ -138,7 +138,7 @@ Wait for both to complete. Report when both are done."
 **Verify preparation**:
 ```bash
 # Verify test database exists
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 
 # Should show: "Test database ready"
 ```
@@ -312,7 +312,7 @@ This skill is the **SIXTH STEP** in the Agent Coder workflow:
 ✅ Documentation Created:
 • {list_of_.docs.md_files}
 
-Test environment prepared: ./scripts/db-switch.sh clean
+Test environment prepared: ./scripts/database/db-switch.sh clean
 
 Running automated tests now..."
 ```
@@ -371,7 +371,7 @@ Will re-run tests after fix."
 
 ```bash
 # Prepare test environment
-./scripts/db-switch.sh clean
+./scripts/database/db-switch.sh clean
 
 # Backend tests
 cd backend
@@ -385,10 +385,10 @@ npm test
 npm run test:coverage
 
 # Check test database status
-./scripts/db-switch.sh status
+./scripts/database/db-switch.sh status
 
 # Restore development database (after testing)
-./scripts/db-switch.sh restore
+./scripts/database/db-switch.sh populated
 ```
 
 ## Documentation File Location Examples

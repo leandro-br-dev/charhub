@@ -294,7 +294,7 @@ export const characterService = {
         limit,
         sortBy,
         includeStats,
-        fields: 'id,firstName,lastName,avatar,ageRating,style,theme,creator',
+        fields: 'id,firstName,lastName,avatar,ageRating,personality,contentTags,creator,stats',
       };
 
       if (ageRatings) {
