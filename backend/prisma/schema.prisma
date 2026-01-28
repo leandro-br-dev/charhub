@@ -529,9 +529,9 @@ model Character {
   age       Int?
   gender    CharacterGender? @default(UNKNOWN) // Standardized gender enum
   speciesId String? // Reference to Species table
-  species   Species?         @relation(fields: [speciesId], references: [id], onDelete: SetNull)
-  style     VisualStyle?     @default(ANIME) // Visual art style preference
-  theme     Theme?           @default(DARK_FANTASY) // Content type/theme
+  species   Species? @relation(fields: [speciesId], references: [id], onDelete: SetNull)
+  style     VisualStyle? @default(ANIME) // Visual art style preference
+  theme     Theme? @default(FANTASY) // Content type/theme
   reference String? // Source reference (e.g., "One Piece", "Marvel Comics")
 
   // Visual and descriptive
@@ -577,6 +577,9 @@ model Character {
   assistantsUsingAsDefault   Assistant[]               @relation("AssistantDefaultCharacter")
   actingParticipations       ConversationParticipant[] @relation("ParticipantActingCharacter")
   representingParticipations ConversationParticipant[] @relation("ParticipantRepresentingCharacter")
+
+  // Correction tracking
+  correctionJobLogs CorrectionJobLog[] @relation("CharacterCorrections")
 
   @@index([userId])
   @@index([visibility])
@@ -1315,18 +1318,27 @@ model SystemConfiguration {
 
 // Correction job execution log
 model CorrectionJobLog {
-  id           String    @id @default(uuid())
-  jobType      String // "avatar-correction" or "data-completeness-correction"
-  targetCount  Int
-  successCount Int
-  failureCount Int
-  duration     Int? // Duration in seconds
-  startedAt    DateTime  @default(now())
-  completedAt  DateTime?
-  errors       Json? // Array of {characterId, error}
-  metadata     Json? // Additional job-specific data
+  id              String   @id @default(uuid())
+  jobType         String   // "avatar-correction" or "data-completeness-correction"
+  targetCount     Int
+  successCount    Int
+  failureCount    Int
+  duration        Int?     // Duration in seconds
+  startedAt       DateTime @default(now())
+  completedAt     DateTime?
+  errors          Json?    // Array of {characterId, error}
+  metadata        Json?    // Additional job-specific data
+
+  // Individual correction tracking (for per-character corrections)
+  characterId     String?  // Character ID (for individual corrections)
+  fieldsCorrected String[] // Array of field names corrected (e.g., ["speciesId", "gender", "theme"])
+  details         Json?    // Additional correction metadata (before/after values, etc.)
 
   @@index([jobType, startedAt])
+  @@index([characterId])
+
+  // Relation to Character (optional, for individual corrections)
+  character Character? @relation("CharacterCorrections", fields: [characterId], references: [id], onDelete: SetNull)
 }
 
 // ============================================================================

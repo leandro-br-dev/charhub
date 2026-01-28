@@ -8,6 +8,7 @@
 import type { Request, Response } from 'express';
 import type { Server } from 'socket.io';
 import { logger } from '../config/logger';
+import { prisma } from '../config/database';
 import { analyzeCharacterImage, type CharacterImageAnalysisResult } from '../agents/characterImageAnalysisAgent';
 import { callLLM } from '../services/llm';
 import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
@@ -432,6 +433,75 @@ function mapGenderToEnum(gender?: string): CharacterGender {
 }
 
 /**
+ * Finalize gender for humanoid characters with intelligent inference
+ *
+ * Rules:
+ * - For humanoid species: If gender is UNKNOWN/ambiguous, infer from context
+ * - Check pronouns in description (she/her → FEMALE, he/his → MALE)
+ * - Default humanoid characters to FEMALE (most common in anime)
+ * - For non-humanoids: Return the detected gender as-is (may be UNKNOWN)
+ */
+function finalizeGender(
+  detectedGender: string | undefined,
+  species: string | undefined,
+  physicalDescription: string | undefined
+): CharacterGender {
+  const mappedGender = mapGenderToEnum(detectedGender);
+
+  // List of humanoid species that should have a determinable gender
+  const humanoidSpecies = [
+    'human',
+    'elf',
+    'demon',
+    'angel',
+    'vampire',
+    'yokai',
+    'kitsune',
+    'nekomimi',
+    'inumimi',
+    'usagimimi',
+    'dragon',
+    'fairy',
+    'succubus',
+    'incubus',
+  ];
+
+  // Check if species is humanoid
+  const isHumanoid = species && humanoidSpecies.some(s =>
+    species.toLowerCase().includes(s)
+  );
+
+  // If gender is UNKNOWN and character is humanoid, try to infer
+  if (mappedGender === CharacterGender.UNKNOWN && isHumanoid) {
+    const desc = (physicalDescription || '').toLowerCase();
+
+    // Infer from pronouns in description
+    if (desc.includes(' she ') || desc.includes(' her ') || desc.includes(' hers ') ||
+        desc.includes(' herself ') || desc.includes(', she') || desc.includes(', her')) {
+      return CharacterGender.FEMALE;
+    }
+    if (desc.includes(' he ') || desc.includes(' his ') || desc.includes(' him ') ||
+        desc.includes(' himself ') || desc.includes(', he') || desc.includes(', his')) {
+      return CharacterGender.MALE;
+    }
+
+    // Infer from gendered keywords
+    if (desc.includes(' female') || desc.includes(' woman') || desc.includes(' girl')) {
+      return CharacterGender.FEMALE;
+    }
+    if (desc.includes(' male') || desc.includes(' man') || desc.includes(' boy')) {
+      return CharacterGender.MALE;
+    }
+
+    // Default humanoid characters to FEMALE (most common in anime)
+    return CharacterGender.FEMALE;
+  }
+
+  // For non-humanoids or when gender is already determined, return as-is
+  return mappedGender;
+}
+
+/**
  * Build name diversity context for LLM prompt
  * This includes ethnicity guidance and name exclusion lists
  */
@@ -566,6 +636,13 @@ export async function compileCharacterDataWithLLM(
       ? await buildNameDiversityContext(imageAnalysis)
       : '';
 
+    // Fetch valid species from database for LLM prompt
+    const validSpecies = await prisma.species.findMany({
+      select: { name: true },
+      orderBy: { name: 'asc' },
+    });
+    const speciesNames = validSpecies.map(s => s.name).join(', ');
+
     const compilationPrompt = [
       'You are a creative character profile generator. Create a complete, engaging character profile.',
       '',
@@ -587,6 +664,15 @@ export async function compileCharacterDataWithLLM(
       }, null, 2) : '(No text analysis data)',
       '',
       nameDiversityContext, // Add name diversity context if available
+      `=== VALID SPECIES LIST ===`,
+      `IMPORTANT: For the "species" field, you MUST use one of these exact values:`,
+      speciesNames,
+      ``,
+      `If the character doesn't match any species exactly, choose the closest match.`,
+      `For human-like characters, use "Human".`,
+      `For animal-based characters, use the most appropriate animal species.`,
+      `For completely unknown/unclear species, use "Unknown".`,
+      ``,
       `=== TASK ===`,
       hasImage
         ? 'Create a COMPLETE character profile with ALL fields filled, incorporating the visual details from the image analysis.'
@@ -599,7 +685,7 @@ export async function compileCharacterDataWithLLM(
       `  "lastName": "string - MUST be a surname, NEVER null or empty",`,
       `  "age": number - MUST be a number between 18-100, not null",`,
       `  "gender": "string - MUST be: MALE, FEMALE, NON_BINARY, OTHER, or UNKNOWN (uppercase)",`,
-      `  "species": "string - Species name in English (human, elf, robot, etc.)",`,
+      `  "species": "string - MUST be one of the valid species listed above",`,
       `  "physicalCharacteristics": "string - ONE paragraph describing appearance${hasImage ? ', based on image analysis' : ', BE CREATIVE - expand from user description with specific details like hair color, eye color, height, build, clothing style'}",`,
       `  "personality": "string - 2-3 sentences describing personality, NEVER generic phrases",`,
       `  "history": "string - 1-2 paragraphs of backstory, NEVER generic phrases",`,
@@ -695,6 +781,20 @@ export async function compileCharacterDataWithLLM(
         };
         compiledData.style = (styleMap[visualStyle.artStyle] || 'ANIME') as any;
       }
+
+      // Finalize gender for humanoid characters with intelligent inference
+      const finalizedGender = finalizeGender(
+        compiledData.gender,
+        compiledData.species,
+        compiledData.physicalCharacteristics
+      );
+      compiledData.gender = finalizedGender;
+
+      logger.info({
+        originalGender: compiledData.gender,
+        finalizedGender,
+        species: compiledData.species,
+      }, 'gender_finalized_for_humanoid_characters');
 
       return compiledData;
     }
@@ -907,6 +1007,20 @@ async function simpleMergeAnalysisResults(
     };
     merged.style = styleMap[visualStyle.artStyle] || VisualStyle.ANIME;
   }
+
+  // Finalize gender for humanoid characters
+  const finalizedGender = finalizeGender(
+    merged.gender,
+    merged.species,
+    merged.physicalCharacteristics
+  );
+  merged.gender = finalizedGender;
+
+  logger.info({
+    originalGender: merged.gender,
+    finalizedGender,
+    species: merged.species,
+  }, 'gender_finalized_in_simple_merge');
 
   return merged;
 }

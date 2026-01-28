@@ -344,18 +344,45 @@ export class CharacterService {
 }
 ```
 
-## Migration Workflow
+## Migration Workflow - CRITICAL!
 
-### Create Migration
+### The Golden Rule
+
+**EVERY schema.prisma change MUST have a corresponding migration.**
+
+If you modify `schema.prisma` and don't create a migration:
+- Tests may pass locally (Prisma auto-syncs in dev)
+- Production WILL FAIL (no auto-sync)
+- Other developers will have drift
+- Agent Reviewer MUST block your PR
+
+### MANDATORY: Create Migration After Schema Change
 
 ```bash
-# Create migration after schema change
-npx prisma migrate dev --name add_character_type
+# 1. IMMEDIATELY after modifying schema.prisma:
+npx prisma migrate dev --name descriptive_name
 
-# This creates:
-# - prisma/migrations/TIMESTAMP_add_character_type/migration.sql
-# - Runs the migration
-# - Regenerates Prisma Client
+# 2. VERIFY migration was created:
+ls -la prisma/migrations/ | tail -3
+
+# 3. VERIFY migration content is correct:
+cat prisma/migrations/LATEST_TIMESTAMP_*/migration.sql
+
+# 4. COMMIT BOTH schema.prisma AND the migration folder
+```
+
+### Migration Naming Convention
+
+```bash
+# Good names (descriptive, snake_case):
+npx prisma migrate dev --name add_theme_to_character
+npx prisma migrate dev --name add_correction_tracking_fields
+npx prisma migrate dev --name remove_deprecated_columns
+
+# Bad names (vague):
+npx prisma migrate dev --name update
+npx prisma migrate dev --name fix
+npx prisma migrate dev --name changes
 ```
 
 ### Migration File Structure
@@ -364,18 +391,20 @@ npx prisma migrate dev --name add_character_type
 prisma/
 ├── schema.prisma              # Schema definition
 ├── migrations/                # Migration files
-│   ├── 20250124000000_init/
+│   ├── 20260124000000_init/
 │   │   └── migration.sql
-│   ├── 20250124100000_add_character_type/
+│   ├── 20260124100000_add_character_type/
 │   │   └── migration.sql
 │   └── ...
 └── seed.ts                    # Seed data (optional)
 ```
 
+**Note**: Migration timestamps MUST be 2026, not 2025!
+
 ### Deploy Migrations
 
 ```bash
-# Apply migrations in production
+# Apply migrations in production/staging
 npx prisma migrate deploy
 
 # Check migration status
@@ -390,6 +419,27 @@ cd backend
 npx prisma migrate deploy
 npm test
 ```
+
+### FORBIDDEN Actions
+
+| Action | Why Forbidden |
+|--------|---------------|
+| Manual ALTER TABLE | Not reproducible in production |
+| Manual CREATE INDEX | Not tracked in version control |
+| Skip migration creation | Causes deployment failures |
+| Commit schema without migration | PR must be blocked |
+
+### Pre-PR Checklist for Schema Changes
+
+- [ ] Modified `schema.prisma`?
+- [ ] Created migration with `npx prisma migrate dev --name ...`?
+- [ ] Verified migration file exists in `prisma/migrations/`?
+- [ ] Verified migration SQL contains expected changes?
+- [ ] Migration timestamp is 2026 (not 2025)?
+- [ ] `npx prisma migrate status` shows "up to date"?
+- [ ] Committed BOTH schema.prisma AND migration folder?
+
+**If any checkbox is NO, do NOT create PR!**
 
 ## Schema Patterns
 

@@ -1,6 +1,6 @@
 # Global Skills Index
 
-**Last Updated**: 2025-01-24
+**Last Updated**: 2026-01-27
 
 Global skills are available to all agents (Coder, Reviewer, Planner). These provide cross-cutting capabilities for common operations.
 
@@ -11,6 +11,7 @@ Global skills are available to all agents (Coder, Reviewer, Planner). These prov
 | **agent-switching** | Switch between agent profiles (coder/reviewer/planner) | All Agents |
 | **container-health-check** | Verify Docker containers are healthy before operations | Coder, Reviewer |
 | **database-switch** | Switch between clean and populated database modes | Coder, Reviewer |
+| **database-schema-management** | **CRITICAL**: Rules for schema changes and migrations | Coder, Reviewer |
 
 ## Skill Details
 
@@ -78,6 +79,56 @@ Global skills are available to all agents (Coder, Reviewer, Planner). These prov
 - Before creating Pull Request (test in clean, then restore)
 
 **Multi-Agent Compatible**: Works correctly in all environments (agent-01, agent-02, agent-03)
+
+---
+
+### database-schema-management
+
+**Purpose**: Define MANDATORY rules for database schema changes to ensure consistency, reproducibility, and prevent production incidents.
+
+**CRITICAL**: This skill defines rules that MUST be followed by ALL agents.
+
+**The Golden Rule**: **NEVER execute SQL commands directly on the database to change schema.**
+
+All schema changes MUST go through Prisma migrations.
+
+**For Agent Coder**:
+```bash
+# IMMEDIATELY after modifying schema.prisma:
+npx prisma migrate dev --name descriptive_name
+
+# VERIFY migration was created:
+ls -la prisma/migrations/ | tail -5
+
+# COMMIT BOTH schema.prisma AND migration folder
+```
+
+**For Agent Reviewer**:
+```bash
+# Check if schema.prisma was modified in PR:
+git diff origin/main...HEAD --name-only | grep schema.prisma
+
+# If YES → Check for corresponding migration:
+git diff origin/main...HEAD --name-only | grep "prisma/migrations"
+
+# If schema changed but NO migration → BLOCK PR IMMEDIATELY!
+```
+
+**Forbidden Actions**:
+| Action | Why Forbidden |
+|--------|---------------|
+| Run ALTER TABLE directly | Not reproducible in production |
+| Run CREATE INDEX directly | Not tracked in version control |
+| "Fix" drift with manual SQL | Creates permanent inconsistencies |
+| Approve PR without migration | Deployment will fail |
+
+**Documentation**: [database-schema-management/SKILL.md](database-schema-management/SKILL.md)
+
+**When to Use**:
+- When modifying `schema.prisma` (Agent Coder)
+- When reviewing PRs with schema changes (Agent Reviewer)
+- When database drift is detected
+- When debugging schema-related errors
 
 ---
 

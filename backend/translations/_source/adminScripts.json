@@ -28,14 +28,21 @@
         "success": "Data correction script started successfully",
         "error": "Failed to start data correction script"
       },
+      "generation": {
+        "name": "Character Generation",
+        "description": "Generate characters automatically from curated images",
+        "success": "Character generation started successfully",
+        "error": "Failed to start character generation"
+      },
       "lastRun": "Last Run",
       "run": "Run Script",
       "running": "Running...",
       "moreComing": "More scripts coming soon...",
-      "records": "records"
+      "records": "records",
+      "characters": "characters",
+      "limit": "Record Limit",
+      "limitPlaceholder": "Number of records to process (1-1000)"
     },
-    "refresh": "Refresh Statistics",
-    "limit": "Record Limit",
-    "limitPlaceholder": "Number of records to process (1-1000)"
+    "refresh": "Refresh Statistics"
   }
 }

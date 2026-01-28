@@ -28,14 +28,21 @@
         "success": "数据校正脚本已成功启动",
         "error": "启动数据校正脚本失败"
       },
+      "generation": {
+        "name": "角色生成",
+        "description": "从精选图像中自动生成角色",
+        "success": "角色生成已成功启动",
+        "error": "启动角色生成失败"
+      },
       "lastRun": "上次运行",
       "run": "运行脚本",
       "running": "正在运行...",
       "moreComing": "更多脚本即将推出...",
-      "records": "条记录"
+      "records": "条记录",
+      "characters": "个角色",
+      "limit": "记录限制",
+      "limitPlaceholder": "要处理的记录数量 (1-1000)"
     },
-    "refresh": "刷新统计数据",
-    "limit": "记录限制",
-    "limitPlaceholder": "要处理的记录数量 (1-1000)"
+    "refresh": "刷新统计数据"
   }
 }

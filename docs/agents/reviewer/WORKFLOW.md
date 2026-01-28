@@ -1,7 +1,7 @@
 # Agent Reviewer Workflow - Complete Flow
 
-**Last Updated**: 2025-01-24
-**Version**: 2.0
+**Last Updated**: 2026-01-27
+**Version**: 2.2 - Enhanced Schema Verification & Migrations
 
 ---
 
@@ -19,9 +19,21 @@ WORKFLOW 1: PULL REQUEST REVIEW
 │      ├─ Detect outdated PR branches
 │      ├─ Identify merge conflicts
 │      ├─ Combine features from multiple agents
-│      └─ Prevent feature loss
+│      ├─ Prevent feature loss
+│      ├─ **Checkout PR branch locally**
+│      ├─ **Apply database migrations** (CRITICAL!)
+│      └─ **Install new dependencies** if needed
 │
-├─→ 1.2. CODE QUALITY REVIEW
+├─→ 1.2. SCHEMA VERIFICATION (CRITICAL!)
+│   └─ Use database-schema-management skill
+│      ├─ Check if schema.prisma was modified in PR
+│      ├─ If YES → Verify migration file exists
+│      ├─ Verify migration SQL matches schema changes
+│      ├─ Verify migration timestamp is 2026
+│      ├─ **If schema changed but NO migration → BLOCK PR!**
+│      └─ **NEVER execute SQL directly to "fix" issues!**
+│
+├─→ 1.3. CODE QUALITY REVIEW
 │   └─ Use pr-code-reviewer
 │      ├─ Code quality verification
 │      ├─ Pattern compliance checking
@@ -30,15 +42,27 @@ WORKFLOW 1: PULL REQUEST REVIEW
 │      ├─ Test coverage assessment
 │      └─ Security review
 │
-├─→ 1.3. LOCAL TESTING & QA
+├─→ 1.4. LOCAL TESTING & QA (Automated)
 │   └─ Use local-qa-tester
 │      ├─ Automated test execution
-│      ├─ Manual feature testing
 │      ├─ API endpoint verification
 │      └─ Regression testing
 │
-└─→ 1.4. DECISION
-    ├─ Approve PR
+├─→ 1.5. USER ACCEPTANCE TESTING (UAT) - CRITICAL!
+│   └─ **MANDATORY - Cannot be skipped!**
+│      ├─ Switch to populated database mode
+│      ├─ Present test checklist to user
+│      ├─ **WAIT for user to perform manual testing**
+│      ├─ **Receive explicit user confirmation**
+│      └─ If user finds issues → Route back to Agent Coder
+│
+├─→ 1.6. USER CONFIRMATION FOR MERGE - CRITICAL!
+│   └─ **MANDATORY - Cannot be skipped!**
+│      ├─ Ask user: "Posso prosseguir com o merge?"
+│      └─ **WAIT for explicit user approval**
+│
+└─→ 1.7. DECISION
+    ├─ User approved + All checks passed → Merge PR
     ├─ Request changes
     └─ Block PR (critical issues)
 
@@ -58,20 +82,26 @@ WORKFLOW 2: DEPLOYMENT COORDINATION
 │      ├─ Verify no merge conflicts
 │      └─ Document rollback plan
 │
-├─→ 2.3. DEPLOYMENT EXECUTION
+├─→ 2.3. USER CONFIRMATION FOR DEPLOY - CRITICAL!
+│   └─ **MANDATORY - Cannot be skipped!**
+│      ├─ Present deploy summary to user
+│      ├─ Ask user: "Posso prosseguir com o deploy para produção?"
+│      └─ **WAIT for explicit user approval**
+│
+├─→ 2.4. DEPLOYMENT EXECUTION
 │   └─ Use deploy-coordinator
 │      ├─ Merge PR to main
 │      ├─ Pull to production
 │      ├─ Build and restart services
 │      └─ Monitor startup logs
 │
-├─→ 2.4. POST-DEPLOY VERIFICATION
+├─→ 2.5. POST-DEPLOY VERIFICATION
 │   └─ Use deploy-coordinator + production-monitor
 │      ├─ Service health checks
 │      ├─ Functional verification
 │      └─ Check for new errors
 │
-└─→ 2.5. DOCUMENTATION
+└─→ 2.6. DOCUMENTATION
     └─ Move feature spec to implemented
        └─ Create deployment record
 
@@ -156,8 +186,39 @@ WORKFLOW 4: PRODUCTION MONITORING
 - [ ] Verify no unintentional deletions
 - [ ] Combine features if multiple agents working
 - [ ] Update branch if needed
+- [ ] **Checkout PR branch locally**
+- [ ] **Apply database migrations** (`cd backend && npx prisma migrate deploy`) (CRITICAL!)
+- [ ] **Install new dependencies** if package.json changed (`npm install`)
 
-#### Checklist 1.2: Code Quality Review
+#### Checklist 1.2: Schema Verification (CRITICAL!)
+**Use skill**: `database-schema-management`
+
+```bash
+# 1. Check if schema.prisma was modified in PR
+git diff origin/main...HEAD --name-only | grep schema.prisma
+
+# 2. If YES → Check for corresponding migration
+git diff origin/main...HEAD --name-only | grep "prisma/migrations"
+
+# 3. Verify migration content matches schema changes
+```
+
+- [ ] Check if `schema.prisma` was modified in PR
+- [ ] If YES → Verify migration file exists in PR
+- [ ] Verify migration timestamp is 2026 (not 2025)
+- [ ] Verify migration SQL matches schema changes
+- [ ] `npx prisma migrate status` shows "up to date"
+- [ ] **If schema changed but NO migration → BLOCK PR immediately!**
+
+**FORBIDDEN ACTIONS** (NEVER do these!):
+| Action | Why Forbidden |
+|--------|---------------|
+| Execute ALTER TABLE directly | Not reproducible in production |
+| Execute CREATE INDEX directly | Not tracked in version control |
+| "Fix" drift with manual SQL | Creates permanent inconsistencies |
+| Approve PR without migration | Deployment will fail |
+
+#### Checklist 1.3: Code Quality Review
 - [ ] Backend TypeScript compiles (`npm run build`)
 - [ ] Frontend TypeScript compiles
 - [ ] Lint checks pass
@@ -169,18 +230,35 @@ WORKFLOW 4: PRODUCTION MONITORING
 - [ ] Pattern compliance checked
 - [ ] Security review passed
 
-#### Checklist 1.3: Local Testing & QA
+#### Checklist 1.4: Local Testing & QA (Automated)
 - [ ] Backend tests pass
 - [ ] Frontend tests pass
-- [ ] Manual feature testing
 - [ ] API endpoint verification
 - [ ] Database validation
 - [ ] Regression testing
 - [ ] Docker containers healthy
 
-#### Checklist 1.4: Decision
+#### Checklist 1.5: User Acceptance Testing (UAT) - CRITICAL!
+**MANDATORY - This step cannot be skipped!**
+- [ ] Switch database to populated mode: `./scripts/database/db-switch.sh populated`
+- [ ] **Present test checklist to user** with specific features to test
+- [ ] **WAIT for user to perform manual testing**
+- [ ] **Receive explicit user confirmation** that features work correctly
+- [ ] If user finds issues → Request changes, route back to Agent Coder
+- [ ] If user confirms → Proceed to next step
+
+#### Checklist 1.6: User Confirmation for Merge - CRITICAL!
+**MANDATORY - This step cannot be skipped!**
+- [ ] All automated checks passed
+- [ ] User confirmed UAT passed
+- [ ] **Ask user: "Posso prosseguir com o merge da PR?"**
+- [ ] **WAIT for explicit user approval**
+- [ ] Only proceed after user says yes
+
+#### Checklist 1.7: Decision
+- [ ] User approved merge
 - [ ] All checks passed
-- [ ] Approval/comment provided
+- [ ] → Merge PR
 - [ ] OR changes requested with specific feedback
 - [ ] OR blocked with critical issues documented
 
@@ -205,15 +283,22 @@ WORKFLOW 4: PRODUCTION MONITORING
 - [ ] Rollback plan documented
 - [ ] Stakeholders notified
 
-#### Checklist 2.3: Deployment Execution
-- [ ] Merge PR to main
+#### Checklist 2.3: User Confirmation for Deploy - CRITICAL!
+**MANDATORY - This step cannot be skipped!**
+- [ ] Present deploy summary to user (what will be deployed)
+- [ ] **Ask user: "Posso prosseguir com o deploy para produção?"**
+- [ ] **WAIT for explicit user approval**
+- [ ] Only proceed after user says yes
+
+#### Checklist 2.4: Deployment Execution
+- [ ] Merge PR to main (if not already merged)
 - [ ] Pull to production server
 - [ ] Build Docker images
 - [ ] Restart services
 - [ ] Monitor startup logs actively
 - [ ] All services started successfully
 
-#### Checklist 2.4: Post-Deploy Verification
+#### Checklist 2.5: Post-Deploy Verification
 - [ ] All containers running
 - [ ] Health checks passing
 - [ ] API responding correctly
@@ -221,7 +306,7 @@ WORKFLOW 4: PRODUCTION MONITORING
 - [ ] Critical features working
 - [ ] Performance acceptable
 
-#### Checklist 2.5: Documentation
+#### Checklist 2.6: Documentation
 - [ ] Feature spec moved to implemented/
 - [ ] Deployment record created
 - [ ] Deployment notes documented
@@ -376,11 +461,55 @@ cd backend && npm test
 - Detects outdated branches
 - Resolves merge conflicts
 
+### After Checking Out PR Branch
+**ALWAYS apply database migrations**
+```bash
+cd backend && npx prisma migrate deploy
+cd backend && npm install  # if new dependencies
+```
+- PR may include new migrations
+- Schema must match code being tested
+- Missing migrations = potential test failures
+
+### Schema Verification (CRITICAL!)
+**ALWAYS verify schema changes have migrations**
+```bash
+# 1. Check if schema.prisma was modified
+git diff origin/main...HEAD --name-only | grep schema.prisma
+
+# 2. If YES → Check for corresponding migration
+git diff origin/main...HEAD --name-only | grep "prisma/migrations"
+
+# 3. If schema changed but NO migration → BLOCK PR!
+```
+- Schema changed? → Migration MUST exist
+- **NEVER** execute SQL directly to "fix" missing columns!
+- **NEVER** approve PR with schema changes but no migration!
+- Request Agent Coder to create proper migration
+
+**FORBIDDEN ACTIONS**:
+- ALTER TABLE directly
+- CREATE INDEX directly
+- "Fix" drift with manual SQL
+- Approve PR without migration
+
+### Before Merge
+**ALWAYS request User Acceptance Testing (UAT)**
+- Present test checklist to user
+- WAIT for user to perform manual testing
+- WAIT for explicit user confirmation
+- **NEVER merge without user approval**
+
 ### Before Deployment
 **ALWAYS use env-guardian FIRST**
 - Validates environment variables
 - Prevents deployment failures
 - Ensures configuration exists
+
+**ALWAYS request user confirmation**
+- Ask: "Posso prosseguir com o deploy para produção?"
+- WAIT for explicit user approval
+- **NEVER deploy without user approval**
 
 ### During Incident
 **Stability > Speed**

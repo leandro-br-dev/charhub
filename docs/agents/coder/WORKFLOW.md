@@ -1,7 +1,7 @@
 # Agent Coder Workflow - Complete Flow
 
-**Last Updated**: 2025-01-24
-**Version**: 1.0
+**Last Updated**: 2026-01-27
+**Version**: 1.1 - Enhanced Migrations & Manual Testing First
 
 ---
 
@@ -22,7 +22,9 @@ PHASE 1: PLANNING & SETUP
 ├─→ 1.2. GIT SETUP (git-branch-management + git-safety-officer)
 │   ├─ Verify working directory clean
 │   ├─ Verify main branch updated
-│   └─ Create feature branch: feature/{short-name}
+│   ├─ Create feature branch: feature/{short-name}
+│   ├─ **Apply database migrations** (CRITICAL!)
+│   └─ **Install new dependencies** if any
 │
 PHASE 2: IMPLEMENTATION
 │
@@ -40,13 +42,16 @@ PHASE 2: IMPLEMENTATION
 │
 PHASE 3: TESTING
 │
-├─→ 3.1. MANUAL TESTING (manual-testing-protocol)
+├─→ 3.1. MANUAL TESTING (manual-testing-protocol) - MUST COME FIRST!
+│   ├─ **CRITICAL: User testing BEFORE automated tests!**
 │   ├─ Present test checklist to user
-│   ├─ Wait for user confirmation
+│   ├─ **WAIT for user to perform manual testing**
+│   ├─ **Receive explicit user confirmation**
 │   ├─ FAILS? → Route back to Phase 2 (development)
-│   └─ PASSES? → Proceed
+│   └─ PASSES? → Proceed to automated test creation
 │
-├─→ 3.2. PARALLEL TASKS (parallel-tasks-execution)
+├─→ 3.2. PARALLEL TASKS (parallel-tasks-execution) - AFTER User Confirms!
+│   ├─ **PREREQUISITE: User confirmed manual testing passed!**
 │   ├─ Delegate IN PARALLEL:
 │   │   ├─→ test-writer (create automated tests)
 │   │   └─→ coder-doc-specialist (create .docs.md files)
@@ -105,6 +110,8 @@ PHASE 4: PULL REQUEST
 - [ ] Verify working directory clean: `git status`
 - [ ] Verify main updated: `git fetch origin main && git log origin/main --oneline -5`
 - [ ] Create feature branch: `feature/{short-descriptive-name}`
+- [ ] **Apply database migrations**: `cd backend && npx prisma migrate deploy` (CRITICAL!)
+- [ ] **Install new dependencies**: `cd backend && npm install && cd ../frontend && npm install`
 
 ### ✅ Phase 2: Implementation
 
@@ -119,10 +126,14 @@ PHASE 4: PULL REQUEST
 
 ### ✅ Phase 3: Testing
 
+**CRITICAL: Manual testing MUST happen BEFORE creating automated tests!**
+
 - [ ] **Manual Testing**: Present checklist to user
-- [ ] Wait for user confirmation
-- [ ] User confirmed? → Continue
-- [ ] **Parallel Tasks**: delegate to test-writer AND coder-doc-specialist
+- [ ] **WAIT for user to perform manual testing**
+- [ ] **Receive explicit user confirmation** that features work
+- [ ] User confirmed? → Continue to automated test creation
+- [ ] User found issues? → Route back to Phase 2
+- [ ] **ONLY AFTER User Confirms**: delegate to test-writer AND coder-doc-specialist
 - [ ] Wait for BOTH to complete
 - [ ] **Prepare Test Environment**: `./scripts/database/db-switch.sh clean`
 - [ ] **Run Tests**: `npm test` (backend + frontend)
@@ -148,6 +159,8 @@ PHASE 4: PULL REQUEST
 - [ ] **Git State**: clean
 - [ ] **Feature Spec**: updated
 - [ ] **Branch Sync**: merge main into feature
+- [ ] **Apply migrations after sync**: `cd backend && npx prisma migrate deploy` (CRITICAL!)
+- [ ] **Install dependencies after sync**: `npm install` (backend + frontend)
 - [ ] **Create PR**: push and create via gh CLI
 
 ---

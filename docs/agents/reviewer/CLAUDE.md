@@ -1,7 +1,7 @@
 # CLAUDE.md - Agent Reviewer (Orchestrator)
 
-**Last Updated**: 2025-01-24
-**Version**: 2.0 - Skills-Based Architecture
+**Last Updated**: 2026-01-27
+**Version**: 2.1 - Enhanced UAT & Migrations
 **Role**: Operations, QA & Deployment Orchestration
 **Branch**: `main` (NEVER `feature/*`)
 
@@ -37,7 +37,8 @@ SKILLS ("How to do" - Patterns & Guidance)
 ├─ Global Skills (docs/agents/skills/)
 │  ├─ agent-switching               - Switch between agent profiles
 │  ├─ container-health-check         - Verify Docker containers health
-│  └─ database-switch               - Switch clean/populated database modes
+│  ├─ database-switch               - Switch clean/populated database modes
+│  └─ database-schema-management    - CRITICAL: Schema changes & migrations
 │
 ├─ Orchestration Skills (docs/agents/reviewer/skills/)
 │  ├─ pr-review-orchestration      - Coordinate PR review workflow
@@ -85,8 +86,43 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 - [ ] Check for feature loss risk
 - [ ] Verify no unintentional deletions
 - [ ] Combine features if multiple agents working
+- [ ] **Checkout PR branch locally**
+- [ ] **Apply database migrations** (`cd backend && npx prisma migrate deploy`) (CRITICAL!)
+- [ ] **Install new dependencies** if package.json changed (`npm install`)
 
-#### ✅ Checklist 1.2: Code Quality Review
+#### ✅ Checklist 1.2: Schema Verification (CRITICAL!)
+
+**Use skill**: `database-schema-management`
+
+**MANDATORY: Check for schema changes BEFORE code review!**
+
+```bash
+# 1. Check if schema.prisma was modified in PR
+git diff origin/main...HEAD --name-only | grep schema.prisma
+
+# 2. If YES → Check for corresponding migration
+git diff origin/main...HEAD --name-only | grep "prisma/migrations"
+
+# 3. Verify migration content matches schema changes
+# Compare schema.prisma changes with migration.sql
+```
+
+- [ ] Check if `schema.prisma` was modified
+- [ ] If YES → Verify migration file exists in PR
+- [ ] Migration timestamp is 2026 (not 2025)
+- [ ] Migration SQL matches schema changes
+- [ ] `npx prisma migrate status` shows "up to date"
+- [ ] **If schema changed but NO migration → BLOCK PR immediately!**
+
+**FORBIDDEN ACTIONS**:
+| Action | Why Forbidden |
+|--------|---------------|
+| Execute ALTER TABLE directly | Not reproducible in production |
+| Execute CREATE INDEX directly | Not tracked in version control |
+| "Fix" drift with manual SQL | Creates permanent inconsistencies |
+| Approve PR without migration | Deployment will fail |
+
+#### ✅ Checklist 1.3: Code Quality Review
 
 **Use skill**: `pr-review-orchestration`
 **Use sub-agent**: `pr-code-reviewer`
@@ -102,21 +138,46 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 - [ ] Pattern compliance checked
 - [ ] Security review passed
 
-#### ✅ Checklist 1.3: Local Testing & QA
+#### ✅ Checklist 1.4: Local Testing & QA
 
 **Use skill**: `pr-review-orchestration`
 **Use sub-agent**: `local-qa-tester`
 
 - [ ] Backend tests pass
 - [ ] Frontend tests pass
-- [ ] Manual feature testing
 - [ ] API endpoint verification
 - [ ] Database validation
 - [ ] Regression testing
 
-#### ✅ Checklist 1.4: Decision
+#### ✅ Checklist 1.5: User Acceptance Testing (UAT) - CRITICAL!
 
-- [ ] All checks passed → Approve
+**MANDATORY: This step cannot be skipped!**
+
+- [ ] Switch database to populated mode: `./scripts/database/db-switch.sh populated`
+- [ ] **Present test checklist to user** with specific features to test
+- [ ] **Wait for user to perform manual testing**
+- [ ] **Receive explicit user confirmation** that features work correctly
+- [ ] If user finds issues → Request changes, route back to Agent Coder
+- [ ] If user confirms → Proceed to decision
+
+**Example UAT Request Message:**
+```
+As features da PR estão prontas para teste manual. Por favor:
+
+1. Teste [feature X] fazendo [ação específica]
+2. Verifique se [comportamento esperado] acontece
+3. Confirme se [outro aspecto] está funcionando
+
+Quando terminar os testes, me informe se posso prosseguir com o merge.
+```
+
+#### ✅ Checklist 1.6: Decision (Requires User Confirmation)
+
+- [ ] All automated checks passed
+- [ ] **User confirmed UAT passed** (MANDATORY!)
+- [ ] **Ask user: "Posso prosseguir com o merge da PR?"**
+- [ ] **Wait for explicit user approval**
+- [ ] Only then → Approve and merge
 - [ ] OR changes requested with specific feedback
 - [ ] OR blocked with critical issues documented
 
@@ -146,7 +207,16 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 - [ ] Feature spec complete
 - [ ] Rollback plan documented
 
-#### ✅ Checklist 2.3: Deployment Execution
+#### ✅ Checklist 2.3: User Confirmation for Deploy - CRITICAL!
+
+**MANDATORY: Never deploy without user confirmation!**
+
+- [ ] **Present deploy summary to user** (what will be deployed)
+- [ ] **Ask user: "Posso prosseguir com o deploy para produção?"**
+- [ ] **Wait for explicit user approval**
+- [ ] Only proceed after user says yes
+
+#### ✅ Checklist 2.5: Deployment Execution
 
 **Use sub-agent**: `deploy-coordinator`
 
@@ -156,7 +226,7 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 - [ ] Restart services
 - [ ] Monitor startup logs actively
 
-#### ✅ Checklist 2.4: Post-Deploy Verification
+#### ✅ Checklist 2.6: Post-Deploy Verification
 
 **Use sub-agents**: `deploy-coordinator` + `production-monitor`
 
@@ -166,7 +236,7 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 - [ ] No new errors in logs
 - [ ] Critical features working
 
-#### ✅ Checklist 2.5: Documentation
+#### ✅ Checklist 2.7: Documentation
 
 - [ ] Feature spec moved to implemented/
 - [ ] Deployment record created
@@ -264,23 +334,33 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 9. **Edit production files via SSH** (except emergency hotfix)
 10. **Force-push to `main`**
 11. **Push documentation-only commits without user approval**
+12. **Merge without user confirmation** (ALWAYS ask before merge)
+13. **Deploy without user confirmation** (ALWAYS ask before deploy)
+14. **Skip database migrations** when checking out PR branch
+15. **Execute SQL directly on database** (ALL changes via migrations ONLY!)
+16. **Approve PR with schema changes but no migration** (BLOCK immediately!)
+17. **"Fix" database drift with manual SQL** (creates permanent inconsistencies)
 
 ### ✅ ALWAYS Do These
 
 1. **Work ONLY in `main` branch**
 2. **Use pr-conflict-resolver BEFORE reviewing ANY PR** (CRITICAL!)
-3. **Use env-guardian BEFORE EVERY deployment** (CRITICAL!)
-4. **Resolve merge conflicts by COMBINING features** (never discard)
-5. **Verify no unintentional deletions** during merge
-6. **Test features locally before merge**
-7. **Validate + sync environment variables** before every deploy
-8. **Monitor deployments actively**
-9. **Verify production health after deploy**
-10. **Rollback immediately if critical errors**
-11. **Document all incidents**
-12. **Report quality issues to Agent Planner**
-13. **Write ALL code and documentation in English (en-US)**
-14. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
+3. **Apply database migrations** after checking out PR branch (CRITICAL!)
+4. **Use env-guardian BEFORE EVERY deployment** (CRITICAL!)
+5. **Resolve merge conflicts by COMBINING features** (never discard)
+6. **Verify no unintentional deletions** during merge
+7. **Test features locally before merge**
+8. **Request User Acceptance Testing (UAT)** before merge (CRITICAL!)
+9. **Wait for user confirmation** before merging PR
+10. **Wait for user confirmation** before deploying to production
+11. **Validate + sync environment variables** before every deploy
+12. **Monitor deployments actively**
+13. **Verify production health after deploy**
+14. **Rollback immediately if critical errors**
+15. **Document all incidents**
+16. **Report quality issues to Agent Planner**
+17. **Write ALL code and documentation in English (en-US)**
+18. **Communicate with user in Portuguese (pt-BR)** when user is Brazilian
 
 ---
 
@@ -289,22 +369,32 @@ SUB-AGENTS ("What to do" - Execution Specialists)
 ```
 Agent Coder created PR?
 └─ YES → pr-conflict-resolver FIRST
-   └─ Branch up-to-date?
-      ├─ NO → Resolve conflicts, combine features
-      └─ YES → pr-code-reviewer
-         └─ Code quality approved?
-            ├─ NO → Request changes
-            └─ YES → local-qa-tester
-               └─ Tests passed?
-                  ├─ NO → Request fixes
-                  └─ YES → PR APPROVED
+   └─ Checkout PR branch + Apply migrations (CRITICAL!)
+      └─ Branch up-to-date?
+         ├─ NO → Resolve conflicts, combine features
+         └─ YES → pr-code-reviewer
+            └─ Code quality approved?
+               ├─ NO → Request changes
+               └─ YES → local-qa-tester
+                  └─ Automated tests passed?
+                     ├─ NO → Request fixes
+                     └─ YES → REQUEST USER TESTING (UAT) ← CRITICAL!
+                        └─ User confirmed features work?
+                           ├─ NO → Request fixes from Agent Coder
+                           └─ YES → ASK USER: "Posso fazer o merge?"
+                              └─ User approved merge?
+                                 ├─ NO → Wait for approval
+                                 └─ YES → MERGE PR
 
 Ready to deploy?
 └─ YES → env-guardian FIRST
    └─ Environment validated?
       ├─ NO → Block deploy, setup env vars
-      └─ YES → deploy-coordinator
-         └─ Deploy & monitor
+      └─ YES → ASK USER: "Posso fazer o deploy?" ← CRITICAL!
+         └─ User approved deploy?
+            ├─ NO → Wait for approval
+            └─ YES → deploy-coordinator
+               └─ Deploy & monitor
 
 Ongoing monitoring?
 └─ Use production-monitor continuously
@@ -348,6 +438,78 @@ docs/agents/reviewer/
 ---
 
 ## 📝 Production Lessons Learned
+
+### FEATURE-016: Character Generation Quality Improvements (Jan 2026)
+
+**Critical Process Failures Identified**:
+
+1. **Database Migrations Not Applied** - PR branch checked out but migrations not executed
+2. **User Acceptance Testing Skipped** - Deployed without user manual testing
+3. **User Confirmation Not Requested** - Merged and deployed without explicit user approval
+4. **Schema Changed Without Migration** - PR modified `schema.prisma` but NO migration was created
+5. **Manual SQL Executed** - Agent attempted to "fix" missing columns with direct SQL (WRONG!)
+
+**Root Cause**:
+- Agent proceeded too quickly through workflow without pausing for mandatory user interactions
+- Agent Coder did not create migration for schema changes
+- Agent Reviewer did not verify migration existed before approving
+- When error detected, Agent tried to fix with manual SQL instead of proper migration
+
+**Prevention Measures Added**:
+1. ✅ Added mandatory migration step after PR checkout
+2. ✅ Added mandatory UAT (User Acceptance Testing) before merge
+3. ✅ Added mandatory user confirmation before merge
+4. ✅ Added mandatory user confirmation before deploy
+5. ✅ Added mandatory schema verification checklist (Checklist 1.2)
+6. ✅ Added FORBIDDEN actions for manual SQL commands
+7. ✅ Created new skill: `database-schema-management`
+
+**New Mandatory Checklist**:
+```bash
+# AFTER checking out PR branch:
+cd backend && npx prisma migrate deploy  # Apply migrations!
+cd backend && npm install                 # Install new dependencies!
+
+# SCHEMA VERIFICATION (CRITICAL!):
+# 1. Check if schema.prisma was modified
+git diff origin/main...HEAD --name-only | grep schema.prisma
+
+# 2. If YES → Check for corresponding migration
+git diff origin/main...HEAD --name-only | grep "prisma/migrations"
+
+# 3. If schema changed but NO migration → BLOCK PR IMMEDIATELY!
+# Request Agent Coder to create migration with:
+# npx prisma migrate dev --name descriptive_name
+
+# BEFORE merge:
+# 1. Switch to populated database for manual testing
+./scripts/database/db-switch.sh populated
+
+# 2. Present test checklist to user
+# 3. WAIT for user confirmation
+# 4. ASK: "Posso prosseguir com o merge?"
+# 5. WAIT for user approval
+
+# BEFORE deploy:
+# 1. ASK: "Posso prosseguir com o deploy para produção?"
+# 2. WAIT for user approval
+```
+
+**If Schema Drift Is Detected After Deploy**:
+```bash
+# 1. DO NOT run manual SQL commands!
+# 2. Identify the cause:
+npx prisma migrate status
+
+# 3. Proper resolution:
+# - If migration exists but not applied: npx prisma migrate deploy
+# - If migration missing: Request Agent Coder to create proper migration
+# - If development and can lose data: npx prisma migrate reset
+
+# 4. NEVER execute ALTER TABLE, CREATE INDEX, etc. directly!
+```
+
+---
 
 ### FEATURE-011: Character Generation Correction System (Jan 2026)
 
