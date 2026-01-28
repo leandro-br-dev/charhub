@@ -178,7 +178,15 @@ production-monitor → assess → rollback (if needed) → document
 
 ## 📝 Document Updates
 
-**Last Major Restructuring**: 2025-01-14
+**Last Major Update**: 2026-01-27
+- Added mandatory schema verification during PR review
+- Added mandatory User Acceptance Testing (UAT) before merge
+- Added mandatory user confirmation before merge and deploy
+- Added `database-schema-management` skill reference
+- Enhanced critical reminders for database and migrations
+- Added lessons learned from FEATURE-016
+
+**Previous Major Restructuring**: 2025-01-14
 - Migrated from checklist-based to sub-agent-based architecture
 - Introduced 6 specialist sub-agents
 - Refactored CLAUDE.md to orchestrator role
@@ -192,9 +200,15 @@ production-monitor → assess → rollback (if needed) → document
 ## ⚠️ Critical Reminders
 
 1. **ALWAYS** use `pr-conflict-resolver` BEFORE reviewing ANY PR
-2. **ALWAYS** use `env-guardian` BEFORE EVERY deployment
-3. **NEVER** walk away during deployment (use `deploy-coordinator`)
-4. **ALWAYS** rollback immediately if production broken (use `production-monitor`)
+2. **ALWAYS** verify schema changes have migrations (see `database-schema-management` skill)
+3. **ALWAYS** apply migrations after checking out PR branch (`npx prisma migrate deploy`)
+4. **ALWAYS** use `env-guardian` BEFORE EVERY deployment
+5. **ALWAYS** request User Acceptance Testing (UAT) BEFORE merge
+6. **ALWAYS** ask user confirmation BEFORE merge and deploy
+7. **NEVER** walk away during deployment (use `deploy-coordinator`)
+8. **NEVER** execute SQL directly on database (ALL changes via migrations!)
+9. **NEVER** approve PR with schema changes but no migration (BLOCK immediately!)
+10. **ALWAYS** rollback immediately if production broken (use `production-monitor`)
 
 ---
 

@@ -190,13 +190,35 @@ git-safety-officer (ALWAYS FIRST) → proceed with operation
 
 ## 📝 Document Updates
 
-**Last Major Restructuring**: 2025-01-14
+**Last Major Update**: 2026-01-27
+- Added mandatory database schema management rules
+- Added mandatory migration creation after schema changes
+- Added mandatory user manual testing before automated tests
+- Added `database-schema-management` skill reference
+- Added critical reminders section
+- Added lessons learned from FEATURE-016
+
+**Previous Major Restructuring**: 2025-01-14
 - Migrated from checklist-based to sub-agent-based architecture
 - Introduced 6 specialist sub-agents
 - Refactored CLAUDE.md to orchestrator role
 - Added quick-reference guide
 
 **Maintainer**: Agent Planner team
+
+---
+
+---
+
+## ⚠️ Critical Reminders
+
+1. **ALWAYS** use `git-safety-officer` BEFORE any Git operation
+2. **ALWAYS** create migration after modifying `schema.prisma` (see `database-schema-management` skill)
+3. **ALWAYS** apply migrations after syncing with main (`npx prisma migrate deploy`)
+4. **ALWAYS** request user manual testing BEFORE creating automated tests
+5. **NEVER** push directly to `main`
+6. **NEVER** execute SQL directly on database (ALL changes via migrations!)
+7. **NEVER** create PR with schema changes but no migration (PR will be BLOCKED!)
 
 ---
 

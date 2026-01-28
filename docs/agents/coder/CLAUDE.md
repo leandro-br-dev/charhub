@@ -1,7 +1,7 @@
 # CLAUDE.md - Agent Coder (Orchestrator)
 
-**Last Updated**: 2025-01-24
-**Version**: 2.0 - Skills-Based Architecture
+**Last Updated**: 2026-01-27
+**Version**: 2.1 - Enhanced Migrations & Manual Testing First
 **Role**: Feature Development Orchestration
 **Branch**: `feature/*` (NEVER `main`)
 
@@ -137,7 +137,16 @@ git log origin/main --oneline -5
 
 # [ ] Create feature branch (via git-safety-officer)
 # Branch naming: feature/{short-descriptive-name}
+
+# [ ] CRITICAL: Apply any new migrations from main
+cd backend && npx prisma migrate deploy
+
+# [ ] Install any new dependencies from main
+cd backend && npm install
+cd frontend && npm install
 ```
+
+**IMPORTANT**: Main branch may contain new migrations from other merged PRs. Always apply migrations after syncing with main to ensure your database schema is up-to-date.
 
 ---
 
@@ -221,20 +230,43 @@ docker compose logs --tail=50 frontend
 
 ### Phase 3: Testing
 
-#### ✅ Checklist 3.1: Manual Testing
+#### ✅ Checklist 3.1: Manual Testing - MUST COME FIRST!
 
 **Use skill**: `manual-testing-protocol`
 
+**CRITICAL: User manual testing MUST happen BEFORE creating automated tests!**
+
+Reasons:
+1. User validates the feature works as expected
+2. User may find edge cases not covered in spec
+3. Automated tests should verify what user already confirmed works
+4. Avoids writing tests for incorrect implementations
+
+```
+CORRECT ORDER:
+1. Implementation complete
+2. User manual testing → User confirms feature works
+3. THEN create automated tests based on confirmed behavior
+
+WRONG ORDER:
+1. Implementation complete
+2. Create automated tests
+3. User finds issues → Tests need rewriting
+```
+
 - [ ] Create test instructions for user
 - [ ] Present testing checklist
-- [ ] Wait for user confirmation
+- [ ] **WAIT for user to perform manual testing**
+- [ ] **Receive explicit user confirmation**
 - [ ] If FAILS → route back to Phase 2
-- [ ] If PASSES → proceed
+- [ ] If PASSES → proceed to automated test creation
 
-#### ✅ Checklist 3.2: Test Creation
+#### ✅ Checklist 3.2: Test Creation (AFTER User Confirms)
 
 **Use sub-agent**: `test-writer`
 **Refer to skills**: charhub-jest-patterns, charhub-react-testing-patterns, charhub-testing-standards
+
+**PREREQUISITE: User must have confirmed manual testing passed!**
 
 ```bash
 # [ ] Check for .docs.md files (contain business logic to test)
@@ -328,9 +360,19 @@ git checkout feature/your-feature
 git merge origin/main
 
 # [ ] Resolve conflicts if any
+
+# [ ] CRITICAL: Apply any new migrations from main
+cd backend && npx prisma migrate deploy
+
+# [ ] Install any new dependencies
+cd backend && npm install
+cd frontend && npm install
+
 # [ ] Verify build still passes
 npm run build  # both backend and frontend
 ```
+
+**IMPORTANT**: Main branch may contain new migrations from recently merged PRs. Always apply migrations after merging main to ensure your schema is compatible.
 
 #### ✅ Checklist 4.3: Create Pull Request
 
@@ -367,6 +409,9 @@ gh pr create \
 8. **Work on backlog features** - Only `features/active/`
 9. **Delete database data** - NEVER use `docker compose down -v` without authorization
 10. **Git operations without safety checks** - ALWAYS use git-safety-officer first
+11. **Modify schema.prisma without creating migration** - ALWAYS run `npx prisma migrate dev` (CRITICAL!)
+12. **Execute SQL directly on database** - ALL schema changes via migrations only
+13. **Create PR with schema changes but no migration** - PR will be BLOCKED
 
 ### ✅ ALWAYS Do These
 
@@ -378,14 +423,63 @@ gh pr create \
 6. **Verify Docker containers healthy before PR**
 7. **Test locally in Docker environment**
 8. **Update branch with main BEFORE PR**
-9. **Update feature spec with progress**
-10. **Write clear PR descriptions**
-11. **Address review feedback promptly**
-12. **Follow existing patterns and conventions**
-13. **Document complex components**
-14. **Write ALL code and documentation in English**
-15. **Communicate in Portuguese (pt-BR) if user is Brazilian**
-16. **Preserve database data** - use `docker compose down` (no `-v`)
+9. **Apply database migrations after syncing with main** (CRITICAL!)
+10. **Request user manual testing BEFORE creating automated tests** (CRITICAL!)
+11. **Update feature spec with progress**
+12. **Write clear PR descriptions**
+13. **Address review feedback promptly**
+14. **Follow existing patterns and conventions**
+15. **Document complex components**
+16. **Write ALL code and documentation in English**
+17. **Communicate in Portuguese (pt-BR) if user is Brazilian**
+18. **Preserve database data** - use `docker compose down` (no `-v`)
+
+---
+
+## 🗄️ Database Schema Changes (CRITICAL)
+
+### The Golden Rule
+
+**EVERY `schema.prisma` change MUST have a corresponding migration.**
+
+### Mandatory Workflow
+
+```bash
+# 1. Modify schema.prisma
+# 2. IMMEDIATELY create migration:
+cd backend
+npx prisma migrate dev --name descriptive_name
+
+# 3. VERIFY migration was created:
+ls -la prisma/migrations/ | tail -3
+
+# 4. VERIFY migration content:
+cat prisma/migrations/LATEST_TIMESTAMP_*/migration.sql
+
+# 5. Commit BOTH files together
+```
+
+### Pre-PR Checklist for Schema Changes
+
+- [ ] Modified `schema.prisma`?
+- [ ] Created migration with `npx prisma migrate dev --name ...`?
+- [ ] Migration file exists in `prisma/migrations/`?
+- [ ] Migration SQL contains expected changes?
+- [ ] Migration timestamp is 2026 (not 2025)?
+- [ ] `npx prisma migrate status` shows "up to date"?
+- [ ] Committed BOTH schema.prisma AND migration folder?
+
+**If any checkbox is NO, do NOT create PR!**
+
+### FORBIDDEN Actions
+
+| Action | Consequence |
+|--------|-------------|
+| Modify schema without migration | PR will be BLOCKED |
+| Run ALTER TABLE directly | Creates drift, breaks production |
+| Skip migration verification | Deployment failure |
+
+See skill `database-schema-management` for detailed rules.
 
 ---
 
