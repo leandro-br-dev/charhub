@@ -12,8 +12,7 @@ export interface CompressionResult {
 
 export interface CompressionOptions {
   limit: number;
-  maxSizeKB: number; // Threshold - only compress images above this size
-  targetSizeKB?: number; // Target size after compression (default: 200)
+  targetSizeKB: number; // Images above this size will be compressed to approximately this size
 }
 
 export interface OversizedStats {
@@ -62,7 +61,7 @@ export const imageCompressionService = {
    * Compress oversized images
    */
   async compressOversizedImages(options: CompressionOptions): Promise<CompressionResult> {
-    const { limit, maxSizeKB, targetSizeKB = 200 } = options;
+    const { limit, targetSizeKB } = options;
     const result: CompressionResult = {
       processed: 0,
       failed: 0,
@@ -70,10 +69,10 @@ export const imageCompressionService = {
       errors: [],
     };
 
-    // Fetch oversized images
+    // Fetch oversized images - select images above target size
     const oversizedImages = await prisma.characterImage.findMany({
       where: {
-        sizeBytes: { gt: maxSizeKB * 1024 },
+        sizeBytes: { gt: targetSizeKB * 1024 },
       },
       take: limit,
       orderBy: { sizeBytes: 'desc' }, // Start with largest
@@ -87,7 +86,6 @@ export const imageCompressionService = {
 
     logger.info({
       found: oversizedImages.length,
-      maxSizeKB,
       targetSizeKB,
     }, 'Starting image compression job');
 

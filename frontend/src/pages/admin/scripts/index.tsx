@@ -22,8 +22,7 @@ type ScriptType = 'avatar' | 'data' | 'generation' | 'compression';
 
 interface CompressionLimits {
   limit: number;
-  maxSizeKB: number;
-  targetSizeKB?: number;
+  targetSizeKB: number;
 }
 
 export default function AdminScriptsPage(): JSX.Element {
@@ -58,7 +57,6 @@ export default function AdminScriptsPage(): JSX.Element {
 
   const [compressionLimits, setCompressionLimits] = useState<CompressionLimits>({
     limit: 100,
-    maxSizeKB: 200,
     targetSizeKB: 200,
   });
 
@@ -145,7 +143,6 @@ export default function AdminScriptsPage(): JSX.Element {
       if (type === 'compression') {
         const response = await adminScriptsService.triggerImageCompression(
           compressionLimits.limit,
-          compressionLimits.maxSizeKB,
           compressionLimits.targetSizeKB
         );
 
@@ -616,6 +613,30 @@ export default function AdminScriptsPage(): JSX.Element {
                     )}
                   </div>
                   <div className="flex items-center gap-3 flex-wrap">
+                    {/* Target Size Input */}
+                    <div className="flex flex-col">
+                      <label className="text-xs text-muted mb-1">
+                        {t('adminScripts:scripts.compression.targetSizeKB')}:
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          min="50"
+                          max="1000"
+                          value={compressionLimits.targetSizeKB}
+                          onChange={(e) =>
+                            setCompressionLimits((prev) => ({
+                              ...prev,
+                              targetSizeKB: parseInt(e.target.value) || 200,
+                            }))
+                          }
+                          className="w-20 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
+                          disabled={scripts.compression.isLoading}
+                        />
+                        <span className="text-xs text-muted whitespace-nowrap">KB</span>
+                      </div>
+                    </div>
+
                     {/* Limit Input */}
                     <div className="flex flex-col">
                       <label className="text-xs text-muted mb-1">
@@ -639,54 +660,6 @@ export default function AdminScriptsPage(): JSX.Element {
                         <span className="text-xs text-muted whitespace-nowrap">
                           {t('adminScripts:scripts.compression.images')}
                         </span>
-                      </div>
-                    </div>
-
-                    {/* Max Size Input */}
-                    <div className="flex flex-col">
-                      <label className="text-xs text-muted mb-1">
-                        {t('adminScripts:scripts.compression.maxSizeKB')}:
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="number"
-                          min="50"
-                          max="5000"
-                          value={compressionLimits.maxSizeKB}
-                          onChange={(e) =>
-                            setCompressionLimits((prev) => ({
-                              ...prev,
-                              maxSizeKB: parseInt(e.target.value) || 200,
-                            }))
-                          }
-                          className="w-20 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
-                          disabled={scripts.compression.isLoading}
-                        />
-                        <span className="text-xs text-muted whitespace-nowrap">KB</span>
-                      </div>
-                    </div>
-
-                    {/* Target Size Input */}
-                    <div className="flex flex-col">
-                      <label className="text-xs text-muted mb-1">
-                        {t('adminScripts:scripts.compression.targetSizeKB')}:
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="number"
-                          min="50"
-                          max="1000"
-                          value={compressionLimits.targetSizeKB}
-                          onChange={(e) =>
-                            setCompressionLimits((prev) => ({
-                              ...prev,
-                              targetSizeKB: parseInt(e.target.value) || 200,
-                            }))
-                          }
-                          className="w-20 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
-                          disabled={scripts.compression.isLoading}
-                        />
-                        <span className="text-xs text-muted whitespace-nowrap">KB</span>
                       </div>
                     </div>
 

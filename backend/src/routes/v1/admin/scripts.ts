@@ -56,12 +56,11 @@ router.get('/image-compression/stats', requireAuth, requireAdmin, async (_req: R
  *
  * Body:
  * - limit: number of images to process (1-1000, default: 100)
- * - maxSizeKB: maximum size threshold in KB (50-5000, default: 200)
- * - targetSizeKB: target size after compression in KB (optional, default: 200)
+ * - targetSizeKB: images above this size will be compressed (50-5000, default: 200)
  */
 router.post('/image-compression', requireAuth, requireAdmin, async (req: Request, res: Response) => {
   try {
-    const { limit = 100, maxSizeKB = 200, targetSizeKB = 200 } = req.body;
+    const { limit = 100, targetSizeKB = 200 } = req.body;
 
     // Validate inputs
     if (typeof limit !== 'number' || limit < 1 || limit > 1000) {
@@ -71,14 +70,7 @@ router.post('/image-compression', requireAuth, requireAdmin, async (req: Request
       });
     }
 
-    if (typeof maxSizeKB !== 'number' || maxSizeKB < 50 || maxSizeKB > 5000) {
-      return res.status(400).json({
-        success: false,
-        message: 'Max size must be between 50 and 5000 KB',
-      });
-    }
-
-    if (targetSizeKB !== undefined && (typeof targetSizeKB !== 'number' || targetSizeKB < 50 || targetSizeKB > 5000)) {
+    if (typeof targetSizeKB !== 'number' || targetSizeKB < 50 || targetSizeKB > 5000) {
       return res.status(400).json({
         success: false,
         message: 'Target size must be between 50 and 5000 KB',
@@ -87,7 +79,6 @@ router.post('/image-compression', requireAuth, requireAdmin, async (req: Request
 
     const result = await imageCompressionService.compressOversizedImages({
       limit,
-      maxSizeKB,
       targetSizeKB,
     });
 

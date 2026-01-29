@@ -91,12 +91,10 @@ export const adminScriptsService = {
    */
   async triggerImageCompression(
     limit: number,
-    maxSizeKB: number,
-    targetSizeKB?: number
+    targetSizeKB: number
   ): Promise<{ data: ImageCompressionResponse }> {
     const response = await api.post(`${ADMIN_SCRIPTS_PREFIX}/image-compression`, {
       limit,
-      maxSizeKB,
       targetSizeKB,
     });
     // Backend returns { success: true, data: result }, so we need to extract the data field

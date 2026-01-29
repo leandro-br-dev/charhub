@@ -4,15 +4,20 @@
     "title": "Admin-Skripte",
     "header": {
       "title": "Admin-Skripte",
-      "description": "Manuelles Ausführen von Datenkorrektur-Skripten und Überwachung von Systemstatistiken."
+      "description": "Manuelles Ausführen von Datenkorrektur-Skripten und Überwachen von Systemstatistiken."
     },
     "stats": {
       "title": "Statistiken",
-      "totalCharacters": "Gesamtzahl Charaktere",
+      "totalCharacters": "Gesamtanzahl Charaktere",
       "charactersWithAvatars": "Charaktere mit Avataren",
       "charactersWithCompleteData": "Charaktere mit vollständigen Daten",
       "never": "Nie",
-      "lastCorrections": "Letzte Korrekturen"
+      "lastCorrections": "Letzte Korrekturen",
+      "compressionStats": "Komprimierungsstatistiken",
+      "totalImages": "Gesamtanzahl Bilder",
+      "oversizedImages": "Überdimensionierte Bilder",
+      "bytesCouldBeSaved": "Könnte gespeichert werden",
+      "maxSizeThreshold": "Maximale Größe Schwelle"
     },
     "scripts": {
       "title": "Korrektur-Skripte",
@@ -23,25 +28,35 @@
         "error": "Fehler beim Starten des Avatar-Korrektur-Skripts"
       },
       "data": {
-        "name": "Korrektur der Datenvollständigkeit",
+        "name": "Datenvollständigkeitskorrektur",
         "description": "Stellt sicher, dass alle erforderlichen Charakterfelder ausgefüllt sind",
         "success": "Datenkorrektur-Skript erfolgreich gestartet",
         "error": "Fehler beim Starten des Datenkorrektur-Skripts"
       },
       "generation": {
-        "name": "Charakter-Generierung",
-        "description": "Generiert Charaktere automatisch aus ausgewählten Bildern",
-        "success": "Charakter-Generierung erfolgreich gestartet",
-        "error": "Fehler beim Starten der Charakter-Generierung"
+        "name": "Charaktergenerierung",
+        "description": "Charaktere automatisch aus kuratierten Bildern generieren",
+        "success": "Charaktergenerierung erfolgreich gestartet",
+        "error": "Fehler beim Starten der Charaktergenerierung"
+      },
+      "compression": {
+        "name": "Bildkomprimierung",
+        "description": "Überdimensionierte Bilder komprimieren, um Speicherplatz zu sparen",
+        "success": "Bildkomprimierung erfolgreich gestartet",
+        "error": "Fehler beim Starten der Bildkomprimierung",
+        "limit": "Limit",
+        "images": "Bilder",
+        "maxSizeKB": "Max. Größe",
+        "targetSizeKB": "Zielgröße"
       },
       "lastRun": "Letzter Lauf",
       "run": "Skript ausführen",
       "running": "Wird ausgeführt...",
       "moreComing": "Weitere Skripte folgen in Kürze...",
-      "records": "Einträge",
+      "records": "Datensätze",
       "characters": "Charaktere",
-      "limit": "Eintragslimit",
-      "limitPlaceholder": "Anzahl der zu verarbeitenden Einträge (1-1000)"
+      "limit": "Datensatz-Limit",
+      "limitPlaceholder": "Anzahl der zu verarbeitenden Datensätze (1-1000)"
     },
     "refresh": "Statistiken aktualisieren"
   }
