@@ -7,7 +7,7 @@ on:
       - 'backend/**'
       - 'frontend/**'
       - 'nginx/**'
-      - 'docker-compose.yml'
+      - 'docker-compose.production.yml'
       - '.github/workflows/deploy-production.yml'
   workflow_dispatch:
     inputs:
@@ -302,6 +302,7 @@ jobs:
               "bash -s" << BUILD
           cd /mnt/stateful_partition/charhub
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
+          COMPOSE_FILE="docker-compose.production.yml"
           CLEAN_BUILD="$CLEAN_BUILD"
 
           # Set HOME to user's home directory (Container-Optimized OS best practice)
@@ -309,7 +310,7 @@ jobs:
           export HOME="/home/leandro_br_dev_gmail_com"
 
           echo "Stopping containers..."
-          sudo -E HOME="\$HOME" \$COMPOSE down --remove-orphans 2>/dev/null || true
+          sudo -E HOME="\$HOME" \$COMPOSE -f \$COMPOSE_FILE down --remove-orphans 2>/dev/null || true
 
           echo "Waiting for containers to fully stop..."
           sleep 5
@@ -319,15 +320,15 @@ jobs:
 
           if [ "\$CLEAN_BUILD" = "true" ]; then
             echo "🔨 Clean build requested - rebuilding without cache..."
-            sudo -E HOME="\$HOME" DOCKER_BUILDKIT=1 \$COMPOSE build --no-cache --pull
+            sudo -E HOME="\$HOME" DOCKER_BUILDKIT=1 \$COMPOSE -f \$COMPOSE_FILE build --no-cache --pull
           else
             echo "🔨 Building with cache (Docker BuildKit enabled)..."
             echo "   Use 'Run workflow' with clean_build=true for clean build"
-            sudo -E HOME="\$HOME" DOCKER_BUILDKIT=1 \$COMPOSE build
+            sudo -E HOME="\$HOME" DOCKER_BUILDKIT=1 \$COMPOSE -f \$COMPOSE_FILE build
           fi
 
           echo "Starting containers..."
-          sudo -E HOME="\$HOME" \$COMPOSE up -d
+          sudo -E HOME="\$HOME" \$COMPOSE -f \$COMPOSE_FILE up -d
 
           sleep 15
           echo "✅ Containers started"
@@ -345,6 +346,7 @@ jobs:
               'bash -s' << 'HEALTH'
           cd /mnt/stateful_partition/charhub
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
+          COMPOSE_FILE="docker-compose.production.yml"
 
           # Optimized health check: 20 attempts × 3s = 1min max (was 30 × 5s = 2.5min)
           # Backend typically becomes healthy in 30-40s, so this is still safe
@@ -352,7 +354,7 @@ jobs:
             echo "Attempt $i/20..."
 
             # Check if backend container is healthy
-            STATUS=$(sudo $COMPOSE ps backend --format='{{.Status}}' 2>/dev/null)
+            STATUS=$(sudo $COMPOSE -f $COMPOSE_FILE ps backend --format='{{.Status}}' 2>/dev/null)
 
             if [[ "$STATUS" =~ "healthy" ]]; then
               echo "✅ Backend healthy: $STATUS"
@@ -370,7 +372,7 @@ jobs:
 
           echo "❌ Health check failed - backend not healthy after 20 attempts (60s)"
           echo "Final status:"
-          sudo $COMPOSE ps backend
+          sudo $COMPOSE -f $COMPOSE_FILE ps backend
           exit 1
           HEALTH
 
@@ -412,6 +414,7 @@ jobs:
 
           APP_DIR="/mnt/stateful_partition/charhub"
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
+          COMPOSE_FILE="docker-compose.production.yml"
           cd "$APP_DIR"
 
           # Fix permissions
@@ -473,14 +476,14 @@ jobs:
           # Rebuild containers
           export HOME="/home/leandro_br_dev_gmail_com"
           echo "🔨 Rebuilding containers with stable version..."
-          sudo -E HOME="$HOME" $COMPOSE down --remove-orphans
+          sudo -E HOME="$HOME" $COMPOSE -f $COMPOSE_FILE down --remove-orphans
           sleep 5
-          sudo -E HOME="$HOME" $COMPOSE build --pull
-          sudo -E HOME="$HOME" $COMPOSE up -d
+          sudo -E HOME="$HOME" $COMPOSE -f $COMPOSE_FILE build --pull
+          sudo -E HOME="$HOME" $COMPOSE -f $COMPOSE_FILE up -d
           sleep 15
 
           # Verify rollback
-          STATUS=$(sudo $COMPOSE ps backend --format='{{.Status}}' 2>/dev/null)
+          STATUS=$(sudo $COMPOSE -f $COMPOSE_FILE ps backend --format='{{.Status}}' 2>/dev/null)
           echo "Backend status after rollback: $STATUS"
 
           if [[ "$STATUS" =~ "Up" ]] || [[ "$STATUS" =~ "healthy" ]]; then
@@ -529,9 +532,10 @@ jobs:
           git config --local --add safe.directory "$(pwd)" 2>/dev/null || true
 
           COMPOSE="/var/lib/toolbox/bin/docker-compose"
+          COMPOSE_FILE="docker-compose.production.yml"
 
           echo "Container status:"
-          sudo $COMPOSE ps
+          sudo $COMPOSE -f $COMPOSE_FILE ps
 
           echo ""
           echo "Git status:"
