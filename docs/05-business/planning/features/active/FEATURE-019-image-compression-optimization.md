@@ -8,10 +8,11 @@
 **Epic**: Storage Optimization
 
 **GitHub Issue**: N/A (internal optimization)
+**Pull Request**: [PR #163](https://github.com/leandro-br-dev/charhub/pull/163)
 
 **Branch**: `feature/image-compression-optimization`
 
-**Progress**: Backend implementation complete, awaiting merge
+**Progress**: Implementation complete, tests passing (845/845), PR submitted for review
 
 ---
 
