@@ -2,6 +2,8 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { requireAuth } from '../../../middleware/auth';
 import { isAdmin } from '../../../middleware/authorization';
 import { imageCompressionService } from '../../../services/imageCompressionService';
+import { queueManager } from '../../../queues/QueueManager';
+import { QueueName } from '../../../queues/config';
 import { logger } from '../../../config/logger';
 
 const router = Router();
@@ -52,7 +54,7 @@ router.get('/image-compression/stats', requireAuth, requireAdmin, async (_req: R
 
 /**
  * POST /api/v1/admin/scripts/image-compression
- * Trigger compression of oversized images
+ * Trigger compression of oversized images (async job)
  *
  * Body:
  * - limit: number of images to process (1-1000, default: 100)
@@ -77,21 +79,28 @@ router.post('/image-compression', requireAuth, requireAdmin, async (req: Request
       });
     }
 
-    const result = await imageCompressionService.compressOversizedImages({
-      limit,
-      targetSizeKB,
-    });
+    // Queue the job asynchronously
+    const job = await queueManager.addJob(
+      QueueName.CHARACTER_POPULATION,
+      'image-compression',
+      { limit, targetSizeKB },
+      { priority: 5 }
+    );
+
+    logger.info({ jobId: job.id, limit, targetSizeKB }, 'Image compression job triggered');
 
     return res.json({
       success: true,
-      message: `Processed ${result.processed} images, failed ${result.failed}. Reclaimed ${(result.bytesReclaimed / 1024 / 1024).toFixed(2)} MB`,
-      data: result,
+      jobId: job.id,
+      message: 'Image compression job started',
+      limit,
+      targetSizeKB,
     });
   } catch (error) {
-    logger.error({ error }, 'Failed to run image compression');
+    logger.error({ error }, 'Failed to trigger image compression');
     return res.status(500).json({
       success: false,
-      message: 'Failed to run compression script',
+      message: 'Failed to trigger compression job',
     });
   }
 });
