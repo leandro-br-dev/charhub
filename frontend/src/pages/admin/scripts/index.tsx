@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePageHeader } from '../../../hooks/usePageHeader';
-import { adminScriptsService, type CorrectionStats } from '../../../services/adminScripts';
+import {
+  adminScriptsService,
+  type CorrectionStats,
+  type ImageCompressionStats,
+} from '../../../services/adminScripts';
 import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 import { useToast } from '../../../contexts/ToastContext';
 
@@ -14,7 +18,12 @@ interface ScriptState {
   result: string | null;
 }
 
-type ScriptType = 'avatar' | 'data' | 'generation';
+type ScriptType = 'avatar' | 'data' | 'generation' | 'compression';
+
+interface CompressionLimits {
+  limit: number;
+  targetSizeKB: number;
+}
 
 export default function AdminScriptsPage(): JSX.Element {
   const { t } = useTranslation(['adminScripts', 'common']);
@@ -29,17 +38,26 @@ export default function AdminScriptsPage(): JSX.Element {
   const [isLoadingStats, setIsLoadingStats] = useState(true);
   const [statsError, setStatsError] = useState<string | null>(null);
   const [stats, setStats] = useState<CorrectionStats | null>(null);
+  const [compressionStats, setCompressionStats] = useState<ImageCompressionStats | null>(null);
+  const [compressionStatsError, setCompressionStatsError] = useState<string | null>(null);
 
   const [scripts, setScripts] = useState<Record<ScriptType, ScriptState>>({
     avatar: { isLoading: false, lastRun: null, result: null },
     data: { isLoading: false, lastRun: null, result: null },
     generation: { isLoading: false, lastRun: null, result: null },
+    compression: { isLoading: false, lastRun: null, result: null },
   });
 
   const [limits, setLimits] = useState<Record<ScriptType, number>>({
     avatar: 100,
     data: 100,
     generation: 10,
+    compression: 100,
+  });
+
+  const [compressionLimits, setCompressionLimits] = useState<CompressionLimits>({
+    limit: 100,
+    targetSizeKB: 200,
   });
 
   // Fetch correction stats
@@ -88,9 +106,31 @@ export default function AdminScriptsPage(): JSX.Element {
     }
   }, []);
 
+  // Fetch compression stats
+  const fetchCompressionStats = useCallback(async () => {
+    setCompressionStatsError(null);
+
+    try {
+      const response = await adminScriptsService.getImageCompressionStats();
+      console.log('[AdminScripts] Compression stats response:', response.data);
+      setCompressionStats(response.data);
+    } catch (err) {
+      console.error('[AdminScripts] Failed to fetch compression stats:', err);
+      setCompressionStatsError(
+        err instanceof Error ? err.message : 'Failed to fetch compression statistics'
+      );
+      setCompressionStats({
+        totalImages: 0,
+        oversizedCount: {},
+        totalBytesOversized: 0,
+      });
+    }
+  }, []);
+
   useEffect(() => {
     fetchStats();
-  }, [fetchStats]);
+    fetchCompressionStats();
+  }, [fetchStats, fetchCompressionStats]);
 
   // Trigger script
   const triggerScript = async (type: ScriptType) => {
@@ -100,28 +140,50 @@ export default function AdminScriptsPage(): JSX.Element {
     }));
 
     try {
-      const limit = limits[type];
-      const response =
-        type === 'avatar'
-          ? await adminScriptsService.triggerAvatarCorrection(limit)
-          : type === 'data'
-            ? await adminScriptsService.triggerDataCorrection(limit)
-            : await adminScriptsService.triggerCharacterGeneration(limit);
+      if (type === 'compression') {
+        const response = await adminScriptsService.triggerImageCompression(
+          compressionLimits.limit,
+          compressionLimits.targetSizeKB
+        );
 
-      setScripts((prev) => ({
-        ...prev,
-        [type]: {
-          ...prev[type],
-          isLoading: false,
-          result: response.data.message,
-          lastRun: new Date().toISOString(),
-        },
-      }));
+        setScripts((prev) => ({
+          ...prev,
+          [type]: {
+            ...prev[type],
+            isLoading: false,
+            result: response.data.message,
+            lastRun: new Date().toISOString(),
+          },
+        }));
 
-      addToast(t(`adminScripts:scripts.${type}.success`), 'success');
+        addToast(t('adminScripts:scripts.compression.success'), 'success');
 
-      // Refresh stats after successful execution
-      setTimeout(() => fetchStats(), 1000);
+        // Refresh compression stats after successful execution
+        setTimeout(() => fetchCompressionStats(), 1000);
+      } else {
+        const limit = limits[type];
+        const response =
+          type === 'avatar'
+            ? await adminScriptsService.triggerAvatarCorrection(limit)
+            : type === 'data'
+              ? await adminScriptsService.triggerDataCorrection(limit)
+              : await adminScriptsService.triggerCharacterGeneration(limit);
+
+        setScripts((prev) => ({
+          ...prev,
+          [type]: {
+            ...prev[type],
+            isLoading: false,
+            result: response.data.message,
+            lastRun: new Date().toISOString(),
+          },
+        }));
+
+        addToast(t(`adminScripts:scripts.${type}.success`), 'success');
+
+        // Refresh stats after successful execution
+        setTimeout(() => fetchStats(), 1000);
+      }
     } catch (err) {
       console.error(`[AdminScripts] Failed to trigger ${type} correction:`, err);
       const errorMessage = err instanceof Error ? err.message : 'Failed to execute script';
@@ -138,6 +200,14 @@ export default function AdminScriptsPage(): JSX.Element {
     return new Date(dateString).toLocaleString();
   };
 
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+  };
+
   return (
     <div className="w-full bg-normal px-4 md:px-6 py-6">
       {/* Header */}
@@ -145,9 +215,7 @@ export default function AdminScriptsPage(): JSX.Element {
         <h1 className="text-2xl font-bold text-title mb-2">
           {t('adminScripts:header.title')}
         </h1>
-        <p className="text-muted">
-          {t('adminScripts:header.description')}
-        </p>
+        <p className="text-muted">{t('adminScripts:header.description')}</p>
       </div>
 
       {/* Error State */}
@@ -206,7 +274,11 @@ export default function AdminScriptsPage(): JSX.Element {
                   <div
                     className="bg-primary h-2 rounded-full"
                     style={{
-                      width: `${stats.totalCharacters > 0 ? (stats.charactersWithAvatars / stats.totalCharacters) * 100 : 0}%`,
+                      width: `${
+                        stats.totalCharacters > 0
+                          ? (stats.charactersWithAvatars / stats.totalCharacters) * 100
+                          : 0
+                      }%`,
                     }}
                   />
                 </div>
@@ -229,7 +301,11 @@ export default function AdminScriptsPage(): JSX.Element {
                   <div
                     className="bg-primary h-2 rounded-full"
                     style={{
-                      width: `${stats.totalCharacters > 0 ? (stats.charactersWithCompleteData / stats.totalCharacters) * 100 : 0}%`,
+                      width: `${
+                        stats.totalCharacters > 0
+                          ? (stats.charactersWithCompleteData / stats.totalCharacters) * 100
+                          : 0
+                      }%`,
                     }}
                   />
                 </div>
@@ -253,6 +329,59 @@ export default function AdminScriptsPage(): JSX.Element {
               </div>
             </div>
           </div>
+
+          {/* Compression Statistics Section */}
+          {compressionStats && (
+            <div className="bg-light rounded-xl p-6 border border-border">
+              <h2 className="text-lg font-semibold text-title mb-4">
+                {t('adminScripts:stats.compressionStats')}
+              </h2>
+              {compressionStatsError && (
+                <div className="mb-4 p-3 bg-error/10 border border-error rounded-lg">
+                  <p className="text-error text-sm">{compressionStatsError}</p>
+                </div>
+              )}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Total Images */}
+                <div className="bg-normal rounded-lg p-4 border border-border">
+                  <div className="text-sm text-muted mb-1">
+                    {t('adminScripts:stats.totalImages')}
+                  </div>
+                  <div className="text-2xl font-bold text-title">
+                    {(compressionStats.totalImages ?? 0).toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Oversized Counts */}
+                <div className="bg-normal rounded-lg p-4 border border-border">
+                  <div className="text-sm text-muted mb-2">
+                    {t('adminScripts:stats.oversizedImages')}
+                  </div>
+                  <div className="space-y-1 text-sm">
+                    {Object.entries(compressionStats.oversizedCount ?? {}).map(([threshold, count]) => (
+                      <div key={threshold} className="flex justify-between">
+                        <span className="text-content">{threshold}:</span>
+                        <span className="text-title font-medium">{(count ?? 0).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bytes That Could Be Saved */}
+                <div className="bg-normal rounded-lg p-4 border border-border">
+                  <div className="text-sm text-muted mb-1">
+                    {t('adminScripts:stats.bytesCouldBeSaved')}
+                  </div>
+                  <div className="text-2xl font-bold text-success">
+                    {formatBytes(compressionStats.totalBytesOversized ?? 0)}
+                  </div>
+                  <div className="text-xs text-muted mt-1">
+                    {t('adminScripts:stats.maxSizeThreshold')}: 200 KB
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Scripts Section */}
           <div className="bg-light rounded-xl p-6 border border-border">
@@ -287,7 +416,9 @@ export default function AdminScriptsPage(): JSX.Element {
                           min="1"
                           max="1000"
                           value={limits.avatar}
-                          onChange={(e) => setLimits((prev) => ({ ...prev, avatar: parseInt(e.target.value) || 100 }))}
+                          onChange={(e) =>
+                            setLimits((prev) => ({ ...prev, avatar: parseInt(e.target.value) || 100 }))
+                          }
                           className="w-24 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
                           disabled={scripts.avatar.isLoading}
                           placeholder={t('adminScripts:scripts.limitPlaceholder')}
@@ -313,11 +444,14 @@ export default function AdminScriptsPage(): JSX.Element {
                   </div>
                 </div>
                 {scripts.avatar.result && (
-                  <div className={`mt-3 p-3 rounded text-sm ${
-                    scripts.avatar.result.includes('Failed') || scripts.avatar.result.includes('Error')
-                      ? 'bg-error/10 text-error'
-                      : 'bg-success/10 text-success'
-                  }`}>
+                  <div
+                    className={`mt-3 p-3 rounded text-sm ${
+                      scripts.avatar.result.includes('Failed') ||
+                      scripts.avatar.result.includes('Error')
+                        ? 'bg-error/10 text-error'
+                        : 'bg-success/10 text-success'
+                    }`}
+                  >
                     {scripts.avatar.result}
                   </div>
                 )}
@@ -350,7 +484,9 @@ export default function AdminScriptsPage(): JSX.Element {
                           min="1"
                           max="1000"
                           value={limits.data}
-                          onChange={(e) => setLimits((prev) => ({ ...prev, data: parseInt(e.target.value) || 100 }))}
+                          onChange={(e) =>
+                            setLimits((prev) => ({ ...prev, data: parseInt(e.target.value) || 100 }))
+                          }
                           className="w-24 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
                           disabled={scripts.data.isLoading}
                           placeholder={t('adminScripts:scripts.limitPlaceholder')}
@@ -376,11 +512,14 @@ export default function AdminScriptsPage(): JSX.Element {
                   </div>
                 </div>
                 {scripts.data.result && (
-                  <div className={`mt-3 p-3 rounded text-sm ${
-                    scripts.data.result.includes('Failed') || scripts.data.result.includes('Error')
-                      ? 'bg-error/10 text-error'
-                      : 'bg-success/10 text-success'
-                  }`}>
+                  <div
+                    className={`mt-3 p-3 rounded text-sm ${
+                      scripts.data.result.includes('Failed') ||
+                      scripts.data.result.includes('Error')
+                        ? 'bg-error/10 text-error'
+                        : 'bg-success/10 text-success'
+                    }`}
+                  >
                     {scripts.data.result}
                   </div>
                 )}
@@ -413,7 +552,12 @@ export default function AdminScriptsPage(): JSX.Element {
                           min="1"
                           max="100"
                           value={limits.generation}
-                          onChange={(e) => setLimits((prev) => ({ ...prev, generation: parseInt(e.target.value) || 10 }))}
+                          onChange={(e) =>
+                            setLimits((prev) => ({
+                              ...prev,
+                              generation: parseInt(e.target.value) || 10,
+                            }))
+                          }
                           className="w-24 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
                           disabled={scripts.generation.isLoading}
                           placeholder={t('adminScripts:scripts.limitPlaceholder')}
@@ -439,12 +583,111 @@ export default function AdminScriptsPage(): JSX.Element {
                   </div>
                 </div>
                 {scripts.generation.result && (
-                  <div className={`mt-3 p-3 rounded text-sm ${
-                    scripts.generation.result.includes('Failed') || scripts.generation.result.includes('Error')
-                      ? 'bg-error/10 text-error'
-                      : 'bg-success/10 text-success'
-                  }`}>
+                  <div
+                    className={`mt-3 p-3 rounded text-sm ${
+                      scripts.generation.result.includes('Failed') ||
+                      scripts.generation.result.includes('Error')
+                        ? 'bg-error/10 text-error'
+                        : 'bg-success/10 text-success'
+                    }`}
+                  >
                     {scripts.generation.result}
+                  </div>
+                )}
+              </div>
+
+              {/* Image Compression Script */}
+              <div className="bg-normal rounded-lg p-4 border border-border">
+                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-medium text-title mb-1">
+                      {t('adminScripts:scripts.compression.name')}
+                    </h3>
+                    <p className="text-sm text-muted mb-2">
+                      {t('adminScripts:scripts.compression.description')}
+                    </p>
+                    {scripts.compression.lastRun && (
+                      <div className="text-xs text-muted">
+                        {t('adminScripts:scripts.lastRun')}: {formatDate(scripts.compression.lastRun)}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    {/* Target Size Input */}
+                    <div className="flex flex-col">
+                      <label className="text-xs text-muted mb-1">
+                        {t('adminScripts:scripts.compression.targetSizeKB')}:
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          min="50"
+                          max="1000"
+                          value={compressionLimits.targetSizeKB}
+                          onChange={(e) =>
+                            setCompressionLimits((prev) => ({
+                              ...prev,
+                              targetSizeKB: parseInt(e.target.value) || 200,
+                            }))
+                          }
+                          className="w-20 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
+                          disabled={scripts.compression.isLoading}
+                        />
+                        <span className="text-xs text-muted whitespace-nowrap">KB</span>
+                      </div>
+                    </div>
+
+                    {/* Limit Input */}
+                    <div className="flex flex-col">
+                      <label className="text-xs text-muted mb-1">
+                        {t('adminScripts:scripts.compression.limit')}:
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="number"
+                          min="1"
+                          max="1000"
+                          value={compressionLimits.limit}
+                          onChange={(e) =>
+                            setCompressionLimits((prev) => ({
+                              ...prev,
+                              limit: parseInt(e.target.value) || 100,
+                            }))
+                          }
+                          className="w-20 px-3 py-2 rounded-lg border border-border bg-light text-content text-sm focus:outline-none focus:border-primary"
+                          disabled={scripts.compression.isLoading}
+                        />
+                        <span className="text-xs text-muted whitespace-nowrap">
+                          {t('adminScripts:scripts.compression.images')}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => triggerScript('compression')}
+                      disabled={scripts.compression.isLoading}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                        scripts.compression.isLoading
+                          ? 'bg-muted text-muted cursor-not-allowed'
+                          : 'bg-primary text-black hover:bg-primary/80'
+                      }`}
+                    >
+                      {scripts.compression.isLoading
+                        ? t('adminScripts:scripts.running')
+                        : t('adminScripts:scripts.run')}
+                    </button>
+                  </div>
+                </div>
+                {scripts.compression.result && (
+                  <div
+                    className={`mt-3 p-3 rounded text-sm ${
+                      scripts.compression.result.includes('Failed') ||
+                      scripts.compression.result.includes('Error')
+                        ? 'bg-error/10 text-error'
+                        : 'bg-success/10 text-success'
+                    }`}
+                  >
+                    {scripts.compression.result}
                   </div>
                 )}
               </div>
@@ -461,7 +704,10 @@ export default function AdminScriptsPage(): JSX.Element {
           {/* Refresh Button */}
           <div className="flex justify-end">
             <button
-              onClick={fetchStats}
+              onClick={() => {
+                fetchStats();
+                fetchCompressionStats();
+              }}
               disabled={isLoadingStats}
               className={`px-4 py-2 rounded-lg text-sm font-medium ${
                 isLoadingStats

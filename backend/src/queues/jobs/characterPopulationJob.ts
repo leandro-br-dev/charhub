@@ -72,6 +72,16 @@ export interface DataCompletenessCorrectionJobData {
 }
 
 /**
+ * Image compression job - compresses oversized images
+ */
+export interface ImageCompressionJobData {
+  /** Number of images to compress (default: 100) */
+  limit?: number;
+  /** Target size in KB - images above this will be compressed (default: 200) */
+  targetSizeKB?: number;
+}
+
+/**
  * Union type for all character population job data types
  */
 export type CharacterPopulationJobData =
@@ -81,4 +91,5 @@ export type CharacterPopulationJobData =
   | HourlyGenerationJobData
   | DailyCurationJobData
   | AvatarCorrectionJobData
-  | DataCompletenessCorrectionJobData;
+  | DataCompletenessCorrectionJobData
+  | ImageCompressionJobData;

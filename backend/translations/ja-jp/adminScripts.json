@@ -1,18 +1,23 @@
 {
   "description": "Admin Scripts Management Interface",
   "resources": {
-    "title": "管理スクリプト",
+    "title": "管理者スクリプト",
     "header": {
-      "title": "管理スクリプト",
+      "title": "管理者スクリプト",
       "description": "データ修正スクリプトを手動で実行し、システム統計を監視します。"
     },
     "stats": {
       "title": "統計",
       "totalCharacters": "総キャラクター数",
-      "charactersWithAvatars": "アバターを持つキャラクター数",
-      "charactersWithCompleteData": "データが完全なキャラクター数",
+      "charactersWithAvatars": "アバター付きキャラクター",
+      "charactersWithCompleteData": "データが完全なキャラクター",
       "never": "なし",
-      "lastCorrections": "最終修正"
+      "lastCorrections": "最終修正",
+      "compressionStats": "圧縮統計",
+      "totalImages": "総画像数",
+      "oversizedImages": "サイズ超過画像",
+      "bytesCouldBeSaved": "節約可能な容量",
+      "maxSizeThreshold": "最大サイズしきい値"
     },
     "scripts": {
       "title": "修正スクリプト",
@@ -24,24 +29,34 @@
       },
       "data": {
         "name": "データ完全性修正",
-        "description": "必須のキャラクターフィールドがすべて入力されていることを確認します",
+        "description": "必須の全キャラクターフィールドが入力されていることを確認します",
         "success": "データ修正スクリプトが正常に開始されました",
         "error": "データ修正スクリプトの開始に失敗しました"
       },
       "generation": {
         "name": "キャラクター生成",
-        "description": "選択された画像からキャラクターを自動的に生成します",
+        "description": "厳選された画像からキャラクターを自動生成します",
         "success": "キャラクター生成が正常に開始されました",
         "error": "キャラクター生成の開始に失敗しました"
       },
+      "compression": {
+        "name": "画像圧縮",
+        "description": "サイズ超過画像を圧縮してストレージを節約します",
+        "success": "画像圧縮が正常に開始されました",
+        "error": "画像圧縮の開始に失敗しました",
+        "limit": "制限",
+        "images": "画像",
+        "maxSizeKB": "最大サイズ",
+        "targetSizeKB": "目標サイズ"
+      },
       "lastRun": "最終実行",
-      "run": "スクリプトを実行",
+      "run": "スクリプト実行",
       "running": "実行中...",
-      "moreComing": "他のスクリプトも近日公開予定です...",
+      "moreComing": "その他のスクリプトは近日公開予定です...",
       "records": "レコード",
       "characters": "キャラクター",
       "limit": "レコード制限",
-      "limitPlaceholder": "処理するレコード数（1-1000）"
+      "limitPlaceholder": "処理するレコード数 (1-1000)"
     },
     "refresh": "統計を更新"
   }

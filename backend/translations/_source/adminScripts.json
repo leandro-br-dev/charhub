@@ -12,7 +12,12 @@
       "charactersWithAvatars": "Characters with Avatars",
       "charactersWithCompleteData": "Characters with Complete Data",
       "never": "Never",
-      "lastCorrections": "Last Corrections"
+      "lastCorrections": "Last Corrections",
+      "compressionStats": "Compression Statistics",
+      "totalImages": "Total Images",
+      "oversizedImages": "Oversized Images",
+      "bytesCouldBeSaved": "Could be saved",
+      "maxSizeThreshold": "Max size threshold"
     },
     "scripts": {
       "title": "Correction Scripts",
@@ -33,6 +38,16 @@
         "description": "Generate characters automatically from curated images",
         "success": "Character generation started successfully",
         "error": "Failed to start character generation"
+      },
+      "compression": {
+        "name": "Image Compression",
+        "description": "Compress oversized images to save storage",
+        "success": "Image compression started successfully",
+        "error": "Failed to start image compression",
+        "limit": "Limit",
+        "images": "images",
+        "maxSizeKB": "Max Size",
+        "targetSizeKB": "Target Size"
       },
       "lastRun": "Last Run",
       "run": "Run Script",
