@@ -1,10 +1,10 @@
 # FEATURE-017: Fix Skipped Tests from PR #148
 
-**Status**: Backlog
+**Status**: Active
 **Priority**: Medium
-**Assigned To**: TBD
+**Assigned To**: Agent Coder
 **Created**: 2026-01-25
-**Last Updated**: 2026-01-25
+**Last Updated**: 2026-01-29
 **Epic**: Technical Debt - Test Suite
 
 **GitHub Issue**: #149
