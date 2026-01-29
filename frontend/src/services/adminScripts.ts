@@ -82,7 +82,8 @@ export const adminScriptsService = {
    */
   async getImageCompressionStats(): Promise<{ data: ImageCompressionStats }> {
     const response = await api.get(`${ADMIN_SCRIPTS_PREFIX}/image-compression/stats`);
-    return { data: response.data };
+    // Backend returns { success: true, data: stats }, so we need to extract the data field
+    return { data: response.data.data || response.data };
   },
 
   /**
@@ -98,6 +99,7 @@ export const adminScriptsService = {
       maxSizeKB,
       targetSizeKB,
     });
-    return { data: response.data };
+    // Backend returns { success: true, data: result }, so we need to extract the data field
+    return { data: response.data.data || response.data };
   },
 };

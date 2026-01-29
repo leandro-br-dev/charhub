@@ -351,7 +351,7 @@ export default function AdminScriptsPage(): JSX.Element {
                     {t('adminScripts:stats.totalImages')}
                   </div>
                   <div className="text-2xl font-bold text-title">
-                    {compressionStats.totalImages.toLocaleString()}
+                    {(compressionStats.totalImages ?? 0).toLocaleString()}
                   </div>
                 </div>
 
@@ -361,10 +361,10 @@ export default function AdminScriptsPage(): JSX.Element {
                     {t('adminScripts:stats.oversizedImages')}
                   </div>
                   <div className="space-y-1 text-sm">
-                    {Object.entries(compressionStats.oversizedCount).map(([threshold, count]) => (
+                    {Object.entries(compressionStats.oversizedCount ?? {}).map(([threshold, count]) => (
                       <div key={threshold} className="flex justify-between">
                         <span className="text-content">{threshold}:</span>
-                        <span className="text-title font-medium">{count.toLocaleString()}</span>
+                        <span className="text-title font-medium">{(count ?? 0).toLocaleString()}</span>
                       </div>
                     ))}
                   </div>
@@ -376,7 +376,7 @@ export default function AdminScriptsPage(): JSX.Element {
                     {t('adminScripts:stats.bytesCouldBeSaved')}
                   </div>
                   <div className="text-2xl font-bold text-success">
-                    {formatBytes(compressionStats.totalBytesOversized)}
+                    {formatBytes(compressionStats.totalBytesOversized ?? 0)}
                   </div>
                   <div className="text-xs text-muted mt-1">
                     {t('adminScripts:stats.maxSizeThreshold')}: 200 KB
