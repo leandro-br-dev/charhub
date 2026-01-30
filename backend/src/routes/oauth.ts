@@ -3,6 +3,7 @@ import passport from 'passport';
 import { generateJWT } from '../services/googleAuth';
 import crypto from 'crypto';
 import type { AuthenticatedUser, OAuthProvider } from '../types';
+import { sendError, API_ERROR_CODES } from '../utils/apiErrors';
 
 const router = Router();
 
@@ -166,7 +167,7 @@ function handlePassportSuccess(
   return async (err: any, user: AuthenticatedUser | undefined) => {
     if (err || !user) {
       req.log.error({ err }, 'oauth_auth_failed');
-      res.status(401).json({ error: 'Authentication failed' });
+      sendError(res, 401, API_ERROR_CODES.AUTH_INVALID, { message: 'Authentication failed' });
       return;
     }
 
@@ -215,7 +216,7 @@ router.get(
     const stateData = state ? consumeState(state, req) : null;
 
     if (!stateData) {
-      res.status(400).json({ error: 'Invalid state parameter' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_STATE, { message: 'Invalid state parameter' });
       return;
     }
 
@@ -259,7 +260,7 @@ router.get(
     const stateData = state ? consumeState(state, req) : null;
 
     if (!stateData) {
-      res.status(400).json({ error: 'Invalid state parameter' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_STATE, { message: 'Invalid state parameter' });
       return;
     }
 

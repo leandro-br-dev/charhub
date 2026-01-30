@@ -8,6 +8,7 @@ import { Router, Request, Response } from 'express';
 import { logger } from '../../config/logger';
 import { processSubscriptionWebhook } from '../../services/subscriptionService';
 import { StripeProvider } from '../../services/payments/StripeProvider';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -25,7 +26,7 @@ router.post(
 
     if (!signature || typeof signature !== 'string') {
       logger.error('Missing Stripe signature header');
-      res.status(400).json({ error: 'Missing signature' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_FORMAT, { message: 'Missing signature' });
       return;
     }
 
@@ -35,7 +36,7 @@ router.post(
 
       if (!rawBody) {
         logger.error('Missing raw body for Stripe webhook');
-        res.status(400).json({ error: 'Missing raw body' });
+        sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, { message: 'Missing raw body' });
         return;
       }
 
@@ -53,7 +54,10 @@ router.post(
       res.json({ received: true });
     } catch (error: any) {
       logger.error({ error: error.message, body: req.body }, 'Error processing Stripe webhook');
-      res.status(400).json({ error: error.message || 'Webhook processing failed' });
+      sendError(res, 400, API_ERROR_CODES.STRIPE_ERROR, {
+        message: error.message || 'Webhook processing failed',
+        details: { originalError: error.message }
+      });
     }
   }
 );

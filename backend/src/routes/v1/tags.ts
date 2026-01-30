@@ -1,6 +1,7 @@
 import { Router, type Request, type Response } from 'express';
 import { prisma } from '../../config/database';
 import { logger } from '../../config/logger';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -92,7 +93,7 @@ router.get('/', async (req: Request, res: Response) => {
     return res.json({ success: true, data: enriched, count: total });
   } catch (error) {
     logger.error({ error }, 'tags_list_failed');
-    return res.status(500).json({ success: false, message: 'Failed to list tags' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to list tags' });
   }
 });
 

@@ -20,6 +20,7 @@ import {
   sendMessageSchema,
   listMessagesQuerySchema,
 } from '../../validators/message.validator';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -31,10 +32,8 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+      return;
     }
 
     // Validate input
@@ -51,18 +50,17 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof Error && 'issues' in error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: error,
+      sendError(res, 400, API_ERROR_CODES.VALIDATION_FAILED, {
+        details: { errors: error }
       });
+      return;
     }
 
     logger.error({ error }, 'Error creating conversation');
-    return res.status(500).json({
-      success: false,
-      message: 'Failed to create conversation',
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to create conversation'
     });
+    return;
   }
 });
 
@@ -76,7 +74,7 @@ router.patch('/:id/participants/:participantId', requireAuth, async (req: Reques
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
     }
 
     // Validate body; we only allow the two fields
@@ -87,13 +85,13 @@ router.patch('/:id/participants/:participantId', requireAuth, async (req: Reques
     return res.json({ success: true, message: 'Participant updated successfully' });
   } catch (error) {
     if (error instanceof Error && (error as any).statusCode) {
-      return res.status((error as any).statusCode).json({ success: false, message: error.message });
+      return sendError(res, (error as any).statusCode, API_ERROR_CODES.INTERNAL_ERROR, { message: error.message });
     }
     if (error instanceof Error && 'issues' in error) {
-      return res.status(400).json({ success: false, message: 'Validation error', errors: error });
+      return sendError(res, 400, API_ERROR_CODES.VALIDATION_FAILED, { details: { errors: error } });
     }
     logger.error({ error }, 'Error updating participant');
-    return res.status(500).json({ success: false, message: 'Failed to update participant' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to update participant' });
   }
 });
 
@@ -105,10 +103,7 @@ router.get('/', requireAuth, translationMiddleware(), async (req: Request, res: 
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
     }
 
     // Parse query parameters
@@ -198,10 +193,7 @@ router.get('/:id', requireAuth, translationMiddleware(), async (req: Request, re
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
     }
 
     const conversation = await conversationService.getConversationById(
@@ -239,10 +231,7 @@ router.patch('/:id', requireAuth, async (req: Request, res: Response) => {
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
     }
 
     // Validate input
@@ -286,10 +275,7 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
     }
 
     await conversationService.deleteConversation(id, userId);
@@ -328,10 +314,7 @@ router.post(
       const userId = req.auth?.user?.id;
 
       if (!userId) {
-        return res.status(401).json({
-          success: false,
-          message: 'Authentication required',
-        });
+        sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
       }
 
       // Validate input
@@ -378,10 +361,7 @@ router.delete(
       const userId = req.auth?.user?.id;
 
       if (!userId) {
-        return res.status(401).json({
-          success: false,
-          message: 'Authentication required',
-        });
+        sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
       }
 
       await conversationService.removeParticipant(id, userId, participantId);
@@ -413,10 +393,7 @@ router.post(
       const userId = req.auth?.user?.id;
 
       if (!userId) {
-        return res.status(401).json({
-          success: false,
-          message: 'Authentication required',
-        });
+        sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
       }
 
       // Validate input
@@ -470,10 +447,7 @@ router.get(
       const userId = req.auth?.user?.id;
 
       if (!userId) {
-        return res.status(401).json({
-          success: false,
-          message: 'Authentication required',
-        });
+        sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
       }
 
       // Parse query parameters
@@ -528,19 +502,19 @@ router.post(
 
       if (!userId) {
         logger.warn({ conversationId }, 'Generate AI: No userId');
-        return res.status(401).json({ success: false, message: 'Authentication required' });
+        sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
       }
 
       if (!participantId) {
         logger.warn({ conversationId, userId }, 'Generate AI: Missing participantId');
-        return res.status(400).json({ success: false, message: 'participantId is required' });
+        return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, { message: 'participantId is required', field: 'participantId' });
       }
 
       // Step 1: Verify user has access to the conversation
       const conversation = await conversationService.getConversationById(conversationId, userId);
       if (!conversation) {
         logger.warn({ conversationId, userId }, 'Generate AI: Conversation not found or access denied');
-        return res.status(404).json({ success: false, message: 'Conversation not found or access denied' });
+        return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, { message: 'Conversation not found or access denied' });
       }
 
       // Step 2: Use ConversationManagerAgent to determine context (SFW/NSFW)
@@ -654,10 +628,7 @@ router.delete(
       const userId = req.auth?.user?.id;
 
       if (!userId) {
-        return res.status(401).json({
-          success: false,
-          message: 'Authentication required',
-        });
+        sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
       }
 
       const result = await messageService.deleteMessage(conversationId, messageId, userId);
@@ -708,10 +679,7 @@ router.get('/:id/background', requireAuth, async (req: Request, res: Response) =
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
     }
 
     // Verify user has access to this conversation (owner OR active member for multi-user)
@@ -794,10 +762,7 @@ router.post('/:id/suggest-reply', requireAuth, async (req: Request, res: Respons
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED); return;
     }
 
     // Get user's preferred language

@@ -14,13 +14,14 @@ import {
 } from '../../services/userService';
 import { r2Service } from '../../services/r2Service';
 import { updateUserProfileSchema } from '../../validators';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get('/me', requireAuth, (req, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
@@ -30,7 +31,7 @@ router.get('/me', requireAuth, (req, res) => {
 // Search users by username or display name
 router.get('/search', requireAuth, async (req, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
@@ -39,7 +40,11 @@ router.get('/search', requireAuth, async (req, res) => {
   const limit = isNaN(limitParam) ? 10 : Math.min(limitParam, 20);
 
   if (!query || query.length < 2) {
-    res.status(400).json({ success: false, error: 'Search query must be at least 2 characters' });
+    sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+      message: 'Search query must be at least 2 characters',
+      details: { minLength: 2, providedLength: query?.length || 0 },
+      field: 'q'
+    });
     return;
   }
 
@@ -49,7 +54,9 @@ router.get('/search', requireAuth, async (req, res) => {
     res.json({ success: true, data: users });
   } catch (error) {
     logger.error({ error }, 'user_search_failed');
-    res.status(500).json({ success: false, error: 'Failed to search users' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to search users'
+    });
   }
 });
 
@@ -58,7 +65,11 @@ router.get('/check-username/:username', requireAuth, async (req, res) => {
   const currentUserId = req.auth?.user?.id;
 
   if (!username || !username.startsWith('@')) {
-    res.status(400).json({ success: false, error: 'Invalid username format' });
+    sendError(res, 400, API_ERROR_CODES.INVALID_FORMAT, {
+      message: 'Invalid username format',
+      details: { requirement: 'Must start with @', provided: username },
+      field: 'username'
+    });
     return;
   }
 
@@ -67,13 +78,15 @@ router.get('/check-username/:username', requireAuth, async (req, res) => {
     res.json({ success: true, available: isAvailable });
   } catch (error) {
     logger.error({ error }, 'username_check_failed');
-    res.status(500).json({ success: false, error: 'Failed to check username' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to check username'
+    });
   }
 });
 
 router.patch('/me', requireAuth, async (req, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
@@ -88,24 +101,31 @@ router.patch('/me', requireAuth, async (req, res) => {
     res.json({ success: true, data: updated });
   } catch (error) {
     if (error instanceof ZodError) {
-      res.status(400).json({ success: false, error: 'Validation error', details: error.flatten() });
+      sendError(res, 400, API_ERROR_CODES.VALIDATION_FAILED, {
+        details: { errors: error.flatten() }
+      });
       return;
     }
 
     logger.error({ error }, 'user_profile_update_failed');
-    res.status(500).json({ success: false, error: 'Failed to update profile' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to update profile'
+    });
   }
 });
 
 router.post('/me/avatar', requireAuth, upload.single('avatar'), async (req: Request, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
   const uploadedFile = (req as Express.Request).file;
   if (!uploadedFile) {
-    res.status(400).json({ success: false, error: 'No file uploaded' });
+    sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+      message: 'No file uploaded',
+      field: 'avatar'
+    });
     return;
   }
 
@@ -128,13 +148,15 @@ router.post('/me/avatar', requireAuth, upload.single('avatar'), async (req: Requ
     res.json({ success: true, data: updated });
   } catch (error) {
     logger.error({ error }, 'avatar_upload_failed');
-    res.status(500).json({ success: false, error: 'Failed to upload avatar' });
+    sendError(res, 500, API_ERROR_CODES.R2_STORAGE_ERROR, {
+      message: 'Failed to upload avatar'
+    });
   }
 });
 
 router.delete('/me', requireAuth, async (req, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
@@ -143,7 +165,9 @@ router.delete('/me', requireAuth, async (req, res) => {
     res.json({ success: true, message: 'Account deleted successfully' });
   } catch (error) {
     logger.error({ error }, 'user_deletion_failed');
-    res.status(500).json({ success: false, error: 'Failed to delete account' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to delete account'
+    });
   }
 });
 
@@ -154,7 +178,7 @@ router.delete('/me', requireAuth, async (req, res) => {
 // Update welcome flow progress
 router.patch('/me/welcome-progress', requireAuth, async (req, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
@@ -170,26 +194,32 @@ router.patch('/me/welcome-progress', requireAuth, async (req, res) => {
     res.json({ success: true, data: updated });
   } catch (error) {
     if (error instanceof ZodError) {
-      res.status(400).json({ success: false, error: 'Validation error', details: error.flatten() });
+      sendError(res, 400, API_ERROR_CODES.VALIDATION_FAILED, {
+        details: { errors: error.flatten() }
+      });
       return;
     }
 
     if (error instanceof Error) {
       if (error.message === 'Invalid birthdate' || error.message === 'Age rating exceeds user\'s age') {
-        res.status(400).json({ success: false, error: error.message });
+        sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+          message: error.message
+        });
         return;
       }
     }
 
     logger.error({ error }, 'welcome_progress_update_failed');
-    res.status(500).json({ success: false, error: 'Failed to update welcome progress' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to update welcome progress'
+    });
   }
 });
 
 // Mark welcome flow as completed
 router.post('/me/complete-welcome', requireAuth, async (req, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
@@ -203,14 +233,16 @@ router.post('/me/complete-welcome', requireAuth, async (req, res) => {
     res.json({ success: true, data: updated });
   } catch (error) {
     logger.error({ error }, 'complete_welcome_failed');
-    res.status(500).json({ success: false, error: 'Failed to complete welcome flow' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to complete welcome flow'
+    });
   }
 });
 
 // Get age rating information
 router.get('/me/age-rating-info', requireAuth, async (req, res) => {
   if (!req.auth?.user) {
-    res.status(401).json({ success: false, error: 'Authentication required' });
+    sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
@@ -219,7 +251,9 @@ router.get('/me/age-rating-info', requireAuth, async (req, res) => {
     res.json({ success: true, data: info });
   } catch (error) {
     logger.error({ error }, 'age_rating_info_failed');
-    res.status(500).json({ success: false, error: 'Failed to get age rating info' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get age rating info'
+    });
   }
 });
 

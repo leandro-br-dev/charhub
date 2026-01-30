@@ -5,6 +5,7 @@ import { Modal } from '../../../../components/ui/Modal';
 import { Input } from '../../../../components/ui';
 import { Button } from '../../../../components/ui/Button';
 import api from '../../../../lib/api';
+import { extractErrorMessage } from '../../../../utils/apiErrorHandler';
 
 interface ShareInviteLinkModalProps {
   isOpen: boolean;
@@ -37,9 +38,9 @@ export const ShareInviteLinkModal: React.FC<ShareInviteLinkModalProps> = ({
         `/api/v1/conversations/${conversationId}/members/generate-invite-link`
       );
       setLink(response.data.data.link);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[ShareInviteLinkModal] Error generating link:', err);
-      const message = err.response?.data?.message || t('shareInvite.generateFailed');
+      const message = extractErrorMessage(err) || t('shareInvite.generateFailed');
       setError(message);
     } finally {
       setLoading(false);

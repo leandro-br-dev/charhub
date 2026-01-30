@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../../../lib/api';
+import { extractErrorMessage } from '../../../utils/apiErrorHandler';
 
 const JoinChatPage: React.FC = () => {
   const { t } = useTranslation('chat');
@@ -64,16 +65,16 @@ const JoinChatPage: React.FC = () => {
           console.log('[JoinChatPage] Redirecting to chat...');
           navigate(`/chat/${conversationId}`, { replace: true });
         }, 1000);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('[JoinChatPage] Error accepting invite:', error);
         console.error('[JoinChatPage] Error details:', {
-          status: error.response?.status,
-          data: error.response?.data,
-          message: error.message
+          status: (error as any).response?.status,
+          data: (error as any).response?.data,
+          message: (error as any).message
         });
         setStatus('error');
 
-        const responseMessage = error.response?.data?.message;
+        const responseMessage = extractErrorMessage(error);
 
         if (responseMessage?.includes('already a member')) {
           setErrorMessage(t('joinChat.alreadyMember'));

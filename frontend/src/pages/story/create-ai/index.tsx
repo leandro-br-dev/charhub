@@ -5,6 +5,7 @@ import { useToast } from '../../../contexts/ToastContext';
 import { Button } from '../../../components/ui/Button';
 import api from '../../../lib/api';
 import { GenerationWizard } from './components';
+import { extractErrorMessage } from '../../../utils/apiErrorHandler';
 
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 
@@ -105,10 +106,8 @@ export default function AutomatedStoryCreatePage(): JSX.Element {
         ),
         'success'
       );
-    } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.error ||
-        err?.message ||
+    } catch (err: unknown) {
+      const errorMessage = extractErrorMessage(err) ||
         t('story:errors.generationFailed', 'Failed to generate story');
 
       setError(errorMessage);

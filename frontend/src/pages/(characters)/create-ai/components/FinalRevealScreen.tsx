@@ -5,6 +5,7 @@ import { useToast } from '../../../../contexts/ToastContext';
 import { Button } from '../../../../components/ui/Button';
 import { useAvatarPolling } from '../../../../hooks/useAvatarPolling';
 import api from '../../../../lib/api';
+import { extractErrorMessage } from '../../../../utils/apiErrorHandler';
 
 interface FinalRevealScreenProps {
   character: any;
@@ -61,10 +62,10 @@ export function FinalRevealScreen({ character }: FinalRevealScreenProps): JSX.El
         'success'
       );
       navigate('/characters/create-ai');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to discard character:', error);
       addToast(
-        error?.response?.data?.error ||
+        extractErrorMessage(error) ||
           t('characters:createAI.discardFailed', 'Failed to discard character'),
         'error'
       );

@@ -8,13 +8,14 @@ import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
 import { systemConfigurationService } from '../../services/config/systemConfigurationService';
 import { prisma } from '../../config/database';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
 // Helper function to check admin access
 function requireAdmin(user: any, res: Response): boolean {
   if (user?.role !== 'ADMIN') {
-    res.status(403).json({ error: 'Admin access required' });
+    sendError(res, 403, API_ERROR_CODES.ADMIN_REQUIRED);
     return false;
   }
   return true;
@@ -44,7 +45,9 @@ router.get('/', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get system configurations');
-    res.status(500).json({ error: 'Failed to get system configurations' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get system configurations'
+    });
   }
 });
 
@@ -64,14 +67,20 @@ router.get('/:key', requireAuth, async (req, res) => {
 
     // Validate key format
     if (!KEY_REGEX.test(key)) {
-      res.status(400).json({ error: 'Invalid key format' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_FORMAT, {
+        message: 'Invalid key format',
+        field: 'key'
+      });
       return;
     }
 
     const value = await systemConfigurationService.get(key);
 
     if (value === null) {
-      res.status(404).json({ error: 'Configuration key not found' });
+      sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Configuration key not found',
+        details: { key }
+      });
       return;
     }
 
@@ -90,7 +99,9 @@ router.get('/:key', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get system configuration');
-    res.status(500).json({ error: 'Failed to get system configuration' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get system configuration'
+    });
   }
 });
 
@@ -110,20 +121,27 @@ router.post('/', requireAuth, async (req, res) => {
 
     // Validate required fields
     if (!key || value === undefined || value === null || value === '') {
-      res.status(400).json({ error: 'Key and value are required' });
+      sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+        message: 'Key and value are required'
+      });
       return;
     }
 
     // Validate key format
     if (!KEY_REGEX.test(key)) {
-      res.status(400).json({ error: 'Invalid key format. Use alphanumeric characters, dots, underscores, and hyphens' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_FORMAT, {
+        message: 'Invalid key format. Use alphanumeric characters, dots, underscores, and hyphens',
+        field: 'key'
+      });
       return;
     }
 
     // Validate category if provided
     if (category && !VALID_CATEGORIES.includes(category)) {
-      res.status(400).json({
-        error: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`,
+        details: { provided: category, validCategories: VALID_CATEGORIES },
+        field: 'category'
       });
       return;
     }
@@ -131,7 +149,10 @@ router.post('/', requireAuth, async (req, res) => {
     // Check if key already exists
     const existing = await systemConfigurationService.exists(key);
     if (existing) {
-      res.status(409).json({ error: 'Configuration key already exists' });
+      sendError(res, 409, API_ERROR_CODES.ALREADY_EXISTS, {
+        message: 'Configuration key already exists',
+        details: { key }
+      });
       return;
     }
 
@@ -160,7 +181,9 @@ router.post('/', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to create system configuration');
-    res.status(500).json({ error: 'Failed to create system configuration' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to create system configuration'
+    });
   }
 });
 
@@ -181,20 +204,28 @@ router.put('/:key', requireAuth, async (req, res) => {
 
     // Validate key format
     if (!KEY_REGEX.test(key)) {
-      res.status(400).json({ error: 'Invalid key format' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_FORMAT, {
+        message: 'Invalid key format',
+        field: 'key'
+      });
       return;
     }
 
     // Validate value
     if (value === undefined || value === null || value === '') {
-      res.status(400).json({ error: 'Value is required' });
+      sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+        message: 'Value is required',
+        field: 'value'
+      });
       return;
     }
 
     // Validate category if provided
     if (category && !VALID_CATEGORIES.includes(category)) {
-      res.status(400).json({
-        error: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`,
+        details: { provided: category, validCategories: VALID_CATEGORIES },
+        field: 'category'
       });
       return;
     }
@@ -202,7 +233,10 @@ router.put('/:key', requireAuth, async (req, res) => {
     // Check if key exists
     const existing = await systemConfigurationService.exists(key);
     if (!existing) {
-      res.status(404).json({ error: 'Configuration key not found' });
+      sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Configuration key not found',
+        details: { key }
+      });
       return;
     }
 
@@ -237,7 +271,9 @@ router.put('/:key', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to update system configuration');
-    res.status(500).json({ error: 'Failed to update system configuration' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to update system configuration'
+    });
   }
 });
 
@@ -257,14 +293,20 @@ router.delete('/:key', requireAuth, async (req, res) => {
 
     // Validate key format
     if (!KEY_REGEX.test(key)) {
-      res.status(400).json({ error: 'Invalid key format' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_FORMAT, {
+        message: 'Invalid key format',
+        field: 'key'
+      });
       return;
     }
 
     // Check if key exists
     const existing = await systemConfigurationService.exists(key);
     if (!existing) {
-      res.status(404).json({ error: 'Configuration key not found' });
+      sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Configuration key not found',
+        details: { key }
+      });
       return;
     }
 
@@ -278,7 +320,9 @@ router.delete('/:key', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to delete system configuration');
-    res.status(500).json({ error: 'Failed to delete system configuration' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to delete system configuration'
+    });
   }
 });
 

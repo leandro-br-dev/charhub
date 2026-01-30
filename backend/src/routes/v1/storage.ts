@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import { Router } from 'express';
 import { r2Service, R2ConfigurationError } from '../../services/r2Service';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -8,24 +9,36 @@ const isDevelopment = (process.env.NODE_ENV || 'development') === 'development';
 
 router.post('/test-upload', async (req, res, next) => {
   if (!isDevelopment) {
-    return res.status(403).json({ error: 'Test upload endpoint is only available in development environments.' });
+    sendError(res, 403, API_ERROR_CODES.FEATURE_DISABLED, {
+      message: 'Test upload endpoint is only available in development environments.'
+    });
+    return;
   }
 
   const { fileName, content, contentType } = req.body ?? {};
 
   if (!fileName || typeof fileName !== 'string') {
-    return res.status(400).json({ error: 'fileName is required and must be a string.' });
+    sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+      message: 'fileName is required and must be a string.',
+      field: 'fileName'
+    });
+    return;
   }
 
   if (!content || typeof content !== 'string') {
-    return res.status(400).json({ error: 'content is required and must be a base64 string.' });
+    sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+      message: 'content is required and must be a base64 string.',
+      field: 'content'
+    });
+    return;
   }
 
   if (!r2Service.isConfigured()) {
-    return res.status(503).json({
-      error: 'Cloudflare R2 is not configured. Populate the R2_* environment variables to enable uploads.',
-      missing: r2Service.getMissingConfig(),
+    sendError(res, 503, API_ERROR_CODES.CONFIGURATION_ERROR, {
+      message: 'Cloudflare R2 is not configured. Populate the R2_* environment variables to enable uploads.',
+      details: { missing: r2Service.getMissingConfig() }
     });
+    return;
   }
 
   try {
@@ -33,14 +46,22 @@ router.post('/test-upload', async (req, res, next) => {
     const buffer = Buffer.from(normalizedContent, 'base64');
 
     if (buffer.length === 0) {
-      return res.status(400).json({ error: 'content must be a valid base64 string representing at least 1 byte.' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'content must be a valid base64 string representing at least 1 byte.',
+        field: 'content'
+      });
+      return;
     }
 
     const reencoded = buffer.toString('base64').replace(/=+$/, '');
     const sanitizedInput = normalizedContent.replace(/=+$/, '');
 
     if (reencoded !== sanitizedInput) {
-      return res.status(400).json({ error: 'content must be a valid base64 string.' });
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'content must be a valid base64 string.',
+        field: 'content'
+      });
+      return;
     }
 
     const sanitizedName = fileName
@@ -72,7 +93,11 @@ router.post('/test-upload', async (req, res, next) => {
     });
   } catch (error) {
     if (error instanceof R2ConfigurationError) {
-      return res.status(error.statusCode).json({ error: error.message, missing: error.missingKeys });
+      sendError(res, error.statusCode, API_ERROR_CODES.CONFIGURATION_ERROR, {
+        message: error.message,
+        details: { missing: error.missingKeys }
+      });
+      return;
     }
 
     return next(error);

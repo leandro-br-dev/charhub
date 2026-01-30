@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button';
 import { creditService } from '../../services';
 import { useToast } from '../../contexts/ToastContext';
 import { Gift, Sparkles, Clock, MessageSquarePlus } from 'lucide-react';
+import { extractErrorMessage } from '../../utils/apiErrorHandler';
 
 export default function TasksPage(): JSX.Element {
   const { t } = useTranslation(['tasks', 'common']);
@@ -49,9 +50,9 @@ export default function TasksPage(): JSX.Element {
       setCredits(result.newBalance);
       setClaimed(true);
       addToast(t('tasks:messages.rewardClaimed'), 'success');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('[Tasks] Failed to claim reward:', error);
-      const errorMsg = error?.response?.data?.message;
+      const errorMsg = extractErrorMessage(error);
 
       if (errorMsg?.includes('already claimed')) {
         setClaimed(true);

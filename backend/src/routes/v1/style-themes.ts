@@ -3,6 +3,7 @@ import { styleThemeService } from '../../services/styleThemeService';
 import { prisma } from '../../config/database';
 import { logger } from '../../config/logger';
 import { VisualStyle, Theme } from '../../generated/prisma';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -16,7 +17,9 @@ router.get('/styles', async (_req: Request, res: Response) => {
     res.json(styles);
   } catch (error) {
     logger.error({ error }, 'Failed to get styles');
-    res.status(500).json({ error: 'Failed to get styles' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get styles'
+    });
   }
 });
 
@@ -30,7 +33,11 @@ router.get('/styles/:style/themes', async (req: Request, res: Response): Promise
 
     // Validate style enum
     if (!Object.values(VisualStyle).includes(style as VisualStyle)) {
-      res.status(400).json({ error: `Invalid style: ${style}` });
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: `Invalid style: ${style}`,
+        details: { provided: style, validStyles: Object.values(VisualStyle) },
+        field: 'style'
+      });
       return;
     }
 
@@ -38,7 +45,9 @@ router.get('/styles/:style/themes', async (req: Request, res: Response): Promise
     res.json({ style, themes });
   } catch (error) {
     logger.error({ error, params: req.params }, 'Failed to get available themes');
-    res.status(500).json({ error: 'Failed to get available themes' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get available themes'
+    });
   }
 });
 
@@ -52,13 +61,21 @@ router.get('/styles/:style/themes/:theme', async (req: Request, res: Response): 
 
     // Validate style enum
     if (!Object.values(VisualStyle).includes(style as VisualStyle)) {
-      res.status(400).json({ error: `Invalid style: ${style}` });
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: `Invalid style: ${style}`,
+        details: { provided: style, validStyles: Object.values(VisualStyle) },
+        field: 'style'
+      });
       return;
     }
 
     // Validate theme enum
     if (!Object.values(Theme).includes(theme as Theme)) {
-      res.status(400).json({ error: `Invalid theme: ${theme}` });
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: `Invalid theme: ${theme}`,
+        details: { provided: theme, validThemes: Object.values(Theme) },
+        field: 'theme'
+      });
       return;
     }
 
@@ -68,11 +85,9 @@ router.get('/styles/:style/themes/:theme', async (req: Request, res: Response): 
     );
 
     if (!combo) {
-      res.status(404).json({
-        error: `Combination not found`,
-        style,
-        theme,
+      sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
         message: `No checkpoint configuration found for ${style} + ${theme}`,
+        details: { style, theme }
       });
       return;
     }
@@ -80,7 +95,9 @@ router.get('/styles/:style/themes/:theme', async (req: Request, res: Response): 
     res.json(combo);
   } catch (error) {
     logger.error({ error, params: req.params }, 'Failed to get Style + Theme combination');
-    res.status(500).json({ error: 'Failed to get combination' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get combination'
+    });
   }
 });
 
@@ -125,7 +142,9 @@ router.get('/style-themes/combinations', async (_req: Request, res: Response) =>
     res.json(combinations);
   } catch (error) {
     logger.error({ error }, 'Failed to get all combinations');
-    res.status(500).json({ error: 'Failed to get combinations' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get combinations'
+    });
   }
 });
 

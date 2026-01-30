@@ -3,6 +3,7 @@ import { queueManager, QueueName } from '../../queues';
 import { isQueuesEnabled } from '../../config/features';
 import { TestJobData } from '../../queues/jobs/testJob';
 import { logger } from '../../config/logger';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -12,7 +13,7 @@ const router = Router();
  */
 router.post('/test', async (req: Request, res: Response): Promise<void> => {
   if (!isQueuesEnabled()) {
-    res.status(503).json({ success: false, message: 'Queues are disabled in this environment' });
+    sendError(res, 503, API_ERROR_CODES.FEATURE_DISABLED, { message: 'Queues are disabled in this environment' });
     return;
   }
   try {
@@ -32,10 +33,7 @@ router.post('/test', async (req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     logger.error({ error }, 'Error adding test job to queue');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to add test job to queue',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to add test job to queue' });
   }
 });
 
@@ -45,7 +43,7 @@ router.post('/test', async (req: Request, res: Response): Promise<void> => {
  */
 router.get('/stats', async (_req: Request, res: Response): Promise<void> => {
   if (!isQueuesEnabled()) {
-    res.status(503).json({ success: false, message: 'Queues are disabled in this environment' });
+    sendError(res, 503, API_ERROR_CODES.FEATURE_DISABLED, { message: 'Queues are disabled in this environment' });
     return;
   }
   try {
@@ -57,10 +55,7 @@ router.get('/stats', async (_req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     logger.error({ error }, 'Error getting queue stats');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get queue stats',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get queue stats' });
   }
 });
 
@@ -70,7 +65,10 @@ router.get('/stats', async (_req: Request, res: Response): Promise<void> => {
  */
 router.get('/health', async (_req: Request, res: Response): Promise<void> => {
   if (!isQueuesEnabled()) {
-    res.status(503).json({ success: false, healthy: false, message: 'Queues are disabled in this environment' });
+    sendError(res, 503, API_ERROR_CODES.FEATURE_DISABLED, {
+      message: 'Queues are disabled in this environment',
+      details: { healthy: false }
+    });
     return;
   }
   try {
@@ -84,10 +82,9 @@ router.get('/health', async (_req: Request, res: Response): Promise<void> => {
     });
   } catch (error) {
     logger.error({ error }, 'Queue health check failed');
-    res.status(503).json({
-      success: false,
-      healthy: false,
+    sendError(res, 503, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Queue system is not operational',
+      details: { healthy: false }
     });
   }
 });

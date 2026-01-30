@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { resolveApiBaseUrl } from './resolveApiBaseUrl';
 import type { AuthUser } from '../types/auth';
+import { isApiError } from '../utils/apiErrorHandler';
 
 const STORAGE_KEY = 'charhub.auth.user';
 const resolvedBase = resolveApiBaseUrl();
@@ -37,6 +38,25 @@ api.interceptors.request.use(
     return config;
   },
   error => Promise.reject(error)
+);
+
+// Response interceptor for debugging API errors
+api.interceptors.response.use(
+  response => response,
+  error => {
+    // Log API errors for debugging
+    if (error.response?.data && isApiError(error.response.data)) {
+      const apiError = error.response.data.error;
+      console.error('[api] API Error:', {
+        code: apiError.code,
+        message: apiError.message,
+        field: apiError.field,
+        details: apiError.details,
+        status: error.response.status
+      });
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default api;
