@@ -25,9 +25,23 @@ Orchestrate safe deployment to production by validating environment variables, c
 ✅ production-monitor sub-agent available
 ✅ Production access credentials valid
 
+## Auto-Deploy Architecture
+
+> **IMPORTANT**: This project uses **automatic CI/CD deployment via GitHub Actions**.
+> Every merge or push to `main` automatically triggers a pipeline that builds, tests,
+> and deploys to production.
+>
+> **Merging a PR to main IS deploying to production.**
+>
+> This means:
+> - Environment validation must happen **BEFORE** the merge
+> - There is no separate "deploy" step — the merge triggers it
+> - After merge, the role is to **monitor** the GitHub Actions pipeline
+> - Post-deploy verification confirms production health
+
 ## Deployment Coordination Workflow
 
-### Phase 1: Environment Validation (CRITICAL!)
+### Phase 1: Environment Validation (CRITICAL! — BEFORE Merge!)
 
 **Use sub-agent**: `env-guardian`
 
@@ -92,35 +106,36 @@ git diff main...<feature-branch> -- .env.example .env
 
 **Output**: Pre-deploy checks passed OR issues identified
 
-### Phase 3: Deployment Execution
+### Phase 3: Merge & Auto-Deploy
 
-**Use sub-agent**: `deploy-coordinator`
+**Only after all pre-deploy checks and environment validation passed**
 
-**Only after all pre-deploy checks passed**
-
-**Deployment process**:
+**Merge triggers automatic deployment via GitHub Actions**:
 
 ```bash
-# Step 1: Merge PR to main
-gh pr merge <number> --merge --delete-branch
+# Step 1: Merge PR to main (this triggers the CI/CD pipeline)
+gh pr merge <number> --merge
 
-# Step 2: Pull to production server
-ssh production-server "cd /app && git pull"
+# Step 2: Monitor GitHub Actions pipeline
+gh run watch
+# OR check status periodically:
+gh run list --limit 5
 
-# Step 3: Build and restart services
-ssh production-server "cd /app && docker compose up -d --build"
-
-# Step 4: Monitor startup
-ssh production-server "docker compose ps"
-ssh production-server "docker compose logs -f --tail=50"
+# Step 3: Verify pipeline completes successfully
+gh run view <run-id>
 ```
 
+**The GitHub Actions pipeline automatically**:
+- Builds Docker images
+- Runs tests
+- Deploys to production server
+- Restarts services
+- Runs health checks
+
 **Active monitoring during deployment**:
-- Watch container startup logs
-- Monitor for any error messages
-- Verify all services start successfully
-- Check health endpoints respond
-- Monitor resource usage
+- Watch GitHub Actions pipeline progress
+- Monitor for any pipeline failures
+- Check production health after pipeline completes
 
 **DO NOT walk away during deployment!**
 

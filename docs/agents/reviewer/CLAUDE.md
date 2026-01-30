@@ -1,7 +1,7 @@
 # CLAUDE.md - Agent Reviewer (Orchestrator)
 
-**Last Updated**: 2026-01-27
-**Version**: 2.1 - Enhanced UAT & Migrations
+**Last Updated**: 2026-01-30
+**Version**: 2.2 - Auto-Deploy via GitHub Actions
 **Role**: Operations, QA & Deployment Orchestration
 **Branch**: `main` (NEVER `feature/*`)
 
@@ -185,58 +185,60 @@ Quando terminar os testes, me informe se posso prosseguir com o merge.
 
 ### Workflow 2: Deployment Coordination
 
-#### ✅ Checklist 2.1: Environment Validation
+> **IMPORTANT: Auto-Deploy via GitHub Actions**
+>
+> This project uses **automatic CI/CD deployment**. Every merge or push to `main`
+> automatically triggers a GitHub Actions workflow that builds, tests, and deploys
+> to production. **There is no manual deployment step.**
+>
+> This means:
+> - **Merging a PR to main IS deploying to production**
+> - Environment validation must happen BEFORE the merge
+> - User confirmation for deploy should be combined with merge approval
+> - After merge, the role shifts to monitoring the GitHub Actions pipeline
+
+#### ✅ Checklist 2.1: Environment Validation (BEFORE Merge!)
 
 **Use skill**: `deployment-coordination`, `production-env-sync`
 **Use sub-agent**: `env-guardian`
 
 - [ ] Use env-guardian FIRST (CRITICAL!)
 - [ ] Run `env-compare.sh` to check for missing keys
-- [ ] Check for new environment variables
-- [ ] Validate all required variables exist
+- [ ] Check for new environment variables in the PR
+- [ ] Validate all required variables exist in production
 - [ ] Verify secrets are set
 - [ ] Document any new variables
 - [ ] Sync to production if needed using `env-sync-production.sh`
+- [ ] **Complete this BEFORE merging** (merge triggers deploy!)
 
 #### ✅ Checklist 2.2: Pre-Deploy Verification
 
 - [ ] PR approved
 - [ ] All tests passing
-- [ ] Docker images build successfully
 - [ ] No merge conflicts
 - [ ] Feature spec complete
-- [ ] Rollback plan documented
+- [ ] Environment validated (Checklist 2.1 passed)
 
-#### ✅ Checklist 2.3: User Confirmation for Deploy - CRITICAL!
+#### ✅ Checklist 2.3: Merge & Deploy (Auto-Deploy)
 
-**MANDATORY: Never deploy without user confirmation!**
+**Merging to main automatically triggers deployment via GitHub Actions.**
 
-- [ ] **Present deploy summary to user** (what will be deployed)
-- [ ] **Ask user: "Posso prosseguir com o deploy para produção?"**
-- [ ] **Wait for explicit user approval**
-- [ ] Only proceed after user says yes
+- [ ] Merge PR to main (`gh pr merge`)
+- [ ] Monitor GitHub Actions pipeline: `gh run watch` or `gh run list`
+- [ ] Verify pipeline completes successfully
 
-#### ✅ Checklist 2.5: Deployment Execution
+#### ✅ Checklist 2.4: Post-Deploy Verification
 
-**Use sub-agent**: `deploy-coordinator`
+**Use sub-agent**: `production-monitor`
 
-- [ ] Merge PR to main
-- [ ] Pull to production server
-- [ ] Build Docker images
-- [ ] Restart services
-- [ ] Monitor startup logs actively
-
-#### ✅ Checklist 2.6: Post-Deploy Verification
-
-**Use sub-agents**: `deploy-coordinator` + `production-monitor`
-
-- [ ] All containers running
+- [ ] GitHub Actions pipeline completed successfully
+- [ ] All containers running in production
 - [ ] Health checks passing
 - [ ] API responding correctly
 - [ ] No new errors in logs
 - [ ] Critical features working
 
-#### ✅ Checklist 2.7: Documentation
+#### ✅ Checklist 2.5: Documentation
 
 - [ ] Feature spec moved to implemented/
 - [ ] Deployment record created
@@ -386,15 +388,15 @@ Agent Coder created PR?
                                  ├─ NO → Wait for approval
                                  └─ YES → MERGE PR
 
-Ready to deploy?
-└─ YES → env-guardian FIRST
+Ready to deploy? (Auto-Deploy: merge to main = deploy to production)
+└─ YES → env-guardian FIRST (BEFORE merge!)
    └─ Environment validated?
-      ├─ NO → Block deploy, setup env vars
-      └─ YES → ASK USER: "Posso fazer o deploy?" ← CRITICAL!
-         └─ User approved deploy?
-            ├─ NO → Wait for approval
-            └─ YES → deploy-coordinator
-               └─ Deploy & monitor
+      ├─ NO → Block merge, setup env vars first
+      └─ YES → MERGE PR (triggers auto-deploy via GitHub Actions)
+         └─ Monitor GitHub Actions: gh run watch
+            └─ Pipeline succeeded?
+               ├─ NO → Investigate, rollback if needed
+               └─ YES → production-monitor (verify health)
 
 Ongoing monitoring?
 └─ Use production-monitor continuously
@@ -507,6 +509,34 @@ npx prisma migrate status
 # - If development and can lose data: npx prisma migrate reset
 
 # 4. NEVER execute ALTER TABLE, CREATE INDEX, etc. directly!
+```
+
+---
+
+### FEATURE-020: API Error Standardization (Jan 2026)
+
+**Process Improvement Identified**:
+
+1. **Auto-Deploy Not Documented** - Agent Reviewer was unaware that merging/pushing to `main` automatically triggers CI/CD deployment via GitHub Actions. This caused the agent to offer manual deployment steps after merge, when deployment was already in progress.
+
+**Root Cause**:
+- The deployment workflow documentation described a manual process (SSH to production, docker compose up, etc.)
+- In reality, GitHub Actions automatically builds, tests, and deploys on every merge/push to `main`
+- Agent asked user about deployment when it had already been triggered by the merge
+
+**Prevention Measures Added**:
+1. Added auto-deploy documentation to CLAUDE.md, WORKFLOW.md, deployment-coordination SKILL.md, and deploy-coordinator sub-agent
+2. Updated Workflow 2 (Deployment) to reflect that merge = deploy
+3. Clarified that env-guardian must run BEFORE merge (not before a separate deploy step)
+4. Updated decision tree to reflect auto-deploy flow
+5. Agent's post-merge role is now monitoring GitHub Actions pipeline and verifying production health
+
+**Key Takeaway**:
+```
+Merge to main = Deploy to production (automatic via GitHub Actions)
+- Environment validation → BEFORE merge
+- User deploy confirmation → Combined with merge approval
+- Post-merge role → Monitor GitHub Actions + verify production health
 ```
 
 ---

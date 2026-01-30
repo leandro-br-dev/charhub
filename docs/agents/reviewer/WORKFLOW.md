@@ -1,7 +1,7 @@
 # Agent Reviewer Workflow - Complete Flow
 
-**Last Updated**: 2026-01-27
-**Version**: 2.2 - Enhanced Schema Verification & Migrations
+**Last Updated**: 2026-01-30
+**Version**: 2.3 - Auto-Deploy via GitHub Actions
 
 ---
 
@@ -67,41 +67,36 @@ WORKFLOW 1: PULL REQUEST REVIEW
     └─ Block PR (critical issues)
 
 WORKFLOW 2: DEPLOYMENT COORDINATION
+│   ⚡ AUTO-DEPLOY: Merge/push to main triggers GitHub Actions CI/CD
+│   Merging a PR to main IS deploying to production!
 │
-├─→ 2.1. ENVIRONMENT VALIDATION (CRITICAL!)
+├─→ 2.1. ENVIRONMENT VALIDATION (BEFORE MERGE! - CRITICAL!)
 │   └─ Use env-guardian
 │      ├─ Environment variable validation
 │      ├─ New env var detection
 │      ├─ Environment synchronization
 │      └─ Secret validation
+│      └─ Must complete BEFORE merge (merge = deploy)
 │
 ├─→ 2.2. PRE-DEPLOY VERIFICATION
-│   └─ Use deploy-coordinator
-│      ├─ Verify all tests passing
-│      ├─ Check Docker images built
-│      ├─ Verify no merge conflicts
-│      └─ Document rollback plan
+│   └─ Verify all tests passing
+│      ├─ No merge conflicts
+│      ├─ Environment validated
+│      └─ Feature spec complete
 │
-├─→ 2.3. USER CONFIRMATION FOR DEPLOY - CRITICAL!
-│   └─ **MANDATORY - Cannot be skipped!**
-│      ├─ Present deploy summary to user
-│      ├─ Ask user: "Posso prosseguir com o deploy para produção?"
-│      └─ **WAIT for explicit user approval**
+├─→ 2.3. MERGE PR (TRIGGERS AUTO-DEPLOY)
+│   └─ gh pr merge → GitHub Actions pipeline starts automatically
+│      ├─ Monitor: gh run watch / gh run list
+│      └─ Pipeline builds, tests, and deploys to production
 │
-├─→ 2.4. DEPLOYMENT EXECUTION
-│   └─ Use deploy-coordinator
-│      ├─ Merge PR to main
-│      ├─ Pull to production
-│      ├─ Build and restart services
-│      └─ Monitor startup logs
-│
-├─→ 2.5. POST-DEPLOY VERIFICATION
-│   └─ Use deploy-coordinator + production-monitor
+├─→ 2.4. POST-DEPLOY VERIFICATION
+│   └─ Use production-monitor
+│      ├─ GitHub Actions pipeline succeeded
 │      ├─ Service health checks
 │      ├─ Functional verification
 │      └─ Check for new errors
 │
-└─→ 2.6. DOCUMENTATION
+└─→ 2.5. DOCUMENTATION
     └─ Move feature spec to implemented
        └─ Create deployment record
 
@@ -266,47 +261,40 @@ git diff origin/main...HEAD --name-only | grep "prisma/migrations"
 
 ### ✅ Workflow 2: Deployment Coordination
 
-#### Checklist 2.1: Environment Validation
+> **AUTO-DEPLOY**: Every merge/push to `main` automatically triggers a GitHub Actions
+> CI/CD pipeline that builds, tests, and deploys to production. **Merging a PR = Deploying.**
+
+#### Checklist 2.1: Environment Validation (BEFORE Merge!)
 - [ ] Use env-guardian FIRST (CRITICAL!)
-- [ ] Check for new environment variables
-- [ ] Validate all required variables exist
+- [ ] Check for new environment variables in the PR
+- [ ] Validate all required variables exist in production
 - [ ] Verify secrets are set
 - [ ] Document any new variables
 - [ ] Synchronize environment if needed
+- [ ] **Complete this BEFORE merging** (merge triggers deploy!)
 
 #### Checklist 2.2: Pre-Deploy Verification
 - [ ] PR approved
 - [ ] All tests passing
-- [ ] Docker images build successfully
 - [ ] No merge conflicts
 - [ ] Feature spec complete
-- [ ] Rollback plan documented
-- [ ] Stakeholders notified
+- [ ] Environment validated (Checklist 2.1 passed)
 
-#### Checklist 2.3: User Confirmation for Deploy - CRITICAL!
-**MANDATORY - This step cannot be skipped!**
-- [ ] Present deploy summary to user (what will be deployed)
-- [ ] **Ask user: "Posso prosseguir com o deploy para produção?"**
-- [ ] **WAIT for explicit user approval**
-- [ ] Only proceed after user says yes
+#### Checklist 2.3: Merge & Auto-Deploy
+- [ ] Merge PR to main (`gh pr merge`) — this automatically triggers GitHub Actions
+- [ ] Monitor GitHub Actions pipeline: `gh run watch` or `gh run list`
+- [ ] Verify pipeline completes successfully
 
-#### Checklist 2.4: Deployment Execution
-- [ ] Merge PR to main (if not already merged)
-- [ ] Pull to production server
-- [ ] Build Docker images
-- [ ] Restart services
-- [ ] Monitor startup logs actively
-- [ ] All services started successfully
-
-#### Checklist 2.5: Post-Deploy Verification
-- [ ] All containers running
+#### Checklist 2.4: Post-Deploy Verification
+- [ ] GitHub Actions pipeline completed successfully
+- [ ] All containers running in production
 - [ ] Health checks passing
 - [ ] API responding correctly
 - [ ] No new errors in logs
 - [ ] Critical features working
 - [ ] Performance acceptable
 
-#### Checklist 2.6: Documentation
+#### Checklist 2.5: Documentation
 - [ ] Feature spec moved to implemented/
 - [ ] Deployment record created
 - [ ] Deployment notes documented
