@@ -132,7 +132,7 @@
       "exampleInstruction2": "Act nervous because this is a first date scenario",
       "exampleInstruction3": "Speak formally as if in a royal court",
       "promoteComingSoon": "This feature is coming soon",
-      "assumePersonaLabel": "Assume persona",
+      "assumePersonaLabel": "Quick Setup: Use Character Template",
       "changeVisualPersonaLabel": "Visual persona",
       "selectCharacterPlaceholder": "Select a character",
       "loadingPersonas": "Loading personas...",
@@ -175,7 +175,6 @@
       "descriptionOverrideLabel": "About You",
       "descriptionOverridePlaceholder": "Describe your appearance, personality, background...",
       "descriptionOverrideHelp": "Details about your character that will help with roleplay. Physical traits, personality, background, etc.",
-      "assumePersonaLabel": "Quick Setup: Use Character Template",
       "assumePersonaHelp": "Select a character to auto-populate all fields. Other characters will address you by this persona's name and traits.",
       "searchCharacterPlaceholder": "Search characters...",
       "noPersonaFound": "No characters found",
@@ -411,6 +410,19 @@
       "noCharactersAvailable": "No characters available",
       "loadingCharacters": "Loading characters...",
       "favoriteTooltip": "Favorite"
+    },
+    "translation": {
+      "toggle": "Show original",
+      "showTranslated": "Show translated",
+      "translating": "Translating...",
+      "requestFailed": "Translation failed",
+      "translated": "Translated",
+      "translatedBadge": "Translated",
+      "autoEnabled": "Auto-translate enabled",
+      "autoDisabled": "Auto-translate disabled",
+      "toggleFailed": "Failed to toggle auto-translate",
+      "autoTranslate": "Auto-translate",
+      "autoTranslateDescription": "Automatically translate messages to your language"
     }
   }
 }

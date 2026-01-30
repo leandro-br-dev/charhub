@@ -6,6 +6,7 @@ import { prisma } from '../../config/database';
 import * as conversationService from '../../services/conversationService';
 import * as messageService from '../../services/messageService';
 import * as assistantService from '../../services/assistantService';
+import { translationService } from '../../services/translation/translationService';
 import { SenderType } from '../../generated/prisma';
 import { trackFromLLMResponse } from '../../services/llm/llmUsageTracker';
 import {
@@ -862,5 +863,155 @@ router.post('/:id/suggest-reply', requireAuth, async (req: Request, res: Respons
     });
   }
 });
+
+// ============================================================================
+// MESSAGE TRANSLATION ROUTES (FEATURE-018)
+// ============================================================================
+
+/**
+ * GET /api/v1/conversations/:id/messages/:messageId/translations
+ * Get all available translations for a message
+ */
+router.get(
+  '/:id/messages/:messageId/translations',
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const { id: conversationId, messageId } = req.params;
+      const userId = req.auth?.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required',
+        });
+      }
+
+      // Verify user has access to this conversation
+      const { membershipService } = await import('../../services/membershipService');
+      const hasAccess = await membershipService.hasAccess(conversationId, userId);
+      if (!hasAccess) {
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied',
+        });
+      }
+
+      // Verify message belongs to this conversation
+      const message = await prisma.message.findFirst({
+        where: {
+          id: messageId,
+          conversationId,
+        },
+      });
+
+      if (!message) {
+        return res.status(404).json({
+          success: false,
+          message: 'Message not found',
+        });
+      }
+
+      // Get all translations for this message
+      const translations = await prisma.messageTranslation.findMany({
+        where: { messageId },
+        select: {
+          targetLanguage: true,
+          translatedText: true,
+          provider: true,
+          createdAt: true,
+        },
+      });
+
+      return res.json({
+        success: true,
+        data: translations,
+      });
+    } catch (error) {
+      logger.error({ error }, 'Failed to fetch message translations');
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to fetch translations',
+      });
+    }
+  }
+);
+
+/**
+ * POST /api/v1/conversations/:id/messages/:messageId/translate
+ * Request translation for a specific language
+ */
+router.post(
+  '/:id/messages/:messageId/translate',
+  requireAuth,
+  async (req: Request, res: Response) => {
+    try {
+      const { id: conversationId, messageId } = req.params;
+      const userId = req.auth?.user?.id;
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required',
+        });
+      }
+
+      const { targetLanguage } = req.body;
+
+      if (!targetLanguage || typeof targetLanguage !== 'string') {
+        return res.status(400).json({
+          success: false,
+          message: 'targetLanguage is required',
+        });
+      }
+
+      // Verify user has access to this conversation
+      const { membershipService } = await import('../../services/membershipService');
+      const hasAccess = await membershipService.hasAccess(conversationId, userId);
+      if (!hasAccess) {
+        return res.status(403).json({
+          success: false,
+          message: 'Access denied',
+        });
+      }
+
+      // Verify message belongs to this conversation
+      const message = await prisma.message.findFirst({
+        where: {
+          id: messageId,
+          conversationId,
+        },
+      });
+
+      if (!message) {
+        return res.status(404).json({
+          success: false,
+          message: 'Message not found',
+        });
+      }
+
+      // Translate message
+      const translated = await translationService.translateMessage(
+        messageId,
+        targetLanguage
+      );
+
+      return res.json({
+        success: true,
+        data: {
+          messageId,
+          targetLanguage,
+          translatedText: translated,
+        },
+      });
+    } catch (error) {
+      logger.error({ error }, 'Message translation failed');
+      return res.status(500).json({
+        success: false,
+        message: 'Translation failed',
+      });
+    }
+  }
+);
 
 export default router;

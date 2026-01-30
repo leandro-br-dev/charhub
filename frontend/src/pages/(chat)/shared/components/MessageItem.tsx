@@ -16,6 +16,7 @@ import { Button } from '../../../../components/ui/Button';
 import { Textarea } from '../../../../components/ui/Textarea';
 import { MessageBubble } from './MessageBubble';
 import { FormattedMessage } from '../../../../components/ui/FormattedMessage';
+import { useMessageTranslations } from '../hooks/useMessageTranslations';
 
 const isLikelyJson = (content: any) =>
   typeof content === "string" &&
@@ -43,6 +44,10 @@ interface MessageItemProps {
   onSendConfirmation?: (friendlyMessage: string, commandToProcess: string) => void;
   isLastMessage?: boolean;
   onReviewFileClick?: (file: any) => void;
+  // FEATURE-018: Translation props
+  userLanguage?: string;
+  socket?: any;
+  conversationId?: string;
 }
 
 const MessageItem = memo(
@@ -67,6 +72,10 @@ const MessageItem = memo(
     onSendConfirmation,
     isLastMessage,
     onReviewFileClick,
+    // FEATURE-018: Translation props
+    userLanguage = "en",
+    socket,
+    conversationId,
   }: MessageItemProps) => {
     const { t } = useTranslation('chat');
     const { addToast } = useToast();
@@ -76,6 +85,25 @@ const MessageItem = memo(
     const [isSavingEdit, setIsSavingEdit] = useState(false);
     const [confirmationSent, setConfirmationSent] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    // FEATURE-018: Message translations hook
+    const {
+      getTranslatedText,
+      hasTranslation,
+      toggleTranslation,
+      requestTranslation,
+      isTranslationLoading,
+    } = useMessageTranslations({
+      socket,
+      userLanguage,
+      conversationId: conversationId || "",
+    });
+
+    // FEATURE-018: Get the text to display (original or translated)
+    // Don't translate own messages - only translate messages from others
+    const displayText = isSent ? message : getTranslatedText(messageId, message);
+    const hasTranslationAvailable = !isSent && hasTranslation(messageId);
+    const isLoadingTranslation = !isSent && isTranslationLoading(messageId);
 
     const confirmationRequest = useMemo(() => {
       if (!isSent && isLikelyJson(message)) {
@@ -94,8 +122,8 @@ const MessageItem = memo(
     }, [message, isSent]);
 
     useEffect(() => {
-      if (!isEditing) setEditedContent(message);
-    }, [message, isEditing]);
+      if (!isEditing) setEditedContent(displayText);
+    }, [displayText, isEditing]);
 
     useEffect(() => {
       if (isEditing && textareaRef.current) {
@@ -133,11 +161,11 @@ const MessageItem = memo(
     const handleEditClick = useCallback(
       (e: React.MouseEvent) => {
         e.stopPropagation();
-        setEditedContent(message);
+        setEditedContent(displayText);
         setIsEditing(true);
         setShowActions(false);
       },
-      [message]
+      [displayText]
     );
 
     const handleCancelEdit = useCallback(() => {
@@ -150,7 +178,7 @@ const MessageItem = memo(
         setIsEditing(false);
         return;
       }
-      if (editedContent.trim() === message.trim()) {
+      if (editedContent.trim() === displayText.trim()) {
         setIsEditing(false);
         return;
       }
@@ -166,7 +194,7 @@ const MessageItem = memo(
       } finally {
         setIsSavingEdit(false);
       }
-    }, [onSaveEditRequest, messageId, editedContent, message]);
+    }, [onSaveEditRequest, messageId, editedContent, displayText]);
 
     const handlePlayAudioClick = useCallback(
       (e: React.MouseEvent) => {
@@ -504,7 +532,32 @@ const MessageItem = memo(
                   isSent ? "rounded-tr-none" : "rounded-tl-none"
                 } shadow-sm relative break-words w-full`}
               >
-                <FormattedMessage content={message} />
+                {/* FEATURE-018: Display translated or original text */}
+                <FormattedMessage content={displayText} />
+
+                {/* FEATURE-018: Translation toggle button */}
+                {!isSent && hasTranslationAvailable && (
+                  <button
+                    onClick={() => toggleTranslation(messageId)}
+                    className="mt-1 text-xs opacity-70 hover:opacity-100 flex items-center gap-1 transition-opacity"
+                    title={t('translation.toggle')}
+                  >
+                    <span className="material-symbols-outlined text-[14px]">
+                      translate
+                    </span>
+                  </button>
+                )}
+
+                {/* FEATURE-018: Loading indicator for translation */}
+                {!isSent && isLoadingTranslation && (
+                  <div className="mt-1 text-xs opacity-50 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px] animate-spin">
+                      hourglass_top
+                    </span>
+                    <span>{t('translation.translating')}</span>
+                  </div>
+                )}
+
                 {audioError && (
                   <p className="text-xs text-red-300 mt-1 opacity-80">
                     {audioError}

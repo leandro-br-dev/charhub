@@ -78,6 +78,10 @@ interface MessageListProps {
   audioCache?: Record<string, boolean>;
   onSendConfirmation?: (content: string) => Promise<boolean>;
   onReviewFileClick?: (file: any) => void;
+  // FEATURE-018: Translation props
+  userLanguage?: string;
+  socket?: any;
+  conversationId?: string;
 }
 
 // Componente espaçador invisível que ocupa o mesmo espaço do input fixo
@@ -106,6 +110,10 @@ const MessageList: React.FC<MessageListProps> = ({
   audioCache = {},
   onSendConfirmation,
   onReviewFileClick,
+  // FEATURE-018: Translation props
+  userLanguage,
+  socket,
+  conversationId,
 }) => {
   const { t, i18n } = useTranslation('chat');
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -282,6 +290,9 @@ const MessageList: React.FC<MessageListProps> = ({
               onSendConfirmation={onSendConfirmation}
               isLastMessage={isLastMessage}
               onReviewFileClick={onReviewFileClick}
+              userLanguage={userLanguage}
+              socket={socket}
+              conversationId={conversationId}
             />
           );
 

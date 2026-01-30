@@ -832,6 +832,9 @@ model UserConversationMembership {
   inviter   User?    @relation("SentInvites", fields: [invitedBy], references: [id])
   isActive  Boolean  @default(true) // false = kicked/left
 
+  // FEATURE-018: Auto-translate setting
+  autoTranslateEnabled Boolean @default(false) // Automatically show translations for this user
+
   @@unique([conversationId, userId])
   @@index([userId])
   @@index([conversationId])
@@ -899,9 +902,34 @@ model Message {
 
   timestamp DateTime @default(now())
 
+  // Message translations (FEATURE-018)
+  translations MessageTranslation[]
+
   @@index([conversationId])
   @@index([senderId])
   @@index([conversationId, timestamp])
+}
+
+// ============================================================================
+// MESSAGE TRANSLATION SYSTEM (FEATURE-018)
+// ============================================================================
+
+// MessageTranslation stores translations of chat messages for multi-user conversations
+model MessageTranslation {
+  id              String   @id @default(uuid())
+  messageId       String
+  message         Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  targetLanguage  String // ISO 639-1 code (e.g., 'pt-BR', 'en-US')
+  translatedText  String   @db.Text
+
+  provider        String   @default("gemini") // 'gemini' | 'deepl'
+  createdAt       DateTime @default(now())
+
+  @@unique([messageId, targetLanguage])
+  @@index([messageId])
+  @@index([targetLanguage])
+  @@map("MessageTranslation")
 }
 
 // ============================================================================

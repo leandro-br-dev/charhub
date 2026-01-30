@@ -7,6 +7,7 @@ import { prisma } from '../config/database';
 import { SenderType } from '../generated/prisma';
 import * as messageService from '../services/messageService';
 import { isQueuesEnabled } from '../config/features';
+import { translationService } from '../services/translation/translationService';
 
 // Job data structure
 export interface ResponseJobData {
@@ -300,7 +301,7 @@ function ensureInitialized() {
   );
 
   // Attach events
-  responseWorker.on('completed', (job, result) => {
+  responseWorker.on('completed', async (job, result) => {
     logger.debug(
       { jobId: job.id, conversationId: job.data.conversationId },
       'Job completed successfully'
@@ -322,6 +323,86 @@ function ensureInitialized() {
         metadata: null,
         timestamp: new Date().toISOString(),
       });
+
+      // ============================================================================
+      // MESSAGE TRANSLATION PRE-GENERATION (FEATURE-018)
+      // ============================================================================
+      // For bot responses in multi-user conversations, pre-generate translations
+      // for all member languages (async, non-blocking)
+      // ============================================================================
+      if (result.messageId && !result.blocked) {
+        (async () => {
+          try {
+            // Fetch conversation to check if multi-user
+            const conversation = await prisma.conversation.findUnique({
+              where: { id: job.data.conversationId },
+              select: { isMultiUser: true }
+            });
+
+            if (conversation?.isMultiUser) {
+              // Get all members with autoTranslateEnabled: true
+              const members = await prisma.userConversationMembership.findMany({
+                where: {
+                  conversationId: job.data.conversationId,
+                  isActive: true,
+                  autoTranslateEnabled: true,
+                },
+                include: {
+                  user: {
+                    select: {
+                      id: true,
+                      preferredLanguage: true
+                    }
+                  }
+                }
+              });
+
+              // Extract unique languages from members with auto-translate enabled
+              const uniqueLanguages = [
+                ...new Set(
+                  members
+                    .map(m => m.user.preferredLanguage)
+                    .filter(lang => lang != null) as string[]
+                )
+              ];
+
+              if (uniqueLanguages.length > 0) {
+                logger.info({
+                  messageId: result.messageId,
+                  conversationId: job.data.conversationId,
+                  autoTranslateMembersCount: members.length,
+                  languages: uniqueLanguages
+                }, 'Pre-generating translations for bot response (auto-translate members)');
+
+                // Pre-generate translations (async, non-blocking)
+                translationService.translateMessageBatch(result.messageId, uniqueLanguages)
+                  .then(translations => {
+                    const translationsRecord: Record<string, string> = {};
+                    translations.forEach((value, key) => {
+                      translationsRecord[key] = value;
+                    });
+
+                    ioInstance?.to(room).emit('message_translations', {
+                      messageId: result.messageId,
+                      translations: translationsRecord
+                    });
+
+                    logger.info({
+                      messageId: result.messageId,
+                      conversationId: job.data.conversationId,
+                      languageCount: Object.keys(translationsRecord).length
+                    }, 'Bot response translations pre-generated and emitted');
+                  })
+                  .catch(error => {
+                    logger.error({ messageId: result.messageId, error }, 'Translation batch failed for bot response');
+                  });
+              }
+            }
+          } catch (error) {
+            logger.error({ error }, 'Failed to pre-generate translations for bot response');
+          }
+        })();
+      }
     }
   });
   responseWorker.on('failed', (job, error) => {

@@ -10,7 +10,8 @@ import {
   searchUsers,
   updateWelcomeProgress,
   completeWelcome,
-  getAgeRatingInfo
+  getAgeRatingInfo,
+  findUserById
 } from '../../services/userService';
 import { r2Service } from '../../services/r2Service';
 import { updateUserProfileSchema } from '../../validators';
@@ -19,13 +20,30 @@ import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.get('/me', requireAuth, (req, res) => {
+router.get('/me', requireAuth, async (req, res) => {
   if (!req.auth?.user) {
     sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     return;
   }
 
-  res.json({ success: true, data: req.auth.user });
+  try {
+    // Fetch fresh user data from database to get latest preferredLanguage
+    const freshUserData = await findUserById(req.auth.user.id);
+
+    if (!freshUserData) {
+      sendError(res, 404, API_ERROR_CODES.USER_NOT_FOUND);
+      return;
+    }
+
+    // Return fresh data from database (includes latest preferredLanguage)
+    // Frontend will merge with token from localStorage
+    res.json({ success: true, data: freshUserData });
+  } catch (error) {
+    logger.error({ error }, 'Failed to fetch user data');
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to fetch user data'
+    });
+  }
 });
 
 // Search users by username or display name
@@ -39,6 +57,13 @@ router.get('/search', requireAuth, async (req, res) => {
   const limitParam = parseInt(req.query.limit as string, 10);
   const limit = isNaN(limitParam) ? 10 : Math.min(limitParam, 20);
 
+  logger.info({
+    userId: req.auth.user.id,
+    query,
+    limit,
+    queryLength: query?.length
+  }, '[USER_SEARCH] Search request received');
+
   if (!query || query.length < 2) {
     sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
       message: 'Search query must be at least 2 characters',
@@ -51,9 +76,15 @@ router.get('/search', requireAuth, async (req, res) => {
   try {
     // Exclude current user from results
     const users = await searchUsers(query, [req.auth.user.id], limit);
+    logger.info({
+      userId: req.auth.user.id,
+      query,
+      resultsCount: users.length,
+      results: users.map(u => ({ id: u.id, username: u.username, displayName: u.displayName }))
+    }, '[USER_SEARCH] Search completed');
     res.json({ success: true, data: users });
   } catch (error) {
-    logger.error({ error }, 'user_search_failed');
+    logger.error({ error, query }, 'user_search_failed');
     sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to search users'
     });

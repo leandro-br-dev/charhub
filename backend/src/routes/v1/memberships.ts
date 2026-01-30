@@ -432,4 +432,103 @@ router.post('/:conversationId/members/join-by-token', requireAuth, async (req: R
   }
 });
 
+/**
+ * PATCH /api/v1/conversations/:conversationId/membership
+ * Update current user's membership settings (auto-translate, etc.)
+ */
+router.patch('/:conversationId/membership', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { conversationId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    const { autoTranslateEnabled } = req.body;
+
+    if (typeof autoTranslateEnabled !== 'boolean') {
+      return res.status(400).json({
+        success: false,
+        message: 'autoTranslateEnabled must be a boolean',
+      });
+    }
+
+    const updatedMembership = await membershipService.updateMembershipSettings(
+      conversationId,
+      userId,
+      { autoTranslateEnabled }
+    );
+
+    return res.json({
+      success: true,
+      data: updatedMembership,
+      message: 'Membership settings updated successfully',
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error({ error, conversationId: req.params.conversationId }, 'Error updating membership settings');
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    logger.error({ error }, 'Unknown error updating membership settings');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to update membership settings',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/conversations/:conversationId/membership
+ * Get current user's membership settings
+ */
+router.get('/:conversationId/membership', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { conversationId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
+    const membership = await membershipService.getUserMembership(conversationId, userId);
+
+    if (!membership) {
+      return res.status(404).json({
+        success: false,
+        message: 'Membership not found',
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: membership,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      logger.error({ error, conversationId: req.params.conversationId }, 'Error getting membership settings');
+      return res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+    }
+
+    logger.error({ error }, 'Unknown error getting membership settings');
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to get membership settings',
+    });
+  }
+});
+
 export default router;
