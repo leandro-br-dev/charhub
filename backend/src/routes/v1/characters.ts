@@ -21,6 +21,7 @@ import {
 import { generateAutomatedCharacter } from '../../controllers/automatedCharacterGenerationController';
 import { canEditCharacter } from '../../services/characterService';
 import { contentClassificationService } from '../../services/contentClassification';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 const upload = multer({
@@ -60,10 +61,7 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     // Validate input
@@ -86,16 +84,11 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof Error && 'issues' in error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: error,
-      });
+      return sendError(res, 400, API_ERROR_CODES.VALIDATION_FAILED);
     }
 
     logger.error({ error }, 'Error creating character');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to create character',
     });
   }
@@ -110,7 +103,7 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      return res.status(401).json({ success: false, message: 'Authentication required' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const { mode, payload } = req.body || {};
@@ -136,7 +129,9 @@ router.post('/autocomplete', requireAuth, async (req: Request, res: Response) =>
     return res.json({ success: true, data: suggestions });
   } catch (error) {
     logger.error({ error }, 'Error running character autocomplete');
-    return res.status(500).json({ success: false, message: 'Failed to autocomplete character' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to autocomplete character',
+    });
   }
 });
 
@@ -163,7 +158,9 @@ router.get('/:id/images', async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, data: images });
   } catch (error) {
     logger.error({ error, characterId: id }, 'get_character_images_failed');
-    return res.status(500).json({ success: false, message: 'Failed to fetch character images' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to fetch character images',
+    });
   }
 });
 
@@ -185,19 +182,29 @@ router.post('/:id/images', requireAuth, asyncMulterHandler(upload.single('image'
   const validTypes = new Set(['AVATAR','COVER','SAMPLE','STICKER','OTHER']);
   const type: ImageType = (validTypes.has(typeRaw) ? typeRaw : 'OTHER') as ImageType;
 
-  if (!userId) return res.status(401).json({ success: false, message: 'Authentication required' });
-  if (!file) return res.status(400).json({ success: false, message: 'No file uploaded' });
+  if (!userId) return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+  if (!file) return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+    message: 'No file uploaded',
+    field: 'image',
+  });
 
   try {
     const owns = await characterService.isCharacterOwner(id, userId);
-    if (!owns) return res.status(403).json({ success: false, message: 'You can only update your own characters' });
+    if (!owns) return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+      message: 'You can only update your own characters',
+    });
 
     if (!r2Service.isConfigured()) {
-      return res.status(503).json({ success: false, message: 'Media storage is not configured', missing: r2Service.getMissingConfig() });
+      return sendError(res, 503, API_ERROR_CODES.R2_STORAGE_ERROR, {
+        message: 'Media storage is not configured',
+        details: { missing: r2Service.getMissingConfig() },
+      });
     }
 
     const ext = ALLOWED_IMAGE_TYPES[file.mimetype];
-    if (!ext) return res.status(415).json({ success: false, message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.' });
+    if (!ext) return sendError(res, 415, API_ERROR_CODES.INVALID_INPUT, {
+      message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.',
+    });
 
     // Process image: compress and convert to WebP
     logger.info({ type, originalSize: file.size, originalType: file.mimetype }, 'Processing image');
@@ -239,7 +246,9 @@ router.post('/:id/images', requireAuth, asyncMulterHandler(upload.single('image'
     return res.status(201).json({ success: true, data: created });
   } catch (error) {
     logger.error({ error }, 'character_image_upload_failed');
-    return res.status(500).json({ success: false, message: 'Failed to upload image' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to upload image',
+    });
   }
 });
 
@@ -256,12 +265,17 @@ router.post('/:id/images/url', requireAuth, async (req: Request, res: Response) 
   const validTypes = new Set(['AVATAR','COVER','SAMPLE','STICKER','OTHER']);
   const type: ImageType = (validTypes.has(typeRaw) ? typeRaw : 'OTHER') as ImageType;
 
-  if (!userId) return res.status(401).json({ success: false, message: 'Authentication required' });
-  if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return res.status(400).json({ success: false, message: 'Invalid url' });
+  if (!userId) return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+  if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+    message: 'Invalid url',
+    field: 'url',
+  });
 
   try {
     const owns = await characterService.isCharacterOwner(id, userId);
-    if (!owns) return res.status(403).json({ success: false, message: 'You can only update your own characters' });
+    if (!owns) return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+      message: 'You can only update your own characters',
+    });
 
     const created = await addCharacterImage({
       characterId: id,
@@ -272,7 +286,9 @@ router.post('/:id/images/url', requireAuth, async (req: Request, res: Response) 
     return res.status(201).json({ success: true, data: created });
   } catch (error) {
     logger.error({ error }, 'character_image_url_failed');
-    return res.status(500).json({ success: false, message: 'Failed to save image url' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to save image url',
+    });
   }
 });
 
@@ -280,21 +296,23 @@ router.post('/avatar', requireAuth, asyncMulterHandler(upload.single('avatar')),
   const userId = req.auth?.user?.id;
 
   if (!userId) {
-    return res.status(401).json({ success: false, message: 'Authentication required' });
+    return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
   }
 
   if (!r2Service.isConfigured()) {
-    return res.status(503).json({
-      success: false,
+    return sendError(res, 503, API_ERROR_CODES.R2_STORAGE_ERROR, {
       message: 'Media storage is not configured for this environment.',
-      missing: r2Service.getMissingConfig(),
+      details: { missing: r2Service.getMissingConfig() },
     });
   }
 
   const uploadedFile = req.file;
 
   if (!uploadedFile) {
-    return res.status(400).json({ success: false, message: 'No file uploaded' });
+    return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+      message: 'No file uploaded',
+      field: 'avatar',
+    });
   }
 
   const { characterId, draftId } = req.body ?? {};
@@ -303,20 +321,26 @@ router.post('/avatar', requireAuth, asyncMulterHandler(upload.single('avatar')),
   const targetEntityId = trimmedCharacterId ?? trimmedDraftId;
 
   if (!targetEntityId) {
-    return res.status(400).json({ success: false, message: 'Provide either characterId or draftId to scope the upload.' });
+    return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+      message: 'Provide either characterId or draftId to scope the upload.',
+    });
   }
 
   try {
     if (trimmedCharacterId) {
       const ownsCharacter = await characterService.isCharacterOwner(trimmedCharacterId, userId);
       if (!ownsCharacter) {
-        return res.status(403).json({ success: false, message: 'You can only update avatars for your characters.' });
+        return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+          message: 'You can only update avatars for your characters.',
+        });
       }
     }
 
     const extension = ALLOWED_IMAGE_TYPES[uploadedFile.mimetype];
     if (!extension) {
-      return res.status(415).json({ success: false, message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.' });
+      return sendError(res, 415, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.',
+      });
     }
 
     // Process image: compress and convert to WebP
@@ -392,11 +416,15 @@ router.post('/avatar', requireAuth, asyncMulterHandler(upload.single('avatar')),
   } catch (error) {
     if (error instanceof Error && 'statusCode' in error && typeof (error as { statusCode?: number }).statusCode === 'number') {
       const statusCode = (error as { statusCode: number }).statusCode;
-      return res.status(statusCode).json({ success: false, message: error.message });
+      return sendError(res, statusCode, API_ERROR_CODES.INTERNAL_ERROR, {
+        message: error.message,
+      });
     }
 
     logger.error({ error }, 'Error uploading character avatar');
-    return res.status(500).json({ success: false, message: 'Failed to upload character avatar' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to upload character avatar',
+    });
   }
 });
 
@@ -410,10 +438,7 @@ router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const { skip, limit } = req.query;
@@ -430,8 +455,7 @@ router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error({ error }, 'Error getting favorite characters');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to get favorite characters',
     });
   }
@@ -448,10 +472,7 @@ router.get('/personas', requireAuth, translationMiddleware(), async (req: Reques
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const { page, limit, search } = req.query;
@@ -469,8 +490,7 @@ router.get('/personas', requireAuth, translationMiddleware(), async (req: Reques
     });
   } catch (error) {
     logger.error({ error }, 'Error getting available personas');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to get available personas',
     });
   }
@@ -487,10 +507,7 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
     const character = await characterService.getCharacterById(id);
 
     if (!character) {
-      return res.status(404).json({
-        success: false,
-        message: 'Character not found',
-      });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     // Check visibility access control
@@ -498,8 +515,7 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
     const canAccess = await characterService.canAccessCharacter(id, userId);
 
     if (!canAccess) {
-      return res.status(403).json({
-        success: false,
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
         message: 'Access denied',
       });
     }
@@ -510,8 +526,7 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
     });
   } catch (error) {
     logger.error({ error }, 'Error getting character');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to get character',
     });
   }
@@ -637,8 +652,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
       result = { characters, total: characters.length, hasMore: false };
     } else if (sortByValue === 'favorites' && !userId) {
       // User requested favorites but is not authenticated
-      return res.status(401).json({
-        success: false,
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED, {
         message: 'Authentication required to view favorites',
       });
     }
@@ -733,8 +747,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (req: Request, res:
     });
   } catch (error) {
     logger.error({ error }, 'Error listing characters');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to list characters',
     });
   }
@@ -751,10 +764,7 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
     const userRole = req.auth?.user?.role;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     // Get character to check ownership
@@ -764,16 +774,12 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
     });
 
     if (!character) {
-      return res.status(404).json({
-        success: false,
-        message: 'Character not found',
-      });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     // Check if user can edit (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({
-        success: false,
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
         message: 'You do not have permission to edit this character',
       });
     }
@@ -826,23 +832,17 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
   } catch (error) {
     // Check if this is a content restriction error (age validation)
     if (error instanceof Error && error.message.includes('Content is rated')) {
-      return res.status(403).json({
-        success: false,
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
         message: error.message,
       });
     }
 
     if (error instanceof Error && 'issues' in error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: error,
-      });
+      return sendError(res, 400, API_ERROR_CODES.VALIDATION_FAILED);
     }
 
     logger.error({ error }, 'Error updating character');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to update character',
     });
   }
@@ -859,10 +859,7 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
     const userRole = req.auth?.user?.role;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     // Get character to check ownership
@@ -872,16 +869,12 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
     });
 
     if (!character) {
-      return res.status(404).json({
-        success: false,
-        message: 'Character not found',
-      });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     // Check if user can edit (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({
-        success: false,
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
         message: 'You do not have permission to delete this character',
       });
     }
@@ -894,8 +887,7 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error({ error }, 'Error deleting character');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to delete character',
     });
   }
@@ -911,18 +903,15 @@ router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) =>
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const { isFavorite } = req.body;
 
     if (typeof isFavorite !== 'boolean') {
-      return res.status(400).json({
-        success: false,
+      return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
         message: 'isFavorite must be a boolean',
+        field: 'isFavorite',
       });
     }
 
@@ -934,8 +923,7 @@ router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) =>
     });
   } catch (error) {
     logger.error({ error }, 'Error toggling favorite');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to toggle favorite',
     });
   }
@@ -958,8 +946,7 @@ router.get('/:id/stats', optionalAuth, async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error({ error }, 'Error getting character stats');
-    return res.status(500).json({
-      success: false,
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to get character stats',
     });
   }

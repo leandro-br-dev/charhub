@@ -13,13 +13,14 @@ import { curationQueue } from '../../services/curation';
 import { batchCharacterGenerator } from '../../services/batch';
 import { civitaiApiClient } from '../../services/civitai';
 import { prisma } from '../../config/database';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
 // Helper function to check admin access
 function requireAdmin(user: any, res: Response): boolean {
   if (user?.role !== 'ADMIN') {
-    res.status(403).json({ error: 'Admin access required' });
+    sendError(res, 403, API_ERROR_CODES.ADMIN_REQUIRED);
     return false;
   }
   return true;
@@ -58,7 +59,9 @@ router.get('/stats', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get population stats');
-    res.status(500).json({ error: 'Failed to get statistics' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get statistics'
+    });
   }
 });
 
@@ -99,7 +102,9 @@ router.post('/trigger-curation', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to trigger curation');
-    res.status(500).json({ error: 'Failed to trigger curation' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to trigger curation'
+    });
   }
 });
 
@@ -140,7 +145,9 @@ router.post('/trigger-batch', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to trigger batch generation');
-    res.status(500).json({ error: 'Failed to trigger batch generation' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to trigger batch generation'
+    });
   }
 });
 
@@ -182,7 +189,9 @@ router.post('/trigger-full', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to trigger full population');
-    res.status(500).json({ error: 'Failed to trigger full population' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to trigger full population'
+    });
   }
 });
 
@@ -223,7 +232,9 @@ router.get('/jobs', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get jobs');
-    res.status(500).json({ error: 'Failed to get jobs' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get jobs'
+    });
   }
 });
 
@@ -258,7 +269,9 @@ router.get('/curated-images', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get curated images');
-    res.status(500).json({ error: 'Failed to get curated images' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get curated images'
+    });
   }
 });
 
@@ -287,7 +300,9 @@ router.get('/settings', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get settings');
-    res.status(500).json({ error: 'Failed to get settings' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get settings'
+    });
   }
 });
 
@@ -308,7 +323,11 @@ router.post('/trigger-avatar-correction', requireAuth, async (req, res) => {
     // Validate limit
     const parsedLimit = parseInt(limit, 10);
     if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 500) {
-      res.status(400).json({ error: 'Limit must be between 1 and 500' });
+      sendError(res, 400, API_ERROR_CODES.VALUE_OUT_OF_RANGE, {
+        message: 'Limit must be between 1 and 500',
+        details: { min: 1, max: 500, provided: limit },
+        field: 'limit'
+      });
       return;
     }
 
@@ -330,7 +349,9 @@ router.post('/trigger-avatar-correction', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to trigger avatar correction');
-    res.status(500).json({ error: 'Failed to trigger avatar correction' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to trigger avatar correction'
+    });
   }
 });
 
@@ -351,7 +372,11 @@ router.post('/trigger-data-correction', requireAuth, async (req, res) => {
     // Validate limit
     const parsedLimit = parseInt(limit, 10);
     if (isNaN(parsedLimit) || parsedLimit < 1 || parsedLimit > 500) {
-      res.status(400).json({ error: 'Limit must be between 1 and 500' });
+      sendError(res, 400, API_ERROR_CODES.VALUE_OUT_OF_RANGE, {
+        message: 'Limit must be between 1 and 500',
+        details: { min: 1, max: 500, provided: limit },
+        field: 'limit'
+      });
       return;
     }
 
@@ -373,7 +398,9 @@ router.post('/trigger-data-correction', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to trigger data correction');
-    res.status(500).json({ error: 'Failed to trigger data correction' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to trigger data correction'
+    });
   }
 });
 
@@ -453,7 +480,9 @@ router.get('/correction-stats', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get correction stats');
-    res.status(500).json({ error: 'Failed to get correction stats' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get correction stats'
+    });
   }
 });
 

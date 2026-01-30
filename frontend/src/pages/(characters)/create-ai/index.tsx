@@ -6,6 +6,7 @@ import { Button } from '../../../components/ui/Button';
 import { Card } from '../../../components/ui/card';
 import api from '../../../lib/api';
 import { GenerationWizard } from './components';
+import { extractErrorMessage } from '../../../utils/apiErrorHandler';
 
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 
@@ -106,10 +107,8 @@ export default function AutomatedCharacterCreatePage(): JSX.Element {
         ),
         'success'
       );
-    } catch (err: any) {
-      const errorMessage =
-        err?.response?.data?.error ||
-        err?.message ||
+    } catch (err: unknown) {
+      const errorMessage = extractErrorMessage(err) ||
         t('characters:errors.generationFailed', 'Failed to generate character');
 
       setError(errorMessage);

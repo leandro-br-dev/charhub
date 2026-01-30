@@ -17,6 +17,7 @@ import { r2Service } from '../../services/r2Service';
 import { logger } from '../../config/logger';
 import { processImageByType } from '../../services/imageProcessingService';
 import { storyStatsService } from '../../services/storyStatsService';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -48,27 +49,30 @@ router.post('/cover', requireAuth, asyncMulterHandler(upload.single('cover')), a
   const userId = req.auth?.user?.id;
 
   if (!userId) {
-    return res.status(401).json({ success: false, message: 'Authentication required' });
+    return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
   }
 
   if (!r2Service.isConfigured()) {
-    return res.status(503).json({
-      success: false,
+    return sendError(res, 503, API_ERROR_CODES.CONFIGURATION_ERROR, {
       message: 'Media storage is not configured for this environment.',
-      missing: r2Service.getMissingConfig(),
+      details: { missing: r2Service.getMissingConfig() }
     });
   }
 
   const uploadedFile = req.file;
 
   if (!uploadedFile) {
-    return res.status(400).json({ success: false, message: 'No file uploaded' });
+    return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, { message: 'No file uploaded' });
   }
 
   try {
     const extension = ALLOWED_IMAGE_TYPES[uploadedFile.mimetype];
     if (!extension) {
-      return res.status(415).json({ success: false, message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.' });
+      return sendError(res, 415, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.',
+        field: 'cover',
+        details: { allowedTypes: Object.keys(ALLOWED_IMAGE_TYPES) }
+      });
     }
 
     // Process image: compress and convert to WebP
@@ -108,11 +112,11 @@ router.post('/cover', requireAuth, asyncMulterHandler(upload.single('cover')), a
   } catch (error) {
     if (error instanceof Error && 'statusCode' in error && typeof (error as { statusCode?: number }).statusCode === 'number') {
       const statusCode = (error as { statusCode: number }).statusCode;
-      return res.status(statusCode).json({ success: false, message: error.message });
+      return sendError(res, statusCode, API_ERROR_CODES.R2_STORAGE_ERROR, { message: error.message });
     }
 
     logger.error({ error }, 'Error uploading story cover');
-    return res.status(500).json({ success: false, message: 'Failed to upload story cover' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to upload story cover' });
   }
 });
 
@@ -121,7 +125,7 @@ router.post('/', requireAuth, async (req: Request, res: Response, next: NextFunc
   try {
     const authorId = req.auth?.user?.id;
     if (!authorId) {
-      return res.status(401).json({ message: 'Authentication required' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     // Force originalLanguageCode to user's preference if not provided
@@ -143,7 +147,7 @@ router.get('/my', requireAuth, translationMiddleware(), async (req: Request, res
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      return res.status(401).json({ message: 'Authentication required' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const { page, limit, sortBy, sortOrder } = req.query;
@@ -205,7 +209,9 @@ router.get('/:id', optionalAuth, translationMiddleware(), async (req: Request, r
     const story = await getStoryById(id, userId);
 
     if (!story) {
-      return res.status(404).json({ message: 'Story not found' });
+      return sendError(res, 404, API_ERROR_CODES.STORY_NOT_FOUND, {
+        details: { storyId: id }
+      });
     }
 
     return res.status(200).json(story);
@@ -221,13 +227,16 @@ router.put('/:id', requireAuth, async (req: Request, res: Response, next: NextFu
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({ message: 'Authentication required' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const story = await updateStory(id, req.body, userId);
 
     if (!story) {
-      return res.status(404).json({ message: 'Story not found or unauthorized' });
+      return sendError(res, 404, API_ERROR_CODES.STORY_NOT_FOUND, {
+        message: 'Story not found or unauthorized',
+        details: { storyId: id }
+      });
     }
 
     return res.status(200).json(story);
@@ -243,13 +252,16 @@ router.delete('/:id', requireAuth, async (req: Request, res: Response, next: Nex
     const userId = req.auth?.user?.id;
 
     if (!userId) {
-      return res.status(401).json({ message: 'Authentication required' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const deleted = await deleteStory(id, userId);
 
     if (!deleted) {
-      return res.status(404).json({ message: 'Story not found or unauthorized' });
+      return sendError(res, 404, API_ERROR_CODES.STORY_NOT_FOUND, {
+        message: 'Story not found or unauthorized',
+        details: { storyId: id }
+      });
     }
 
     return res.status(204).send();
@@ -267,14 +279,14 @@ router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) =>
   const userId = req.auth?.user?.id;
 
   if (!userId) {
-    return res.status(401).json({ success: false, message: 'Authentication required' });
+    return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
   }
 
   try {
     const { isFavorite } = req.body;
 
     if (typeof isFavorite !== 'boolean') {
-      return res.status(400).json({ success: false, message: 'isFavorite must be a boolean' });
+      return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, { message: 'isFavorite must be a boolean' });
     }
 
     await storyStatsService.toggleFavorite(storyId, userId, isFavorite);
@@ -288,7 +300,7 @@ router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) =>
     });
   } catch (error) {
     logger.error({ error }, 'Error toggling story favorite');
-    return res.status(500).json({ success: false, message: 'Failed to toggle favorite' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to toggle favorite' });
   }
 });
 
@@ -309,7 +321,7 @@ router.get('/:id/stats', optionalAuth, async (req: Request, res: Response) => {
     });
   } catch (error) {
     logger.error({ error }, 'Error getting story stats');
-    return res.status(500).json({ success: false, message: 'Failed to get story stats' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get story stats' });
   }
 });
 

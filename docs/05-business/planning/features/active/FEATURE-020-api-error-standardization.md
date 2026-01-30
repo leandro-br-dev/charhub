@@ -1,13 +1,14 @@
 # FEATURE-020: API Error Response Standardization
 
-**Status**: Active
+**Status**: In Review
 **Priority**: High
 **Assigned To**: Agent Coder
 **Created**: 2026-01-29
-**Last Updated**: 2026-01-29
+**Last Updated**: 2026-01-30
 **Epic**: Developer Experience & i18n
 
 **GitHub Issue**: #129
+**Pull Request**: #165
 
 ---
 

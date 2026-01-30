@@ -3,6 +3,7 @@ import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
 import http from 'node:http';
 import https from 'node:https';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -43,7 +44,7 @@ function proxyImage(url: string, res: Response, redirectCount = 0): void {
         remote.headers.location
       ) {
         if (redirectCount >= MAX_REDIRECTS) {
-          res.status(508).json({ success: false, message: 'Too many redirects' });
+          sendError(res, 508, API_ERROR_CODES.EXTERNAL_SERVICE_ERROR, { message: 'Too many redirects' });
           remote.destroy();
           return;
         }
@@ -54,14 +55,14 @@ function proxyImage(url: string, res: Response, redirectCount = 0): void {
       }
 
       if ((remote.statusCode || 0) >= 400) {
-        res.status(502).json({ success: false, message: `Failed to fetch image: ${remote.statusCode}` });
+        sendError(res, 502, API_ERROR_CODES.EXTERNAL_SERVICE_ERROR, { message: `Failed to fetch image: ${remote.statusCode}` });
         remote.destroy();
         return;
       }
 
       const contentType = String(remote.headers['content-type'] || '');
       if (!contentType.startsWith('image/')) {
-        res.status(415).json({ success: false, message: 'URL does not point to an image' });
+        sendError(res, 415, API_ERROR_CODES.INVALID_INPUT, { message: 'URL does not point to an image' });
         remote.destroy();
         return;
       }
@@ -69,7 +70,7 @@ function proxyImage(url: string, res: Response, redirectCount = 0): void {
       const contentLengthHeader = remote.headers['content-length'];
       const contentLength = contentLengthHeader ? Number(contentLengthHeader) : undefined;
       if (contentLength && contentLength > MAX_DOWNLOAD_BYTES) {
-        res.status(413).json({ success: false, message: 'Image is too large' });
+        sendError(res, 413, API_ERROR_CODES.VALUE_OUT_OF_RANGE, { message: 'Image is too large' });
         remote.destroy();
         return;
       }
@@ -112,7 +113,7 @@ function proxyImage(url: string, res: Response, redirectCount = 0): void {
   request.on('error', (err) => {
     logger.error({ err }, 'media_proxy_request_error');
     if (!res.headersSent) {
-      res.status(502).json({ success: false, message: 'Failed to fetch image' });
+      sendError(res, 502, API_ERROR_CODES.EXTERNAL_SERVICE_ERROR, { message: 'Failed to fetch image' });
     } else {
       res.end();
     }
@@ -122,14 +123,14 @@ function proxyImage(url: string, res: Response, redirectCount = 0): void {
 router.get('/proxy', requireAuth, (req: Request, res: Response): void => {
   const url = typeof req.query.url === 'string' ? req.query.url : '';
   if (!url || !isHttpUrl(url)) {
-    res.status(400).json({ success: false, message: 'Invalid or missing URL' });
+    sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, { message: 'Invalid or missing URL', field: 'url' });
     return;
   }
   try {
     proxyImage(url, res);
   } catch (error) {
     logger.error({ error }, 'media_proxy_error');
-    res.status(500).json({ success: false, message: 'Failed to proxy image' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to proxy image' });
   }
 });
 

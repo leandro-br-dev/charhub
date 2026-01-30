@@ -9,6 +9,7 @@ import { subscriptionService, planService } from '../../services';
 import type { Plan, CurrentSubscription } from '../../services/subscriptionService';
 import { Button } from '../../components/ui/Button';
 import { useToast } from '../../contexts/ToastContext';
+import { extractErrorMessage } from '../../utils/apiErrorHandler';
 
 export default function PlansPage() {
   const { t } = useTranslation('plans');
@@ -92,9 +93,9 @@ export default function PlansPage() {
       } else {
         throw new Error('Invalid subscription response');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[Plans] Failed to subscribe:', err);
-      addToast(err.response?.data?.message || t('error_starting_subscription'), 'error');
+      addToast(extractErrorMessage(err) || t('error_starting_subscription'), 'error');
     }
   };
 
@@ -108,9 +109,9 @@ export default function PlansPage() {
       setCheckoutData(null);
       addToast(t('subscription_activated'), 'success');
       await loadData();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[Plans] Failed to activate subscription:', err);
-      addToast(err.response?.data?.message || t('error_starting_subscription'), 'error');
+      addToast(extractErrorMessage(err) || t('error_starting_subscription'), 'error');
     }
   };
 
@@ -131,9 +132,9 @@ export default function PlansPage() {
 
       addToast(t('plan_changed_to_free'), 'success');
       await loadData();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[Plans] Failed to switch to free plan:', err);
-      addToast(err.response?.data?.message || t('error_changing_plan'), 'error');
+      addToast(extractErrorMessage(err) || t('error_changing_plan'), 'error');
     }
   };
 
@@ -146,9 +147,9 @@ export default function PlansPage() {
       await subscriptionService.cancel('User requested cancellation');
       addToast(t('subscription_will_cancel'), 'success');
       await loadData();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[Plans] Failed to cancel subscription:', err);
-      addToast(err.response?.data?.message || t('error_cancelling_subscription'), 'error');
+      addToast(extractErrorMessage(err) || t('error_cancelling_subscription'), 'error');
     }
   };
 
@@ -157,9 +158,9 @@ export default function PlansPage() {
       await subscriptionService.reactivate();
       addToast(t('subscription_reactivated'), 'success');
       await loadData();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[Plans] Failed to reactivate subscription:', err);
-      addToast(err.response?.data?.message || t('error_reactivating_subscription'), 'error');
+      addToast(extractErrorMessage(err) || t('error_reactivating_subscription'), 'error');
     }
   };
 

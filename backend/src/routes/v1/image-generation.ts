@@ -12,6 +12,7 @@ import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
 import { ImageGenerationType } from '../../services/comfyui';
 import { r2Service } from '../../services/r2Service';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 import type {
   AvatarGenerationJobData,
   StickerGenerationJobData,
@@ -30,19 +31,25 @@ router.post('/avatar', requireAuth, async (req, res) => {
     const user = req.auth?.user;
 
     if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const userId = user.id;
     const userRole = user.role;
 
     if (!characterId) {
-      return res.status(400).json({ error: 'characterId is required' });
+      return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+        message: 'characterId is required',
+        field: 'characterId',
+      });
     }
 
     // Validate imageType if provided
     if (imageType && imageType !== 'AVATAR' && imageType !== 'COVER') {
-      return res.status(400).json({ error: 'imageType must be either AVATAR or COVER' });
+      return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'imageType must be either AVATAR or COVER',
+        field: 'imageType',
+      });
     }
 
     // Verify character exists and user has access
@@ -54,12 +61,16 @@ router.post('/avatar', requireAuth, async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found or access denied' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND, {
+        message: 'Character not found or access denied',
+      });
     }
 
     // Check if user can edit the character (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({ error: 'You can only generate images for your own characters' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only generate images for your own characters',
+      });
     }
 
     // Queue the job with optional prompt, reference image, and image type
@@ -85,7 +96,9 @@ router.post('/avatar', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to queue image generation');
-    return res.status(500).json({ error: 'Failed to start image generation' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to start image generation',
+    });
   }
 });
 
@@ -99,14 +112,16 @@ router.post('/sticker', requireAuth, async (req, res) => {
     const user = req.auth?.user;
 
     if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const userId = user.id;
     const userRole = user.role;
 
     if (!characterId || !emotion || !actionTag) {
-      return res.status(400).json({ error: 'characterId, emotion, and actionTag are required' });
+      return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+        message: 'characterId, emotion, and actionTag are required',
+      });
     }
 
     // Verify character exists and user has access
@@ -118,12 +133,16 @@ router.post('/sticker', requireAuth, async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found or access denied' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND, {
+        message: 'Character not found or access denied',
+      });
     }
 
     // Check if user can edit the character (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({ error: 'You can only generate stickers for your own characters' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only generate stickers for your own characters',
+      });
     }
 
     // Queue the job
@@ -149,7 +168,9 @@ router.post('/sticker', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to queue sticker generation');
-    return res.status(500).json({ error: 'Failed to start sticker generation' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to start sticker generation',
+    });
   }
 });
 
@@ -163,14 +184,17 @@ router.post('/stickers/bulk', requireAuth, async (req, res) => {
     const user = req.auth?.user;
 
     if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const userId = user.id;
     const userRole = user.role;
 
     if (!characterId) {
-      return res.status(400).json({ error: 'characterId is required' });
+      return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+        message: 'characterId is required',
+        field: 'characterId',
+      });
     }
 
     // Verify character exists and user has access
@@ -182,12 +206,16 @@ router.post('/stickers/bulk', requireAuth, async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found or access denied' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND, {
+        message: 'Character not found or access denied',
+      });
     }
 
     // Check if user can edit the character (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({ error: 'You can only generate stickers for your own characters' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only generate stickers for your own characters',
+      });
     }
 
     // Queue the job
@@ -213,7 +241,9 @@ router.post('/stickers/bulk', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to queue bulk sticker generation');
-    return res.status(500).json({ error: 'Failed to start bulk sticker generation' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to start bulk sticker generation',
+    });
   }
 });
 
@@ -229,7 +259,9 @@ router.get('/status/:jobId', requireAuth, async (_req, res) => {
     const job = await queue.getJob(jobId);
 
     if (!job) {
-      return res.status(404).json({ error: 'Job not found' });
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Job not found',
+      });
     }
 
     const state = await job.getState();
@@ -245,7 +277,9 @@ router.get('/status/:jobId', requireAuth, async (_req, res) => {
     });
   } catch (error) {
     logger.error({ err: error, jobId: _req.params.jobId }, 'Failed to get job status');
-    return res.status(500).json({ error: 'Failed to get job status' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get job status',
+    });
   }
 });
 
@@ -264,9 +298,9 @@ router.get('/health', requireAuth, async (_req, res) => {
     });
   } catch (error) {
     logger.error({ err: error }, 'ComfyUI health check failed');
-    res.status(503).json({
-      comfyui: 'error',
-      error: error instanceof Error ? error.message : 'Unknown error',
+    sendError(res, 503, API_ERROR_CODES.EXTERNAL_SERVICE_ERROR, {
+      message: error instanceof Error ? error.message : 'ComfyUI service unavailable',
+      details: { service: 'comfyui' },
     });
   }
 });
@@ -281,7 +315,7 @@ router.get('/characters/:characterId/images', requireAuth, async (req, res) => {
     const userId = req.auth?.user.id;
 
     if (!userId) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     // Verify character ownership or public visibility
@@ -291,11 +325,13 @@ router.get('/characters/:characterId/images', requireAuth, async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     if (character.userId !== userId && character.visibility !== 'PUBLIC') {
-      return res.status(403).json({ error: 'Access denied' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
     }
 
     // Fetch all images grouped by type
@@ -334,7 +370,9 @@ router.get('/characters/:characterId/images', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to list character images');
-    return res.status(500).json({ error: 'Failed to list images' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to list images',
+    });
   }
 });
 
@@ -348,7 +386,7 @@ router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, a
     const user = req.auth?.user;
 
     if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const userId = user.id;
@@ -361,12 +399,14 @@ router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, a
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     // Check if user can edit the character (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({ error: 'Access denied' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
     }
 
     // Get the image to activate
@@ -376,7 +416,7 @@ router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, a
     });
 
     if (!image) {
-      return res.status(404).json({ error: 'Image not found' });
+      return sendError(res, 404, API_ERROR_CODES.IMAGE_NOT_FOUND);
     }
 
     // Transaction: deactivate all images of this type, then activate the selected one
@@ -404,7 +444,9 @@ router.patch('/characters/:characterId/images/:imageId/activate', requireAuth, a
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to activate image');
-    return res.status(500).json({ error: 'Failed to activate image' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to activate image',
+    });
   }
 });
 
@@ -418,7 +460,7 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
     const user = req.auth?.user;
 
     if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const userId = user.id;
@@ -431,12 +473,14 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     // Check if user can edit the character (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({ error: 'Access denied' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
     }
 
     // Get the image to delete (including isActive and type)
@@ -446,7 +490,7 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
     });
 
     if (!image) {
-      return res.status(404).json({ error: 'Image not found' });
+      return sendError(res, 404, API_ERROR_CODES.IMAGE_NOT_FOUND);
     }
 
     // Delete from R2 if key exists
@@ -502,7 +546,9 @@ router.delete('/characters/:characterId/images/:imageId', requireAuth, async (re
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to delete image');
-    return res.status(500).json({ error: 'Failed to delete image' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to delete image',
+    });
   }
 });
 
@@ -527,14 +573,17 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
     const user = req.auth?.user;
 
     if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     const userId = user.id;
     const userRole = user.role;
 
     if (!characterId) {
-      return res.status(400).json({ error: 'characterId is required' });
+      return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+        message: 'characterId is required',
+        field: 'characterId',
+      });
     }
 
     // Verify character ownership and get character data
@@ -555,12 +604,14 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     // Check if user can edit the character (owner OR admin for official characters)
     if (!canEditCharacter(userId, userRole, character.userId)) {
-      return res.status(403).json({ error: 'Unauthorized to generate images for this character' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Unauthorized to generate images for this character',
+      });
     }
 
     // Fetch species data if character has one
@@ -633,7 +684,9 @@ router.post('/character-dataset', requireAuth, async (req, res) => {
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to queue multi-stage dataset generation');
-    return res.status(500).json({ error: 'Failed to start dataset generation' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to start dataset generation',
+    });
   }
 });
 
@@ -647,7 +700,7 @@ router.get('/characters/:characterId/reference-dataset', requireAuth, async (req
     const userId = req.auth?.user.id;
 
     if (!userId) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
     }
 
     // Verify character ownership or public visibility
@@ -657,11 +710,13 @@ router.get('/characters/:characterId/reference-dataset', requireAuth, async (req
     });
 
     if (!character) {
-      return res.status(404).json({ error: 'Character not found' });
+      return sendError(res, 404, API_ERROR_CODES.CHARACTER_NOT_FOUND);
     }
 
     if (character.userId !== userId && character.visibility !== 'PUBLIC') {
-      return res.status(403).json({ error: 'Access denied' });
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
     }
 
     // Fetch reference images
@@ -695,7 +750,9 @@ router.get('/characters/:characterId/reference-dataset', requireAuth, async (req
     });
   } catch (error) {
     logger.error({ err: error }, 'Failed to get reference dataset');
-    return res.status(500).json({ error: 'Failed to get reference dataset' });
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get reference dataset',
+    });
   }
 });
 

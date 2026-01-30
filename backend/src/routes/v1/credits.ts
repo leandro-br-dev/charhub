@@ -15,6 +15,7 @@ import {
   getServiceCosts,
   estimateServiceCost,
 } from '../../services/usageService';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -26,10 +27,7 @@ router.get('/balance', requireAuth, async (req: Request, res: Response): Promise
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -44,10 +42,7 @@ router.get('/balance', requireAuth, async (req: Request, res: Response): Promise
     });
   } catch (error) {
     logger.error({ error, userId: req.auth?.user?.id }, 'Error getting credit balance');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get credit balance',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get credit balance' });
   }
 });
 
@@ -59,10 +54,7 @@ router.get('/transactions', requireAuth, async (req: Request, res: Response): Pr
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -87,10 +79,7 @@ router.get('/transactions', requireAuth, async (req: Request, res: Response): Pr
     });
   } catch (error) {
     logger.error({ error, userId: req.auth?.user?.id }, 'Error getting transaction history');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get transaction history',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get transaction history' });
   }
 });
 
@@ -102,10 +91,7 @@ router.post('/daily-reward', requireAuth, async (req: Request, res: Response): P
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -118,19 +104,12 @@ router.post('/daily-reward', requireAuth, async (req: Request, res: Response): P
     });
   } catch (error) {
     if (error instanceof Error && error.message === 'Daily reward already claimed today') {
-      res.status(400).json({
-        success: false,
-        message: 'Daily reward already claimed today',
-        code: 'ALREADY_CLAIMED',
-      });
+      sendError(res, 400, API_ERROR_CODES.ALREADY_EXISTS, { message: 'Daily reward already claimed today' });
       return;
     }
 
     logger.error({ error, userId: req.auth?.user?.id }, 'Error claiming daily reward');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to claim daily reward',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to claim daily reward' });
   }
 });
 
@@ -142,7 +121,7 @@ router.get('/daily-reward/status', requireAuth, async (req: Request, res: Respon
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({ success: false, message: 'Authentication required' });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -150,7 +129,7 @@ router.get('/daily-reward/status', requireAuth, async (req: Request, res: Respon
     res.json({ success: true, data: status });
   } catch (error) {
     logger.error({ error, userId: req.auth?.user?.id }, 'Error getting daily reward status');
-    res.status(500).json({ success: false, message: 'Failed to get daily reward status' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get daily reward status' });
   }
 });
 
@@ -162,7 +141,7 @@ router.get('/first-chat-reward/status', requireAuth, async (req: Request, res: R
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({ success: false, message: 'Authentication required' });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -170,7 +149,7 @@ router.get('/first-chat-reward/status', requireAuth, async (req: Request, res: R
     res.json({ success: true, data: status });
   } catch (error) {
     logger.error({ error, userId: req.auth?.user?.id }, 'Error getting first chat reward status');
-    res.status(500).json({ success: false, message: 'Failed to get first chat reward status' });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get first chat reward status' });
   }
 });
 
@@ -188,10 +167,7 @@ router.get('/service-costs', requireAuth, async (_req: Request, res: Response): 
     });
   } catch (error) {
     logger.error({ error }, 'Error getting service costs');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get service costs',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get service costs' });
   }
 });
 
@@ -204,10 +180,7 @@ router.post('/estimate-cost', requireAuth, async (req: Request, res: Response): 
     const { serviceType, inputTokens, outputTokens, characterCount, imageCount, metadata } = req.body;
 
     if (!serviceType) {
-      res.status(400).json({
-        success: false,
-        message: 'serviceType is required',
-      });
+      sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, { message: 'serviceType is required', field: 'serviceType' });
       return;
     }
 
@@ -228,10 +201,7 @@ router.post('/estimate-cost', requireAuth, async (req: Request, res: Response): 
     });
   } catch (error) {
     logger.error({ error }, 'Error estimating service cost');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to estimate service cost',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to estimate service cost' });
   }
 });
 
@@ -243,10 +213,7 @@ router.get('/usage', requireAuth, async (req: Request, res: Response): Promise<v
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -258,10 +225,7 @@ router.get('/usage', requireAuth, async (req: Request, res: Response): Promise<v
     });
   } catch (error) {
     logger.error({ error, userId: req.auth?.user?.id }, 'Error getting usage statistics');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get usage statistics',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get usage statistics' });
   }
 });
 
@@ -273,10 +237,7 @@ router.get('/plan', requireAuth, async (req: Request, res: Response): Promise<vo
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -288,10 +249,7 @@ router.get('/plan', requireAuth, async (req: Request, res: Response): Promise<vo
     });
   } catch (error) {
     logger.error({ error, userId: req.auth?.user?.id }, 'Error getting user plan');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get user plan',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get user plan' });
   }
 });
 
@@ -303,20 +261,14 @@ router.post('/check-balance', requireAuth, async (req: Request, res: Response): 
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
     const { requiredCredits } = req.body;
 
     if (typeof requiredCredits !== 'number' || requiredCredits < 0) {
-      res.status(400).json({
-        success: false,
-        message: 'requiredCredits must be a positive number',
-      });
+      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, { message: 'requiredCredits must be a positive number', field: 'requiredCredits' });
       return;
     }
 
@@ -334,10 +286,7 @@ router.post('/check-balance', requireAuth, async (req: Request, res: Response): 
     });
   } catch (error) {
     logger.error({ error, userId: req.auth?.user?.id }, 'Error checking balance');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to check balance',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to check balance' });
   }
 });
 

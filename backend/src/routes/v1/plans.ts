@@ -3,6 +3,7 @@ import { optionalAuth } from '../../middleware/auth';
 import { translationMiddleware } from '../../middleware/translationMiddleware';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -27,10 +28,7 @@ router.get('/', optionalAuth, translationMiddleware(), async (_req: Request, res
     });
   } catch (error) {
     logger.error({ error }, 'Error getting plans');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get plans',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get plans' });
   }
 });
 
@@ -49,10 +47,7 @@ router.get('/:tier', optionalAuth, translationMiddleware(), async (req: Request,
     });
 
     if (!plan) {
-      res.status(404).json({
-        success: false,
-        message: 'Plan not found',
-      });
+      sendError(res, 404, API_ERROR_CODES.NOT_FOUND, { message: 'Plan not found', details: { tier } });
       return;
     }
 
@@ -62,10 +57,7 @@ router.get('/:tier', optionalAuth, translationMiddleware(), async (req: Request,
     });
   } catch (error) {
     logger.error({ error, tier: req.params.tier }, 'Error getting plan');
-    res.status(500).json({
-      success: false,
-      message: 'Failed to get plan',
-    });
+    sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, { message: 'Failed to get plan' });
   }
 });
 

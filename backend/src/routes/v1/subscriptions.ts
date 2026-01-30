@@ -8,6 +8,7 @@ import {
   changePlan,
   getSubscriptionStatus,
 } from '../../services/subscriptionService';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -19,20 +20,14 @@ router.post('/subscribe', requireAuth, async (req: Request, res: Response): Prom
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
     const { planId } = req.body;
 
     if (!planId) {
-      res.status(400).json({
-        success: false,
-        message: 'planId is required',
-      });
+      sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, { message: 'planId is required', field: 'planId' });
       return;
     }
 
@@ -57,10 +52,7 @@ router.post('/subscribe', requireAuth, async (req: Request, res: Response): Prom
       });
       logger.error({ error, userId: req.auth?.user?.id, planId: req.body.planId }, 'Subscribe error');
     } else {
-      res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-      });
+      sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR);
     }
   }
 });
@@ -73,10 +65,7 @@ router.post('/cancel', requireAuth, async (req: Request, res: Response): Promise
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -96,10 +85,7 @@ router.post('/cancel', requireAuth, async (req: Request, res: Response): Promise
       });
       logger.error({ error, userId: req.auth?.user?.id }, 'Cancel subscription error');
     } else {
-      res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-      });
+      sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR);
     }
   }
 });
@@ -112,10 +98,7 @@ router.post('/reactivate', requireAuth, async (req: Request, res: Response): Pro
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -133,10 +116,7 @@ router.post('/reactivate', requireAuth, async (req: Request, res: Response): Pro
       });
       logger.error({ error, userId: req.auth?.user?.id }, 'Reactivate subscription error');
     } else {
-      res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-      });
+      sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR);
     }
   }
 });
@@ -149,20 +129,14 @@ router.post('/change-plan', requireAuth, async (req: Request, res: Response): Pr
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
     const { newPlanId } = req.body;
 
     if (!newPlanId) {
-      res.status(400).json({
-        success: false,
-        message: 'newPlanId is required',
-      });
+      sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, { message: 'newPlanId is required', field: 'newPlanId' });
       return;
     }
 
@@ -180,10 +154,7 @@ router.post('/change-plan', requireAuth, async (req: Request, res: Response): Pr
       });
       logger.error({ error, userId: req.auth?.user?.id, newPlanId: req.body.newPlanId }, 'Change plan error');
     } else {
-      res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-      });
+      sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR);
     }
   }
 });
@@ -196,10 +167,7 @@ router.get('/status', requireAuth, async (req: Request, res: Response): Promise<
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
@@ -217,10 +185,7 @@ router.get('/status', requireAuth, async (req: Request, res: Response): Promise<
       });
       logger.error({ error, userId: req.auth?.user?.id }, 'Get subscription status error');
     } else {
-      res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-      });
+      sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR);
     }
   }
 });
@@ -233,20 +198,14 @@ router.post('/activate-stripe', requireAuth, async (req: Request, res: Response)
   try {
     const userId = req.auth?.user?.id;
     if (!userId) {
-      res.status(401).json({
-        success: false,
-        message: 'Authentication required',
-      });
+      sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
       return;
     }
 
     const { subscriptionId } = req.body;
 
     if (!subscriptionId) {
-      res.status(400).json({
-        success: false,
-        message: 'subscriptionId is required',
-      });
+      sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, { message: 'subscriptionId is required', field: 'subscriptionId' });
       return;
     }
 
@@ -266,10 +225,7 @@ router.post('/activate-stripe', requireAuth, async (req: Request, res: Response)
       });
       logger.error({ error, userId: req.auth?.user?.id, subscriptionId: req.body.subscriptionId }, 'Activate Stripe subscription error');
     } else {
-      res.status(500).json({
-        success: false,
-        message: 'Internal server error',
-      });
+      sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR);
     }
   }
 });

@@ -4,6 +4,7 @@ import { prisma } from '../../config/database';
 import { grantMonthlyCredits } from '../../services/creditService';
 import { processSubscriptionWebhook } from '../../services/subscriptionService';
 import { PayPalProvider } from '../../services/payments/PayPalProvider';
+import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
 
@@ -69,7 +70,7 @@ router.post(
       res.json({ received: true });
     } catch (error) {
       logger.error({ error, body: req.body }, 'Error processing PayPal webhook');
-      res.status(500).json({ error: 'Webhook processing failed' });
+      sendError(res, 500, API_ERROR_CODES.PAYPAL_ERROR, { message: 'Webhook processing failed' });
     }
   }
 );

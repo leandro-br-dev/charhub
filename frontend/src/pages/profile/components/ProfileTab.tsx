@@ -5,6 +5,7 @@ import { useUsernameValidation, formatUsernameWithPrefix, removeUsernamePrefix, 
 import { Button } from '../../../components/ui/Button';
 import { userService } from '../../../services/userService';
 import { useToast } from '../../../contexts/ToastContext';
+import { extractErrorMessage } from '../../../utils/apiErrorHandler';
 
 type ProfileFormState = {
   displayName: string;
@@ -168,8 +169,7 @@ export function ProfileTab() {
       addToast(t('profile:feedback.success'), 'success');
     } catch (error) {
       console.error('[profile] failed to update user profile', error);
-      const apiError = (error as { response?: { data?: { error?: string; message?: string } } }).response?.data;
-      const errorMsg = apiError?.error || apiError?.message;
+      const errorMsg = extractErrorMessage(error);
 
       // Provide user-friendly error messages
       if (errorMsg?.includes('Username is already taken')) {

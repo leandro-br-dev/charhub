@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import api from '../../../lib/api';
 import type { WelcomeFormData, WelcomeStep } from '../types';
+import { extractErrorMessage } from '../../../utils/apiErrorHandler';
 
 const TOTAL_STEPS = 7;
 
@@ -88,8 +89,8 @@ export function useWelcomeFlow() {
       }
 
       return true;
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.error || 'Failed to save progress';
+    } catch (err: unknown) {
+      const errorMessage = extractErrorMessage(err) || 'Failed to save progress';
       setError(errorMessage);
       console.error('Error saving welcome progress:', err);
       return false;
