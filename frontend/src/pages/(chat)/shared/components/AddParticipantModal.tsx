@@ -53,6 +53,7 @@ const AddParticipantModal = React.memo(
     const [invitingUserId, setInvitingUserId] = useState<string | null>(null);
     const [generatedLink, setGeneratedLink] = useState<string | null>(null);
     const [copiedLink, setCopiedLink] = useState(false);
+    const [isGeneratingLink, setIsGeneratingLink] = useState(false);
 
     const currentActorIds = useMemo(() => {
       if (!Array.isArray(currentParticipants)) return new Set();
@@ -217,8 +218,29 @@ const AddParticipantModal = React.memo(
       try {
         await onInviteUser(userToInvite.id);
 
-        // Se não é multi-user, gerar link de convite para compartilhar
-        if (!isMultiUser) {
+        // Após convidar com sucesso, sempre gerar link de convite
+        try {
+          const response = await api.post(
+            `/api/v1/conversations/${conversationId}/members/generate-invite-link`
+          );
+          if (response.data.success) {
+            setGeneratedLink(response.data.data.link);
+          }
+        } catch (linkErr) {
+          console.error('[AddParticipantModal] Error generating invite link:', linkErr);
+          // Não bloquear o fluxo se falhar a geração do link
+        }
+
+        // Remove user from list after successful invite
+        setItems((prev) => prev.filter((u) => u.id !== userToInvite.id));
+      } catch (err: any) {
+        console.error('[AddParticipantModal] Invite error:', err);
+        const errorMessage = err?.response?.data?.message || err?.message || t('inviteUser.inviteFailed');
+
+        // Se o erro for "já é membro", mostra mensagem diferente e NÃO remove da lista
+        if (errorMessage.includes('already a member') || errorMessage.includes('já é membro')) {
+          setError(t('inviteUser.alreadyMember'));
+          // Gerar link de convite mesmo quando já é membro
           try {
             const response = await api.post(
               `/api/v1/conversations/${conversationId}/members/generate-invite-link`
@@ -228,19 +250,14 @@ const AddParticipantModal = React.memo(
             }
           } catch (linkErr) {
             console.error('[AddParticipantModal] Error generating invite link:', linkErr);
-            // Não bloquear o fluxo se falhar a geração do link
           }
+        } else {
+          setError(errorMessage);
         }
-
-        // Remove user from list after successful invite
-        setItems((prev) => prev.filter((u) => u.id !== userToInvite.id));
-      } catch (err) {
-        console.error('[AddParticipantModal] Invite error:', err);
-        setError(t('inviteUser.inviteFailed'));
       } finally {
         setInvitingUserId(null);
       }
-    }, [onInviteUser, conversationId, isMultiUser, t]);
+    }, [onInviteUser, conversationId, t]);
 
     const changeTab = useCallback((tab: string) => {
       setSearchTerm("");
@@ -259,6 +276,27 @@ const AddParticipantModal = React.memo(
         }
       }
     }, [generatedLink]);
+
+    const handleGenerateInviteLink = useCallback(async () => {
+      if (!conversationId) return;
+
+      setIsGeneratingLink(true);
+      setError(null);
+
+      try {
+        const response = await api.post(
+          `/api/v1/conversations/${conversationId}/members/generate-invite-link`
+        );
+        if (response.data.success) {
+          setGeneratedLink(response.data.data.link);
+        }
+      } catch (err) {
+        console.error('[AddParticipantModal] Error generating invite link:', err);
+        setError(t('shareInvite.generateFailed'));
+      } finally {
+        setIsGeneratingLink(false);
+      }
+    }, [conversationId, t]);
 
     const handleCloseLinkView = useCallback(() => {
       setGeneratedLink(null);
@@ -386,6 +424,14 @@ const AddParticipantModal = React.memo(
             </div>
           );
         }
+        // Check if users were found but filtered out
+        if (items.length > 0) {
+          return (
+            <div className="text-center text-muted p-4 italic text-sm">
+              {t("addParticipantModal.allResultsAlreadyMembers")}
+            </div>
+          );
+        }
         return (
           <div className="text-center text-muted p-4 italic text-sm">
             {t("inviteUser.noResults")}
@@ -455,6 +501,19 @@ const AddParticipantModal = React.memo(
         title={t("addParticipantModal.title")}
         size="lg"
       >
+        {/* Invite link button at the top */}
+        <div className="flex justify-end mb-3">
+          <Button
+            variant="light"
+            size="small"
+            icon={isGeneratingLink ? "hourglass_top" : (generatedLink ? "check" : "link")}
+            onClick={generatedLink ? handleCopyLink : handleGenerateInviteLink}
+            disabled={isGeneratingLink}
+            title={generatedLink ? (copiedLink ? t('shareInvite.copied') : t('shareInvite.copy')) : t('shareInvite.title')}
+          >
+            {isGeneratingLink ? t('common.saving') : (generatedLink ? (copiedLink ? t('shareInvite.copied') : t('shareInvite.copy')) : t('shareInvite.title'))}
+          </Button>
+        </div>
         <div className="flex border-b mb-4 overflow-x-auto">
           <button
             className={`py-2 px-4 text-sm font-medium whitespace-nowrap ${

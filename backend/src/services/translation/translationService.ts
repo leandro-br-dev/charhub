@@ -5,6 +5,7 @@ import { callLLM, type LLMResponse } from '../llm';
 import { trackFromLLMResponse, trackLLMUsage } from '../llm/llmUsageTracker';
 import { TranslationStatus } from '../../generated/prisma';
 import crypto from 'crypto';
+import { decryptMessage } from '../encryption';
 
 export interface TranslationRequest {
   contentType: string;
@@ -248,6 +249,242 @@ export class TranslationService {
     });
 
     return response;
+  }
+
+  // ============================================================================
+  // MESSAGE TRANSLATION METHODS (FEATURE-018)
+  // ============================================================================
+
+  /**
+   * Translate a single message to target language with caching
+   * Uses MessageTranslation table for message-specific translations
+   */
+  async translateMessage(
+    messageId: string,
+    targetLanguage: string
+  ): Promise<string> {
+    // Check cache first (MessageTranslation table)
+    const cached = await prisma.messageTranslation.findUnique({
+      where: {
+        messageId_targetLanguage: { messageId, targetLanguage }
+      }
+    });
+
+    if (cached) {
+      logger.debug({ messageId, targetLanguage }, 'Message translation cache hit');
+      return cached.translatedText;
+    }
+
+    // Fetch original message
+    const message = await prisma.message.findUnique({
+      where: { id: messageId },
+      select: { id: true, content: true, senderId: true }
+    });
+
+    if (!message) {
+      throw new Error(`Message not found: ${messageId}`);
+    }
+
+    // Decrypt message content before translation
+    let decryptedContent: string;
+    try {
+      decryptedContent = decryptMessage(message.content);
+    } catch (error) {
+      logger.warn({ messageId, error }, 'Failed to decrypt message, using content as-is');
+      decryptedContent = message.content;
+    }
+
+    // Detect source language
+    const sourceLanguage = await this.detectLanguage(decryptedContent);
+
+    // Skip if same language
+    if (sourceLanguage === targetLanguage) {
+      return decryptedContent;
+    }
+
+    // Translate via LLM
+    const translated = await this.translateText(decryptedContent, targetLanguage, sourceLanguage);
+
+    // Cache translation in MessageTranslation table
+    await prisma.messageTranslation.create({
+      data: {
+        messageId,
+        targetLanguage,
+        translatedText: translated,
+        provider: 'gemini'
+      }
+    });
+
+    logger.info({ messageId, sourceLanguage, targetLanguage }, 'Message translation cached');
+
+    return translated;
+  }
+
+  /**
+   * Batch translate message for multiple languages
+   * Used for pre-generating translations when a message is sent
+   */
+  async translateMessageBatch(
+    messageId: string,
+    targetLanguages: string[]
+  ): Promise<Map<string, string>> {
+    const results = new Map<string, string>();
+
+    // Check which translations already exist
+    const existing = await prisma.messageTranslation.findMany({
+      where: {
+        messageId,
+        targetLanguage: { in: targetLanguages }
+      }
+    });
+
+    const cachedLanguages = new Set(existing.map(t => t.targetLanguage));
+    existing.forEach(t => results.set(t.targetLanguage, t.translatedText));
+
+    // Translate missing languages
+    const missingLanguages = targetLanguages.filter(lang => !cachedLanguages.has(lang));
+
+    if (missingLanguages.length > 0) {
+      const message = await prisma.message.findUnique({
+        where: { id: messageId },
+        select: { content: true }
+      });
+
+      if (!message) {
+        throw new Error(`Message not found: ${messageId}`);
+      }
+
+      // Decrypt message content before translation
+      let decryptedContent: string;
+      try {
+        decryptedContent = decryptMessage(message.content);
+        logger.debug({ messageId, contentLength: decryptedContent.length }, 'Message decrypted for batch translation');
+      } catch (error) {
+        logger.warn({ messageId, error }, 'Failed to decrypt message, using content as-is');
+        decryptedContent = message.content;
+      }
+
+      for (const lang of missingLanguages) {
+        try {
+          const translated = await this.translateText(decryptedContent, lang);
+          results.set(lang, translated);
+
+          // Cache result
+          await prisma.messageTranslation.create({
+            data: {
+              messageId,
+              targetLanguage: lang,
+              translatedText: translated,
+              provider: 'gemini'
+            }
+          });
+
+          logger.info({ messageId, lang, translatedLength: translated.length }, 'Message translated and cached');
+        } catch (error) {
+          logger.error({ messageId, lang, error }, 'Message translation failed');
+          // Don't fail entire batch if one translation fails
+        }
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Helper method to translate text directly
+   * Used by message translation methods
+   */
+  private async translateText(
+    text: string,
+    targetLanguage: string,
+    sourceLanguage?: string
+  ): Promise<string> {
+    const systemPrompt = this.buildSystemPrompt();
+
+    const languageNames: Record<string, string> = {
+      'en-US': 'American English',
+      'pt-BR': 'Brazilian Portuguese',
+      'es-ES': 'European Spanish',
+      'ja-JP': 'Japanese',
+      'zh-CN': 'Simplified Chinese',
+      'ko-KR': 'Korean',
+      'fr-FR': 'French',
+      'de-DE': 'German',
+      'it-IT': 'Italian',
+      'ru-RU': 'Russian',
+    };
+
+    const toLang = languageNames[targetLanguage] || targetLanguage;
+    const fromLang = sourceLanguage ? (languageNames[sourceLanguage] || sourceLanguage) : 'auto-detected language';
+
+    const userPrompt = sourceLanguage
+      ? `Translate the following message from ${fromLang} to ${toLang}:\n\n${text}\n\nTranslation:`
+      : `Detect the language of the following text and translate it to ${toLang}:\n\n${text}\n\nTranslation:`;
+
+    logger.info({
+      text: text.substring(0, 50),
+      fromLang,
+      toLang,
+      targetLanguage,
+      sourceLanguage
+    }, '[translateText] Calling LLM for translation');
+
+    const response = await callLLM({
+      provider: this.DEFAULT_PROVIDER,
+      model: this.DEFAULT_MODEL,
+      systemPrompt,
+      userPrompt,
+      temperature: 0.3,
+      maxTokens: 2000,
+    });
+
+    logger.info({
+      originalText: text.substring(0, 50),
+      translatedText: response.content.substring(0, 100),
+      contentLength: response.content.length,
+    }, '[translateText] LLM response received');
+
+    // Track usage for message translations
+    trackLLMUsage({
+      feature: 'CONTENT_TRANSLATION',
+      featureId: `message:${text.substring(0, 20)}`,
+      provider: 'GEMINI',
+      model: this.DEFAULT_MODEL,
+      inputTokens: Math.ceil(text.length / 4),
+      outputTokens: Math.ceil(response.content.length / 4),
+      cached: false,
+      operation: 'translate_message',
+      metadata: {
+        toLanguage: targetLanguage,
+        fromLanguage: sourceLanguage || 'auto',
+        characterCount: text.length,
+      },
+    }).catch((error: Error) => {
+      logger.debug({ error }, 'Failed to track message translation');
+    });
+
+    return response.content;
+  }
+
+  /**
+   * Detect language of text (simplified - uses LLM for detection)
+   */
+  private async detectLanguage(text: string): Promise<string> {
+    // Simple heuristic: check for common patterns
+    // In production, you might use a language detection library or API
+
+    // For Portuguese
+    if (/\b(é|ê|á|à|ã|õ|ç|está|estão|sou|é|não|por|para|que|como)\b/i.test(text)) {
+      return 'pt-BR';
+    }
+
+    // For Spanish
+    if (/\b(está|están|el|la|los|por|para|que|cómo|no|sí|es|son)\b/i.test(text)) {
+      return 'es-ES';
+    }
+
+    // Default to English
+    return 'en-US';
   }
 
   /**

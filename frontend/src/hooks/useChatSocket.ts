@@ -35,6 +35,7 @@ interface OnlineUser {
 interface ChatSocketState {
   isConnected: boolean;
   socketId: string | null;
+  socket: Socket | null;  // Expose the socket instance for translation features
   connectionError: string | null;
   typingParticipants: Set<string>;
   onlineUsers: string[];
@@ -563,6 +564,7 @@ export function useChatSocket(options: UseChatSocketOptions = {}): ChatSocketSta
   return {
     isConnected,
     socketId,
+    socket,  // Expose socket instance for translation features
     connectionError,
     typingParticipants,
     onlineUsers,

@@ -765,6 +765,40 @@ export class MembershipService {
       wasConverted: shouldConvertToMultiUser
     };
   }
+
+  /**
+   * Update current user's membership settings (auto-translate, etc.)
+   */
+  async updateMembershipSettings(
+    conversationId: string,
+    userId: string,
+    settings: {
+      autoTranslateEnabled?: boolean;
+    }
+  ) {
+    const membership = await prisma.userConversationMembership.findUnique({
+      where: {
+        conversationId_userId: { conversationId, userId }
+      }
+    });
+
+    if (!membership) {
+      throw new Error('Not a member of this conversation');
+    }
+
+    const updated = await prisma.userConversationMembership.update({
+      where: { id: membership.id },
+      data: settings
+    });
+
+    logger.info({
+      conversationId,
+      userId,
+      settings
+    }, 'Membership settings updated');
+
+    return updated;
+  }
 }
 
 export const membershipService = new MembershipService();
