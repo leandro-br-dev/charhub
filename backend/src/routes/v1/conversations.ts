@@ -86,7 +86,14 @@ router.patch('/:id/participants/:participantId', requireAuth, async (req: Reques
     return res.json({ success: true, message: 'Participant updated successfully' });
   } catch (error) {
     if (error instanceof Error && (error as any).statusCode) {
-      return sendError(res, (error as any).statusCode, API_ERROR_CODES.INTERNAL_ERROR, { message: error.message });
+      const statusCode = (error as any).statusCode;
+      // Map status codes to appropriate error codes
+      const errorCode = statusCode === 403
+        ? API_ERROR_CODES.FORBIDDEN
+        : statusCode === 404
+        ? API_ERROR_CODES.NOT_FOUND
+        : API_ERROR_CODES.INTERNAL_ERROR;
+      return sendError(res, statusCode, errorCode, { message: error.message });
     }
     if (error instanceof Error && 'issues' in error) {
       return sendError(res, 400, API_ERROR_CODES.VALIDATION_FAILED, { details: { errors: error } });

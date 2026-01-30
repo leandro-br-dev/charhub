@@ -252,7 +252,8 @@ describeCI('Character-Specific Instructions Integration Tests', () => {
         .send({ configOverride: 'Malicious instructions' })
         .expect(403);
 
-      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBeDefined();
+      expect(response.body.error.code).toBe('FORBIDDEN');
     });
 
     it('should handle very long instructions (up to 2000 characters)', async () => {

@@ -189,8 +189,10 @@ describe('Credits API Integration Tests', () => {
         .send({ requiredCredits: -10 })
         .expect(400);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.message).toBe('requiredCredits must be a positive number');
+      expect(response.body.error).toBeDefined();
+      expect(response.body.error.code).toBe('INVALID_INPUT');
+      expect(response.body.error.message).toBe('requiredCredits must be a positive number');
+      expect(response.body.error.field).toBe('requiredCredits');
     });
 
     it('should return 401 without authentication', async () => {
@@ -231,9 +233,9 @@ describe('Credits API Integration Tests', () => {
         .set(getAuthHeader(token))
         .expect(400);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.message).toBe('Daily reward already claimed today');
-      expect(response.body.code).toBe('ALREADY_CLAIMED');
+      expect(response.body.error).toBeDefined();
+      expect(response.body.error.code).toBe('ALREADY_EXISTS');
+      expect(response.body.error.message).toBe('Daily reward already claimed today');
     });
 
     it('should return 401 without authentication', async () => {
@@ -351,8 +353,10 @@ describe('Credits API Integration Tests', () => {
         .send({})
         .expect(400);
 
-      expect(response.body.success).toBe(false);
-      expect(response.body.message).toBe('serviceType is required');
+      expect(response.body.error).toBeDefined();
+      expect(response.body.error.code).toBe('MISSING_REQUIRED_FIELD');
+      expect(response.body.error.message).toBe('serviceType is required');
+      expect(response.body.error.field).toBe('serviceType');
     });
 
     it('should return 401 without authentication', async () => {
