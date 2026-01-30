@@ -12,7 +12,12 @@
       "charactersWithAvatars": "Personagens com Avatares",
       "charactersWithCompleteData": "Personagens com Dados Completos",
       "never": "Nunca",
-      "lastCorrections": "Últimas Correções"
+      "lastCorrections": "Últimas Correções",
+      "compressionStats": "Estatísticas de Compressão",
+      "totalImages": "Total de Imagens",
+      "oversizedImages": "Imagens Excedentes",
+      "bytesCouldBeSaved": "Podem ser salvos",
+      "maxSizeThreshold": "Limite máximo"
     },
     "scripts": {
       "title": "Scripts de Correção",
@@ -33,6 +38,16 @@
         "description": "Gera personagens automaticamente a partir de imagens selecionadas",
         "success": "Geração de personagens iniciada com sucesso",
         "error": "Falha ao iniciar geração de personagens"
+      },
+      "compression": {
+        "name": "Compressão de Imagens",
+        "description": "Comprime imagens excedentes para economizar armazenamento",
+        "success": "Compressão de imagens iniciada com sucesso",
+        "error": "Falha ao iniciar compressão de imagens",
+        "limit": "Limite",
+        "images": "imagens",
+        "maxSizeKB": "Tamanho Máx",
+        "targetSizeKB": "Tamanho Alvo"
       },
       "lastRun": "Última Execução",
       "run": "Executar Script",

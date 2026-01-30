@@ -20,7 +20,9 @@ import type {
   DailyCurationJobData,
   AvatarCorrectionJobData,
   DataCompletenessCorrectionJobData,
+  ImageCompressionJobData,
 } from '../jobs/characterPopulationJob';
+import { imageCompressionService } from '../../services/imageCompressionService';
 
 /**
  * Process trigger curation job
@@ -359,6 +361,40 @@ async function processDataCompletenessCorrection(job: Job<DataCompletenessCorrec
 }
 
 /**
+ * Process image compression job
+ * Compresses oversized images to save storage space
+ */
+async function processImageCompression(job: Job<ImageCompressionJobData>): Promise<void> {
+  const { limit: limitFromJob = 100, targetSizeKB: targetSizeKBFromJob = 200 } = job.data;
+
+  logger.info({ limit: limitFromJob, targetSizeKB: targetSizeKBFromJob }, 'Processing image compression job');
+
+  await job.updateProgress(10);
+
+  try {
+    const result = await imageCompressionService.compressOversizedImages({
+      limit: limitFromJob,
+      targetSizeKB: targetSizeKBFromJob,
+    });
+
+    await job.updateProgress(100);
+
+    logger.info(
+      {
+        processed: result.processed,
+        failed: result.failed,
+        bytesReclaimed: result.bytesReclaimed,
+        errors: result.errors.length,
+      },
+      'Image compression job completed'
+    );
+  } catch (error) {
+    logger.error({ error, jobData: job.data }, 'Image compression job failed');
+    throw error;
+  }
+}
+
+/**
  * Character Population Worker Processor
  */
 export async function characterPopulationProcessor(job: Job<any>): Promise<void> {
@@ -387,6 +423,9 @@ export async function characterPopulationProcessor(job: Job<any>): Promise<void>
       break;
     case 'data-completeness-correction':
       await processDataCompletenessCorrection(job as Job<DataCompletenessCorrectionJobData>);
+      break;
+    case 'image-compression':
+      await processImageCompression(job as Job<ImageCompressionJobData>);
       break;
     default:
       throw new Error(`Unknown job name: ${name}`);

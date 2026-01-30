@@ -12,7 +12,12 @@
       "charactersWithAvatars": "有头像的角色",
       "charactersWithCompleteData": "数据完整的角色",
       "never": "从不",
-      "lastCorrections": "上次校正"
+      "lastCorrections": "上次校正",
+      "compressionStats": "压缩统计",
+      "totalImages": "总图片数",
+      "oversizedImages": "过大图片",
+      "bytesCouldBeSaved": "可节省",
+      "maxSizeThreshold": "最大尺寸阈值"
     },
     "scripts": {
       "title": "校正脚本",
@@ -24,22 +29,32 @@
       },
       "data": {
         "name": "数据完整性校正",
-        "description": "确保所有必需的角色字段都已填充",
+        "description": "确保所有必填角色字段都已填充",
         "success": "数据校正脚本已成功启动",
         "error": "启动数据校正脚本失败"
       },
       "generation": {
         "name": "角色生成",
-        "description": "从精选图像中自动生成角色",
+        "description": "从精选图片自动生成角色",
         "success": "角色生成已成功启动",
         "error": "启动角色生成失败"
       },
+      "compression": {
+        "name": "图片压缩",
+        "description": "压缩过大的图片以节省存储空间",
+        "success": "图片压缩已成功启动",
+        "error": "启动图片压缩失败",
+        "limit": "限制",
+        "images": "图片",
+        "maxSizeKB": "最大尺寸",
+        "targetSizeKB": "目标尺寸"
+      },
       "lastRun": "上次运行",
       "run": "运行脚本",
-      "running": "正在运行...",
+      "running": "运行中...",
       "moreComing": "更多脚本即将推出...",
-      "records": "条记录",
-      "characters": "个角色",
+      "records": "记录",
+      "characters": "角色",
       "limit": "记录限制",
       "limitPlaceholder": "要处理的记录数量 (1-1000)"
     },

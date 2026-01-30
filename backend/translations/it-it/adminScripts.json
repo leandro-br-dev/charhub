@@ -4,7 +4,7 @@
     "title": "Script Amministrativi",
     "header": {
       "title": "Script Amministrativi",
-      "description": "Esegui manualmente script di correzione dati e monitora le statistiche del sistema."
+      "description": "Esegui manualmente script di correzione dati e monitora le statistiche di sistema."
     },
     "stats": {
       "title": "Statistiche",
@@ -12,27 +12,42 @@
       "charactersWithAvatars": "Personaggi con Avatar",
       "charactersWithCompleteData": "Personaggi con Dati Completi",
       "never": "Mai",
-      "lastCorrections": "Ultime Correzioni"
+      "lastCorrections": "Ultime Correzioni",
+      "compressionStats": "Statistiche di Compressione",
+      "totalImages": "Immagini Totali",
+      "oversizedImages": "Immagini Sovradimensionate",
+      "bytesCouldBeSaved": "Potrebbero essere salvati",
+      "maxSizeThreshold": "Soglia dimensione massima"
     },
     "scripts": {
       "title": "Script di Correzione",
       "avatar": {
         "name": "Correzione Avatar",
-        "description": "Correggi URL di avatar rotti o mancanti per i personaggi",
+        "description": "Corregge URL di avatar interrotti o mancanti per i personaggi",
         "success": "Script di correzione avatar avviato con successo",
         "error": "Impossibile avviare lo script di correzione avatar"
       },
       "data": {
         "name": "Correzione Completezza Dati",
-        "description": "Garantisce che tutti i campi personaggio richiesti siano popolati",
+        "description": "Assicura che tutti i campi personaggio richiesti siano popolati",
         "success": "Script di correzione dati avviato con successo",
         "error": "Impossibile avviare lo script di correzione dati"
       },
       "generation": {
         "name": "Generazione Personaggi",
-        "description": "Genera personaggi automaticamente da immagini selezionate",
+        "description": "Genera personaggi automaticamente da immagini curate",
         "success": "Generazione personaggi avviata con successo",
         "error": "Impossibile avviare la generazione personaggi"
+      },
+      "compression": {
+        "name": "Compressione Immagini",
+        "description": "Comprimi immagini sovradimensionate per risparmiare spazio di archiviazione",
+        "success": "Compressione immagini avviata con successo",
+        "error": "Impossibile avviare la compressione immagini",
+        "limit": "Limite",
+        "images": "immagini",
+        "maxSizeKB": "Dimensione Max",
+        "targetSizeKB": "Dimensione Target"
       },
       "lastRun": "Ultima Esecuzione",
       "run": "Esegui Script",
