@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQueryClient } from '@tanstack/react-query';
@@ -256,10 +256,19 @@ const ChatContainer = () => {
   const { conversationId } = useParams<{ conversationId: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation('chat');
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const queryClient = useQueryClient();
 
   const [manualError, setManualError] = useState<string | null>(null);
+
+  // Refresh user data on mount to get latest preferredLanguage
+  useEffect(() => {
+    if (user) {
+      refreshUser().catch(err => {
+        console.warn('[ChatContainer] Failed to refresh user data:', err);
+      });
+    }
+  }, [user?.id, refreshUser]);
 
   const conversationQuery = useConversationQuery(conversationId || null);
   const messagesQuery = useMessagesQuery(conversationId || null);
@@ -687,6 +696,9 @@ const ChatContainer = () => {
       onSendMessage={handleSendMessage}
       onAddParticipant={handleAddParticipant}
       onRemoveParticipant={handleRemoveParticipant}
+      socket={socketState.socket}
+      userLanguage={user?.preferredLanguage || 'en'}
+      conversationId={conversationId}
       onConfigureParticipant={async (participantId: string, data: any) => {
         try {
           if (!conversationId) return false;

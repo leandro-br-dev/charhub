@@ -8,6 +8,7 @@ import * as conversationService from '../services/conversationService';
 import * as messageService from '../services/messageService';
 import { agentService } from '../services/agentService';
 import { presenceService } from '../services/presenceService';
+import { translationService } from '../services/translation/translationService';
 import { queueAIResponse, setupWebSocketBroadcast } from '../queues/responseQueue';
 import { isQueuesEnabled } from '../config/features';
 import type { AuthenticatedUser } from '../types';
@@ -465,6 +466,93 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
         // Step 2: Broadcast user message to room
         io.to(room).emit('message_received', serialized);
 
+        // ============================================================================
+        // MESSAGE TRANSLATION PRE-GENERATION (FEATURE-018)
+        // ============================================================================
+        // For multi-user conversations, pre-generate translations for all member languages
+        // This happens asynchronously, doesn't block message delivery
+        // ============================================================================
+
+        // Check if this is a multi-user conversation and pre-generate translations
+        // Note: prisma is imported later in this function, so we'll do translation check after
+        // We'll make this async and non-blocking
+        (async () => {
+          try {
+            const { prisma: prismaImport } = await import('../config/database');
+            const conversationData = await prismaImport.conversation.findUnique({
+              where: { id: payload.conversationId },
+              select: { isMultiUser: true }
+            });
+
+            if (conversationData?.isMultiUser) {
+              // Get all conversation members with their preferred languages and autoTranslate settings
+              // CRITICAL: Exclude the message sender - translations are for OTHER members' messages only
+              const members = await prismaImport.userConversationMembership.findMany({
+                where: {
+                  conversationId: payload.conversationId,
+                  isActive: true,
+                  autoTranslateEnabled: true,  // FEATURE-018: Only translate for members with auto-translate enabled
+                  userId: { not: user.id },    // Exclude the sender - don't translate their own messages for them
+                },
+                include: {
+                  user: {
+                    select: {
+                      id: true,
+                      preferredLanguage: true
+                    }
+                  }
+                }
+              });
+
+              // Extract unique languages from OTHER members (not sender) with auto-translate enabled
+              const uniqueLanguages = [
+                ...new Set(
+                  members
+                    .map(m => m.user.preferredLanguage)
+                    .filter(lang => lang != null) as string[]
+                )
+              ];
+
+              // Skip translation if no members with auto-translate enabled
+              if (uniqueLanguages.length > 0) {
+                logger.info({
+                  messageId: message.id,
+                  conversationId: payload.conversationId,
+                  autoTranslateMembersCount: members.length,
+                  languages: uniqueLanguages
+                }, 'Pre-generating translations for auto-translate members');
+
+                // Pre-generate translations (async, don't block message delivery)
+                translationService.translateMessageBatch(message.id, uniqueLanguages)
+                  .then(translations => {
+                    // Convert Map to Record for WebSocket
+                    const translationsRecord: Record<string, string> = {};
+                    translations.forEach((value, key) => {
+                      translationsRecord[key] = value;
+                    });
+
+                    // Emit translations event when ready
+                    io.to(room).emit('message_translations', {
+                      messageId: message.id,
+                      translations: translationsRecord
+                    });
+
+                    logger.info({
+                      messageId: message.id,
+                      conversationId: payload.conversationId,
+                      languageCount: Object.keys(translationsRecord).length
+                    }, 'Message translations pre-generated and emitted');
+                  })
+                  .catch(error => {
+                    logger.error({ messageId: message.id, error }, 'Translation batch failed');
+                  });
+              }
+            }
+          } catch (error) {
+            logger.error({ error }, 'Failed to pre-generate message translations');
+          }
+        })(); // Immediately invoked async function - runs in background
+
         // Step 3: Fetch conversation with full context for ConversationManagerAgent
         const conversation = await conversationService.getConversationById(
           payload.conversationId,
@@ -805,6 +893,64 @@ export function setupChatSocket(server: HttpServer, options?: Partial<ChatServer
 
               // Broadcast the AI response to the room
               io.to(room).emit('message_received', serializeMessage(aiMessage));
+
+              // ============================================================================
+              // MESSAGE TRANSLATION PRE-GENERATION (FEATURE-018) - Fallback Path
+              // ============================================================================
+              // For bot responses in multi-user conversations when queues are disabled,
+              // pre-generate translations for all member languages (async, non-blocking)
+              // ============================================================================
+              (async () => {
+                try {
+                  if (conversation?.isMultiUser) {
+                    const { prisma: prismaImport } = await import('../config/database');
+                    // Get all members with autoTranslateEnabled: true
+                    const members = await prismaImport.userConversationMembership.findMany({
+                      where: {
+                        conversationId: payload.conversationId,
+                        isActive: true,
+                        autoTranslateEnabled: true,
+                      },
+                      include: {
+                        user: {
+                          select: {
+                            id: true,
+                            preferredLanguage: true
+                          }
+                        }
+                      }
+                    });
+
+                    const uniqueLanguages = [
+                      ...new Set(
+                        members
+                          .map(m => m.user.preferredLanguage)
+                          .filter(lang => lang != null) as string[]
+                      )
+                    ];
+
+                    if (uniqueLanguages.length > 0) {
+                      translationService.translateMessageBatch(aiMessage.id, uniqueLanguages)
+                        .then(translations => {
+                          const translationsRecord: Record<string, string> = {};
+                          translations.forEach((value, key) => {
+                            translationsRecord[key] = value;
+                          });
+
+                          io.to(room).emit('message_translations', {
+                            messageId: aiMessage.id,
+                            translations: translationsRecord
+                          });
+                        })
+                        .catch(error => {
+                          logger.error({ messageId: aiMessage.id, error }, 'Translation batch failed for bot response (fallback)');
+                        });
+                    }
+                  }
+                } catch (error) {
+                  logger.error({ error }, 'Failed to pre-generate translations for bot response (fallback)');
+                }
+              })();
 
               // Stop typing indicator
               emitTypingForBots(io, payload.conversationId, [participantId], false);

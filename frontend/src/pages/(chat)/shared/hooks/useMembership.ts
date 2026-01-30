@@ -14,6 +14,7 @@ export interface Member {
   isActive: boolean;
   joinedAt: string;
   invitedBy?: string;
+  autoTranslateEnabled?: boolean; // FEATURE-018: Auto-translate setting
   user: {
     id: string;
     username?: string;
@@ -142,11 +143,25 @@ export function useMembershipMutations(conversationId: string | undefined) {
     onSuccess: invalidateMembers,
   });
 
+  // FEATURE-018: Update membership settings (auto-translate, etc.)
+  const updateMembershipSettings = useMutation({
+    mutationFn: async (settings: { autoTranslateEnabled: boolean }) => {
+      if (!conversationId) throw new Error('Conversation ID required');
+      const response = await api.patch(
+        `/api/v1/conversations/${conversationId}/membership`,
+        settings
+      );
+      return response.data;
+    },
+    onSuccess: invalidateMembers,
+  });
+
   return {
     inviteUser,
     leaveConversation,
     kickUser,
     updatePermissions,
     transferOwnership,
+    updateMembershipSettings,
   };
 }

@@ -18,6 +18,7 @@ import { useChatModalsManager } from '../hooks/useChatModalsManager';
 import { useConversationBackground } from '../hooks/useConversationBackground';
 import { chatService } from '../../../../services/chatService';
 import { useMembershipMutations, useMembersQuery } from '../hooks/useMembership';
+import { useAuth } from '../../../../hooks/useAuth';
 
 const ChatView: React.FC<any> = ({
   userId,
@@ -51,9 +52,22 @@ const ChatView: React.FC<any> = ({
   getSenderDetailsAndParticipantId,
   onReviewFileClick,
   onSendConfirmation,
+  // FEATURE-018: Translation props
+  socket,
+  userLanguage,
+  conversationId,
 }) => {
   const { t } = useTranslation('chat');
+  const { user } = useAuth();
   const { setActions, setTitle } = usePageHeader();
+
+  // Multi-user membership management
+  const { data: membersData } = useMembersQuery(conversation?.id);
+  const { inviteUser, updateMembershipSettings } = useMembershipMutations(conversation?.id);
+
+  // FEATURE-018: Get auto-translate setting from membership
+  const currentMember = membersData?.items?.find((m) => m.userId === user?.id);
+  const autoTranslateEnabled = currentMember?.autoTranslateEnabled ?? false;
 
   const {
     activeModal,
@@ -66,10 +80,6 @@ const ChatView: React.FC<any> = ({
     openShareInviteLinkModal,
     closeActiveModal,
   } = useChatModalsManager();
-
-  // Multi-user membership management
-  const { data: membersData } = useMembersQuery(conversation?.id);
-  const { inviteUser } = useMembershipMutations(conversation?.id);
 
   const currentMemberIds = useMemo(() => {
     return membersData?.items?.map((m) => m.userId) || [];
@@ -280,6 +290,25 @@ const ChatView: React.FC<any> = ({
                   conversation={conversation}
                   isCompressing={isMemoryCompressing}
                 />
+                {/* FEATURE-018: Auto-translate toggle button */}
+                {conversation?.isMultiUser && (
+                  <button
+                    onClick={() => updateMembershipSettings.mutate({ autoTranslateEnabled: !autoTranslateEnabled })}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs transition-colors ${
+                      autoTranslateEnabled
+                        ? 'bg-primary text-white'
+                        : 'bg-light dark:bg-dark text-muted hover:bg-gray-200 dark:hover:bg-gray-700'
+                    }`}
+                    title={autoTranslateEnabled ? t('translation.autoEnabled') : t('translation.autoTranslate')}
+                  >
+                    <span className="material-symbols-outlined text-sm">
+                      {autoTranslateEnabled ? 'check' : 'translate'}
+                    </span>
+                    <span className="hidden sm:inline">
+                      {t('translation.autoTranslate')}
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -301,6 +330,10 @@ const ChatView: React.FC<any> = ({
               audioCache={audioCache}
               onSendConfirmation={onSendConfirmation}
               onReviewFileClick={onReviewFileClick}
+              // FEATURE-018: Translation props
+              userLanguage={userLanguage}
+              socket={socket}
+              conversationId={conversationId}
             />
           </div>
         </div>
