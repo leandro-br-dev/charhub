@@ -5,6 +5,7 @@ import { Button } from "../ui/Button";
 import { ConversationHistory } from "../../pages/(chat)/shared/components/ConversationHistory";
 import { CharacterListSidebar } from "../../pages/(characters)/shared/components";
 import { StoryListSidebar } from "../../pages/story/shared/components";
+import { AssetListSidebar } from "../../pages/assets/shared/components";
 
 /**
  * Loading placeholder for sidebar content while translations load
@@ -58,6 +59,11 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   const handleCreateStory = () => {
     handleLinkClick();
     navigate("/stories/create");
+  };
+
+  const handleCreateAsset = () => {
+    handleLinkClick();
+    navigate("/assets/create");
   };
 
   let content: ReactNode;
@@ -132,6 +138,14 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
             {t("navigation:viewAllStories", "View all stories")}
           </Button>
         </div>
+      </div>
+    );
+  } else if (activeView?.startsWith("/assets")) {
+    content = (
+      <div className="flex h-full w-full flex-col">
+        <Suspense fallback={<SidebarLoadingFallback />}>
+          <AssetListSidebar onLinkClick={handleLinkClick} />
+        </Suspense>
       </div>
     );
   } else {

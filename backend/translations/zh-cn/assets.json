@@ -1,0 +1,323 @@
+{
+  "description": "Assets module strings for asset management, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledAsset": "未命名资产",
+      "updatedAt": "于 {{date}} 更新",
+      "public": "公开",
+      "private": "私有",
+      "identifier": "资产 ID：{{id}}",
+      "unsavedChanges": "未保存的更改",
+      "allSaved": "所有更改已保存",
+      "submitting": "正在保存..."
+    },
+    "types": {
+      "CLOTHING": "服装",
+      "ACCESSORY": "配饰",
+      "SCAR": "疤痕",
+      "HAIRSTYLE": "发型",
+      "OBJECT": "物体",
+      "VEHICLE": "载具",
+      "FURNITURE": "家具",
+      "PROP": "道具"
+    },
+    "typeDescriptions": {
+      "CLOTHING": "服装及服饰物品",
+      "ACCESSORY": "可穿戴配饰与装饰品",
+      "SCAR": "标记、疤痕及身体特征",
+      "HAIRSTYLE": "发型与发色",
+      "OBJECT": "手持物品与物件",
+      "VEHICLE": "载具与坐骑",
+      "FURNITURE": "家具与结构元素",
+      "PROP": "背景道具与装饰品"
+    },
+    "categories": {
+      "WEARABLE": "可穿戴",
+      "HOLDABLE": "可手持",
+      "ENVIRONMENTAL": "环境"
+    },
+    "categoryDescriptions": {
+      "WEARABLE": "角色可穿戴的物品",
+      "HOLDABLE": "可手持或携带的物品",
+      "ENVIRONMENTAL": "背景与环境元素"
+    },
+    "placementZones": {
+      "face": "面部",
+      "torso": "躯干",
+      "left_hand": "左手",
+      "right_hand": "右手",
+      "head": "头部",
+      "feet": "双脚"
+    },
+    "placementZoneDescriptions": {
+      "face": "应用于面部区域",
+      "torso": "应用于身体/躯干区域",
+      "left_hand": "左手手持",
+      "right_hand": "右手手持",
+      "head": "佩戴于头部",
+      "feet": "穿戴于双脚"
+    },
+    "accessibility": {
+      "addToFavorites": "添加到收藏夹",
+      "removeFromFavorites": "从收藏夹中移除"
+    },
+    "stats": {
+      "characters": "角色",
+      "charactersShort": "{{count}}K 个角色",
+      "charactersShort_plural": "{{count}}K 个角色"
+    },
+    "hub": {
+      "title": "资产",
+      "subtitle": "为你的角色创建和管理资产。资产包括服装、配饰、物品等。",
+      "sidebar": {
+        "description": "浏览和管理你的创作资产。",
+        "viewGallery": "查看画廊"
+      },
+      "actions": {
+        "newAsset": "新建资产",
+        "createAsset": "新建资产",
+        "retry": "重试"
+      },
+      "tabs": {
+        "myAssets": "我的资产",
+        "publicGallery": "公开画廊"
+      },
+      "filters": {
+        "searchPlaceholder": "按名称搜索",
+        "type": "类型",
+        "category": "类别",
+        "allTypes": "所有类型",
+        "allCategories": "所有类别",
+        "noFilter": "任意"
+      },
+      "states": {
+        "loading": "正在加载你的资产...",
+        "error": "无法加载资产。请重试。",
+        "empty": "暂无可用资产。",
+        "empty_private": "你尚未创建任何资产。",
+        "empty_public": "没有符合你筛选条件的公开资产。",
+        "emptyHint": "开始创建你的第一个资产，或调整筛选条件。",
+        "emptySearchHint": "调整筛选条件或清除搜索以查看更多结果。"
+      },
+      "labels": {
+        "total": "{{count}} 个资产可用",
+        "total_plural": "{{count}} 个资产可用",
+        "quickCreateLink": "直接开始创建"
+      }
+    },
+    "form": {
+      "submit": "保存",
+      "cancel": "取消",
+      "sections": {
+        "identity": "身份",
+        "identityHint": "定义此资产的基本属性。",
+        "details": "详情",
+        "detailsHint": "描述外观、特征和视觉提示。",
+        "configuration": "配置",
+        "configurationHint": "控制类别、放置和生成设置。"
+      },
+      "fields": {
+        "name": "名称",
+        "description": "描述",
+        "type": "类型",
+        "category": "类别",
+        "positivePrompt": "视觉提示",
+        "negativePrompt": "负面提示",
+        "placementZone": "放置区域",
+        "isPublic": "可见性"
+      },
+      "placeholders": {
+        "name": "输入资产名称",
+        "description": "描述此资产...",
+        "type": "选择类型",
+        "category": "选择类别",
+        "positivePrompt": "描述资产应如何呈现...",
+        "negativePrompt": "描述要避免的内容...",
+        "placementZone": "选择放置区域"
+      },
+      "hints": {
+        "name": "此资产清晰、描述性的名称",
+        "description": "资产外观的详细描述",
+        "positivePrompt": "用于 AI 生成的视觉提示（例如，“一件带银色拉链的红色皮夹克”）",
+        "negativePrompt": "生成时要避免的元素（例如，“损坏、撕裂、脏污”）",
+        "placementZone": "资产应放置在角色的哪个位置"
+      },
+      "labels": {
+        "unsavedChanges": "你有未保存的更改",
+        "allSaved": "更改已保存",
+        "submitting": "正在保存...",
+        "visibilityPublic": "公开",
+        "visibilityPrivate": "私有"
+      },
+      "images": {
+        "coverHeader": "资产封面",
+        "coverDescription": "代表此资产的图片。",
+        "upload": "上传封面",
+        "change": "更改封面",
+        "uploading": "正在上传...",
+        "urlModalTitle": "使用 URL 中的图片",
+        "urlLabel": "图片 URL",
+        "previewAlt": "资产封面预览",
+        "invalidUrl": "请输入有效的图片 URL (http/https)。"
+      },
+      "tabs": {
+        "identity": "身份",
+        "details": "详情",
+        "configuration": "配置",
+        "images": "图片",
+        "lockedHint": "填写基本身份详情以解锁其他部分。"
+      }
+    },
+    "create": {
+      "title": "创建新资产",
+      "subtitle": "定义资产的属性和视觉特征。",
+      "saveButton": "保存资产",
+      "cancelButton": "取消并返回"
+    },
+    "edit": {
+      "title": "编辑资产",
+      "subtitle": "正在更新 {{name}}",
+      "saveButton": "更新资产",
+      "cancelButton": "放弃更改",
+      "states": {
+        "loading": "正在加载资产..."
+      },
+      "accessDenied": {
+        "title": "访问被拒绝",
+        "message": "你没有编辑此资产的权限。",
+        "backButton": "返回资产"
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "正在加载资产详情...",
+        "notFound": "我们找不到此资产。"
+      },
+      "actions": {
+        "backToHub": "返回中心",
+        "edit": "编辑",
+        "delete": "删除",
+        "deleting": "正在删除...",
+        "share": "分享"
+      },
+      "confirmDelete": {
+        "title": "删除资产？",
+        "message": "此操作无法撤消。与此资产相关的所有数据将被永久删除。",
+        "confirm": "永久删除",
+        "cancel": "取消"
+      },
+      "labels": {
+        "public": "公开",
+        "private": "私有",
+        "createdAt": "创建时间",
+        "createdBy": "创建者",
+        "updatedAt": "最后更新时间",
+        "identifier": "资产 ID：{{id}}",
+        "characterCount": "{{count}} 个角色",
+        "characterCount_plural": "{{count}} 个角色",
+        "type": "类型",
+        "category": "类别"
+      },
+      "sections": {
+        "description": "描述",
+        "prompts": "生成提示",
+        "placement": "放置",
+        "metadata": "元数据"
+      },
+      "placement": {
+        "title": "资产放置",
+        "zoneLabel": "放置区域",
+        "categoryLabel": "类别"
+      },
+      "characters": {
+        "title": "使用此资产的角色",
+        "empty": "目前没有角色使用此资产。"
+      }
+    },
+    "picker": {
+      "title": "选择资产",
+      "subtitle": "选择要添加到角色的资产",
+      "searchPlaceholder": "搜索资产...",
+      "filters": {
+        "allTypes": "所有类型",
+        "allCategories": "所有类别",
+        "typeFilter": "按类型筛选",
+        "categoryFilter": "按类别筛选"
+      },
+      "actions": {
+        "addSelected": "添加所选 ({{count}})",
+        "addSelected_plural": "添加所选 ({{count}})",
+        "cancel": "取消",
+        "clearSelection": "清除选择"
+      },
+      "states": {
+        "loading": "正在加载资产...",
+        "error": "加载资产失败",
+        "empty": "暂无资产",
+        "noResults": "没有资产符合你的搜索条件",
+        "selectedEmpty": "选择要添加的资产"
+      },
+      "labels": {
+        "selected": "已选择 {{count}} 项",
+        "selected_plural": "已选择 {{count}} 项"
+      },
+      "assetCard": {
+        "typeLabel": "类型",
+        "categoryLabel": "类别"
+      }
+    },
+    "characterAssets": {
+      "title": "角色资产",
+      "subtitle": "管理此角色已装备的资产",
+      "tabs": {
+        "equipped": "已装备",
+        "available": "可用"
+      },
+      "actions": {
+        "addAssets": "添加资产",
+        "removeAsset": "移除",
+        "configureAsset": "配置"
+      },
+      "states": {
+        "noEquipped": "未装备任何资产",
+        "noAvailable": "暂无可用资产",
+        "loading": "正在加载资产..."
+      },
+      "placement": {
+        "title": "资产放置",
+        "zoneLabel": "区域",
+        "configure": "配置放置",
+        "remove": "从角色移除"
+      },
+      "labels": {
+        "equippedCount": "已装备 {{count}} 个资产",
+        "equippedCount_plural": "已装备 {{count}} 个资产",
+        "availableCount": "有 {{count}} 个可用",
+        "availableCount_plural": "有 {{count}} 个可用"
+      }
+    },
+    "errors": {
+      "createFailed": "无法创建资产。请重试。",
+      "updateFailed": "无法更新资产。",
+      "deleteFailed": "无法删除资产。",
+      "detailUnavailable": "目前无法加载资产详情。",
+      "linkFailed": "链接资产到角色失败。",
+      "unlinkFailed": "将资产从角色解除链接失败。",
+      "nameRequired": "资产名称是必需的",
+      "typeRequired": "资产类型是必需的",
+      "categoryRequired": "资产类别是必需的",
+      "invalidType": "无效的资产类型",
+      "invalidCategory": "无效的资产类别",
+      "invalidPlacementZone": "此资产类型的放置区域无效",
+      "assetInUse": "此资产正在被 {{count}} 个角色使用，无法删除。",
+      "assetInUse_plural": "此资产正在被 {{count}} 个角色使用，无法删除。"
+    },
+    "success": {
+      "created": "资产创建成功",
+      "updated": "资产更新成功",
+      "deleted": "资产删除成功",
+      "linked": "资产已链接到角色",
+      "unlinked": "资产已从角色解除链接"
+    }
+  }
+}

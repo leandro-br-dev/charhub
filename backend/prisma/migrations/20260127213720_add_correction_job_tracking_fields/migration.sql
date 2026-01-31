@@ -6,7 +6,7 @@
 ALTER TABLE "CorrectionJobLog" ADD COLUMN "characterId" TEXT;
 
 -- Add fieldsCorrected array to track which fields were corrected
-ALTER TABLE "CorrectionJobLog" ADD COLUMN "fieldsCorrected" TEXT[] DEFAULT '{}';
+ALTER TABLE "CorrectionJobLog" ADD COLUMN "fieldsCorrected" TEXT[];
 
 -- Add details column for additional correction metadata
 ALTER TABLE "CorrectionJobLog" ADD COLUMN "details" JSONB;

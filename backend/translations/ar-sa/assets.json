@@ -1,0 +1,323 @@
+{
+  "description": "Assets module strings for asset management, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledAsset": "أصل غير مسمى",
+      "updatedAt": "تم التحديث في {{date}}",
+      "public": "عام",
+      "private": "خاص",
+      "identifier": "معرف الأصل: {{id}}",
+      "unsavedChanges": "تغييرات غير محفوظة",
+      "allSaved": "تم حفظ جميع التغييرات",
+      "submitting": "جاري الحفظ..."
+    },
+    "types": {
+      "CLOTHING": "ملابس",
+      "ACCESSORY": "إكسسوار",
+      "SCAR": "ندبة",
+      "HAIRSTYLE": "تسريحة شعر",
+      "OBJECT": "كائن",
+      "VEHICLE": "مركبة",
+      "FURNITURE": "أثاث",
+      "PROP": "دعامة"
+    },
+    "typeDescriptions": {
+      "CLOTHING": "عناصر الملابس والأزياء",
+      "ACCESSORY": "إكسسوارات وحلي يمكن ارتداؤها",
+      "SCAR": "علامات وندوب وميزات جسدية",
+      "HAIRSTYLE": "تسريحات وألوان الشعر",
+      "OBJECT": "أشياء وعناصر محمولة باليد",
+      "VEHICLE": "مركبات ومطايا",
+      "FURNITURE": "أثاث وعناصر هيكلية",
+      "PROP": "دعائم وديكورات الخلفية"
+    },
+    "categories": {
+      "WEARABLE": "قابل للارتداء",
+      "HOLDABLE": "قابل للحمل",
+      "ENVIRONMENTAL": "بيئي"
+    },
+    "categoryDescriptions": {
+      "WEARABLE": "عناصر يمكن أن يرتديها الشخصية",
+      "HOLDABLE": "عناصر يمكن حملها أو نقلها",
+      "ENVIRONMENTAL": "عناصر خلفية وبيئية"
+    },
+    "placementZones": {
+      "face": "وجه",
+      "torso": "جذع",
+      "left_hand": "يد يسرى",
+      "right_hand": "يد يمنى",
+      "head": "رأس",
+      "feet": "قدمان"
+    },
+    "placementZoneDescriptions": {
+      "face": "تطبق على منطقة الوجه",
+      "torso": "تطبق على منطقة الجسم/الجذع",
+      "left_hand": "تُمسك باليد اليسرى",
+      "right_hand": "تُمسك باليد اليمنى",
+      "head": "تُلبس على الرأس",
+      "feet": "تُلبس على القدمين"
+    },
+    "accessibility": {
+      "addToFavorites": "إضافة إلى المفضلة",
+      "removeFromFavorites": "إزالة من المفضلة"
+    },
+    "stats": {
+      "characters": "شخصيات",
+      "charactersShort": "{{count}} ألف شخصية",
+      "charactersShort_plural": "{{count}} ألف شخصية"
+    },
+    "hub": {
+      "title": "الأصول",
+      "subtitle": "قم بإنشاء وإدارة الأصول لشخصياتك. تتضمن الأصول الملابس، الإكسسوارات، الكائنات، والمزيد.",
+      "sidebar": {
+        "description": "تصفح وإدارة أصولك الإبداعية.",
+        "viewGallery": "عرض المعرض"
+      },
+      "actions": {
+        "newAsset": "أصل جديد",
+        "createAsset": "أصل جديد",
+        "retry": "حاول مرة أخرى"
+      },
+      "tabs": {
+        "myAssets": "أصولي",
+        "publicGallery": "معرض عام"
+      },
+      "filters": {
+        "searchPlaceholder": "بحث بالاسم",
+        "type": "النوع",
+        "category": "الفئة",
+        "allTypes": "جميع الأنواع",
+        "allCategories": "جميع الفئات",
+        "noFilter": "أي"
+      },
+      "states": {
+        "loading": "جاري تحميل أصولك...",
+        "error": "لم نتمكن من تحميل الأصول. يرجى المحاولة مرة أخرى.",
+        "empty": "لا توجد أصول متاحة بعد.",
+        "empty_private": "لم تقم بإنشاء أي أصول بعد.",
+        "empty_public": "لا توجد أصول عامة تطابق عوامل التصفية الخاصة بك.",
+        "emptyHint": "ابدأ بإنشاء أول أصل لك أو عدّل عوامل التصفية.",
+        "emptySearchHint": "عدّل عوامل التصفية الخاصة بك أو امسح البحث لمشاهدة المزيد من النتائج."
+      },
+      "labels": {
+        "total": "{{count}} أصل متاح",
+        "total_plural": "{{count}} أصول متاحة",
+        "quickCreateLink": "انتقل مباشرة إلى الإنشاء"
+      }
+    },
+    "form": {
+      "submit": "حفظ",
+      "cancel": "إلغاء",
+      "sections": {
+        "identity": "الهوية",
+        "identityHint": "حدد الخصائص الأساسية لهذا الأصل.",
+        "details": "التفاصيل",
+        "detailsHint": "صف المظهر والخصائص والمطالبات المرئية.",
+        "configuration": "التهيئة",
+        "configurationHint": "تحكم في إعدادات الفئة والموضع والتوليد."
+      },
+      "fields": {
+        "name": "الاسم",
+        "description": "الوصف",
+        "type": "النوع",
+        "category": "الفئة",
+        "positivePrompt": "مطالبة مرئية",
+        "negativePrompt": "مطالبة سلبية",
+        "placementZone": "منطقة الموضع",
+        "isPublic": "الرؤية"
+      },
+      "placeholders": {
+        "name": "أدخل اسم الأصل",
+        "description": "صف هذا الأصل...",
+        "type": "اختر النوع",
+        "category": "اختر الفئة",
+        "positivePrompt": "صف كيف يجب أن يظهر الأصل...",
+        "negativePrompt": "صف ما يجب تجنبه...",
+        "placementZone": "اختر منطقة الموضع"
+      },
+      "hints": {
+        "name": "اسم واضح ووصفي لهذا الأصل",
+        "description": "وصف مفصل لمظهر الأصل",
+        "positivePrompt": "مطالبة مرئية لتوليد الذكاء الاصطناعي (على سبيل المثال، 'سترة جلدية حمراء بسحابات فضية')",
+        "negativePrompt": "العناصر التي يجب تجنبها في التوليد (على سبيل المثال، 'تالف، ممزق، متسخ')",
+        "placementZone": "المكان الذي يجب أن يوضع فيه الأصل على الشخصية"
+      },
+      "labels": {
+        "unsavedChanges": "لديك تغييرات غير محفوظة",
+        "allSaved": "تم حفظ التغييرات",
+        "submitting": "جاري الحفظ...",
+        "visibilityPublic": "عام",
+        "visibilityPrivate": "خاص"
+      },
+      "images": {
+        "coverHeader": "غلاف الأصل",
+        "coverDescription": "صورة تمثل هذا الأصل.",
+        "upload": "تحميل الغلاف",
+        "change": "تغيير الغلاف",
+        "uploading": "جاري الرفع...",
+        "urlModalTitle": "استخدام صورة من رابط URL",
+        "urlLabel": "رابط الصورة (URL)",
+        "previewAlt": "معاينة غلاف الأصل",
+        "invalidUrl": "أدخل رابط صورة صالح (http/https)."
+      },
+      "tabs": {
+        "identity": "الهوية",
+        "details": "التفاصيل",
+        "configuration": "التهيئة",
+        "images": "الصور",
+        "lockedHint": "املأ تفاصيل الهوية الأساسية لفتح الأقسام الأخرى."
+      }
+    },
+    "create": {
+      "title": "إنشاء أصل جديد",
+      "subtitle": "حدد خصائص الأصل وسماته المرئية.",
+      "saveButton": "حفظ الأصل",
+      "cancelButton": "إلغاء والعودة"
+    },
+    "edit": {
+      "title": "تعديل الأصل",
+      "subtitle": "تحديث {{name}}",
+      "saveButton": "تحديث الأصل",
+      "cancelButton": "تجاهل التغييرات",
+      "states": {
+        "loading": "جاري تحميل الأصل..."
+      },
+      "accessDenied": {
+        "title": "تم رفض الوصول",
+        "message": "ليس لديك إذن لتعديل هذا الأصل.",
+        "backButton": "العودة إلى الأصول"
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "جاري تحميل تفاصيل الأصل...",
+        "notFound": "لم نتمكن من العثور على هذا الأصل."
+      },
+      "actions": {
+        "backToHub": "العودة إلى المركز",
+        "edit": "تعديل",
+        "delete": "حذف",
+        "deleting": "جاري الحذف...",
+        "share": "مشاركة"
+      },
+      "confirmDelete": {
+        "title": "هل تريد حذف الأصل؟",
+        "message": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع البيانات المرتبطة بهذا الأصل بشكل دائم.",
+        "confirm": "حذف بشكل دائم",
+        "cancel": "إلغاء"
+      },
+      "labels": {
+        "public": "عام",
+        "private": "خاص",
+        "createdAt": "تاريخ الإنشاء",
+        "createdBy": "تم الإنشاء بواسطة",
+        "updatedAt": "آخر تحديث",
+        "identifier": "معرف الأصل: {{id}}",
+        "characterCount": "{{count}} شخصية",
+        "characterCount_plural": "{{count}} شخصيات",
+        "type": "النوع",
+        "category": "الفئة"
+      },
+      "sections": {
+        "description": "الوصف",
+        "prompts": "مطالبات التوليد",
+        "placement": "الموضع",
+        "metadata": "البيانات الوصفية"
+      },
+      "placement": {
+        "title": "موضع الأصل",
+        "zoneLabel": "منطقة الموضع",
+        "categoryLabel": "الفئة"
+      },
+      "characters": {
+        "title": "الشخصيات التي تستخدم هذا الأصل",
+        "empty": "لا توجد شخصيات تستخدم هذا الأصل بعد."
+      }
+    },
+    "picker": {
+      "title": "اختر الأصول",
+      "subtitle": "اختر الأصول لإضافتها إلى شخصيتك",
+      "searchPlaceholder": "بحث في الأصول...",
+      "filters": {
+        "allTypes": "جميع الأنواع",
+        "allCategories": "جميع الفئات",
+        "typeFilter": "تصفية حسب النوع",
+        "categoryFilter": "تصفية حسب الفئة"
+      },
+      "actions": {
+        "addSelected": "إضافة المحدد ({{count}})",
+        "addSelected_plural": "إضافة المحدد ({{count}})",
+        "cancel": "إلغاء",
+        "clearSelection": "مسح التحديد"
+      },
+      "states": {
+        "loading": "جاري تحميل الأصول...",
+        "error": "فشل تحميل الأصول",
+        "empty": "لا توجد أصول متاحة",
+        "noResults": "لا توجد أصول تطابق بحثك",
+        "selectedEmpty": "حدد الأصول للإضافة"
+      },
+      "labels": {
+        "selected": "{{count}} محدد",
+        "selected_plural": "{{count}} محددة"
+      },
+      "assetCard": {
+        "typeLabel": "النوع",
+        "categoryLabel": "الفئة"
+      }
+    },
+    "characterAssets": {
+      "title": "أصول الشخصية",
+      "subtitle": "إدارة الأصول المجهزة لهذه الشخصية",
+      "tabs": {
+        "equipped": "مجهز",
+        "available": "متاح"
+      },
+      "actions": {
+        "addAssets": "إضافة أصول",
+        "removeAsset": "إزالة",
+        "configureAsset": "تهيئة"
+      },
+      "states": {
+        "noEquipped": "لا توجد أصول مجهزة",
+        "noAvailable": "لا توجد أصول متاحة",
+        "loading": "جاري تحميل الأصول..."
+      },
+      "placement": {
+        "title": "موضع الأصل",
+        "zoneLabel": "منطقة",
+        "configure": "تهيئة الموضع",
+        "remove": "إزالة من الشخصية"
+      },
+      "labels": {
+        "equippedCount": "{{count}} أصل مجهز",
+        "equippedCount_plural": "{{count}} أصول مجهزة",
+        "availableCount": "{{count}} متاح",
+        "availableCount_plural": "{{count}} متاحة"
+      }
+    },
+    "errors": {
+      "createFailed": "لم نتمكن من إنشاء الأصل. يرجى المحاولة مرة أخرى.",
+      "updateFailed": "لم نتمكن من تحديث الأصل.",
+      "deleteFailed": "لم نتمكن من حذف الأصل.",
+      "detailUnavailable": "تعذر تحميل تفاصيل الأصل حاليًا.",
+      "linkFailed": "فشل ربط الأصل بالشخصية.",
+      "unlinkFailed": "فشل فك ربط الأصل بالشخصية.",
+      "nameRequired": "اسم الأصل مطلوب",
+      "typeRequired": "نوع الأصل مطلوب",
+      "categoryRequired": "فئة الأصل مطلوبة",
+      "invalidType": "نوع أصل غير صالح",
+      "invalidCategory": "فئة أصل غير صالحة",
+      "invalidPlacementZone": "منطقة موضع غير صالحة لنوع الأصل هذا",
+      "assetInUse": "هذا الأصل يُستخدم بواسطة {{count}} شخصية ولا يمكن حذفه.",
+      "assetInUse_plural": "هذا الأصل يُستخدم بواسطة {{count}} شخصيات ولا يمكن حذفه."
+    },
+    "success": {
+      "created": "تم إنشاء الأصل بنجاح",
+      "updated": "تم تحديث الأصل بنجاح",
+      "deleted": "تم حذف الأصل بنجاح",
+      "linked": "تم ربط الأصل بالشخصية",
+      "unlinked": "تم فك ربط الأصل بالشخصية"
+    }
+  }
+}

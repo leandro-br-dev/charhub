@@ -142,6 +142,7 @@ model User {
   createdCharacters Character[] @relation("CharacterCreator")
   stories           Story[]     @relation("StoryAuthor")
   createdAttires    Attire[]    @relation("AttireCreator")
+  createdAssets     Asset[]     @relation("AssetAuthor")
 
   // Chat system relations
   assistants                 Assistant[]               @relation("UserAssistants")
@@ -225,6 +226,29 @@ enum TagType {
   GAME // Game-related tags
   MEDIA // Media types (anime, manga, etc.)
   GENERAL // General classification tags
+}
+
+// ============================================================================
+// ASSET MANAGEMENT SYSTEM (FEATURE-021)
+// ============================================================================
+
+// Asset type classification
+enum AssetType {
+  CLOTHING // Existing attire functionality
+  ACCESSORY // Jewelry, glasses, hats, bags
+  SCAR // Scars, tattoos, birthmarks, wounds
+  HAIRSTYLE // Hair styles, colors, accessories
+  OBJECT // General objects (weapons, tools, items)
+  VEHICLE // Cars, horses, ships
+  FURNITURE // Tables, chairs, beds
+  PROP // Stage props, decorative items
+}
+
+// Asset category classification
+enum AssetCategory {
+  WEARABLE // On character body (clothing, scars, accessories, hairstyles)
+  HOLDABLE // In character hands (weapons, tools, items)
+  ENVIRONMENTAL // In scene (furniture, vehicles, props)
 }
 
 // LoRA model from Civitai
@@ -455,6 +479,116 @@ model Attire {
   @@index([ageRating])
 }
 
+// Asset model - comprehensive asset management system (FEATURE-021)
+model Asset {
+  id String @id @default(uuid())
+
+  // Core data
+  name        String
+  description String       @db.Text
+  type        AssetType
+  category    AssetCategory
+
+  // Generation prompts
+  promptPrimary  String?   @db.Text // Main prompt for generating this asset
+  promptContext  String?   @db.Text // Additional context for when used with characters
+  negativePrompt String?   @db.Text // Negative prompt for generation
+
+  // Placement info (for wearable/holdable)
+  placementZone   String? // "face", "torso", "left_hand", "right_hand", "head", "feet"
+  placementDetail String? // "left cheek", "across nose", "forehead"
+
+  // Visual
+  previewImageUrl String?
+
+  // Classification
+  style       VisualStyle?
+  ageRating   AgeRating  @default(L)
+  contentTags ContentTag[]
+  visibility  Visibility @default(PRIVATE)
+
+  // Ownership
+  authorId String
+  author   User @relation("AssetAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Translation versioning
+  contentVersion       Int     @default(1) // Increments when translatable content changes
+  originalLanguageCode String?
+
+  // Relations
+  characterAssets CharacterAsset[]
+  images          AssetImage[]
+  tags            AssetTag[]
+
+  // Metadata
+  metadata  Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type])
+  @@index([category])
+  @@index([authorId])
+  @@index([visibility])
+  @@index([ageRating])
+  @@index([style])
+}
+
+// Asset images
+model AssetImage {
+  id     String @id @default(uuid())
+  assetId String
+  asset   Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  imageUrl  String
+  imageType String // "preview", "reference", "transparent", "in_context"
+  width     Int?
+  height    Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([assetId])
+}
+
+// Asset-Tag junction model
+model AssetTag {
+  id     String @id @default(uuid())
+  assetId String
+  asset   Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  tagId  String
+  tag    Tag   @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([assetId, tagId])
+  @@index([assetId])
+  @@index([tagId])
+}
+
+// Character-Asset junction model
+model CharacterAsset {
+  id        String    @id @default(uuid())
+  characterId String
+  character   Character @relation(fields: [characterId], references: [id], onDelete: Cascade)
+  assetId     String
+  asset       Asset     @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  // Placement override (can differ from asset default)
+  placementZone   String? // Override asset's default placement
+  placementDetail String? // Specific placement on this character
+
+  // Context
+  contextNote String?   @db.Text // "Helena always wears this ring on her left hand"
+  isVisible   Boolean  @default(true) // Can be hidden (secret scar)
+  isPrimary   Boolean  @default(false) // Primary asset of this type
+
+  // Order
+  displayOrder Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@unique([characterId, assetId])
+  @@index([characterId])
+  @@index([assetId])
+}
+
 // Tag system for categorization
 model Tag {
   id          String  @id @default(uuid())
@@ -481,6 +615,7 @@ model Tag {
   // Relations
   characters Character[]
   stories    Story[]
+  assets     AssetTag[]
 
   @@unique([name, type]) // Same tag name can exist for different types
   @@index([type])
@@ -572,6 +707,9 @@ model Character {
   stickers        CharacterSticker[]
   images          CharacterImage[]
   curatedFrom     CuratedImage? // Source curated image if auto-generated
+
+  // Asset Management System (FEATURE-021)
+  characterAssets CharacterAsset[]
 
   // Chat system relations
   assistantsUsingAsDefault   Assistant[]               @relation("AssistantDefaultCharacter")

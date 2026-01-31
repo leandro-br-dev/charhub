@@ -136,6 +136,14 @@ export function NavigationRail({
         opensSidebar: true
       },
       {
+        to: '/assets/hub',
+        icon: 'inventory_2',
+        labelKey: 'navigation:assets',
+        fallbackLabel: 'Assets',
+        available: true,
+        opensSidebar: true
+      },
+      {
         to: '/tasks',
         icon: 'task_alt',
         labelKey: 'navigation:tasks',
@@ -151,14 +159,6 @@ export function NavigationRail({
         available: true,
         onlyAdmin: true,
         opensSidebar: false
-      },
-      {
-        to: '/assets',
-        icon: 'inventory_2',
-        labelKey: 'navigation:assets',
-        fallbackLabel: 'Assets',
-        available: false,
-        opensSidebar: true
       }
     ],
     []

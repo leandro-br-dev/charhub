@@ -27,6 +27,7 @@ import { StoryDetailPage } from './pages/story/[storyId]';
 import PlansPage from './pages/plans';
 import TasksPage from './pages/tasks';
 import DiscoverPage from './pages/(discover)';
+import AssetHubPage from './pages/assets/hub';
 import AnalyticsPage from './pages/admin/analytics';
 import AdminScriptsPage from './pages/admin/scripts';
 
@@ -79,9 +80,15 @@ export default function App(): JSX.Element {
         <Route path="/stories/new" element={<StoryNewPage />} />
         <Route path="/stories/create-ai" element={<AutomatedStoryCreatePage />} />
         <Route path="/stories/:storyId" element={<StoryDetailPage />} />
+        <Route path="/stories/:storyId/edit" element={<StoryEditPage />} />
+        {/* Asset Management System routes */}
+        <Route path="/assets" element={<Navigate to="/assets/hub" replace />} />
+        <Route path="/assets/hub" element={<AssetHubPage />} />
+        <Route path="/assets/create" element={<Navigate to="/assets/hub" replace />} />
+        <Route path="/assets/:assetId" element={<Navigate to="/assets/hub" replace />} />
+        <Route path="/assets/:assetId/edit" element={<Navigate to="/assets/hub" replace />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/tasks" element={<TasksPage />} />
-        <Route path="/stories/:storyId/edit" element={<StoryEditPage />} />
       </Route>
 
       {/* Admin-only routes */}
