@@ -437,21 +437,7 @@ export async function seedVisualStyles(options?: SeedVisualStylesOptions) {
 
   const { Theme } = await import('../../generated/prisma');
 
-  // Update ANIME style to support themes
-  const animeStyleWithThemes = await prisma.visualStyleConfig.upsert({
-    where: { style: VisualStyle.ANIME },
-    update: {
-      supportedThemes: [Theme.DARK_FANTASY, Theme.FANTASY, Theme.FURRY],
-    },
-    create: {
-      style: VisualStyle.ANIME,
-      name: 'Anime',
-      description: 'Japanese anime art style',
-      supportedThemes: [Theme.DARK_FANTASY, Theme.FANTASY, Theme.FURRY],
-    },
-  });
-
-  // Wai Illustrious SDXL checkpoint (for FANTASY theme)
+  // Wai Illustrious SDXL checkpoint (default for ANIME style)
   const waiIllustriousCheckpoint = await prisma.styleCheckpoint.upsert({
     where: { filename: 'waiIllustriousSDXL_v160.safetensors' },
     update: {},
@@ -461,6 +447,22 @@ export async function seedVisualStyles(options?: SeedVisualStylesOptions) {
       path: '/models/checkpoints/waiIllustriousSDXL_v160.safetensors',
       modelType: ModelType.CHECKPOINT,
       isActive: true,
+    },
+  });
+
+  // Update ANIME style to support themes and correct default checkpoint
+  const animeStyleWithThemes = await prisma.visualStyleConfig.upsert({
+    where: { style: VisualStyle.ANIME },
+    update: {
+      supportedThemes: [Theme.DARK_FANTASY, Theme.FANTASY, Theme.FURRY],
+      defaultCheckpointId: waiIllustriousCheckpoint.id,
+    },
+    create: {
+      style: VisualStyle.ANIME,
+      name: 'Anime',
+      description: 'Japanese anime art style',
+      supportedThemes: [Theme.DARK_FANTASY, Theme.FANTASY, Theme.FURRY],
+      defaultCheckpointId: waiIllustriousCheckpoint.id,
     },
   });
 

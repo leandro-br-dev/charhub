@@ -338,6 +338,7 @@ export class BatchCharacterGenerator {
         userRole: 'ADMIN', // Bot user has admin role
         visualStyle: character.style || undefined, // Apply Visual Style System for model/LoRA selection
         contentType: undefined, // Let Visual Style System determine content type
+        theme: character.theme || undefined, // Style + Theme system for correct model selection
         onProgress: (stage, total, message) => {
           logger.info({ characterId, stage, total, message }, 'Reference generation progress');
         },
