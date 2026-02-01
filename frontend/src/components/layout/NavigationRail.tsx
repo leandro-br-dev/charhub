@@ -144,6 +144,14 @@ export function NavigationRail({
         opensSidebar: true
       },
       {
+        to: '/scenes/hub',
+        icon: 'landscape',
+        labelKey: 'navigation:scenes',
+        fallbackLabel: 'Scenes',
+        available: true,
+        opensSidebar: true
+      },
+      {
         to: '/tasks',
         icon: 'task_alt',
         labelKey: 'navigation:tasks',

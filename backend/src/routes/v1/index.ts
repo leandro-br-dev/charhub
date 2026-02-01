@@ -31,6 +31,7 @@ import imageGenerationRoutes from './image-generation';
 import visualStylesRoutes from './visual-styles';
 import styleThemesRoutes from './style-themes';
 import characterPopulationRoutes from './character-population';
+import scenesRoutes from './scenes';
 import systemConfigRoutes from './system-config';
 import { checkFreeMonthlyCredits } from '../../middleware/checkFreeMonthlyCredits';
 
@@ -72,6 +73,7 @@ router.use('/image-generation', imageGenerationRoutes);
 router.use('/visual-styles', visualStylesRoutes);
 router.use('/style-themes', styleThemesRoutes);
 router.use('/character-population', characterPopulationRoutes);
+router.use('/scenes', scenesRoutes);
 router.use('/system-config', systemConfigRoutes);
 router.use('/', accessRoutes);
 

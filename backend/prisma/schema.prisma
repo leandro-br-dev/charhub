@@ -143,6 +143,7 @@ model User {
   stories           Story[]     @relation("StoryAuthor")
   createdAttires    Attire[]    @relation("AttireCreator")
   createdAssets     Asset[]     @relation("AssetAuthor")
+  createdScenes     Scene[]     @relation("SceneAuthor")
 
   // Chat system relations
   assistants                 Assistant[]               @relation("UserAssistants")
@@ -519,6 +520,7 @@ model Asset {
   characterAssets CharacterAsset[]
   images          AssetImage[]
   tags            AssetTag[]
+  sceneAreas      SceneAreaAsset[]
 
   // Metadata
   metadata  Json?
@@ -616,6 +618,7 @@ model Tag {
   characters Character[]
   stories    Story[]
   assets     AssetTag[]
+  scenes     SceneTag[]
 
   @@unique([name, type]) // Same tag name can exist for different types
   @@index([type])
@@ -1599,4 +1602,188 @@ model LLMPricing {
   @@index([provider, model])
   @@index([isActive])
   @@index([effectiveFrom])
+}
+
+// ============================================================================
+// SCENE & LOCATION SYSTEM (FEATURE-022)
+// ============================================================================
+
+// Scene - Top-level location model
+model Scene {
+  id              String        @id @default(uuid())
+
+  // Core data
+  name            String
+  description     String        @db.Text
+  shortDescription String?      // One-line summary for lists
+
+  // Classification
+  genre           String?       // "victorian_manor", "modern_apartment", "spaceship"
+  era             String?       // "1890", "2024", "future"
+  mood            String?       // "dark", "mysterious", "cheerful"
+  style           VisualStyle?
+
+  // Generation
+  imagePrompt     String?       @db.Text   // Prompt for exterior/overview image
+  mapPrompt       String?       @db.Text   // Prompt for top-down floor plan
+
+  // Images
+  coverImageUrl   String?       // Main scene image
+  mapImageUrl     String?       // Top-down floor plan
+
+  // Classification
+  ageRating       AgeRating     @default(L)
+  contentTags     ContentTag[]
+  visibility      Visibility    @default(PRIVATE)
+
+  // Ownership
+  authorId        String
+  author          User          @relation("SceneAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+
+  // Translation versioning
+  contentVersion       Int     @default(1) // Increments when translatable content changes
+  originalLanguageCode String?
+
+  // Relations
+  areas           SceneArea[]
+  images          SceneImage[]
+  tags            SceneTag[]
+
+  // Metadata
+  metadata        Json?         // Extra scene-specific data
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([authorId])
+  @@index([visibility])
+  @@index([ageRating])
+  @@index([style])
+}
+
+// Scene images
+model SceneImage {
+  id          String   @id @default(uuid())
+  sceneId     String
+  scene       Scene    @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+
+  imageUrl    String
+  imageType   String   // "cover", "map", "panorama", "detail"
+  caption     String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([sceneId])
+}
+
+// Scene-Tag junction model
+model SceneTag {
+  id      String @id @default(uuid())
+  sceneId String
+  scene   Scene  @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+  tagId   String
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([sceneId, tagId])
+  @@index([sceneId])
+  @@index([tagId])
+}
+
+// SceneArea - Sub-location within Scene
+model SceneArea {
+  id              String      @id @default(uuid())
+  sceneId         String
+  scene           Scene       @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+
+  // Core data
+  name            String      // "Library", "Main Hall", "Kitchen"
+  description     String      @db.Text
+  shortDescription String?    // One-line for navigation
+
+  // Generation
+  imagePrompt     String?     @db.Text   // Prompt for environment view
+  mapPrompt       String?     @db.Text   // Prompt for top-down area view
+
+  // Images
+  environmentImageUrl String? // First-person/third-person view of the area
+  mapImageUrl         String? // Top-down view of just this area
+
+  // Navigation
+  displayOrder    Int         @default(0)
+  isAccessible    Boolean     @default(true)  // Can be locked/unlocked
+
+  // Translation versioning
+  contentVersion       Int     @default(1) // Increments when translatable content changes
+  originalLanguageCode String?
+
+  // Relations
+  assets          SceneAreaAsset[]
+  connections     SceneAreaConnection[] @relation("FromArea")
+  connectedFrom   SceneAreaConnection[] @relation("ToArea")
+  images          SceneAreaImage[]
+
+  // Metadata
+  metadata        Json?       // Extra data (light level, temperature, smell)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([sceneId])
+  @@index([displayOrder])
+}
+
+// SceneArea images
+model SceneAreaImage {
+  id          String     @id @default(uuid())
+  areaId      String
+  area        SceneArea  @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  imageUrl    String
+  imageType   String     // "environment", "map", "detail", "panorama"
+  caption     String?
+
+  createdAt   DateTime   @default(now())
+
+  @@index([areaId])
+}
+
+// SceneAreaAsset - Assets placed in areas
+model SceneAreaAsset {
+  id          String     @id @default(uuid())
+  areaId      String
+  area        SceneArea  @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  assetId     String
+  asset       Asset      @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  // Placement within area
+  position    String?    // "on desk", "near fireplace", "hanging on wall"
+  isHidden    Boolean    @default(false)  // Must be discovered
+  isInteractable Boolean @default(true)   // Can be examined
+
+  // Game-specific
+  discoveryHint String?  @db.Text // Hint text when examining area
+  metadata     Json?     // Extra game data
+
+  displayOrder Int       @default(0)
+
+  @@unique([areaId, assetId])
+  @@index([areaId])
+  @@index([assetId])
+}
+
+// SceneAreaConnection - Area-to-area navigation
+model SceneAreaConnection {
+  id          String     @id @default(uuid())
+  fromAreaId  String
+  fromArea    SceneArea  @relation("FromArea", fields: [fromAreaId], references: [id], onDelete: Cascade)
+  toAreaId    String
+  toArea      SceneArea  @relation("ToArea", fields: [toAreaId], references: [id], onDelete: Cascade)
+
+  // Navigation
+  direction   String?    // "north", "east", "upstairs", "through door"
+  description String?    @db.Text // "A heavy oak door leads to..."
+  isLocked    Boolean    @default(false)
+  lockHint    String?    @db.Text // "Requires brass key"
+
+  @@unique([fromAreaId, toAreaId])
+  @@index([fromAreaId])
+  @@index([toAreaId])
 }

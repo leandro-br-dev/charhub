@@ -28,6 +28,10 @@ import PlansPage from './pages/plans';
 import TasksPage from './pages/tasks';
 import DiscoverPage from './pages/(discover)';
 import AssetHubPage from './pages/assets/hub';
+import SceneHubPage from './pages/scenes/hub';
+import SceneCreatePage from './pages/scenes/create';
+import SceneDetailPage from './pages/scenes/$id';
+import SceneEditPage from './pages/scenes/$id/edit/index';
 import AnalyticsPage from './pages/admin/analytics';
 import AdminScriptsPage from './pages/admin/scripts';
 
@@ -87,6 +91,12 @@ export default function App(): JSX.Element {
         <Route path="/assets/create" element={<Navigate to="/assets/hub" replace />} />
         <Route path="/assets/:assetId" element={<Navigate to="/assets/hub" replace />} />
         <Route path="/assets/:assetId/edit" element={<Navigate to="/assets/hub" replace />} />
+        {/* Scene & Location System routes */}
+        <Route path="/scenes" element={<Navigate to="/scenes/hub" replace />} />
+        <Route path="/scenes/hub" element={<SceneHubPage />} />
+        <Route path="/scenes/create" element={<SceneCreatePage />} />
+        <Route path="/scenes/:sceneId" element={<SceneDetailPage />} />
+        <Route path="/scenes/:sceneId/edit" element={<SceneEditPage />} />
         <Route path="/plans" element={<PlansPage />} />
         <Route path="/tasks" element={<TasksPage />} />
       </Route>
