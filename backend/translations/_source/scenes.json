@@ -217,6 +217,9 @@
       "assets": "Assets",
       "connections": "Connections"
     },
+    "sidebar": {
+      "myScene": "My Scene"
+    },
     "hub": {
       "title": "Scenes",
       "subtitle": "Create and manage locations for your stories",

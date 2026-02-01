@@ -5,16 +5,19 @@
     "story": "Historia",
     "characters": "Personajes",
     "tasks": "Tareas",
-    "admin": "Administrador",
-    "adminAnalytics": "Análisis",
+    "admin": "Admin",
+    "adminAnalytics": "Analíticas",
     "adminScripts": "Scripts",
     "assets": "Activos",
+    "scenes": "Escenas",
     "profileLink": "Mi perfil",
     "sidebarDefaultTitle": "Explora CharHub",
-    "sidebarDefaultDescription": "Usa los íconos de la barra de navegación para cambiar entre experiencias.",
-    "developmentTools": "Herramientas de desarrollo",
-    "developmentPlaceholder": "Los pipelines de compilación, los registros y los controles de automatización estarán aquí pronto.",
+    "sidebarDefaultDescription": "Usa los iconos de la barra de navegación para cambiar entre experiencias.",
+    "developmentTools": "Herramientas de desarrollador",
+    "developmentPlaceholder": "Las tuberías de compilación, los registros y los controles de automatización estarán aquí pronto.",
     "viewAllCharacters": "Ver todos los personajes",
-    "viewAllStories": "Ver todas las historias"
+    "viewAllStories": "Ver todas las historias",
+    "viewAllScenes": "Ver todas las escenas",
+    "createScene": "Crear escena"
   }
 }

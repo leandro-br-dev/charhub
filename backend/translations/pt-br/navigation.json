@@ -1,20 +1,23 @@
 {
   "description": "Navigation and menu labels",
   "resources": {
-    "chat": "Bate-papo",
+    "chat": "Chat",
     "story": "História",
     "characters": "Personagens",
     "tasks": "Tarefas",
-    "admin": "Administração",
-    "adminAnalytics": "Análises",
+    "admin": "Admin",
+    "adminAnalytics": "Analytics",
     "adminScripts": "Scripts",
     "assets": "Ativos",
+    "scenes": "Cenas",
     "profileLink": "Meu perfil",
-    "sidebarDefaultTitle": "Explorar CharHub",
-    "sidebarDefaultDescription": "Use os ícones na barra de navegação para alternar entre as experiências.",
+    "sidebarDefaultTitle": "Explore o CharHub",
+    "sidebarDefaultDescription": "Use os ícones na barra de navegação para alternar entre experiências.",
     "developmentTools": "Ferramentas de desenvolvedor",
     "developmentPlaceholder": "Pipelines de build, logs e controles de automação estarão aqui em breve.",
     "viewAllCharacters": "Ver todos os personagens",
-    "viewAllStories": "Ver todas as histórias"
+    "viewAllStories": "Ver todas as histórias",
+    "viewAllScenes": "Ver todas as cenas",
+    "createScene": "Criar Cena"
   }
 }

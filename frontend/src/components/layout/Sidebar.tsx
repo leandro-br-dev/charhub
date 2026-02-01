@@ -6,6 +6,7 @@ import { ConversationHistory } from "../../pages/(chat)/shared/components/Conver
 import { CharacterListSidebar } from "../../pages/(characters)/shared/components";
 import { StoryListSidebar } from "../../pages/story/shared/components";
 import { AssetListSidebar } from "../../pages/assets/shared/components";
+import { SceneListSidebar } from "../../pages/scenes/shared/components";
 
 /**
  * Loading placeholder for sidebar content while translations load
@@ -64,6 +65,11 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
   const handleCreateAsset = () => {
     handleLinkClick();
     navigate("/assets/create");
+  };
+
+  const handleCreateScene = () => {
+    handleLinkClick();
+    navigate("/scenes/create");
   };
 
   let content: ReactNode;
@@ -146,6 +152,29 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
         <Suspense fallback={<SidebarLoadingFallback />}>
           <AssetListSidebar onLinkClick={handleLinkClick} />
         </Suspense>
+      </div>
+    );
+  } else if (activeView?.startsWith("/scenes")) {
+    content = (
+      <div className="flex h-full w-full flex-col">
+        <Suspense fallback={<SidebarLoadingFallback />}>
+          <SceneListSidebar onLinkClick={handleLinkClick} />
+        </Suspense>
+        <div className="mt-auto flex flex-col gap-2 p-4">
+          <Button variant="primary" icon="add" onClick={handleCreateScene}>
+            {t("navigation:createScene", "Create Scene")}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="grid_view"
+            onClick={() => {
+              handleLinkClick();
+              navigate("/scenes/hub");
+            }}
+          >
+            {t("navigation.viewAllScenes", "View all scenes")}
+          </Button>
+        </div>
       </div>
     );
   } else {

@@ -9,12 +9,15 @@
     "adminAnalytics": "Analytics",
     "adminScripts": "Scripts",
     "assets": "Assets",
+    "scenes": "Scenes",
     "profileLink": "My profile",
     "sidebarDefaultTitle": "Explore CharHub",
     "sidebarDefaultDescription": "Use the icons on the navigation rail to switch between experiences.",
     "developmentTools": "Developer tools",
     "developmentPlaceholder": "Build pipelines, logs and automation controls will live here soon.",
     "viewAllCharacters": "View all characters",
-    "viewAllStories": "View all stories"
+    "viewAllStories": "View all stories",
+    "viewAllScenes": "View all scenes",
+    "createScene": "Create Scene"
   }
 }
