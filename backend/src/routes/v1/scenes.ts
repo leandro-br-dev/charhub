@@ -1151,4 +1151,616 @@ router.post('/cover', requireAuth, asyncMulterHandler(upload.single('cover')), a
   }
 });
 
+// ============================================================================
+// SCENE IMAGES ENDPOINTS
+// ============================================================================
+
+/**
+ * GET /api/v1/scenes/:id/images
+ * List all scene images
+ */
+router.get('/:id/images', optionalAuth, async (req: Request, res: Response) => {
+  try {
+    const { id: sceneId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    // Check scene access
+    const scene = await sceneService.getSceneById(sceneId);
+    if (!scene) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Scene not found',
+      });
+    }
+
+    const isOwner = userId ? await sceneService.isSceneOwner(sceneId, userId) : false;
+    if (scene.visibility !== 'PUBLIC' && !isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
+    }
+
+    const images = await sceneService.getSceneImages(sceneId);
+
+    return res.json({
+      success: true,
+      data: images,
+      count: images.length,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting scene images');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get scene images',
+    });
+  }
+});
+
+/**
+ * POST /api/v1/scenes/:id/images
+ * Upload scene image
+ */
+router.post('/:id/images', requireAuth, asyncMulterHandler(upload.single('image')), async (req: Request, res: Response) => {
+  const userId = req.auth?.user?.id;
+
+  if (!userId) {
+    return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+  }
+
+  if (!r2Service.isConfigured()) {
+    return sendError(res, 503, API_ERROR_CODES.R2_STORAGE_ERROR, {
+      message: 'Media storage is not configured',
+      details: { missing: r2Service.getMissingConfig() },
+    });
+  }
+
+  const { id: sceneId } = req.params;
+  const uploadedFile = req.file;
+
+  if (!uploadedFile) {
+    return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+      message: 'No file uploaded',
+      field: 'image',
+    });
+  }
+
+  const { imageType, caption } = req.body ?? {};
+
+  if (!imageType) {
+    return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+      message: 'imageType is required',
+      field: 'imageType',
+    });
+  }
+
+  const validImageTypes = ['COVER', 'MAP', 'EXTERIOR', 'INTERIOR', 'DETAIL', 'PANORAMA', 'MISC'];
+  if (!validImageTypes.includes(imageType)) {
+    return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+      message: 'Invalid imageType',
+    });
+  }
+
+  try {
+    // Check ownership
+    const isOwner = await sceneService.isSceneOwner(sceneId, userId);
+    if (!isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only add images to your own scenes',
+      });
+    }
+
+    const ext = ALLOWED_IMAGE_TYPES[uploadedFile.mimetype];
+    if (!ext) {
+      return sendError(res, 415, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.',
+      });
+    }
+
+    // Process image
+    logger.info({ originalSize: uploadedFile.size, originalType: uploadedFile.mimetype }, 'Processing scene image');
+    const processed = await processImageByType(uploadedFile.buffer, 'COVER');
+
+    const sanitizedName = uploadedFile.originalname
+      ? uploadedFile.originalname.replace(/[^a-z0-9._-]+/gi, '-').toLowerCase()
+      : 'image';
+
+    const baseName = sanitizedName.replace(/\.[^.]+$/, '');
+    const key = `scenes/${sceneId}/images/${Date.now()}-${randomUUID()}-${baseName}.webp`;
+
+    const { publicUrl } = await r2Service.uploadObject({
+      key,
+      body: processed.buffer,
+      contentType: processed.contentType,
+      cacheControl: 'public, max-age=604800',
+    });
+
+    // Create scene image record
+    const image = await sceneService.addSceneImage(sceneId, {
+      imageUrl: publicUrl,
+      imageType: imageType as 'COVER' | 'MAP' | 'EXTERIOR' | 'INTERIOR' | 'DETAIL' | 'PANORAMA' | 'MISC',
+      caption: caption || null,
+    });
+
+    logger.info(
+      {
+        sceneId,
+        imageId: image.id,
+        imageType,
+        originalSize: uploadedFile.size,
+        processedSize: processed.sizeBytes,
+      },
+      'Scene image uploaded successfully'
+    );
+
+    return res.status(201).json({
+      success: true,
+      data: image,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error uploading scene image');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to upload image',
+    });
+  }
+});
+
+/**
+ * DELETE /api/v1/scenes/images/:imageId
+ * Delete scene image
+ */
+router.delete('/images/:imageId', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { imageId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    // Get image to find sceneId
+    const image = await prisma.sceneImage.findUnique({
+      where: { id: imageId },
+    });
+
+    if (!image) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Image not found',
+      });
+    }
+
+    // Check scene ownership
+    const isOwner = await sceneService.isSceneOwner(image.sceneId, userId);
+    if (!isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only delete images from your own scenes',
+      });
+    }
+
+    await sceneService.deleteSceneImage(imageId);
+
+    return res.json({
+      success: true,
+      message: 'Image deleted successfully',
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error deleting scene image');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to delete image',
+    });
+  }
+});
+
+/**
+ * PATCH /api/v1/scenes/images/:imageId
+ * Update scene image
+ */
+router.patch('/images/:imageId', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { imageId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    // Get image to find sceneId
+    const image = await prisma.sceneImage.findUnique({
+      where: { id: imageId },
+    });
+
+    if (!image) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Image not found',
+      });
+    }
+
+    // Check scene ownership
+    const isOwner = await sceneService.isSceneOwner(image.sceneId, userId);
+    if (!isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only update images in your own scenes',
+      });
+    }
+
+    const { imageType, caption } = req.body;
+
+    const updatedImage = await sceneService.updateSceneImage(imageId, {
+      imageType,
+      caption,
+    });
+
+    return res.json({
+      success: true,
+      data: updatedImage,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error updating scene image');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to update image',
+    });
+  }
+});
+
+// ============================================================================
+// AREA ENDPOINTS (Full CRUD)
+// ============================================================================
+
+/**
+ * GET /api/v1/scenes/:id/areas
+ * List all areas for a scene
+ */
+router.get('/:id/areas', optionalAuth, async (req: Request, res: Response) => {
+  try {
+    const { id: sceneId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    // Check scene access
+    const scene = await sceneService.getSceneById(sceneId);
+    if (!scene) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Scene not found',
+      });
+    }
+
+    const isOwner = userId ? await sceneService.isSceneOwner(sceneId, userId) : false;
+    if (scene.visibility !== 'PUBLIC' && !isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
+    }
+
+    const areas = await sceneService.getSceneAreas(sceneId);
+
+    return res.json({
+      success: true,
+      data: areas,
+      count: areas.length,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting scene areas');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get areas',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/scenes/:id/areas/:areaId
+ * Get area details with images
+ */
+router.get('/:id/areas/:areaId', optionalAuth, async (req: Request, res: Response) => {
+  try {
+    const { id: sceneId, areaId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    // Check scene access
+    const scene = await sceneService.getSceneById(sceneId);
+    if (!scene) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Scene not found',
+      });
+    }
+
+    const isOwner = userId ? await sceneService.isSceneOwner(sceneId, userId) : false;
+    if (scene.visibility !== 'PUBLIC' && !isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
+    }
+
+    const area = await sceneService.getAreaDetail(areaId);
+    if (!area || area.sceneId !== sceneId) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Area not found',
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: area,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting area');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get area',
+    });
+  }
+});
+
+// ============================================================================
+// AREA IMAGES ENDPOINTS
+// ============================================================================
+
+/**
+ * GET /api/v1/scenes/:id/areas/:areaId/images
+ * List area images
+ */
+router.get('/:id/areas/:areaId/images', optionalAuth, async (req: Request, res: Response) => {
+  try {
+    const { id: sceneId, areaId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    // Check scene access
+    const scene = await sceneService.getSceneById(sceneId);
+    if (!scene) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Scene not found',
+      });
+    }
+
+    const isOwner = userId ? await sceneService.isSceneOwner(sceneId, userId) : false;
+    if (scene.visibility !== 'PUBLIC' && !isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'Access denied',
+      });
+    }
+
+    // Verify area belongs to scene
+    const area = await sceneService.getAreaDetail(areaId);
+    if (!area || area.sceneId !== sceneId) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Area not found',
+      });
+    }
+
+    const images = await sceneService.getAreaImages(areaId);
+
+    return res.json({
+      success: true,
+      data: images,
+      count: images.length,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting area images');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get area images',
+    });
+  }
+});
+
+/**
+ * POST /api/v1/scenes/:id/areas/:areaId/images
+ * Upload area image
+ */
+router.post('/:id/areas/:areaId/images', requireAuth, asyncMulterHandler(upload.single('image')), async (req: Request, res: Response) => {
+  const userId = req.auth?.user?.id;
+
+  if (!userId) {
+    return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+  }
+
+  if (!r2Service.isConfigured()) {
+    return sendError(res, 503, API_ERROR_CODES.R2_STORAGE_ERROR, {
+      message: 'Media storage is not configured',
+      details: { missing: r2Service.getMissingConfig() },
+    });
+  }
+
+  const { id: sceneId, areaId } = req.params;
+  const uploadedFile = req.file;
+
+  if (!uploadedFile) {
+    return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+      message: 'No file uploaded',
+      field: 'image',
+    });
+  }
+
+  const { imageType, caption } = req.body ?? {};
+
+  if (!imageType) {
+    return sendError(res, 400, API_ERROR_CODES.MISSING_REQUIRED_FIELD, {
+      message: 'imageType is required',
+      field: 'imageType',
+    });
+  }
+
+  const validImageTypes = ['ENVIRONMENT', 'MAP', 'DETAIL', 'PANORAMA', 'MISC'];
+  if (!validImageTypes.includes(imageType)) {
+    return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+      message: 'Invalid imageType',
+    });
+  }
+
+  try {
+    // Check scene ownership
+    const isOwner = await sceneService.isSceneOwner(sceneId, userId);
+    if (!isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only add images to areas in your own scenes',
+      });
+    }
+
+    // Verify area belongs to scene
+    const area = await sceneService.getAreaDetail(areaId);
+    if (!area || area.sceneId !== sceneId) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Area not found',
+      });
+    }
+
+    const ext = ALLOWED_IMAGE_TYPES[uploadedFile.mimetype];
+    if (!ext) {
+      return sendError(res, 415, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'Unsupported image format. Use PNG, JPG, WEBP or GIF.',
+      });
+    }
+
+    // Process image
+    logger.info({ originalSize: uploadedFile.size, originalType: uploadedFile.mimetype }, 'Processing area image');
+    const processed = await processImageByType(uploadedFile.buffer, 'COVER');
+
+    const sanitizedName = uploadedFile.originalname
+      ? uploadedFile.originalname.replace(/[^a-z0-9._-]+/gi, '-').toLowerCase()
+      : 'image';
+
+    const baseName = sanitizedName.replace(/\.[^.]+$/, '');
+    const key = `scenes/${sceneId}/areas/${areaId}/${Date.now()}-${randomUUID()}-${baseName}.webp`;
+
+    const { publicUrl } = await r2Service.uploadObject({
+      key,
+      body: processed.buffer,
+      contentType: processed.contentType,
+      cacheControl: 'public, max-age=604800',
+    });
+
+    // Create area image record
+    const image = await sceneService.addAreaImage(areaId, {
+      imageUrl: publicUrl,
+      imageType: imageType as 'ENVIRONMENT' | 'MAP' | 'DETAIL' | 'PANORAMA' | 'MISC',
+      caption: caption || null,
+    });
+
+    logger.info(
+      {
+        areaId,
+        imageId: image.id,
+        imageType,
+        originalSize: uploadedFile.size,
+        processedSize: processed.sizeBytes,
+      },
+      'Area image uploaded successfully'
+    );
+
+    return res.status(201).json({
+      success: true,
+      data: image,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error uploading area image');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to upload image',
+    });
+  }
+});
+
+/**
+ * DELETE /api/v1/scenes/areas/images/:imageId
+ * Delete area image
+ */
+router.delete('/areas/images/:imageId', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { imageId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    // Get image to find areaId
+    const image = await prisma.sceneAreaImage.findUnique({
+      where: { id: imageId },
+      include: {
+        area: {
+          select: {
+            sceneId: true,
+          },
+        },
+      },
+    });
+
+    if (!image) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Image not found',
+      });
+    }
+
+    // Check scene ownership
+    const isOwner = await sceneService.isSceneOwner(image.area.sceneId, userId);
+    if (!isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only delete images from areas in your own scenes',
+      });
+    }
+
+    await sceneService.deleteAreaImage(imageId);
+
+    return res.json({
+      success: true,
+      message: 'Image deleted successfully',
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error deleting area image');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to delete image',
+    });
+  }
+});
+
+/**
+ * PATCH /api/v1/scenes/areas/images/:imageId
+ * Update area image
+ */
+router.patch('/areas/images/:imageId', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { imageId } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    // Get image to find areaId
+    const image = await prisma.sceneAreaImage.findUnique({
+      where: { id: imageId },
+      include: {
+        area: {
+          select: {
+            sceneId: true,
+          },
+        },
+      },
+    });
+
+    if (!image) {
+      return sendError(res, 404, API_ERROR_CODES.NOT_FOUND, {
+        message: 'Image not found',
+      });
+    }
+
+    // Check scene ownership
+    const isOwner = await sceneService.isSceneOwner(image.area.sceneId, userId);
+    if (!isOwner) {
+      return sendError(res, 403, API_ERROR_CODES.FORBIDDEN, {
+        message: 'You can only update images in areas of your own scenes',
+      });
+    }
+
+    const { imageType, caption } = req.body;
+
+    const updatedImage = await sceneService.updateAreaImage(imageId, {
+      imageType,
+      caption,
+    });
+
+    return res.json({
+      success: true,
+      data: updatedImage,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error updating area image');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to update image',
+    });
+  }
+});
+
 export default router;

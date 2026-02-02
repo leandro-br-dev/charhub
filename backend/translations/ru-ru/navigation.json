@@ -9,12 +9,15 @@
     "adminAnalytics": "Аналитика",
     "adminScripts": "Скрипты",
     "assets": "Ресурсы",
+    "scenes": "Сцены",
     "profileLink": "Мой профиль",
     "sidebarDefaultTitle": "Исследуйте CharHub",
-    "sidebarDefaultDescription": "Используйте значки на панели навигации для переключения между разделами.",
+    "sidebarDefaultDescription": "Используйте иконки в навигационной панели для переключения между разделами.",
     "developmentTools": "Инструменты разработчика",
-    "developmentPlaceholder": "Скоро здесь появятся конвейеры сборки, журналы и элементы управления автоматизацией.",
+    "developmentPlaceholder": "Скоро здесь появятся конвейеры сборки, логи и элементы управления автоматизацией.",
     "viewAllCharacters": "Посмотреть всех персонажей",
-    "viewAllStories": "Посмотреть все истории"
+    "viewAllStories": "Посмотреть все истории",
+    "viewAllScenes": "Посмотреть все сцены",
+    "createScene": "Создать сцену"
   }
 }

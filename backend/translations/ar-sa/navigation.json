@@ -1,20 +1,23 @@
 {
   "description": "Navigation and menu labels",
   "resources": {
-    "chat": "محادثة",
-    "story": "قصة",
-    "characters": "شخصيات",
-    "tasks": "مهام",
-    "admin": "مسؤول",
-    "adminAnalytics": "تحليلات",
-    "adminScripts": "برامج نصية",
-    "assets": "أصول",
+    "chat": "الدردشة",
+    "story": "القصة",
+    "characters": "الشخصيات",
+    "tasks": "المهام",
+    "admin": "الإدارة",
+    "adminAnalytics": "التحليلات",
+    "adminScripts": "البرامج النصية",
+    "assets": "الأصول",
+    "scenes": "المشاهد",
     "profileLink": "ملفي الشخصي",
     "sidebarDefaultTitle": "استكشف CharHub",
-    "sidebarDefaultDescription": "استخدم الأيقونات في شريط التنقل للتنقل بين التجارب.",
+    "sidebarDefaultDescription": "استخدم الأيقونات في شريط التنقل للتبديل بين التجارب.",
     "developmentTools": "أدوات المطور",
-    "developmentPlaceholder": "مسارات البناء والسجلات وعناصر التحكم في الأتمتة ستكون هنا قريبًا.",
+    "developmentPlaceholder": "ستتوفر هنا قريبًا مسارات البناء والسجلات وعناصر التحكم في الأتمتة.",
     "viewAllCharacters": "عرض جميع الشخصيات",
-    "viewAllStories": "عرض جميع القصص"
+    "viewAllStories": "عرض جميع القصص",
+    "viewAllScenes": "عرض جميع المشاهد",
+    "createScene": "إنشاء مشهد"
   }
 }

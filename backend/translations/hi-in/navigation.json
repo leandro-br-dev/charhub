@@ -5,16 +5,19 @@
     "story": "कहानी",
     "characters": "किरदार",
     "tasks": "कार्य",
-    "admin": "एडमिन",
-    "adminAnalytics": "एनालिटिक्स",
+    "admin": "व्यवस्थापक",
+    "adminAnalytics": "विश्लेषण",
     "adminScripts": "स्क्रिप्ट्स",
     "assets": "एसेट्स",
-    "profileLink": "मेरी प्रोफाइल",
-    "sidebarDefaultTitle": "CharHub एक्सप्लोर करें",
-    "sidebarDefaultDescription": "अनुभवों के बीच स्विच करने के लिए नेविगेशन रेल पर आइकनों का उपयोग करें।",
+    "scenes": "दृश्य",
+    "profileLink": "मेरी प्रोफ़ाइल",
+    "sidebarDefaultTitle": "चारहब एक्सप्लोर करें",
+    "sidebarDefaultDescription": "अनुभवों के बीच स्विच करने के लिए नेविगेशन रेल पर आइकन का उपयोग करें।",
     "developmentTools": "डेवलपर टूल्स",
-    "developmentPlaceholder": "बिल्ड पाइपलाइन, लॉग और ऑटोमेशन कंट्रोल जल्द ही यहाँ उपलब्ध होंगे।",
+    "developmentPlaceholder": "बिल्ड पाइपलाइन, लॉग और ऑटोमेशन नियंत्रण जल्द ही यहां होंगे।",
     "viewAllCharacters": "सभी किरदार देखें",
-    "viewAllStories": "सभी कहानियाँ देखें"
+    "viewAllStories": "सभी कहानियाँ देखें",
+    "viewAllScenes": "सभी दृश्य देखें",
+    "createScene": "दृश्य बनाएँ"
   }
 }

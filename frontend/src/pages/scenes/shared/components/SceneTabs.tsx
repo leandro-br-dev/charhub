@@ -3,6 +3,8 @@ import type { UseSceneFormReturn } from '../hooks/useSceneForm';
 import { VisualStyle, type AgeRating, type ContentTag } from '../../../../types/characters';
 import { Visibility } from '../../../../types/common';
 import { ClassificationTab as SharedClassificationTab } from '../../../../components/ui';
+import { SceneImagesTab } from './SceneImagesTab';
+import { SceneAreasTab } from './SceneAreasTab';
 
 // ============================================================================
 // DETAILS TAB
@@ -241,11 +243,17 @@ export function ClassificationTab({ form }: ClassificationTabProps): JSX.Element
 
 interface ImagesTabProps {
   form: UseSceneFormReturn;
+  sceneId?: string;
 }
 
-export function ImagesTab({ form }: ImagesTabProps): JSX.Element {
+export function ImagesTab({ form, sceneId }: ImagesTabProps): JSX.Element {
   const { t } = useTranslation(['scenes']);
   const { values, handleTextChange } = form;
+
+  // For edit mode (when sceneId exists), show the image gallery. For create mode, show prompts.
+  if (sceneId) {
+    return <SceneImagesTab sceneId={sceneId} />;
+  }
 
   return (
     <div className="space-y-6 rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
@@ -304,33 +312,6 @@ interface AreasTabProps {
 }
 
 export function AreasTab({ sceneId }: AreasTabProps): JSX.Element {
-  const { t } = useTranslation(['scenes']);
-
-  return (
-    <div className="space-y-6 rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
-      <div>
-        <h2 className="text-lg font-semibold text-title">
-          {t('scenes:form.sections.areas')}
-        </h2>
-        <p className="mt-2 text-sm text-description">
-          {t('scenes:form.sections.areasHint')}
-        </p>
-      </div>
-
-      <div className="rounded-lg bg-normal/50 p-6 text-center">
-        <span className="material-symbols-outlined text-4xl text-muted">location_off</span>
-        <p className="mt-3 text-sm text-content">
-          {t('scenes:form.areas.comingSoon', 'Areas can be added after creating the scene')}
-        </p>
-        {sceneId && (
-          <a
-            href={`/scenes/${sceneId}/areas`}
-            className="mt-4 inline-block text-sm text-primary hover:underline"
-          >
-            {t('scenes:form.areas.manageLink', 'Manage scene areas')}
-          </a>
-        )}
-      </div>
-    </div>
-  );
+  // Delegate to SceneAreasTab component
+  return <SceneAreasTab sceneId={sceneId} />;
 }

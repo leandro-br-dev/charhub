@@ -571,6 +571,62 @@
       "connectionExists": "Connection already exists",
       "assetAlreadyPlaced": "Asset is already placed in this area",
       "invalidPosition": "Invalid position value"
+    },
+    "imageTypes": {
+      "COVER": "Cover",
+      "MAP": "Floor Plan",
+      "EXTERIOR": "Exterior View",
+      "INTERIOR": "Interior View",
+      "DETAIL": "Detail",
+      "PANORAMA": "Panorama",
+      "MISC": "Other"
+    },
+    "areaImageTypes": {
+      "ENVIRONMENT": "Environment",
+      "MAP": "Area Map",
+      "DETAIL": "Detail",
+      "PANORAMA": "Panorama",
+      "MISC": "Other"
+    },
+    "images": {
+      "title": "Scene Images",
+      "addImage": "Add Image",
+      "selectType": "Image Type",
+      "caption": "Name/Description",
+      "captionPlaceholder": "e.g., Kitchen view, Main hall...",
+      "deleteConfirm": "Delete this image?",
+      "deleteImageWarning": "This action cannot be undone. The image will be permanently deleted.",
+      "noImages": "No images yet. Add images to visualize this scene.",
+      "uploading": "Uploading image...",
+      "uploadFailed": "Failed to upload image",
+      "deleteFailed": "Failed to delete image",
+      "updateFailed": "Failed to update image",
+      "imageDeleted": "Image deleted successfully",
+      "imageUpdated": "Image updated successfully"
+    },
+    "areas": {
+      "title": "Areas",
+      "addArea": "Add Area",
+      "areaName": "Area Name",
+      "areaNamePlaceholder": "e.g., Kitchen, Library, Main Hall",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe this area...",
+      "shortDescription": "Short Description",
+      "shortDescriptionPlaceholder": "Brief summary for navigation",
+      "deleteConfirm": "Delete this area and all its images?",
+      "deleteAreaWarning": "This action cannot be undone. The area and all its images will be permanently deleted.",
+      "noAreas": "No areas yet. Create areas to organize different locations within this scene.",
+      "createSuccess": "Area created successfully",
+      "updateSuccess": "Area updated successfully",
+      "deleteSuccess": "Area deleted successfully",
+      "createFailed": "Failed to create area",
+      "updateFailed": "Failed to update area",
+      "deleteFailed": "Failed to delete area",
+      "images": "Area Images",
+      "addImageToArea": "Add Image to Area",
+      "noAreaImages": "No images yet for this area.",
+      "expandArea": "View area details and images",
+      "collapseArea": "Hide area details"
     }
   }
 }

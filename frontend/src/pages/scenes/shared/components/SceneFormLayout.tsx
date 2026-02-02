@@ -154,7 +154,7 @@ export function SceneFormLayout({
                 <ClassificationTab form={form} />
               </TabPanel>
               <TabPanel label="images">
-                <ImagesTab form={form} />
+                <ImagesTab form={form} sceneId={sceneId} />
               </TabPanel>
               <TabPanel label="areas">
                 <AreasTab sceneId={sceneId} />

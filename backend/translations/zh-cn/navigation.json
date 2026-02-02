@@ -9,12 +9,15 @@
     "adminAnalytics": "分析",
     "adminScripts": "脚本",
     "assets": "资产",
-    "profileLink": "我的资料",
+    "scenes": "场景",
+    "profileLink": "我的个人资料",
     "sidebarDefaultTitle": "探索 CharHub",
     "sidebarDefaultDescription": "使用导航栏上的图标切换不同体验。",
     "developmentTools": "开发者工具",
-    "developmentPlaceholder": "构建管道、日志和自动化控制将很快在此处启用。",
+    "developmentPlaceholder": "构建管道、日志和自动化控制功能即将在此上线。",
     "viewAllCharacters": "查看所有角色",
-    "viewAllStories": "查看所有故事"
+    "viewAllStories": "查看所有故事",
+    "viewAllScenes": "查看所有场景",
+    "createScene": "创建场景"
   }
 }

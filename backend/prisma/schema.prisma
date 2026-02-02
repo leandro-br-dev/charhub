@@ -1608,6 +1608,26 @@ model LLMPricing {
 // SCENE & LOCATION SYSTEM (FEATURE-022)
 // ============================================================================
 
+// Scene image type classification
+enum SceneImageType {
+  COVER       // Main scene cover image
+  MAP         // Floor plan of entire scene
+  EXTERIOR    // External view of the scene
+  INTERIOR    // Internal view of the scene
+  DETAIL      // Detail shots
+  PANORAMA    // Wide panoramic view
+  MISC        // Miscellaneous (requires caption)
+}
+
+// Scene area image type classification
+enum SceneAreaImageType {
+  ENVIRONMENT // Main view of the area
+  MAP         // Floor plan of this area
+  DETAIL      // Detail shots within area
+  PANORAMA    // Wide view of area
+  MISC        // Miscellaneous (requires caption)
+}
+
 // Scene - Top-level location model
 model Scene {
   id              String        @id @default(uuid())
@@ -1662,15 +1682,15 @@ model Scene {
 
 // Scene images
 model SceneImage {
-  id          String   @id @default(uuid())
+  id          String         @id @default(uuid())
   sceneId     String
-  scene       Scene    @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+  scene       Scene          @relation(fields: [sceneId], references: [id], onDelete: Cascade)
 
   imageUrl    String
-  imageType   String   // "cover", "map", "panorama", "detail"
+  imageType   SceneImageType
   caption     String?
 
-  createdAt   DateTime @default(now())
+  createdAt   DateTime       @default(now())
 
   @@index([sceneId])
 }
@@ -1732,15 +1752,15 @@ model SceneArea {
 
 // SceneArea images
 model SceneAreaImage {
-  id          String     @id @default(uuid())
+  id          String           @id @default(uuid())
   areaId      String
-  area        SceneArea  @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  area        SceneArea        @relation(fields: [areaId], references: [id], onDelete: Cascade)
 
   imageUrl    String
-  imageType   String     // "environment", "map", "detail", "panorama"
+  imageType   SceneAreaImageType
   caption     String?
 
-  createdAt   DateTime   @default(now())
+  createdAt   DateTime         @default(now())
 
   @@index([areaId])
 }

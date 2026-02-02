@@ -1307,3 +1307,195 @@ export async function getPublicScenes(options?: {
     throw error;
   }
 }
+
+// ============================================================================
+// SCENE IMAGES
+// ============================================================================
+
+/**
+ * Add image to scene
+ */
+export async function addSceneImage(sceneId: string, data: {
+  imageUrl: string;
+  imageType: 'COVER' | 'MAP' | 'EXTERIOR' | 'INTERIOR' | 'DETAIL' | 'PANORAMA' | 'MISC';
+  caption?: string | null;
+}) {
+  try {
+    const image = await prisma.sceneImage.create({
+      data: {
+        sceneId,
+        imageUrl: data.imageUrl,
+        imageType: data.imageType,
+        caption: data.caption,
+      },
+    });
+
+    logger.info(
+      { sceneId, imageId: image.id, imageType: data.imageType },
+      'Scene image added successfully'
+    );
+
+    return image;
+  } catch (error) {
+    logger.error({ error, sceneId, data }, 'Error adding scene image');
+    throw error;
+  }
+}
+
+/**
+ * Update scene image
+ */
+export async function updateSceneImage(imageId: string, data: {
+  imageType?: 'COVER' | 'MAP' | 'EXTERIOR' | 'INTERIOR' | 'DETAIL' | 'PANORAMA' | 'MISC';
+  caption?: string | null;
+}) {
+  try {
+    const image = await prisma.sceneImage.update({
+      where: { id: imageId },
+      data,
+    });
+
+    logger.info({ imageId }, 'Scene image updated successfully');
+
+    return image;
+  } catch (error) {
+    logger.error({ error, imageId, data }, 'Error updating scene image');
+    throw error;
+  }
+}
+
+/**
+ * Delete scene image
+ */
+export async function deleteSceneImage(imageId: string) {
+  try {
+    const image = await prisma.sceneImage.delete({
+      where: { id: imageId },
+    });
+
+    logger.info({ imageId }, 'Scene image deleted successfully');
+
+    return image;
+  } catch (error) {
+    logger.error({ error, imageId }, 'Error deleting scene image');
+    throw error;
+  }
+}
+
+/**
+ * Get all scene images
+ */
+export async function getSceneImages(sceneId: string) {
+  try {
+    const images = await prisma.sceneImage.findMany({
+      where: { sceneId },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    logger.debug(
+      { sceneId, count: images.length },
+      'Scene images fetched'
+    );
+
+    return images;
+  } catch (error) {
+    logger.error({ error, sceneId }, 'Error getting scene images');
+    throw error;
+  }
+}
+
+// ============================================================================
+// AREA IMAGES
+// ============================================================================
+
+/**
+ * Add image to area
+ */
+export async function addAreaImage(areaId: string, data: {
+  imageUrl: string;
+  imageType: 'ENVIRONMENT' | 'MAP' | 'DETAIL' | 'PANORAMA' | 'MISC';
+  caption?: string | null;
+}) {
+  try {
+    const image = await prisma.sceneAreaImage.create({
+      data: {
+        areaId,
+        imageUrl: data.imageUrl,
+        imageType: data.imageType,
+        caption: data.caption,
+      },
+    });
+
+    logger.info(
+      { areaId, imageId: image.id, imageType: data.imageType },
+      'Area image added successfully'
+    );
+
+    return image;
+  } catch (error) {
+    logger.error({ error, areaId, data }, 'Error adding area image');
+    throw error;
+  }
+}
+
+/**
+ * Update area image
+ */
+export async function updateAreaImage(imageId: string, data: {
+  imageType?: 'ENVIRONMENT' | 'MAP' | 'DETAIL' | 'PANORAMA' | 'MISC';
+  caption?: string | null;
+}) {
+  try {
+    const image = await prisma.sceneAreaImage.update({
+      where: { id: imageId },
+      data,
+    });
+
+    logger.info({ imageId }, 'Area image updated successfully');
+
+    return image;
+  } catch (error) {
+    logger.error({ error, imageId, data }, 'Error updating area image');
+    throw error;
+  }
+}
+
+/**
+ * Delete area image
+ */
+export async function deleteAreaImage(imageId: string) {
+  try {
+    const image = await prisma.sceneAreaImage.delete({
+      where: { id: imageId },
+    });
+
+    logger.info({ imageId }, 'Area image deleted successfully');
+
+    return image;
+  } catch (error) {
+    logger.error({ error, imageId }, 'Error deleting area image');
+    throw error;
+  }
+}
+
+/**
+ * Get all area images
+ */
+export async function getAreaImages(areaId: string) {
+  try {
+    const images = await prisma.sceneAreaImage.findMany({
+      where: { areaId },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    logger.debug(
+      { areaId, count: images.length },
+      'Area images fetched'
+    );
+
+    return images;
+  } catch (error) {
+    logger.error({ error, areaId }, 'Error getting area images');
+    throw error;
+  }
+}

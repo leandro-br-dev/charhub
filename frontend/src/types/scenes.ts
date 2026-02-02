@@ -1,6 +1,32 @@
 import { AgeRating, ContentTag, VisualStyle } from './characters';
 import { Visibility } from './common';
 
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+/**
+ * Scene image type classification
+ */
+export type SceneImageType =
+  | 'COVER'       // Main scene cover image
+  | 'MAP'         // Floor plan of entire scene
+  | 'EXTERIOR'    // External view of the scene
+  | 'INTERIOR'    // Internal view of the scene
+  | 'DETAIL'      // Detail shots
+  | 'PANORAMA'    // Wide panoramic view
+  | 'MISC';       // Miscellaneous (requires caption)
+
+/**
+ * Scene area image type classification
+ */
+export type SceneAreaImageType =
+  | 'ENVIRONMENT' // Main view of the area
+  | 'MAP'         // Floor plan of this area
+  | 'DETAIL'      // Detail shots within area
+  | 'PANORAMA'    // Wide view of area
+  | 'MISC';       // Miscellaneous (requires caption)
+
 /**
  * Scene - Represents a location/environment that can contain multiple areas
  */
@@ -137,7 +163,7 @@ export interface SceneImage {
   id: string;
   sceneId: string;
   imageUrl: string;
-  imageType: string;
+  imageType: SceneImageType;
   caption?: string | null;
   createdAt: string;
 }
@@ -149,7 +175,7 @@ export interface SceneAreaImage {
   id: string;
   areaId: string;
   imageUrl: string;
-  imageType: string;
+  imageType: SceneAreaImageType;
   caption?: string | null;
   createdAt: string;
 }

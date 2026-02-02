@@ -10,6 +10,10 @@ import {
   type SceneListParams,
   type SceneListResponse,
   type SceneMutationResult,
+  type SceneImage,
+  type SceneImageType,
+  type SceneAreaImage,
+  type SceneAreaImageType,
   EMPTY_SCENE_FORM,
 } from '../types/scenes';
 
@@ -381,6 +385,179 @@ export const sceneService = {
     );
 
     return response.data.data;
+  },
+
+  // ==========================================================================
+  // SCENE IMAGES
+  // ==========================================================================
+
+  /**
+   * List all scene images
+   */
+  async listSceneImages(sceneId: string): Promise<SceneImage[]> {
+    const response = await api.get<{ success: boolean; data: SceneImage[]; count: number }>(
+      `${BASE_PATH}/${sceneId}/images`
+    );
+    return response.data.data || [];
+  },
+
+  /**
+   * Upload scene image
+   */
+  async uploadSceneImage(sceneId: string, file: File, options: {
+    imageType: SceneImageType;
+    caption?: string;
+  }): Promise<SceneImage> {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('imageType', options.imageType);
+    if (options.caption) {
+      formData.append('caption', options.caption);
+    }
+
+    const response = await api.post<{ success: boolean; data: SceneImage }>(
+      `${BASE_PATH}/${sceneId}/images`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Update scene image
+   */
+  async updateSceneImage(imageId: string, options: {
+    imageType?: SceneImageType;
+    caption?: string;
+  }): Promise<SceneImage> {
+    const response = await api.patch<{ success: boolean; data: SceneImage }>(
+      `${BASE_PATH}/images/${imageId}`,
+      options
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Delete scene image
+   */
+  async deleteSceneImage(imageId: string): Promise<{ success: boolean; message: string }> {
+    const response = await api.delete<{ success: boolean; message: string }>(
+      `${BASE_PATH}/images/${imageId}`
+    );
+    return response.data;
+  },
+
+  // ==========================================================================
+  // SCENE AREAS (Full CRUD)
+  // ==========================================================================
+
+  /**
+   * List all areas for a scene
+   */
+  async listSceneAreas(sceneId: string): Promise<SceneArea[]> {
+    const response = await api.get<{ success: boolean; data: SceneArea[]; count: number }>(
+      `${BASE_PATH}/${sceneId}/areas`
+    );
+    return response.data.data || [];
+  },
+
+  /**
+   * Get area by ID
+   */
+  async getSceneAreaById(sceneId: string, areaId: string): Promise<SceneArea> {
+    const response = await api.get<{ success: boolean; data: SceneArea }>(
+      `${BASE_PATH}/${sceneId}/areas/${areaId}`
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Update area
+   */
+  async updateSceneArea(areaId: string, payload: SceneAreaFormValues): Promise<SceneArea> {
+    const response = await api.put<{ success: boolean; data: SceneArea }>(
+      `${BASE_PATH}/areas/${areaId}`,
+      payload
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Delete area
+   */
+  async deleteSceneArea(areaId: string): Promise<{ success: boolean; message: string }> {
+    const response = await api.delete<{ success: boolean; message: string }>(
+      `${BASE_PATH}/areas/${areaId}`
+    );
+    return response.data;
+  },
+
+  // ==========================================================================
+  // AREA IMAGES
+  // ==========================================================================
+
+  /**
+   * List all area images
+   */
+  async listAreaImages(sceneId: string, areaId: string): Promise<SceneAreaImage[]> {
+    const response = await api.get<{ success: boolean; data: SceneAreaImage[]; count: number }>(
+      `${BASE_PATH}/${sceneId}/areas/${areaId}/images`
+    );
+    return response.data.data || [];
+  },
+
+  /**
+   * Upload area image
+   */
+  async uploadAreaImage(sceneId: string, areaId: string, file: File, options: {
+    imageType: SceneAreaImageType;
+    caption?: string;
+  }): Promise<SceneAreaImage> {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('imageType', options.imageType);
+    if (options.caption) {
+      formData.append('caption', options.caption);
+    }
+
+    const response = await api.post<{ success: boolean; data: SceneAreaImage }>(
+      `${BASE_PATH}/${sceneId}/areas/${areaId}/images`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Update area image
+   */
+  async updateAreaImage(imageId: string, options: {
+    imageType?: SceneAreaImageType;
+    caption?: string;
+  }): Promise<SceneAreaImage> {
+    const response = await api.patch<{ success: boolean; data: SceneAreaImage }>(
+      `${BASE_PATH}/areas/images/${imageId}`,
+      options
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Delete area image
+   */
+  async deleteAreaImage(imageId: string): Promise<{ success: boolean; message: string }> {
+    const response = await api.delete<{ success: boolean; message: string }>(
+      `${BASE_PATH}/areas/images/${imageId}`
+    );
+    return response.data;
   },
 };
 
