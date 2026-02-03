@@ -109,31 +109,38 @@
       "submit": "Save",
       "cancel": "Cancel",
       "sections": {
-        "identity": "Identity",
-        "identityHint": "Define the basic properties of this asset.",
         "details": "Details",
-        "detailsHint": "Describe appearance, characteristics and visual prompts.",
-        "configuration": "Configuration",
-        "configurationHint": "Control category, placement and generation settings."
+        "detailsHint": "Basic information about this asset.",
+        "classification": "Classification",
+        "classificationHint": "Visual style, age rating, and content tags.",
+        "images": "Images",
+        "imagesHint": "Manage visual references for this asset."
       },
       "fields": {
         "name": "Name",
         "description": "Description",
         "type": "Type",
         "category": "Category",
-        "positivePrompt": "Visual Prompt",
+        "promptPrimary": "Visual Prompt",
+        "promptContext": "Context Prompt",
         "negativePrompt": "Negative Prompt",
         "placementZone": "Placement Zone",
-        "isPublic": "Visibility"
+        "placementDetail": "Placement Detail",
+        "style": "Visual Style",
+        "visibility": "Visibility",
+        "ageRating": "Age Rating",
+        "contentTags": "Content Tags"
       },
       "placeholders": {
         "name": "Enter asset name",
         "description": "Describe this asset...",
         "type": "Select type",
         "category": "Select category",
-        "positivePrompt": "Describe how the asset should appear...",
+        "promptPrimary": "Describe how the asset should appear...",
+        "promptContext": "Additional context when used with characters...",
         "negativePrompt": "Describe what to avoid...",
-        "placementZone": "Select placement zone"
+        "placementZone": "Select placement zone",
+        "placementDetail": "e.g., 'left cheek', 'across nose'"
       },
       "hints": {
         "name": "A clear, descriptive name for this asset",
@@ -158,7 +165,8 @@
         "urlModalTitle": "Use image from URL",
         "urlLabel": "Image URL",
         "previewAlt": "Asset cover preview",
-        "invalidUrl": "Enter a valid image URL (http/https)."
+        "invalidUrl": "Enter a valid image URL (http/https).",
+        "saveFirst": "Save the asset first to add images"
       },
       "tabs": {
         "identity": "Identity",
@@ -318,6 +326,55 @@
       "deleted": "Asset deleted successfully",
       "linked": "Asset linked to character",
       "unlinked": "Asset unlinked from character"
+    },
+    "messages": {
+      "imageUploaded": "Image uploaded successfully",
+      "imageDeleted": "Image deleted successfully",
+      "coverUploaded": "Cover image updated successfully",
+      "descriptionRequired": "Description is required"
+    },
+    "images": {
+      "title": "Asset Images",
+      "addImage": "Add Image",
+      "selectType": "Select image type",
+      "uploadFailed": "Failed to upload image",
+      "deleteFailed": "Failed to delete image",
+      "deleteConfirm": "Delete this image?",
+      "noImages": "No images yet. Add your first visual reference.",
+      "types": {
+        "preview": "Preview",
+        "reference": "Reference",
+        "transparent": "Transparent",
+        "in_context": "In Context"
+      },
+      "typeDescriptions": {
+        "preview": "Main preview image for the asset",
+        "reference": "Visual reference for the asset",
+        "transparent": "Transparent background version",
+        "in_context": "Asset shown in use/scene context"
+      }
+    },
+    "prompts": {
+      "title": "Generation Prompts",
+      "primaryLabel": "Visual Prompt",
+      "primaryHint": "Describe how the asset should appear in generated images",
+      "contextLabel": "Context Prompt",
+      "contextHint": "Additional context when this asset is used with characters",
+      "negativeLabel": "Negative Prompt",
+      "negativeHint": "Elements to avoid when generating this asset"
+    },
+    "avatar": {
+      "invalidUrl": "Enter a valid image URL (http/https).",
+      "error": "We could not load this image. {{message}}",
+      "aiComingSoon": "AI generation coming soon for assets",
+      "generateAI": "Generate with AI",
+      "fromDevice": "Upload from device",
+      "fromUrl": "Use image URL",
+      "urlModalTitle": "Use image from URL",
+      "urlLabel": "Image URL",
+      "preview": "Preview",
+      "previewAlt": "Image preview",
+      "loading": "Loading..."
     }
   }
 }

@@ -2,7 +2,7 @@
   "description": "Assets module strings for asset management, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledAsset": "Asset senza nome",
+      "untitledAsset": "Asset senza titolo",
       "updatedAt": "Aggiornato il {{date}}",
       "public": "Pubblico",
       "private": "Privato",
@@ -14,7 +14,7 @@
     "types": {
       "CLOTHING": "Abbigliamento",
       "ACCESSORY": "Accessorio",
-      "SCAR": "Cicatrice",
+      "SCAR": "Cicatrici",
       "HAIRSTYLE": "Acconciatura",
       "OBJECT": "Oggetto",
       "VEHICLE": "Veicolo",
@@ -22,13 +22,13 @@
       "PROP": "Oggetto di scena"
     },
     "typeDescriptions": {
-      "CLOTHING": "Capi e articoli di abbigliamento",
-      "ACCESSORY": "Accessori e ornamenti indossabili",
-      "SCAR": "Segni, cicatrici e caratteristiche del corpo",
+      "CLOTHING": "Capi di abbigliamento e articoli",
+      "ACCESSORY": "Accessori indossabili e ornamenti",
+      "SCAR": "Segni, cicatrici e caratteristiche corporee",
       "HAIRSTYLE": "Acconciature e colori dei capelli",
       "OBJECT": "Oggetti e articoli da tenere in mano",
       "VEHICLE": "Veicoli e cavalcature",
-      "FURNITURE": "Mobili ed elementi strutturali",
+      "FURNITURE": "Arredamento ed elementi strutturali",
       "PROP": "Oggetti di scena e decorazioni di sfondo"
     },
     "categories": {
@@ -42,16 +42,16 @@
       "ENVIRONMENTAL": "Elementi di sfondo e ambientali"
     },
     "placementZones": {
-      "face": "Viso",
-      "torso": "Busto",
+      "face": "Volto",
+      "torso": "Torso",
       "left_hand": "Mano sinistra",
       "right_hand": "Mano destra",
       "head": "Testa",
       "feet": "Piedi"
     },
     "placementZoneDescriptions": {
-      "face": "Applicato all'area del viso",
-      "torso": "Applicato all'area del corpo/busto",
+      "face": "Applicato all'area del volto",
+      "torso": "Applicato all'area del corpo/torso",
       "left_hand": "Tenuto nella mano sinistra",
       "right_hand": "Tenuto nella mano destra",
       "head": "Indossato sulla testa",
@@ -68,14 +68,14 @@
     },
     "hub": {
       "title": "Asset",
-      "subtitle": "Crea e gestisci asset per i tuoi personaggi. Gli asset includono abbigliamento, accessori, oggetti e altro.",
+      "subtitle": "Crea e gestisci asset per i tuoi personaggi. Gli asset includono abbigliamento, accessori, oggetti e altro ancora.",
       "sidebar": {
         "description": "Sfoglia e gestisci i tuoi asset creativi.",
-        "viewGallery": "Visualizza Galleria"
+        "viewGallery": "Visualizza galleria"
       },
       "actions": {
         "newAsset": "Nuovo Asset",
-        "createAsset": "Crea asset",
+        "createAsset": "Nuovo asset",
         "retry": "Riprova"
       },
       "tabs": {
@@ -94,10 +94,10 @@
         "loading": "Caricamento dei tuoi asset...",
         "error": "Non è stato possibile caricare gli asset. Riprova.",
         "empty": "Nessun asset disponibile ancora.",
-        "empty_private": "Non hai ancora creato nessun asset.",
+        "empty_private": "Non hai ancora creato alcun asset.",
         "empty_public": "Nessun asset pubblico corrisponde ai tuoi filtri.",
         "emptyHint": "Inizia creando il tuo primo asset o modifica i tuoi filtri.",
-        "emptySearchHint": "Regola i filtri o cancella la ricerca per vedere più risultati."
+        "emptySearchHint": "Modifica i tuoi filtri o cancella la ricerca per vedere più risultati."
       },
       "labels": {
         "total": "{{count}} asset disponibile",
@@ -109,37 +109,44 @@
       "submit": "Salva",
       "cancel": "Annulla",
       "sections": {
-        "identity": "Identità",
-        "identityHint": "Definisci le proprietà di base di questo asset.",
         "details": "Dettagli",
-        "detailsHint": "Descrivi aspetto, caratteristiche e prompt visivi.",
-        "configuration": "Configurazione",
-        "configurationHint": "Controlla categoria, posizionamento e impostazioni di generazione."
+        "detailsHint": "Informazioni di base su questo asset.",
+        "classification": "Classificazione",
+        "classificationHint": "Stile visivo, classificazione per età e tag di contenuto.",
+        "images": "Immagini",
+        "imagesHint": "Gestisci i riferimenti visivi per questo asset."
       },
       "fields": {
         "name": "Nome",
         "description": "Descrizione",
         "type": "Tipo",
         "category": "Categoria",
-        "positivePrompt": "Prompt visivo",
+        "promptPrimary": "Prompt visivo",
+        "promptContext": "Prompt di contesto",
         "negativePrompt": "Prompt negativo",
         "placementZone": "Zona di posizionamento",
-        "isPublic": "Visibilità"
+        "placementDetail": "Dettaglio posizionamento",
+        "style": "Stile visivo",
+        "visibility": "Visibilità",
+        "ageRating": "Classificazione per età",
+        "contentTags": "Tag di contenuto"
       },
       "placeholders": {
         "name": "Inserisci il nome dell'asset",
         "description": "Descrivi questo asset...",
         "type": "Seleziona tipo",
         "category": "Seleziona categoria",
-        "positivePrompt": "Descrivi come dovrebbe apparire l'asset...",
+        "promptPrimary": "Descrivi come dovrebbe apparire l'asset...",
+        "promptContext": "Contesto aggiuntivo quando usato con i personaggi...",
         "negativePrompt": "Descrivi cosa evitare...",
-        "placementZone": "Seleziona zona di posizionamento"
+        "placementZone": "Seleziona zona di posizionamento",
+        "placementDetail": "es. \\'guancia sinistra\\', \\'attraverso il naso\\'"
       },
       "hints": {
         "name": "Un nome chiaro e descrittivo per questo asset",
         "description": "Descrizione dettagliata dell'aspetto dell'asset",
-        "positivePrompt": "Prompt visivo per la generazione AI (es. 'una giacca di pelle rossa con cerniere argentate')",
-        "negativePrompt": "Elementi da evitare nella generazione (es. 'danneggiato, strappato, sporco')",
+        "positivePrompt": "Prompt visivo per la generazione AI (es. \\'una giacca di pelle rossa con cerniere argentate\\')",
+        "negativePrompt": "Elementi da evitare nella generazione (es. \\'danneggiato, strappato, sporco\\')",
         "placementZone": "Dove l'asset dovrebbe essere posizionato sul personaggio"
       },
       "labels": {
@@ -150,7 +157,7 @@
         "visibilityPrivate": "Privato"
       },
       "images": {
-        "coverHeader": "Copertina asset",
+        "coverHeader": "Immagine di copertina dell'asset",
         "coverDescription": "Immagine che rappresenta questo asset.",
         "upload": "Carica copertina",
         "change": "Cambia copertina",
@@ -158,14 +165,15 @@
         "urlModalTitle": "Usa immagine da URL",
         "urlLabel": "URL immagine",
         "previewAlt": "Anteprima copertina asset",
-        "invalidUrl": "Inserisci un URL immagine valido (http/https)."
+        "invalidUrl": "Inserisci un URL immagine valido (http/https).",
+        "saveFirst": "Salva prima l'asset per aggiungere immagini"
       },
       "tabs": {
         "identity": "Identità",
         "details": "Dettagli",
         "configuration": "Configurazione",
         "images": "Immagini",
-        "lockedHint": "Completa i dettagli di base dell'identità per sbloccare le altre sezioni."
+        "lockedHint": "Compila i dettagli di identità di base per sbloccare le altre sezioni."
       }
     },
     "create": {
@@ -183,7 +191,7 @@
         "loading": "Caricamento asset..."
       },
       "accessDenied": {
-        "title": "Accesso Negato",
+        "title": "Accesso negato",
         "message": "Non hai il permesso di modificare questo asset.",
         "backButton": "Torna agli Asset"
       }
@@ -191,19 +199,19 @@
     "detail": {
       "states": {
         "loading": "Caricamento dettagli asset...",
-        "notFound": "Non siamo riusciti a trovare questo asset."
+        "notFound": "Non è stato possibile trovare questo asset."
       },
       "actions": {
-        "backToHub": "Torna all'hub",
+        "backToHub": "Torna alla dashboard",
         "edit": "Modifica",
         "delete": "Elimina",
         "deleting": "Eliminazione in corso...",
         "share": "Condividi"
       },
       "confirmDelete": {
-        "title": "Eliminare l'Asset?",
-        "message": "Questa azione non può essere annullata. Tutti i dati associati a questo asset verranno eliminati permanentemente.",
-        "confirm": "Elimina permanentemente",
+        "title": "Eliminare Asset?",
+        "message": "Questa azione non può essere annullata. Tutti i dati associati a questo asset verranno eliminati in modo permanente.",
+        "confirm": "Elimina definitivamente",
         "cancel": "Annulla"
       },
       "labels": {
@@ -230,8 +238,8 @@
         "categoryLabel": "Categoria"
       },
       "characters": {
-        "title": "Personaggi che utilizzano questo asset",
-        "empty": "Nessun personaggio sta ancora utilizzando questo asset."
+        "title": "Personaggi che usano questo asset",
+        "empty": "Nessun personaggio sta usando questo asset ancora."
       }
     },
     "picker": {
@@ -245,7 +253,7 @@
         "categoryFilter": "Filtra per categoria"
       },
       "actions": {
-        "addSelected": "Aggiungi selezionato ({{count}})",
+        "addSelected": "Aggiungi selezionati ({{count}})",
         "addSelected_plural": "Aggiungi selezionati ({{count}})",
         "cancel": "Annulla",
         "clearSelection": "Cancella selezione"
@@ -267,14 +275,14 @@
       }
     },
     "characterAssets": {
-      "title": "Asset del personaggio",
+      "title": "Asset del Personaggio",
       "subtitle": "Gestisci gli asset equipaggiati a questo personaggio",
       "tabs": {
         "equipped": "Equipaggiato",
         "available": "Disponibile"
       },
       "actions": {
-        "addAssets": "Aggiungi asset",
+        "addAssets": "Aggiungi Asset",
         "removeAsset": "Rimuovi",
         "configureAsset": "Configura"
       },
@@ -301,13 +309,13 @@
       "updateFailed": "Non è stato possibile aggiornare l'asset.",
       "deleteFailed": "Non è stato possibile eliminare l'asset.",
       "detailUnavailable": "Impossibile caricare i dettagli dell'asset in questo momento.",
-      "linkFailed": "Collegamento asset al personaggio fallito.",
-      "unlinkFailed": "Scollegamento asset dal personaggio fallito.",
+      "linkFailed": "Impossibile collegare l'asset al personaggio.",
+      "unlinkFailed": "Impossibile scollegare l'asset dal personaggio.",
       "nameRequired": "Il nome dell'asset è obbligatorio",
       "typeRequired": "Il tipo di asset è obbligatorio",
       "categoryRequired": "La categoria dell'asset è obbligatoria",
       "invalidType": "Tipo di asset non valido",
-      "invalidCategory": "Categoria asset non valida",
+      "invalidCategory": "Categoria di asset non valida",
       "invalidPlacementZone": "Zona di posizionamento non valida per questo tipo di asset",
       "assetInUse": "Questo asset è utilizzato da {{count}} personaggio e non può essere eliminato.",
       "assetInUse_plural": "Questo asset è utilizzato da {{count}} personaggi e non può essere eliminato."
@@ -318,6 +326,55 @@
       "deleted": "Asset eliminato con successo",
       "linked": "Asset collegato al personaggio",
       "unlinked": "Asset scollegato dal personaggio"
+    },
+    "messages": {
+      "imageUploaded": "Immagine caricata con successo",
+      "imageDeleted": "Immagine eliminata con successo",
+      "coverUploaded": "Immagine di copertina aggiornata con successo",
+      "descriptionRequired": "La descrizione è obbligatoria"
+    },
+    "images": {
+      "title": "Immagini Asset",
+      "addImage": "Aggiungi Immagine",
+      "selectType": "Seleziona tipo di immagine",
+      "uploadFailed": "Caricamento immagine fallito",
+      "deleteFailed": "Eliminazione immagine fallita",
+      "deleteConfirm": "Eliminare questa immagine?",
+      "noImages": "Nessuna immagine ancora. Aggiungi il tuo primo riferimento visivo.",
+      "types": {
+        "preview": "Anteprima",
+        "reference": "Riferimento",
+        "transparent": "Trasparente",
+        "in_context": "Nel Contesto"
+      },
+      "typeDescriptions": {
+        "preview": "Immagine di anteprima principale per l'asset",
+        "reference": "Riferimento visivo per l'asset",
+        "transparent": "Versione con sfondo trasparente",
+        "in_context": "Asset mostrato in uso/contesto della scena"
+      }
+    },
+    "prompts": {
+      "title": "Prompt di generazione",
+      "primaryLabel": "Prompt visivo",
+      "primaryHint": "Descrivi come l'asset dovrebbe apparire nelle immagini generate",
+      "contextLabel": "Prompt di contesto",
+      "contextHint": "Contesto aggiuntivo quando questo asset è usato con i personaggi",
+      "negativeLabel": "Prompt negativo",
+      "negativeHint": "Elementi da evitare durante la generazione di questo asset"
+    },
+    "avatar": {
+      "invalidUrl": "Inserisci un URL immagine valido (http/https).",
+      "error": "Non è stato possibile caricare questa immagine. {{message}}",
+      "aiComingSoon": "Generazione AI in arrivo per gli asset",
+      "generateAI": "Genera con AI",
+      "fromDevice": "Carica dal dispositivo",
+      "fromUrl": "Usa URL immagine",
+      "urlModalTitle": "Usa immagine da URL",
+      "urlLabel": "URL immagine",
+      "preview": "Anteprima",
+      "previewAlt": "Anteprima immagine",
+      "loading": "Caricamento..."
     }
   }
 }

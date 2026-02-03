@@ -1,4 +1,5 @@
 import { Visibility } from './common';
+import type { AgeRating, ContentTag, VisualStyle } from './characters';
 
 /**
  * Asset Types - represent different kinds of assets in the system
@@ -27,41 +28,63 @@ export type AssetCategory =
 export type AssetImageType = 'PREVIEW' | 'SOURCE' | 'THUMBNAIL' | 'OTHER';
 
 /**
+ * Asset image types from backend
+ */
+export type AssetImageTypeDb = 'preview' | 'reference' | 'transparent' | 'in_context';
+
+/**
  * Core asset fields
  */
 export interface AssetCore {
   id: string;
   name: string;
-  description: string | null;
+  description: string;
   type: AssetType;
   category: AssetCategory;
-  sourceUrl: string | null;
-  previewUrl: string | null;
-  thumbnailUrl: string | null;
-  fileSize: number | null;
-  width: number | null;
-  height: number | null;
-  duration: number | null; // For audio/video in seconds
-  format: string | null; // e.g., 'png', 'jpg', 'mp3', 'wav'
-  tags: string[];
+  promptPrimary: string | null;
+  promptContext: string | null;
+  negativePrompt: string | null;
+  placementZone: string | null;
+  placementDetail: string | null;
+  previewImageUrl: string | null;
+  style: VisualStyle | null;
+  ageRating: AgeRating;
+  contentTags: ContentTag[];
   visibility: Visibility;
-  userId: string;
+  authorId: string;
+  contentVersion: number;
+  originalLanguageCode: string | null;
   createdAt: string;
   updatedAt: string;
+  // Legacy/compatibility fields
+  tags: string[]; // Computed from tag names
 }
 
 /**
  * Full asset with relations
  */
 export interface Asset extends AssetCore {
-  images: AssetImage[];
+  images?: AssetImage[];
   characterAssets?: CharacterAsset[];
-  creator?: {
+  tagObjects?: Tag[]; // Related Tag objects (renamed from 'tags' to avoid conflict)
+  author?: {
     id: string;
     username: string | null;
     displayName: string | null;
     avatarUrl: string | null;
   } | null;
+  // Computed/legacy fields for UI compatibility
+  previewUrl: string | null; // Same as previewImageUrl
+  thumbnailUrl: string | null; // Computed from images
+  format: string | null; // Computed from image metadata
+}
+
+/**
+ * Tag for asset categorization
+ */
+export interface Tag {
+  id: string;
+  name: string;
 }
 
 /**
@@ -70,6 +93,10 @@ export interface Asset extends AssetCore {
 export interface AssetSummary extends AssetCore {
   imageCount?: number;
   linkedCharacterCount?: number;
+  // Computed/legacy fields for UI compatibility
+  previewUrl: string | null; // Same as previewImageUrl
+  thumbnailUrl: string | null; // Computed from images
+  format: string | null; // Computed from image metadata
 }
 
 /**
@@ -78,16 +105,11 @@ export interface AssetSummary extends AssetCore {
 export interface AssetImage {
   id: string;
   assetId: string;
-  type: AssetImageType;
-  url: string;
-  key: string | null;
+  imageUrl: string;
+  imageType: AssetImageTypeDb;
   width: number | null;
   height: number | null;
-  sizeBytes: number | null;
-  contentType: string | null;
-  isActive: boolean;
   createdAt: string;
-  updatedAt: string;
 }
 
 /**
@@ -149,14 +171,33 @@ export interface AssetPayload {
 /**
  * Full form values for asset creation/editing
  */
-export interface AssetFormValues extends AssetPayload {
-  previewUrl: string | null;
-  thumbnailUrl: string | null;
-  fileSize: number | null;
-  width: number | null;
-  height: number | null;
-  duration: number | null;
-  format: string | null;
+export interface AssetFormValues {
+  // Basic fields
+  name: string;
+  description: string | null;
+  type: AssetType;
+  category: AssetCategory;
+
+  // Prompts
+  promptPrimary: string | null;
+  promptContext: string | null;
+  negativePrompt: string | null;
+
+  // Placement
+  placementZone: string | null;
+  placementDetail: string | null;
+
+  // Visual
+  previewImageUrl: string | null;
+
+  // Classification
+  style: VisualStyle | null;
+  ageRating: AgeRating;
+  contentTags: ContentTag[];
+  visibility: Visibility;
+
+  // Tags
+  tagIds: string[];
 }
 
 /**
@@ -212,16 +253,17 @@ export const EMPTY_ASSET_FORM: AssetFormValues = {
   description: null,
   type: 'PROP',
   category: 'ENVIRONMENTAL',
-  sourceUrl: null,
-  tags: [],
+  promptPrimary: null,
+  promptContext: null,
+  negativePrompt: null,
+  placementZone: null,
+  placementDetail: null,
+  previewImageUrl: null,
+  style: null,
+  ageRating: 'L',
+  contentTags: [],
   visibility: Visibility.PRIVATE,
-  previewUrl: null,
-  thumbnailUrl: null,
-  fileSize: null,
-  width: null,
-  height: null,
-  duration: null,
-  format: null,
+  tagIds: [],
 };
 
 /**

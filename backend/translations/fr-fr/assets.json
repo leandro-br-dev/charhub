@@ -8,7 +8,7 @@
       "private": "Privé",
       "identifier": "ID de l'actif : {{id}}",
       "unsavedChanges": "Modifications non enregistrées",
-      "allSaved": "Toutes les modifications enregistrées",
+      "allSaved": "Toutes les modifications sont enregistrées",
       "submitting": "Enregistrement..."
     },
     "types": {
@@ -19,27 +19,27 @@
       "OBJECT": "Objet",
       "VEHICLE": "Véhicule",
       "FURNITURE": "Meuble",
-      "PROP": "Accessoire"
+      "PROP": "Accessoire de scène"
     },
     "typeDescriptions": {
-      "CLOTHING": "Vêtements et articles vestimentaires",
-      "ACCESSORY": "Accessoires portables et ornements",
+      "CLOTHING": "Articles vestimentaires et vêtements",
+      "ACCESSORY": "Accessoires et parures portables",
       "SCAR": "Marques, cicatrices et caractéristiques corporelles",
-      "HAIRSTYLE": "Coiffures et couleurs de cheveux",
-      "OBJECT": "Objets et articles portables",
+      "HAIRSTYLE": "Styles et couleurs de cheveux",
+      "OBJECT": "Objets et articles à tenir à la main",
       "VEHICLE": "Véhicules et montures",
       "FURNITURE": "Meubles et éléments structurels",
-      "PROP": "Accessoires et décorations d'arrière-plan"
+      "PROP": "Accessoires de fond et décorations"
     },
     "categories": {
       "WEARABLE": "Portable",
-      "HOLDABLE": "Tenable",
+      "HOLDABLE": "Tenables",
       "ENVIRONMENTAL": "Environnemental"
     },
     "categoryDescriptions": {
-      "WEARABLE": "Éléments pouvant être portés par un personnage",
-      "HOLDABLE": "Éléments pouvant être tenus ou transportés",
-      "ENVIRONMENTAL": "Éléments d'arrière-plan et environnementaux"
+      "WEARABLE": "Articles pouvant être portés par un personnage",
+      "HOLDABLE": "Articles pouvant être tenus ou transportés",
+      "ENVIRONMENTAL": "Éléments de fond et environnementaux"
     },
     "placementZones": {
       "face": "Visage",
@@ -68,7 +68,7 @@
     },
     "hub": {
       "title": "Actifs",
-      "subtitle": "Créez et gérez des actifs pour vos personnages. Les actifs incluent des vêtements, des accessoires, des objets et bien plus encore.",
+      "subtitle": "Créez et gérez des actifs pour vos personnages. Les actifs incluent les vêtements, les accessoires, les objets, et plus encore.",
       "sidebar": {
         "description": "Parcourez et gérez vos actifs créatifs.",
         "viewGallery": "Voir la galerie"
@@ -88,7 +88,7 @@
         "category": "Catégorie",
         "allTypes": "Tous les types",
         "allCategories": "Toutes les catégories",
-        "noFilter": "Tous"
+        "noFilter": "N'importe lequel"
       },
       "states": {
         "loading": "Chargement de vos actifs...",
@@ -97,7 +97,7 @@
         "empty_private": "Vous n'avez pas encore créé d'actifs.",
         "empty_public": "Aucun actif public ne correspond à vos filtres.",
         "emptyHint": "Commencez par créer votre premier actif ou ajustez vos filtres.",
-        "emptySearchHint": "Ajustez vos filtres ou videz la recherche pour voir plus de résultats."
+        "emptySearchHint": "Ajustez vos filtres ou effacez la recherche pour voir plus de résultats."
       },
       "labels": {
         "total": "{{count}} actif disponible",
@@ -109,37 +109,44 @@
       "submit": "Enregistrer",
       "cancel": "Annuler",
       "sections": {
-        "identity": "Identité",
-        "identityHint": "Définissez les propriétés de base de cet actif.",
         "details": "Détails",
-        "detailsHint": "Décrivez l'apparence, les caractéristiques et les invites visuelles.",
-        "configuration": "Configuration",
-        "configurationHint": "Contrôlez la catégorie, le placement et les paramètres de génération."
+        "detailsHint": "Informations de base sur cet actif.",
+        "classification": "Classification",
+        "classificationHint": "Style visuel, classification par âge et balises de contenu.",
+        "images": "Images",
+        "imagesHint": "Gérez les références visuelles de cet actif."
       },
       "fields": {
         "name": "Nom",
         "description": "Description",
         "type": "Type",
         "category": "Catégorie",
-        "positivePrompt": "Invite visuelle",
+        "promptPrimary": "Invite visuelle",
+        "promptContext": "Invite de contexte",
         "negativePrompt": "Invite négative",
         "placementZone": "Zone de placement",
-        "isPublic": "Visibilité"
+        "placementDetail": "Détail du placement",
+        "style": "Style visuel",
+        "visibility": "Visibilité",
+        "ageRating": "Classification par âge",
+        "contentTags": "Balises de contenu"
       },
       "placeholders": {
-        "name": "Saisir le nom de l'actif",
-        "description": "Décrire cet actif...",
-        "type": "Sélectionner le type",
-        "category": "Sélectionner la catégorie",
-        "positivePrompt": "Décrivez l'apparence de l'actif...",
+        "name": "Saisissez le nom de l'actif",
+        "description": "Décrivez cet actif...",
+        "type": "Sélectionnez le type",
+        "category": "Sélectionnez la catégorie",
+        "promptPrimary": "Décrivez comment l'actif doit apparaître...",
+        "promptContext": "Contexte additionnel lors de l'utilisation avec des personnages...",
         "negativePrompt": "Décrivez ce qu'il faut éviter...",
-        "placementZone": "Sélectionner la zone de placement"
+        "placementZone": "Sélectionnez la zone de placement",
+        "placementDetail": "ex: 'joue gauche', 'sur le nez'"
       },
       "hints": {
         "name": "Un nom clair et descriptif pour cet actif",
         "description": "Description détaillée de l'apparence de l'actif",
-        "positivePrompt": "Invite visuelle pour la génération IA (par exemple, 'une veste en cuir rouge avec des fermetures éclair argentées')",
-        "negativePrompt": "Éléments à éviter lors de la génération (par exemple, 'endommagé, déchiré, sale')",
+        "positivePrompt": "Invite visuelle pour la génération IA (ex: 'une veste en cuir rouge avec des fermetures éclair argentées')",
+        "negativePrompt": "Éléments à éviter dans la génération (ex: 'endommagé, déchiré, sale')",
         "placementZone": "Où l'actif doit être placé sur le personnage"
       },
       "labels": {
@@ -152,13 +159,14 @@
       "images": {
         "coverHeader": "Image de couverture de l'actif",
         "coverDescription": "Image représentant cet actif.",
-        "upload": "Télécharger la couverture",
-        "change": "Changer la couverture",
-        "uploading": "Téléchargement...",
+        "upload": "Importer une couverture",
+        "change": "Modifier la couverture",
+        "uploading": "Importation...",
         "urlModalTitle": "Utiliser une image depuis une URL",
         "urlLabel": "URL de l'image",
         "previewAlt": "Aperçu de la couverture de l'actif",
-        "invalidUrl": "Saisissez une URL d'image valide (http/https)."
+        "invalidUrl": "Saisissez une URL d'image valide (http/https).",
+        "saveFirst": "Enregistrez d'abord l'actif pour ajouter des images"
       },
       "tabs": {
         "identity": "Identité",
@@ -184,7 +192,7 @@
       },
       "accessDenied": {
         "title": "Accès refusé",
-        "message": "Vous n'avez pas la permission de modifier cet actif.",
+        "message": "Vous n'avez pas l'autorisation de modifier cet actif.",
         "backButton": "Retour aux actifs"
       }
     },
@@ -194,7 +202,7 @@
         "notFound": "Nous n'avons pas pu trouver cet actif."
       },
       "actions": {
-        "backToHub": "Retour au centre",
+        "backToHub": "Retour au tableau de bord",
         "edit": "Modifier",
         "delete": "Supprimer",
         "deleting": "Suppression...",
@@ -255,7 +263,7 @@
         "error": "Échec du chargement des actifs",
         "empty": "Aucun actif disponible",
         "noResults": "Aucun actif ne correspond à votre recherche",
-        "selectedEmpty": "Sélectionnez des actifs à ajouter"
+        "selectedEmpty": "Sélectionnez les actifs à ajouter"
       },
       "labels": {
         "selected": "{{count}} sélectionné",
@@ -305,7 +313,7 @@
       "unlinkFailed": "Échec de la dissociation de l'actif du personnage.",
       "nameRequired": "Le nom de l'actif est requis",
       "typeRequired": "Le type d'actif est requis",
-      "categoryRequired": "La catégorie d'actif est requise",
+      "categoryRequired": "La catégorie de l'actif est requise",
       "invalidType": "Type d'actif invalide",
       "invalidCategory": "Catégorie d'actif invalide",
       "invalidPlacementZone": "Zone de placement invalide pour ce type d'actif",
@@ -318,6 +326,55 @@
       "deleted": "Actif supprimé avec succès",
       "linked": "Actif lié au personnage",
       "unlinked": "Actif dissocié du personnage"
+    },
+    "messages": {
+      "imageUploaded": "Image importée avec succès",
+      "imageDeleted": "Image supprimée avec succès",
+      "coverUploaded": "Image de couverture mise à jour avec succès",
+      "descriptionRequired": "La description est requise"
+    },
+    "images": {
+      "title": "Images de l'actif",
+      "addImage": "Ajouter une image",
+      "selectType": "Sélectionnez le type d'image",
+      "uploadFailed": "Échec de l'importation de l'image",
+      "deleteFailed": "Échec de la suppression de l'image",
+      "deleteConfirm": "Supprimer cette image ?",
+      "noImages": "Aucune image pour l'instant. Ajoutez votre première référence visuelle.",
+      "types": {
+        "preview": "Aperçu",
+        "reference": "Référence",
+        "transparent": "Transparent",
+        "in_context": "En contexte"
+      },
+      "typeDescriptions": {
+        "preview": "Image d'aperçu principale de l'actif",
+        "reference": "Référence visuelle de l'actif",
+        "transparent": "Version avec fond transparent",
+        "in_context": "Actif montré en utilisation/contexte de scène"
+      }
+    },
+    "prompts": {
+      "title": "Invites de génération",
+      "primaryLabel": "Invite visuelle",
+      "primaryHint": "Décrivez comment l'actif doit apparaître dans les images générées",
+      "contextLabel": "Invite de contexte",
+      "contextHint": "Contexte additionnel lorsque cet actif est utilisé avec des personnages",
+      "negativeLabel": "Invite négative",
+      "negativeHint": "Éléments à éviter lors de la génération de cet actif"
+    },
+    "avatar": {
+      "invalidUrl": "Saisissez une URL d'image valide (http/https).",
+      "error": "Nous n'avons pas pu charger cette image. {{message}}",
+      "aiComingSoon": "Génération IA bientôt disponible pour les actifs",
+      "generateAI": "Générer avec l'IA",
+      "fromDevice": "Importer depuis l'appareil",
+      "fromUrl": "Utiliser une URL d'image",
+      "urlModalTitle": "Utiliser une image depuis une URL",
+      "urlLabel": "URL de l'image",
+      "preview": "Aperçu",
+      "previewAlt": "Aperçu de l'image",
+      "loading": "Chargement..."
     }
   }
 }
