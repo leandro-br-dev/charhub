@@ -1,0 +1,147 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "إعدادات النظام",
+    "header": {
+      "title": "إعدادات النظام",
+      "description": "إدارة معلمات وقت التشغيل دون إعادة تشغيل الخادم. تسري التغييرات فوراً."
+    },
+    "search": {
+      "placeholder": "تصفية الإعدادات..."
+    },
+    "categories": {
+      "translation": "نظام الترجمة",
+      "context": "نافذة السياق",
+      "generation": "توليد الشخصيات",
+      "correction": "نظام التصحيح",
+      "curation": "تنظيم الصور",
+      "moderation": "الإشراف على المحتوى",
+      "scheduling": "جدولة المهام"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "المزود الافتراضي",
+          "description": "مزود LLM الافتراضي للترجمات"
+        },
+        "default_model": {
+          "label": "النموذج الافتراضي",
+          "description": "اسم النموذج الافتراضي للترجمات"
+        },
+        "cache_ttl": {
+          "label": "عمر ذاكرة التخزين المؤقت TTL (بالثواني)",
+          "description": "مدة تخزين نتائج الترجمة مؤقتًا"
+        },
+        "enable_pre_translation": {
+          "label": "تمكين الترجمة المسبقة",
+          "description": "ترجمة المحتوى مسبقًا لتحميل أسرع"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "الحد الأقصى للرموز",
+          "description": "الحد الأقصى لحجم نافذة السياق بالرموز"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "الحد اليومي",
+          "description": "الحد الأقصى لعدد الشخصيات المولدة يوميًا"
+        },
+        "batch_enabled": {
+          "label": "تمكين المعالجة الدفعية",
+          "description": "معالجة توليد الشخصيات على دفعات"
+        },
+        "batch_size_per_run": {
+          "label": "حجم الدفعة",
+          "description": "عدد الشخصيات المراد معالجتها في كل دفعة"
+        },
+        "batch_retry_attempts": {
+          "label": "محاولات إعادة المحاولة",
+          "description": "عدد محاولات إعادة المحاولة للدفعات الفاشلة"
+        },
+        "batch_timeout_minutes": {
+          "label": "مهلة الانتهاء (بالدقائق)",
+          "description": "الحد الأقصى للوقت للانتظار لإكمال الدفعة"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "الحد اليومي للصور الرمزية",
+          "description": "الحد الأقصى لتصحيحات الصور الرمزية يوميًا"
+        },
+        "data_daily_limit": {
+          "label": "الحد اليومي للبيانات",
+          "description": "الحد الأقصى لتصحيحات البيانات يوميًا"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "كلمات البحث الرئيسية",
+          "description": "كلمات بحث رئيسية مفصولة بفواصل لعملية التنظيم"
+        },
+        "anime_model_ids": {
+          "label": "معرفات نماذج Anime",
+          "description": "معرفات نماذج Anime مفصولة بفواصل لعملية تنظيم Anime"
+        },
+        "auto_approval_threshold": {
+          "label": "عتبة الموافقة التلقائية",
+          "description": "عتبة النقاط للموافقة التلقائية (0-100)"
+        },
+        "require_manual_review": {
+          "label": "تتطلب مراجعة يدوية",
+          "description": "تتطلب مراجعة يدوية للمحتوى المنظم"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "تمكين فلتر NSFW",
+          "description": "تصفية محتوى NSFW تلقائيًا"
+        },
+        "nsfw_filter_strictness": {
+          "label": "صرامة فلتر NSFW",
+          "description": "مدى صرامة فلتر NSFW"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "ساعة التنظيم اليومي",
+          "description": "ساعة اليوم لتشغيل التنظيم اليومي (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "منخفض",
+      "medium": "متوسط",
+      "high": "عالي"
+    },
+    "actions": {
+      "save": "حفظ",
+      "saving": "جارٍ الحفظ...",
+      "reset": "إعادة تعيين إلى الافتراضي",
+      "addModel": "إضافة نموذج"
+    },
+    "messages": {
+      "saveSuccess": "تم تحديث الإعداد \"{{key}}\" بنجاح",
+      "saveError": "فشل تحديث الإعداد",
+      "loadError": "فشل تحميل إعدادات النظام",
+      "confirmChange": "هل أنت متأكد من رغبتك في تغيير \"{{key}}\"؟ سيسري هذا التغيير فورًا.",
+      "selectProviderFirst": "اختر المزود أولاً",
+      "selectModel": "اختر النموذج..."
+    },
+    "meta": {
+      "updatedAt": "تم التحديث {{time}}",
+      "updatedBy": "بواسطة {{user}}",
+      "neverUpdated": "قيمة افتراضية (لم يتم تعديلها مطلقًا)"
+    },
+    "modelSelection": {
+      "provider": "المزود",
+      "model": "النموذج",
+      "selectProvider": "اختر مزودًا...",
+      "selectModel": "اختر نموذجًا...",
+      "selectProviderFirst": "اختر مزودًا أولاً",
+      "addNewModel": "إضافة نموذج جديد",
+      "noModelsFound": "لم يتم العثور على نماذج لهذا المزود"
+    }
+  }
+}

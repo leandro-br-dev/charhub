@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "LLMモデルカタログ",
+    "header": {
+      "title": "LLMモデルカタログ",
+      "description": "プラットフォームのLLMモデルとプロバイダーを管理します"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "プロバイダーを選択"
+    },
+    "categories": {
+      "CHAT": "チャット",
+      "CODING": "コーディング",
+      "REASONING": "推論",
+      "VISION": "ビジョン",
+      "SPEECH": "音声",
+      "TRANSLATION": "翻訳",
+      "AGENTIC": "エージェント",
+      "EMBEDDING": "埋め込み"
+    },
+    "types": {
+      "TEXT": "テキスト",
+      "MULTIMODAL": "マルチモーダル",
+      "REASONING": "推論",
+      "SPEECH": "音声",
+      "EMBEDDING": "埋め込み"
+    },
+    "model": {
+      "id": "ID",
+      "name": "モデルID",
+      "displayName": "表示名",
+      "category": "カテゴリ",
+      "type": "タイプ",
+      "contextWindow": "コンテキストウィンドウ",
+      "maxOutput": "最大出力",
+      "supportsTools": "ツール",
+      "supportsVision": "ビジョン",
+      "supportsReasoning": "推論",
+      "description": "説明",
+      "status": "ステータス",
+      "isActive": "アクティブ",
+      "isAvailable": "利用可能",
+      "version": "バージョン",
+      "source": "ソース"
+    },
+    "actions": {
+      "addModel": "モデルを追加",
+      "editModel": "モデルを編集",
+      "deleteModel": "モデルを削除",
+      "toggleActive": "アクティブ/非アクティブを切り替える",
+      "toggleAvailable": "利用可能/利用不可を切り替える",
+      "refreshCache": "キャッシュを更新",
+      "save": "保存",
+      "cancel": "キャンセル",
+      "confirm": "確認",
+      "back": "戻る"
+    },
+    "messages": {
+      "loadError": "LLMモデルの読み込みに失敗しました",
+      "createSuccess": "モデルが正常に作成されました",
+      "updateSuccess": "モデルが正常に更新されました",
+      "deleteSuccess": "モデルが正常に削除されました",
+      "toggleSuccess": "モデルのステータスが更新されました",
+      "cacheRefreshed": "モデルキャッシュが正常に更新されました",
+      "noModelsFound": "このプロバイダーにはモデルが見つかりません",
+      "deleteConfirm": "モデル「{{modelName}}」を削除してもよろしいですか？この操作は元に戻せません。"
+    },
+    "errors": {
+      "createFailed": "モデルの作成に失敗しました",
+      "updateFailed": "モデルの更新に失敗しました",
+      "deleteFailed": "モデルの削除に失敗しました",
+      "toggleFailed": "モデルステータスの更新に失敗しました",
+      "validation": {
+        "nameRequired": "モデルIDは必須です",
+        "displayNameRequired": "表示名は必須です",
+        "categoryRequired": "カテゴリは必須です",
+        "typeRequired": "タイプは必須です",
+        "contextWindowRequired": "コンテキストウィンドウは必須です",
+        "maxOutputRequired": "最大出力は必須です"
+      }
+    },
+    "form": {
+      "addTitle": "新規モデルを追加",
+      "editTitle": "モデルを編集",
+      "provider": "プロバイダー",
+      "providerChangeWarning": "変更できません",
+      "providerChangeHelp": "プロバイダーは作成後に変更できません。必要に応じてモデルを削除して再作成してください。",
+      "name": "モデルID",
+      "namePlaceholder": "例: gemini-2.5-flash",
+      "displayName": "表示名",
+      "displayNamePlaceholder": "例: Gemini 2.5 Flash",
+      "category": "カテゴリ",
+      "type": "タイプ",
+      "contextWindow": "コンテキストウィンドウ (トークン)",
+      "contextWindowPlaceholder": "例: 128000",
+      "maxOutput": "最大出力 (トークン)",
+      "maxOutputPlaceholder": "例: 4096",
+      "supportsTools": "関数呼び出しをサポート",
+      "supportsVision": "ビジョンをサポート",
+      "supportsReasoning": "推論をサポート",
+      "description": "説明",
+      "descriptionPlaceholder": "モデルの簡単な説明...",
+      "version": "バージョン",
+      "versionPlaceholder": "例: 1.0.0",
+      "source": "ソースURL",
+      "sourcePlaceholder": "https://...",
+      "isActive": "アクティブ (使用可能)",
+      "isAvailable": "利用可能 (API設定済み)"
+    }
+  }
+}

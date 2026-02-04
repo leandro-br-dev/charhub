@@ -158,7 +158,7 @@ async function processFullPopulation(job: Job<FullPopulationJobData>): Promise<v
  */
 async function processHourlyGeneration(job: Job<HourlyGenerationJobData>): Promise<void> {
   const { dailyLimit, userId } = job.data;
-  const dailyLimitOrDefault = dailyLimit || parseInt(process.env.BATCH_SIZE_PER_RUN || '24', 10);
+  const dailyLimitOrDefault = dailyLimit || await systemConfigurationService.getInt('generation.batch_size_per_run', 24);
   const botUserId = userId || process.env.OFFICIAL_BOT_USER_ID || '00000000-0000-0000-0000-000000000001';
 
   logger.info({ dailyLimit: dailyLimitOrDefault, userId: botUserId }, 'Processing hourly generation job');
@@ -226,7 +226,8 @@ async function processHourlyGeneration(job: Job<HourlyGenerationJobData>): Promi
 async function processDailyCuration(job: Job<DailyCurationJobData>): Promise<void> {
   const { imageCount, keywords } = job.data;
   // Default to BATCH_SIZE_PER_RUN * 2 to get extra images for filtering
-  const targetCount = imageCount || (parseInt(process.env.BATCH_SIZE_PER_RUN || '24', 10) * 2);
+  const batchSize = await systemConfigurationService.getInt('generation.batch_size_per_run', 24);
+  const targetCount = imageCount || (batchSize * 2);
 
   logger.info(
     { imageCount: targetCount, keywords },

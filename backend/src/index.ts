@@ -14,6 +14,7 @@ import { queueManager } from './queues';
 import v1Routes from './routes/v1';
 import { setupChatSocket } from './websocket/chatHandler';
 import webhookRoutes from './routes/webhooks';
+import { systemConfigurationService } from './services/config/systemConfigurationService';
 
 const app = express();
 const server = createServer(app);
@@ -104,11 +105,19 @@ const io = setupChatSocket(server);
 (app as any).io = io;
 
 // Start server
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '0.0.0.0', async () => {
   logger.info(`Server running on port ${PORT}`);
   logger.info(`API version: v1`);
   logger.info(`Environment: ${process.env.NODE_ENV || 'development'}`);
   logger.info(`Base URL: ${process.env.BASE_URL || `http://localhost:${PORT}`}`);
+
+  // Initialize system configuration cache after server starts
+  try {
+    await systemConfigurationService.initializeCache();
+    logger.info('System configuration cache initialized');
+  } catch (error) {
+    logger.error({ error }, 'Failed to initialize system configuration cache');
+  }
 });
 
 // Graceful shutdown hooks

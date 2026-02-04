@@ -1,5 +1,5 @@
 /**
- * System Configuration API Routes
+ * System Configuration API Routes (Simplified)
  * Admin endpoints for managing system configuration
  */
 
@@ -7,7 +7,6 @@ import { Router, Response } from 'express';
 import { requireAuth } from '../../middleware/auth';
 import { logger } from '../../config/logger';
 import { systemConfigurationService } from '../../services/config/systemConfigurationService';
-import { prisma } from '../../config/database';
 import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
 
 const router = Router();
@@ -22,12 +21,11 @@ function requireAdmin(user: any, res: Response): boolean {
 }
 
 // Validation constants
-const VALID_CATEGORIES = ['generation', 'correction', 'curation'];
 const KEY_REGEX = /^[a-zA-Z0-9._-]+$/;
 
 /**
  * GET /api/v1/system-config
- * Get all system configurations
+ * Get all system configurations (simplified - returns array of {key, value})
  */
 router.get('/', requireAuth, async (req, res) => {
   try {
@@ -39,9 +37,15 @@ router.get('/', requireAuth, async (req, res) => {
 
     const configs = await systemConfigurationService.getAll();
 
+    // Return simplified array of {key, value}
+    const simplifiedConfigs = configs.map(([key, value]) => ({ key, value }));
+
     res.json({
-      configs,
-      count: configs.length,
+      success: true,
+      data: {
+        configs: simplifiedConfigs,
+        count: simplifiedConfigs.length,
+      },
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get system configurations');
@@ -53,7 +57,7 @@ router.get('/', requireAuth, async (req, res) => {
 
 /**
  * GET /api/v1/system-config/:key
- * Get single configuration by key
+ * Get single configuration by key (simplified)
  */
 router.get('/:key', requireAuth, async (req, res) => {
   try {
@@ -84,18 +88,12 @@ router.get('/:key', requireAuth, async (req, res) => {
       return;
     }
 
-    // Get full config details from database
-    const config = await prisma.systemConfiguration.findUnique({
-      where: { key },
-    });
-
     res.json({
-      key,
-      value,
-      description: config?.description || null,
-      category: config?.category || null,
-      updatedAt: config?.updatedAt || null,
-      updatedBy: config?.updatedBy || null,
+      success: true,
+      data: {
+        key,
+        value,
+      },
     });
   } catch (error) {
     logger.error({ error }, 'Failed to get system configuration');
@@ -107,7 +105,7 @@ router.get('/:key', requireAuth, async (req, res) => {
 
 /**
  * POST /api/v1/system-config
- * Create new configuration
+ * Create new configuration (simplified - only key and value)
  */
 router.post('/', requireAuth, async (req, res) => {
   try {
@@ -117,7 +115,7 @@ router.post('/', requireAuth, async (req, res) => {
       return;
     }
 
-    const { key, value, description, category } = req.body;
+    const { key, value } = req.body;
 
     // Validate required fields
     if (!key || value === undefined || value === null || value === '') {
@@ -136,16 +134,6 @@ router.post('/', requireAuth, async (req, res) => {
       return;
     }
 
-    // Validate category if provided
-    if (category && !VALID_CATEGORIES.includes(category)) {
-      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
-        message: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`,
-        details: { provided: category, validCategories: VALID_CATEGORIES },
-        field: 'category'
-      });
-      return;
-    }
-
     // Check if key already exists
     const existing = await systemConfigurationService.exists(key);
     if (existing) {
@@ -156,27 +144,17 @@ router.post('/', requireAuth, async (req, res) => {
       return;
     }
 
-    // Create configuration with description and category
-    await prisma.systemConfiguration.create({
-      data: {
-        key,
-        value: String(value),
-        description: description || null,
-        category: category || null,
-        updatedBy: user?.id,
-      },
-    });
-
-    // Invalidate cache
-    await systemConfigurationService.refreshCache();
+    // Create configuration (simplified - only key and value)
+    await systemConfigurationService.set(key, String(value), user?.id);
 
     logger.info({ key, userId: user?.id }, 'System configuration created');
 
     res.status(201).json({
-      key,
-      value,
-      description: description || null,
-      category: category || null,
+      success: true,
+      data: {
+        key,
+        value,
+      },
       message: 'Configuration created successfully',
     });
   } catch (error) {
@@ -189,7 +167,7 @@ router.post('/', requireAuth, async (req, res) => {
 
 /**
  * PUT /api/v1/system-config/:key
- * Update existing configuration
+ * Update existing configuration (simplified - only value)
  */
 router.put('/:key', requireAuth, async (req, res) => {
   try {
@@ -200,7 +178,7 @@ router.put('/:key', requireAuth, async (req, res) => {
     }
 
     const { key } = req.params;
-    const { value, description, category } = req.body;
+    const { value } = req.body;
 
     // Validate key format
     if (!KEY_REGEX.test(key)) {
@@ -220,16 +198,6 @@ router.put('/:key', requireAuth, async (req, res) => {
       return;
     }
 
-    // Validate category if provided
-    if (category && !VALID_CATEGORIES.includes(category)) {
-      sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
-        message: `Invalid category. Must be one of: ${VALID_CATEGORIES.join(', ')}`,
-        details: { provided: category, validCategories: VALID_CATEGORIES },
-        field: 'category'
-      });
-      return;
-    }
-
     // Check if key exists
     const existing = await systemConfigurationService.exists(key);
     if (!existing) {
@@ -243,30 +211,14 @@ router.put('/:key', requireAuth, async (req, res) => {
     // Update configuration value
     await systemConfigurationService.set(key, String(value), user?.id);
 
-    // Update description and category if provided
-    if (description !== undefined || category !== undefined) {
-      await prisma.systemConfiguration.update({
-        where: { key },
-        data: {
-          ...(description !== undefined && { description }),
-          ...(category !== undefined && { category }),
-        },
-      });
-    }
-
-    // Get updated config
-    const config = await prisma.systemConfiguration.findUnique({
-      where: { key },
-    });
-
     logger.info({ key, userId: user?.id }, 'System configuration updated');
 
     res.json({
-      key,
-      value,
-      description: config?.description || null,
-      category: config?.category || null,
-      updatedAt: config?.updatedAt,
+      success: true,
+      data: {
+        key,
+        value,
+      },
       message: 'Configuration updated successfully',
     });
   } catch (error) {
@@ -316,7 +268,10 @@ router.delete('/:key', requireAuth, async (req, res) => {
     logger.info({ key, userId: user?.id }, 'System configuration deleted');
 
     res.json({
-      message: 'Configuration deleted successfully',
+      success: true,
+      data: {
+        message: 'Configuration deleted successfully',
+      },
     });
   } catch (error) {
     logger.error({ error }, 'Failed to delete system configuration');

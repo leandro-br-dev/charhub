@@ -8,6 +8,8 @@
     "admin": "Admin",
     "adminAnalytics": "Analytics",
     "adminScripts": "Scripts",
+    "adminSystemConfig": "System Config",
+    "adminLlmCatalog": "LLM Catalog",
     "assets": "Assets",
     "profileLink": "My profile",
     "sidebarDefaultTitle": "Explore CharHub",

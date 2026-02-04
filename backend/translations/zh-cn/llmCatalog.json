@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "LLM 模型目录",
+    "header": {
+      "title": "LLM 模型目录",
+      "description": "管理平台上的 LLM 模型和提供商"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "选择提供商"
+    },
+    "categories": {
+      "CHAT": "聊天",
+      "CODING": "编码",
+      "REASONING": "推理",
+      "VISION": "视觉",
+      "SPEECH": "语音",
+      "TRANSLATION": "翻译",
+      "AGENTIC": "智能体",
+      "EMBEDDING": "嵌入"
+    },
+    "types": {
+      "TEXT": "文本",
+      "MULTIMODAL": "多模态",
+      "REASONING": "推理",
+      "SPEECH": "语音",
+      "EMBEDDING": "嵌入"
+    },
+    "model": {
+      "id": "ID",
+      "name": "模型 ID",
+      "displayName": "显示名称",
+      "category": "类别",
+      "type": "类型",
+      "contextWindow": "上下文窗口",
+      "maxOutput": "最大输出",
+      "supportsTools": "工具",
+      "supportsVision": "视觉",
+      "supportsReasoning": "推理",
+      "description": "描述",
+      "status": "状态",
+      "isActive": "启用",
+      "isAvailable": "可用",
+      "version": "版本",
+      "source": "来源"
+    },
+    "actions": {
+      "addModel": "添加模型",
+      "editModel": "编辑模型",
+      "deleteModel": "删除模型",
+      "toggleActive": "切换启用状态",
+      "toggleAvailable": "切换可用状态",
+      "refreshCache": "刷新缓存",
+      "save": "保存",
+      "cancel": "取消",
+      "confirm": "确认",
+      "back": "返回"
+    },
+    "messages": {
+      "loadError": "加载 LLM 模型失败",
+      "createSuccess": "模型创建成功",
+      "updateSuccess": "模型更新成功",
+      "deleteSuccess": "模型删除成功",
+      "toggleSuccess": "模型状态已更新",
+      "cacheRefreshed": "模型缓存刷新成功",
+      "noModelsFound": "此提供商未找到模型",
+      "deleteConfirm": "您确定要删除模型 \"{{modelName}}\" 吗？此操作无法撤销。"
+    },
+    "errors": {
+      "createFailed": "创建模型失败",
+      "updateFailed": "更新模型失败",
+      "deleteFailed": "删除模型失败",
+      "toggleFailed": "更新模型状态失败",
+      "validation": {
+        "nameRequired": "模型 ID 为必填项",
+        "displayNameRequired": "显示名称为必填项",
+        "categoryRequired": "类别为必填项",
+        "typeRequired": "类型为必填项",
+        "contextWindowRequired": "上下文窗口为必填项",
+        "maxOutputRequired": "最大输出为必填项"
+      }
+    },
+    "form": {
+      "addTitle": "添加新模型",
+      "editTitle": "编辑模型",
+      "provider": "提供商",
+      "providerChangeWarning": "无法更改",
+      "providerChangeHelp": "提供商在创建后无法更改。如果需要，请删除并重新创建模型。",
+      "name": "模型 ID",
+      "namePlaceholder": "例如：gemini-2.5-flash",
+      "displayName": "显示名称",
+      "displayNamePlaceholder": "例如：Gemini 2.5 Flash",
+      "category": "类别",
+      "type": "类型",
+      "contextWindow": "上下文窗口（tokens）",
+      "contextWindowPlaceholder": "例如：128000",
+      "maxOutput": "最大输出（tokens）",
+      "maxOutputPlaceholder": "例如：4096",
+      "supportsTools": "支持函数调用",
+      "supportsVision": "支持视觉",
+      "supportsReasoning": "支持推理",
+      "description": "描述",
+      "descriptionPlaceholder": "模型的简要描述...",
+      "version": "版本",
+      "versionPlaceholder": "例如：1.0.0",
+      "source": "来源 URL",
+      "sourcePlaceholder": "https://...",
+      "isActive": "启用（已激活可使用）",
+      "isAvailable": "可用（API 已配置）"
+    }
+  }
+}

@@ -1,11 +1,12 @@
 import { prisma } from '../../config/database';
 import { redis } from '../../config/redis';
 import { logger } from '../../config/logger';
-import { callLLM, type LLMResponse } from '../llm';
+import { callLLM, type LLMResponse, type LLMProvider } from '../llm';
 import { trackFromLLMResponse, trackLLMUsage } from '../llm/llmUsageTracker';
 import { TranslationStatus } from '../../generated/prisma';
 import crypto from 'crypto';
 import { decryptMessage } from '../encryption';
+import { systemConfigurationService } from '../config/systemConfigurationService';
 
 export interface TranslationRequest {
   contentType: string;
@@ -29,15 +30,44 @@ export interface TranslationResult {
 }
 
 export class TranslationService {
-  private readonly DEFAULT_CACHE_TTL = 3600; // 1 hour
-  private readonly DEFAULT_PROVIDER = 'gemini';
-  private readonly DEFAULT_MODEL = 'gemini-2.5-flash-lite'; // Updated model
+  private defaultCacheTTL: number = 3600; // 1 hour
+  private defaultProvider: LLMProvider = 'gemini';
+  private defaultModel: string = 'gemini-2.5-flash-lite'; // Updated model
+  private configInitialized: boolean = false;
+
+  /**
+   * Initialize configuration from system configuration service
+   * Called once during service initialization
+   */
+  private async initializeConfig(): Promise<void> {
+    try {
+      const [cacheTTL, provider, model] = await Promise.all([
+        systemConfigurationService.getInt('translation.cache_ttl', 3600),
+        systemConfigurationService.get('translation.default_provider', 'gemini'),
+        systemConfigurationService.get('translation.default_model', 'gemini-2.5-flash-lite'),
+      ]);
+
+      this.defaultCacheTTL = cacheTTL;
+      this.defaultProvider = (provider || 'gemini') as LLMProvider;
+      this.defaultModel = model || 'gemini-2.5-flash-lite';
+      this.configInitialized = true;
+    } catch (error) {
+      logger.warn({ error }, 'Failed to load translation config from system configuration, using defaults');
+      // Still mark as initialized even on error, so we don't retry
+      this.configInitialized = true;
+    }
+  }
 
   /**
    * Translates content with multi-layer caching
    */
   async translate(request: TranslationRequest): Promise<TranslationResult> {
     const startTime = Date.now();
+
+    // Initialize config if not already done (lazy initialization)
+    if (!this.configInitialized) {
+      await this.initializeConfig();
+    }
 
     try {
       // Validation
@@ -101,8 +131,8 @@ export class TranslationService {
 
         return {
           translatedText: dbResult.translatedText,
-          provider: dbResult.translationProvider || this.DEFAULT_PROVIDER,
-          model: dbResult.translationModel || this.DEFAULT_MODEL,
+          provider: dbResult.translationProvider || this.defaultProvider,
+          model: dbResult.translationModel || this.defaultModel,
           confidence: dbResult.confidence || undefined,
           translationTimeMs: Date.now() - startTime,
           cached: true,
@@ -220,8 +250,8 @@ export class TranslationService {
     const userPrompt = this.buildUserPrompt(request);
 
     const response = await callLLM({
-      provider: this.DEFAULT_PROVIDER,
-      model: this.DEFAULT_MODEL,
+      provider: this.defaultProvider,
+      model: this.defaultModel,
       systemPrompt,
       userPrompt,
       temperature: 0.3,
@@ -430,8 +460,8 @@ export class TranslationService {
     }, '[translateText] Calling LLM for translation');
 
     const response = await callLLM({
-      provider: this.DEFAULT_PROVIDER,
-      model: this.DEFAULT_MODEL,
+      provider: this.defaultProvider,
+      model: this.defaultModel,
       systemPrompt,
       userPrompt,
       temperature: 0.3,
@@ -449,7 +479,7 @@ export class TranslationService {
       feature: 'CONTENT_TRANSLATION',
       featureId: `message:${text.substring(0, 20)}`,
       provider: 'GEMINI',
-      model: this.DEFAULT_MODEL,
+      model: this.defaultModel,
       inputTokens: Math.ceil(text.length / 4),
       outputTokens: Math.ceil(response.content.length / 4),
       cached: false,
@@ -519,8 +549,8 @@ export class TranslationService {
     const estimatedOutputTokens = Math.ceil((cached.translatedText?.length || request.originalText.length) / 4);
 
     // Determine provider from cached translation or use default
-    const provider = cached.translationProvider || this.DEFAULT_PROVIDER;
-    const model = cached.translationModel || this.DEFAULT_MODEL;
+    const provider = cached.translationProvider || this.defaultProvider;
+    const model = cached.translationModel || this.defaultModel;
 
     // Map provider string to enum
     const providerMap: Record<string, any> = {
@@ -563,7 +593,7 @@ export class TranslationService {
   private async saveToRedis(request: TranslationRequest, data: any): Promise<void> {
     try {
       const cacheKey = this.buildCacheKey(request);
-      await redis.setex(cacheKey, this.DEFAULT_CACHE_TTL, JSON.stringify(data));
+      await redis.setex(cacheKey, this.defaultCacheTTL, JSON.stringify(data));
     } catch (error) {
       logger.error({ error }, 'Redis save failed');
     }

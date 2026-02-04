@@ -6,15 +6,43 @@ type CacheEntry = {
   error?: any;
   promise?: Promise<string>;
   ts: number;
+  retryCount?: number;
 };
 
 const imageObjectUrlCache = new Map<string, CacheEntry>();
-const DEFAULT_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const DEFAULT_TTL_MS = 5 * 60 * 1000; // 5 minutes for success
+const ERROR_TTL_MS = 30 * 1000; // 30 seconds for errors
+const MAX_RETRIES = 3; // Max retry attempts per URL
 
 // Default avatar SVG (base64) for fallback
 const DEFAULT_AVATAR_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%239CA3AF'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E";
 
+/**
+ * Evicts expired entries from the cache and revokes their blob URLs to prevent memory leaks.
+ * Uses different TTLs for success (5min) and error (30s) entries.
+ */
+function evictExpiredEntries(): void {
+  const now = Date.now();
+  for (const [key, entry] of imageObjectUrlCache) {
+    const ttl = entry.status === 'error' ? ERROR_TTL_MS : DEFAULT_TTL_MS;
+    if (now - entry.ts > ttl) {
+      if (entry.blobUrl) {
+        URL.revokeObjectURL(entry.blobUrl);
+      }
+      imageObjectUrlCache.delete(key);
+    }
+  }
+}
+
+// Set up periodic cleanup every 60 seconds
+const cleanupInterval = setInterval(evictExpiredEntries, 60_000);
+
 async function fetchAsBlobUrl(src: string): Promise<string> {
+  // Never cache data URIs or blob URLs - return them directly
+  if (src.startsWith('data:') || src.startsWith('blob:')) {
+    return src;
+  }
+
   const existing = imageObjectUrlCache.get(src);
   if (existing?.status === 'loaded' && existing.blobUrl) {
     return existing.blobUrl;
@@ -38,7 +66,14 @@ async function fetchAsBlobUrl(src: string): Promise<string> {
       return url;
     })
     .catch((err) => {
-      imageObjectUrlCache.set(src, { status: 'error', error: err, ts: Date.now() });
+      const existingEntry = imageObjectUrlCache.get(src);
+      const retryCount = (existingEntry?.retryCount ?? 0) + 1;
+      imageObjectUrlCache.set(src, {
+        status: 'error',
+        error: err,
+        ts: Date.now(),
+        retryCount,
+      });
       throw err;
     });
 
@@ -48,6 +83,13 @@ async function fetchAsBlobUrl(src: string): Promise<string> {
 
 export function prefetchImage(src: string): Promise<string> {
   return fetchAsBlobUrl(src);
+}
+
+// Test-only export to clear cache between tests
+if (import.meta.env?.VITEST ?? import.meta.env?.NODE_ENV === 'test') {
+  (globalThis as any).__clearCachedImageCache__ = () => {
+    imageObjectUrlCache.clear();
+  };
 }
 
 export type CachedImageProps = React.ImgHTMLAttributes<HTMLImageElement> & {
@@ -97,10 +139,20 @@ export function CachedImage({
       return;
     }
 
-    // If previously errored, don't retry
+    // If previously errored, check if error TTL expired and retries remain
     if (entry && entry.status === 'error') {
-      setHasError(true);
-      return;
+      const errorAge = now - entry.ts;
+      const retries = entry.retryCount ?? 0;
+
+      // If error is fresh OR max retries reached, show fallback
+      if (errorAge < ERROR_TTL_MS || retries >= MAX_RETRIES) {
+        setHasError(true);
+        return;
+      }
+
+      // Error TTL expired and retries remaining - clear entry and retry
+      imageObjectUrlCache.delete(src);
+      // Fall through to fetch below
     }
 
     let cancelled = false;
@@ -113,8 +165,10 @@ export function CachedImage({
       })
       .catch(() => {
         if (!cancelled) {
-          setResolvedSrc(src); // Fallback to original src
-          setHasError(true);
+          // Fallback to direct img src (browser doesn't need CORS for <img> tags)
+          // Don't set hasError=true here - let the <img> tag try loading directly
+          // Only set hasError if the <img> onError also fires
+          setResolvedSrc(src);
         }
       });
 

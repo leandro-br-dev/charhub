@@ -1,0 +1,147 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "Configurazione del sistema",
+    "header": {
+      "title": "Configurazione del sistema",
+      "description": "Gestisci i parametri di runtime senza riavviare il server. Le modifiche hanno effetto immediato."
+    },
+    "search": {
+      "placeholder": "Filtra configurazioni..."
+    },
+    "categories": {
+      "translation": "Sistema di Traduzione",
+      "context": "Finestra di Contesto",
+      "generation": "Generazione di Personaggi",
+      "correction": "Sistema di Correzione",
+      "curation": "Curatela Immagini",
+      "moderation": "Moderazione Contenuti",
+      "scheduling": "Pianificazione Lavori"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "Provider Predefinito",
+          "description": "Provider LLM predefinito per le traduzioni"
+        },
+        "default_model": {
+          "label": "Modello Predefinito",
+          "description": "Nome del modello predefinito per le traduzioni"
+        },
+        "cache_ttl": {
+          "label": "TTL Cache (secondi)",
+          "description": "Durata della cache per i risultati di traduzione"
+        },
+        "enable_pre_translation": {
+          "label": "Abilita Pre-traduzione",
+          "description": "Pre-traduci i contenuti per un caricamento più rapido"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "Token Massimi",
+          "description": "Dimensione massima della finestra di contesto in token"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "Limite Giornaliero",
+          "description": "Numero massimo di personaggi generati al giorno"
+        },
+        "batch_enabled": {
+          "label": "Abilita Elaborazione in Batch",
+          "description": "Elabora la generazione dei personaggi in batch"
+        },
+        "batch_size_per_run": {
+          "label": "Dimensione Batch",
+          "description": "Numero di personaggi da elaborare per batch"
+        },
+        "batch_retry_attempts": {
+          "label": "Tentativi di Ripetizione",
+          "description": "Numero di tentativi di ripetizione per i batch falliti"
+        },
+        "batch_timeout_minutes": {
+          "label": "Timeout (minuti)",
+          "description": "Tempo massimo di attesa per il completamento del batch"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "Limite Giornaliero Avatar",
+          "description": "Numero massimo di correzioni avatar al giorno"
+        },
+        "data_daily_limit": {
+          "label": "Limite Giornaliero Dati",
+          "description": "Numero massimo di correzioni dati al giorno"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "Parole Chiave di Ricerca",
+          "description": "Parole chiave separate da virgola per la ricerca di curatela"
+        },
+        "anime_model_ids": {
+          "label": "ID Modello Anime",
+          "description": "ID modello separati da virgola per la curatela Anime"
+        },
+        "auto_approval_threshold": {
+          "label": "Soglia di Approvazione Automatica",
+          "description": "Soglia di punteggio per l'approvazione automatica (0-100)"
+        },
+        "require_manual_review": {
+          "label": "Richiedi Revisione Manuale",
+          "description": "Richiedi revisione manuale per i contenuti curati"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "Abilita Filtro NSFW",
+          "description": "Filtra automaticamente i contenuti NSFW"
+        },
+        "nsfw_filter_strictness": {
+          "label": "Rigorosità Filtro NSFW",
+          "description": "Quanto deve essere rigoroso il filtro NSFW"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "Ora Curatela Giornaliera",
+          "description": "Ora del giorno per eseguire la curatela giornaliera (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "Bassa",
+      "medium": "Media",
+      "high": "Alta"
+    },
+    "actions": {
+      "save": "Salva",
+      "saving": "Salvataggio in corso...",
+      "reset": "Ripristina predefiniti",
+      "addModel": "Aggiungi Modello"
+    },
+    "messages": {
+      "saveSuccess": "Configurazione \"{{key}}\" aggiornata con successo",
+      "saveError": "Impossibile aggiornare la configurazione",
+      "loadError": "Impossibile caricare le configurazioni di sistema",
+      "confirmChange": "Sei sicuro di voler modificare \"{{key}}\"? L'effetto sarà immediato.",
+      "selectProviderFirst": "Seleziona prima il provider",
+      "selectModel": "Seleziona modello..."
+    },
+    "meta": {
+      "updatedAt": "Aggiornato {{time}}",
+      "updatedBy": "da {{user}}",
+      "neverUpdated": "Valore predefinito (mai modificato)"
+    },
+    "modelSelection": {
+      "provider": "Provider",
+      "model": "Modello",
+      "selectProvider": "Seleziona un provider...",
+      "selectModel": "Seleziona un modello...",
+      "selectProviderFirst": "Seleziona prima un provider",
+      "addNewModel": "Aggiungi nuovo modello",
+      "noModelsFound": "Nessun modello trovato per questo provider"
+    }
+  }
+}

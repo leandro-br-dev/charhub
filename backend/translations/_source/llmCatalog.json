@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "LLM Model Catalog",
+    "header": {
+      "title": "LLM Model Catalog",
+      "description": "Manage LLM models and providers for the platform"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "Select Provider"
+    },
+    "categories": {
+      "CHAT": "Chat",
+      "CODING": "Coding",
+      "REASONING": "Reasoning",
+      "VISION": "Vision",
+      "SPEECH": "Speech",
+      "TRANSLATION": "Translation",
+      "AGENTIC": "Agentic",
+      "EMBEDDING": "Embedding"
+    },
+    "types": {
+      "TEXT": "Text",
+      "MULTIMODAL": "Multimodal",
+      "REASONING": "Reasoning",
+      "SPEECH": "Speech",
+      "EMBEDDING": "Embedding"
+    },
+    "model": {
+      "id": "ID",
+      "name": "Model ID",
+      "displayName": "Display Name",
+      "category": "Category",
+      "type": "Type",
+      "contextWindow": "Context Window",
+      "maxOutput": "Max Output",
+      "supportsTools": "Tools",
+      "supportsVision": "Vision",
+      "supportsReasoning": "Reasoning",
+      "description": "Description",
+      "status": "Status",
+      "isActive": "Active",
+      "isAvailable": "Available",
+      "version": "Version",
+      "source": "Source"
+    },
+    "actions": {
+      "addModel": "Add Model",
+      "editModel": "Edit Model",
+      "deleteModel": "Delete Model",
+      "toggleActive": "Toggle Active",
+      "toggleAvailable": "Toggle Available",
+      "refreshCache": "Refresh Cache",
+      "save": "Save",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "back": "Back"
+    },
+    "messages": {
+      "loadError": "Failed to load LLM models",
+      "createSuccess": "Model created successfully",
+      "updateSuccess": "Model updated successfully",
+      "deleteSuccess": "Model deleted successfully",
+      "toggleSuccess": "Model status updated",
+      "cacheRefreshed": "Model cache refreshed successfully",
+      "noModelsFound": "No models found for this provider",
+      "deleteConfirm": "Are you sure you want to delete model \"{{modelName}}\"? This action cannot be undone."
+    },
+    "errors": {
+      "createFailed": "Failed to create model",
+      "updateFailed": "Failed to update model",
+      "deleteFailed": "Failed to delete model",
+      "toggleFailed": "Failed to update model status",
+      "validation": {
+        "nameRequired": "Model ID is required",
+        "displayNameRequired": "Display name is required",
+        "categoryRequired": "Category is required",
+        "typeRequired": "Type is required",
+        "contextWindowRequired": "Context window is required",
+        "maxOutputRequired": "Max output is required"
+      }
+    },
+    "form": {
+      "addTitle": "Add New Model",
+      "editTitle": "Edit Model",
+      "provider": "Provider",
+      "providerChangeWarning": "cannot be changed",
+      "providerChangeHelp": "The provider cannot be changed after creation. Delete and recreate the model if needed.",
+      "name": "Model ID",
+      "namePlaceholder": "e.g., gemini-2.5-flash",
+      "displayName": "Display Name",
+      "displayNamePlaceholder": "e.g., Gemini 2.5 Flash",
+      "category": "Category",
+      "type": "Type",
+      "contextWindow": "Context Window (tokens)",
+      "contextWindowPlaceholder": "e.g., 128000",
+      "maxOutput": "Max Output (tokens)",
+      "maxOutputPlaceholder": "e.g., 4096",
+      "supportsTools": "Supports Function Calling",
+      "supportsVision": "Supports Vision",
+      "supportsReasoning": "Supports Reasoning",
+      "description": "Description",
+      "descriptionPlaceholder": "Brief description of the model...",
+      "version": "Version",
+      "versionPlaceholder": "e.g., 1.0.0",
+      "source": "Source URL",
+      "sourcePlaceholder": "https://...",
+      "isActive": "Active (enabled for use)",
+      "isAvailable": "Available (API configured)"
+    }
+  }
+}

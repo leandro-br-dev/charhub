@@ -104,10 +104,10 @@ export async function scheduleRecurringJobs(): Promise<void> {
     logger.info('Monthly snapshot job scheduled to run on 1st of each month at 01:00 UTC');
 
     // Schedule automated character population (if enabled)
-    const batchGenerationEnabled = process.env.BATCH_GENERATION_ENABLED === 'true';
+    const batchGenerationEnabled = await systemConfigurationService.getBool('generation.batch_enabled', false);
     if (batchGenerationEnabled) {
-      const batchSize = parseInt(process.env.BATCH_SIZE_PER_RUN || '24', 10);
-      const dailyCurationHour = parseInt(process.env.DAILY_CURATION_HOUR || '3', 10); // Default: 3 AM UTC
+      const batchSize = await systemConfigurationService.getInt('generation.batch_size_per_run', 24);
+      const dailyCurationHour = await systemConfigurationService.getInt('scheduling.daily_curation_hour', 3); // Default: 3 AM UTC
 
       // Schedule daily curation job (fetches and curates images once per day)
       await populationQueue.add(
@@ -159,7 +159,7 @@ export async function scheduleRecurringJobs(): Promise<void> {
         'Hourly generation job scheduled (generates 1 character per hour, respecting daily limit)'
       );
     } else {
-      logger.info('Automated character population is disabled (set BATCH_GENERATION_ENABLED=true to enable)');
+      logger.info('Automated character population is disabled (set generation.batch_enabled=true to enable)');
     }
 
     // Schedule avatar correction job (if enabled)

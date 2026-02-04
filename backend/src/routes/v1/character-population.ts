@@ -14,6 +14,7 @@ import { batchCharacterGenerator } from '../../services/batch';
 import { civitaiApiClient } from '../../services/civitai';
 import { prisma } from '../../config/database';
 import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
+import { systemConfigurationService } from '../../services/config/systemConfigurationService';
 
 const router = Router();
 
@@ -287,15 +288,30 @@ router.get('/settings', requireAuth, async (req, res) => {
       return;
     }
 
+    // Read settings from system configuration service
+    const [
+      batchEnabled,
+      batchSize,
+      autoApprovalThreshold,
+      requireManualReview,
+      nsfwFilterEnabled,
+    ] = await Promise.all([
+      systemConfigurationService.getBool('generation.batch_enabled', false),
+      systemConfigurationService.getInt('generation.batch_size_per_run', 24),
+      systemConfigurationService.get('curation.auto_approval_threshold', '4.5'),
+      systemConfigurationService.getBool('curation.require_manual_review', false),
+      systemConfigurationService.getBool('moderation.nsfw_filter_enabled', true),
+    ]);
+
     res.json({
-      enabled: process.env.BATCH_GENERATION_ENABLED === 'true',
-      batchSize: process.env.BATCH_SIZE_PER_RUN,
-      cronSchedule: process.env.BATCH_SCHEDULE_CRON,
-      retryAttempts: process.env.BATCH_RETRY_ATTEMPTS,
-      timeout: process.env.BATCH_TIMEOUT_MINUTES,
-      autoApprovalThreshold: process.env.AUTO_APPROVAL_THRESHOLD,
-      requireManualReview: process.env.REQUIRE_MANUAL_REVIEW,
-      nsfwFilterEnabled: process.env.NSFW_FILTER_ENABLED,
+      enabled: batchEnabled,
+      batchSize: String(batchSize),
+      cronSchedule: process.env.BATCH_SCHEDULE_CRON, // Still from env, not migrated
+      retryAttempts: process.env.BATCH_RETRY_ATTEMPTS, // Still from env, not migrated
+      timeout: process.env.BATCH_TIMEOUT_MINUTES, // Still from env, not migrated
+      autoApprovalThreshold,
+      requireManualReview: String(requireManualReview),
+      nsfwFilterEnabled: String(nsfwFilterEnabled),
       botUserId: process.env.OFFICIAL_BOT_USER_ID,
     });
   } catch (error) {

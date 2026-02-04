@@ -2,12 +2,14 @@
   "description": "Navigation and menu labels",
   "resources": {
     "chat": "채팅",
-    "story": "이야기",
+    "story": "스토리",
     "characters": "캐릭터",
     "tasks": "작업",
     "admin": "관리자",
     "adminAnalytics": "분석",
     "adminScripts": "스크립트",
+    "adminSystemConfig": "시스템 설정",
+    "adminLlmCatalog": "LLM 카탈로그",
     "assets": "자산",
     "profileLink": "내 프로필",
     "sidebarDefaultTitle": "CharHub 탐색",
@@ -15,6 +17,6 @@
     "developmentTools": "개발자 도구",
     "developmentPlaceholder": "빌드 파이프라인, 로그 및 자동화 제어 기능이 곧 여기에 추가될 예정입니다.",
     "viewAllCharacters": "모든 캐릭터 보기",
-    "viewAllStories": "모든 이야기 보기"
+    "viewAllStories": "모든 스토리 보기"
   }
 }
