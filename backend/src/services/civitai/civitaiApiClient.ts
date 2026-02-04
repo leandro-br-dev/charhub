@@ -6,6 +6,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { logger } from '../../config/logger';
 import { getVariedSearchParams } from './searchVariation';
+import { systemConfigurationService } from '../config/systemConfigurationService';
 
 // Civitai API Types
 export interface CivitaiImage {
@@ -168,8 +169,9 @@ export class CivitaiApiClient {
         // Filter for image type (still images only)
         params.types = 'image';
 
-        // Use anime-related base models if configured
-        const animeModelIds = process.env.CIVITAI_ANIME_MODEL_IDS?.split(',').map(id => id.trim()) || [];
+        // Use anime-related base models if configured (from SystemConfiguration)
+        const animeModelIdsStr = await systemConfigurationService.get('curation.anime_model_ids', '');
+        const animeModelIds = animeModelIdsStr ? animeModelIdsStr.split(',').map(id => id.trim()) : [];
 
         // Add model filter if specific anime models are configured
         if (animeModelIds.length > 0) {
