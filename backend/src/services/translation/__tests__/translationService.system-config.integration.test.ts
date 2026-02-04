@@ -52,9 +52,8 @@ describe('TranslationService - System Configuration Integration', () => {
     (translationService as any).defaultModel = 'gemini-2.5-flash-lite';
     (translationService as any).defaultCacheTTL = 3600;
     (translationService as any).configInitialized = false;
-    // Clear systemConfigurationService cache
-    (systemConfigurationService as any).cache.clear();
-    (systemConfigurationService as any).cacheInitialized = false;
+    // Clear systemConfigurationService cache using public method
+    systemConfigurationService.clearCacheForTesting();
   });
 
   afterAll(async () => {
