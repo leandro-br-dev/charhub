@@ -1,13 +1,14 @@
 # FEATURE-028: Image CORS Fix & Error Cache Resilience
 
-**Status**: Active
+**Status**: In Review
 **Priority**: P0 - Critical (Production Bug)
 **Type**: Bug Fix (Infrastructure + Frontend)
 **Depends on**: None
 **Blocks**: None
 **Assigned To**: Agent Coder
 **Created**: 2026-02-01
-**Last Updated**: 2026-02-01
+**Last Updated**: 2026-02-04
+**Pull Request**: [PR #176](https://github.com/leandro-br-dev/charhub/pull/176)
 
 ---
 
