@@ -31,8 +31,8 @@ interface ConfigParameter {
  */
 export const CONFIG_PARAMETERS: ConfigParameter[] = [
   // Translation settings
-  { key: 'translation.default_provider', envVar: 'TRANSLATION_DEFAULT_PROVIDER', defaultValue: 'openai' },
-  { key: 'translation.default_model', envVar: 'TRANSLATION_DEFAULT_MODEL', defaultValue: 'gpt-4o-mini' },
+  { key: 'translation.default_provider', envVar: 'TRANSLATION_DEFAULT_PROVIDER', defaultValue: 'gemini' },
+  { key: 'translation.default_model', envVar: 'TRANSLATION_DEFAULT_MODEL', defaultValue: 'gemini-2.5-flash' },
   { key: 'translation.cache_ttl', envVar: 'TRANSLATION_CACHE_TTL', defaultValue: 3600 },
   { key: 'translation.enable_pre_translation', envVar: 'TRANSLATION_ENABLE_PRE_TRANSLATION', defaultValue: false },
 
