@@ -56,17 +56,17 @@ describe('System Configuration Seed', () => {
       expect(firstResult.created).toBe(19);
       expect(firstResult.skipped).toBe(0);
 
-      // Modify one value directly in database
+      // Modify one value directly in database (change from 'openai' to 'gemini')
       await db.systemConfiguration.update({
         where: { key: 'translation.default_provider' },
-        data: { value: 'openai' },
+        data: { value: 'gemini' },
       });
 
       // Verify the modified value
       const modifiedConfig = await db.systemConfiguration.findUnique({
         where: { key: 'translation.default_provider' },
       });
-      expect(modifiedConfig?.value).toBe('openai');
+      expect(modifiedConfig?.value).toBe('gemini');
 
       // Second seed - should skip all existing entries
       const secondResult = await seedSystemConfiguration({ verbose: false });
@@ -77,7 +77,7 @@ describe('System Configuration Seed', () => {
       const configAfterSecondSeed = await db.systemConfiguration.findUnique({
         where: { key: 'translation.default_provider' },
       });
-      expect(configAfterSecondSeed?.value).toBe('openai'); // Still 'openai', not 'gemini'
+      expect(configAfterSecondSeed?.value).toBe('gemini'); // Still 'gemini', not 'openai'
     });
 
     it('should respect .env values when provided', async () => {
@@ -108,7 +108,7 @@ describe('System Configuration Seed', () => {
         where: { key: 'translation.default_provider' },
       });
 
-      expect(config?.value).toBe('gemini'); // Default value
+      expect(config?.value).toBe('openai'); // Default value
     });
 
     it('should handle dry run mode', async () => {
@@ -158,12 +158,12 @@ describe('System Configuration Seed', () => {
 
       expect(translationConfigs).toHaveLength(4);
 
-      // Verify specific translation configs
+      // Verify specific translation configs (matching CONFIG_PARAMETERS defaults)
       const providerConfig = translationConfigs.find((c: { key: string }) => c.key === 'translation.default_provider');
-      expect(providerConfig?.value).toBe('gemini');
+      expect(providerConfig?.value).toBe('openai');
 
       const modelConfig = translationConfigs.find((c: { key: string }) => c.key === 'translation.default_model');
-      expect(modelConfig?.value).toBe('gemini-2.5-flash-lite');
+      expect(modelConfig?.value).toBe('gpt-4o-mini');
 
       const ttlConfig = translationConfigs.find((c: { key: string }) => c.key === 'translation.cache_ttl');
       expect(ttlConfig?.value).toBe('3600');
