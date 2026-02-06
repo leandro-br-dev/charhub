@@ -114,7 +114,7 @@ describe('System Configuration Seed', () => {
     it('should handle dry run mode', async () => {
       const result = await seedSystemConfiguration({ dryRun: true });
 
-      expect(result.created).toBe(19);
+      expect(result.created).toBe(23);
       expect(result.skipped).toBe(0);
 
       // In dry run, nothing should be created in database
@@ -135,8 +135,8 @@ describe('System Configuration Seed', () => {
 
       const result = await seedSystemConfiguration({ verbose: false });
 
-      // Should skip the 9 existing, create 10 new
-      expect(result.created).toBe(10);
+      // Should skip the 9 existing, create 14 new (23 - 9 = 14)
+      expect(result.created).toBe(14);
       expect(result.skipped).toBe(9);
       expect(result.errors).toHaveLength(0);
 
@@ -198,14 +198,14 @@ describe('System Configuration Seed', () => {
   });
 
   describe('CONFIG_PARAMETERS constant', () => {
-    it('should have exactly 19 parameters', () => {
-      expect(CONFIG_PARAMETERS).toHaveLength(19);
+    it('should have exactly 23 parameters', () => {
+      expect(CONFIG_PARAMETERS).toHaveLength(23);
     });
 
     it('should have unique keys', () => {
       const keys = CONFIG_PARAMETERS.map((p: { key: string }) => p.key);
       const uniqueKeys = new Set(keys);
-      expect(uniqueKeys.size).toBe(19);
+      expect(uniqueKeys.size).toBe(23);
     });
 
     it('should have valid envVar format (uppercase with underscores)', () => {
