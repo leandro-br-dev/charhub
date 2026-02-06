@@ -26,10 +26,10 @@ describe('System Configuration Seed', () => {
   });
 
   describe('seedSystemConfiguration()', () => {
-    it('should seed all 19 configuration parameters', async () => {
+    it('should seed all 23 configuration parameters', async () => {
       const result = await seedSystemConfiguration({ verbose: false });
 
-      expect(result.created).toBe(19);
+      expect(result.created).toBe(23);
       expect(result.skipped).toBe(0);
       expect(result.errors).toHaveLength(0);
 
@@ -37,7 +37,7 @@ describe('System Configuration Seed', () => {
       const db = getTestDb();
       const configs = await db.systemConfiguration.findMany();
 
-      expect(configs).toHaveLength(19);
+      expect(configs).toHaveLength(23);
 
       // Verify all keys from CONFIG_PARAMETERS are present
       const seededKeys = configs.map((c: { key: string }) => c.key);
@@ -53,7 +53,7 @@ describe('System Configuration Seed', () => {
 
       // First seed - create all entries (simplified)
       const firstResult = await seedSystemConfiguration({ verbose: false });
-      expect(firstResult.created).toBe(19);
+      expect(firstResult.created).toBe(23);
       expect(firstResult.skipped).toBe(0);
 
       // Modify one value directly in database (change from 'gemini' to 'openai')
@@ -71,7 +71,7 @@ describe('System Configuration Seed', () => {
       // Second seed - should skip all existing entries
       const secondResult = await seedSystemConfiguration({ verbose: false });
       expect(secondResult.created).toBe(0);
-      expect(secondResult.skipped).toBe(19);
+      expect(secondResult.skipped).toBe(23);
 
       // Verify the modified value was NOT overwritten
       const configAfterSecondSeed = await db.systemConfiguration.findUnique({
@@ -140,9 +140,9 @@ describe('System Configuration Seed', () => {
       expect(result.skipped).toBe(9);
       expect(result.errors).toHaveLength(0);
 
-      // Verify total is 19
+      // Verify total is 23
       const allConfigs = await db.systemConfiguration.findMany();
-      expect(allConfigs).toHaveLength(19);
+      expect(allConfigs).toHaveLength(23);
     });
 
     it('should seed all translation parameters with correct defaults', async () => {
