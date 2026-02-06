@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { type SceneSummary, type Scene } from '../../../../types/scenes';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { AgeRatingBadge } from '../../../../components/ui/AgeRatingBadge';
+import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
 
 export interface SceneCardProps {
   scene: SceneSummary | Scene;
   to?: string;
   clickAction?: 'edit' | 'view';
-  onDelete?: (sceneId: string) => void;
-  showActions?: boolean;
   areaCount?: number;
 }
 
@@ -18,15 +17,11 @@ export function SceneCard({
   scene,
   to,
   clickAction = 'view',
-  onDelete,
-  showActions = true,
   areaCount,
 }: SceneCardProps): JSX.Element | null {
   const { t } = useTranslation(['scenes', 'common'], { useSuspense: false });
   const navigate = useNavigate();
   const destination = to ?? `/scenes/${scene.id}`;
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
 
   const title = useMemo(() => {
     return scene.name || t('scenes:labels.untitledScene');
@@ -60,59 +55,15 @@ export function SceneCard({
     }
   };
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (showDeleteConfirm) {
-      setIsDeleting(true);
-      onDelete?.(scene.id);
-    } else {
-      setShowDeleteConfirm(true);
-      // Auto-hide confirm after 3 seconds
-      setTimeout(() => setShowDeleteConfirm(false), 3000);
-    }
-  };
-
-  const handleEditClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    startTransition(() => {
-      navigate(`/scenes/${scene.id}/edit`);
-    });
-  };
-
   return (
     <article
       onClick={handleCardClick}
       className="flex basis-[calc(50%-0.5rem)] sm:w-[180px] md:w-[192px] lg:w-[192px] max-w-[192px] flex-none cursor-pointer flex-col overflow-hidden rounded-lg bg-light shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl self-stretch relative"
     >
-      {showActions && (
-        <div className="scene-actions absolute top-2 right-2 z-10 flex gap-1">
-          <button
-            type="button"
-            onClick={handleEditClick}
-            className="p-1.5 rounded-full bg-black/50 hover:bg-black/70 text-white transition"
-            title={t('scenes:actions.edit', 'Edit')}
-          >
-            <span className="material-symbols-outlined text-sm">edit</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleDeleteClick}
-            disabled={isDeleting}
-            className={`p-1.5 rounded-full transition ${
-              showDeleteConfirm
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-black/50 hover:bg-black/70 text-white'
-            }`}
-            title={t('scenes:actions.delete', 'Delete')}
-          >
-            {showDeleteConfirm ? (
-              <span className="material-symbols-outlined text-sm">check</span>
-            ) : (
-              <span className="material-symbols-outlined text-sm">delete</span>
-            )}
-          </button>
-        </div>
-      )}
+      {/* Favorite button - top right corner */}
+      <div className="scene-actions absolute top-2 right-2 z-10">
+        <FavoriteButton sceneId={scene.id} size="medium" />
+      </div>
 
       <div className="relative">
         {scene.coverImageUrl ? (
@@ -133,12 +84,6 @@ export function SceneCard({
           variant="overlay"
           size="sm"
         />
-
-        {isDeleting && (
-          <div className="absolute inset-0 rounded-t-lg bg-black/70 backdrop-blur-sm flex items-center justify-center">
-            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-white" />
-          </div>
-        )}
       </div>
 
       <div className="flex flex-1 flex-col p-4">

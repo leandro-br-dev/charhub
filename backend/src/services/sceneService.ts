@@ -2,6 +2,21 @@ import { Prisma, AgeRating, ContentTag, Visibility, VisualStyle } from '../gener
 import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 
+// Type for scene with author (from sceneInclude)
+type SceneWithAuthor = Prisma.SceneGetPayload<{
+  include: {
+    author: {
+      select: {
+        id: true;
+        username: true;
+        displayName: true;
+        avatarUrl: true;
+      };
+    };
+    areas: true;
+  };
+}>;
+
 /**
  * Scene Service
  *
@@ -1496,6 +1511,180 @@ export async function getAreaImages(areaId: string) {
     return images;
   } catch (error) {
     logger.error({ error, areaId }, 'Error getting area images');
+    throw error;
+  }
+}
+
+/**
+ * Toggle favorite status for a scene
+ */
+export async function toggleFavoriteScene(
+  userId: string,
+  sceneId: string,
+  isFavorite: boolean
+): Promise<{ success: boolean; isFavorite: boolean }> {
+  try {
+    // Verify scene exists
+    const scene = await prisma.scene.findUnique({
+      where: { id: sceneId },
+      select: { id: true },
+    });
+
+    if (!scene) {
+      throw new Error('Scene not found');
+    }
+
+    if (isFavorite) {
+      // Add to favorites
+      await prisma.sceneFavorite.upsert({
+        where: {
+          userId_sceneId: {
+            userId,
+            sceneId,
+          },
+        },
+        create: {
+          userId,
+          sceneId,
+        },
+        update: {}, // No-op if already exists
+      });
+
+      logger.debug({ userId, sceneId }, 'Scene added to favorites');
+      return { success: true, isFavorite: true };
+    } else {
+      // Remove from favorites
+      await prisma.sceneFavorite.deleteMany({
+        where: {
+          userId,
+          sceneId,
+        },
+      });
+
+      logger.debug({ userId, sceneId }, 'Scene removed from favorites');
+      return { success: true, isFavorite: false };
+    }
+  } catch (error) {
+    logger.error({ error, userId, sceneId, isFavorite }, 'Error toggling favorite');
+    throw error;
+  }
+}
+
+/**
+ * Get user's favorite scenes
+ */
+export async function getFavoriteScenes(
+  userId: string,
+  options: {
+    skip?: number;
+    limit?: number;
+  } = {}
+): Promise<SceneWithAuthor[]> {
+  try {
+    const { skip = 0, limit = 20 } = options;
+
+    // Get favorite scene IDs
+    const favorites = await prisma.sceneFavorite.findMany({
+      where: { userId },
+      select: { sceneId: true },
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+    });
+
+    if (favorites.length === 0) {
+      return [];
+    }
+
+    const sceneIds = favorites.map(f => f.sceneId);
+
+    // Fetch full scene data
+    const scenes = await prisma.scene.findMany({
+      where: { id: { in: sceneIds } },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    // Sort by the order of favorite IDs (most recent first)
+    const scenesMap = new Map(scenes.map(s => [s.id, s]));
+    const sortedScenes = sceneIds
+      .map(id => scenesMap.get(id))
+      .filter(Boolean) as SceneWithAuthor[];
+
+    logger.debug(
+      { userId, count: sortedScenes.length },
+      'Favorite scenes fetched'
+    );
+
+    return sortedScenes;
+  } catch (error) {
+    logger.error({ error, userId }, 'Error getting favorite scenes');
+    throw error;
+  }
+}
+
+/**
+ * Get scene stats (favorite status, usage count, etc.)
+ */
+export async function getSceneStats(
+  sceneId: string,
+  userId?: string
+): Promise<{
+  id: string;
+  isFavoritedByUser: boolean;
+  areaCount: number;
+  imageCount: number;
+}> {
+  try {
+    // Get basic stats
+    const scene = await prisma.scene.findUnique({
+      where: { id: sceneId },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!scene) {
+      throw new Error('Scene not found');
+    }
+
+    // Get area and image counts in parallel
+    const [areaCount, imageCount] = await Promise.all([
+      prisma.sceneArea.count({ where: { sceneId } }),
+      prisma.sceneImage.count({ where: { sceneId } }),
+    ]);
+
+    // Check if favorited by user
+    let isFavoritedByUser = false;
+    if (userId) {
+      const favorite = await prisma.sceneFavorite.findUnique({
+        where: {
+          userId_sceneId: {
+            userId,
+            sceneId,
+          },
+        },
+      });
+      isFavoritedByUser = !!favorite;
+    }
+
+    return {
+      id: scene.id,
+      isFavoritedByUser,
+      areaCount,
+      imageCount,
+    };
+  } catch (error) {
+    logger.error({ error, sceneId, userId }, 'Error getting scene stats');
     throw error;
   }
 }

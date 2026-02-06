@@ -219,6 +219,97 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
 });
 
 /**
+ * GET /api/v1/scenes/favorites
+ * Get user's favorite scenes
+ * NOTE: Must come BEFORE /:id route to avoid "favorites" being captured as an ID
+ */
+router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    const skip = typeof req.query.skip === 'string' ? parseInt(req.query.skip, 10) : 0;
+    const limit = typeof req.query.limit === 'string' ? parseInt(req.query.limit, 10) : 20;
+
+    const scenes = await sceneService.getFavoriteScenes(userId, { skip, limit });
+
+    return res.json({
+      success: true,
+      data: scenes,
+      count: scenes.length,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting favorite scenes');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get favorite scenes',
+    });
+  }
+});
+
+/**
+ * POST /api/v1/scenes/:id/favorite
+ * Toggle favorite status for a scene
+ * NOTE: Must come BEFORE /:id route to match /id/favorite pattern
+ */
+router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    const { isFavorite } = req.body;
+
+    if (typeof isFavorite !== 'boolean') {
+      return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'isFavorite must be a boolean',
+      });
+    }
+
+    const result = await sceneService.toggleFavoriteScene(userId, id, isFavorite);
+
+    return res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error toggling favorite');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to toggle favorite',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/scenes/:id/stats
+ * Get scene statistics (favorite status, usage count, etc.)
+ * NOTE: Must come BEFORE /:id route to match /id/stats pattern
+ */
+router.get('/:id/stats', optionalAuth, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.auth?.user?.id;
+
+    const stats = await sceneService.getSceneStats(id, userId);
+
+    return res.json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting scene stats');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get scene stats',
+    });
+  }
+});
+
+/**
  * GET /api/v1/scenes/:id
  * Get scene by ID with areas
  */

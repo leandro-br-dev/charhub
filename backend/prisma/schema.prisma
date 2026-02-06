@@ -159,6 +159,7 @@ model User {
   favoriteCharacters FavoriteCharacter[] @relation("UserFavoriteCharacters")
   storyFavorites     StoryFavorite[]     @relation("UserStoryFavorites")
   assetFavorites     AssetFavorite[]     @relation("UserAssetFavorites")
+  sceneFavorites     SceneFavorite[]     @relation("UserSceneFavorites")
 
   // Credit and subscription relations
   creditTransactions CreditTransaction[]  @relation("UserCreditTransactions")
@@ -572,6 +573,21 @@ model AssetFavorite {
   @@unique([userId, assetId])
   @@index([userId])
   @@index([assetId])
+}
+
+// User-Scene Favorite junction model
+model SceneFavorite {
+  id        String   @id @default(uuid())
+  userId    String
+  sceneId   String
+  createdAt DateTime @default(now())
+
+  user  User  @relation("UserSceneFavorites", fields: [userId], references: [id], onDelete: Cascade)
+  scene Scene @relation("SceneFavorites", fields: [sceneId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sceneId])
+  @@index([userId])
+  @@index([sceneId])
 }
 
 // Character-Asset junction model
@@ -1678,6 +1694,7 @@ model Scene {
   areas           SceneArea[]
   images          SceneImage[]
   tags            SceneTag[]
+  favorites       SceneFavorite[] @relation("SceneFavorites")
 
   // Metadata
   metadata        Json?         // Extra scene-specific data

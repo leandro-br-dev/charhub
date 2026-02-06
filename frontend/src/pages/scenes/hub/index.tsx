@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { SceneCard } from '../shared/components/SceneCard';
-import { useSceneListQuery, useSceneMutations } from '../shared/hooks/useSceneQueries';
+import { useSceneListQuery } from '../shared/hooks/useSceneQueries';
 import { usePageHeader } from '../../../hooks/usePageHeader';
 import { Visibility } from '../../../types/common';
 import type { SceneListParams } from '../../../types/scenes';
@@ -51,18 +51,8 @@ export default function SceneHubPage(): JSX.Element {
   }, [search, genreFilter, moodFilter, eraFilter, viewMode]);
 
   const { data, isLoading, isError, refetch } = useSceneListQuery(filters);
-  const { deleteMutation } = useSceneMutations();
 
   const items = data?.items ?? [];
-
-  const handleDelete = async (sceneId: string) => {
-    try {
-      await deleteMutation.mutateAsync(sceneId);
-      refetch();
-    } catch (error) {
-      console.error('[SceneHub] Failed to delete scene:', error);
-    }
-  };
 
   return (
     <section className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-10">
@@ -191,7 +181,6 @@ export default function SceneHubPage(): JSX.Element {
               <SceneCard
                 key={scene.id}
                 scene={scene}
-                onDelete={handleDelete}
               />
             ))}
           </div>
