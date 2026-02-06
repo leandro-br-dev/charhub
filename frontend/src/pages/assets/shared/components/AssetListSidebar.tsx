@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../../../../components/ui/Button';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
 import { assetService } from '../../../../services/assetService';
@@ -12,17 +11,22 @@ type AssetListSidebarProps = {
   onLinkClick?: () => void;
 };
 
-interface AssetWithFavorite extends Asset {
+interface AssetWithFavorite {
+  id: string;
+  name: string | null;
+  thumbnailUrl: string | null;
+  previewUrl: string | null;
+  authorId: string;
   isFavorite: boolean;
   isOwn: boolean;
 }
 
-export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps): JSX.Element {
-  const { t } = useTranslation(['assets', 'navigation', 'common']);
-  const { user } = useAuth();
+export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps) {
   const [assets, setAssets] = useState<AssetWithFavorite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+  const { t } = useTranslation('assets');
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -50,7 +54,11 @@ export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps): JSX.El
         for (const asset of favoriteResponse) {
           if (!addedIds.has(asset.id)) {
             combined.push({
-              ...asset,
+              id: asset.id,
+              name: asset.name,
+              thumbnailUrl: asset.thumbnailUrl,
+              previewUrl: asset.previewUrl,
+              authorId: asset.authorId,
               isOwn: asset.authorId === user.id,
               isFavorite: true,
             });
@@ -62,7 +70,11 @@ export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps): JSX.El
         for (const asset of ownResponse.items) {
           if (!addedIds.has(asset.id)) {
             combined.push({
-              ...asset,
+              id: asset.id,
+              name: asset.name,
+              thumbnailUrl: asset.thumbnailUrl,
+              previewUrl: asset.previewUrl,
+              authorId: asset.authorId,
               isOwn: true,
               isFavorite: false,
             });
@@ -75,50 +87,37 @@ export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps): JSX.El
 
         setAssets(limited);
       } catch (err) {
-        setError('Failed to load assets.');
+        setError(t('messages.errorLoading', 'Failed to load assets.'));
         console.error(err);
       } finally {
         setIsLoading(false);
       }
     };
     fetchAssets();
-  }, [user]);
+  }, [user, t]);
 
-  const handleCreateAsset = () => {
-    onLinkClick?.();
-    window.location.href = '/assets/create';
-  };
+  if (isLoading) {
+    return <div className="p-4 text-sm text-muted">{t('hub.states.loading')}</div>;
+  }
 
-  const handleNavigateToHub = () => {
-    onLinkClick?.();
-    window.location.href = '/assets/hub';
-  };
+  if (error) {
+    return <div className="p-4 text-sm text-danger">{error}</div>;
+  }
 
   return (
-    <div className="flex h-full w-full flex-col">
-      <div className="flex flex-col gap-4 py-6">
-        <div className="px-6">
-          <h2 className="text-base font-semibold text-content">
-            {t('assets:hub.title', 'Assets')}
-          </h2>
-          <p className="mt-2 text-sm text-muted">
-            {t('assets:hub.sidebar.description', 'Browse and manage your creative assets.')}
-          </p>
-        </div>
-      </div>
-
-      {/* Asset List */}
-      <div className="flex-1 overflow-y-auto">
-        {isLoading ? (
-          <div className="p-4 text-sm text-muted">Loading assets...</div>
-        ) : error ? (
-          <div className="p-4 text-sm text-danger">{error}</div>
-        ) : assets.length === 0 ? (
-          <p className="text-sm text-muted px-6">{t('assets:sidebar.noAssetsFound', 'No assets found.')}</p>
-        ) : (
-          <ul className="space-y-1 px-2">
+    <div className="flex flex-col gap-2 py-4">
+      <h3 className="text-xs font-semibold text-muted uppercase mb-3 px-4">
+        {t('stats.assets')}
+      </h3>
+      {assets.length === 0 ? (
+        <p className="text-sm text-muted px-4">
+          {t('sidebar.noAssetsFound')}
+        </p>
+      ) : (
+        <>
+          <ul className="space-y-2">
             {assets.map(asset => {
-              const title = asset.name || t('assets:labels.untitledAsset', 'Unnamed Asset');
+              const title = asset.name || t('labels.untitledAsset');
               const thumbnailUrl = asset.thumbnailUrl || asset.previewUrl;
               return (
                 <li key={asset.id}>
@@ -138,7 +137,7 @@ export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps): JSX.El
                       <span className="text-sm font-medium text-content truncate">{title}</span>
                       <div className="flex items-center gap-1">
                         {asset.isOwn && (
-                          <span className="text-xs text-muted">{t('assets:sidebar.myAsset', 'My asset')}</span>
+                          <span className="text-xs text-muted">{t('sidebar.myAsset')}</span>
                         )}
                       </div>
                     </div>
@@ -155,25 +154,15 @@ export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps): JSX.El
               );
             })}
           </ul>
-        )}
-      </div>
-
-      <div className="mt-auto flex flex-col gap-2 p-4">
-        <Button
-          variant="primary"
-          icon="add"
-          onClick={handleCreateAsset}
-        >
-          {t('assets:hub.actions.newAsset', 'New Asset')}
-        </Button>
-        <Button
-          variant="secondary"
-          icon="inventory_2"
-          onClick={handleNavigateToHub}
-        >
-          {t('assets:hub.sidebar.viewGallery', 'View Gallery')}
-        </Button>
-      </div>
+          <Link
+            to="/assets/hub"
+            onClick={onLinkClick}
+            className="mx-4 mt-2 text-sm text-primary hover:underline"
+          >
+            {t('sidebar.viewAllAssets')}
+          </Link>
+        </>
+      )}
     </div>
   );
 }

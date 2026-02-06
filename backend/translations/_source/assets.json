@@ -95,6 +95,7 @@
       "sidebar": {
         "description": "Browse and manage your creative assets.",
         "viewGallery": "View Gallery",
+        "viewAllAssets": "View all assets",
         "myAsset": "My asset",
         "noAssetsFound": "No assets found."
       },
