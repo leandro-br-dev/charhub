@@ -14,7 +14,7 @@
       "context": "نافذة السياق",
       "generation": "توليد الشخصيات",
       "correction": "نظام التصحيح",
-      "curation": "تنظيم الصور",
+      "curation": "تنسيق الصور",
       "moderation": "الإشراف على المحتوى",
       "scheduling": "جدولة المهام"
     },
@@ -29,60 +29,60 @@
           "description": "اسم النموذج الافتراضي للترجمات"
         },
         "cache_ttl": {
-          "label": "عمر ذاكرة التخزين المؤقت TTL (بالثواني)",
-          "description": "مدة تخزين نتائج الترجمة مؤقتًا"
+          "label": "عمر ذاكرة التخزين المؤقت (ثوانٍ)",
+          "description": "مدة تخزين نتائج الترجمة مؤقتاً"
         },
         "enable_pre_translation": {
           "label": "تمكين الترجمة المسبقة",
-          "description": "ترجمة المحتوى مسبقًا لتحميل أسرع"
+          "description": "ترجمة المحتوى مسبقاً لتحميل أسرع"
         }
       },
       "context": {
         "max_tokens": {
-          "label": "الحد الأقصى للرموز",
-          "description": "الحد الأقصى لحجم نافذة السياق بالرموز"
+          "label": "الحد الأقصى للرموز المميزة",
+          "description": "الحد الأقصى لحجم نافذة السياق بالرموز المميزة"
         }
       },
       "generation": {
         "daily_limit": {
           "label": "الحد اليومي",
-          "description": "الحد الأقصى لعدد الشخصيات المولدة يوميًا"
+          "description": "الحد الأقصى للشخصيات المولدة يومياً"
         },
         "batch_enabled": {
-          "label": "تمكين المعالجة الدفعية",
+          "label": "تمكين معالجة الدفعات",
           "description": "معالجة توليد الشخصيات على دفعات"
         },
         "batch_size_per_run": {
           "label": "حجم الدفعة",
-          "description": "عدد الشخصيات المراد معالجتها في كل دفعة"
+          "description": "عدد الشخصيات المراد معالجتها لكل دفعة"
         },
         "batch_retry_attempts": {
           "label": "محاولات إعادة المحاولة",
           "description": "عدد محاولات إعادة المحاولة للدفعات الفاشلة"
         },
         "batch_timeout_minutes": {
-          "label": "مهلة الانتهاء (بالدقائق)",
-          "description": "الحد الأقصى للوقت للانتظار لإكمال الدفعة"
+          "label": "مهلة (دقائق)",
+          "description": "الحد الأقصى للوقت للانتظار حتى اكتمال الدفعة"
         }
       },
       "correction": {
         "avatar_daily_limit": {
           "label": "الحد اليومي للصور الرمزية",
-          "description": "الحد الأقصى لتصحيحات الصور الرمزية يوميًا"
+          "description": "الحد الأقصى لتصحيحات الصور الرمزية يومياً"
         },
         "data_daily_limit": {
           "label": "الحد اليومي للبيانات",
-          "description": "الحد الأقصى لتصحيحات البيانات يوميًا"
+          "description": "الحد الأقصى لتصحيحات البيانات يومياً"
         }
       },
       "curation": {
         "search_keywords": {
-          "label": "كلمات البحث الرئيسية",
-          "description": "كلمات بحث رئيسية مفصولة بفواصل لعملية التنظيم"
+          "label": "كلمات البحث",
+          "description": "كلمات مفتاحية مفصولة بفواصل لبحث التنسيق"
         },
         "anime_model_ids": {
           "label": "معرفات نماذج Anime",
-          "description": "معرفات نماذج Anime مفصولة بفواصل لعملية تنظيم Anime"
+          "description": "معرفات نماذج مفصولة بفواصل لتنسيق Anime"
         },
         "auto_approval_threshold": {
           "label": "عتبة الموافقة التلقائية",
@@ -90,13 +90,29 @@
         },
         "require_manual_review": {
           "label": "تتطلب مراجعة يدوية",
-          "description": "تتطلب مراجعة يدوية للمحتوى المنظم"
+          "description": "تتطلب مراجعة يدوية للمحتوى المنسق"
+        },
+        "image_limit": {
+          "label": "الحد اليومي للصور",
+          "description": "عدد الصور التي سيتم جلبها من Civitai يومياً (0 = معطل)"
+        },
+        "rate_limit": {
+          "label": "حد معدل Civitai API",
+          "description": "الحد الأقصى لطلبات API يومياً إلى Civitai"
+        },
+        "max_image_size": {
+          "label": "الحد الأقصى لحجم الصورة (بايت)",
+          "description": "الحد الأقصى لحجم الملف للصور التي تم تنزيلها"
+        },
+        "min_rating": {
+          "label": "الحد الأدنى للتقييم",
+          "description": "عتبة التقييم الأدنى للصور المنسقة (0-5)"
         }
       },
       "moderation": {
         "nsfw_filter_enabled": {
           "label": "تمكين فلتر NSFW",
-          "description": "تصفية محتوى NSFW تلقائيًا"
+          "description": "تصفية محتوى NSFW تلقائياً"
         },
         "nsfw_filter_strictness": {
           "label": "صرامة فلتر NSFW",
@@ -105,41 +121,41 @@
       },
       "scheduling": {
         "daily_curation_hour": {
-          "label": "ساعة التنظيم اليومي",
-          "description": "ساعة اليوم لتشغيل التنظيم اليومي (0-23)"
+          "label": "ساعة التنسيق اليومي",
+          "description": "ساعة اليوم لتشغيل التنسيق اليومي (0-23)"
         }
       }
     },
     "strictness": {
       "low": "منخفض",
       "medium": "متوسط",
-      "high": "عالي"
+      "high": "مرتفع"
     },
     "actions": {
-      "save": "حفظ",
+      "save": "حفظ ({{count}})",
       "saving": "جارٍ الحفظ...",
       "reset": "إعادة تعيين إلى الافتراضي",
       "addModel": "إضافة نموذج"
     },
     "messages": {
       "saveSuccess": "تم تحديث الإعداد \"{{key}}\" بنجاح",
-      "saveError": "فشل تحديث الإعداد",
+      "saveError": "فشل تحديث الإعدادات",
       "loadError": "فشل تحميل إعدادات النظام",
-      "confirmChange": "هل أنت متأكد من رغبتك في تغيير \"{{key}}\"؟ سيسري هذا التغيير فورًا.",
+      "confirmChange": "هل أنت متأكد من أنك تريد تغيير \"{{key}}\"؟ سيسري هذا التغيير فوراً.",
       "selectProviderFirst": "اختر المزود أولاً",
-      "selectModel": "اختر النموذج..."
+      "selectModel": "اختر نموذجاً..."
     },
     "meta": {
-      "updatedAt": "تم التحديث {{time}}",
+      "updatedAt": "تم التحديث في {{time}}",
       "updatedBy": "بواسطة {{user}}",
-      "neverUpdated": "قيمة افتراضية (لم يتم تعديلها مطلقًا)"
+      "neverUpdated": "قيمة افتراضية (لم يتم تعديلها مطلقاً)"
     },
     "modelSelection": {
       "provider": "المزود",
       "model": "النموذج",
-      "selectProvider": "اختر مزودًا...",
-      "selectModel": "اختر نموذجًا...",
-      "selectProviderFirst": "اختر مزودًا أولاً",
+      "selectProvider": "اختر مزوداً...",
+      "selectModel": "اختر نموذجاً...",
+      "selectProviderFirst": "اختر مزوداً أولاً",
       "addNewModel": "إضافة نموذج جديد",
       "noModelsFound": "لم يتم العثور على نماذج لهذا المزود"
     }

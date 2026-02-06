@@ -9,10 +9,24 @@ import { logger } from '../../config/logger';
 import { contentAnalyzer } from './contentAnalyzer';
 import { ageRatingClassifier } from './ageRatingClassifier';
 import { qualityScorer } from './qualityScorer';
+import { systemConfigurationService } from '../config/systemConfigurationService';
 import type { CivitaiImageResult } from '../civitai';
 
-// Minimum quality threshold for images from Civitai
-const MIN_CIVITAI_RATING = 3.0; // Minimum 3/5 rating (60% quality)
+// Default minimum quality threshold for images from Civitai
+const DEFAULT_MIN_CIVITAI_RATING = 3.0; // Minimum 3/5 rating (60% quality)
+
+/**
+ * Get minimum rating threshold from SystemConfiguration
+ * Falls back to default if not configured
+ */
+async function getMinCivitaiRating(): Promise<number> {
+  try {
+    const rating = await systemConfigurationService.get('curation.min_rating');
+    return rating ? parseFloat(rating) : DEFAULT_MIN_CIVITAI_RATING;
+  } catch {
+    return DEFAULT_MIN_CIVITAI_RATING;
+  }
+}
 
 /**
  * Curation queue item
@@ -40,11 +54,14 @@ export class CurationQueue {
    */
   async addToQueue(image: CivitaiImageResult): Promise<CurationQueueItem | null> {
     try {
+      // Get minimum rating threshold from SystemConfiguration
+      const minRating = await getMinCivitaiRating();
+
       // Quality filter: Skip low-quality images from Civitai
       // Images with rating below threshold are likely poor quality
-      if (image.rating !== undefined && image.rating < MIN_CIVITAI_RATING) {
+      if (image.rating !== undefined && image.rating < minRating) {
         logger.debug(
-          { sourceUrl: image.url, rating: image.rating, minRating: MIN_CIVITAI_RATING },
+          { sourceUrl: image.url, rating: image.rating, minRating },
           'Skipping low-quality image (below rating threshold)'
         );
         return null; // Return null to indicate image was skipped

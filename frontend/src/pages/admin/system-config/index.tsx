@@ -47,6 +47,10 @@ const SECTIONS: Record<string, ConfigField[]> = {
     { key: 'curation.anime_model_ids', type: 'text' },
     { key: 'curation.auto_approval_threshold', type: 'number' },
     { key: 'curation.require_manual_review', type: 'boolean' },
+    { key: 'curation.image_limit', type: 'number' },
+    { key: 'curation.rate_limit', type: 'number' },
+    { key: 'curation.max_image_size', type: 'number' },
+    { key: 'curation.min_rating', type: 'number' },
   ],
   moderation: [
     { key: 'moderation.nsfw_filter_enabled', type: 'boolean' },
@@ -363,7 +367,7 @@ export default function SystemConfigPage(): JSX.Element {
               onClick={handleSaveAll}
               disabled={!hasChanges || isSaving}
             >
-              {isSaving ? t('systemConfig:actions.saving') : `Save (${changedKeys.size})`}
+              {isSaving ? t('systemConfig:actions.saving') : t('systemConfig:actions.save', { count: changedKeys.size })}
             </Button>
           </div>
 

@@ -4,7 +4,7 @@
     "title": "Systemkonfiguration",
     "header": {
       "title": "Systemkonfiguration",
-      "description": "Laufzeitparameter ohne Server-Neustart verwalten. Änderungen werden sofort wirksam."
+      "description": "Laufzeitparameter ohne Serverneustart verwalten. Änderungen werden sofort wirksam."
     },
     "search": {
       "placeholder": "Konfigurationen filtern..."
@@ -14,19 +14,19 @@
       "context": "Kontextfenster",
       "generation": "Charaktergenerierung",
       "correction": "Korrektursystem",
-      "curation": "Bildkuration",
+      "curation": "Bildkurartion",
       "moderation": "Inhaltsmoderation",
-      "scheduling": "Aufgabenplanung"
+      "scheduling": "Jobplanung"
     },
     "fields": {
       "translation": {
         "default_provider": {
-          "label": "Standard-Anbieter",
+          "label": "Standardanbieter",
           "description": "Standard-LLM-Anbieter für Übersetzungen"
         },
         "default_model": {
-          "label": "Standard-Modell",
-          "description": "Standard-Modellname für Übersetzungen"
+          "label": "Standardmodell",
+          "description": "Standardmodellname für Übersetzungen"
         },
         "cache_ttl": {
           "label": "Cache-TTL (Sekunden)",
@@ -40,7 +40,7 @@
       "context": {
         "max_tokens": {
           "label": "Max. Tokens",
-          "description": "Maximale Kontextfenstergröße in Tokens"
+          "description": "Maximale Größe des Kontextfensters in Tokens"
         }
       },
       "generation": {
@@ -61,36 +61,52 @@
           "description": "Anzahl der Wiederholungsversuche für fehlgeschlagene Stapel"
         },
         "batch_timeout_minutes": {
-          "label": "Timeout (Minuten)",
-          "description": "Maximale Wartezeit bis zur Stapelfertigstellung"
+          "label": "Zeitüberschreitung (Minuten)",
+          "description": "Maximale Wartezeit bis zum Abschluss des Stapels"
         }
       },
       "correction": {
         "avatar_daily_limit": {
-          "label": "Avatar-Tageslimit",
+          "label": "Tägliches Avatar-Limit",
           "description": "Maximale Avatar-Korrekturen pro Tag"
         },
         "data_daily_limit": {
-          "label": "Daten-Tageslimit",
-          "description": "Maximale Daten-Korrekturen pro Tag"
+          "label": "Tägliches Daten-Limit",
+          "description": "Maximale Datenkorrekturen pro Tag"
         }
       },
       "curation": {
         "search_keywords": {
-          "label": "Such-Schlüsselwörter",
-          "description": "Kommagetrennte Schlüsselwörter für die Kurationssuche"
+          "label": "Suchbegriffe",
+          "description": "Kommagetrennte Suchbegriffe für die Kuratierungssuche"
         },
         "anime_model_ids": {
-          "label": "Anime-Modell-IDs",
-          "description": "Kommagetrennte Modell-IDs für die Anime-Kuration"
+          "label": "Anime Model IDs",
+          "description": "Kommagetrennte Modell-IDs für Anime-Kuratierung"
         },
         "auto_approval_threshold": {
           "label": "Schwellenwert für automatische Genehmigung",
-          "description": "Punkteschwellenwert für automatische Genehmigung (0-100)"
+          "description": "Punkteschwelle für automatische Genehmigung (0-100)"
         },
         "require_manual_review": {
           "label": "Manuelle Überprüfung erforderlich",
-          "description": "Manuelle Überprüfung für kuratierten Inhalt erforderlich"
+          "description": "Manuelle Überprüfung für kuratierte Inhalte erforderlich"
+        },
+        "image_limit": {
+          "label": "Tägliches Bildlimit",
+          "description": "Anzahl der Bilder, die täglich von Civitai abgerufen werden sollen (0 = deaktiviert)"
+        },
+        "rate_limit": {
+          "label": "Civitai API-Ratenbegrenzung",
+          "description": "Maximale API-Anfragen pro Tag an Civitai"
+        },
+        "max_image_size": {
+          "label": "Max. Bildgröße (Bytes)",
+          "description": "Maximale Dateigröße für heruntergeladene Bilder"
+        },
+        "min_rating": {
+          "label": "Mindestbewertung",
+          "description": "Mindestbewertungsschwelle für kuratierte Bilder (0-5)"
         }
       },
       "moderation": {
@@ -105,8 +121,8 @@
       },
       "scheduling": {
         "daily_curation_hour": {
-          "label": "Stunde der täglichen Kuration",
-          "description": "Stunde des Tages, zu der die tägliche Kuration ausgeführt werden soll (0-23)"
+          "label": "Stunde der täglichen Kuratierung",
+          "description": "Stunde des Tages, zu der die tägliche Kuratierung ausgeführt werden soll (0-23)"
         }
       }
     },
@@ -116,7 +132,7 @@
       "high": "Hoch"
     },
     "actions": {
-      "save": "Speichern",
+      "save": "Speichern ({{count}})",
       "saving": "Wird gespeichert...",
       "reset": "Auf Standard zurücksetzen",
       "addModel": "Modell hinzufügen"
@@ -125,7 +141,7 @@
       "saveSuccess": "Konfiguration \"{{key}}\" erfolgreich aktualisiert",
       "saveError": "Fehler beim Aktualisieren der Konfiguration",
       "loadError": "Fehler beim Laden der Systemkonfigurationen",
-      "confirmChange": "Möchten Sie \"{{key}}\" wirklich ändern? Dies wird sofort wirksam.",
+      "confirmChange": "Sind Sie sicher, dass Sie \"{{key}}\" ändern möchten? Dies wird sofort wirksam.",
       "selectProviderFirst": "Zuerst Anbieter auswählen",
       "selectModel": "Modell auswählen..."
     },

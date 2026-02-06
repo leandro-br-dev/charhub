@@ -39,14 +39,14 @@
       },
       "context": {
         "max_tokens": {
-          "label": "Jetons max",
+          "label": "Max. de jetons",
           "description": "Taille maximale de la fenêtre de contexte en jetons"
         }
       },
       "generation": {
         "daily_limit": {
           "label": "Limite quotidienne",
-          "description": "Nombre maximum de personnages générés par jour"
+          "description": "Nombre maximal de caractères générés par jour"
         },
         "batch_enabled": {
           "label": "Activer le traitement par lots",
@@ -54,25 +54,25 @@
         },
         "batch_size_per_run": {
           "label": "Taille du lot",
-          "description": "Nombre de personnages à traiter par lot"
+          "description": "Nombre de caractères à traiter par lot"
         },
         "batch_retry_attempts": {
           "label": "Tentatives de réessai",
           "description": "Nombre de tentatives de réessai pour les lots échoués"
         },
         "batch_timeout_minutes": {
-          "label": "Délai d'expiration (minutes)",
-          "description": "Durée maximale d'attente pour la complétion d'un lot"
+          "label": "Délai d'attente (minutes)",
+          "description": "Temps maximum à attendre pour l'achèvement du lot"
         }
       },
       "correction": {
         "avatar_daily_limit": {
           "label": "Limite quotidienne d'avatars",
-          "description": "Nombre maximum de corrections d'avatars par jour"
+          "description": "Nombre maximal de corrections d'avatars par jour"
         },
         "data_daily_limit": {
           "label": "Limite quotidienne de données",
-          "description": "Nombre maximum de corrections de données par jour"
+          "description": "Nombre maximal de corrections de données par jour"
         }
       },
       "curation": {
@@ -91,12 +91,28 @@
         "require_manual_review": {
           "label": "Exiger une révision manuelle",
           "description": "Exiger une révision manuelle pour le contenu curaté"
+        },
+        "image_limit": {
+          "label": "Limite quotidienne d'images",
+          "description": "Nombre d'images à récupérer de Civitai par jour (0 = désactivé)"
+        },
+        "rate_limit": {
+          "label": "Limite de taux de l'API Civitai",
+          "description": "Nombre maximal de requêtes API par jour vers Civitai"
+        },
+        "max_image_size": {
+          "label": "Taille maximale de l'image (octets)",
+          "description": "Taille maximale du fichier pour les images téléchargées"
+        },
+        "min_rating": {
+          "label": "Note minimale",
+          "description": "Seuil de note minimale pour les images curatées (0-5)"
         }
       },
       "moderation": {
         "nsfw_filter_enabled": {
           "label": "Activer le filtre NSFW",
-          "description": "Filtrer le contenu NSFW automatiquement"
+          "description": "Filtrer automatiquement le contenu NSFW"
         },
         "nsfw_filter_strictness": {
           "label": "Rigueur du filtre NSFW",
@@ -112,20 +128,20 @@
     },
     "strictness": {
       "low": "Faible",
-      "medium": "Moyen",
-      "high": "Élevé"
+      "medium": "Moyenne",
+      "high": "Élevée"
     },
     "actions": {
-      "save": "Enregistrer",
-      "saving": "Enregistrement...",
-      "reset": "Réinitialiser par défaut",
+      "save": "Enregistrer ({{count}})",
+      "saving": "Enregistrement en cours...",
+      "reset": "Rétablir par défaut",
       "addModel": "Ajouter un modèle"
     },
     "messages": {
       "saveSuccess": "Configuration \"{{key}}\" mise à jour avec succès",
       "saveError": "Échec de la mise à jour de la configuration",
       "loadError": "Échec du chargement des configurations système",
-      "confirmChange": "Êtes-vous sûr de vouloir modifier \"{{key}}\"? Cela prendra effet immédiatement.",
+      "confirmChange": "Êtes-vous sûr de vouloir modifier \"{{key}}\" ? Cette modification prendra effet immédiatement.",
       "selectProviderFirst": "Sélectionnez d'abord un fournisseur",
       "selectModel": "Sélectionner un modèle..."
     },
@@ -137,8 +153,8 @@
     "modelSelection": {
       "provider": "Fournisseur",
       "model": "Modèle",
-      "selectProvider": "Sélectionnez un fournisseur...",
-      "selectModel": "Sélectionnez un modèle...",
+      "selectProvider": "Sélectionner un fournisseur...",
+      "selectModel": "Sélectionner un modèle...",
       "selectProviderFirst": "Sélectionnez d'abord un fournisseur",
       "addNewModel": "Ajouter un nouveau modèle",
       "noModelsFound": "Aucun modèle trouvé pour ce fournisseur"
