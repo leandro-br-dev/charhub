@@ -1,15 +1,15 @@
 {
   "description": "Signup page strings for new user registration.",
   "resources": {
-    "greeting": "创建您的账户！",
+    "greeting": "创建您的账号！",
     "instruction": "选择一种注册方式",
     "googleButton": "使用 Google 注册",
     "facebookButton": "使用 Facebook 注册",
     "termsAgreementPt1": "注册即表示您同意",
     "termsAgreementAnd": "和",
-    "termsAndConditions": "条款和条件",
+    "termsAndConditions": "使用条款",
     "privacyPolicy": "隐私政策",
-    "alreadyRegistered": "已有账户？",
+    "alreadyRegistered": "已有账号？",
     "loginLink": "登录",
     "checkingAuth": "正在检查身份验证..."
   }
