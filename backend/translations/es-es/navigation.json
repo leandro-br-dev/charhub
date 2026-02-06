@@ -5,8 +5,8 @@
     "story": "Historia",
     "characters": "Personajes",
     "tasks": "Tareas",
-    "admin": "Admin",
-    "adminAnalytics": "Analíticas",
+    "admin": "Administración",
+    "adminAnalytics": "Análisis",
     "adminScripts": "Scripts",
     "assets": "Activos",
     "scenes": "Escenas",
@@ -17,7 +17,9 @@
     "developmentPlaceholder": "Las tuberías de compilación, los registros y los controles de automatización estarán aquí pronto.",
     "viewAllCharacters": "Ver todos los personajes",
     "viewAllStories": "Ver todas las historias",
+    "viewAllAssets": "Ver todos los activos",
     "viewAllScenes": "Ver todas las escenas",
-    "createScene": "Crear escena"
+    "createAsset": "Crear Activo",
+    "createScene": "Crear Escena"
   }
 }
