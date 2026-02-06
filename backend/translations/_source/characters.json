@@ -134,6 +134,9 @@
     "sidebar": {
       "myCharacter": "My character"
     },
+    "emptyStates": {
+      "noCharacters": "No characters found."
+    },
     "form": {
       "submit": "Save",
       "cancel": "Cancel",

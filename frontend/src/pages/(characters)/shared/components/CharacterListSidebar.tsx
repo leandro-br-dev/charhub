@@ -117,9 +117,11 @@ export function CharacterListSidebar({ onLinkClick }: CharacterListSidebarProps)
 
   return (
     <div className="flex flex-col gap-2 py-4">
-      <h3 className="text-xs font-semibold text-muted uppercase mb-3 px-4">Characters</h3>
+      <h3 className="text-xs font-semibold text-muted uppercase mb-3 px-4">
+        {t('stats.characters')}
+      </h3>
       {characters.length === 0 ? (
-        <p className="text-sm text-muted px-4">No characters found.</p>
+        <p className="text-sm text-muted px-4">{t('emptyStates.noCharacters')}</p>
       ) : (
         <ul className="space-y-2">
           {characters.map(character => {
