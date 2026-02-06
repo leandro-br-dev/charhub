@@ -147,7 +147,7 @@ testI18n.init({
           high: 'High',
         },
         actions: {
-          save: 'Save',
+          save: 'Save ({{count}})',
           saving: 'Saving...',
           reset: 'Reset to default',
           addModel: 'Add Model',
