@@ -2,7 +2,7 @@
   "description": "Assets module strings for asset management, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledAsset": "Ativo Sem Título",
+      "untitledAsset": "Ativo sem título",
       "updatedAt": "Atualizado em {{date}}",
       "public": "Público",
       "private": "Privado",
@@ -19,23 +19,23 @@
       "OBJECT": "Objeto",
       "WEAPON": "Arma",
       "VEHICLE": "Veículo",
-      "FURNITURE": "Mobiliário",
+      "FURNITURE": "Móvel",
       "PROP": "Adereço"
     },
     "typeDescriptions": {
-      "CLOTHING": "Peças de vestuário e roupas",
+      "CLOTHING": "Itens de vestuário e roupas",
       "ACCESSORY": "Acessórios e adornos vestíveis",
-      "SCAR": "Marcas, cicatrizes e características corporais",
-      "HAIRSTYLE": "Penteados e cores de cabelo",
-      "OBJECT": "Objetos e itens de mão",
+      "SCAR": "Marcações, cicatrizes e características corporais",
+      "HAIRSTYLE": "Estilos e cores de cabelo",
+      "OBJECT": "Objetos e itens portáteis",
       "WEAPON": "Armas, armas brancas, armas de fogo",
       "VEHICLE": "Veículos e montarias",
-      "FURNITURE": "Mobiliário e elementos estruturais",
+      "FURNITURE": "Móveis e elementos estruturais",
       "PROP": "Adereços de fundo e decorações"
     },
     "categories": {
       "WEARABLE": "Vestível",
-      "HOLDABLE": "Segurável",
+      "HOLDABLE": "Portátil",
       "ENVIRONMENTAL": "Ambiental"
     },
     "categoryDescriptions": {
@@ -52,8 +52,8 @@
       "feet": "Pés"
     },
     "placementZoneDescriptions": {
-      "face": "Aplicado na área do rosto",
-      "torso": "Aplicado na área do corpo/tronco",
+      "face": "Aplicado à área do rosto",
+      "torso": "Aplicado à área do corpo/tronco",
       "left_hand": "Segurado na mão esquerda",
       "right_hand": "Segurado na mão direita",
       "head": "Usado na cabeça",
@@ -62,11 +62,11 @@
     "visualStyles": {
       "ANIME": "Anime",
       "REALISTIC": "Realista",
-      "SEMI_REALISTIC": "Semirrealista",
-      "CARTOON": "Cartoon",
+      "SEMI_REALISTIC": "Semi-Realista",
+      "CARTOON": "Cartum",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
-      "COMIC": "Comic",
+      "COMIC": "Quadrinho",
       "CHIBI": "Chibi",
       "PIXEL_ART": "Pixel Art",
       "THREE_D": "3D"
@@ -82,6 +82,7 @@
       "removeFromFavorites": "Remover dos favoritos"
     },
     "stats": {
+      "assets": "Ativos",
       "characters": "Personagem",
       "characters_plural": "Personagens",
       "images": "Imagem",
@@ -91,7 +92,7 @@
     },
     "hub": {
       "title": "Ativos",
-      "subtitle": "Crie e gerencie ativos para seus personagens. Ativos incluem vestuário, acessórios, objetos e muito mais.",
+      "subtitle": "Crie e gerencie ativos para seus personagens. Os ativos incluem vestuário, acessórios, objetos e muito mais.",
       "sidebar": {
         "description": "Navegue e gerencie seus ativos criativos.",
         "viewGallery": "Ver Galeria",
@@ -153,14 +154,14 @@
         "promptContext": "Prompt de Contexto",
         "negativePrompt": "Prompt Negativo",
         "placementZone": "Zona de Posicionamento",
-        "placementDetail": "Detalhe de Posicionamento",
+        "placementDetail": "Detalhe do Posicionamento",
         "style": "Estilo Visual",
         "visibility": "Visibilidade",
         "ageRating": "Classificação Etária",
         "contentTags": "Tags de Conteúdo"
       },
       "placeholders": {
-        "name": "Digite o nome do ativo",
+        "name": "Insira o nome do ativo",
         "description": "Descreva este ativo...",
         "type": "Selecionar tipo",
         "category": "Selecionar categoria",
@@ -168,12 +169,12 @@
         "promptContext": "Contexto adicional quando usado com personagens...",
         "negativePrompt": "Descreva o que evitar...",
         "placementZone": "Selecionar zona de posicionamento",
-        "placementDetail": "ex: 'bochecha esquerda', 'através do nariz'"
+        "placementDetail": "ex: 'bochecha esquerda', 'sobre o nariz'"
       },
       "hints": {
         "name": "Um nome claro e descritivo para este ativo",
         "description": "Descrição detalhada da aparência do ativo",
-        "positivePrompt": "Prompt visual para geração por IA (ex: 'uma jaqueta de couro vermelha com zíperes prateados')",
+        "positivePrompt": "Prompt visual para geração de IA (ex: 'uma jaqueta de couro vermelha com zíperes prateados')",
         "negativePrompt": "Elementos a serem evitados na geração (ex: 'danificado, rasgado, sujo')",
         "placementZone": "Onde o ativo deve ser posicionado no personagem"
       },
@@ -205,7 +206,7 @@
         "fromDevice": "Carregar do dispositivo",
         "fromUrl": "Usar URL da imagem",
         "generateAI": "Gerar com IA",
-        "aiComingSoon": "Geração por IA para ativos em breve",
+        "aiComingSoon": "Geração por IA em breve para ativos",
         "urlModalTitle": "Usar imagem de URL",
         "urlLabel": "URL da Imagem",
         "preview": "Prévia",
@@ -226,12 +227,12 @@
         "lockedHint": "Preencha os detalhes básicos para desbloquear as outras seções."
       },
       "autocomplete": {
-        "button": "Autocompletar",
-        "ai": "Autocompletar com IA",
-        "web": "Autocompletar com busca na web",
+        "button": "Preenchimento automático",
+        "ai": "Preencher com IA",
+        "web": "Preencher com busca na web",
         "nothing": "Nenhuma sugestão disponível.",
-        "applied": "Autocompletar aplicado.",
-        "failed": "Falha ao autocompletar."
+        "applied": "Preenchimento automático aplicado.",
+        "failed": "Falha ao preencher automaticamente."
       }
     },
     "create": {
@@ -378,7 +379,7 @@
       "linkFailed": "Falha ao vincular ativo ao personagem.",
       "unlinkFailed": "Falha ao desvincular ativo do personagem.",
       "nameRequired": "O nome do ativo é obrigatório",
-      "typeRequired": "O tipo de ativo é obrigatório",
+      "typeRequired": "O tipo do ativo é obrigatório",
       "categoryRequired": "A categoria do ativo é obrigatória",
       "invalidType": "Tipo de ativo inválido",
       "invalidCategory": "Categoria de ativo inválida",
@@ -414,7 +415,7 @@
         "in_context": "Em Contexto"
       },
       "typeDescriptions": {
-        "preview": "Imagem de prévia principal para o ativo",
+        "preview": "Imagem principal de prévia para o ativo",
         "reference": "Referência visual para o ativo",
         "transparent": "Versão com fundo transparente",
         "in_context": "Ativo mostrado em uso/contexto de cena"
@@ -432,7 +433,7 @@
     "avatar": {
       "invalidUrl": "Insira uma URL de imagem válida (http/https).",
       "error": "Não foi possível carregar esta imagem. {{message}}",
-      "aiComingSoon": "Geração por IA para ativos em breve",
+      "aiComingSoon": "Geração por IA em breve para ativos",
       "generateAI": "Gerar com IA",
       "fromDevice": "Carregar do dispositivo",
       "fromUrl": "Usar URL da imagem",

@@ -17,7 +17,9 @@
     "developmentPlaceholder": "Build pipelines, logs and automation controls will live here soon.",
     "viewAllCharacters": "View all characters",
     "viewAllStories": "View all stories",
+    "viewAllAssets": "View all assets",
     "viewAllScenes": "View all scenes",
+    "createAsset": "Create Asset",
     "createScene": "Create Scene"
   }
 }

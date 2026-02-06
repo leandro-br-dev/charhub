@@ -114,54 +114,45 @@ export function AssetListSidebar({ onLinkClick }: AssetListSidebarProps) {
           {t('sidebar.noAssetsFound')}
         </p>
       ) : (
-        <>
-          <ul className="space-y-2">
-            {assets.map(asset => {
-              const title = asset.name || t('labels.untitledAsset');
-              const thumbnailUrl = asset.thumbnailUrl || asset.previewUrl;
-              return (
-                <li key={asset.id}>
-                  <Link
-                    to={`/assets/${asset.id}`}
-                    onClick={onLinkClick}
-                    className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  >
-                    {thumbnailUrl ? (
-                      <CachedImage src={thumbnailUrl} alt={title} className="h-8 w-8 rounded-md object-cover" />
-                    ) : (
-                      <div className="h-8 w-8 rounded-md bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-                        <span className="material-symbols-outlined text-lg text-muted">inventory_2</span>
-                      </div>
-                    )}
-                    <div className="flex flex-col flex-grow min-w-0">
-                      <span className="text-sm font-medium text-content truncate">{title}</span>
-                      <div className="flex items-center gap-1">
-                        {asset.isOwn && (
-                          <span className="text-xs text-muted">{t('sidebar.myAsset')}</span>
-                        )}
-                      </div>
+        <ul className="space-y-2">
+          {assets.map(asset => {
+            const title = asset.name || t('labels.untitledAsset');
+            const thumbnailUrl = asset.thumbnailUrl || asset.previewUrl;
+            return (
+              <li key={asset.id}>
+                <Link
+                  to={`/assets/${asset.id}`}
+                  onClick={onLinkClick}
+                  className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  {thumbnailUrl ? (
+                    <CachedImage src={thumbnailUrl} alt={title} className="h-8 w-8 rounded-md object-cover" />
+                  ) : (
+                    <div className="h-8 w-8 rounded-md bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-lg text-muted">inventory_2</span>
                     </div>
-                    {asset.isFavorite && (
-                      <FavoriteButton
-                        assetId={asset.id}
-                        initialIsFavorited={true}
-                        size="small"
-                        readOnly={true}
-                      />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <Link
-            to="/assets/hub"
-            onClick={onLinkClick}
-            className="mx-4 mt-2 text-sm text-primary hover:underline"
-          >
-            {t('sidebar.viewAllAssets')}
-          </Link>
-        </>
+                  )}
+                  <div className="flex flex-col flex-grow min-w-0">
+                    <span className="text-sm font-medium text-content truncate">{title}</span>
+                    <div className="flex items-center gap-1">
+                      {asset.isOwn && (
+                        <span className="text-xs text-muted">{t('sidebar.myAsset')}</span>
+                      )}
+                    </div>
+                  </div>
+                  {asset.isFavorite && (
+                    <FavoriteButton
+                      assetId={asset.id}
+                      initialIsFavorited={true}
+                      size="small"
+                      readOnly={true}
+                    />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );

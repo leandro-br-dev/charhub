@@ -152,6 +152,21 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
         <Suspense fallback={<SidebarLoadingFallback />}>
           <AssetListSidebar onLinkClick={handleLinkClick} />
         </Suspense>
+        <div className="mt-auto flex flex-col gap-2 p-4">
+          <Button variant="primary" icon="add" onClick={handleCreateAsset}>
+            {t("navigation:createAsset", "Create Asset")}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="inventory_2"
+            onClick={() => {
+              handleLinkClick();
+              navigate("/assets/hub");
+            }}
+          >
+            {t("navigation:viewAllAssets", "View all assets")}
+          </Button>
+        </div>
       </div>
     );
   } else if (activeView?.startsWith("/scenes")) {

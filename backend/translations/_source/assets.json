@@ -82,6 +82,7 @@
       "removeFromFavorites": "Remove from favorites"
     },
     "stats": {
+      "assets": "Assets",
       "characters": "Character",
       "characters_plural": "Characters",
       "images": "Image",

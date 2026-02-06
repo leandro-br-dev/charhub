@@ -107,62 +107,53 @@ export function SceneListSidebar({ onLinkClick }: SceneListSidebarProps) {
           {t('emptyStates.noScenes')}
         </p>
       ) : (
-        <>
-          <ul className="space-y-2">
-            {scenes.map(scene => {
-              const coverImageUrl = scene.coverImageUrl;
-              return (
-                <li key={scene.id}>
-                  <Link
-                    to={`/scenes/${scene.id}`}
-                    onClick={onLinkClick}
-                    className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  >
-                    {coverImageUrl ? (
-                      <CachedImage
-                        src={coverImageUrl}
-                        alt={scene.name}
-                        className="h-8 w-8 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                        <span className="material-symbols-outlined text-sm text-slate-400 dark:text-slate-600">landscape</span>
-                      </div>
-                    )}
-                    <div className="flex flex-col flex-grow min-w-0">
-                      <span className="text-sm font-medium text-content truncate">{scene.name}</span>
-                      <div className="flex items-center gap-1">
-                        {scene.isOwn && (
-                          <span className="text-xs text-muted">{t('sidebar.myScene')}</span>
-                        )}
-                        {scene.areaCount !== undefined && scene.areaCount > 0 && (
-                          <span className="text-xs text-muted">
-                            {scene.areaCount} {scene.areaCount === 1 ? t('stats.areas') : t('stats.areas')}
-                          </span>
-                        )}
-                      </div>
+        <ul className="space-y-2">
+          {scenes.map(scene => {
+            const coverImageUrl = scene.coverImageUrl;
+            return (
+              <li key={scene.id}>
+                <Link
+                  to={`/scenes/${scene.id}`}
+                  onClick={onLinkClick}
+                  className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                >
+                  {coverImageUrl ? (
+                    <CachedImage
+                      src={coverImageUrl}
+                      alt={scene.name}
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                      <span className="material-symbols-outlined text-sm text-slate-400 dark:text-slate-600">landscape</span>
                     </div>
-                    {scene.isFavorite && (
-                      <FavoriteButton
-                        sceneId={scene.id}
-                        initialIsFavorited={true}
-                        size="small"
-                        readOnly={true}
-                      />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <Link
-            to="/scenes/hub"
-            onClick={onLinkClick}
-            className="mx-4 mt-2 text-sm text-primary hover:underline"
-          >
-            {t('sidebar.viewAllScenes')}
-          </Link>
-        </>
+                  )}
+                  <div className="flex flex-col flex-grow min-w-0">
+                    <span className="text-sm font-medium text-content truncate">{scene.name}</span>
+                    <div className="flex items-center gap-1">
+                      {scene.isOwn && (
+                        <span className="text-xs text-muted">{t('sidebar.myScene')}</span>
+                      )}
+                      {scene.areaCount !== undefined && scene.areaCount > 0 && (
+                        <span className="text-xs text-muted">
+                          {scene.areaCount} {scene.areaCount === 1 ? t('stats.areas') : t('stats.areas')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {scene.isFavorite && (
+                    <FavoriteButton
+                      sceneId={scene.id}
+                      initialIsFavorited={true}
+                      size="small"
+                      readOnly={true}
+                    />
+                  )}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );
