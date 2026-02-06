@@ -1,0 +1,147 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "System Configuration",
+    "header": {
+      "title": "System Configuration",
+      "description": "Manage runtime parameters without server restart. Changes take effect immediately."
+    },
+    "search": {
+      "placeholder": "Filter configurations..."
+    },
+    "categories": {
+      "translation": "Translation System",
+      "context": "Context Window",
+      "generation": "Character Generation",
+      "correction": "Correction System",
+      "curation": "Image Curation",
+      "moderation": "Content Moderation",
+      "scheduling": "Job Scheduling"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "Default Provider",
+          "description": "Default LLM provider for translations"
+        },
+        "default_model": {
+          "label": "Default Model",
+          "description": "Default model name for translations"
+        },
+        "cache_ttl": {
+          "label": "Cache TTL (seconds)",
+          "description": "How long to cache translation results"
+        },
+        "enable_pre_translation": {
+          "label": "Enable Pre-translation",
+          "description": "Pre-translate content for faster loading"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "Max Tokens",
+          "description": "Maximum context window size in tokens"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "Daily Limit",
+          "description": "Maximum characters generated per day"
+        },
+        "batch_enabled": {
+          "label": "Enable Batch Processing",
+          "description": "Process character generation in batches"
+        },
+        "batch_size_per_run": {
+          "label": "Batch Size",
+          "description": "Number of characters to process per batch"
+        },
+        "batch_retry_attempts": {
+          "label": "Retry Attempts",
+          "description": "Number of retry attempts for failed batches"
+        },
+        "batch_timeout_minutes": {
+          "label": "Timeout (minutes)",
+          "description": "Maximum time to wait for batch completion"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "Avatar Daily Limit",
+          "description": "Maximum avatar corrections per day"
+        },
+        "data_daily_limit": {
+          "label": "Data Daily Limit",
+          "description": "Maximum data corrections per day"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "Search Keywords",
+          "description": "Comma-separated keywords for curation search"
+        },
+        "anime_model_ids": {
+          "label": "Anime Model IDs",
+          "description": "Comma-separated model IDs for anime curation"
+        },
+        "auto_approval_threshold": {
+          "label": "Auto-approval Threshold",
+          "description": "Score threshold for automatic approval (0-100)"
+        },
+        "require_manual_review": {
+          "label": "Require Manual Review",
+          "description": "Require manual review for curated content"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "Enable NSFW Filter",
+          "description": "Filter NSFW content automatically"
+        },
+        "nsfw_filter_strictness": {
+          "label": "NSFW Filter Strictness",
+          "description": "How strict the NSFW filter should be"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "Daily Curation Hour",
+          "description": "Hour of day to run daily curation (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "actions": {
+      "save": "Save",
+      "saving": "Saving...",
+      "reset": "Reset to default",
+      "addModel": "Add Model"
+    },
+    "messages": {
+      "saveSuccess": "Configuration \"{{key}}\" updated successfully",
+      "saveError": "Failed to update configuration",
+      "loadError": "Failed to load system configurations",
+      "confirmChange": "Are you sure you want to change \"{{key}}\"? This will take effect immediately.",
+      "selectProviderFirst": "Select provider first",
+      "selectModel": "Select model..."
+    },
+    "meta": {
+      "updatedAt": "Updated {{time}}",
+      "updatedBy": "by {{user}}",
+      "neverUpdated": "Default value (never modified)"
+    },
+    "modelSelection": {
+      "provider": "Provider",
+      "model": "Model",
+      "selectProvider": "Select a provider...",
+      "selectModel": "Select a model...",
+      "selectProviderFirst": "Select a provider first",
+      "addNewModel": "Add new model",
+      "noModelsFound": "No models found for this provider"
+    }
+  }
+}

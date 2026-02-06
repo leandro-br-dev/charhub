@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "Catalogue de modèles LLM",
+    "header": {
+      "title": "Catalogue de modèles LLM",
+      "description": "Gérer les modèles et fournisseurs LLM pour la plateforme"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "Sélectionner un fournisseur"
+    },
+    "categories": {
+      "CHAT": "Chat",
+      "CODING": "Développement",
+      "REASONING": "Raisonnement",
+      "VISION": "Vision",
+      "SPEECH": "Vocale",
+      "TRANSLATION": "Traduction",
+      "AGENTIC": "Agentique",
+      "EMBEDDING": "Embedding"
+    },
+    "types": {
+      "TEXT": "Texte",
+      "MULTIMODAL": "Multimodal",
+      "REASONING": "Raisonnement",
+      "SPEECH": "Vocale",
+      "EMBEDDING": "Embedding"
+    },
+    "model": {
+      "id": "ID",
+      "name": "ID du modèle",
+      "displayName": "Nom d'affichage",
+      "category": "Catégorie",
+      "type": "Type",
+      "contextWindow": "Fenêtre de contexte",
+      "maxOutput": "Sortie maximale",
+      "supportsTools": "Outils",
+      "supportsVision": "Vision",
+      "supportsReasoning": "Raisonnement",
+      "description": "Description",
+      "status": "Statut",
+      "isActive": "Actif",
+      "isAvailable": "Disponible",
+      "version": "Version",
+      "source": "Source"
+    },
+    "actions": {
+      "addModel": "Ajouter un modèle",
+      "editModel": "Modifier le modèle",
+      "deleteModel": "Supprimer le modèle",
+      "toggleActive": "Activer/Désactiver",
+      "toggleAvailable": "Rendre disponible/indisponible",
+      "refreshCache": "Actualiser le cache",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "back": "Retour"
+    },
+    "messages": {
+      "loadError": "Échec du chargement des modèles LLM",
+      "createSuccess": "Modèle créé avec succès",
+      "updateSuccess": "Modèle mis à jour avec succès",
+      "deleteSuccess": "Modèle supprimé avec succès",
+      "toggleSuccess": "Statut du modèle mis à jour",
+      "cacheRefreshed": "Cache des modèles actualisé avec succès",
+      "noModelsFound": "Aucun modèle trouvé pour ce fournisseur",
+      "deleteConfirm": "Êtes-vous sûr de vouloir supprimer le modèle \"{{modelName}}\" ? Cette action est irréversible."
+    },
+    "errors": {
+      "createFailed": "Échec de la création du modèle",
+      "updateFailed": "Échec de la mise à jour du modèle",
+      "deleteFailed": "Échec de la suppression du modèle",
+      "toggleFailed": "Échec de la mise à jour du statut du modèle",
+      "validation": {
+        "nameRequired": "L'ID du modèle est requis",
+        "displayNameRequired": "Le nom d'affichage est requis",
+        "categoryRequired": "La catégorie est requise",
+        "typeRequired": "Le type est requis",
+        "contextWindowRequired": "La fenêtre de contexte est requise",
+        "maxOutputRequired": "La sortie maximale est requise"
+      }
+    },
+    "form": {
+      "addTitle": "Ajouter un nouveau modèle",
+      "editTitle": "Modifier le modèle",
+      "provider": "Fournisseur",
+      "providerChangeWarning": "ne peut pas être modifié",
+      "providerChangeHelp": "Le fournisseur ne peut pas être modifié après la création. Supprimez et recréez le modèle si nécessaire.",
+      "name": "ID du modèle",
+      "namePlaceholder": "ex: gemini-2.5-flash",
+      "displayName": "Nom d'affichage",
+      "displayNamePlaceholder": "ex: Gemini 2.5 Flash",
+      "category": "Catégorie",
+      "type": "Type",
+      "contextWindow": "Fenêtre de contexte (jetons)",
+      "contextWindowPlaceholder": "ex: 128000",
+      "maxOutput": "Sortie maximale (jetons)",
+      "maxOutputPlaceholder": "ex: 4096",
+      "supportsTools": "Prend en charge l'appel de fonctions",
+      "supportsVision": "Prend en charge la vision",
+      "supportsReasoning": "Prend en charge le raisonnement",
+      "description": "Description",
+      "descriptionPlaceholder": "Brève description du modèle...",
+      "version": "Version",
+      "versionPlaceholder": "ex: 1.0.0",
+      "source": "URL source",
+      "sourcePlaceholder": "https://...",
+      "isActive": "Actif (activé pour utilisation)",
+      "isAvailable": "Disponible (API configurée)"
+    }
+  }
+}

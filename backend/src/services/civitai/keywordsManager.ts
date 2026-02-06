@@ -4,20 +4,19 @@
  */
 
 import { logger } from '../../config/logger';
+import { systemConfigurationService } from '../config/systemConfigurationService';
 
 /**
  * Keywords Manager
  */
 export class KeywordsManager {
-  private readonly defaultKeywords: string[];
+  private defaultKeywords: string[];
+  private keywordsLoaded = false;
   private readonly categoryGroups: Record<string, string[]>;
 
   constructor() {
-    // Load keywords from env or use defaults
-    const envKeywords = process.env.CIVITAI_SEARCH_KEYWORDS;
-    this.defaultKeywords = envKeywords
-      ? envKeywords.split(',').map(k => k.trim())
-      : this.getDefaultKeywords();
+    // Initialize with default keywords (will be overridden by database values if present)
+    this.defaultKeywords = this.getDefaultKeywords();
 
     // Organize keywords into categories for diversity
     this.categoryGroups = {
@@ -44,16 +43,45 @@ export class KeywordsManager {
   }
 
   /**
+   * Ensure keywords are loaded from database
+   * Uses lazy loading pattern to avoid async constructor
+   */
+  private async ensureKeywordsLoaded(): Promise<void> {
+    if (this.keywordsLoaded) {
+      return;
+    }
+
+    try {
+      const keywordsStr = await systemConfigurationService.get('curation.search_keywords');
+
+      if (keywordsStr) {
+        this.defaultKeywords = keywordsStr.split(',').map(k => k.trim());
+        logger.info(
+          { keywordsCount: this.defaultKeywords.length, source: 'database' },
+          'Keywords loaded from SystemConfiguration'
+        );
+      }
+
+      this.keywordsLoaded = true;
+    } catch (error) {
+      logger.warn({ error }, 'Failed to load keywords from database, using defaults');
+      this.keywordsLoaded = true;
+    }
+  }
+
+  /**
    * Get all keywords
    */
-  getAllKeywords(): string[] {
+  async getAllKeywords(): Promise<string[]> {
+    await this.ensureKeywordsLoaded();
     return [...this.defaultKeywords];
   }
 
   /**
    * Get random keywords for diverse search
    */
-  getRandomKeywords(count: number = 5): string[] {
+  async getRandomKeywords(count: number = 5): Promise<string[]> {
+    await this.ensureKeywordsLoaded();
     const shuffled = [...this.defaultKeywords].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, count);
   }
@@ -143,7 +171,7 @@ export class KeywordsManager {
   }
 
   /**
-   * Get default keywords if env not set
+   * Get default keywords if database value not set
    */
   private getDefaultKeywords(): string[] {
     return [
@@ -163,14 +191,16 @@ export class KeywordsManager {
   /**
    * Validate if keyword is in allowed list
    */
-  isValidKeyword(keyword: string): boolean {
+  async isValidKeyword(keyword: string): Promise<boolean> {
+    await this.ensureKeywordsLoaded();
     return this.defaultKeywords.includes(keyword.toLowerCase());
   }
 
   /**
    * Add custom keyword (with validation)
    */
-  addCustomKeyword(keyword: string): boolean {
+  async addCustomKeyword(keyword: string): Promise<boolean> {
+    await this.ensureKeywordsLoaded();
     const normalized = keyword.toLowerCase().trim();
 
     // Check if already exists

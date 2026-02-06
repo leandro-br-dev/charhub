@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "كتالوج نماذج LLM",
+    "header": {
+      "title": "كتالوج نماذج LLM",
+      "description": "إدارة نماذج LLM والموفرين للمنصة"
+    },
+    "providers": {
+      "gemini": "جوجل جيميني",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "اختر الموفر"
+    },
+    "categories": {
+      "CHAT": "محادثة",
+      "CODING": "برمجة",
+      "REASONING": "استدلال",
+      "VISION": "رؤية",
+      "SPEECH": "كلام",
+      "TRANSLATION": "ترجمة",
+      "AGENTIC": "عميلي",
+      "EMBEDDING": "تضمين"
+    },
+    "types": {
+      "TEXT": "نص",
+      "MULTIMODAL": "متعدد الأنماط",
+      "REASONING": "استدلال",
+      "SPEECH": "كلام",
+      "EMBEDDING": "تضمين"
+    },
+    "model": {
+      "id": "المعرّف",
+      "name": "معرّف النموذج",
+      "displayName": "اسم العرض",
+      "category": "الفئة",
+      "type": "النوع",
+      "contextWindow": "نافذة السياق",
+      "maxOutput": "الحد الأقصى للإخراج",
+      "supportsTools": "الأدوات",
+      "supportsVision": "الرؤية",
+      "supportsReasoning": "الاستدلال",
+      "description": "الوصف",
+      "status": "الحالة",
+      "isActive": "نشط",
+      "isAvailable": "متاح",
+      "version": "الإصدار",
+      "source": "المصدر"
+    },
+    "actions": {
+      "addModel": "إضافة نموذج",
+      "editModel": "تعديل النموذج",
+      "deleteModel": "حذف النموذج",
+      "toggleActive": "تبديل النشاط",
+      "toggleAvailable": "تبديل الإتاحة",
+      "refreshCache": "تحديث الذاكرة المؤقتة",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "confirm": "تأكيد",
+      "back": "رجوع"
+    },
+    "messages": {
+      "loadError": "فشل تحميل نماذج LLM",
+      "createSuccess": "تم إنشاء النموذج بنجاح",
+      "updateSuccess": "تم تحديث النموذج بنجاح",
+      "deleteSuccess": "تم حذف النموذج بنجاح",
+      "toggleSuccess": "تم تحديث حالة النموذج",
+      "cacheRefreshed": "تم تحديث ذاكرة التخزين المؤقت للنماذج بنجاح",
+      "noModelsFound": "لم يتم العثور على نماذج لهذا الموفر",
+      "deleteConfirm": "هل أنت متأكد أنك تريد حذف النموذج \"{{modelName}}\"؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "errors": {
+      "createFailed": "فشل إنشاء النموذج",
+      "updateFailed": "فشل تحديث النموذج",
+      "deleteFailed": "فشل حذف النموذج",
+      "toggleFailed": "فشل تحديث حالة النموذج",
+      "validation": {
+        "nameRequired": "معرّف النموذج مطلوب",
+        "displayNameRequired": "اسم العرض مطلوب",
+        "categoryRequired": "الفئة مطلوبة",
+        "typeRequired": "النوع مطلوب",
+        "contextWindowRequired": "نافذة السياق مطلوبة",
+        "maxOutputRequired": "الحد الأقصى للإخراج مطلوب"
+      }
+    },
+    "form": {
+      "addTitle": "إضافة نموذج جديد",
+      "editTitle": "تعديل النموذج",
+      "provider": "الموفر",
+      "providerChangeWarning": "لا يمكن تغييره",
+      "providerChangeHelp": "لا يمكن تغيير الموفر بعد الإنشاء. قم بحذف النموذج وإعادة إنشائه إذا لزم الأمر.",
+      "name": "معرّف النموذج",
+      "namePlaceholder": "مثال: gemini-2.5-flash",
+      "displayName": "اسم العرض",
+      "displayNamePlaceholder": "مثال: Gemini 2.5 Flash",
+      "category": "الفئة",
+      "type": "النوع",
+      "contextWindow": "نافذة السياق (الرموز)",
+      "contextWindowPlaceholder": "مثال: 128000",
+      "maxOutput": "الحد الأقصى للإخراج (الرموز)",
+      "maxOutputPlaceholder": "مثال: 4096",
+      "supportsTools": "يدعم استدعاء الدوال",
+      "supportsVision": "يدعم الرؤية",
+      "supportsReasoning": "يدعم الاستدلال",
+      "description": "الوصف",
+      "descriptionPlaceholder": "وصف موجز للنموذج...",
+      "version": "الإصدار",
+      "versionPlaceholder": "مثال: 1.0.0",
+      "source": "عنوان URL للمصدر",
+      "sourcePlaceholder": "https://...",
+      "isActive": "نشط (ممكن للاستخدام)",
+      "isAvailable": "متاح (تم تكوين API)"
+    }
+  }
+}

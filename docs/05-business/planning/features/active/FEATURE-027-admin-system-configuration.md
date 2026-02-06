@@ -1,13 +1,14 @@
 # FEATURE-027: Admin System Configuration Page
 
-**Status**: Active
+**Status**: In Review
 **Priority**: P1 - High
 **Type**: Enhancement (Admin Tooling)
 **Depends on**: None (infrastructure already exists)
 **Blocks**: None
 **Assigned To**: Agent Coder
 **Created**: 2026-02-01
-**Last Updated**: 2026-02-01
+**Last Updated**: 2026-02-04
+**Pull Request**: [PR #176](https://github.com/leandro-br-dev/charhub/pull/176)
 
 ---
 

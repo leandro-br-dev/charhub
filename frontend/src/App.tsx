@@ -29,6 +29,8 @@ import TasksPage from './pages/tasks';
 import DiscoverPage from './pages/(discover)';
 import AnalyticsPage from './pages/admin/analytics';
 import AdminScriptsPage from './pages/admin/scripts';
+import SystemConfigPage from './pages/admin/system-config';
+import LLMCatalogPage from './pages/admin/llm-catalog';
 
 function PublicShell(): JSX.Element {
   return (
@@ -94,6 +96,8 @@ export default function App(): JSX.Element {
       >
         <Route path="/admin/analytics" element={<AnalyticsPage />} />
         <Route path="/admin/scripts" element={<AdminScriptsPage />} />
+        <Route path="/admin/system-config" element={<SystemConfigPage />} />
+        <Route path="/admin/llm-catalog" element={<LLMCatalogPage />} />
       </Route>
     </Routes>
   );

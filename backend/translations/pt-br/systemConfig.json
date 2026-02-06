@@ -1,0 +1,147 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "Configuração do Sistema",
+    "header": {
+      "title": "Configuração do Sistema",
+      "description": "Gerencie parâmetros de tempo de execução sem reiniciar o servidor. As alterações entram em vigor imediatamente."
+    },
+    "search": {
+      "placeholder": "Filtrar configurações..."
+    },
+    "categories": {
+      "translation": "Sistema de Tradução",
+      "context": "Janela de Contexto",
+      "generation": "Geração de Personagens",
+      "correction": "Sistema de Correção",
+      "curation": "Curadoria de Imagens",
+      "moderation": "Moderação de Conteúdo",
+      "scheduling": "Agendamento de Tarefas"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "Provedor Padrão",
+          "description": "Provedor LLM padrão para traduções"
+        },
+        "default_model": {
+          "label": "Modelo Padrão",
+          "description": "Nome do modelo padrão para traduções"
+        },
+        "cache_ttl": {
+          "label": "TTL do Cache (segundos)",
+          "description": "Por quanto tempo armazenar em cache os resultados da tradução"
+        },
+        "enable_pre_translation": {
+          "label": "Habilitar Pré-tradução",
+          "description": "Pré-traduzir conteúdo para carregamento mais rápido"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "Máximo de Tokens",
+          "description": "Tamanho máximo da janela de contexto em tokens"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "Limite Diário",
+          "description": "Número máximo de personagens gerados por dia"
+        },
+        "batch_enabled": {
+          "label": "Habilitar Processamento em Lotes",
+          "description": "Processar a geração de personagens em lotes"
+        },
+        "batch_size_per_run": {
+          "label": "Tamanho do Lote",
+          "description": "Número de personagens a processar por lote"
+        },
+        "batch_retry_attempts": {
+          "label": "Tentativas de Reexecução",
+          "description": "Número de tentativas de reexecução para lotes falhos"
+        },
+        "batch_timeout_minutes": {
+          "label": "Tempo Limite (minutos)",
+          "description": "Tempo máximo para aguardar a conclusão do lote"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "Limite Diário de Avatar",
+          "description": "Número máximo de correções de avatar por dia"
+        },
+        "data_daily_limit": {
+          "label": "Limite Diário de Dados",
+          "description": "Número máximo de correções de dados por dia"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "Palavras-chave de Busca",
+          "description": "Palavras-chave separadas por vírgulas para busca de curadoria"
+        },
+        "anime_model_ids": {
+          "label": "IDs de Modelo Anime",
+          "description": "IDs de modelo separadas por vírgulas para curadoria de Anime"
+        },
+        "auto_approval_threshold": {
+          "label": "Limiar de Aprovação Automática",
+          "description": "Pontuação limite para aprovação automática (0-100)"
+        },
+        "require_manual_review": {
+          "label": "Exigir Revisão Manual",
+          "description": "Exigir revisão manual para conteúdo curado"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "Habilitar Filtro NSFW",
+          "description": "Filtrar conteúdo NSFW automaticamente"
+        },
+        "nsfw_filter_strictness": {
+          "label": "Rigor do Filtro NSFW",
+          "description": "Quão rigoroso o filtro NSFW deve ser"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "Hora da Curadoria Diária",
+          "description": "Hora do dia para executar a curadoria diária (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "Baixo",
+      "medium": "Médio",
+      "high": "Alto"
+    },
+    "actions": {
+      "save": "Salvar",
+      "saving": "Salvando...",
+      "reset": "Redefinir para o padrão",
+      "addModel": "Adicionar Modelo"
+    },
+    "messages": {
+      "saveSuccess": "Configuração \"{{key}}\" atualizada com sucesso",
+      "saveError": "Falha ao atualizar a configuração",
+      "loadError": "Falha ao carregar as configurações do sistema",
+      "confirmChange": "Tem certeza de que deseja alterar \"{{key}}\"? Isso terá efeito imediatamente.",
+      "selectProviderFirst": "Selecione o provedor primeiro",
+      "selectModel": "Selecionar modelo..."
+    },
+    "meta": {
+      "updatedAt": "Atualizado em {{time}}",
+      "updatedBy": "por {{user}}",
+      "neverUpdated": "Valor padrão (nunca modificado)"
+    },
+    "modelSelection": {
+      "provider": "Provedor",
+      "model": "Modelo",
+      "selectProvider": "Selecione um provedor...",
+      "selectModel": "Selecione um modelo...",
+      "selectProviderFirst": "Selecione um provedor primeiro",
+      "addNewModel": "Adicionar novo modelo",
+      "noModelsFound": "Nenhum modelo encontrado para este provedor"
+    }
+  }
+}

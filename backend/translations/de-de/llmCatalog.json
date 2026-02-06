@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "LLM Modellkatalog",
+    "header": {
+      "title": "LLM Modellkatalog",
+      "description": "LLM Modelle und Anbieter für die Plattform verwalten"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "Anbieter auswählen"
+    },
+    "categories": {
+      "CHAT": "Chat",
+      "CODING": "Programmierung",
+      "REASONING": "Schlussfolgerung",
+      "VISION": "Bilderkennung",
+      "SPEECH": "Sprache",
+      "TRANSLATION": "Übersetzung",
+      "AGENTIC": "Agentenbasiert",
+      "EMBEDDING": "Embedding"
+    },
+    "types": {
+      "TEXT": "Text",
+      "MULTIMODAL": "Multimodal",
+      "REASONING": "Schlussfolgerung",
+      "SPEECH": "Sprache",
+      "EMBEDDING": "Embedding"
+    },
+    "model": {
+      "id": "ID",
+      "name": "Modell-ID",
+      "displayName": "Anzeigename",
+      "category": "Kategorie",
+      "type": "Typ",
+      "contextWindow": "Kontextfenster",
+      "maxOutput": "Maximale Ausgabe",
+      "supportsTools": "Tools",
+      "supportsVision": "Bilderkennung",
+      "supportsReasoning": "Schlussfolgerung",
+      "description": "Beschreibung",
+      "status": "Status",
+      "isActive": "Aktiv",
+      "isAvailable": "Verfügbar",
+      "version": "Version",
+      "source": "Quelle"
+    },
+    "actions": {
+      "addModel": "Modell hinzufügen",
+      "editModel": "Modell bearbeiten",
+      "deleteModel": "Modell löschen",
+      "toggleActive": "Aktivität umschalten",
+      "toggleAvailable": "Verfügbarkeit umschalten",
+      "refreshCache": "Cache aktualisieren",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "confirm": "Bestätigen",
+      "back": "Zurück"
+    },
+    "messages": {
+      "loadError": "Fehler beim Laden der LLM Modelle",
+      "createSuccess": "Modell erfolgreich erstellt",
+      "updateSuccess": "Modell erfolgreich aktualisiert",
+      "deleteSuccess": "Modell erfolgreich gelöscht",
+      "toggleSuccess": "Modellstatus aktualisiert",
+      "cacheRefreshed": "Modell-Cache erfolgreich aktualisiert",
+      "noModelsFound": "Keine Modelle für diesen Anbieter gefunden",
+      "deleteConfirm": "Sind Sie sicher, dass Sie das Modell \"{{modelName}}\" löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "errors": {
+      "createFailed": "Fehler beim Erstellen des Modells",
+      "updateFailed": "Fehler beim Aktualisieren des Modells",
+      "deleteFailed": "Fehler beim Löschen des Modells",
+      "toggleFailed": "Fehler beim Aktualisieren des Modellstatus",
+      "validation": {
+        "nameRequired": "Modell-ID ist erforderlich",
+        "displayNameRequired": "Anzeigename ist erforderlich",
+        "categoryRequired": "Kategorie ist erforderlich",
+        "typeRequired": "Typ ist erforderlich",
+        "contextWindowRequired": "Kontextfenster ist erforderlich",
+        "maxOutputRequired": "Maximale Ausgabe ist erforderlich"
+      }
+    },
+    "form": {
+      "addTitle": "Neues Modell hinzufügen",
+      "editTitle": "Modell bearbeiten",
+      "provider": "Anbieter",
+      "providerChangeWarning": "kann nicht geändert werden",
+      "providerChangeHelp": "Der Anbieter kann nach der Erstellung nicht mehr geändert werden. Löschen Sie das Modell und erstellen Sie es bei Bedarf neu.",
+      "name": "Modell-ID",
+      "namePlaceholder": "z.B. gemini-2.5-flash",
+      "displayName": "Anzeigename",
+      "displayNamePlaceholder": "z.B. Gemini 2.5 Flash",
+      "category": "Kategorie",
+      "type": "Typ",
+      "contextWindow": "Kontextfenster (Tokens)",
+      "contextWindowPlaceholder": "z.B. 128000",
+      "maxOutput": "Maximale Ausgabe (Tokens)",
+      "maxOutputPlaceholder": "z.B. 4096",
+      "supportsTools": "Unterstützt Funktionsaufrufe",
+      "supportsVision": "Unterstützt Bilderkennung",
+      "supportsReasoning": "Unterstützt Schlussfolgerung",
+      "description": "Beschreibung",
+      "descriptionPlaceholder": "Kurze Beschreibung des Modells...",
+      "version": "Version",
+      "versionPlaceholder": "z.B. 1.0.0",
+      "source": "Quell-URL",
+      "sourcePlaceholder": "https://...",
+      "isActive": "Aktiv (für die Nutzung aktiviert)",
+      "isAvailable": "Verfügbar (API konfiguriert)"
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "Catalogo Modelli LLM",
+    "header": {
+      "title": "Catalogo Modelli LLM",
+      "description": "Gestisci i modelli e i provider LLM per la piattaforma"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "Seleziona Provider"
+    },
+    "categories": {
+      "CHAT": "Chat",
+      "CODING": "Codifica",
+      "REASONING": "Ragionamento",
+      "VISION": "Visione",
+      "SPEECH": "Voce",
+      "TRANSLATION": "Traduzione",
+      "AGENTIC": "Agentico",
+      "EMBEDDING": "Embedding"
+    },
+    "types": {
+      "TEXT": "Testo",
+      "MULTIMODAL": "Multimodale",
+      "REASONING": "Ragionamento",
+      "SPEECH": "Voce",
+      "EMBEDDING": "Embedding"
+    },
+    "model": {
+      "id": "ID",
+      "name": "ID Modello",
+      "displayName": "Nome Visualizzato",
+      "category": "Categoria",
+      "type": "Tipo",
+      "contextWindow": "Finestra di Contesto",
+      "maxOutput": "Output Massimo",
+      "supportsTools": "Strumenti",
+      "supportsVision": "Visione",
+      "supportsReasoning": "Ragionamento",
+      "description": "Descrizione",
+      "status": "Stato",
+      "isActive": "Attivo",
+      "isAvailable": "Disponibile",
+      "version": "Versione",
+      "source": "Sorgente"
+    },
+    "actions": {
+      "addModel": "Aggiungi Modello",
+      "editModel": "Modifica Modello",
+      "deleteModel": "Elimina Modello",
+      "toggleActive": "Attiva/Disattiva",
+      "toggleAvailable": "Attiva/Disattiva Disponibilità",
+      "refreshCache": "Aggiorna Cache",
+      "save": "Salva",
+      "cancel": "Annulla",
+      "confirm": "Conferma",
+      "back": "Indietro"
+    },
+    "messages": {
+      "loadError": "Impossibile caricare i modelli LLM",
+      "createSuccess": "Modello creato con successo",
+      "updateSuccess": "Modello aggiornato con successo",
+      "deleteSuccess": "Modello eliminato con successo",
+      "toggleSuccess": "Stato del modello aggiornato",
+      "cacheRefreshed": "Cache dei modelli aggiornata con successo",
+      "noModelsFound": "Nessun modello trovato per questo provider",
+      "deleteConfirm": "Sei sicuro di voler eliminare il modello \"{{modelName}}\"? Questa azione non può essere annullata."
+    },
+    "errors": {
+      "createFailed": "Impossibile creare il modello",
+      "updateFailed": "Impossibile aggiornare il modello",
+      "deleteFailed": "Impossibile eliminare il modello",
+      "toggleFailed": "Impossibile aggiornare lo stato del modello",
+      "validation": {
+        "nameRequired": "L'ID del modello è richiesto",
+        "displayNameRequired": "Il nome visualizzato è richiesto",
+        "categoryRequired": "La categoria è richiesta",
+        "typeRequired": "Il tipo è richiesto",
+        "contextWindowRequired": "La finestra di contesto è richiesta",
+        "maxOutputRequired": "L'output massimo è richiesto"
+      }
+    },
+    "form": {
+      "addTitle": "Aggiungi Nuovo Modello",
+      "editTitle": "Modifica Modello",
+      "provider": "Provider",
+      "providerChangeWarning": "non può essere modificato",
+      "providerChangeHelp": "Il provider non può essere modificato dopo la creazione. Elimina e ricrea il modello se necessario.",
+      "name": "ID Modello",
+      "namePlaceholder": "es. gemini-2.5-flash",
+      "displayName": "Nome Visualizzato",
+      "displayNamePlaceholder": "es. Gemini 2.5 Flash",
+      "category": "Categoria",
+      "type": "Tipo",
+      "contextWindow": "Finestra di Contesto (token)",
+      "contextWindowPlaceholder": "es. 128000",
+      "maxOutput": "Output Massimo (token)",
+      "maxOutputPlaceholder": "es. 4096",
+      "supportsTools": "Supporta la Chiamata di Funzioni",
+      "supportsVision": "Supporta la Visione",
+      "supportsReasoning": "Supporta il Ragionamento",
+      "description": "Descrizione",
+      "descriptionPlaceholder": "Breve descrizione del modello...",
+      "version": "Versione",
+      "versionPlaceholder": "es. 1.0.0",
+      "source": "URL Sorgente",
+      "sourcePlaceholder": "https://...",
+      "isActive": "Attivo (abilitato all'uso)",
+      "isAvailable": "Disponibile (API configurata)"
+    }
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "Systemkonfiguration",
+    "header": {
+      "title": "Systemkonfiguration",
+      "description": "Laufzeitparameter ohne Server-Neustart verwalten. Änderungen werden sofort wirksam."
+    },
+    "search": {
+      "placeholder": "Konfigurationen filtern..."
+    },
+    "categories": {
+      "translation": "Übersetzungssystem",
+      "context": "Kontextfenster",
+      "generation": "Charaktergenerierung",
+      "correction": "Korrektursystem",
+      "curation": "Bildkuration",
+      "moderation": "Inhaltsmoderation",
+      "scheduling": "Aufgabenplanung"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "Standard-Anbieter",
+          "description": "Standard-LLM-Anbieter für Übersetzungen"
+        },
+        "default_model": {
+          "label": "Standard-Modell",
+          "description": "Standard-Modellname für Übersetzungen"
+        },
+        "cache_ttl": {
+          "label": "Cache-TTL (Sekunden)",
+          "description": "Wie lange Übersetzungsergebnisse im Cache gespeichert werden sollen"
+        },
+        "enable_pre_translation": {
+          "label": "Vorübersetzung aktivieren",
+          "description": "Inhalte vorübersetzen für schnelleres Laden"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "Max. Tokens",
+          "description": "Maximale Kontextfenstergröße in Tokens"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "Tageslimit",
+          "description": "Maximale Anzahl der pro Tag generierten Zeichen"
+        },
+        "batch_enabled": {
+          "label": "Stapelverarbeitung aktivieren",
+          "description": "Charaktergenerierung in Stapeln verarbeiten"
+        },
+        "batch_size_per_run": {
+          "label": "Stapelgröße",
+          "description": "Anzahl der Zeichen, die pro Stapel verarbeitet werden sollen"
+        },
+        "batch_retry_attempts": {
+          "label": "Wiederholungsversuche",
+          "description": "Anzahl der Wiederholungsversuche für fehlgeschlagene Stapel"
+        },
+        "batch_timeout_minutes": {
+          "label": "Timeout (Minuten)",
+          "description": "Maximale Wartezeit bis zur Stapelfertigstellung"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "Avatar-Tageslimit",
+          "description": "Maximale Avatar-Korrekturen pro Tag"
+        },
+        "data_daily_limit": {
+          "label": "Daten-Tageslimit",
+          "description": "Maximale Daten-Korrekturen pro Tag"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "Such-Schlüsselwörter",
+          "description": "Kommagetrennte Schlüsselwörter für die Kurationssuche"
+        },
+        "anime_model_ids": {
+          "label": "Anime-Modell-IDs",
+          "description": "Kommagetrennte Modell-IDs für die Anime-Kuration"
+        },
+        "auto_approval_threshold": {
+          "label": "Schwellenwert für automatische Genehmigung",
+          "description": "Punkteschwellenwert für automatische Genehmigung (0-100)"
+        },
+        "require_manual_review": {
+          "label": "Manuelle Überprüfung erforderlich",
+          "description": "Manuelle Überprüfung für kuratierten Inhalt erforderlich"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "NSFW-Filter aktivieren",
+          "description": "NSFW-Inhalte automatisch filtern"
+        },
+        "nsfw_filter_strictness": {
+          "label": "Strenge des NSFW-Filters",
+          "description": "Wie streng der NSFW-Filter sein soll"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "Stunde der täglichen Kuration",
+          "description": "Stunde des Tages, zu der die tägliche Kuration ausgeführt werden soll (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "Niedrig",
+      "medium": "Mittel",
+      "high": "Hoch"
+    },
+    "actions": {
+      "save": "Speichern",
+      "saving": "Wird gespeichert...",
+      "reset": "Auf Standard zurücksetzen",
+      "addModel": "Modell hinzufügen"
+    },
+    "messages": {
+      "saveSuccess": "Konfiguration \"{{key}}\" erfolgreich aktualisiert",
+      "saveError": "Fehler beim Aktualisieren der Konfiguration",
+      "loadError": "Fehler beim Laden der Systemkonfigurationen",
+      "confirmChange": "Möchten Sie \"{{key}}\" wirklich ändern? Dies wird sofort wirksam.",
+      "selectProviderFirst": "Zuerst Anbieter auswählen",
+      "selectModel": "Modell auswählen..."
+    },
+    "meta": {
+      "updatedAt": "Aktualisiert {{time}}",
+      "updatedBy": "von {{user}}",
+      "neverUpdated": "Standardwert (nie geändert)"
+    },
+    "modelSelection": {
+      "provider": "Anbieter",
+      "model": "Modell",
+      "selectProvider": "Anbieter auswählen...",
+      "selectModel": "Modell auswählen...",
+      "selectProviderFirst": "Zuerst einen Anbieter auswählen",
+      "addNewModel": "Neues Modell hinzufügen",
+      "noModelsFound": "Keine Modelle für diesen Anbieter gefunden"
+    }
+  }
+}

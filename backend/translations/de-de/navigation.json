@@ -8,12 +8,14 @@
     "admin": "Admin",
     "adminAnalytics": "Analysen",
     "adminScripts": "Skripte",
-    "assets": "Ressourcen",
+    "adminSystemConfig": "Systemkonfiguration",
+    "adminLlmCatalog": "LLM-Katalog",
+    "assets": "Assets",
     "profileLink": "Mein Profil",
     "sidebarDefaultTitle": "CharHub erkunden",
-    "sidebarDefaultDescription": "Nutzen Sie die Symbole in der Navigationsleiste, um zwischen den Erlebnissen zu wechseln.",
-    "developmentTools": "Entwickler-Tools",
-    "developmentPlaceholder": "Build-Pipelines, Protokolle und Automatisierungssteuerungen werden bald hier zu finden sein.",
+    "sidebarDefaultDescription": "Verwenden Sie die Symbole in der Navigationsleiste, um zwischen den verschiedenen Bereichen zu wechseln.",
+    "developmentTools": "Entwicklertools",
+    "developmentPlaceholder": "Build-Pipelines, Protokolle und Automatisierungssteuerungen werden bald hier verfügbar sein.",
     "viewAllCharacters": "Alle Charaktere anzeigen",
     "viewAllStories": "Alle Geschichten anzeigen"
   }

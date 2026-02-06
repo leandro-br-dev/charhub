@@ -1,19 +1,21 @@
 {
   "description": "Navigation and menu labels",
   "resources": {
-    "chat": "محادثة",
+    "chat": "دردشة",
     "story": "قصة",
     "characters": "شخصيات",
     "tasks": "مهام",
-    "admin": "مسؤول",
+    "admin": "الإدارة",
     "adminAnalytics": "تحليلات",
     "adminScripts": "برامج نصية",
+    "adminSystemConfig": "إعدادات النظام",
+    "adminLlmCatalog": "كتالوج LLM",
     "assets": "أصول",
     "profileLink": "ملفي الشخصي",
     "sidebarDefaultTitle": "استكشف CharHub",
-    "sidebarDefaultDescription": "استخدم الأيقونات في شريط التنقل للتنقل بين التجارب.",
+    "sidebarDefaultDescription": "استخدم الأيقونات في شريط التنقل للتبديل بين التجارب.",
     "developmentTools": "أدوات المطور",
-    "developmentPlaceholder": "مسارات البناء والسجلات وعناصر التحكم في الأتمتة ستكون هنا قريبًا.",
+    "developmentPlaceholder": "سيتم توفير مسارات الإنشاء والسجلات وعناصر التحكم في الأتمتة هنا قريبًا.",
     "viewAllCharacters": "عرض جميع الشخصيات",
     "viewAllStories": "عرض جميع القصص"
   }

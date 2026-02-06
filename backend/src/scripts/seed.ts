@@ -7,6 +7,7 @@ import { seedAllSpecies } from './seedSpecies';
 import { seedStripePlans } from './seeds/seedStripePlans';
 import { seedLLMPricing } from './seeds/seedLLMPricing';
 import { seedVisualStyles } from './seeds/seedVisualStyles';
+import { seedSystemConfiguration } from './seeds/systemConfiguration';
 import { prisma } from '../config/database';
 
 const DATA_DIR = path.resolve(__dirname, '../data');
@@ -27,6 +28,7 @@ interface SeedStats {
   serviceCosts: { created: number; skipped: number };
   llmPricing: { created: number; updated: number; skipped: number };
   visualStyles: { seeded: boolean };
+  systemConfig: { created: number; skipped: number; errors: string[] };
   errors: string[];
 }
 
@@ -516,6 +518,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     serviceCosts: { created: 0, skipped: 0 },
     llmPricing: { created: 0, updated: 0, skipped: 0 },
     visualStyles: { seeded: false },
+    systemConfig: { created: 0, skipped: 0, errors: [] },
     errors: [],
   };
 
@@ -584,6 +587,12 @@ async function seed(options: SeedOptions = {}): Promise<void> {
       stats.visualStyles.seeded = true;
     }
 
+    // 10. Seed system configuration parameters
+    stats.systemConfig = await seedSystemConfiguration({
+      verbose: options.verbose,
+      dryRun: options.dryRun,
+    });
+
   } catch (error) {
     stats.errors.push(String(error));
     console.error('\n❌ Seed failed:', error);
@@ -595,14 +604,15 @@ async function seed(options: SeedOptions = {}): Promise<void> {
   console.log('\n' + '='.repeat(60));
   console.log('📊 SEED SUMMARY');
   console.log('='.repeat(60));
-  console.log(`Users:         ${stats.users.created} created, ${stats.users.skipped} skipped`);
-  console.log(`Characters:    ${stats.characters.created} created, ${stats.characters.skipped} skipped`);
-  console.log(`Plans:         ${stats.plans.created} created, ${stats.plans.skipped} skipped`);
-  console.log(`Stripe Plans:  ${stats.stripePlans.configured} configured, ${stats.stripePlans.skipped} skipped`);
-  console.log(`Service Costs: ${stats.serviceCosts.created} created, ${stats.serviceCosts.skipped} skipped`);
-  console.log(`LLM Pricing:   ${stats.llmPricing.created} created, ${stats.llmPricing.updated} updated, ${stats.llmPricing.skipped} skipped`);
-  console.log(`Visual Styles: ${stats.visualStyles.seeded ? '✅ Seeded' : '⏭️  Skipped'}`);
-  console.log(`Duration:      ${duration}s`);
+  console.log(`Users:              ${stats.users.created} created, ${stats.users.skipped} skipped`);
+  console.log(`Characters:         ${stats.characters.created} created, ${stats.characters.skipped} skipped`);
+  console.log(`Plans:              ${stats.plans.created} created, ${stats.plans.skipped} skipped`);
+  console.log(`Stripe Plans:       ${stats.stripePlans.configured} configured, ${stats.stripePlans.skipped} skipped`);
+  console.log(`Service Costs:      ${stats.serviceCosts.created} created, ${stats.serviceCosts.skipped} skipped`);
+  console.log(`LLM Pricing:        ${stats.llmPricing.created} created, ${stats.llmPricing.updated} updated, ${stats.llmPricing.skipped} skipped`);
+  console.log(`Visual Styles:      ${stats.visualStyles.seeded ? '✅ Seeded' : '⏭️  Skipped'}`);
+  console.log(`System Config:      ${stats.systemConfig.created} created, ${stats.systemConfig.skipped} skipped`);
+  console.log(`Duration:           ${duration}s`);
 
   if (stats.errors.length > 0) {
     console.log(`\n⚠️  ${stats.errors.length} error(s) occurred`);

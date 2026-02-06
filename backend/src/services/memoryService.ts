@@ -3,14 +3,29 @@ import { prisma } from '../config/database';
 import { logger } from '../config/logger';
 import { callLLM } from '../services/llm';
 import { trackFromLLMResponse } from '../services/llm/llmUsageTracker';
+import { systemConfigurationService } from './config/systemConfigurationService';
 
 // Local reference to avoid unused import warning (callLLM is used dynamically)
 void callLLM;
 
-// Constants - Token-based limits
-const MAX_CONTEXT_TOKENS = parseInt(process.env.MAX_CONTEXT_TOKENS || '8000', 10); // Total context window
-const MAX_COMPRESSED_TOKENS = Math.floor(MAX_CONTEXT_TOKENS * 0.30); // 30% for compressed history
+// Constants - Token-based limits (will be initialized from system configuration)
+let MAX_CONTEXT_TOKENS = 8000; // Total context window
+let MAX_COMPRESSED_TOKENS = Math.floor(MAX_CONTEXT_TOKENS * 0.30); // 30% for compressed history
 const RECENT_MESSAGES_COUNT = 10; // Keep last 10 messages uncompressed
+
+/**
+ * Initialize memory configuration from system configuration service
+ */
+async function initializeMemoryConfig(): Promise<void> {
+  try {
+    const maxTokens = await systemConfigurationService.getInt('context.max_tokens', 8000);
+    MAX_CONTEXT_TOKENS = maxTokens;
+    MAX_COMPRESSED_TOKENS = Math.floor(MAX_CONTEXT_TOKENS * 0.30);
+    logger.info({ MAX_CONTEXT_TOKENS, MAX_COMPRESSED_TOKENS }, 'Memory configuration initialized');
+  } catch (error) {
+    logger.warn({ error }, 'Failed to load memory config from system configuration, using defaults');
+  }
+}
 
 interface KeyEvent {
   timestamp: string;
@@ -43,6 +58,11 @@ class MemoryService {
     totalTokens: number;
     recentMessageCount: number;
   }> {
+    // Initialize config on first call (lazy initialization)
+    if (MAX_CONTEXT_TOKENS === 8000 && MAX_COMPRESSED_TOKENS === 2400) {
+      await initializeMemoryConfig();
+    }
+
     // Buscar última memória (histórico compactado)
     const lastMemory = await this.getLatestMemory(conversationId);
 
@@ -87,7 +107,7 @@ class MemoryService {
       logger.debug({
         conversationId,
         ...tokenStats,
-        maxTokens: MAX_CONTEXT_TOKENS
+        maxTokens: MAX_CONTEXT_TOKENS,
       }, 'Context token stats');
 
       // Precisa compactar se:

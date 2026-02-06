@@ -7,3 +7,5 @@ export { planService } from './planService';
 export { creditService } from './creditService';
 export { analyticsService } from './analyticsService';
 export { visualStyleService } from './visualStyleService';
+export { systemConfigService } from './systemConfig';
+export { llmCatalogService, type LLMProvider, type LLMModelCategory, type LLMModelType, type LLMModelInfo, type LLMModelFormValues, type LLMProviderGroup, type GroupedCatalogResponse } from './llmCatalog';

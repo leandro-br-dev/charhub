@@ -1,0 +1,147 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "システム設定",
+    "header": {
+      "title": "システム設定",
+      "description": "サーバーを再起動せずに実行時パラメーターを管理します。変更はすぐに適用されます。"
+    },
+    "search": {
+      "placeholder": "設定をフィルター..."
+    },
+    "categories": {
+      "translation": "翻訳システム",
+      "context": "コンテキストウィンドウ",
+      "generation": "キャラクター生成",
+      "correction": "修正システム",
+      "curation": "画像キュレーション",
+      "moderation": "コンテンツモデレーション",
+      "scheduling": "ジョブスケジューリング"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "デフォルトプロバイダー",
+          "description": "翻訳のデフォルトLLMプロバイダー"
+        },
+        "default_model": {
+          "label": "デフォルトモデル",
+          "description": "翻訳のデフォルトモデル名"
+        },
+        "cache_ttl": {
+          "label": "キャッシュTTL (秒)",
+          "description": "翻訳結果をキャッシュする期間"
+        },
+        "enable_pre_translation": {
+          "label": "事前翻訳を有効にする",
+          "description": "より速い読み込みのためにコンテンツを事前翻訳する"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "最大トークン数",
+          "description": "トークンにおける最大コンテキストウィンドウサイズ"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "1日あたりの上限",
+          "description": "1日あたりに生成される最大キャラクター数"
+        },
+        "batch_enabled": {
+          "label": "バッチ処理を有効にする",
+          "description": "キャラクター生成をバッチで処理する"
+        },
+        "batch_size_per_run": {
+          "label": "バッチサイズ",
+          "description": "1バッチあたりに処理するキャラクター数"
+        },
+        "batch_retry_attempts": {
+          "label": "リトライ回数",
+          "description": "失敗したバッチのリトライ回数"
+        },
+        "batch_timeout_minutes": {
+          "label": "タイムアウト (分)",
+          "description": "バッチ完了を待つ最大時間"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "アバター1日あたりの上限",
+          "description": "1日あたりの最大アバター修正数"
+        },
+        "data_daily_limit": {
+          "label": "データ1日あたりの上限",
+          "description": "1日あたりの最大データ修正数"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "検索キーワード",
+          "description": "キュレーション検索用のコンマ区切りキーワード"
+        },
+        "anime_model_ids": {
+          "label": "AnimeモデルID",
+          "description": "Animeキュレーション用のコンマ区切りモデルID"
+        },
+        "auto_approval_threshold": {
+          "label": "自動承認しきい値",
+          "description": "自動承認のスコアしきい値 (0-100)"
+        },
+        "require_manual_review": {
+          "label": "手動レビューを必須にする",
+          "description": "キュレーションされたコンテンツの手動レビューを必須にする"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "NSFWフィルターを有効にする",
+          "description": "NSFWコンテンツを自動的にフィルターする"
+        },
+        "nsfw_filter_strictness": {
+          "label": "NSFWフィルターの厳格さ",
+          "description": "NSFWフィルターの厳格さを設定する"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "毎日のキュレーション時刻",
+          "description": "毎日のキュレーションを実行する時刻 (0-23時)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "低",
+      "medium": "中",
+      "high": "高"
+    },
+    "actions": {
+      "save": "保存",
+      "saving": "保存中...",
+      "reset": "デフォルトにリセット",
+      "addModel": "モデルを追加"
+    },
+    "messages": {
+      "saveSuccess": "設定「{{key}}」が正常に更新されました",
+      "saveError": "設定の更新に失敗しました",
+      "loadError": "システム設定の読み込みに失敗しました",
+      "confirmChange": "「{{key}}」を変更してもよろしいですか？これはすぐに適用されます。",
+      "selectProviderFirst": "まずプロバイダーを選択してください",
+      "selectModel": "モデルを選択..."
+    },
+    "meta": {
+      "updatedAt": "{{time}}に更新",
+      "updatedBy": "{{user}}による",
+      "neverUpdated": "デフォルト値（未変更）"
+    },
+    "modelSelection": {
+      "provider": "プロバイダー",
+      "model": "モデル",
+      "selectProvider": "プロバイダーを選択...",
+      "selectModel": "モデルを選択...",
+      "selectProviderFirst": "まずプロバイダーを選択してください",
+      "addNewModel": "新しいモデルを追加",
+      "noModelsFound": "このプロバイダーにはモデルが見つかりません"
+    }
+  }
+}
