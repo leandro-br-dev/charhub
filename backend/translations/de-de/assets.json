@@ -3,13 +3,13 @@
   "resources": {
     "labels": {
       "untitledAsset": "Unbenanntes Asset",
-      "updatedAt": "Aktualisiert am {{date}}",
+      "updatedAt": "Aktualisiert {{date}}",
       "public": "Öffentlich",
       "private": "Privat",
       "identifier": "Asset-ID: {{id}}",
       "unsavedChanges": "Ungespeicherte Änderungen",
       "allSaved": "Alle Änderungen gespeichert",
-      "submitting": "Wird gespeichert..."
+      "submitting": "Speichern..."
     },
     "types": {
       "CLOTHING": "Kleidung",
@@ -24,13 +24,13 @@
     },
     "typeDescriptions": {
       "CLOTHING": "Bekleidung und Kleidungsstücke",
-      "ACCESSORY": "Tragbare Accessoires und Schmuck",
+      "ACCESSORY": "Tragbare Accessoires und Verzierungen",
       "SCAR": "Markierungen, Narben und Körpermerkmale",
       "HAIRSTYLE": "Frisuren und Haarfarben",
       "OBJECT": "Handgehaltene Objekte und Gegenstände",
       "WEAPON": "Waffen, Nahkampfwaffen, Schusswaffen",
       "VEHICLE": "Fahrzeuge und Reittiere",
-      "FURNITURE": "Möbel und Strukturelemente",
+      "FURNITURE": "Möbel und strukturelle Elemente",
       "PROP": "Hintergrundrequisiten und Dekorationen"
     },
     "categories": {
@@ -45,19 +45,19 @@
     },
     "placementZones": {
       "face": "Gesicht",
-      "torso": "Rumpf",
+      "torso": "Oberkörper",
       "left_hand": "Linke Hand",
       "right_hand": "Rechte Hand",
       "head": "Kopf",
       "feet": "Füße"
     },
     "placementZoneDescriptions": {
-      "face": "Wird im Gesichtsbereich angewendet",
-      "torso": "Wird im Körper-/Rumpfbereich angewendet",
-      "left_hand": "Wird in der linken Hand gehalten",
-      "right_hand": "Wird in der rechten Hand gehalten",
-      "head": "Wird auf dem Kopf getragen",
-      "feet": "Wird an den Füßen getragen"
+      "face": "Auf den Gesichtsbereich angewendet",
+      "torso": "Auf den Körper/Oberkörperbereich angewendet",
+      "left_hand": "In der linken Hand gehalten",
+      "right_hand": "In der rechten Hand gehalten",
+      "head": "Am Kopf getragen",
+      "feet": "An den Füßen getragen"
     },
     "visualStyles": {
       "ANIME": "Anime",
@@ -68,7 +68,7 @@
       "MANHWA": "Manhwa",
       "COMIC": "Comic",
       "CHIBI": "Chibi",
-      "PIXEL_ART": "Pixel-Art",
+      "PIXEL_ART": "Pixel Art",
       "THREE_D": "3D"
     },
     "imageTypes": {
@@ -82,18 +82,19 @@
       "removeFromFavorites": "Aus Favoriten entfernen"
     },
     "stats": {
+      "assets": "Assets",
       "characters": "Charakter",
       "characters_plural": "Charaktere",
       "images": "Bild",
       "images_plural": "Bilder",
-      "charactersShort": "{{count}} Tsd. Charaktere",
-      "charactersShort_plural": "{{count}} Tsd. Charaktere"
+      "charactersShort": "{{count}}K Charaktere",
+      "charactersShort_plural": "{{count}}K Charaktere"
     },
     "hub": {
       "title": "Assets",
-      "subtitle": "Erstellen und verwalten Sie Assets für Ihre Charaktere. Assets umfassen Kleidung, Accessoires, Objekte und mehr.",
+      "subtitle": "Erstelle und verwalte Assets für deine Charaktere. Assets umfassen Kleidung, Accessoires, Objekte und mehr.",
       "sidebar": {
-        "description": "Durchsuchen und verwalten Sie Ihre kreativen Assets.",
+        "description": "Durchsuche und verwalte deine kreativen Assets.",
         "viewGallery": "Galerie ansehen",
         "viewAllAssets": "Alle Assets ansehen",
         "myAsset": "Mein Asset",
@@ -109,7 +110,7 @@
         "publicGallery": "Öffentliche Galerie"
       },
       "filters": {
-        "searchPlaceholder": "Nach Name suchen",
+        "searchPlaceholder": "Nach Namen suchen",
         "type": "Typ",
         "category": "Kategorie",
         "allTypes": "Alle Typen",
@@ -117,13 +118,13 @@
         "noFilter": "Beliebig"
       },
       "states": {
-        "loading": "Ihre Assets werden geladen...",
-        "error": "Wir konnten die Assets nicht laden. Bitte versuchen Sie es erneut.",
+        "loading": "Lade deine Assets...",
+        "error": "Assets konnten nicht geladen werden. Bitte versuche es erneut.",
         "empty": "Noch keine Assets verfügbar.",
-        "empty_private": "Sie haben noch keine Assets erstellt.",
-        "empty_public": "Keine öffentlichen Assets entsprechen Ihren Filtern.",
-        "emptyHint": "Beginnen Sie mit der Erstellung Ihres ersten Assets oder passen Sie Ihre Filter an.",
-        "emptySearchHint": "Passen Sie Ihre Filter an oder löschen Sie die Suche, um weitere Ergebnisse zu sehen."
+        "empty_private": "Du hast noch keine Assets erstellt.",
+        "empty_public": "Keine öffentlichen Assets entsprechen deinen Filtern.",
+        "emptyHint": "Beginne mit der Erstellung deines ersten Assets oder passe deine Filter an.",
+        "emptySearchHint": "Passe deine Filter an oder lösche die Suche, um mehr Ergebnisse zu sehen."
       },
       "labels": {
         "total": "{{count}} Asset verfügbar",
@@ -138,7 +139,7 @@
       "saveChanges": "Änderungen speichern",
       "sections": {
         "details": "Details",
-        "detailsHint": "Grundlegende Informationen zu diesem Asset.",
+        "detailsHint": "Basisinformationen zu diesem Asset.",
         "classification": "Klassifizierung",
         "classificationHint": "Visueller Stil, Altersfreigabe und Inhaltstags.",
         "images": "Bilder",
@@ -161,26 +162,26 @@
       },
       "placeholders": {
         "name": "Asset-Namen eingeben",
-        "description": "Dieses Asset beschreiben...",
+        "description": "Beschreibe dieses Asset...",
         "type": "Typ auswählen",
         "category": "Kategorie auswählen",
-        "promptPrimary": "Beschreiben Sie, wie das Asset aussehen soll...",
-        "promptContext": "Zusätzlicher Kontext, wenn mit Charakteren verwendet...",
-        "negativePrompt": "Beschreiben Sie, was vermieden werden soll...",
+        "promptPrimary": "Beschreibe, wie das Asset aussehen soll...",
+        "promptContext": "Zusätzlicher Kontext bei Verwendung mit Charakteren...",
+        "negativePrompt": "Beschreibe, was vermieden werden soll...",
         "placementZone": "Platzierungszone auswählen",
-        "placementDetail": "z.B. \"linke Wange\", \"über die Nase\""
+        "placementDetail": "z.B. „linke Wange“, „über der Nase“"
       },
       "hints": {
         "name": "Ein klarer, beschreibender Name für dieses Asset",
         "description": "Detaillierte Beschreibung des Aussehens des Assets",
-        "positivePrompt": "Visueller Prompt für die KI-Generierung (z.B. \"eine rote Lederjacke mit silbernen Reißverschlüssen\")",
-        "negativePrompt": "Elemente, die bei der Generierung vermieden werden sollen (z.B. \"beschädigt, zerrissen, schmutzig\")",
-        "placementZone": "Wo das Asset am Charakter platziert werden soll"
+        "positivePrompt": "Visueller Prompt für die KI-Generierung (z.B. „eine rote Lederjacke mit silbernen Reißverschlüssen“)",
+        "negativePrompt": "Elemente, die bei der Generierung vermieden werden sollen (z.B. „beschädigt, zerrissen, schmutzig“)",
+        "placementZone": "Wo das Asset auf dem Charakter platziert werden soll"
       },
       "labels": {
-        "unsavedChanges": "Sie haben ungespeicherte Änderungen",
+        "unsavedChanges": "Du hast ungespeicherte Änderungen",
         "allSaved": "Änderungen gespeichert",
-        "submitting": "Wird gespeichert...",
+        "submitting": "Speichern...",
         "visibilityPublic": "Öffentlich",
         "visibilityPrivate": "Privat"
       },
@@ -189,16 +190,16 @@
         "coverDescription": "Bild, das dieses Asset repräsentiert.",
         "upload": "Cover hochladen",
         "change": "Cover ändern",
-        "uploading": "Wird hochgeladen...",
+        "uploading": "Lade hoch...",
         "urlModalTitle": "Bild von URL verwenden",
         "urlLabel": "Bild-URL",
-        "previewAlt": "Asset-Cover-Vorschau",
-        "invalidUrl": "Geben Sie eine gültige Bild-URL (http/https) ein.",
-        "saveFirst": "Speichern Sie das Asset zuerst, um Bilder hinzuzufügen"
+        "previewAlt": "Vorschau des Asset-Covers",
+        "invalidUrl": "Geben Sie eine gültige Bild-URL ein (http/https).",
+        "saveFirst": "Speichern Sie zuerst das Asset, um Bilder hinzuzufügen"
       },
       "cover": {
         "header": "Asset-Cover",
-        "description": "Visuelle Darstellung Ihres Assets.",
+        "description": "Visuelle Darstellung deines Assets.",
         "upload": "Bild auswählen",
         "change": "Bild ändern",
         "remove": "Entfernen",
@@ -209,13 +210,13 @@
         "urlModalTitle": "Bild von URL verwenden",
         "urlLabel": "Bild-URL",
         "preview": "Vorschau",
-        "previewAlt": "Asset-Cover-Vorschau",
-        "invalidUrl": "Geben Sie eine gültige Bild-URL (http/https) ein.",
-        "error": "Wir konnten dieses Bild nicht laden. {{message}}",
-        "loading": "Wird geladen...",
-        "uploading": "Wird hochgeladen...",
-        "helperCreate": "Wählen Sie jetzt ein Cover-Bild aus, wir behalten es bei, während Sie den Rest des Formulars ausfüllen.",
-        "helperEdit": "Aktualisieren Sie das Cover-Bild jederzeit. Änderungen werden sofort nach dem Speichern übernommen."
+        "previewAlt": "Vorschau des Asset-Covers",
+        "invalidUrl": "Geben Sie eine gültige Bild-URL ein (http/https).",
+        "error": "Dieses Bild konnte nicht geladen werden. {{message}}",
+        "loading": "Lade...",
+        "uploading": "Lade hoch...",
+        "helperCreate": "Wähle jetzt ein Cover-Bild aus und wir behalten es, während du den Rest des Formulars ausfüllst.",
+        "helperEdit": "Aktualisiere das Cover-Bild jederzeit. Änderungen werden sofort nach dem Speichern übernommen."
       },
       "tabs": {
         "identity": "Identität",
@@ -223,55 +224,55 @@
         "configuration": "Konfiguration",
         "classification": "Klassifizierung",
         "images": "Bilder",
-        "lockedHint": "Füllen Sie die grundlegenden Details aus, um die anderen Abschnitte freizuschalten."
+        "lockedHint": "Fülle die grundlegenden Details aus, um die anderen Abschnitte freizuschalten."
       },
       "autocomplete": {
-        "button": "Vervollständigen",
-        "ai": "Mit KI vervollständigen",
-        "web": "Mit Websuche vervollständigen",
+        "button": "Autovervollständigen",
+        "ai": "Mit KI autovervollständigen",
+        "web": "Mit Websuche autovervollständigen",
         "nothing": "Keine Vorschläge verfügbar.",
-        "applied": "Vervollständigung angewendet.",
-        "failed": "Vervollständigung fehlgeschlagen."
+        "applied": "Autovervollständigung angewendet.",
+        "failed": "Autovervollständigung fehlgeschlagen."
       }
     },
     "create": {
       "title": "Neues Asset erstellen",
-      "subtitle": "Definieren Sie die Eigenschaften und visuellen Merkmale des Assets.",
+      "subtitle": "Definiere die Eigenschaften und visuellen Merkmale des Assets.",
       "saveButton": "Asset speichern",
       "cancelButton": "Abbrechen und zurück",
       "cover": {
         "header": "Asset-Cover",
-        "description": "Visuelle Darstellung Ihres Assets."
+        "description": "Visuelle Darstellung deines Assets."
       }
     },
     "edit": {
       "title": "Asset bearbeiten",
-      "subtitle": "{{name}} wird aktualisiert",
+      "subtitle": "Aktualisiere {{name}}",
       "saveButton": "Asset aktualisieren",
       "cancelButton": "Änderungen verwerfen",
       "states": {
-        "loading": "Asset wird geladen..."
+        "loading": "Lade Asset..."
       },
       "accessDenied": {
         "title": "Zugriff verweigert",
-        "message": "Sie haben keine Berechtigung, dieses Asset zu bearbeiten.",
+        "message": "Du hast keine Berechtigung, dieses Asset zu bearbeiten.",
         "backButton": "Zurück zu Assets"
       },
       "cover": {
         "header": "Asset-Cover",
-        "description": "Visuelle Darstellung Ihres Assets."
+        "description": "Visuelle Darstellung deines Assets."
       }
     },
     "detail": {
       "states": {
-        "loading": "Asset-Details werden geladen...",
-        "notFound": "Wir konnten dieses Asset nicht finden."
+        "loading": "Lade Asset-Details...",
+        "notFound": "Dieses Asset konnte nicht gefunden werden."
       },
       "actions": {
         "backToHub": "Zurück zum Hub",
         "edit": "Bearbeiten",
         "delete": "Löschen",
-        "deleting": "Wird gelöscht...",
+        "deleting": "Lösche...",
         "share": "Teilen"
       },
       "confirmDelete": {
@@ -283,9 +284,9 @@
       "labels": {
         "public": "Öffentlich",
         "private": "Privat",
-        "createdAt": "Erstellt",
+        "createdAt": "Erstellt am",
         "createdBy": "Erstellt von",
-        "updatedAt": "Zuletzt aktualisiert",
+        "updatedAt": "Zuletzt aktualisiert am",
         "identifier": "Asset-ID: {{id}}",
         "characterCount": "{{count}} Charakter",
         "characterCount_plural": "{{count}} Charaktere",
@@ -310,7 +311,7 @@
     },
     "picker": {
       "title": "Assets auswählen",
-      "subtitle": "Wählen Sie Assets aus, die Sie Ihrem Charakter hinzufügen möchten",
+      "subtitle": "Wählen Sie Assets aus, um sie Ihrem Charakter hinzuzufügen",
       "searchPlaceholder": "Assets suchen...",
       "filters": {
         "allTypes": "Alle Typen",
@@ -325,11 +326,11 @@
         "clearSelection": "Auswahl aufheben"
       },
       "states": {
-        "loading": "Assets werden geladen...",
-        "error": "Fehler beim Laden der Assets",
+        "loading": "Lade Assets...",
+        "error": "Assets konnten nicht geladen werden",
         "empty": "Keine Assets verfügbar",
-        "noResults": "Keine Assets stimmen mit Ihrer Suche überein",
-        "selectedEmpty": "Assets zum Hinzufügen auswählen"
+        "noResults": "Keine Assets entsprechen Ihrer Suche",
+        "selectedEmpty": "Wählen Sie Assets zum Hinzufügen aus"
       },
       "labels": {
         "selected": "{{count}} ausgewählt",
@@ -342,7 +343,7 @@
     },
     "characterAssets": {
       "title": "Charakter-Assets",
-      "subtitle": "Ausgerüstete Assets für diesen Charakter verwalten",
+      "subtitle": "Assets verwalten, die diesem Charakter zugewiesen sind",
       "tabs": {
         "equipped": "Ausgerüstet",
         "available": "Verfügbar"
@@ -355,7 +356,7 @@
       "states": {
         "noEquipped": "Keine Assets ausgerüstet",
         "noAvailable": "Keine Assets verfügbar",
-        "loading": "Assets werden geladen..."
+        "loading": "Lade Assets..."
       },
       "placement": {
         "title": "Asset-Platzierung",
@@ -371,12 +372,12 @@
       }
     },
     "errors": {
-      "createFailed": "Wir konnten das Asset nicht erstellen. Bitte versuchen Sie es erneut.",
-      "updateFailed": "Wir konnten das Asset nicht aktualisieren.",
-      "deleteFailed": "Wir konnten das Asset nicht löschen.",
-      "detailUnavailable": "Asset-Details können zurzeit nicht geladen werden.",
-      "linkFailed": "Fehler beim Verknüpfen des Assets mit dem Charakter.",
-      "unlinkFailed": "Fehler beim Entknüpfen des Assets vom Charakter.",
+      "createFailed": "Das Asset konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
+      "updateFailed": "Das Asset konnte nicht aktualisiert werden.",
+      "deleteFailed": "Das Asset konnte nicht gelöscht werden.",
+      "detailUnavailable": "Asset-Details sind momentan nicht verfügbar.",
+      "linkFailed": "Verknüpfung des Assets mit dem Charakter fehlgeschlagen.",
+      "unlinkFailed": "Aufhebung der Verknüpfung des Assets mit dem Charakter fehlgeschlagen.",
       "nameRequired": "Asset-Name ist erforderlich",
       "typeRequired": "Asset-Typ ist erforderlich",
       "categoryRequired": "Asset-Kategorie ist erforderlich",
@@ -391,7 +392,7 @@
       "updated": "Asset erfolgreich aktualisiert",
       "deleted": "Asset erfolgreich gelöscht",
       "linked": "Asset mit Charakter verknüpft",
-      "unlinked": "Asset vom Charakter entknüpft"
+      "unlinked": "Asset von Charakter entknüpft"
     },
     "messages": {
       "imageUploaded": "Bild erfolgreich hochgeladen",
@@ -403,8 +404,8 @@
       "title": "Asset-Bilder",
       "addImage": "Bild hinzufügen",
       "selectType": "Bildtyp auswählen",
-      "uploadFailed": "Fehler beim Hochladen des Bildes",
-      "deleteFailed": "Fehler beim Löschen des Bildes",
+      "uploadFailed": "Hochladen des Bildes fehlgeschlagen",
+      "deleteFailed": "Löschen des Bildes fehlgeschlagen",
       "deleteConfirm": "Dieses Bild löschen?",
       "noImages": "Noch keine Bilder. Fügen Sie Ihre erste visuelle Referenz hinzu.",
       "types": {
@@ -417,21 +418,21 @@
         "preview": "Haupt-Vorschaubild für das Asset",
         "reference": "Visuelle Referenz für das Asset",
         "transparent": "Version mit transparentem Hintergrund",
-        "in_context": "Asset im Verwendungs-/Szenenkontext dargestellt"
+        "in_context": "Asset im Gebrauch/Szenenkontext gezeigt"
       }
     },
     "prompts": {
       "title": "Generierungs-Prompts",
       "primaryLabel": "Visueller Prompt",
-      "primaryHint": "Beschreiben Sie, wie das Asset in generierten Bildern erscheinen soll",
+      "primaryHint": "Beschreiben Sie, wie das Asset in generierten Bildern aussehen soll",
       "contextLabel": "Kontext-Prompt",
       "contextHint": "Zusätzlicher Kontext, wenn dieses Asset mit Charakteren verwendet wird",
       "negativeLabel": "Negativer Prompt",
       "negativeHint": "Elemente, die bei der Generierung dieses Assets vermieden werden sollen"
     },
     "avatar": {
-      "invalidUrl": "Geben Sie eine gültige Bild-URL (http/https) ein.",
-      "error": "Wir konnten dieses Bild nicht laden. {{message}}",
+      "invalidUrl": "Geben Sie eine gültige Bild-URL ein (http/https).",
+      "error": "Dieses Bild konnte nicht geladen werden. {{message}}",
       "aiComingSoon": "KI-Generierung für Assets bald verfügbar",
       "generateAI": "Mit KI generieren",
       "fromDevice": "Vom Gerät hochladen",
@@ -440,7 +441,7 @@
       "urlLabel": "Bild-URL",
       "preview": "Vorschau",
       "previewAlt": "Bildvorschau",
-      "loading": "Wird geladen..."
+      "loading": "Lade..."
     }
   }
 }

@@ -1,63 +1,63 @@
 {
   "description": "Admin Scripts Management Interface",
   "resources": {
-    "title": "Scripts de Administrador",
+    "title": "Scripts de administración",
     "header": {
-      "title": "Scripts de Administrador",
+      "title": "Scripts de administración",
       "description": "Ejecuta manualmente scripts de corrección de datos y monitoriza las estadísticas del sistema."
     },
     "stats": {
       "title": "Estadísticas",
-      "totalCharacters": "Total de Personajes",
-      "charactersWithAvatars": "Personajes con Avatares",
-      "charactersWithCompleteData": "Personajes con Datos Completos",
+      "totalCharacters": "Personajes totales",
+      "charactersWithAvatars": "Personajes con avatares",
+      "charactersWithCompleteData": "Personajes con datos completos",
       "never": "Nunca",
-      "lastCorrections": "Últimas Correcciones",
-      "compressionStats": "Estadísticas de Compresión",
-      "totalImages": "Total de Imágenes",
-      "oversizedImages": "Imágenes Sobredimensionadas",
-      "bytesCouldBeSaved": "Se podrían ahorrar",
+      "lastCorrections": "Últimas correcciones",
+      "compressionStats": "Estadísticas de compresión",
+      "totalImages": "Imágenes totales",
+      "oversizedImages": "Imágenes sobredimensionadas",
+      "bytesCouldBeSaved": "Se podrían guardar",
       "maxSizeThreshold": "Umbral de tamaño máximo"
     },
     "scripts": {
-      "title": "Scripts de Corrección",
+      "title": "Scripts de corrección",
       "avatar": {
-        "name": "Corrección de Avatar",
-        "description": "Corrige URLs de avatares rotas o faltantes para los personajes",
-        "success": "Script de corrección de avatar iniciado con éxito",
-        "error": "Fallo al iniciar el script de corrección de avatar"
+        "name": "Corrección de avatares",
+        "description": "Corrige URLs de avatares rotas o faltantes para personajes",
+        "success": "Script de corrección de avatares iniciado correctamente",
+        "error": "Error al iniciar el script de corrección de avatares"
       },
       "data": {
-        "name": "Corrección de Integridad de Datos",
-        "description": "Asegura que todos los campos de personaje requeridos estén completos",
-        "success": "Script de corrección de datos iniciado con éxito",
-        "error": "Fallo al iniciar el script de corrección de datos"
+        "name": "Corrección de integridad de datos",
+        "description": "Asegura que todos los campos de personaje requeridos estén llenos",
+        "success": "Script de corrección de datos iniciado correctamente",
+        "error": "Error al iniciar el script de corrección de datos"
       },
       "generation": {
-        "name": "Generación de Personajes",
+        "name": "Generación de personajes",
         "description": "Genera personajes automáticamente a partir de imágenes seleccionadas",
-        "success": "Generación de personajes iniciada con éxito",
-        "error": "Fallo al iniciar la generación de personajes"
+        "success": "Generación de personajes iniciada correctamente",
+        "error": "Error al iniciar la generación de personajes"
       },
       "compression": {
-        "name": "Compresión de Imágenes",
+        "name": "Compresión de imágenes",
         "description": "Comprime imágenes sobredimensionadas para ahorrar almacenamiento",
-        "success": "Compresión de imágenes iniciada con éxito",
-        "error": "Fallo al iniciar la compresión de imágenes",
+        "success": "Compresión de imágenes iniciada correctamente",
+        "error": "Error al iniciar la compresión de imágenes",
         "limit": "Límite",
         "images": "imágenes",
-        "maxSizeKB": "Tamaño Máximo",
+        "maxSizeKB": "Tamaño Máx.",
         "targetSizeKB": "Tamaño Objetivo"
       },
-      "lastRun": "Última Ejecución",
-      "run": "Ejecutar Script",
+      "lastRun": "Última ejecución",
+      "run": "Ejecutar script",
       "running": "Ejecutando...",
-      "moreComing": "Más scripts próximamente...",
+      "moreComing": "Próximamente más scripts...",
       "records": "registros",
       "characters": "personajes",
-      "limit": "Límite de Registros",
+      "limit": "Límite de registros",
       "limitPlaceholder": "Número de registros a procesar (1-1000)"
     },
-    "refresh": "Actualizar Estadísticas"
+    "refresh": "Actualizar estadísticas"
   }
 }

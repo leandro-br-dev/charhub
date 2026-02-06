@@ -5,8 +5,8 @@
       "untitledAsset": "未命名资产",
       "updatedAt": "更新于 {{date}}",
       "public": "公开",
-      "private": "私有",
-      "identifier": "资产 ID: {{id}}",
+      "private": "私人",
+      "identifier": "资产ID: {{id}}",
       "unsavedChanges": "未保存的更改",
       "allSaved": "所有更改已保存",
       "submitting": "正在保存..."
@@ -26,7 +26,7 @@
       "CLOTHING": "服装和衣物",
       "ACCESSORY": "可穿戴配饰和装饰品",
       "SCAR": "标记、疤痕和身体特征",
-      "HAIRSTYLE": "发型和发色",
+      "HAIRSTYLE": "发型和颜色",
       "OBJECT": "手持物品和小物件",
       "WEAPON": "武器、近战武器、枪械",
       "VEHICLE": "载具和坐骑",
@@ -35,7 +35,7 @@
     },
     "categories": {
       "WEARABLE": "可穿戴",
-      "HOLDABLE": "可持有",
+      "HOLDABLE": "可手持",
       "ENVIRONMENTAL": "环境"
     },
     "categoryDescriptions": {
@@ -49,15 +49,15 @@
       "left_hand": "左手",
       "right_hand": "右手",
       "head": "头部",
-      "feet": "脚部"
+      "feet": "足部"
     },
     "placementZoneDescriptions": {
       "face": "应用于脸部区域",
       "torso": "应用于身体/躯干区域",
-      "left_hand": "手持于左手",
-      "right_hand": "手持于右手",
+      "left_hand": "左手持",
+      "right_hand": "右手持",
       "head": "佩戴于头部",
-      "feet": "穿戴于脚部"
+      "feet": "穿戴于足部"
     },
     "visualStyles": {
       "ANIME": "Anime",
@@ -67,7 +67,7 @@
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
       "COMIC": "漫画",
-      "CHIBI": "Q版",
+      "CHIBI": "Chibi",
       "PIXEL_ART": "像素艺术",
       "THREE_D": "3D"
     },
@@ -75,13 +75,14 @@
       "preview": "预览",
       "reference": "参考",
       "transparent": "透明",
-      "in_context": "情境内"
+      "in_context": "场景中"
     },
     "accessibility": {
       "addToFavorites": "添加到收藏夹",
-      "removeFromFavorites": "从收藏夹中移除"
+      "removeFromFavorites": "从收藏夹移除"
     },
     "stats": {
+      "assets": "资产",
       "characters": "角色",
       "characters_plural": "角色",
       "images": "图片",
@@ -93,7 +94,7 @@
       "title": "资产",
       "subtitle": "为您的角色创建和管理资产。资产包括服装、配饰、物品等。",
       "sidebar": {
-        "description": "浏览并管理您的创意资产。",
+        "description": "浏览并管理您的创作资产。",
         "viewGallery": "查看图库",
         "viewAllAssets": "查看所有资产",
         "myAsset": "我的资产",
@@ -106,7 +107,7 @@
       },
       "tabs": {
         "myAssets": "我的资产",
-        "publicGallery": "公开图库"
+        "publicGallery": "公共图库"
       },
       "filters": {
         "searchPlaceholder": "按名称搜索",
@@ -121,14 +122,14 @@
         "error": "无法加载资产。请重试。",
         "empty": "暂无可用资产。",
         "empty_private": "您尚未创建任何资产。",
-        "empty_public": "没有符合您筛选条件的公开资产。",
-        "emptyHint": "从创建您的第一个资产或调整筛选条件开始。",
-        "emptySearchHint": "调整筛选条件或清空搜索以查看更多结果。"
+        "empty_public": "没有符合您筛选条件的公共资产。",
+        "emptyHint": "开始创建您的第一个资产或调整您的筛选条件。",
+        "emptySearchHint": "调整您的筛选条件或清除搜索以查看更多结果。"
       },
       "labels": {
-        "total": "有 {{count}} 个资产可用",
-        "total_plural": "有 {{count}} 个资产可用",
-        "quickCreateLink": "立即创建"
+        "total": "{{count}} 项资产可用",
+        "total_plural": "{{count}} 项资产可用",
+        "quickCreateLink": "直接开始创建"
       }
     },
     "form": {
@@ -140,7 +141,7 @@
         "details": "详情",
         "detailsHint": "此资产的基本信息。",
         "classification": "分类",
-        "classificationHint": "视觉风格、年龄分级和内容标签。",
+        "classificationHint": "视觉风格、年龄评级和内容标签。",
         "images": "图片",
         "imagesHint": "管理此资产的视觉参考。"
       },
@@ -149,14 +150,14 @@
         "description": "描述",
         "type": "类型",
         "category": "类别",
-        "promptPrimary": "视觉提示",
-        "promptContext": "情境提示",
-        "negativePrompt": "负面提示",
+        "promptPrimary": "视觉提示词",
+        "promptContext": "上下文提示词",
+        "negativePrompt": "负面提示词",
         "placementZone": "放置区域",
         "placementDetail": "放置详情",
         "style": "视觉风格",
         "visibility": "可见性",
-        "ageRating": "年龄分级",
+        "ageRating": "年龄评级",
         "contentTags": "内容标签"
       },
       "placeholders": {
@@ -165,24 +166,24 @@
         "type": "选择类型",
         "category": "选择类别",
         "promptPrimary": "描述资产应如何呈现...",
-        "promptContext": "与角色一起使用时的附加情境...",
+        "promptContext": "与角色一起使用时的额外上下文...",
         "negativePrompt": "描述应避免的内容...",
         "placementZone": "选择放置区域",
-        "placementDetail": "例如：“左脸颊”、“鼻梁”"
+        "placementDetail": "例如：“左脸颊”、“鼻梁上”"
       },
       "hints": {
         "name": "此资产清晰、描述性的名称",
         "description": "资产外观的详细描述",
-        "positivePrompt": "AI 生成的视觉提示（例如：“一件红色皮夹克，配有银色拉链”）",
-        "negativePrompt": "生成时应避免的元素（例如：“损坏的、破损的、脏的”）",
-        "placementZone": "资产应放置在角色身上的位置"
+        "positivePrompt": "AI 生成的视觉提示词（例如：“一件带有银色拉链的红色皮夹克”）",
+        "negativePrompt": "生成时应避免的元素（例如：“破损、撕裂、脏污”）",
+        "placementZone": "资产应放置在角色的哪个位置"
       },
       "labels": {
         "unsavedChanges": "您有未保存的更改",
         "allSaved": "更改已保存",
         "submitting": "正在保存...",
         "visibilityPublic": "公开",
-        "visibilityPrivate": "私有"
+        "visibilityPrivate": "私人"
       },
       "images": {
         "coverHeader": "资产封面",
@@ -190,32 +191,32 @@
         "upload": "上传封面",
         "change": "更改封面",
         "uploading": "正在上传...",
-        "urlModalTitle": "使用 URL 图片",
-        "urlLabel": "图片 URL",
+        "urlModalTitle": "使用图片URL",
+        "urlLabel": "图片URL",
         "previewAlt": "资产封面预览",
-        "invalidUrl": "请输入有效的图片 URL (http/https)。",
+        "invalidUrl": "请输入有效的图片URL (http/https)。",
         "saveFirst": "请先保存资产以添加图片"
       },
       "cover": {
         "header": "资产封面",
-        "description": "资产的视觉呈现。",
+        "description": "您的资产的视觉呈现。",
         "upload": "选择图片",
         "change": "更改图片",
         "remove": "移除",
         "fromDevice": "从设备上传",
-        "fromUrl": "使用图片 URL",
-        "generateAI": "AI 生成",
-        "aiComingSoon": "资产的 AI 生成功能即将推出",
-        "urlModalTitle": "使用图片 URL",
-        "urlLabel": "图片 URL",
+        "fromUrl": "使用图片URL",
+        "generateAI": "AI生成",
+        "aiComingSoon": "资产AI生成功能即将推出",
+        "urlModalTitle": "使用图片URL",
+        "urlLabel": "图片URL",
         "preview": "预览",
         "previewAlt": "资产封面预览",
-        "invalidUrl": "请输入有效的图片 URL (http/https)。",
+        "invalidUrl": "请输入有效的图片URL (http/https)。",
         "error": "无法加载此图片。{{message}}",
         "loading": "正在加载...",
         "uploading": "正在上传...",
         "helperCreate": "现在选择一张封面图片，我们会在您填写完其余表单时保留它。",
-        "helperEdit": "您可以随时更新封面图片。更改保存后立即生效。"
+        "helperEdit": "您可以随时更新封面图片。更改将在您保存后立即生效。"
       },
       "tabs": {
         "identity": "身份",
@@ -226,12 +227,12 @@
         "lockedHint": "填写基本详情以解锁其他部分。"
       },
       "autocomplete": {
-        "button": "自动完成",
-        "ai": "使用 AI 自动完成",
-        "web": "使用网页搜索自动完成",
+        "button": "自动填充",
+        "ai": "AI自动填充",
+        "web": "网页搜索自动填充",
         "nothing": "没有可用建议。",
-        "applied": "已应用自动完成。",
-        "failed": "自动完成失败。"
+        "applied": "已应用自动填充。",
+        "failed": "自动填充失败。"
       }
     },
     "create": {
@@ -241,7 +242,7 @@
       "cancelButton": "取消并返回",
       "cover": {
         "header": "资产封面",
-        "description": "资产的视觉呈现。"
+        "description": "您的资产的视觉呈现。"
       }
     },
     "edit": {
@@ -259,13 +260,13 @@
       },
       "cover": {
         "header": "资产封面",
-        "description": "资产的视觉呈现。"
+        "description": "您的资产的视觉呈现。"
       }
     },
     "detail": {
       "states": {
         "loading": "正在加载资产详情...",
-        "notFound": "未能找到此资产。"
+        "notFound": "未找到此资产。"
       },
       "actions": {
         "backToHub": "返回中心",
@@ -276,17 +277,17 @@
       },
       "confirmDelete": {
         "title": "删除资产？",
-        "message": "此操作无法撤销。与此资产关联的所有数据将被永久删除。",
+        "message": "此操作无法撤销。与此资产相关的所有数据将被永久删除。",
         "confirm": "永久删除",
         "cancel": "取消"
       },
       "labels": {
         "public": "公开",
-        "private": "私有",
-        "createdAt": "创建时间",
+        "private": "私人",
+        "createdAt": "创建于",
         "createdBy": "创建者",
         "updatedAt": "上次更新",
-        "identifier": "资产 ID: {{id}}",
+        "identifier": "资产ID: {{id}}",
         "characterCount": "{{count}} 个角色",
         "characterCount_plural": "{{count}} 个角色",
         "type": "类型",
@@ -294,7 +295,7 @@
       },
       "sections": {
         "description": "描述",
-        "prompts": "生成提示",
+        "prompts": "生成提示词",
         "placement": "放置",
         "metadata": "元数据"
       },
@@ -305,7 +306,7 @@
       },
       "characters": {
         "title": "使用此资产的角色",
-        "empty": "目前没有角色使用此资产。"
+        "empty": "暂无角色使用此资产。"
       }
     },
     "picker": {
@@ -319,21 +320,21 @@
         "categoryFilter": "按类别筛选"
       },
       "actions": {
-        "addSelected": "添加已选 ({{count}})",
-        "addSelected_plural": "添加已选 ({{count}})",
+        "addSelected": "添加选中项 ({{count}})",
+        "addSelected_plural": "添加选中项 ({{count}})",
         "cancel": "取消",
-        "clearSelection": "清空选择"
+        "clearSelection": "清除选择"
       },
       "states": {
         "loading": "正在加载资产...",
         "error": "加载资产失败",
-        "empty": "无可用资产",
+        "empty": "暂无可用资产",
         "noResults": "没有资产符合您的搜索条件",
         "selectedEmpty": "选择要添加的资产"
       },
       "labels": {
-        "selected": "已选择 {{count}} 个",
-        "selected_plural": "已选择 {{count}} 个"
+        "selected": "已选中 {{count}} 项",
+        "selected_plural": "已选中 {{count}} 项"
       },
       "assetCard": {
         "typeLabel": "类型",
@@ -342,7 +343,7 @@
     },
     "characterAssets": {
       "title": "角色资产",
-      "subtitle": "管理此角色装备的资产",
+      "subtitle": "管理此角色已装备的资产",
       "tabs": {
         "equipped": "已装备",
         "available": "可用"
@@ -353,8 +354,8 @@
         "configureAsset": "配置"
       },
       "states": {
-        "noEquipped": "未装备任何资产",
-        "noAvailable": "无可用资产",
+        "noEquipped": "未装备资产",
+        "noAvailable": "暂无可用资产",
         "loading": "正在加载资产..."
       },
       "placement": {
@@ -364,25 +365,25 @@
         "remove": "从角色移除"
       },
       "labels": {
-        "equippedCount": "已装备 {{count}} 个资产",
-        "equippedCount_plural": "已装备 {{count}} 个资产",
-        "availableCount": "{{count}} 个可用",
-        "availableCount_plural": "{{count}} 个可用"
+        "equippedCount": "已装备 {{count}} 项资产",
+        "equippedCount_plural": "已装备 {{count}} 项资产",
+        "availableCount": "{{count}} 项可用",
+        "availableCount_plural": "{{count}} 项可用"
       }
     },
     "errors": {
-      "createFailed": "未能创建资产。请重试。",
-      "updateFailed": "未能更新资产。",
-      "deleteFailed": "未能删除资产。",
-      "detailUnavailable": "当前无法加载资产详情。",
-      "linkFailed": "未能将资产链接到角色。",
-      "unlinkFailed": "未能将资产从角色解除链接。",
+      "createFailed": "无法创建资产。请重试。",
+      "updateFailed": "无法更新资产。",
+      "deleteFailed": "无法删除资产。",
+      "detailUnavailable": "暂时无法加载资产详情。",
+      "linkFailed": "无法将资产链接到角色。",
+      "unlinkFailed": "无法将资产从角色解除链接。",
       "nameRequired": "资产名称为必填项",
       "typeRequired": "资产类型为必填项",
       "categoryRequired": "资产类别为必填项",
       "invalidType": "无效的资产类型",
       "invalidCategory": "无效的资产类别",
-      "invalidPlacementZone": "此资产类型无效的放置区域",
+      "invalidPlacementZone": "此资产类型的放置区域无效",
       "assetInUse": "此资产正被 {{count}} 个角色使用，无法删除。",
       "assetInUse_plural": "此资产正被 {{count}} 个角色使用，无法删除。"
     },
@@ -406,38 +407,38 @@
       "uploadFailed": "图片上传失败",
       "deleteFailed": "图片删除失败",
       "deleteConfirm": "删除此图片？",
-      "noImages": "暂无图片。添加您的第一张视觉参考。",
+      "noImages": "暂无图片。添加您的第一个视觉参考。",
       "types": {
         "preview": "预览",
         "reference": "参考",
         "transparent": "透明",
-        "in_context": "情境内"
+        "in_context": "场景中"
       },
       "typeDescriptions": {
         "preview": "资产的主要预览图片",
         "reference": "资产的视觉参考",
         "transparent": "透明背景版本",
-        "in_context": "在用途/场景情境中显示的资产"
+        "in_context": "在实际使用/场景中展示的资产"
       }
     },
     "prompts": {
-      "title": "生成提示",
-      "primaryLabel": "视觉提示",
+      "title": "生成提示词",
+      "primaryLabel": "视觉提示词",
       "primaryHint": "描述资产在生成图片中应如何呈现",
-      "contextLabel": "情境提示",
-      "contextHint": "此资产与角色一起使用时的附加情境",
-      "negativeLabel": "负面提示",
+      "contextLabel": "上下文提示词",
+      "contextHint": "此资产与角色一起使用时的额外上下文",
+      "negativeLabel": "负面提示词",
       "negativeHint": "生成此资产时应避免的元素"
     },
     "avatar": {
-      "invalidUrl": "请输入有效的图片 URL (http/https)。",
+      "invalidUrl": "请输入有效的图片URL (http/https)。",
       "error": "无法加载此图片。{{message}}",
-      "aiComingSoon": "资产的 AI 生成功能即将推出",
-      "generateAI": "AI 生成",
+      "aiComingSoon": "资产AI生成功能即将推出",
+      "generateAI": "AI生成",
       "fromDevice": "从设备上传",
-      "fromUrl": "使用图片 URL",
-      "urlModalTitle": "使用图片 URL",
-      "urlLabel": "图片 URL",
+      "fromUrl": "使用图片URL",
+      "urlModalTitle": "使用图片URL",
+      "urlLabel": "图片URL",
       "preview": "预览",
       "previewAlt": "图片预览",
       "loading": "正在加载..."

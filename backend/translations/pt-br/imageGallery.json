@@ -2,14 +2,14 @@
   "resources": {
     "title": "Galeria de imagens",
     "loading": "Carregando imagens...",
-    "error": "Falha ao carregar imagens.",
+    "error": "Não foi possível carregar imagens.",
     "tabs": {
-      "gallery": "Galeria de Conversa",
+      "gallery": "Galeria de Conversas",
       "avatar": "Avatares",
       "samples": "Exemplos",
       "stickers": "Figurinhas"
     },
-    "upload": "Enviar Imagem",
+    "upload": "Carregar Imagem",
     "close": "Fechar",
     "noImages": "Nenhuma imagem disponível ainda"
   }

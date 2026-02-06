@@ -2,7 +2,7 @@
   "description": "Daily tasks and rewards page for earning credits through daily activities.",
   "resources": {
     "title": "Tarefas Diárias",
-    "subtitle": "Complete tarefas diárias para ganhar créditos",
+    "subtitle": "Conclua tarefas diárias para ganhar créditos",
     "dailyReward": {
       "title": "Recompensa de Login Diário",
       "description": "Resgate sua recompensa de login diário e ganhe créditos",
@@ -15,20 +15,20 @@
       "minutes": "minutos"
     },
     "firstChatReward": {
-      "title": "Primeira Conversa do Dia",
-      "description": "Inicie uma nova conversa e ganhe uma recompensa",
+      "title": "Primeiro Chat do Dia",
+      "description": "Comece uma nova conversa e ganhe uma recompensa",
       "claimed": "Resgatado",
       "available": "Disponível",
-      "rewardGranted": "Recompensa da primeira conversa do dia! Você ganhou 25 créditos."
+      "rewardGranted": "Recompensa de primeiro chat do dia! Você ganhou 25 créditos."
     },
     "yourCredits": "Seus Créditos",
     "availableCredits": "Créditos Disponíveis",
     "comingSoon": "Mais tarefas em breve",
-    "comingSoonDescription": "Estamos trabalhando para adicionar mais maneiras de ganhar créditos através de tarefas e conquistas diárias.",
+    "comingSoonDescription": "Estamos trabalhando para adicionar mais formas de ganhar créditos através de tarefas diárias e conquistas.",
     "messages": {
       "rewardClaimed": "Recompensa diária resgatada com sucesso!",
       "alreadyClaimed": "Você já resgatou sua recompensa diária hoje. Volte amanhã!",
-      "error": "Falha ao resgatar a recompensa. Por favor, tente novamente."
+      "error": "Falha ao resgatar recompensa. Por favor, tente novamente."
     }
   }
 }
