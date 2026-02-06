@@ -2,11 +2,11 @@
   "description": "Assets module strings for asset management, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledAsset": "이름 없는 에셋",
-      "updatedAt": "{{date}}에 업데이트됨",
+      "untitledAsset": "이름 없는 애셋",
+      "updatedAt": "{{date}} 업데이트됨",
       "public": "공개",
       "private": "비공개",
-      "identifier": "에셋 ID: {{id}}",
+      "identifier": "애셋 ID: {{id}}",
       "unsavedChanges": "저장되지 않은 변경 사항",
       "allSaved": "모든 변경 사항 저장됨",
       "submitting": "저장 중..."
@@ -17,16 +17,18 @@
       "SCAR": "흉터",
       "HAIRSTYLE": "헤어스타일",
       "OBJECT": "오브젝트",
+      "WEAPON": "무기",
       "VEHICLE": "탈것",
       "FURNITURE": "가구",
       "PROP": "소품"
     },
     "typeDescriptions": {
-      "CLOTHING": "의류 및 복장 아이템",
+      "CLOTHING": "의류 및 의복 아이템",
       "ACCESSORY": "착용 가능한 액세서리 및 장식품",
       "SCAR": "표식, 흉터 및 신체 특징",
       "HAIRSTYLE": "헤어스타일 및 색상",
-      "OBJECT": "손에 쥘 수 있는 오브젝트 및 아이템",
+      "OBJECT": "손에 들 수 있는 오브젝트 및 아이템",
+      "WEAPON": "무기, 근접 무기, 총기류",
       "VEHICLE": "탈것 및 탑승물",
       "FURNITURE": "가구 및 구조 요소",
       "PROP": "배경 소품 및 장식"
@@ -38,7 +40,7 @@
     },
     "categoryDescriptions": {
       "WEARABLE": "캐릭터가 착용할 수 있는 아이템",
-      "HOLDABLE": "손에 쥐거나 휴대할 수 있는 아이템",
+      "HOLDABLE": "들거나 휴대할 수 있는 아이템",
       "ENVIRONMENTAL": "배경 및 환경 요소"
     },
     "placementZones": {
@@ -52,10 +54,28 @@
     "placementZoneDescriptions": {
       "face": "얼굴 영역에 적용됨",
       "torso": "몸/몸통 영역에 적용됨",
-      "left_hand": "왼손에 쥐기",
-      "right_hand": "오른손에 쥐기",
-      "head": "머리에 착용",
-      "feet": "발에 착용"
+      "left_hand": "왼손에 들림",
+      "right_hand": "오른손에 들림",
+      "head": "머리에 착용됨",
+      "feet": "발에 착용됨"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "사실적",
+      "SEMI_REALISTIC": "반사실적",
+      "CARTOON": "카툰",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "코믹",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "imageTypes": {
+      "preview": "미리보기",
+      "reference": "참고 자료",
+      "transparent": "투명",
+      "in_context": "컨텍스트 내"
     },
     "accessibility": {
       "addToFavorites": "즐겨찾기에 추가",
@@ -63,23 +83,28 @@
     },
     "stats": {
       "characters": "캐릭터",
+      "characters_plural": "캐릭터",
+      "images": "이미지",
+      "images_plural": "이미지",
       "charactersShort": "{{count}}K 캐릭터",
       "charactersShort_plural": "{{count}}K 캐릭터"
     },
     "hub": {
-      "title": "에셋",
-      "subtitle": "캐릭터 에셋을 생성하고 관리하세요. 에셋에는 의류, 액세서리, 오브젝트 등이 포함됩니다.",
+      "title": "애셋",
+      "subtitle": "캐릭터를 위한 애셋을 생성하고 관리하세요. 애셋에는 의류, 액세서리, 오브젝트 등이 포함됩니다.",
       "sidebar": {
-        "description": "창의적인 에셋을 탐색하고 관리하세요.",
-        "viewGallery": "갤러리 보기"
+        "description": "창작 애셋을 찾아보고 관리하세요.",
+        "viewGallery": "갤러리 보기",
+        "myAsset": "내 애셋",
+        "noAssetsFound": "애셋을 찾을 수 없습니다."
       },
       "actions": {
-        "newAsset": "새 에셋",
-        "createAsset": "새 에셋",
+        "newAsset": "새 애셋",
+        "createAsset": "새 애셋",
         "retry": "다시 시도"
       },
       "tabs": {
-        "myAssets": "내 에셋",
+        "myAssets": "내 애셋",
         "publicGallery": "공개 갤러리"
       },
       "filters": {
@@ -91,30 +116,32 @@
         "noFilter": "모두"
       },
       "states": {
-        "loading": "에셋을 불러오는 중...",
-        "error": "에셋을 불러올 수 없습니다. 다시 시도해 주세요.",
-        "empty": "아직 사용할 수 있는 에셋이 없습니다.",
-        "empty_private": "아직 에셋을 생성하지 않으셨습니다.",
-        "empty_public": "필터와 일치하는 공개 에셋이 없습니다.",
-        "emptyHint": "첫 번째 에셋을 생성하거나 필터를 조정하여 시작하세요.",
-        "emptySearchHint": "더 많은 결과를 보려면 필터를 조정하거나 검색을 초기화하세요."
+        "loading": "애셋을 불러오는 중...",
+        "error": "애셋을 불러올 수 없었습니다. 다시 시도해 주세요.",
+        "empty": "아직 사용할 수 있는 애셋이 없습니다.",
+        "empty_private": "아직 애셋을 생성하지 않으셨습니다.",
+        "empty_public": "필터와 일치하는 공개 애셋이 없습니다.",
+        "emptyHint": "첫 애셋을 생성하거나 필터를 조정하여 시작하세요.",
+        "emptySearchHint": "더 많은 결과를 보려면 필터를 조정하거나 검색을 지우세요."
       },
       "labels": {
-        "total": "{{count}}개의 에셋 사용 가능",
-        "total_plural": "{{count}}개의 에셋 사용 가능",
+        "total": "애셋 {{count}}개 사용 가능",
+        "total_plural": "애셋 {{count}}개 사용 가능",
         "quickCreateLink": "바로 생성하러 가기"
       }
     },
     "form": {
       "submit": "저장",
       "cancel": "취소",
+      "create": "애셋 생성",
+      "saveChanges": "변경 사항 저장",
       "sections": {
         "details": "세부 정보",
-        "detailsHint": "이 에셋에 대한 기본 정보입니다.",
+        "detailsHint": "이 애셋에 대한 기본 정보입니다.",
         "classification": "분류",
-        "classificationHint": "시각적 스타일, 연령 등급 및 콘텐츠 태그입니다.",
+        "classificationHint": "시각적 스타일, 연령 등급 및 콘텐츠 태그.",
         "images": "이미지",
-        "imagesHint": "이 에셋의 시각적 참조를 관리하세요."
+        "imagesHint": "이 애셋에 대한 시각적 참고 자료를 관리합니다."
       },
       "fields": {
         "name": "이름",
@@ -123,31 +150,31 @@
         "category": "카테고리",
         "promptPrimary": "시각적 프롬프트",
         "promptContext": "컨텍스트 프롬프트",
-        "negativePrompt": "부정 프롬프트",
+        "negativePrompt": "부정적 프롬프트",
         "placementZone": "배치 영역",
-        "placementDetail": "세부 배치",
+        "placementDetail": "배치 세부 정보",
         "style": "시각적 스타일",
-        "visibility": "공개 범위",
+        "visibility": "공개 여부",
         "ageRating": "연령 등급",
         "contentTags": "콘텐츠 태그"
       },
       "placeholders": {
-        "name": "에셋 이름 입력",
-        "description": "이 에셋을 설명하세요...",
+        "name": "애셋 이름 입력",
+        "description": "이 애셋을 설명하세요...",
         "type": "유형 선택",
         "category": "카테고리 선택",
-        "promptPrimary": "에셋이 어떻게 나타나야 하는지 설명하세요...",
+        "promptPrimary": "애셋이 어떻게 보여야 하는지 설명하세요...",
         "promptContext": "캐릭터와 함께 사용될 때의 추가 컨텍스트...",
-        "negativePrompt": "피해야 할 사항을 설명하세요...",
+        "negativePrompt": "피해야 할 것을 설명하세요...",
         "placementZone": "배치 영역 선택",
         "placementDetail": "예: '왼쪽 뺨', '코 위'"
       },
       "hints": {
-        "name": "이 에셋의 명확하고 설명적인 이름",
-        "description": "에셋 외형에 대한 자세한 설명",
+        "name": "이 애셋의 명확하고 설명적인 이름",
+        "description": "애셋의 외형에 대한 상세 설명",
         "positivePrompt": "AI 생성을 위한 시각적 프롬프트 (예: '은색 지퍼가 달린 빨간색 가죽 재킷')",
         "negativePrompt": "생성 시 피해야 할 요소 (예: '손상된, 찢어진, 더러운')",
-        "placementZone": "캐릭터에 에셋을 배치할 위치"
+        "placementZone": "애셋이 캐릭터의 어디에 배치되어야 하는지"
       },
       "labels": {
         "unsavedChanges": "저장되지 않은 변경 사항이 있습니다",
@@ -157,49 +184,87 @@
         "visibilityPrivate": "비공개"
       },
       "images": {
-        "coverHeader": "에셋 커버",
-        "coverDescription": "이 에셋을 나타내는 이미지입니다.",
+        "coverHeader": "애셋 커버",
+        "coverDescription": "이 애셋을 나타내는 이미지.",
         "upload": "커버 업로드",
         "change": "커버 변경",
         "uploading": "업로드 중...",
         "urlModalTitle": "URL에서 이미지 사용",
         "urlLabel": "이미지 URL",
-        "previewAlt": "에셋 커버 미리보기",
+        "previewAlt": "애셋 커버 미리보기",
         "invalidUrl": "유효한 이미지 URL(http/https)을 입력하세요.",
-        "saveFirst": "이미지를 추가하려면 먼저 에셋을 저장하세요"
+        "saveFirst": "이미지를 추가하려면 먼저 애셋을 저장하세요"
+      },
+      "cover": {
+        "header": "애셋 커버",
+        "description": "애셋의 시각적 표현.",
+        "upload": "이미지 선택",
+        "change": "이미지 변경",
+        "remove": "제거",
+        "fromDevice": "기기에서 업로드",
+        "fromUrl": "이미지 URL 사용",
+        "generateAI": "AI로 생성",
+        "aiComingSoon": "애셋 AI 생성 기능이 곧 제공됩니다",
+        "urlModalTitle": "URL에서 이미지 사용",
+        "urlLabel": "이미지 URL",
+        "preview": "미리보기",
+        "previewAlt": "애셋 커버 미리보기",
+        "invalidUrl": "유효한 이미지 URL(http/https)을 입력하세요.",
+        "error": "이 이미지를 불러올 수 없었습니다. {{message}}",
+        "loading": "불러오는 중...",
+        "uploading": "업로드 중...",
+        "helperCreate": "지금 커버 이미지를 선택하면, 나머지 양식을 작성하는 동안 유지됩니다.",
+        "helperEdit": "원할 때 언제든지 커버 이미지를 업데이트하세요. 저장하는 즉시 변경 사항이 적용됩니다."
       },
       "tabs": {
-        "identity": "정보",
+        "identity": "기본 정보",
         "details": "세부 정보",
         "configuration": "구성",
+        "classification": "분류",
         "images": "이미지",
-        "lockedHint": "다른 섹션을 잠금 해제하려면 기본 정보 세부 사항을 입력하세요."
+        "lockedHint": "다른 섹션을 잠금 해제하려면 기본 세부 정보를 입력하세요."
+      },
+      "autocomplete": {
+        "button": "자동 완성",
+        "ai": "AI로 자동 완성",
+        "web": "웹 검색으로 자동 완성",
+        "nothing": "제안 사항이 없습니다.",
+        "applied": "자동 완성이 적용되었습니다.",
+        "failed": "자동 완성에 실패했습니다."
       }
     },
     "create": {
-      "title": "새 에셋 생성",
-      "subtitle": "에셋의 속성 및 시각적 특징을 정의하세요.",
-      "saveButton": "에셋 저장",
-      "cancelButton": "취소하고 돌아가기"
+      "title": "새 애셋 생성",
+      "subtitle": "애셋의 속성 및 시각적 특징을 정의하세요.",
+      "saveButton": "애셋 저장",
+      "cancelButton": "취소하고 돌아가기",
+      "cover": {
+        "header": "애셋 커버",
+        "description": "애셋의 시각적 표현."
+      }
     },
     "edit": {
-      "title": "에셋 편집",
+      "title": "애셋 편집",
       "subtitle": "{{name}} 업데이트 중",
-      "saveButton": "에셋 업데이트",
+      "saveButton": "애셋 업데이트",
       "cancelButton": "변경 사항 취소",
       "states": {
-        "loading": "에셋 불러오는 중..."
+        "loading": "애셋 불러오는 중..."
       },
       "accessDenied": {
         "title": "접근 거부",
-        "message": "이 에셋을 편집할 권한이 없습니다.",
-        "backButton": "에셋으로 돌아가기"
+        "message": "이 애셋을 편집할 권한이 없습니다.",
+        "backButton": "애셋으로 돌아가기"
+      },
+      "cover": {
+        "header": "애셋 커버",
+        "description": "애셋의 시각적 표현."
       }
     },
     "detail": {
       "states": {
-        "loading": "에셋 세부 정보를 불러오는 중...",
-        "notFound": "이 에셋을 찾을 수 없습니다."
+        "loading": "애셋 세부 정보 불러오는 중...",
+        "notFound": "이 애셋을 찾을 수 없었습니다."
       },
       "actions": {
         "backToHub": "허브로 돌아가기",
@@ -209,20 +274,20 @@
         "share": "공유"
       },
       "confirmDelete": {
-        "title": "에셋을 삭제하시겠습니까?",
-        "message": "이 작업은 취소할 수 없습니다. 이 에셋과 관련된 모든 데이터는 영구적으로 삭제됩니다.",
+        "title": "애셋을 삭제하시겠습니까?",
+        "message": "이 작업은 되돌릴 수 없습니다. 이 애셋과 관련된 모든 데이터는 영구적으로 삭제됩니다.",
         "confirm": "영구 삭제",
         "cancel": "취소"
       },
       "labels": {
         "public": "공개",
         "private": "비공개",
-        "createdAt": "생성됨",
+        "createdAt": "생성일",
         "createdBy": "생성자",
-        "updatedAt": "마지막 업데이트",
-        "identifier": "에셋 ID: {{id}}",
-        "characterCount": "{{count}}개 캐릭터",
-        "characterCount_plural": "{{count}}개 캐릭터",
+        "updatedAt": "최종 업데이트",
+        "identifier": "애셋 ID: {{id}}",
+        "characterCount": "캐릭터 {{count}}명",
+        "characterCount_plural": "캐릭터 {{count}}명",
         "type": "유형",
         "category": "카테고리"
       },
@@ -233,19 +298,19 @@
         "metadata": "메타데이터"
       },
       "placement": {
-        "title": "에셋 배치",
+        "title": "애셋 배치",
         "zoneLabel": "배치 영역",
         "categoryLabel": "카테고리"
       },
       "characters": {
-        "title": "이 에셋을 사용하는 캐릭터",
-        "empty": "아직 이 에셋을 사용하는 캐릭터가 없습니다."
+        "title": "이 애셋을 사용하는 캐릭터",
+        "empty": "아직 이 애셋을 사용하는 캐릭터가 없습니다."
       }
     },
     "picker": {
-      "title": "에셋 선택",
-      "subtitle": "캐릭터에 추가할 에셋을 선택하세요",
-      "searchPlaceholder": "에셋 검색...",
+      "title": "애셋 선택",
+      "subtitle": "캐릭터에 추가할 애셋을 선택하세요",
+      "searchPlaceholder": "애셋 검색...",
       "filters": {
         "allTypes": "모든 유형",
         "allCategories": "모든 카테고리",
@@ -256,14 +321,14 @@
         "addSelected": "선택 항목 추가 ({{count}})",
         "addSelected_plural": "선택 항목 추가 ({{count}})",
         "cancel": "취소",
-        "clearSelection": "선택 초기화"
+        "clearSelection": "선택 해제"
       },
       "states": {
-        "loading": "에셋을 불러오는 중...",
-        "error": "에셋 불러오기 실패",
-        "empty": "사용 가능한 에셋 없음",
-        "noResults": "검색과 일치하는 에셋 없음",
-        "selectedEmpty": "추가할 에셋 선택"
+        "loading": "애셋 불러오는 중...",
+        "error": "애셋 불러오기 실패",
+        "empty": "사용 가능한 애셋 없음",
+        "noResults": "검색과 일치하는 애셋 없음",
+        "selectedEmpty": "추가할 애셋을 선택하세요"
       },
       "labels": {
         "selected": "{{count}}개 선택됨",
@@ -275,57 +340,57 @@
       }
     },
     "characterAssets": {
-      "title": "캐릭터 에셋",
-      "subtitle": "이 캐릭터에 장착된 에셋을 관리하세요",
+      "title": "캐릭터 애셋",
+      "subtitle": "이 캐릭터에 장착된 애셋을 관리하세요",
       "tabs": {
         "equipped": "장착됨",
         "available": "사용 가능"
       },
       "actions": {
-        "addAssets": "에셋 추가",
+        "addAssets": "애셋 추가",
         "removeAsset": "제거",
         "configureAsset": "구성"
       },
       "states": {
-        "noEquipped": "장착된 에셋 없음",
-        "noAvailable": "사용 가능한 에셋 없음",
-        "loading": "에셋을 불러오는 중..."
+        "noEquipped": "장착된 애셋 없음",
+        "noAvailable": "사용 가능한 애셋 없음",
+        "loading": "애셋 불러오는 중..."
       },
       "placement": {
-        "title": "에셋 배치",
+        "title": "애셋 배치",
         "zoneLabel": "영역",
         "configure": "배치 구성",
         "remove": "캐릭터에서 제거"
       },
       "labels": {
-        "equippedCount": "{{count}}개의 에셋 장착됨",
-        "equippedCount_plural": "{{count}}개의 에셋 장착됨",
+        "equippedCount": "애셋 {{count}}개 장착됨",
+        "equippedCount_plural": "애셋 {{count}}개 장착됨",
         "availableCount": "{{count}}개 사용 가능",
         "availableCount_plural": "{{count}}개 사용 가능"
       }
     },
     "errors": {
-      "createFailed": "에셋을 생성할 수 없습니다. 다시 시도해 주세요.",
-      "updateFailed": "에셋을 업데이트할 수 없습니다.",
-      "deleteFailed": "에셋을 삭제할 수 없습니다.",
-      "detailUnavailable": "현재 에셋 세부 정보를 불러올 수 없습니다.",
-      "linkFailed": "캐릭터에 에셋 연결 실패.",
-      "unlinkFailed": "캐릭터에서 에셋 연결 해제 실패.",
-      "nameRequired": "에셋 이름은 필수입니다",
-      "typeRequired": "에셋 유형은 필수입니다",
-      "categoryRequired": "에셋 카테고리는 필수입니다",
-      "invalidType": "유효하지 않은 에셋 유형",
-      "invalidCategory": "유효하지 않은 에셋 카테고리",
-      "invalidPlacementZone": "이 에셋 유형에 대한 유효하지 않은 배치 영역",
-      "assetInUse": "이 에셋은 {{count}}개의 캐릭터에서 사용 중이므로 삭제할 수 없습니다.",
-      "assetInUse_plural": "이 에셋은 {{count}}개의 캐릭터에서 사용 중이므로 삭제할 수 없습니다."
+      "createFailed": "애셋을 생성할 수 없었습니다. 다시 시도해 주세요.",
+      "updateFailed": "애셋을 업데이트할 수 없었습니다.",
+      "deleteFailed": "애셋을 삭제할 수 없었습니다.",
+      "detailUnavailable": "현재 애셋 세부 정보를 불러올 수 없습니다.",
+      "linkFailed": "애셋을 캐릭터에 연결하지 못했습니다.",
+      "unlinkFailed": "애셋을 캐릭터에서 연결 해제하지 못했습니다.",
+      "nameRequired": "애셋 이름은 필수입니다",
+      "typeRequired": "애셋 유형은 필수입니다",
+      "categoryRequired": "애셋 카테고리는 필수입니다",
+      "invalidType": "유효하지 않은 애셋 유형",
+      "invalidCategory": "유효하지 않은 애셋 카테고리",
+      "invalidPlacementZone": "이 애셋 유형에 대한 유효하지 않은 배치 영역",
+      "assetInUse": "이 애셋은 캐릭터 {{count}}명에게 사용 중이므로 삭제할 수 없습니다.",
+      "assetInUse_plural": "이 애셋은 캐릭터 {{count}}명에게 사용 중이므로 삭제할 수 없습니다."
     },
     "success": {
-      "created": "에셋이 성공적으로 생성되었습니다",
-      "updated": "에셋이 성공적으로 업데이트되었습니다",
-      "deleted": "에셋이 성공적으로 삭제되었습니다",
-      "linked": "에셋이 캐릭터에 연결되었습니다",
-      "unlinked": "에셋이 캐릭터에서 연결 해제되었습니다"
+      "created": "애셋이 성공적으로 생성되었습니다",
+      "updated": "애셋이 성공적으로 업데이트되었습니다",
+      "deleted": "애셋이 성공적으로 삭제되었습니다",
+      "linked": "애셋이 캐릭터에 연결되었습니다",
+      "unlinked": "애셋이 캐릭터에서 연결 해제되었습니다"
     },
     "messages": {
       "imageUploaded": "이미지가 성공적으로 업로드되었습니다",
@@ -334,39 +399,39 @@
       "descriptionRequired": "설명은 필수입니다"
     },
     "images": {
-      "title": "에셋 이미지",
+      "title": "애셋 이미지",
       "addImage": "이미지 추가",
       "selectType": "이미지 유형 선택",
       "uploadFailed": "이미지 업로드 실패",
       "deleteFailed": "이미지 삭제 실패",
       "deleteConfirm": "이 이미지를 삭제하시겠습니까?",
-      "noImages": "아직 이미지가 없습니다. 첫 번째 시각적 참조를 추가하세요.",
+      "noImages": "아직 이미지가 없습니다. 첫 시각적 참고 자료를 추가하세요.",
       "types": {
         "preview": "미리보기",
-        "reference": "참조",
+        "reference": "참고 자료",
         "transparent": "투명",
         "in_context": "컨텍스트 내"
       },
       "typeDescriptions": {
-        "preview": "에셋의 주요 미리보기 이미지",
-        "reference": "에셋의 시각적 참조",
+        "preview": "애셋의 주요 미리보기 이미지",
+        "reference": "애셋의 시각적 참고 자료",
         "transparent": "투명 배경 버전",
-        "in_context": "사용/장면 컨텍스트에서 표시되는 에셋"
+        "in_context": "사용/장면 컨텍스트에서 표시되는 애셋"
       }
     },
     "prompts": {
       "title": "생성 프롬프트",
       "primaryLabel": "시각적 프롬프트",
-      "primaryHint": "생성된 이미지에서 에셋이 어떻게 나타나야 하는지 설명하세요",
+      "primaryHint": "생성된 이미지에서 애셋이 어떻게 보여야 하는지 설명하세요",
       "contextLabel": "컨텍스트 프롬프트",
-      "contextHint": "이 에셋이 캐릭터와 함께 사용될 때의 추가 컨텍스트",
-      "negativeLabel": "부정 프롬프트",
-      "negativeHint": "이 에셋을 생성할 때 피해야 할 요소"
+      "contextHint": "이 애셋이 캐릭터와 함께 사용될 때의 추가 컨텍스트",
+      "negativeLabel": "부정적 프롬프트",
+      "negativeHint": "이 애셋을 생성할 때 피해야 할 요소"
     },
     "avatar": {
       "invalidUrl": "유효한 이미지 URL(http/https)을 입력하세요.",
-      "error": "이 이미지를 불러올 수 없습니다. {{message}}",
-      "aiComingSoon": "에셋 AI 생성 기능이 곧 제공됩니다",
+      "error": "이 이미지를 불러올 수 없었습니다. {{message}}",
+      "aiComingSoon": "애셋 AI 생성 기능이 곧 제공됩니다",
       "generateAI": "AI로 생성",
       "fromDevice": "기기에서 업로드",
       "fromUrl": "이미지 URL 사용",

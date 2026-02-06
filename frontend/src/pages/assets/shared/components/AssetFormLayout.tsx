@@ -14,6 +14,7 @@ interface AssetFormLayoutProps {
   assetName?: string;
   coverUrl?: string;
   assetId?: string;
+  images?: any[];
   form: UseAssetFormReturn;
   error?: string | null;
   isSubmitting: boolean;
@@ -28,6 +29,7 @@ export function AssetFormLayout({
   assetName,
   coverUrl,
   assetId,
+  images = [],
   form,
   error,
   isSubmitting,
@@ -151,7 +153,7 @@ export function AssetFormLayout({
                 <ClassificationTab form={form} />
               </TabPanel>
               <TabPanel label="images">
-                <ImagesTab form={form} assetId={assetId} />
+                <ImagesTab form={form} assetId={assetId} images={images} />
               </TabPanel>
             </TabPanels>
           </Tabs>
@@ -163,6 +165,105 @@ export function AssetFormLayout({
               {form.isDirty ? t('assets:form.labels.unsavedChanges') : t('assets:form.labels.allSaved')}
             </span>
             <div className="flex flex-wrap gap-3">
+              <SmartDropdown
+                buttonContent={
+                  <Button
+                    type="button"
+                    variant="light"
+                    size="small"
+                    icon="auto_awesome"
+                    disabled={isSubmitting || isAutoCompleting}
+                  >
+                    {t('assets:form.autocomplete.button', 'Autocomplete')}
+                  </Button>
+                }
+                menuWidth="w-72"
+              >
+                <div className="py-1 text-sm">
+                  <button
+                    type="button"
+                    className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10"
+                    onClick={async () => {
+                      setIsAutoCompleting(true);
+                      try {
+                        const patch = await assetService.autocomplete(form.values, 'ai');
+                        const entries = Object.entries(patch || {});
+                        if (entries.length === 0) {
+                          addToast(t('assets:form.autocomplete.nothing', 'No suggestions available.'), 'info');
+                        } else {
+                          for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
+                            if (key === 'previewImageUrl') continue; // avoid media fields
+
+                            if (key === 'contentTags' || key === 'tagIds') {
+                              const tags = Array.isArray(value) ? value : [];
+                              form.updateField(key, tags as any);
+                            } else if (Array.isArray(value)) {
+                              // Keep arrays as arrays
+                              form.updateField(key, value as any);
+                            } else if (typeof value === 'object' && value !== null) {
+                              // Convert objects to a readable string
+                              const text = Object.entries(value as Record<string, unknown>)
+                                .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
+                              form.updateField(key, text as any);
+                            } else if (key in form.values) {
+                              form.updateField(key, value as any);
+                            }
+                          }
+                          addToast(t('assets:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
+                        }
+                      } catch (e) {
+                        addToast(t('assets:form.autocomplete.failed', 'Failed to autocomplete.'), 'error');
+                      } finally {
+                        setIsAutoCompleting(false);
+                      }
+                    }}
+                  >
+                    <span className="material-symbols-outlined text-base">auto_fix_high</span>
+                    {t('assets:form.autocomplete.ai', 'Autocomplete with AI')}
+                  </button>
+                  <button
+                    type="button"
+                    className="flex w-full items-center gap-2 px-3 py-2 hover:bg-primary/10"
+                    onClick={async () => {
+                      setIsAutoCompleting(true);
+                      try {
+                        const patch = await assetService.autocomplete(form.values, 'web');
+                        const entries = Object.entries(patch || {});
+                        if (entries.length === 0) {
+                          addToast(t('assets:form.autocomplete.nothing', 'No suggestions available.'), 'info');
+                        } else {
+                          for (const [key, value] of entries as Array<[keyof typeof form.values, any]>) {
+                            if (key === 'previewImageUrl') continue; // avoid media fields
+
+                            if (key === 'contentTags' || key === 'tagIds') {
+                              const tags = Array.isArray(value) ? value : [];
+                              form.updateField(key, tags as any);
+                            } else if (Array.isArray(value)) {
+                              // Keep arrays as arrays
+                              form.updateField(key, value as any);
+                            } else if (typeof value === 'object' && value !== null) {
+                              // Convert objects to a readable string
+                              const text = Object.entries(value as Record<string, unknown>)
+                                .map(([k, v]) => `${k}: ${String(v)}`).join('; ');
+                              form.updateField(key, text as any);
+                            } else if (key in form.values) {
+                              form.updateField(key, value as any);
+                            }
+                          }
+                          addToast(t('assets:form.autocomplete.applied', 'Autocomplete applied.'), 'success');
+                        }
+                      } catch (e) {
+                        addToast(t('assets:form.autocomplete.failed', 'Failed to autocomplete.'), 'error');
+                      } finally {
+                        setIsAutoCompleting(false);
+                      }
+                    }}
+                  >
+                    <span className="material-symbols-outlined text-base">language</span>
+                    {t('assets:form.autocomplete.web', 'Autocomplete with web search')}
+                  </button>
+                </div>
+              </SmartDropdown>
               <Button
                 type="button"
                 variant="light"

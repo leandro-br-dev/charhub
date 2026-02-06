@@ -5,11 +5,13 @@ import { requireAuth, optionalAuth } from '../../middleware/auth';
 import { asyncMulterHandler } from '../../middleware/multerErrorHandler';
 import { logger } from '../../config/logger';
 import { prisma } from '../../config/database';
+import { AssetType, AssetCategory } from '../../generated/prisma';
 import * as assetService from '../../services/assetService';
 import * as characterService from '../../services/characterService';
 import { r2Service } from '../../services/r2Service';
 import { processImageByType } from '../../services/imageProcessingService';
 import { sendError, API_ERROR_CODES } from '../../utils/apiErrors';
+import { runAssetAutocomplete, AssetAutocompleteMode } from '../../agents/assetAutocompleteAgent';
 
 const router = Router();
 const upload = multer({
@@ -43,11 +45,6 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       description,
       type,
       category,
-      promptPrimary,
-      promptContext,
-      negativePrompt,
-      placementZone,
-      placementDetail,
       previewImageUrl,
       style,
       ageRating,
@@ -68,11 +65,6 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
       description,
       type,
       category,
-      promptPrimary,
-      promptContext,
-      negativePrompt,
-      placementZone,
-      placementDetail,
       previewImageUrl,
       style,
       ageRating,
@@ -100,16 +92,63 @@ router.post('/', requireAuth, async (req: Request, res: Response) => {
 });
 
 /**
+ * POST /api/v1/assets/autocomplete
+ * Given partial asset fields, return proposed values for missing ones.
+ * Body: { mode: 'ai' | 'web', payload: Partial<AssetFormValues> }
+ */
+router.post('/autocomplete', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const userId = req.auth?.user?.id;
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    const { mode, payload } = req.body || {};
+    const selectedMode: AssetAutocompleteMode = mode === 'web' ? 'web' : 'ai';
+
+    // Get language from payload or fallback to user preference
+    const preferredLang = (payload as any)?.originalLanguageCode || req.auth?.user?.preferredLanguage || 'en';
+
+    logger.info({ userId, preferredLang, mode: selectedMode }, 'Asset autocomplete requested');
+
+    // Sanitize payload: only accept known keys
+    const allowedKeys = new Set([
+      'name','description','type','category','style','ageRating','contentTags','visibility','originalLanguageCode'
+    ]);
+    const safePayload: Record<string, unknown> = {};
+    if (payload && typeof payload === 'object') {
+      for (const [k, v] of Object.entries(payload)) {
+        if (allowedKeys.has(k)) safePayload[k] = v;
+      }
+    }
+
+    const suggestions = await runAssetAutocomplete(safePayload as any, selectedMode, preferredLang);
+    return res.json({ success: true, data: suggestions });
+  } catch (error) {
+    logger.error({ error }, 'Error running asset autocomplete');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to autocomplete asset',
+    });
+  }
+});
+
+/**
  * GET /api/v1/assets
  * List assets with filters
- * Query params: type, category, search, authorId, visibility, style, skip, limit
+ * Query params: type(s), category(ies), search, authorId, visibility, style, skip, limit
+ *
+ * Supports comma-separated values for type and category filters:
+ * - types=CLOTHING,WEAPON (comma-separated array)
+ * - categories=WEARABLE,HOLDABLE (comma-separated array)
  */
 router.get('/', optionalAuth, async (req: Request, res: Response) => {
   try {
     const userId = req.auth?.user?.id;
     const {
       type,
+      types,
       category,
+      categories,
       search,
       authorId,
       visibility,
@@ -119,14 +158,30 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
       public: publicOnly,
     } = req.query;
 
+    // Parse comma-separated filter values
+    const parseFilterArray = (value: unknown): string[] | undefined => {
+      if (typeof value === 'string') {
+        return value.split(',').map(v => v.trim()).filter(Boolean);
+      }
+      return undefined;
+    };
+
+    // Support both singular and plural query param names
+    const typeFilters = parseFilterArray(types) || parseFilterArray(type);
+    const categoryFilters = parseFilterArray(categories) || parseFilterArray(category);
+
+    // Cast to proper enum types for service
+    const typeFiltersTyped = typeFilters as AssetType[] | undefined;
+    const categoryFiltersTyped = categoryFilters as AssetCategory[] | undefined;
+
     let assets;
 
     // If filtering by specific author
     if (authorId && typeof authorId === 'string') {
       assets = await assetService.listAssets({
         authorId,
-        type: typeof type === 'string' ? type as any : undefined,
-        category: typeof category === 'string' ? category as any : undefined,
+        type: typeFiltersTyped,
+        category: categoryFiltersTyped,
         search: typeof search === 'string' ? search : undefined,
         visibility: typeof visibility === 'string' ? visibility as any : undefined,
         style: typeof style === 'string' ? style : undefined,
@@ -138,8 +193,8 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
     else if (userId && publicOnly !== 'true') {
       assets = await assetService.listAssets({
         authorId: userId,
-        type: typeof type === 'string' ? type as any : undefined,
-        category: typeof category === 'string' ? category as any : undefined,
+        type: typeFiltersTyped,
+        category: categoryFiltersTyped,
         search: typeof search === 'string' ? search : undefined,
         visibility: typeof visibility === 'string' ? visibility as any : undefined,
         style: typeof style === 'string' ? style : undefined,
@@ -150,8 +205,8 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
     // Otherwise get public assets
     else {
       assets = await assetService.getPublicAssets({
-        type: typeof type === 'string' ? type as any : undefined,
-        category: typeof category === 'string' ? category as any : undefined,
+        type: typeFiltersTyped,
+        category: categoryFiltersTyped,
         search: typeof search === 'string' ? search : undefined,
         skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
         limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
@@ -167,6 +222,97 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
     logger.error({ error }, 'Error listing assets');
     return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
       message: 'Failed to list assets',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/assets/favorites
+ * Get user's favorite assets
+ * NOTE: Must come BEFORE /:id route to avoid "favorites" being captured as an ID
+ */
+router.get('/favorites', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    const skip = typeof req.query.skip === 'string' ? parseInt(req.query.skip, 10) : 0;
+    const limit = typeof req.query.limit === 'string' ? parseInt(req.query.limit, 10) : 20;
+
+    const assets = await assetService.getFavoriteAssets(userId, { skip, limit });
+
+    return res.json({
+      success: true,
+      data: assets,
+      count: assets.length,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting favorite assets');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get favorite assets',
+    });
+  }
+});
+
+/**
+ * POST /api/v1/assets/:id/favorite
+ * Toggle favorite status for an asset
+ * NOTE: Must come BEFORE /:id route to match /id/favorite pattern
+ */
+router.post('/:id/favorite', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.auth?.user?.id;
+
+    if (!userId) {
+      return sendError(res, 401, API_ERROR_CODES.AUTH_REQUIRED);
+    }
+
+    const { isFavorite } = req.body;
+
+    if (typeof isFavorite !== 'boolean') {
+      return sendError(res, 400, API_ERROR_CODES.INVALID_INPUT, {
+        message: 'isFavorite must be a boolean',
+      });
+    }
+
+    const result = await assetService.toggleFavoriteAsset(userId, id, isFavorite);
+
+    return res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error toggling favorite');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to toggle favorite',
+    });
+  }
+});
+
+/**
+ * GET /api/v1/assets/:id/stats
+ * Get asset statistics (favorite status, usage count, etc.)
+ * NOTE: Must come BEFORE /:id route to match /id/stats pattern
+ */
+router.get('/:id/stats', optionalAuth, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const userId = req.auth?.user?.id;
+
+    const stats = await assetService.getAssetStats(id, userId);
+
+    return res.json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    logger.error({ error }, 'Error getting asset stats');
+    return sendError(res, 500, API_ERROR_CODES.INTERNAL_ERROR, {
+      message: 'Failed to get asset stats',
     });
   }
 });
@@ -232,11 +378,6 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
       description,
       type,
       category,
-      promptPrimary,
-      promptContext,
-      negativePrompt,
-      placementZone,
-      placementDetail,
       previewImageUrl,
       style,
       ageRating,
@@ -250,11 +391,6 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
       description,
       type,
       category,
-      promptPrimary,
-      promptContext,
-      negativePrompt,
-      placementZone,
-      placementDetail,
       previewImageUrl,
       style,
       ageRating,

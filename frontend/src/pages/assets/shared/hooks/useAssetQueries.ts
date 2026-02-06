@@ -29,7 +29,7 @@ export function useAssetListQuery(
   return useQuery<AssetListResponse, Error>({
     queryKey: listQueryKey(filters),
     queryFn: () => assetService.list(filters),
-    staleTime: 1000 * 30,
+    staleTime: 0, // Always refetch when filters change
     ...options
   });
 }

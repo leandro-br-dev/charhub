@@ -9,17 +9,91 @@ import { logger } from '../config/logger';
  * Assets include: clothing, accessories, scars, hairstyles, objects, vehicles, furniture, and props.
  */
 
+// Type for asset with relations
+type AssetWithRelations = Prisma.AssetGetPayload<{
+  include: {
+    author: {
+      select: {
+        id: true;
+        displayName: true;
+        avatarUrl: true;
+      };
+    };
+    images: {
+      orderBy: {
+        createdAt: 'asc';
+      };
+    };
+    tags: {
+      include: {
+        tag: {
+          select: {
+            id: true;
+            name: true;
+            type: true;
+          };
+        };
+      };
+    };
+    _count: {
+      select: {
+        characterAssets: true;
+      };
+    };
+  };
+}>;
+
+/**
+ * Computed asset fields for frontend compatibility
+ */
+export interface AssetWithComputedFields extends AssetWithRelations {
+  previewUrl: string | null;
+  thumbnailUrl: string | null;
+  format: string | null;
+}
+
+/**
+ * Transform asset to include computed fields for frontend compatibility
+ *
+ * Computed fields:
+ * - previewUrl: Same as previewImageUrl (for frontend compatibility)
+ * - thumbnailUrl: First image where imageType is 'preview', or first image overall
+ * - format: Derived from image metadata or defaults to 'WEBP'
+ */
+function transformAssetWithComputedFields(asset: AssetWithRelations): AssetWithComputedFields {
+  // Find thumbnail: prefer preview type, fallback to first image
+  const previewImage = asset.images.find((img: { imageType: string }) => img.imageType === 'preview');
+  const firstImage = asset.images[0];
+  const thumbnailImage = previewImage || firstImage;
+
+  // Derive format from image URL or default to WEBP
+  const format = thumbnailImage?.imageUrl
+    ? (thumbnailImage.imageUrl.match(/\.(webp|png|jpg|jpeg|gif)(?:\?|$)/i)?.[1]?.toUpperCase() || 'WEBP')
+    : null;
+
+  return {
+    ...asset,
+    previewUrl: asset.previewImageUrl,
+    thumbnailUrl: thumbnailImage?.imageUrl || null,
+    format,
+  };
+}
+
+/**
+ * Transform array of assets to include computed fields
+ */
+function transformAssetsWithComputedFields(
+  assets: AssetWithRelations[]
+): AssetWithComputedFields[] {
+  return assets.map(transformAssetWithComputedFields);
+}
+
 // Input types for asset operations
 export interface CreateAssetInput {
   name: string;
   description: string;
   type: AssetType;
   category: AssetCategory;
-  promptPrimary?: string | null;
-  promptContext?: string | null;
-  negativePrompt?: string | null;
-  placementZone?: string | null;
-  placementDetail?: string | null;
   previewImageUrl?: string | null;
   style?: VisualStyle | null;
   ageRating?: string;
@@ -35,11 +109,6 @@ export interface UpdateAssetInput {
   description?: string;
   type?: AssetType;
   category?: AssetCategory;
-  promptPrimary?: string | null;
-  promptContext?: string | null;
-  negativePrompt?: string | null;
-  placementZone?: string | null;
-  placementDetail?: string | null;
   previewImageUrl?: string | null;
   style?: VisualStyle | null;
   ageRating?: string;
@@ -50,8 +119,8 @@ export interface UpdateAssetInput {
 
 export interface ListAssetsFilters {
   authorId?: string;
-  type?: AssetType;
-  category?: AssetCategory;
+  type?: AssetType | AssetType[];
+  category?: AssetCategory | AssetCategory[];
   search?: string;
   visibility?: Visibility;
   style?: string;
@@ -84,6 +153,7 @@ const assetInclude = {
   author: {
     select: {
       id: true,
+      username: true,
       displayName: true,
       avatarUrl: true,
     },
@@ -150,7 +220,7 @@ export async function createAsset(data: CreateAssetInput) {
 /**
  * Get asset by ID
  */
-export async function getAssetById(assetId: string) {
+export async function getAssetById(assetId: string): Promise<AssetWithComputedFields | null> {
   try {
     const asset = await prisma.asset.findUnique({
       where: { id: assetId },
@@ -161,7 +231,7 @@ export async function getAssetById(assetId: string) {
       return null;
     }
 
-    return asset;
+    return transformAssetWithComputedFields(asset);
   } catch (error) {
     logger.error({ error, assetId }, 'Error getting asset by ID');
     throw error;
@@ -171,7 +241,7 @@ export async function getAssetById(assetId: string) {
 /**
  * List assets with filters
  */
-export async function listAssets(filters: ListAssetsFilters) {
+export async function listAssets(filters: ListAssetsFilters): Promise<AssetWithComputedFields[]> {
   try {
     const {
       authorId,
@@ -191,14 +261,14 @@ export async function listAssets(filters: ListAssetsFilters) {
       where.authorId = authorId;
     }
 
-    // Type filter
+    // Type filter (supports both single value and array)
     if (type) {
-      where.type = type;
+      where.type = Array.isArray(type) ? { in: type } : type;
     }
 
-    // Category filter
+    // Category filter (supports both single value and array)
     if (category) {
-      where.category = category;
+      where.category = Array.isArray(category) ? { in: category } : category;
     }
 
     // Visibility filter
@@ -233,7 +303,7 @@ export async function listAssets(filters: ListAssetsFilters) {
       'Assets listed successfully'
     );
 
-    return assets;
+    return transformAssetsWithComputedFields(assets);
   } catch (error) {
     logger.error({ error, filters }, 'Error listing assets');
     throw error;
@@ -249,7 +319,7 @@ export async function searchAssets(query: string, options?: {
   authorId?: string;
   skip?: number;
   limit?: number;
-}) {
+}): Promise<AssetWithComputedFields[]> {
   try {
     const {
       type,
@@ -278,7 +348,6 @@ export async function searchAssets(query: string, options?: {
       where.OR = [
         { name: { contains: searchTerm, mode: 'insensitive' } },
         { description: { contains: searchTerm, mode: 'insensitive' } },
-        { promptPrimary: { contains: searchTerm, mode: 'insensitive' } },
       ];
     }
 
@@ -295,7 +364,7 @@ export async function searchAssets(query: string, options?: {
       'Asset search completed'
     );
 
-    return assets;
+    return transformAssetsWithComputedFields(assets);
   } catch (error) {
     logger.error({ error, query, options }, 'Error searching assets');
     throw error;
@@ -678,12 +747,12 @@ export async function getAssetCountByUser(userId: string): Promise<number> {
  * Get public assets
  */
 export async function getPublicAssets(options?: {
-  type?: AssetType;
-  category?: AssetCategory;
+  type?: AssetType | AssetType[];
+  category?: AssetCategory | AssetCategory[];
   search?: string;
   skip?: number;
   limit?: number;
-}) {
+}): Promise<AssetWithComputedFields[]> {
   try {
     const {
       type,
@@ -697,12 +766,14 @@ export async function getPublicAssets(options?: {
       visibility: Visibility.PUBLIC,
     };
 
+    // Type filter (supports both single value and array)
     if (type) {
-      where.type = type;
+      where.type = Array.isArray(type) ? { in: type } : type;
     }
 
+    // Category filter (supports both single value and array)
     if (category) {
-      where.category = category;
+      where.category = Array.isArray(category) ? { in: category } : category;
     }
 
     if (search && search.trim()) {
@@ -726,9 +797,173 @@ export async function getPublicAssets(options?: {
       'Public assets fetched'
     );
 
-    return assets;
+    return transformAssetsWithComputedFields(assets);
   } catch (error) {
     logger.error({ error, options }, 'Error getting public assets');
+    throw error;
+  }
+}
+
+/**
+ * Toggle favorite status for an asset
+ */
+export async function toggleFavoriteAsset(
+  userId: string,
+  assetId: string,
+  isFavorite: boolean
+): Promise<{ success: boolean; isFavorite: boolean }> {
+  try {
+    // Verify asset exists
+    const asset = await prisma.asset.findUnique({
+      where: { id: assetId },
+      select: { id: true },
+    });
+
+    if (!asset) {
+      throw new Error('Asset not found');
+    }
+
+    if (isFavorite) {
+      // Add to favorites
+      await prisma.assetFavorite.upsert({
+        where: {
+          userId_assetId: {
+            userId,
+            assetId,
+          },
+        },
+        create: {
+          userId,
+          assetId,
+        },
+        update: {}, // No-op if already exists
+      });
+
+      logger.debug({ userId, assetId }, 'Asset added to favorites');
+      return { success: true, isFavorite: true };
+    } else {
+      // Remove from favorites
+      await prisma.assetFavorite.deleteMany({
+        where: {
+          userId,
+          assetId,
+        },
+      });
+
+      logger.debug({ userId, assetId }, 'Asset removed from favorites');
+      return { success: true, isFavorite: false };
+    }
+  } catch (error) {
+    logger.error({ error, userId, assetId, isFavorite }, 'Error toggling favorite');
+    throw error;
+  }
+}
+
+/**
+ * Get user's favorite assets
+ */
+export async function getFavoriteAssets(
+  userId: string,
+  options: {
+    skip?: number;
+    limit?: number;
+  } = {}
+): Promise<AssetWithComputedFields[]> {
+  try {
+    const { skip = 0, limit = 20 } = options;
+
+    // Get favorite asset IDs
+    const favorites = await prisma.assetFavorite.findMany({
+      where: { userId },
+      select: { assetId: true },
+      orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
+    });
+
+    if (favorites.length === 0) {
+      return [];
+    }
+
+    const assetIds = favorites.map(f => f.assetId);
+
+    // Fetch full asset data
+    const assets = await prisma.asset.findMany({
+      where: { id: { in: assetIds } },
+      include: assetInclude,
+    });
+
+    // Sort by the order of favorite IDs (most recent first)
+    const assetsMap = new Map(assets.map(a => [a.id, a]));
+    const sortedAssets = assetIds
+      .map(id => assetsMap.get(id))
+      .filter(Boolean) as AssetWithRelations[];
+
+    logger.debug(
+      { userId, count: sortedAssets.length },
+      'Favorite assets fetched'
+    );
+
+    return transformAssetsWithComputedFields(sortedAssets);
+  } catch (error) {
+    logger.error({ error, userId }, 'Error getting favorite assets');
+    throw error;
+  }
+}
+
+/**
+ * Get asset stats (favorite status, usage count, etc.)
+ */
+export async function getAssetStats(
+  assetId: string,
+  userId?: string
+): Promise<{
+  id: string;
+  isFavoritedByUser: boolean;
+  characterCount: number;
+  imageCount: number;
+}> {
+  try {
+    // Get basic stats
+    const asset = await prisma.asset.findUnique({
+      where: { id: assetId },
+      select: {
+        id: true,
+        _count: {
+          select: {
+            characterAssets: true,
+            images: true,
+          },
+        },
+      },
+    });
+
+    if (!asset) {
+      throw new Error('Asset not found');
+    }
+
+    // Check if favorited by user
+    let isFavoritedByUser = false;
+    if (userId) {
+      const favorite = await prisma.assetFavorite.findUnique({
+        where: {
+          userId_assetId: {
+            userId,
+            assetId,
+          },
+        },
+      });
+      isFavoritedByUser = !!favorite;
+    }
+
+    return {
+      id: asset.id,
+      isFavoritedByUser,
+      characterCount: asset._count.characterAssets,
+      imageCount: asset._count.images,
+    };
+  } catch (error) {
+    logger.error({ error, assetId, userId }, 'Error getting asset stats');
     throw error;
   }
 }

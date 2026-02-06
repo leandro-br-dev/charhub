@@ -17,6 +17,7 @@
       "SCAR": "Scar",
       "HAIRSTYLE": "Hairstyle",
       "OBJECT": "Object",
+      "WEAPON": "Weapon",
       "VEHICLE": "Vehicle",
       "FURNITURE": "Furniture",
       "PROP": "Prop"
@@ -27,6 +28,7 @@
       "SCAR": "Markings, scars, and body features",
       "HAIRSTYLE": "Hair styles and colors",
       "OBJECT": "Handheld objects and items",
+      "WEAPON": "Weapons, melee weapons, firearms",
       "VEHICLE": "Vehicles and mounts",
       "FURNITURE": "Furniture and structural elements",
       "PROP": "Background props and decorations"
@@ -57,12 +59,33 @@
       "head": "Worn on head",
       "feet": "Worn on feet"
     },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realistic",
+      "SEMI_REALISTIC": "Semi-Realistic",
+      "CARTOON": "Cartoon",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Comic",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "imageTypes": {
+      "preview": "Preview",
+      "reference": "Reference",
+      "transparent": "Transparent",
+      "in_context": "In Context"
+    },
     "accessibility": {
       "addToFavorites": "Add to favorites",
       "removeFromFavorites": "Remove from favorites"
     },
     "stats": {
-      "characters": "Characters",
+      "characters": "Character",
+      "characters_plural": "Characters",
+      "images": "Image",
+      "images_plural": "Images",
       "charactersShort": "{{count}}K characters",
       "charactersShort_plural": "{{count}}K characters"
     },
@@ -71,7 +94,9 @@
       "subtitle": "Create and manage assets for your characters. Assets include clothing, accessories, objects, and more.",
       "sidebar": {
         "description": "Browse and manage your creative assets.",
-        "viewGallery": "View Gallery"
+        "viewGallery": "View Gallery",
+        "myAsset": "My asset",
+        "noAssetsFound": "No assets found."
       },
       "actions": {
         "newAsset": "New Asset",
@@ -108,6 +133,8 @@
     "form": {
       "submit": "Save",
       "cancel": "Cancel",
+      "create": "Create Asset",
+      "saveChanges": "Save Changes",
       "sections": {
         "details": "Details",
         "detailsHint": "Basic information about this asset.",
@@ -168,19 +195,53 @@
         "invalidUrl": "Enter a valid image URL (http/https).",
         "saveFirst": "Save the asset first to add images"
       },
+      "cover": {
+        "header": "Asset cover",
+        "description": "Visual representation of your asset.",
+        "upload": "Select image",
+        "change": "Change image",
+        "remove": "Remove",
+        "fromDevice": "Upload from device",
+        "fromUrl": "Use image URL",
+        "generateAI": "Generate with AI",
+        "aiComingSoon": "AI generation coming soon for assets",
+        "urlModalTitle": "Use image from URL",
+        "urlLabel": "Image URL",
+        "preview": "Preview",
+        "previewAlt": "Asset cover preview",
+        "invalidUrl": "Enter a valid image URL (http/https).",
+        "error": "We could not load this image. {{message}}",
+        "loading": "Loading...",
+        "uploading": "Uploading...",
+        "helperCreate": "Pick a cover image now and we will keep it while you fill out the rest of the form.",
+        "helperEdit": "Update the cover image whenever you like. Changes apply as soon as you save."
+      },
       "tabs": {
         "identity": "Identity",
         "details": "Details",
         "configuration": "Configuration",
+        "classification": "Classification",
         "images": "Images",
-        "lockedHint": "Fill in the basic identity details to unlock the other sections."
+        "lockedHint": "Fill in the basic details to unlock the other sections."
+      },
+      "autocomplete": {
+        "button": "Autocomplete",
+        "ai": "Autocomplete with AI",
+        "web": "Autocomplete with web search",
+        "nothing": "No suggestions available.",
+        "applied": "Autocomplete applied.",
+        "failed": "Failed to autocomplete."
       }
     },
     "create": {
       "title": "Create a new asset",
       "subtitle": "Define the asset's properties and visual characteristics.",
       "saveButton": "Save asset",
-      "cancelButton": "Cancel and go back"
+      "cancelButton": "Cancel and go back",
+      "cover": {
+        "header": "Asset cover",
+        "description": "Visual representation of your asset."
+      }
     },
     "edit": {
       "title": "Edit asset",
@@ -194,6 +255,10 @@
         "title": "Access Denied",
         "message": "You do not have permission to edit this asset.",
         "backButton": "Back to Assets"
+      },
+      "cover": {
+        "header": "Asset cover",
+        "description": "Visual representation of your asset."
       }
     },
     "detail": {

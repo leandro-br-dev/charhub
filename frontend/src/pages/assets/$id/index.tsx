@@ -5,6 +5,7 @@ import { Button } from '../../../components/ui/Button';
 import { CachedImage } from '../../../components/ui/CachedImage';
 import { Tag as UITag, Dialog } from '../../../components/ui';
 import { AgeRatingBadge } from '../../../components/ui/AgeRatingBadge';
+import { FavoriteButton } from '../../../components/ui/FavoriteButton';
 import { useAssetDetailQuery, useAssetMutations } from '../shared/hooks/useAssetQueries';
 import { useAuth } from '../../../hooks/useAuth';
 import { usePageHeader } from '../../../hooks/usePageHeader';
@@ -133,6 +134,11 @@ export default function AssetDetailPage(): JSX.Element {
                   </div>
                 )}
 
+                {/* Favorite button - top right corner of image */}
+                <div className="absolute top-3 right-3 z-10">
+                  <FavoriteButton assetId={asset.id} size="medium" />
+                </div>
+
                 {/* Gradient fade overlay */}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
               </div>
@@ -197,7 +203,7 @@ export default function AssetDetailPage(): JSX.Element {
 
                 {/* Category badge */}
                 <UITag
-                  label={t(`assets:categories.${asset.category.toLowerCase()}`, asset.category)}
+                  label={t(`assets:categories.${asset.category}`, asset.category)}
                   tone="secondary"
                   selected
                   disabled
@@ -282,36 +288,13 @@ export default function AssetDetailPage(): JSX.Element {
                   {asset.category && (
                     <div>
                       <div className="text-sm text-muted">{t('assets:form.fields.category')}</div>
-                      <div className="font-medium text-content">{t(`assets:categories.${asset.category.toLowerCase()}`, asset.category)}</div>
+                      <div className="font-medium text-content">{t(`assets:categories.${asset.category}`, asset.category)}</div>
                     </div>
                   )}
                   {asset.style && (
                     <div>
                       <div className="text-sm text-muted">{t('assets:form.fields.style')}</div>
                       <div className="font-medium text-content">{t(`assets:styles.${asset.style}`, asset.style)}</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Placement info */}
-            {(asset.placementZone || asset.placementDetail) && (
-              <div className="mx-0 rounded-2xl bg-card p-6 shadow-lg">
-                <h2 className="mb-4 text-xl font-semibold text-title">
-                  {t('assets:detail.sections.placement', 'Placement')}
-                </h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {asset.placementZone && (
-                    <div>
-                      <div className="text-sm text-muted">{t('assets:form.fields.placementZone')}</div>
-                      <div className="font-medium text-content">{t(`assets:placementZones.${asset.placementZone}`, asset.placementZone)}</div>
-                    </div>
-                  )}
-                  {asset.placementDetail && (
-                    <div>
-                      <div className="text-sm text-muted">{t('assets:form.fields.placementDetail')}</div>
-                      <div className="font-medium text-content">{asset.placementDetail}</div>
                     </div>
                   )}
                 </div>
@@ -343,47 +326,6 @@ export default function AssetDetailPage(): JSX.Element {
                   {asset.images.length > 6 && (
                     <div className="flex items-center justify-center rounded-lg bg-background text-muted">
                       <span className="text-sm">+{asset.images.length - 6}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Prompts section */}
-            {(asset.promptPrimary || asset.promptContext || asset.negativePrompt) && (
-              <div className="mx-0 rounded-2xl bg-card p-6 shadow-lg">
-                <h2 className="mb-4 text-xl font-semibold text-title">
-                  {t('assets:detail.sections.prompts', 'Prompts')}
-                </h2>
-                <div className="space-y-4">
-                  {asset.promptPrimary && (
-                    <div>
-                      <div className="text-sm font-medium text-muted mb-1">
-                        {t('assets:form.fields.promptPrimary')}
-                      </div>
-                      <p className="text-sm text-content whitespace-pre-line bg-background rounded-lg p-3">
-                        {asset.promptPrimary}
-                      </p>
-                    </div>
-                  )}
-                  {asset.promptContext && (
-                    <div>
-                      <div className="text-sm font-medium text-muted mb-1">
-                        {t('assets:form.fields.promptContext')}
-                      </div>
-                      <p className="text-sm text-content whitespace-pre-line bg-background rounded-lg p-3">
-                        {asset.promptContext}
-                      </p>
-                    </div>
-                  )}
-                  {asset.negativePrompt && (
-                    <div>
-                      <div className="text-sm font-medium text-muted mb-1">
-                        {t('assets:form.fields.negativePrompt')}
-                      </div>
-                      <p className="text-sm text-content whitespace-pre-line bg-background rounded-lg p-3">
-                        {asset.negativePrompt}
-                      </p>
                     </div>
                   )}
                 </div>

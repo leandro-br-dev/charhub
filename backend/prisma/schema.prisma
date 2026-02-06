@@ -158,6 +158,7 @@ model User {
   // Favorites
   favoriteCharacters FavoriteCharacter[] @relation("UserFavoriteCharacters")
   storyFavorites     StoryFavorite[]     @relation("UserStoryFavorites")
+  assetFavorites     AssetFavorite[]     @relation("UserAssetFavorites")
 
   // Credit and subscription relations
   creditTransactions CreditTransaction[]  @relation("UserCreditTransactions")
@@ -239,7 +240,8 @@ enum AssetType {
   ACCESSORY // Jewelry, glasses, hats, bags
   SCAR // Scars, tattoos, birthmarks, wounds
   HAIRSTYLE // Hair styles, colors, accessories
-  OBJECT // General objects (weapons, tools, items)
+  OBJECT // General objects (tools, items)
+  WEAPON // Weapons, melee weapons, firearms
   VEHICLE // Cars, horses, ships
   FURNITURE // Tables, chairs, beds
   PROP // Stage props, decorative items
@@ -490,14 +492,6 @@ model Asset {
   type        AssetType
   category    AssetCategory
 
-  // Generation prompts
-  promptPrimary  String?   @db.Text // Main prompt for generating this asset
-  promptContext  String?   @db.Text // Additional context for when used with characters
-  negativePrompt String?   @db.Text // Negative prompt for generation
-
-  // Placement info (for wearable/holdable)
-  placementZone   String? // "face", "torso", "left_hand", "right_hand", "head", "feet"
-  placementDetail String? // "left cheek", "across nose", "forehead"
 
   // Visual
   previewImageUrl String?
@@ -520,6 +514,7 @@ model Asset {
   characterAssets CharacterAsset[]
   images          AssetImage[]
   tags            AssetTag[]
+  favorites       AssetFavorite[] @relation("AssetFavorites")
   sceneAreas      SceneAreaAsset[]
 
   // Metadata
@@ -562,6 +557,21 @@ model AssetTag {
   @@unique([assetId, tagId])
   @@index([assetId])
   @@index([tagId])
+}
+
+// User-Asset Favorite junction model
+model AssetFavorite {
+  id        String   @id @default(uuid())
+  userId    String
+  assetId   String
+  createdAt DateTime @default(now())
+
+  user  User  @relation("UserAssetFavorites", fields: [userId], references: [id], onDelete: Cascade)
+  asset Asset @relation("AssetFavorites", fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, assetId])
+  @@index([userId])
+  @@index([assetId])
 }
 
 // Character-Asset junction model

@@ -140,7 +140,7 @@ export default function AssetHubPage(): JSX.Element {
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap gap-2">
             <span className="text-xs text-muted self-center">{t('assets:hub.filters.type')}</span>
-            {(['CLOTHING', 'ACCESSORY', 'SCAR', 'HAIRSTYLE', 'OBJECT', 'VEHICLE', 'FURNITURE', 'PROP'] as AssetType[]).map((type) => (
+            {(['CLOTHING', 'ACCESSORY', 'SCAR', 'HAIRSTYLE', 'OBJECT', 'WEAPON', 'VEHICLE', 'FURNITURE', 'PROP'] as AssetType[]).map((type) => (
               <button
                 key={type}
                 type="button"
@@ -168,7 +168,7 @@ export default function AssetHubPage(): JSX.Element {
                     : 'bg-gray-200 dark:bg-gray-600 text-content hover:bg-gray-300 dark:hover:bg-gray-500'
                 }`}
               >
-                {t(`assets:categories.${category.toLowerCase()}`, category)}
+                {t(`assets:categories.${category}`, category)}
               </button>
             ))}
           </div>
@@ -227,7 +227,6 @@ export default function AssetHubPage(): JSX.Element {
               <AssetCard
                 key={asset.id}
                 asset={asset}
-                onDelete={handleDelete}
               />
             ))}
           </div>

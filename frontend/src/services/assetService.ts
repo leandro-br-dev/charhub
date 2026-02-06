@@ -302,6 +302,41 @@ export const assetService = {
       console.error('[assetService] uploadFile failed:', error);
       return { success: false, message: 'assets:errors.uploadFailed' };
     }
+  },
+
+  /**
+   * Autocomplete asset form fields using AI or web search
+   */
+  async autocomplete(
+    payload: Partial<AssetFormValues>,
+    mode: 'ai' | 'web'
+  ): Promise<Partial<AssetFormValues>> {
+    try {
+      const response = await api.post<{ success: boolean; data: Partial<AssetFormValues> }>(
+        `${BASE_PATH}/autocomplete`,
+        { mode, payload }
+      );
+      return response.data.data || {};
+    } catch (error) {
+      console.error('[assetService] autocomplete failed:', error);
+      return {};
+    }
+  },
+
+  /**
+   * Get user's favorite assets
+   */
+  async getFavorites(limit: number = 15): Promise<Asset[]> {
+    try {
+      const response = await api.get<{ success: boolean; data: Asset[] }>(
+        `${BASE_PATH}/favorites`,
+        { params: { limit } }
+      );
+      return response.data.data || [];
+    } catch (error) {
+      console.error('[assetService] getFavorites failed:', error);
+      return [];
+    }
   }
 };
 

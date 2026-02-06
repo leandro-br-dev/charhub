@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dialog } from '../../../../components/ui/Dialog';
 import { useToast } from '../../../../contexts/ToastContext';
-import { assetService } from '../../../../services/assetService';
 import type { AssetImage, AssetImageTypeDb } from '../../../../types/assets';
 import { AssetImageUploader } from './AssetImageUploader';
 
 interface AssetImagesTabProps {
   assetId?: string;
+  initialImages?: AssetImage[];
 }
 
-export function AssetImagesTab({ assetId }: AssetImagesTabProps): JSX.Element {
+export function AssetImagesTab({ assetId, initialImages = [] }: AssetImagesTabProps): JSX.Element {
   const { t } = useTranslation(['assets', 'common']);
   const { addToast } = useToast();
-  const [images, setImages] = useState<AssetImage[]>([]);
+  const [images, setImages] = useState<AssetImage[]>(initialImages);
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<AssetImageTypeDb>('preview');
@@ -21,34 +21,6 @@ export function AssetImagesTab({ assetId }: AssetImagesTabProps): JSX.Element {
 
   // Image type options
   const imageTypes: AssetImageTypeDb[] = ['preview', 'reference', 'transparent', 'in_context'];
-
-  // Load images when assetId is available
-  const loadImages = useCallback(async () => {
-    if (!assetId) return;
-    try {
-      const data = await assetService.getImages(assetId);
-      // Transform the response to match AssetImage interface
-      const transformedImages: AssetImage[] = data.map((img, index) => ({
-        id: img.id || `temp-${index}`,
-        assetId,
-        imageUrl: img.url,
-        imageType: img.type as AssetImageTypeDb,
-        width: null,
-        height: null,
-        createdAt: new Date().toISOString(),
-      }));
-      setImages(transformedImages);
-    } catch (error) {
-      console.error('[AssetImagesTab] Failed to load images:', error);
-    }
-  }, [assetId]);
-
-  // Load images on mount
-  useEffect(() => {
-    if (assetId) {
-      loadImages();
-    }
-  }, [assetId, loadImages]);
 
   const handleUploadComplete = (imageUrl: string, imageType: string) => {
     if (!assetId) return;

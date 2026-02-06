@@ -10,6 +10,7 @@ export type AssetType =
   | 'SCAR'
   | 'HAIRSTYLE'
   | 'OBJECT'
+  | 'WEAPON'
   | 'VEHICLE'
   | 'FURNITURE'
   | 'PROP';
@@ -41,11 +42,6 @@ export interface AssetCore {
   description: string;
   type: AssetType;
   category: AssetCategory;
-  promptPrimary: string | null;
-  promptContext: string | null;
-  negativePrompt: string | null;
-  placementZone: string | null;
-  placementDetail: string | null;
   previewImageUrl: string | null;
   style: VisualStyle | null;
   ageRating: AgeRating;
@@ -178,15 +174,6 @@ export interface AssetFormValues {
   type: AssetType;
   category: AssetCategory;
 
-  // Prompts
-  promptPrimary: string | null;
-  promptContext: string | null;
-  negativePrompt: string | null;
-
-  // Placement
-  placementZone: string | null;
-  placementDetail: string | null;
-
   // Visual
   previewImageUrl: string | null;
 
@@ -253,16 +240,11 @@ export const EMPTY_ASSET_FORM: AssetFormValues = {
   description: null,
   type: 'PROP',
   category: 'ENVIRONMENTAL',
-  promptPrimary: null,
-  promptContext: null,
-  negativePrompt: null,
-  placementZone: null,
-  placementDetail: null,
   previewImageUrl: null,
   style: null,
   ageRating: 'L',
   contentTags: [],
-  visibility: Visibility.PRIVATE,
+  visibility: Visibility.PUBLIC,
   tagIds: [],
 };
 
@@ -275,6 +257,7 @@ export const ASSET_TYPE_LABELS: Record<AssetType, string> = {
   SCAR: 'Scar',
   HAIRSTYLE: 'Hairstyle',
   OBJECT: 'Object',
+  WEAPON: 'Weapon',
   VEHICLE: 'Vehicle',
   FURNITURE: 'Furniture',
   PROP: 'Prop',

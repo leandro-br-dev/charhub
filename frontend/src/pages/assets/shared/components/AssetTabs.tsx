@@ -24,6 +24,7 @@ export function DetailsTab({ form }: DetailsTabProps): JSX.Element {
     'SCAR',
     'HAIRSTYLE',
     'OBJECT',
+    'WEAPON',
     'VEHICLE',
     'FURNITURE',
     'PROP',
@@ -110,71 +111,6 @@ export function DetailsTab({ form }: DetailsTabProps): JSX.Element {
                 </option>
               ))}
             </select>
-          </label>
-        </div>
-
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium text-content">
-            {t('assets:form.fields.promptPrimary')}
-          </span>
-          <textarea
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-content shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-            value={values.promptPrimary ?? ''}
-            onChange={handleTextChange('promptPrimary')}
-            placeholder={t('assets:form.placeholders.promptPrimary') ?? ''}
-            rows={2}
-          />
-        </label>
-
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium text-content">
-            {t('assets:form.fields.promptContext')}
-          </span>
-          <textarea
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-content shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-            value={values.promptContext ?? ''}
-            onChange={handleTextChange('promptContext')}
-            placeholder={t('assets:form.placeholders.promptContext') ?? ''}
-            rows={2}
-          />
-        </label>
-
-        <label className="flex flex-col gap-2 text-sm">
-          <span className="font-medium text-content">
-            {t('assets:form.fields.negativePrompt')}
-          </span>
-          <textarea
-            className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-content shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-            value={values.negativePrompt ?? ''}
-            onChange={handleTextChange('negativePrompt')}
-            placeholder={t('assets:form.placeholders.negativePrompt') ?? ''}
-            rows={2}
-          />
-        </label>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <label className="flex flex-col gap-2 text-sm">
-            <span className="font-medium text-content">
-              {t('assets:form.fields.placementZone')}
-            </span>
-            <input
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-content shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-              value={values.placementZone ?? ''}
-              onChange={handleTextChange('placementZone')}
-              placeholder={t('assets:form.placeholders.placementZone') ?? ''}
-            />
-          </label>
-
-          <label className="flex flex-col gap-2 text-sm">
-            <span className="font-medium text-content">
-              {t('assets:form.fields.placementDetail')}
-            </span>
-            <input
-              className="rounded-lg border border-border bg-background px-3 py-2 text-sm text-content shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40"
-              value={values.placementDetail ?? ''}
-              onChange={handleTextChange('placementDetail')}
-              placeholder={t('assets:form.placeholders.placementDetail') ?? ''}
-            />
           </label>
         </div>
       </div>
@@ -273,15 +209,16 @@ export function ClassificationTab({ form }: ClassificationTabProps): JSX.Element
 interface ImagesTabProps {
   form: UseAssetFormReturn;
   assetId?: string;
+  images?: any[];
 }
 
-export function ImagesTab({ form, assetId }: ImagesTabProps): JSX.Element {
+export function ImagesTab({ form, assetId, images = [] }: ImagesTabProps): JSX.Element {
   const { t } = useTranslation(['assets']);
   const { values, handleTextChange } = form;
 
   // For edit mode (when assetId exists), show the image gallery. For create mode, show prompts.
   if (assetId) {
-    return <AssetImagesTab assetId={assetId} />;
+    return <AssetImagesTab assetId={assetId} initialImages={images} />;
   }
 
   return (

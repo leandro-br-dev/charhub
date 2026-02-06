@@ -2,13 +2,13 @@
   "description": "Assets module strings for asset management, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledAsset": "名前のないアセット",
-      "updatedAt": "{{date}} に更新",
+      "untitledAsset": "無題のアセット",
+      "updatedAt": "{{date}}に更新",
       "public": "公開",
       "private": "非公開",
       "identifier": "アセットID: {{id}}",
       "unsavedChanges": "未保存の変更があります",
-      "allSaved": "すべての変更を保存しました",
+      "allSaved": "全ての変更が保存されました",
       "submitting": "保存中..."
     },
     "types": {
@@ -17,19 +17,21 @@
       "SCAR": "傷跡",
       "HAIRSTYLE": "髪型",
       "OBJECT": "オブジェクト",
+      "WEAPON": "武器",
       "VEHICLE": "乗り物",
       "FURNITURE": "家具",
       "PROP": "小道具"
     },
     "typeDescriptions": {
-      "CLOTHING": "衣料品および衣類アイテム",
+      "CLOTHING": "アパレルや衣類アイテム",
       "ACCESSORY": "着用可能なアクセサリーや装飾品",
-      "SCAR": "マーキング、傷跡、身体的特徴",
-      "HAIRSTYLE": "髪型と髪の色",
+      "SCAR": "マーク、傷跡、身体的特徴",
+      "HAIRSTYLE": "髪型や髪色",
       "OBJECT": "手持ちのオブジェクトやアイテム",
-      "VEHICLE": "乗り物およびマウント",
-      "FURNITURE": "家具および構造要素",
-      "PROP": "背景の小道具や装飾品"
+      "WEAPON": "武器、近接武器、銃器",
+      "VEHICLE": "乗り物や騎乗動物",
+      "FURNITURE": "家具や構造要素",
+      "PROP": "背景の小道具や装飾"
     },
     "categories": {
       "WEARABLE": "着用可能",
@@ -38,8 +40,8 @@
     },
     "categoryDescriptions": {
       "WEARABLE": "キャラクターが着用できるアイテム",
-      "HOLDABLE": "手に持ったり、持ち運んだりできるアイテム",
-      "ENVIRONMENTAL": "背景および環境要素"
+      "HOLDABLE": "持ったり運んだりできるアイテム",
+      "ENVIRONMENTAL": "背景や環境要素"
     },
     "placementZones": {
       "face": "顔",
@@ -51,11 +53,29 @@
     },
     "placementZoneDescriptions": {
       "face": "顔の領域に適用",
-      "torso": "体/胴体の領域に適用",
-      "left_hand": "左手に保持",
-      "right_hand": "右手に保持",
+      "torso": "身体/胴体の領域に適用",
+      "left_hand": "左手に持つ",
+      "right_hand": "右手に持つ",
       "head": "頭に着用",
       "feet": "足に着用"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "リアル",
+      "SEMI_REALISTIC": "セミリアル",
+      "CARTOON": "カートゥーン",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "コミック",
+      "CHIBI": "ちび",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "imageTypes": {
+      "preview": "プレビュー",
+      "reference": "参照",
+      "transparent": "透過",
+      "in_context": "コンテキスト内"
     },
     "accessibility": {
       "addToFavorites": "お気に入りに追加",
@@ -63,20 +83,25 @@
     },
     "stats": {
       "characters": "キャラクター",
+      "characters_plural": "キャラクター",
+      "images": "画像",
+      "images_plural": "画像",
       "charactersShort": "{{count}}K キャラクター",
       "charactersShort_plural": "{{count}}K キャラクター"
     },
     "hub": {
       "title": "アセット",
-      "subtitle": "キャラクター用アセットの作成と管理を行います。アセットには衣類、アクセサリー、オブジェクトなどが含まれます。",
+      "subtitle": "キャラクター用アセットを作成、管理します。アセットには、衣類、アクセサリー、オブジェクトなどが含まれます。",
       "sidebar": {
-        "description": "作成したアセットを閲覧・管理します。",
-        "viewGallery": "ギャラリーを表示"
+        "description": "クリエイティブなアセットを閲覧・管理します。",
+        "viewGallery": "ギャラリーを表示",
+        "myAsset": "マイアセット",
+        "noAssetsFound": "アセットが見つかりませんでした。"
       },
       "actions": {
-        "newAsset": "新規アセット",
-        "createAsset": "新規アセット",
-        "retry": "再試行"
+        "newAsset": "新しいアセット",
+        "createAsset": "新しいアセット",
+        "retry": "もう一度お試しください"
       },
       "tabs": {
         "myAssets": "マイアセット",
@@ -86,35 +111,37 @@
         "searchPlaceholder": "名前で検索",
         "type": "タイプ",
         "category": "カテゴリ",
-        "allTypes": "すべてのタイプ",
-        "allCategories": "すべてのカテゴリ",
-        "noFilter": "指定なし"
+        "allTypes": "全てのタイプ",
+        "allCategories": "全てのカテゴリ",
+        "noFilter": "全て"
       },
       "states": {
         "loading": "アセットを読み込み中...",
         "error": "アセットを読み込めませんでした。もう一度お試しください。",
         "empty": "まだアセットがありません。",
         "empty_private": "まだアセットを作成していません。",
-        "empty_public": "フィルタに一致する公開アセットはありません。",
-        "emptyHint": "最初のアセットを作成するか、フィルタを調整してください。",
-        "emptySearchHint": "フィルタを調整するか、検索をクリアしてより多くの結果を表示してください。"
+        "empty_public": "フィルターに一致する公開アセットはありません。",
+        "emptyHint": "最初のアセットを作成するか、フィルターを調整して開始してください。",
+        "emptySearchHint": "フィルターを調整するか、検索をクリアしてより多くの結果を表示してください。"
       },
       "labels": {
-        "total": "{{count}} 個のアセットが利用可能",
-        "total_plural": "{{count}} 個のアセットが利用可能",
+        "total": "{{count}}個のアセットが利用可能",
+        "total_plural": "{{count}}個のアセットが利用可能",
         "quickCreateLink": "すぐに作成を開始"
       }
     },
     "form": {
       "submit": "保存",
       "cancel": "キャンセル",
+      "create": "アセットを作成",
+      "saveChanges": "変更を保存",
       "sections": {
         "details": "詳細",
-        "detailsHint": "このアセットの基本情報です。",
+        "detailsHint": "このアセットに関する基本情報です。",
         "classification": "分類",
-        "classificationHint": "ビジュアルスタイル、年齢制限、コンテンツタグです。",
+        "classificationHint": "ビジュアルスタイル、年齢制限、コンテンツタグ。",
         "images": "画像",
-        "imagesHint": "このアセットのビジュアルリファレンスを管理します。"
+        "imagesHint": "このアセットのビジュアル参照を管理します。"
       },
       "fields": {
         "name": "名前",
@@ -133,25 +160,25 @@
       },
       "placeholders": {
         "name": "アセット名を入力",
-        "description": "このアセットについて説明...",
+        "description": "このアセットを説明...",
         "type": "タイプを選択",
         "category": "カテゴリを選択",
         "promptPrimary": "アセットがどのように表示されるべきかを説明...",
-        "promptContext": "キャラクターと一緒に使用する際の追加のコンテキスト...",
+        "promptContext": "キャラクターと使用する際の追加コンテキスト...",
         "negativePrompt": "避けるべき内容を説明...",
         "placementZone": "配置ゾーンを選択",
-        "placementDetail": "例: 「左頬」、「鼻筋」"
+        "placementDetail": "例： '左頬', '鼻の上'"
       },
       "hints": {
         "name": "このアセットの明確で分かりやすい名前",
         "description": "アセットの外観に関する詳細な説明",
-        "positivePrompt": "AI生成用のビジュアルプロンプト（例: 「シルバーのジッパーが付いた赤いレザージャケット」）",
-        "negativePrompt": "生成で避けるべき要素（例: 「破損した、破れた、汚い」）",
-        "placementZone": "アセットがキャラクターのどこに配置されるべきか"
+        "positivePrompt": "AI生成用のビジュアルプロンプト（例：「銀色のジッパーが付いた赤いレザージャケット」）",
+        "negativePrompt": "生成で避けるべき要素（例：「破損、破れ、汚れた」）",
+        "placementZone": "キャラクターにアセットを配置する場所"
       },
       "labels": {
         "unsavedChanges": "未保存の変更があります",
-        "allSaved": "変更を保存しました",
+        "allSaved": "変更が保存されました",
         "submitting": "保存中...",
         "visibilityPublic": "公開",
         "visibilityPrivate": "非公開"
@@ -165,26 +192,60 @@
         "urlModalTitle": "URLから画像を使用",
         "urlLabel": "画像URL",
         "previewAlt": "アセットカバープレビュー",
-        "invalidUrl": "有効な画像URL（http/https）を入力してください。",
+        "invalidUrl": "有効な画像URL (http/https) を入力してください。",
         "saveFirst": "画像をアップロードするには、まずアセットを保存してください"
       },
+      "cover": {
+        "header": "アセットカバー",
+        "description": "アセットの視覚的な表現です。",
+        "upload": "画像を選択",
+        "change": "画像を変更",
+        "remove": "削除",
+        "fromDevice": "デバイスからアップロード",
+        "fromUrl": "画像URLを使用",
+        "generateAI": "AIで生成",
+        "aiComingSoon": "アセットのAI生成は近日公開予定",
+        "urlModalTitle": "URLから画像を使用",
+        "urlLabel": "画像URL",
+        "preview": "プレビュー",
+        "previewAlt": "アセットカバープレビュー",
+        "invalidUrl": "有効な画像URL (http/https) を入力してください。",
+        "error": "この画像を読み込めませんでした。{{message}}",
+        "loading": "読み込み中...",
+        "uploading": "アップロード中...",
+        "helperCreate": "今すぐカバー画像を選んでください。残りのフォームを入力している間、画像を保持します。",
+        "helperEdit": "カバー画像はいつでも更新できます。保存するとすぐに変更が適用されます。"
+      },
       "tabs": {
-        "identity": "基本情報",
+        "identity": "識別情報",
         "details": "詳細",
         "configuration": "設定",
+        "classification": "分類",
         "images": "画像",
-        "lockedHint": "他のセクションをアンロックするには、基本的な基本情報を入力してください。"
+        "lockedHint": "他のセクションをアンロックするには、基本情報を入力してください。"
+      },
+      "autocomplete": {
+        "button": "自動補完",
+        "ai": "AIで自動補完",
+        "web": "Web検索で自動補完",
+        "nothing": "提案はありません。",
+        "applied": "自動補完が適用されました。",
+        "failed": "自動補完に失敗しました。"
       }
     },
     "create": {
-      "title": "新規アセットを作成",
+      "title": "新しいアセットを作成",
       "subtitle": "アセットのプロパティと視覚的特徴を定義します。",
       "saveButton": "アセットを保存",
-      "cancelButton": "キャンセルして戻る"
+      "cancelButton": "キャンセルして戻る",
+      "cover": {
+        "header": "アセットカバー",
+        "description": "アセットの視覚的な表現です。"
+      }
     },
     "edit": {
       "title": "アセットを編集",
-      "subtitle": "{{name}} を更新中",
+      "subtitle": "{{name}}を更新中",
       "saveButton": "アセットを更新",
       "cancelButton": "変更を破棄",
       "states": {
@@ -193,7 +254,11 @@
       "accessDenied": {
         "title": "アクセス拒否",
         "message": "このアセットを編集する権限がありません。",
-        "backButton": "アセット一覧に戻る"
+        "backButton": "アセットに戻る"
+      },
+      "cover": {
+        "header": "アセットカバー",
+        "description": "アセットの視覚的な表現です。"
       }
     },
     "detail": {
@@ -210,7 +275,7 @@
       },
       "confirmDelete": {
         "title": "アセットを削除しますか？",
-        "message": "この操作は元に戻せません。このアセットに関連するすべてのデータは完全に削除されます。",
+        "message": "この操作は元に戻せません。このアセットに関連する全てのデータは完全に削除されます。",
         "confirm": "完全に削除",
         "cancel": "キャンセル"
       },
@@ -221,8 +286,8 @@
         "createdBy": "作成者",
         "updatedAt": "最終更新日",
         "identifier": "アセットID: {{id}}",
-        "characterCount": "{{count}} キャラクター",
-        "characterCount_plural": "{{count}} キャラクター",
+        "characterCount": "{{count}}体 のキャラクター",
+        "characterCount_plural": "{{count}}体 のキャラクター",
         "type": "タイプ",
         "category": "カテゴリ"
       },
@@ -247,27 +312,27 @@
       "subtitle": "キャラクターに追加するアセットを選択してください",
       "searchPlaceholder": "アセットを検索...",
       "filters": {
-        "allTypes": "すべてのタイプ",
-        "allCategories": "すべてのカテゴリ",
-        "typeFilter": "タイプでフィルタ",
-        "categoryFilter": "カテゴリでフィルタ"
+        "allTypes": "全てのタイプ",
+        "allCategories": "全てのカテゴリ",
+        "typeFilter": "タイプでフィルター",
+        "categoryFilter": "カテゴリでフィルター"
       },
       "actions": {
-        "addSelected": "選択を追加 ({{count}})",
-        "addSelected_plural": "選択を追加 ({{count}})",
+        "addSelected": "選択した項目を追加 ({{count}})",
+        "addSelected_plural": "選択した項目を追加 ({{count}})",
         "cancel": "キャンセル",
         "clearSelection": "選択をクリア"
       },
       "states": {
         "loading": "アセットを読み込み中...",
         "error": "アセットの読み込みに失敗しました",
-        "empty": "利用可能なアセットがありません",
-        "noResults": "検索条件に一致するアセットはありません",
+        "empty": "利用可能なアセットはありません",
+        "noResults": "検索に一致するアセットはありません",
         "selectedEmpty": "追加するアセットを選択してください"
       },
       "labels": {
-        "selected": "{{count}} 個を選択済み",
-        "selected_plural": "{{count}} 個を選択済み"
+        "selected": "{{count}}個選択済み",
+        "selected_plural": "{{count}}個選択済み"
       },
       "assetCard": {
         "typeLabel": "タイプ",
@@ -276,9 +341,9 @@
     },
     "characterAssets": {
       "title": "キャラクターアセット",
-      "subtitle": "このキャラクターに装備されたアセットを管理",
+      "subtitle": "このキャラクターに装備されているアセットを管理",
       "tabs": {
-        "equipped": "装備中",
+        "equipped": "装備済み",
         "available": "利用可能"
       },
       "actions": {
@@ -287,7 +352,7 @@
         "configureAsset": "設定"
       },
       "states": {
-        "noEquipped": "装備中のアセットはありません",
+        "noEquipped": "装備済みのアセットはありません",
         "noAvailable": "利用可能なアセットはありません",
         "loading": "アセットを読み込み中..."
       },
@@ -298,27 +363,27 @@
         "remove": "キャラクターから削除"
       },
       "labels": {
-        "equippedCount": "{{count}} 個のアセットを装備中",
-        "equippedCount_plural": "{{count}} 個のアセットを装備中",
-        "availableCount": "{{count}} 個が利用可能",
-        "availableCount_plural": "{{count}} 個が利用可能"
+        "equippedCount": "{{count}}個のアセットを装備中",
+        "equippedCount_plural": "{{count}}個のアセットを装備中",
+        "availableCount": "{{count}}個が利用可能",
+        "availableCount_plural": "{{count}}個が利用可能"
       }
     },
     "errors": {
       "createFailed": "アセットを作成できませんでした。もう一度お試しください。",
       "updateFailed": "アセットを更新できませんでした。",
       "deleteFailed": "アセットを削除できませんでした。",
-      "detailUnavailable": "現在、アセットの詳細を読み込むことができません。",
+      "detailUnavailable": "現在、アセットの詳細を読み込めません。",
       "linkFailed": "アセットをキャラクターにリンクできませんでした。",
       "unlinkFailed": "アセットをキャラクターからリンク解除できませんでした。",
       "nameRequired": "アセット名は必須です",
       "typeRequired": "アセットタイプは必須です",
       "categoryRequired": "アセットカテゴリは必須です",
-      "invalidType": "無効なアセットタイプです",
-      "invalidCategory": "無効なアセットカテゴリです",
+      "invalidType": "無効なアセットタイプ",
+      "invalidCategory": "無効なアセットカテゴリ",
       "invalidPlacementZone": "このアセットタイプには無効な配置ゾーンです",
-      "assetInUse": "このアセットは{{count}}人のキャラクターが使用しているため削除できません。",
-      "assetInUse_plural": "このアセットは{{count}}人のキャラクターが使用しているため削除できません。"
+      "assetInUse": "このアセットは{{count}}体のキャラクターによって使用されているため、削除できません。",
+      "assetInUse_plural": "このアセットは{{count}}体のキャラクターによって使用されているため、削除できません。"
     },
     "success": {
       "created": "アセットが正常に作成されました",
@@ -328,9 +393,9 @@
       "unlinked": "アセットがキャラクターからリンク解除されました"
     },
     "messages": {
-      "imageUploaded": "画像を正常にアップロードしました",
-      "imageDeleted": "画像を正常に削除しました",
-      "coverUploaded": "カバー画像を正常に更新しました",
+      "imageUploaded": "画像が正常にアップロードされました",
+      "imageDeleted": "画像が正常に削除されました",
+      "coverUploaded": "カバー画像が正常に更新されました",
       "descriptionRequired": "説明は必須です"
     },
     "images": {
@@ -340,31 +405,31 @@
       "uploadFailed": "画像のアップロードに失敗しました",
       "deleteFailed": "画像の削除に失敗しました",
       "deleteConfirm": "この画像を削除しますか？",
-      "noImages": "まだ画像がありません。最初のビジュアルリファレンスを追加してください。",
+      "noImages": "まだ画像がありません。最初のビジュアル参照を追加してください。",
       "types": {
         "preview": "プレビュー",
-        "reference": "リファレンス",
+        "reference": "参照",
         "transparent": "透過",
-        "in_context": "インコンテキスト"
+        "in_context": "コンテキスト内"
       },
       "typeDescriptions": {
         "preview": "アセットのメインプレビュー画像",
-        "reference": "アセットのビジュアルリファレンス",
-        "transparent": "背景透過バージョン",
+        "reference": "アセットの視覚的参照",
+        "transparent": "透過背景バージョン",
         "in_context": "使用中/シーンのコンテキストで表示されるアセット"
       }
     },
     "prompts": {
       "title": "生成プロンプト",
       "primaryLabel": "ビジュアルプロンプト",
-      "primaryHint": "生成される画像でアセットがどのように表示されるべきかを説明します",
+      "primaryHint": "生成された画像でアセットがどのように表示されるべきかを説明",
       "contextLabel": "コンテキストプロンプト",
-      "contextHint": "このアセットがキャラクターと一緒に使用される際の追加のコンテキスト",
+      "contextHint": "このアセットがキャラクターと共に使用される際の追加コンテキスト",
       "negativeLabel": "ネガティブプロンプト",
       "negativeHint": "このアセットを生成する際に避けるべき要素"
     },
     "avatar": {
-      "invalidUrl": "有効な画像URL（http/https）を入力してください。",
+      "invalidUrl": "有効な画像URL (http/https) を入力してください。",
       "error": "この画像を読み込めませんでした。{{message}}",
       "aiComingSoon": "アセットのAI生成は近日公開予定",
       "generateAI": "AIで生成",

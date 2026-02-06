@@ -27,11 +27,6 @@ export default function AssetEditPage() {
       description: asset.description,
       type: asset.type,
       category: asset.category,
-      promptPrimary: asset.promptPrimary || null,
-      promptContext: asset.promptContext || null,
-      negativePrompt: asset.negativePrompt || null,
-      placementZone: asset.placementZone || null,
-      placementDetail: asset.placementDetail || null,
       previewImageUrl: asset.previewImageUrl || null,
       style: asset.style || null,
       ageRating: asset.ageRating,
@@ -120,6 +115,7 @@ export default function AssetEditPage() {
       assetName={asset.name}
       coverUrl={asset.previewImageUrl || undefined}
       assetId={assetId}
+      images={asset.images}
       form={form}
       error={error}
       isSubmitting={isSubmitting}

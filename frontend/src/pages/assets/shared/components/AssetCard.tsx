@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { type AssetSummary, type Asset, ASSET_TYPE_LABELS, ASSET_CATEGORY_LABELS } from '../../../../types/assets';
 import { CachedImage } from '../../../../components/ui/CachedImage';
 import { Tag as UITag } from '../../../../components/ui/Tag';
+import { AgeRatingBadge } from '../../../../components/ui/AgeRatingBadge';
+import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
 
 export interface AssetCardProps {
   asset: AssetSummary | Asset;
@@ -14,6 +16,8 @@ export interface AssetCardProps {
   showActions?: boolean;
   linkedCharacterCount?: number;
   imageCount?: number;
+  isFavorited?: boolean;
+  onFavoriteToggle?: (isFavorited: boolean) => void;
 }
 
 export function AssetCard({
@@ -25,6 +29,8 @@ export function AssetCard({
   showActions = true,
   linkedCharacterCount,
   imageCount,
+  isFavorited = false,
+  onFavoriteToggle,
 }: AssetCardProps): JSX.Element | null {
   const { t } = useTranslation(['assets', 'common'], { useSuspense: false });
   const navigate = useNavigate();
@@ -89,32 +95,13 @@ export function AssetCard({
       className="flex basis-[calc(50%-0.5rem)] sm:w-[180px] md:w-[192px] lg:w-[192px] max-w-[192px] flex-none cursor-pointer flex-col overflow-hidden rounded-lg bg-light shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-xl self-stretch relative"
     >
       {showActions && (
-        <div className="asset-actions absolute top-2 right-2 z-10 flex gap-1">
-          <button
-            type="button"
-            onClick={handleEditClick}
-            className="p-1.5 rounded-full bg-black/50 hover:bg-black/70 text-white transition"
-            title={t('assets:actions.edit', 'Edit')}
-          >
-            <span className="material-symbols-outlined text-sm">edit</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleDeleteClick}
-            disabled={isDeleting}
-            className={`p-1.5 rounded-full transition ${
-              showDeleteConfirm
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-black/50 hover:bg-black/70 text-white'
-            }`}
-            title={t('assets:actions.delete', 'Delete')}
-          >
-            {showDeleteConfirm ? (
-              <span className="material-symbols-outlined text-sm">check</span>
-            ) : (
-              <span className="material-symbols-outlined text-sm">delete</span>
-            )}
-          </button>
+        <div className="asset-actions absolute top-2 right-2 z-10">
+          <FavoriteButton
+            assetId={asset.id}
+            initialIsFavorited={isFavorited}
+            onToggle={onFavoriteToggle}
+            size="small"
+          />
         </div>
       )}
 
@@ -132,10 +119,11 @@ export function AssetCard({
           </div>
         )}
 
-        {/* Asset type badge */}
-        <div className="absolute bottom-2 left-2 rounded-md bg-black/60 px-2 py-1 text-xs font-medium text-white backdrop-blur-sm">
-          {typeLabel}
-        </div>
+        <AgeRatingBadge
+          ageRating={asset.ageRating}
+          variant="overlay"
+          size="sm"
+        />
 
         {isDeleting && (
           <div className="absolute inset-0 rounded-t-lg bg-black/70 backdrop-blur-sm flex items-center justify-center">
@@ -182,17 +170,13 @@ export function AssetCard({
 
         {/* Stats footer */}
         <div className="mt-auto flex items-center justify-between border-t border-border pt-3 text-xs text-muted">
-          <div className="flex items-center gap-1" title={t('assets:labels.characters', 'Characters')}>
-            <span className="material-symbols-outlined text-base">person</span>
-            <span>{resolvedLinkedCount}</span>
+          <div className="flex items-center gap-1" title={t('assets:labels.type', 'Type')}>
+            <span className="material-symbols-outlined text-base">category</span>
+            <span className="truncate max-w-[80px]">{typeLabel}</span>
           </div>
-          <div className="flex items-center gap-1" title={t('assets:labels.images', 'Images')}>
-            <span className="material-symbols-outlined text-base">photo_library</span>
-            <span>{resolvedImageCount}</span>
-          </div>
-          <div className="flex items-center gap-1" title={t('assets:labels.format', 'Format')}>
-            <span className="material-symbols-outlined text-base">extension</span>
-            <span className="uppercase">{asset.format || '—'}</span>
+          <div className="flex items-center gap-1" title={t('assets:labels.style', 'Style')}>
+            <span className="material-symbols-outlined text-base">palette</span>
+            <span className="truncate max-w-[60px]">{asset.style || '—'}</span>
           </div>
         </div>
       </div>
