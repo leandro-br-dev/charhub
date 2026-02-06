@@ -97,6 +97,22 @@ export const sceneService = {
   },
 
   /**
+   * Get user's favorite scenes
+   */
+  async getFavorites(limit = 10): Promise<Scene[]> {
+    try {
+      const response = await api.get<{ success: boolean; data: Scene[] }>(
+        `${BASE_PATH}/favorites`,
+        { params: { limit } }
+      );
+      return response.data.data || [];
+    } catch (error) {
+      console.error('[sceneService] getFavorites failed:', error);
+      return [];
+    }
+  },
+
+  /**
    * Get scene map data (full structure with areas, assets, connections)
    */
   async getSceneMap(sceneId: string): Promise<{

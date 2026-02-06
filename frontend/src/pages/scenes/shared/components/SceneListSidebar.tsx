@@ -2,24 +2,32 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CachedImage } from '../../../../components/ui/CachedImage';
+import { FavoriteButton } from '../../../../components/ui/FavoriteButton';
 import { sceneService } from '../../../../services/sceneService';
-import type { SceneSummary } from '../../../../types/scenes';
+import type { SceneSummary, Scene } from '../../../../types/scenes';
 import { useAuth } from '../../../../hooks/useAuth';
 
 type SceneListSidebarProps = {
   onLinkClick?: () => void;
 };
 
-interface SceneWithOwn extends SceneSummary {
+interface SceneWithFavorite {
+  id: string;
+  name: string;
+  coverImageUrl?: string | null;
+  areaCount?: number;
+  updatedAt: string;
+  authorId: string;
+  isFavorite: boolean;
   isOwn: boolean;
 }
 
 export function SceneListSidebar({ onLinkClick }: SceneListSidebarProps) {
-  const [scenes, setScenes] = useState<SceneWithOwn[]>([]);
+  const [scenes, setScenes] = useState<SceneWithFavorite[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
-  const { t } = useTranslation('scenes');
+  const { t } = useTranslation(['scenes', 'common']);
 
   useEffect(() => {
     const fetchScenes = async () => {
@@ -33,19 +41,44 @@ export function SceneListSidebar({ onLinkClick }: SceneListSidebarProps) {
       try {
         setIsLoading(true);
 
-        // Fetch user's own scenes, sorted by most recently updated
-        const ownResponse = await sceneService.list({ public: false, limit: 15 });
+        // Fetch user's own scenes and favorites in parallel
+        const [ownResponse, favoriteResponse] = await Promise.all([
+          sceneService.list({ public: false, limit: 15 }),
+          sceneService.getFavorites(15),
+        ]);
 
-        // Add own scenes with isOwn flag and sort by updatedAt (most recent first)
-        const combined: SceneWithOwn[] = ownResponse.items
-          .map(scene => ({
-            ...scene,
-            isOwn: scene.authorId === user.id,
-          }))
-          .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-          .slice(0, 15);
+        // Track which IDs are already added to avoid duplicates
+        const addedIds = new Set<string>();
+        const combined: SceneWithFavorite[] = [];
 
-        setScenes(combined);
+        // Add favorite scenes FIRST
+        for (const scene of favoriteResponse) {
+          if (!addedIds.has(scene.id)) {
+            combined.push({
+              ...scene,
+              isOwn: scene.authorId === user.id,
+              isFavorite: true,
+            });
+            addedIds.add(scene.id);
+          }
+        }
+
+        // Add remaining own scenes (not already in favorites)
+        for (const scene of ownResponse.items) {
+          if (!addedIds.has(scene.id)) {
+            combined.push({
+              ...scene,
+              isOwn: true,
+              isFavorite: false,
+            });
+            addedIds.add(scene.id);
+          }
+        }
+
+        // Limit to 15 total
+        const limited = combined.slice(0, 15);
+
+        setScenes(limited);
       } catch (err) {
         setError(t('messages.errorLoading', 'Failed to load scenes.'));
         console.error(err);
@@ -74,45 +107,62 @@ export function SceneListSidebar({ onLinkClick }: SceneListSidebarProps) {
           {t('emptyStates.noScenes')}
         </p>
       ) : (
-        <ul className="space-y-2">
-          {scenes.map(scene => {
-            const coverImageUrl = scene.coverImageUrl;
-            return (
-              <li key={scene.id}>
-                <Link
-                  to={`/scenes/${scene.id}`}
-                  onClick={onLinkClick}
-                  className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                >
-                  {coverImageUrl ? (
-                    <CachedImage
-                      src={coverImageUrl}
-                      alt={scene.name}
-                      className="h-8 w-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-                      <span className="material-symbols-outlined text-sm text-slate-400 dark:text-slate-600">landscape</span>
+        <>
+          <ul className="space-y-2">
+            {scenes.map(scene => {
+              const coverImageUrl = scene.coverImageUrl;
+              return (
+                <li key={scene.id}>
+                  <Link
+                    to={`/scenes/${scene.id}`}
+                    onClick={onLinkClick}
+                    className="flex items-center gap-3 rounded-md p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    {coverImageUrl ? (
+                      <CachedImage
+                        src={coverImageUrl}
+                        alt={scene.name}
+                        className="h-8 w-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                        <span className="material-symbols-outlined text-sm text-slate-400 dark:text-slate-600">landscape</span>
+                      </div>
+                    )}
+                    <div className="flex flex-col flex-grow min-w-0">
+                      <span className="text-sm font-medium text-content truncate">{scene.name}</span>
+                      <div className="flex items-center gap-1">
+                        {scene.isOwn && (
+                          <span className="text-xs text-muted">{t('sidebar.myScene')}</span>
+                        )}
+                        {scene.areaCount !== undefined && scene.areaCount > 0 && (
+                          <span className="text-xs text-muted">
+                            {scene.areaCount} {scene.areaCount === 1 ? t('stats.areas') : t('stats.areas')}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  )}
-                  <div className="flex flex-col flex-grow min-w-0">
-                    <span className="text-sm font-medium text-content truncate">{scene.name}</span>
-                    <div className="flex items-center gap-1">
-                      {scene.isOwn && (
-                        <span className="text-xs text-muted">{t('sidebar.myScene')}</span>
-                      )}
-                      {scene.areaCount !== undefined && scene.areaCount > 0 && (
-                        <span className="text-xs text-muted">
-                          {scene.areaCount} {scene.areaCount === 1 ? t('stats.areas') : t('stats.areas')}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+                    {scene.isFavorite && (
+                      <FavoriteButton
+                        sceneId={scene.id}
+                        initialIsFavorited={true}
+                        size="small"
+                        readOnly={true}
+                      />
+                    )}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <Link
+            to="/scenes/hub"
+            onClick={onLinkClick}
+            className="mx-4 mt-2 text-sm text-primary hover:underline"
+          >
+            {t('sidebar.viewAllScenes')}
+          </Link>
+        </>
       )}
     </div>
   );

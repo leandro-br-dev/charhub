@@ -218,7 +218,8 @@
       "connections": "Connections"
     },
     "sidebar": {
-      "myScene": "My Scene"
+      "myScene": "My Scene",
+      "viewAllScenes": "View all scenes"
     },
     "hub": {
       "title": "Scenes",
