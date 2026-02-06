@@ -2,11 +2,11 @@
   "resources": {
     "title": "Galería de imágenes",
     "loading": "Cargando imágenes...",
-    "error": "Error al cargar las imágenes.",
+    "error": "Error al cargar imágenes.",
     "tabs": {
       "gallery": "Galería de conversaciones",
       "avatar": "Avatares",
-      "samples": "Muestras",
+      "samples": "Ejemplos",
       "stickers": "Stickers"
     },
     "upload": "Subir imagen",

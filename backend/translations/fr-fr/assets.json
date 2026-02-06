@@ -2,17 +2,17 @@
   "description": "Assets module strings for asset management, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledAsset": "Actif sans titre",
+      "untitledAsset": "Asset sans titre",
       "updatedAt": "Mis à jour le {{date}}",
       "public": "Public",
       "private": "Privé",
-      "identifier": "ID de l'actif : {{id}}",
+      "identifier": "ID de l'asset : {{id}}",
       "unsavedChanges": "Modifications non enregistrées",
       "allSaved": "Toutes les modifications enregistrées",
       "submitting": "Enregistrement..."
     },
     "types": {
-      "CLOTHING": "Vêtement",
+      "CLOTHING": "Vêtements",
       "ACCESSORY": "Accessoire",
       "SCAR": "Cicatrice",
       "HAIRSTYLE": "Coiffure",
@@ -23,25 +23,25 @@
       "PROP": "Accessoire de décor"
     },
     "typeDescriptions": {
-      "CLOTHING": "Articles d'habillement et vêtements",
-      "ACCESSORY": "Accessoires et parures à porter",
+      "CLOTHING": "Articles vestimentaires et vêtements",
+      "ACCESSORY": "Accessoires et parures portables",
       "SCAR": "Marques, cicatrices et caractéristiques corporelles",
       "HAIRSTYLE": "Styles et couleurs de cheveux",
-      "OBJECT": "Objets et articles à tenir en main",
+      "OBJECT": "Objets et articles portables",
       "WEAPON": "Armes, armes de mêlée, armes à feu",
       "VEHICLE": "Véhicules et montures",
       "FURNITURE": "Meubles et éléments structurels",
-      "PROP": "Accessoires de décor et décorations"
+      "PROP": "Accessoires de fond et décorations"
     },
     "categories": {
-      "WEARABLE": "Portables",
-      "HOLDABLE": "À tenir",
-      "ENVIRONMENTAL": "Environnementaux"
+      "WEARABLE": "Portable",
+      "HOLDABLE": "Tenables",
+      "ENVIRONMENTAL": "Environnemental"
     },
     "categoryDescriptions": {
       "WEARABLE": "Articles pouvant être portés par un personnage",
       "HOLDABLE": "Articles pouvant être tenus ou transportés",
-      "ENVIRONMENTAL": "Éléments de décor et d'environnement"
+      "ENVIRONMENTAL": "Éléments de fond et environnementaux"
     },
     "placementZones": {
       "face": "Visage",
@@ -52,8 +52,8 @@
       "feet": "Pieds"
     },
     "placementZoneDescriptions": {
-      "face": "Appliqué à la zone du visage",
-      "torso": "Appliqué à la zone du corps/torse",
+      "face": "Appliqué sur la zone du visage",
+      "torso": "Appliqué sur la zone du corps/torse",
       "left_hand": "Tenu dans la main gauche",
       "right_hand": "Tenu dans la main droite",
       "head": "Porté sur la tête",
@@ -63,7 +63,7 @@
       "ANIME": "Anime",
       "REALISTIC": "Réaliste",
       "SEMI_REALISTIC": "Semi-réaliste",
-      "CARTOON": "Dessin animé",
+      "CARTOON": "Cartoon",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
       "COMIC": "Bande dessinée",
@@ -79,10 +79,10 @@
     },
     "accessibility": {
       "addToFavorites": "Ajouter aux favoris",
-      "removeFromFavorites": "Retirer des favoris"
+      "removeFromFavorites": "Supprimer des favoris"
     },
     "stats": {
-      "assets": "Actifs",
+      "assets": "Assets",
       "characters": "Personnage",
       "characters_plural": "Personnages",
       "images": "Image",
@@ -91,22 +91,22 @@
       "charactersShort_plural": "{{count}}K personnages"
     },
     "hub": {
-      "title": "Actifs",
-      "subtitle": "Créez et gérez des actifs pour vos personnages. Les actifs comprennent les vêtements, les accessoires, les objets, et plus encore.",
+      "title": "Assets",
+      "subtitle": "Créez et gérez des assets pour vos personnages. Les assets incluent des vêtements, des accessoires, des objets et bien plus encore.",
       "sidebar": {
-        "description": "Parcourez et gérez vos actifs créatifs.",
+        "description": "Parcourez et gérez vos assets créatifs.",
         "viewGallery": "Voir la galerie",
-        "viewAllAssets": "Voir tous les actifs",
-        "myAsset": "Mon actif",
-        "noAssetsFound": "Aucun actif trouvé."
+        "viewAllAssets": "Voir tous les assets",
+        "myAsset": "Mon asset",
+        "noAssetsFound": "Aucun asset trouvé."
       },
       "actions": {
-        "newAsset": "Nouvel actif",
-        "createAsset": "Nouvel actif",
+        "newAsset": "Nouvel asset",
+        "createAsset": "Nouvel asset",
         "retry": "Réessayer"
       },
       "tabs": {
-        "myAssets": "Mes actifs",
+        "myAssets": "Mes assets",
         "publicGallery": "Galerie publique"
       },
       "filters": {
@@ -118,41 +118,41 @@
         "noFilter": "Tous"
       },
       "states": {
-        "loading": "Chargement de vos actifs...",
-        "error": "Nous n'avons pas pu charger les actifs. Veuillez réessayer.",
-        "empty": "Aucun actif disponible pour l'instant.",
-        "empty_private": "Vous n'avez pas encore créé d'actifs.",
-        "empty_public": "Aucun actif public ne correspond à vos filtres.",
-        "emptyHint": "Commencez par créer votre premier actif ou ajustez vos filtres.",
-        "emptySearchHint": "Ajustez vos filtres ou videz la recherche pour voir plus de résultats."
+        "loading": "Chargement de vos assets...",
+        "error": "Nous n'avons pas pu charger les assets. Veuillez réessayer.",
+        "empty": "Aucun asset disponible pour le moment.",
+        "empty_private": "Vous n'avez pas encore créé d'assets.",
+        "empty_public": "Aucun asset public ne correspond à vos filtres.",
+        "emptyHint": "Commencez par créer votre premier asset ou ajustez vos filtres.",
+        "emptySearchHint": "Ajustez vos filtres ou effacez la recherche pour voir plus de résultats."
       },
       "labels": {
-        "total": "{{count}} actif disponible",
-        "total_plural": "{{count}} actifs disponibles",
+        "total": "{{count}} asset disponible",
+        "total_plural": "{{count}} assets disponibles",
         "quickCreateLink": "Passez directement à la création"
       }
     },
     "form": {
       "submit": "Enregistrer",
       "cancel": "Annuler",
-      "create": "Créer l'actif",
+      "create": "Créer l'asset",
       "saveChanges": "Enregistrer les modifications",
       "sections": {
         "details": "Détails",
-        "detailsHint": "Informations de base sur cet actif.",
+        "detailsHint": "Informations de base sur cet asset.",
         "classification": "Classification",
-        "classificationHint": "Style visuel, classification par âge et étiquettes de contenu.",
+        "classificationHint": "Style visuel, classification par âge et balises de contenu.",
         "images": "Images",
-        "imagesHint": "Gérez les références visuelles de cet actif."
+        "imagesHint": "Gérez les références visuelles de cet asset."
       },
       "fields": {
         "name": "Nom",
         "description": "Description",
         "type": "Type",
         "category": "Catégorie",
-        "promptPrimary": "Invite visuelle",
-        "promptContext": "Invite de contexte",
-        "negativePrompt": "Invite négative",
+        "promptPrimary": "Prompt visuel",
+        "promptContext": "Prompt de contexte",
+        "negativePrompt": "Prompt négatif",
         "placementZone": "Zone de placement",
         "placementDetail": "Détail du placement",
         "style": "Style visuel",
@@ -161,22 +161,22 @@
         "contentTags": "Balises de contenu"
       },
       "placeholders": {
-        "name": "Saisir le nom de l'actif",
-        "description": "Décrire cet actif...",
-        "type": "Sélectionner le type",
-        "category": "Sélectionner la catégorie",
-        "promptPrimary": "Décrire l'apparence de l'actif...",
-        "promptContext": "Contexte additionnel lorsqu'utilisé avec des personnages...",
-        "negativePrompt": "Décrire ce qu'il faut éviter...",
-        "placementZone": "Sélectionner la zone de placement",
+        "name": "Saisissez le nom de l'asset",
+        "description": "Décrivez cet asset...",
+        "type": "Sélectionnez le type",
+        "category": "Sélectionnez la catégorie",
+        "promptPrimary": "Décrivez comment l'asset doit apparaître...",
+        "promptContext": "Contexte supplémentaire lorsqu'il est utilisé avec des personnages...",
+        "negativePrompt": "Décrivez ce qu'il faut éviter...",
+        "placementZone": "Sélectionnez la zone de placement",
         "placementDetail": "ex: 'joue gauche', 'sur le nez'"
       },
       "hints": {
-        "name": "Un nom clair et descriptif pour cet actif",
-        "description": "Description détaillée de l'apparence de l'actif",
-        "positivePrompt": "Invite visuelle pour la génération IA (ex: 'une veste en cuir rouge avec des fermetures éclair argentées')",
-        "negativePrompt": "Éléments à éviter dans la génération (ex: 'endommagé, déchiré, sale')",
-        "placementZone": "Où l'actif doit être placé sur le personnage"
+        "name": "Un nom clair et descriptif pour cet asset",
+        "description": "Description détaillée de l'apparence de l'asset",
+        "positivePrompt": "Prompt visuel pour la génération IA (ex: 'une veste en cuir rouge avec des fermetures éclair argentées')",
+        "negativePrompt": "Éléments à éviter lors de la génération (ex: 'endommagé, déchiré, sale')",
+        "placementZone": "Où l'asset doit être placé sur le personnage"
       },
       "labels": {
         "unsavedChanges": "Vous avez des modifications non enregistrées",
@@ -186,36 +186,36 @@
         "visibilityPrivate": "Privé"
       },
       "images": {
-        "coverHeader": "Image de couverture de l'actif",
-        "coverDescription": "Image représentant cet actif.",
+        "coverHeader": "Image de couverture de l'asset",
+        "coverDescription": "Image représentant cet asset.",
         "upload": "Télécharger la couverture",
         "change": "Modifier la couverture",
         "uploading": "Téléchargement...",
         "urlModalTitle": "Utiliser une image depuis une URL",
         "urlLabel": "URL de l'image",
-        "previewAlt": "Aperçu de la couverture de l'actif",
-        "invalidUrl": "Saisir une URL d'image valide (http/https).",
-        "saveFirst": "Enregistrez d'abord l'actif pour ajouter des images"
+        "previewAlt": "Aperçu de la couverture de l'asset",
+        "invalidUrl": "Saisissez une URL d'image valide (http/https).",
+        "saveFirst": "Enregistrez d'abord l'asset pour ajouter des images"
       },
       "cover": {
-        "header": "Couverture de l'actif",
-        "description": "Représentation visuelle de votre actif.",
+        "header": "Image de couverture de l'asset",
+        "description": "Représentation visuelle de votre asset.",
         "upload": "Sélectionner une image",
-        "change": "Modifier l'image",
+        "change": "Changer l'image",
         "remove": "Supprimer",
         "fromDevice": "Télécharger depuis l'appareil",
-        "fromUrl": "Utiliser l'URL de l'image",
+        "fromUrl": "Utiliser une URL d'image",
         "generateAI": "Générer avec l'IA",
-        "aiComingSoon": "La génération IA pour les actifs arrive bientôt",
+        "aiComingSoon": "La génération IA pour les assets sera bientôt disponible",
         "urlModalTitle": "Utiliser une image depuis une URL",
         "urlLabel": "URL de l'image",
         "preview": "Aperçu",
-        "previewAlt": "Aperçu de la couverture de l'actif",
-        "invalidUrl": "Saisir une URL d'image valide (http/https).",
+        "previewAlt": "Aperçu de la couverture de l'asset",
+        "invalidUrl": "Saisissez une URL d'image valide (http/https).",
         "error": "Nous n'avons pas pu charger cette image. {{message}}",
         "loading": "Chargement...",
         "uploading": "Téléchargement...",
-        "helperCreate": "Choisissez une image de couverture maintenant et nous la conserverons pendant que vous remplirez le reste du formulaire.",
+        "helperCreate": "Choisissez une image de couverture maintenant et nous la conserverons pendant que vous remplissez le reste du formulaire.",
         "helperEdit": "Mettez à jour l'image de couverture quand vous le souhaitez. Les modifications s'appliquent dès que vous enregistrez."
       },
       "tabs": {
@@ -227,57 +227,57 @@
         "lockedHint": "Remplissez les détails de base pour déverrouiller les autres sections."
       },
       "autocomplete": {
-        "button": "Autocompléter",
-        "ai": "Autocompléter avec l'IA",
-        "web": "Autocompléter avec la recherche web",
+        "button": "Autocomplétion",
+        "ai": "Autocomplétion avec l'IA",
+        "web": "Autocomplétion avec recherche web",
         "nothing": "Aucune suggestion disponible.",
         "applied": "Autocomplétion appliquée.",
         "failed": "Échec de l'autocomplétion."
       }
     },
     "create": {
-      "title": "Créer un nouvel actif",
-      "subtitle": "Définissez les propriétés et les caractéristiques visuelles de l'actif.",
-      "saveButton": "Enregistrer l'actif",
+      "title": "Créer un nouvel asset",
+      "subtitle": "Définissez les propriétés et les caractéristiques visuelles de l'asset.",
+      "saveButton": "Enregistrer l'asset",
       "cancelButton": "Annuler et revenir",
       "cover": {
-        "header": "Couverture de l'actif",
-        "description": "Représentation visuelle de votre actif."
+        "header": "Image de couverture de l'asset",
+        "description": "Représentation visuelle de votre asset."
       }
     },
     "edit": {
-      "title": "Modifier l'actif",
+      "title": "Modifier l'asset",
       "subtitle": "Mise à jour de {{name}}",
-      "saveButton": "Mettre à jour l'actif",
+      "saveButton": "Mettre à jour l'asset",
       "cancelButton": "Annuler les modifications",
       "states": {
-        "loading": "Chargement de l'actif..."
+        "loading": "Chargement de l'asset..."
       },
       "accessDenied": {
         "title": "Accès refusé",
-        "message": "Vous n'avez pas l'autorisation de modifier cet actif.",
-        "backButton": "Retour aux actifs"
+        "message": "Vous n'avez pas l'autorisation de modifier cet asset.",
+        "backButton": "Retour aux Assets"
       },
       "cover": {
-        "header": "Couverture de l'actif",
-        "description": "Représentation visuelle de votre actif."
+        "header": "Image de couverture de l'asset",
+        "description": "Représentation visuelle de votre asset."
       }
     },
     "detail": {
       "states": {
-        "loading": "Chargement des détails de l'actif...",
-        "notFound": "Nous n'avons pas pu trouver cet actif."
+        "loading": "Chargement des détails de l'asset...",
+        "notFound": "Nous n'avons pas pu trouver cet asset."
       },
       "actions": {
-        "backToHub": "Retour à l'accueil",
+        "backToHub": "Retour au centre",
         "edit": "Modifier",
         "delete": "Supprimer",
         "deleting": "Suppression...",
         "share": "Partager"
       },
       "confirmDelete": {
-        "title": "Supprimer l'actif ?",
-        "message": "Cette action est irréversible. Toutes les données associées à cet actif seront définitivement supprimées.",
+        "title": "Supprimer l'asset ?",
+        "message": "Cette action est irréversible. Toutes les données associées à cet asset seront définitivement supprimées.",
         "confirm": "Supprimer définitivement",
         "cancel": "Annuler"
       },
@@ -287,7 +287,7 @@
         "createdAt": "Créé le",
         "createdBy": "Créé par",
         "updatedAt": "Dernière mise à jour",
-        "identifier": "ID de l'actif : {{id}}",
+        "identifier": "ID de l'asset : {{id}}",
         "characterCount": "{{count}} personnage",
         "characterCount_plural": "{{count}} personnages",
         "type": "Type",
@@ -295,24 +295,24 @@
       },
       "sections": {
         "description": "Description",
-        "prompts": "Invites de génération",
+        "prompts": "Prompts de génération",
         "placement": "Placement",
         "metadata": "Métadonnées"
       },
       "placement": {
-        "title": "Placement de l'actif",
+        "title": "Placement de l'asset",
         "zoneLabel": "Zone de placement",
         "categoryLabel": "Catégorie"
       },
       "characters": {
-        "title": "Personnages utilisant cet actif",
-        "empty": "Aucun personnage n'utilise cet actif pour l'instant."
+        "title": "Personnages utilisant cet asset",
+        "empty": "Aucun personnage n'utilise cet asset pour le moment."
       }
     },
     "picker": {
-      "title": "Sélectionner des actifs",
-      "subtitle": "Choisissez des actifs à ajouter à votre personnage",
-      "searchPlaceholder": "Rechercher des actifs...",
+      "title": "Sélectionner des assets",
+      "subtitle": "Choisissez les assets à ajouter à votre personnage",
+      "searchPlaceholder": "Rechercher des assets...",
       "filters": {
         "allTypes": "Tous les types",
         "allCategories": "Toutes les catégories",
@@ -320,17 +320,17 @@
         "categoryFilter": "Filtrer par catégorie"
       },
       "actions": {
-        "addSelected": "Ajouter les sélectionnés ({{count}})",
-        "addSelected_plural": "Ajouter les sélectionnés ({{count}})",
+        "addSelected": "Ajouter la sélection ({{count}})",
+        "addSelected_plural": "Ajouter la sélection ({{count}})",
         "cancel": "Annuler",
         "clearSelection": "Effacer la sélection"
       },
       "states": {
-        "loading": "Chargement des actifs...",
-        "error": "Échec du chargement des actifs",
-        "empty": "Aucun actif disponible",
-        "noResults": "Aucun actif ne correspond à votre recherche",
-        "selectedEmpty": "Sélectionnez les actifs à ajouter"
+        "loading": "Chargement des assets...",
+        "error": "Échec du chargement des assets",
+        "empty": "Aucun asset disponible",
+        "noResults": "Aucun asset ne correspond à votre recherche",
+        "selectedEmpty": "Sélectionnez des assets à ajouter"
       },
       "labels": {
         "selected": "{{count}} sélectionné",
@@ -342,57 +342,57 @@
       }
     },
     "characterAssets": {
-      "title": "Actifs du personnage",
-      "subtitle": "Gérer les actifs équipés pour ce personnage",
+      "title": "Assets du personnage",
+      "subtitle": "Gérer les assets équipés pour ce personnage",
       "tabs": {
         "equipped": "Équipés",
         "available": "Disponibles"
       },
       "actions": {
-        "addAssets": "Ajouter des actifs",
+        "addAssets": "Ajouter des assets",
         "removeAsset": "Retirer",
         "configureAsset": "Configurer"
       },
       "states": {
-        "noEquipped": "Aucun actif équipé",
-        "noAvailable": "Aucun actif disponible",
-        "loading": "Chargement des actifs..."
+        "noEquipped": "Aucun asset équipé",
+        "noAvailable": "Aucun asset disponible",
+        "loading": "Chargement des assets..."
       },
       "placement": {
-        "title": "Placement de l'actif",
+        "title": "Placement de l'asset",
         "zoneLabel": "Zone",
         "configure": "Configurer le placement",
         "remove": "Retirer du personnage"
       },
       "labels": {
-        "equippedCount": "{{count}} actif équipé",
-        "equippedCount_plural": "{{count}} actifs équipés",
+        "equippedCount": "{{count}} asset équipé",
+        "equippedCount_plural": "{{count}} assets équipés",
         "availableCount": "{{count}} disponible",
         "availableCount_plural": "{{count}} disponibles"
       }
     },
     "errors": {
-      "createFailed": "Nous n'avons pas pu créer l'actif. Veuillez réessayer.",
-      "updateFailed": "Nous n'avons pas pu mettre à jour l'actif.",
-      "deleteFailed": "Nous n'avons pas pu supprimer l'actif.",
-      "detailUnavailable": "Impossible de charger les détails de l'actif pour le moment.",
-      "linkFailed": "Échec de la liaison de l'actif au personnage.",
-      "unlinkFailed": "Échec de la dissociation de l'actif du personnage.",
-      "nameRequired": "Le nom de l'actif est requis",
-      "typeRequired": "Le type d'actif est requis",
-      "categoryRequired": "La catégorie d'actif est requise",
-      "invalidType": "Type d'actif invalide",
-      "invalidCategory": "Catégorie d'actif invalide",
-      "invalidPlacementZone": "Zone de placement invalide pour ce type d'actif",
-      "assetInUse": "Cet actif est utilisé par {{count}} personnage et ne peut pas être supprimé.",
-      "assetInUse_plural": "Cet actif est utilisé par {{count}} personnages et ne peut pas être supprimé."
+      "createFailed": "Nous n'avons pas pu créer l'asset. Veuillez réessayer.",
+      "updateFailed": "Nous n'avons pas pu mettre à jour l'asset.",
+      "deleteFailed": "Nous n'avons pas pu supprimer l'asset.",
+      "detailUnavailable": "Impossible de charger les détails de l'asset pour le moment.",
+      "linkFailed": "Échec de la liaison de l'asset au personnage.",
+      "unlinkFailed": "Échec de la dissociation de l'asset du personnage.",
+      "nameRequired": "Le nom de l'asset est requis",
+      "typeRequired": "Le type de l'asset est requis",
+      "categoryRequired": "La catégorie de l'asset est requise",
+      "invalidType": "Type d'asset invalide",
+      "invalidCategory": "Catégorie d'asset invalide",
+      "invalidPlacementZone": "Zone de placement invalide pour ce type d'asset",
+      "assetInUse": "Cet asset est utilisé par {{count}} personnage et ne peut pas être supprimé.",
+      "assetInUse_plural": "Cet asset est utilisé par {{count}} personnages et ne peut pas être supprimé."
     },
     "success": {
-      "created": "Actif créé avec succès",
-      "updated": "Actif mis à jour avec succès",
-      "deleted": "Actif supprimé avec succès",
-      "linked": "Actif lié au personnage",
-      "unlinked": "Actif dissocié du personnage"
+      "created": "Asset créé avec succès",
+      "updated": "Asset mis à jour avec succès",
+      "deleted": "Asset supprimé avec succès",
+      "linked": "Asset lié au personnage",
+      "unlinked": "Asset dissocié du personnage"
     },
     "messages": {
       "imageUploaded": "Image téléchargée avec succès",
@@ -401,9 +401,9 @@
       "descriptionRequired": "La description est requise"
     },
     "images": {
-      "title": "Images de l'actif",
+      "title": "Images de l'asset",
       "addImage": "Ajouter une image",
-      "selectType": "Sélectionner le type d'image",
+      "selectType": "Sélectionnez le type d'image",
       "uploadFailed": "Échec du téléchargement de l'image",
       "deleteFailed": "Échec de la suppression de l'image",
       "deleteConfirm": "Supprimer cette image ?",
@@ -415,28 +415,28 @@
         "in_context": "En contexte"
       },
       "typeDescriptions": {
-        "preview": "Image d'aperçu principale de l'actif",
-        "reference": "Référence visuelle de l'actif",
+        "preview": "Image d'aperçu principale pour l'asset",
+        "reference": "Référence visuelle pour l'asset",
         "transparent": "Version avec fond transparent",
-        "in_context": "Actif montré en utilisation/contexte de scène"
+        "in_context": "Asset montré en utilisation/contexte de scène"
       }
     },
     "prompts": {
-      "title": "Invites de génération",
-      "primaryLabel": "Invite visuelle",
-      "primaryHint": "Décrivez l'apparence de l'actif dans les images générées",
-      "contextLabel": "Invite de contexte",
-      "contextHint": "Contexte additionnel lorsque cet actif est utilisé avec des personnages",
-      "negativeLabel": "Invite négative",
-      "negativeHint": "Éléments à éviter lors de la génération de cet actif"
+      "title": "Prompts de génération",
+      "primaryLabel": "Prompt visuel",
+      "primaryHint": "Décrivez comment l'asset doit apparaître dans les images générées",
+      "contextLabel": "Prompt de contexte",
+      "contextHint": "Contexte supplémentaire lorsque cet asset est utilisé avec des personnages",
+      "negativeLabel": "Prompt négatif",
+      "negativeHint": "Éléments à éviter lors de la génération de cet asset"
     },
     "avatar": {
-      "invalidUrl": "Saisir une URL d'image valide (http/https).",
+      "invalidUrl": "Saisissez une URL d'image valide (http/https).",
       "error": "Nous n'avons pas pu charger cette image. {{message}}",
-      "aiComingSoon": "La génération IA pour les actifs arrive bientôt",
+      "aiComingSoon": "La génération IA pour les assets sera bientôt disponible",
       "generateAI": "Générer avec l'IA",
       "fromDevice": "Télécharger depuis l'appareil",
-      "fromUrl": "Utiliser l'URL de l'image",
+      "fromUrl": "Utiliser une URL d'image",
       "urlModalTitle": "Utiliser une image depuis une URL",
       "urlLabel": "URL de l'image",
       "preview": "Aperçu",

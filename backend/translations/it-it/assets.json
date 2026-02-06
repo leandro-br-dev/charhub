@@ -6,7 +6,7 @@
       "updatedAt": "Aggiornato il {{date}}",
       "public": "Pubblico",
       "private": "Privato",
-      "identifier": "ID risorsa: {{id}}",
+      "identifier": "ID Risorsa: {{id}}",
       "unsavedChanges": "Modifiche non salvate",
       "allSaved": "Tutte le modifiche salvate",
       "submitting": "Salvataggio in corso..."
@@ -23,29 +23,29 @@
       "PROP": "Oggetto di scena"
     },
     "typeDescriptions": {
-      "CLOTHING": "Capi di vestiario e articoli di abbigliamento",
-      "ACCESSORY": "Accessori indossabili e ornamenti",
-      "SCAR": "Marchi, cicatrici e caratteristiche corporee",
-      "HAIRSTYLE": "Stili e colori di capelli",
-      "OBJECT": "Oggetti e articoli portatili",
-      "WEAPON": "Armi, armi bianche, armi da fuoco",
+      "CLOTHING": "Capi e articoli di abbigliamento",
+      "ACCESSORY": "Accessori e ornamenti indossabili",
+      "SCAR": "Segni, cicatrici e caratteristiche corporee",
+      "HAIRSTYLE": "Acconciature e colori dei capelli",
+      "OBJECT": "Oggetti e articoli da tenere in mano",
+      "WEAPON": "Armi, armi da mischia, armi da fuoco",
       "VEHICLE": "Veicoli e cavalcature",
       "FURNITURE": "Mobili ed elementi strutturali",
       "PROP": "Oggetti di scena e decorazioni di sfondo"
     },
     "categories": {
       "WEARABLE": "Indossabile",
-      "HOLDABLE": "Tenibile",
+      "HOLDABLE": "Impugnabile",
       "ENVIRONMENTAL": "Ambientale"
     },
     "categoryDescriptions": {
-      "WEARABLE": "Articoli che possono essere indossati da un personaggio",
-      "HOLDABLE": "Articoli che possono essere tenuti o trasportati",
+      "WEARABLE": "Oggetti che possono essere indossati da un personaggio",
+      "HOLDABLE": "Oggetti che possono essere tenuti o trasportati",
       "ENVIRONMENTAL": "Elementi di sfondo e ambientali"
     },
     "placementZones": {
       "face": "Volto",
-      "torso": "Torso",
+      "torso": "Busto",
       "left_hand": "Mano sinistra",
       "right_hand": "Mano destra",
       "head": "Testa",
@@ -53,7 +53,7 @@
     },
     "placementZoneDescriptions": {
       "face": "Applicato all'area del volto",
-      "torso": "Applicato all'area del corpo/torso",
+      "torso": "Applicato all'area del corpo/busto",
       "left_hand": "Tenuto nella mano sinistra",
       "right_hand": "Tenuto nella mano destra",
       "head": "Indossato sulla testa",
@@ -82,6 +82,7 @@
       "removeFromFavorites": "Rimuovi dai preferiti"
     },
     "stats": {
+      "assets": "Risorse",
       "characters": "Personaggio",
       "characters_plural": "Personaggi",
       "images": "Immagine",
@@ -94,12 +95,13 @@
       "subtitle": "Crea e gestisci le risorse per i tuoi personaggi. Le risorse includono abbigliamento, accessori, oggetti e altro ancora.",
       "sidebar": {
         "description": "Sfoglia e gestisci le tue risorse creative.",
-        "viewGallery": "Visualizza galleria",
-        "myAsset": "La mia risorsa",
+        "viewGallery": "Visualizza Galleria",
+        "viewAllAssets": "Visualizza tutte le risorse",
+        "myAsset": "Mia risorsa",
         "noAssetsFound": "Nessuna risorsa trovata."
       },
       "actions": {
-        "newAsset": "Nuova risorsa",
+        "newAsset": "Nuova Risorsa",
         "createAsset": "Nuova risorsa",
         "retry": "Riprova"
       },
@@ -118,11 +120,11 @@
       "states": {
         "loading": "Caricamento delle tue risorse...",
         "error": "Non è stato possibile caricare le risorse. Riprova.",
-        "empty": "Nessuna risorsa disponibile ancora.",
+        "empty": "Nessuna risorsa disponibile per il momento.",
         "empty_private": "Non hai ancora creato nessuna risorsa.",
         "empty_public": "Nessuna risorsa pubblica corrisponde ai tuoi filtri.",
         "emptyHint": "Inizia creando la tua prima risorsa o modifica i tuoi filtri.",
-        "emptySearchHint": "Regola i filtri o cancella la ricerca per vedere più risultati."
+        "emptySearchHint": "Modifica i tuoi filtri o cancella la ricerca per vedere più risultati."
       },
       "labels": {
         "total": "{{count}} risorsa disponibile",
@@ -133,8 +135,8 @@
     "form": {
       "submit": "Salva",
       "cancel": "Annulla",
-      "create": "Crea risorsa",
-      "saveChanges": "Salva modifiche",
+      "create": "Crea Risorsa",
+      "saveChanges": "Salva Modifiche",
       "sections": {
         "details": "Dettagli",
         "detailsHint": "Informazioni di base su questa risorsa.",
@@ -148,15 +150,15 @@
         "description": "Descrizione",
         "type": "Tipo",
         "category": "Categoria",
-        "promptPrimary": "Prompt visivo",
-        "promptContext": "Prompt di contesto",
-        "negativePrompt": "Prompt negativo",
-        "placementZone": "Zona di posizionamento",
-        "placementDetail": "Dettaglio posizionamento",
-        "style": "Stile visivo",
+        "promptPrimary": "Prompt Visivo",
+        "promptContext": "Prompt di Contesto",
+        "negativePrompt": "Prompt Negativo",
+        "placementZone": "Zona di Posizionamento",
+        "placementDetail": "Dettaglio Posizionamento",
+        "style": "Stile Visivo",
         "visibility": "Visibilità",
-        "ageRating": "Classificazione per età",
-        "contentTags": "Tag di contenuto"
+        "ageRating": "Classificazione per Età",
+        "contentTags": "Tag di Contenuto"
       },
       "placeholders": {
         "name": "Inserisci il nome della risorsa",
@@ -164,10 +166,10 @@
         "type": "Seleziona tipo",
         "category": "Seleziona categoria",
         "promptPrimary": "Descrivi come dovrebbe apparire la risorsa...",
-        "promptContext": "Contesto aggiuntivo quando utilizzato con i personaggi...",
+        "promptContext": "Contesto aggiuntivo quando usato con i personaggi...",
         "negativePrompt": "Descrivi cosa evitare...",
         "placementZone": "Seleziona zona di posizionamento",
-        "placementDetail": "es. 'guancia sinistra', 'sul naso'"
+        "placementDetail": "es. 'guancia sinistra', 'attraverso il naso'"
       },
       "hints": {
         "name": "Un nome chiaro e descrittivo per questa risorsa",
@@ -180,15 +182,15 @@
         "unsavedChanges": "Hai modifiche non salvate",
         "allSaved": "Modifiche salvate",
         "submitting": "Salvataggio in corso...",
-        "visibilityPublic": "Pubblico",
-        "visibilityPrivate": "Privato"
+        "visibilityPublic": "Pubblica",
+        "visibilityPrivate": "Privata"
       },
       "images": {
         "coverHeader": "Copertina risorsa",
         "coverDescription": "Immagine che rappresenta questa risorsa.",
         "upload": "Carica copertina",
         "change": "Cambia copertina",
-        "uploading": "Caricamento...",
+        "uploading": "Caricamento in corso...",
         "urlModalTitle": "Usa immagine da URL",
         "urlLabel": "URL immagine",
         "previewAlt": "Anteprima copertina risorsa",
@@ -201,10 +203,10 @@
         "upload": "Seleziona immagine",
         "change": "Cambia immagine",
         "remove": "Rimuovi",
-        "fromDevice": "Carica da dispositivo",
+        "fromDevice": "Carica dal dispositivo",
         "fromUrl": "Usa URL immagine",
         "generateAI": "Genera con AI",
-        "aiComingSoon": "Generazione AI in arrivo per le risorse",
+        "aiComingSoon": "Generazione AI presto disponibile per le risorse",
         "urlModalTitle": "Usa immagine da URL",
         "urlLabel": "URL immagine",
         "preview": "Anteprima",
@@ -212,9 +214,9 @@
         "invalidUrl": "Inserisci un URL immagine valido (http/https).",
         "error": "Non è stato possibile caricare questa immagine. {{message}}",
         "loading": "Caricamento...",
-        "uploading": "Caricamento...",
+        "uploading": "Caricamento in corso...",
         "helperCreate": "Scegli ora un'immagine di copertina e la manterremo mentre compili il resto del modulo.",
-        "helperEdit": "Aggiorna l'immagine di copertina quando vuoi. Le modifiche vengono applicate non appena salvi."
+        "helperEdit": "Aggiorna l'immagine di copertina quando vuoi. Le modifiche verranno applicate non appena salvi."
       },
       "tabs": {
         "identity": "Identità",
@@ -247,14 +249,14 @@
       "title": "Modifica risorsa",
       "subtitle": "Aggiornamento di {{name}}",
       "saveButton": "Aggiorna risorsa",
-      "cancelButton": "Annulla modifiche",
+      "cancelButton": "Ignora modifiche",
       "states": {
         "loading": "Caricamento risorsa..."
       },
       "accessDenied": {
-        "title": "Accesso negato",
+        "title": "Accesso Negato",
         "message": "Non hai il permesso di modificare questa risorsa.",
-        "backButton": "Torna alle risorse"
+        "backButton": "Torna alle Risorse"
       },
       "cover": {
         "header": "Copertina risorsa",
@@ -264,28 +266,28 @@
     "detail": {
       "states": {
         "loading": "Caricamento dettagli risorsa...",
-        "notFound": "Non è stato possibile trovare questa risorsa."
+        "notFound": "Non siamo riusciti a trovare questa risorsa."
       },
       "actions": {
-        "backToHub": "Torna alla home",
+        "backToHub": "Torna all'hub",
         "edit": "Modifica",
         "delete": "Elimina",
         "deleting": "Eliminazione in corso...",
         "share": "Condividi"
       },
       "confirmDelete": {
-        "title": "Eliminare risorsa?",
-        "message": "Questa azione non può essere annullata. Tutti i dati associati a questa risorsa verranno eliminati definitivamente.",
+        "title": "Eliminare Risorsa?",
+        "message": "Questa azione non può essere annullata. Tutti i dati associati a questa risorsa verranno eliminati permanentemente.",
         "confirm": "Elimina definitivamente",
         "cancel": "Annulla"
       },
       "labels": {
-        "public": "Pubblico",
-        "private": "Privato",
-        "createdAt": "Creato il",
+        "public": "Pubblica",
+        "private": "Privata",
+        "createdAt": "Creato",
         "createdBy": "Creato da",
         "updatedAt": "Ultimo aggiornamento",
-        "identifier": "ID risorsa: {{id}}",
+        "identifier": "ID Risorsa: {{id}}",
         "characterCount": "{{count}} personaggio",
         "characterCount_plural": "{{count}} personaggi",
         "type": "Tipo",
@@ -293,27 +295,27 @@
       },
       "sections": {
         "description": "Descrizione",
-        "prompts": "Prompt di generazione",
+        "prompts": "Prompt di Generazione",
         "placement": "Posizionamento",
         "metadata": "Metadati"
       },
       "placement": {
-        "title": "Posizionamento risorsa",
-        "zoneLabel": "Zona di posizionamento",
+        "title": "Posizionamento Risorsa",
+        "zoneLabel": "Zona di Posizionamento",
         "categoryLabel": "Categoria"
       },
       "characters": {
         "title": "Personaggi che usano questa risorsa",
-        "empty": "Nessun personaggio sta usando questa risorsa ancora."
+        "empty": "Nessun personaggio sta ancora usando questa risorsa."
       }
     },
     "picker": {
-      "title": "Seleziona risorse",
+      "title": "Seleziona Risorse",
       "subtitle": "Scegli le risorse da aggiungere al tuo personaggio",
       "searchPlaceholder": "Cerca risorse...",
       "filters": {
-        "allTypes": "Tutti i tipi",
-        "allCategories": "Tutte le categorie",
+        "allTypes": "Tutti i Tipi",
+        "allCategories": "Tutte le Categorie",
         "typeFilter": "Filtra per tipo",
         "categoryFilter": "Filtra per categoria"
       },
@@ -325,10 +327,10 @@
       },
       "states": {
         "loading": "Caricamento risorse...",
-        "error": "Impossibile caricare le risorse",
+        "error": "Caricamento risorse fallito",
         "empty": "Nessuna risorsa disponibile",
         "noResults": "Nessuna risorsa corrisponde alla tua ricerca",
-        "selectedEmpty": "Seleziona le risorse da aggiungere"
+        "selectedEmpty": "Seleziona risorse da aggiungere"
       },
       "labels": {
         "selected": "{{count}} selezionato",
@@ -340,14 +342,14 @@
       }
     },
     "characterAssets": {
-      "title": "Risorse personaggio",
+      "title": "Risorse del Personaggio",
       "subtitle": "Gestisci le risorse equipaggiate a questo personaggio",
       "tabs": {
-        "equipped": "Equipaggiate",
-        "available": "Disponibili"
+        "equipped": "Equipaggiato",
+        "available": "Disponibile"
       },
       "actions": {
-        "addAssets": "Aggiungi risorse",
+        "addAssets": "Aggiungi Risorse",
         "removeAsset": "Rimuovi",
         "configureAsset": "Configura"
       },
@@ -357,7 +359,7 @@
         "loading": "Caricamento risorse..."
       },
       "placement": {
-        "title": "Posizionamento risorsa",
+        "title": "Posizionamento Risorsa",
         "zoneLabel": "Zona",
         "configure": "Configura posizionamento",
         "remove": "Rimuovi dal personaggio"
@@ -399,8 +401,8 @@
       "descriptionRequired": "La descrizione è obbligatoria"
     },
     "images": {
-      "title": "Immagini risorsa",
-      "addImage": "Aggiungi immagine",
+      "title": "Immagini della Risorsa",
+      "addImage": "Aggiungi Immagine",
       "selectType": "Seleziona tipo di immagine",
       "uploadFailed": "Caricamento immagine fallito",
       "deleteFailed": "Eliminazione immagine fallita",
@@ -420,20 +422,20 @@
       }
     },
     "prompts": {
-      "title": "Prompt di generazione",
-      "primaryLabel": "Prompt visivo",
+      "title": "Prompt di Generazione",
+      "primaryLabel": "Prompt Visivo",
       "primaryHint": "Descrivi come la risorsa dovrebbe apparire nelle immagini generate",
-      "contextLabel": "Prompt di contesto",
-      "contextHint": "Contesto aggiuntivo quando questa risorsa è utilizzata con i personaggi",
-      "negativeLabel": "Prompt negativo",
+      "contextLabel": "Prompt di Contesto",
+      "contextHint": "Contesto aggiuntivo quando questa risorsa viene utilizzata con i personaggi",
+      "negativeLabel": "Prompt Negativo",
       "negativeHint": "Elementi da evitare durante la generazione di questa risorsa"
     },
     "avatar": {
       "invalidUrl": "Inserisci un URL immagine valido (http/https).",
       "error": "Non è stato possibile caricare questa immagine. {{message}}",
-      "aiComingSoon": "Generazione AI in arrivo per le risorse",
+      "aiComingSoon": "Generazione AI presto disponibile per le risorse",
       "generateAI": "Genera con AI",
-      "fromDevice": "Carica da dispositivo",
+      "fromDevice": "Carica dal dispositivo",
       "fromUrl": "Usa URL immagine",
       "urlModalTitle": "Usa immagine da URL",
       "urlLabel": "URL immagine",

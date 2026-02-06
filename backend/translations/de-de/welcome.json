@@ -5,8 +5,8 @@
       "skip": "Überspringen",
       "back": "Zurück",
       "next": "Weiter",
-      "finish": "Abschließen",
-      "saving": "Speichern...",
+      "finish": "Fertigstellen",
+      "saving": "Wird gespeichert...",
       "progress": "Schritt {{current}} von {{total}}",
       "successTitle": "Willkommen abgeschlossen!",
       "successMessage": "Ihr Profil wurde erfolgreich eingerichtet. Viel Spaß mit CharHub!"
@@ -18,7 +18,7 @@
     },
     "username": {
       "title": "Wählen Sie Ihren Benutzernamen",
-      "subtitle": "So werden andere Benutzer Sie finden",
+      "subtitle": "So werden andere Nutzer Sie finden",
       "label": "Benutzername",
       "placeholder": "z.B. johnsilva",
       "description": "Nur Buchstaben, Zahlen und Unterstriche",
@@ -40,7 +40,7 @@
       "masculine": "Männlich",
       "nonBinary": "Nicht-binär",
       "preferNotToSay": "Möchte ich nicht angeben",
-      "description": "Dies hilft KI-Agenten, die passenden Pronomen und die richtige Sprache zu verwenden"
+      "description": "Dies hilft KI-Agenten, die richtigen Pronomen und die passende Sprache zu verwenden"
     },
     "language": {
       "title": "Bevorzugte Sprache",
@@ -48,7 +48,7 @@
       "label": "Sprache"
     },
     "ageRating": {
-      "title": "Präferenz für Inhaltsbewertung",
+      "title": "Inhaltsbewertungspräferenz",
       "subtitle": "Wählen Sie die maximale Altersfreigabe, die Sie sehen möchten",
       "options": {
         "L": "Alle Altersgruppen (L)",

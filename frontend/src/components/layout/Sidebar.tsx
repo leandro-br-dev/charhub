@@ -118,7 +118,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
               navigate("/characters");
             }}
           >
-            {t("navigation:viewAllCharacters", "View all characters")}
+            {t("viewAllCharacters", "View all characters")}
           </Button>
         </div>
       </div>
@@ -141,7 +141,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
               navigate("/stories");
             }}
           >
-            {t("navigation:viewAllStories", "View all stories")}
+            {t("viewAllStories", "View all stories")}
           </Button>
         </div>
       </div>
@@ -154,7 +154,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
         </Suspense>
         <div className="mt-auto flex flex-col gap-2 p-4">
           <Button variant="primary" icon="add" onClick={handleCreateAsset}>
-            {t("navigation:createAsset", "Create Asset")}
+            {t("createAsset", "Create Asset")}
           </Button>
           <Button
             variant="secondary"
@@ -164,7 +164,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
               navigate("/assets/hub");
             }}
           >
-            {t("navigation:viewAllAssets", "View all assets")}
+            {t("viewAllAssets", "View all assets")}
           </Button>
         </div>
       </div>
@@ -177,7 +177,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
         </Suspense>
         <div className="mt-auto flex flex-col gap-2 p-4">
           <Button variant="primary" icon="add" onClick={handleCreateScene}>
-            {t("navigation:createScene", "Create Scene")}
+            {t("createScene", "Create Scene")}
           </Button>
           <Button
             variant="secondary"
@@ -187,7 +187,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
               navigate("/scenes/hub");
             }}
           >
-            {t("navigation.viewAllScenes", "View all scenes")}
+            {t("viewAllScenes", "View all scenes")}
           </Button>
         </div>
       </div>

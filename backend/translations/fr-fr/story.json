@@ -3,7 +3,7 @@
   "resources": {
     "create": {
       "title": "Créer une nouvelle histoire",
-      "subtitle": "Créez une histoire interactive avec des personnages et des objectifs",
+      "subtitle": "Construisez une histoire interactive avec des personnages et des objectifs",
       "chooseMethod": {
         "title": "Comment souhaitez-vous créer votre histoire ?",
         "subtitle": "Choisissez la méthode qui correspond le mieux à vos besoins",
@@ -12,18 +12,18 @@
           "description": "Créez votre histoire étape par étape avec un contrôle total",
           "features": [
             "Personnalisation complète",
-            "Organisé par onglets",
+            "Organisé en onglets",
             "Parfait pour les histoires détaillées"
           ],
           "cost": "Gratuit",
           "button": "Créer manuellement"
         },
         "ai": {
-          "title": "Création assistée par IA",
+          "title": "Création assistée par l'IA",
           "description": "Laissez l'IA générer votre histoire à partir d'une description ou d'une image",
           "features": [
             "Génération automatique",
-            "Télécharger une image ou décrire",
+            "Téléchargez une image ou décrivez",
             "Rapide et créatif"
           ],
           "cost": "75-100 crédits",
@@ -40,10 +40,10 @@
       "subtitle": "Modifiez les détails de votre histoire"
     },
     "createAI": {
-      "title": "Générateur d'histoires par IA",
+      "title": "Générateur d'histoires par l'IA",
       "subtitle": "Décrivez votre idée d'histoire ou téléchargez une image, et l'IA générera les détails pour vous",
       "descriptionLabel": "Description de l'histoire",
-      "descriptionPlaceholder": "Décrivez votre idée d'histoire... (par exemple, \"Un jeune sorcier découvre un ancien portail qui mène à un monde de rêves\")",
+      "descriptionPlaceholder": "Décrivez votre idée d'histoire... (ex: \"Un jeune sorcier découvre un ancien portail qui mène à un monde de rêves\")",
       "descriptionHint": "Plus votre description est détaillée, meilleurs seront les résultats",
       "imageLabel": "Image de scène",
       "uploadPrompt": "Cliquez pour télécharger l'image de la scène",
@@ -53,10 +53,10 @@
       "howItWorks": "Comment ça marche",
       "step1": "Fournissez une description textuelle et/ou téléchargez une image de scène",
       "step2": "L'IA analyse votre saisie et génère les détails de l'histoire",
-      "step3": "Revoyez et modifiez l'histoire générée avant de l'enregistrer",
+      "step3": "Examinez et modifiez l'histoire générée avant de l'enregistrer",
       "step4": "Une image de couverture sera automatiquement générée pour vous",
       "pricing": "Coût en crédits",
-      "textOnly": "Texte uniquement",
+      "textOnly": "Texte seulement",
       "withImage": "Avec image",
       "progress": {
         "preparing": "Préparation de votre histoire",
@@ -65,7 +65,7 @@
         "extractingDescription": "Lecture du récit",
         "generatingConcept": "Tissage du récit",
         "generatingPlot": "Élaboration de l'intrigue",
-        "writingScene": "Écriture de l'introduction",
+        "writingScene": "Rédaction de l'ouverture",
         "generatingCover": "Création de la couverture",
         "creatingStory": "Donner vie à l'histoire",
         "completed": "Votre histoire vous attend",
@@ -89,7 +89,7 @@
       },
       "generationStarted": "Génération de l'histoire lancée ! Suivi de la progression...",
       "generationFailed": "Échec de la génération",
-      "weavingYourTale": "Tissage de votre récit..."
+      "weavingYourTale": "Nous tissons votre récit..."
     },
     "form": {
       "title": "Titre",
@@ -102,18 +102,18 @@
       "coverImageError": "Échec du chargement de l'image",
       "coverImageHint": "Téléchargez une image ou collez une URL pour la couverture de l'histoire",
       "changeCoverImage": "Changer l'image",
-      "uploadCoverImage": "Sélectionner une image",
+      "uploadCoverImage": "Sélectionner l'image",
       "uploadFromDevice": "Télécharger depuis l'appareil",
       "useImageUrl": "Utiliser une URL d'image",
       "imageUrlModalTitle": "Utiliser une image à partir d'une URL",
       "imageUrlLabel": "URL de l'image",
-      "invalidImageUrl": "Saisissez une URL d'image valide (http/https).",
+      "invalidImageUrl": "Veuillez saisir une URL d'image valide (http/https).",
       "preview": "Aperçu",
-      "uploading": "Traitement...",
+      "uploading": "Traitement en cours...",
       "loading": "Chargement...",
       "initialText": "Scène d'ouverture",
       "initialTextPlaceholder": "L'histoire commence...",
-      "initialTextHint": "Ceci est la scène d'ouverture que les joueurs verront en commençant l'histoire.",
+      "initialTextHint": "C'est la scène d'ouverture que les joueurs verront au début de l'histoire.",
       "objectives": "Objectifs de l'histoire",
       "objectivePlaceholder": "Ajouter un objectif d'histoire",
       "noObjectives": "Aucun objectif pour l'instant. Ajoutez-en pour guider le récit.",
@@ -121,28 +121,28 @@
       "selectedCharacters": "Personnages sélectionnés",
       "searchCharacters": "Rechercher des personnages",
       "noCharactersFound": "Aucun personnage trouvé",
-      "noCharactersAvailable": "Créez d'abord des personnages",
+      "noCharactersAvailable": "Créez des personnages d'abord",
       "mainCharacterLabel": "Personnage principal (joué par vous)",
       "selectMainCharacter": "Sélectionner le personnage principal...",
-      "tags": "Tags de genre",
-      "selectedTags": "Tags sélectionnés",
-      "searchTags": "Rechercher des tags",
-      "noTagsFound": "Aucun tag trouvé",
-      "noTagsAvailable": "Aucun tag disponible",
-      "incompatibleHint": "Les tags en rouge sont incompatibles avec la classification d'âge sélectionnée. Supprimez-les pour continuer.",
-      "ageRating": "Classification d'âge",
-      "ageRatingHint": "Ceci filtre les tags de genre disponibles et bloque les avertissements de contenu inapproprié.",
+      "tags": "Balises de genre",
+      "selectedTags": "Balises sélectionnées",
+      "searchTags": "Rechercher des balises",
+      "noTagsFound": "Aucune balise trouvée",
+      "noTagsAvailable": "Aucune balise disponible",
+      "incompatibleHint": "Les balises surlignées en rouge sont incompatibles avec la classification par âge sélectionnée. Supprimez-les pour continuer.",
+      "ageRating": "Classification par âge",
+      "ageRatingHint": "Ceci filtre les balises de genre disponibles et bloque les avertissements de contenu inapproprié.",
       "contentTags": "Avertissements de contenu",
-      "contentTagDisabled": "Nécessite l'âge {age} ou plus",
-      "contentTagsDisabledHint": "Les avertissements de contenu grisés nécessitent une classification d'âge plus élevée.",
+      "contentTagDisabled": "Nécessite l'âge de {age} ans ou plus",
+      "contentTagsDisabledHint": "Les avertissements de contenu grisés nécessitent une classification par âge plus élevée.",
       "visibility": "Visibilité de l'histoire",
       "makePublic": "Rendre cette histoire publique",
       "tabs": {
         "details": "Détails",
-        "plot": "Intrigue et décor",
+        "plot": "Intrigue et Cadre",
         "characters": "Personnages",
         "classification": "Classification",
-        "media": "Média"
+        "media": "Médias"
       }
     },
     "validation": {

@@ -8,16 +8,18 @@
     "admin": "Админ",
     "adminAnalytics": "Аналитика",
     "adminScripts": "Скрипты",
-    "assets": "Ресурсы",
+    "assets": "Активы",
     "scenes": "Сцены",
     "profileLink": "Мой профиль",
     "sidebarDefaultTitle": "Исследуйте CharHub",
-    "sidebarDefaultDescription": "Используйте иконки в навигационной панели для переключения между разделами.",
+    "sidebarDefaultDescription": "Используйте иконки на навигационной панели для переключения между разделами.",
     "developmentTools": "Инструменты разработчика",
-    "developmentPlaceholder": "Скоро здесь появятся конвейеры сборки, логи и элементы управления автоматизацией.",
+    "developmentPlaceholder": "Скоро здесь появятся конвейеры сборки, журналы и элементы управления автоматизацией.",
     "viewAllCharacters": "Посмотреть всех персонажей",
     "viewAllStories": "Посмотреть все истории",
+    "viewAllAssets": "Посмотреть все активы",
     "viewAllScenes": "Посмотреть все сцены",
+    "createAsset": "Создать актив",
     "createScene": "Создать сцену"
   }
 }

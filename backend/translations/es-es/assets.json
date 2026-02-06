@@ -6,13 +6,13 @@
       "updatedAt": "Actualizado el {{date}}",
       "public": "Público",
       "private": "Privado",
-      "identifier": "ID del activo: {{id}}",
+      "identifier": "ID de activo: {{id}}",
       "unsavedChanges": "Cambios sin guardar",
       "allSaved": "Todos los cambios guardados",
       "submitting": "Guardando..."
     },
     "types": {
-      "CLOTHING": "Ropa",
+      "CLOTHING": "Vestimenta",
       "ACCESSORY": "Accesorio",
       "SCAR": "Cicatriz",
       "HAIRSTYLE": "Peinado",
@@ -20,21 +20,21 @@
       "WEAPON": "Arma",
       "VEHICLE": "Vehículo",
       "FURNITURE": "Mobiliario",
-      "PROP": "Atrezzo"
+      "PROP": "Utilería"
     },
     "typeDescriptions": {
-      "CLOTHING": "Prendas de vestir y artículos de ropa",
-      "ACCESSORY": "Accesorios y adornos que se pueden usar",
+      "CLOTHING": "Prendas y artículos de vestir",
+      "ACCESSORY": "Accesorios y adornos ponibles",
       "SCAR": "Marcas, cicatrices y características corporales",
       "HAIRSTYLE": "Estilos y colores de cabello",
       "OBJECT": "Objetos y artículos de mano",
       "WEAPON": "Armas, armas cuerpo a cuerpo, armas de fuego",
       "VEHICLE": "Vehículos y monturas",
       "FURNITURE": "Mobiliario y elementos estructurales",
-      "PROP": "Atrezzo y decoraciones de fondo"
+      "PROP": "Utilería y decoraciones de fondo"
     },
     "categories": {
-      "WEARABLE": "Llevable",
+      "WEARABLE": "Ponible",
       "HOLDABLE": "Sostenible",
       "ENVIRONMENTAL": "Ambiental"
     },
@@ -46,8 +46,8 @@
     "placementZones": {
       "face": "Cara",
       "torso": "Torso",
-      "left_hand": "Mano Izquierda",
-      "right_hand": "Mano Derecha",
+      "left_hand": "Mano izquierda",
+      "right_hand": "Mano derecha",
       "head": "Cabeza",
       "feet": "Pies"
     },
@@ -62,7 +62,7 @@
     "visualStyles": {
       "ANIME": "Anime",
       "REALISTIC": "Realista",
-      "SEMI_REALISTIC": "Semi-realista",
+      "SEMI_REALISTIC": "Semi-Realista",
       "CARTOON": "Dibujo animado",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
@@ -92,7 +92,7 @@
     },
     "hub": {
       "title": "Activos",
-      "subtitle": "Crea y gestiona activos para tus personajes. Los activos incluyen ropa, accesorios, objetos y más.",
+      "subtitle": "Crea y gestiona activos para tus personajes. Los activos incluyen vestimenta, accesorios, objetos y más.",
       "sidebar": {
         "description": "Explora y gestiona tus activos creativos.",
         "viewGallery": "Ver galería",
@@ -102,7 +102,7 @@
       },
       "actions": {
         "newAsset": "Nuevo activo",
-        "createAsset": "Nuevo activo",
+        "createAsset": "Crear activo",
         "retry": "Intentar de nuevo"
       },
       "tabs": {
@@ -122,14 +122,14 @@
         "error": "No pudimos cargar los activos. Inténtalo de nuevo.",
         "empty": "Aún no hay activos disponibles.",
         "empty_private": "Todavía no has creado ningún activo.",
-        "empty_public": "No hay activos públicos que coincidan con tus filtros.",
+        "empty_public": "Ningún activo público coincide con tus filtros.",
         "emptyHint": "Empieza creando tu primer activo o ajusta tus filtros.",
         "emptySearchHint": "Ajusta tus filtros o borra la búsqueda para ver más resultados."
       },
       "labels": {
         "total": "{{count}} activo disponible",
         "total_plural": "{{count}} activos disponibles",
-        "quickCreateLink": "Ve directamente a la creación"
+        "quickCreateLink": "Ir directamente a la creación"
       }
     },
     "form": {
@@ -150,9 +150,9 @@
         "description": "Descripción",
         "type": "Tipo",
         "category": "Categoría",
-        "promptPrimary": "Mensaje visual",
-        "promptContext": "Mensaje de contexto",
-        "negativePrompt": "Mensaje negativo",
+        "promptPrimary": "Prompt visual",
+        "promptContext": "Prompt de contexto",
+        "negativePrompt": "Prompt negativo",
         "placementZone": "Zona de colocación",
         "placementDetail": "Detalle de colocación",
         "style": "Estilo visual",
@@ -167,14 +167,14 @@
         "category": "Seleccionar categoría",
         "promptPrimary": "Describe cómo debe aparecer el activo...",
         "promptContext": "Contexto adicional cuando se usa con personajes...",
-        "negativePrompt": "Describe qué evitar...",
+        "negativePrompt": "Describe lo que se debe evitar...",
         "placementZone": "Seleccionar zona de colocación",
         "placementDetail": "ej., 'mejilla izquierda', 'a través de la nariz'"
       },
       "hints": {
         "name": "Un nombre claro y descriptivo para este activo",
         "description": "Descripción detallada de la apariencia del activo",
-        "positivePrompt": "Mensaje visual para la generación de IA (ej., 'una chaqueta de cuero roja con cremalleras plateadas')",
+        "positivePrompt": "Prompt visual para la generación de IA (ej., 'una chaqueta de cuero roja con cremalleras plateadas')",
         "negativePrompt": "Elementos a evitar en la generación (ej., 'dañado, roto, sucio')",
         "placementZone": "Dónde debe colocarse el activo en el personaje"
       },
@@ -192,7 +192,7 @@
         "change": "Cambiar portada",
         "uploading": "Subiendo...",
         "urlModalTitle": "Usar imagen desde URL",
-        "urlLabel": "URL de la imagen",
+        "urlLabel": "URL de imagen",
         "previewAlt": "Vista previa de la portada del activo",
         "invalidUrl": "Introduce una URL de imagen válida (http/https).",
         "saveFirst": "Guarda primero el activo para añadir imágenes"
@@ -206,17 +206,17 @@
         "fromDevice": "Subir desde el dispositivo",
         "fromUrl": "Usar URL de imagen",
         "generateAI": "Generar con IA",
-        "aiComingSoon": "La generación con IA para activos estará disponible pronto",
+        "aiComingSoon": "Generación de IA próximamente para activos",
         "urlModalTitle": "Usar imagen desde URL",
-        "urlLabel": "URL de la imagen",
+        "urlLabel": "URL de imagen",
         "preview": "Vista previa",
         "previewAlt": "Vista previa de la portada del activo",
         "invalidUrl": "Introduce una URL de imagen válida (http/https).",
         "error": "No pudimos cargar esta imagen. {{message}}",
         "loading": "Cargando...",
         "uploading": "Subiendo...",
-        "helperCreate": "Elige una imagen de portada ahora y la mantendremos mientras rellenas el resto del formulario.",
-        "helperEdit": "Actualiza la imagen de portada cuando quieras. Los cambios se aplicarán tan pronto como guardes."
+        "helperCreate": "Elige una imagen de portada ahora y la conservaremos mientras rellenas el resto del formulario.",
+        "helperEdit": "Actualiza la imagen de portada cuando quieras. Los cambios se aplican tan pronto como guardes."
       },
       "tabs": {
         "identity": "Identidad",
@@ -277,7 +277,7 @@
       },
       "confirmDelete": {
         "title": "¿Eliminar activo?",
-        "message": "Esta acción no se puede deshacer. Todos los datos asociados a este activo se eliminarán permanentemente.",
+        "message": "Esta acción no se puede deshacer. Todos los datos asociados con este activo se eliminarán permanentemente.",
         "confirm": "Eliminar permanentemente",
         "cancel": "Cancelar"
       },
@@ -287,7 +287,7 @@
         "createdAt": "Creado",
         "createdBy": "Creado por",
         "updatedAt": "Última actualización",
-        "identifier": "ID del activo: {{id}}",
+        "identifier": "ID de activo: {{id}}",
         "characterCount": "{{count}} personaje",
         "characterCount_plural": "{{count}} personajes",
         "type": "Tipo",
@@ -295,7 +295,7 @@
       },
       "sections": {
         "description": "Descripción",
-        "prompts": "Mensajes de generación",
+        "prompts": "Prompts de generación",
         "placement": "Colocación",
         "metadata": "Metadatos"
       },
@@ -320,14 +320,14 @@
         "categoryFilter": "Filtrar por categoría"
       },
       "actions": {
-        "addSelected": "Añadir seleccionado ({{count}})",
+        "addSelected": "Añadir seleccionados ({{count}})",
         "addSelected_plural": "Añadir seleccionados ({{count}})",
         "cancel": "Cancelar",
         "clearSelection": "Borrar selección"
       },
       "states": {
         "loading": "Cargando activos...",
-        "error": "Error al cargar los activos",
+        "error": "Error al cargar activos",
         "empty": "No hay activos disponibles",
         "noResults": "Ningún activo coincide con tu búsqueda",
         "selectedEmpty": "Selecciona activos para añadir"
@@ -343,7 +343,7 @@
     },
     "characterAssets": {
       "title": "Activos del personaje",
-      "subtitle": "Gestiona los activos equipados a este personaje",
+      "subtitle": "Gestionar los activos equipados en este personaje",
       "tabs": {
         "equipped": "Equipados",
         "available": "Disponibles"
@@ -384,20 +384,20 @@
       "invalidType": "Tipo de activo no válido",
       "invalidCategory": "Categoría de activo no válida",
       "invalidPlacementZone": "Zona de colocación no válida para este tipo de activo",
-      "assetInUse": "Este activo está siendo utilizado por {{count}} personaje y no puede ser eliminado.",
-      "assetInUse_plural": "Este activo está siendo utilizado por {{count}} personajes y no puede ser eliminado."
+      "assetInUse": "Este activo está siendo utilizado por {{count}} personaje y no se puede eliminar.",
+      "assetInUse_plural": "Este activo está siendo utilizado por {{count}} personajes y no se puede eliminar."
     },
     "success": {
-      "created": "Activo creado con éxito",
-      "updated": "Activo actualizado con éxito",
-      "deleted": "Activo eliminado con éxito",
+      "created": "Activo creado correctamente",
+      "updated": "Activo actualizado correctamente",
+      "deleted": "Activo eliminado correctamente",
       "linked": "Activo vinculado al personaje",
       "unlinked": "Activo desvinculado del personaje"
     },
     "messages": {
-      "imageUploaded": "Imagen subida con éxito",
-      "imageDeleted": "Imagen eliminada con éxito",
-      "coverUploaded": "Imagen de portada actualizada con éxito",
+      "imageUploaded": "Imagen subida correctamente",
+      "imageDeleted": "Imagen eliminada correctamente",
+      "coverUploaded": "Imagen de portada actualizada correctamente",
       "descriptionRequired": "La descripción es obligatoria"
     },
     "images": {
@@ -407,7 +407,7 @@
       "uploadFailed": "Error al subir imagen",
       "deleteFailed": "Error al eliminar imagen",
       "deleteConfirm": "¿Eliminar esta imagen?",
-      "noImages": "Todavía no hay imágenes. Añade tu primera referencia visual.",
+      "noImages": "Aún no hay imágenes. Añade tu primera referencia visual.",
       "types": {
         "preview": "Vista previa",
         "reference": "Referencia",
@@ -415,30 +415,30 @@
         "in_context": "En contexto"
       },
       "typeDescriptions": {
-        "preview": "Imagen principal de vista previa del activo",
-        "reference": "Referencia visual del activo",
+        "preview": "Imagen de vista previa principal para el activo",
+        "reference": "Referencia visual para el activo",
         "transparent": "Versión con fondo transparente",
         "in_context": "Activo mostrado en contexto de uso/escena"
       }
     },
     "prompts": {
-      "title": "Mensajes de generación",
-      "primaryLabel": "Mensaje visual",
+      "title": "Prompts de generación",
+      "primaryLabel": "Prompt visual",
       "primaryHint": "Describe cómo debe aparecer el activo en las imágenes generadas",
-      "contextLabel": "Mensaje de contexto",
+      "contextLabel": "Prompt de contexto",
       "contextHint": "Contexto adicional cuando este activo se usa con personajes",
-      "negativeLabel": "Mensaje negativo",
+      "negativeLabel": "Prompt negativo",
       "negativeHint": "Elementos a evitar al generar este activo"
     },
     "avatar": {
       "invalidUrl": "Introduce una URL de imagen válida (http/https).",
       "error": "No pudimos cargar esta imagen. {{message}}",
-      "aiComingSoon": "La generación con IA para activos estará disponible pronto",
+      "aiComingSoon": "Generación de IA próximamente para activos",
       "generateAI": "Generar con IA",
       "fromDevice": "Subir desde el dispositivo",
       "fromUrl": "Usar URL de imagen",
       "urlModalTitle": "Usar imagen desde URL",
-      "urlLabel": "URL de la imagen",
+      "urlLabel": "URL de imagen",
       "preview": "Vista previa",
       "previewAlt": "Vista previa de la imagen",
       "loading": "Cargando..."

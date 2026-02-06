@@ -11,11 +11,11 @@
     },
     "Dark Elf": {
       "name": "Elfe Noir",
-      "description": "Elfe à la peau sombre vivant sous terre"
+      "description": "Elfe à la peau sombre habitant les souterrains"
     },
     "Wood Elf": {
       "name": "Elfe Sylvestre",
-      "description": "Elfe vivant en forêt avec une affinité pour la nature"
+      "description": "Elfe habitant la forêt avec une affinité pour la nature"
     },
     "High Elf": {
       "name": "Haut Elfe",
@@ -43,19 +43,19 @@
     },
     "Goblin": {
       "name": "Gobelin",
-      "description": "Petit humanoïde vert et espiègle"
+      "description": "Petit humanoïde vert et malicieux"
     },
     "Tiefling": {
       "name": "Tieffelin",
-      "description": "Humanoïde d'ascendance fiélonne, avec des cornes et une queue"
+      "description": "Humanoïde d'ascendance fiélonne, cornes et queue"
     },
     "Dragonborn": {
-      "name": "Draconide",
+      "name": "Draconien",
       "description": "Humanoïde draconique avec des écailles et une arme de souffle"
     },
     "Half-Elf": {
       "name": "Demi-Elfe",
-      "description": "Hybride humain-elfe doté de capacités polyvalentes"
+      "description": "Hybride humain-elfe aux capacités polyvalentes"
     },
     "Giant": {
       "name": "Géant",
@@ -75,11 +75,11 @@
     },
     "Fairy": {
       "name": "Fée",
-      "description": "Petit humanoïde ailé avec de la poussière magique"
+      "description": "Petit humanoïde ailé doté de poussière magique"
     },
     "Pixie": {
       "name": "Pixie",
-      "description": "Minuscule humanoïde espiègle avec des ailes d'insecte"
+      "description": "Tout petit humanoïde malicieux avec des ailes d'insecte"
     },
     "Nymph": {
       "name": "Nymphe",
@@ -91,15 +91,15 @@
     },
     "Satyr": {
       "name": "Satyre",
-      "description": "Mi-humain, mi-chèvre avec un talent musical"
+      "description": "Mi-homme, mi-chèvre avec un talent musical"
     },
     "Centaur": {
       "name": "Centaure",
-      "description": "Mi-humain, mi-cheval à partir de la taille"
+      "description": "Mi-homme, mi-cheval de la taille aux sabots"
     },
     "Minotaur": {
       "name": "Minotaure",
-      "description": "Mi-humain, mi-taureau avec une grande force"
+      "description": "Mi-homme, mi-taureau d'une grande force"
     },
     "Naga": {
       "name": "Naga",
@@ -107,15 +107,15 @@
     },
     "Lamia": {
       "name": "Lamia",
-      "description": "Femme humanoïde avec le corps inférieur d'un serpent"
+      "description": "Femme humanoïde avec un corps inférieur de serpent"
     },
     "Merfolk": {
-      "name": "Peuple Marin",
-      "description": "Habitant aquatique mi-humain, mi-poisson"
+      "name": "Peuple de la Mer",
+      "description": "Habitant de l'eau mi-humain, mi-poisson"
     },
     "Mermaid": {
       "name": "Sirène",
-      "description": "Sirène avec une belle voix chantante"
+      "description": "Femme du peuple de la mer dotée d'une magnifique voix chantante"
     },
     "Siren": {
       "name": "Sirène",
@@ -131,15 +131,15 @@
     },
     "Vampire": {
       "name": "Vampire",
-      "description": "Être mort-vivant qui se nourrit de sang"
+      "description": "Mort-vivant qui se nourrit de sang"
     },
     "Zombie": {
       "name": "Zombie",
-      "description": "Cadre réanimé affamé de cerveaux"
+      "description": "Cadavre réanimé affamé de cerveaux"
     },
     "Lich": {
       "name": "Liche",
-      "description": "Puissant lanceur de sorts mort-vivant avec un phylactère"
+      "description": "Puissant nécromancien mort-vivant avec un phylactère"
     },
     "Ghost": {
       "name": "Fantôme",
@@ -150,8 +150,8 @@
       "description": "Esprit malveillant capable de drainer l'énergie"
     },
     "Wraith": {
-      "name": "Revenant",
-      "description": "Esprit vengeur au toucher qui draine la vie"
+      "name": "Spectre",
+      "description": "Esprit vengeur au toucher drainant la vie"
     },
     "Skeleton": {
       "name": "Squelette",
@@ -163,7 +163,7 @@
     },
     "Ghoul": {
       "name": "Goule",
-      "description": "Créature mort-vivante mangeuse de charognes"
+      "description": "Créature morte-vivante mangeuse de charognes"
     },
     "Banshee": {
       "name": "Banshee",
@@ -171,7 +171,7 @@
     },
     "Reaper": {
       "name": "Faucheur",
-      "description": "Faucheur, la mort personnifiée"
+      "description": "Faucheuse, la Mort personnifiée"
     },
     "Dragon": {
       "name": "Dragon",
@@ -191,11 +191,11 @@
     },
     "Griffin": {
       "name": "Griffon",
-      "description": "Créature noble hybride lion-aigle"
+      "description": "Noble créature hybride lion-aigle"
     },
     "Hydra": {
       "name": "Hydre",
-      "description": "Serpent à plusieurs têtes qui en fait repousser deux quand une est coupée"
+      "description": "Serpent à plusieurs têtes qui en regénère deux quand l'une est coupée"
     },
     "Chimera": {
       "name": "Chimère",
@@ -203,7 +203,7 @@
     },
     "Sphinx": {
       "name": "Sphinx",
-      "description": "Lion à tête humaine, gardien des énigmes"
+      "description": "Lion à tête humaine, gardien d'énigmes"
     },
     "Unicorn": {
       "name": "Licorne",
@@ -215,15 +215,15 @@
     },
     "Kirin": {
       "name": "Kirin",
-      "description": "Créature japonaise ressemblant à une licorne, porteuse de bons présages"
+      "description": "Créature japonaise ressemblant à une licorne, signe de bon augure"
     },
     "Kitsune": {
       "name": "Kitsune",
-      "description": "Esprit renard japonais avec plusieurs queues"
+      "description": "Esprit renard japonais à plusieurs queues"
     },
     "Tanuki": {
       "name": "Tanuki",
-      "description": "Chien viverrin japonais doté de la capacité de métamorphose"
+      "description": "Chien viverrin japonais capable de métamorphose"
     },
     "Oni": {
       "name": "Oni",
@@ -235,7 +235,7 @@
     },
     "Kappa": {
       "name": "Kappa",
-      "description": "Kobold aquatique japonais avec une tête en forme de plat"
+      "description": "Diablotin d'eau japonais avec une tête en forme de plat"
     },
     "Yokai": {
       "name": "Yokai",
@@ -243,7 +243,7 @@
     },
     "Yuki-onna": {
       "name": "Yuki-onna",
-      "description": "Esprit de la femme des neiges japonaise"
+      "description": "Esprit japonais de la femme des neiges"
     },
     "Raiju": {
       "name": "Raiju",
@@ -275,7 +275,7 @@
     },
     "Ice Elemental": {
       "name": "Élémentaire de Glace",
-      "description": "Glace vivante avec une aura gelée"
+      "description": "Glace vivante à l'aura glaciale"
     },
     "Lightning Elemental": {
       "name": "Élémentaire de Foudre",
@@ -315,10 +315,10 @@
     },
     "Marionette": {
       "name": "Marionnette",
-      "description": "Marionnette animée"
+      "description": "Marionnette ayant pris vie"
     },
     "Catfolk": {
-      "name": "Félinoïde",
+      "name": "Felin",
       "description": "Humanoïde aux traits de chat"
     },
     "Nekomimi": {
@@ -330,20 +330,20 @@
       "description": "Humanoïde aux traits de loup"
     },
     "Foxkin": {
-      "name": "Vulpin",
+      "name": "Vulpine",
       "description": "Humanoïde aux traits de renard"
     },
     "Rabbitfolk": {
-      "name": "Lapinoïde",
+      "name": "Lagomorphe",
       "description": "Humanoïde aux traits de lapin"
     },
     "Dragonkin": {
-      "name": "Draconide",
+      "name": "Draconien",
       "description": "Humanoïde aux traits de dragon"
     },
     "Demon": {
       "name": "Démon",
-      "description": "Créature démoniaque des plans inférieurs"
+      "description": "Créature fiélone des plans inférieurs"
     },
     "Angel": {
       "name": "Ange",
@@ -351,15 +351,15 @@
     },
     "Fallen Angel": {
       "name": "Ange Déchu",
-      "description": "Ange chassé du royaume divin"
+      "description": "Ange banni du royaume divin"
     },
     "Devil": {
       "name": "Diable",
-      "description": "Puissant démon des Neuf Enfers"
+      "description": "Puissant fiélon des Neuf Enfers"
     },
     "Imp": {
       "name": "Diablotin",
-      "description": "Petit diable espiègle"
+      "description": "Petit diable malicieux"
     },
     "Succubus": {
       "name": "Succube",
@@ -374,11 +374,11 @@
       "description": "Serviteur magique sous forme animale"
     },
     "Doppelganger": {
-      "name": "Changeforme",
-      "description": "Changeforme qui prend l'apparence d'autrui"
+      "name": "Doppelgänger",
+      "description": "Métamorphe qui prend l'apparence d'autrui"
     },
     "Changeling": {
-      "name": "Changelin",
+      "name": "Enfant substitué",
       "description": "Enfant fée laissé à la place d'un humain volé"
     },
     "Alien": {
@@ -386,7 +386,7 @@
       "description": "Être extraterrestre d'un autre monde"
     },
     "Eldritch": {
-      "name": "Abominable",
+      "name": "Eldritch",
       "description": "Horreur cosmique au-delà de la compréhension mortelle"
     },
     "Lovecraftian": {
@@ -394,12 +394,12 @@
       "description": "Créature issue du mythe de Lovecraft"
     },
     "Eldritch Tentacle": {
-      "name": "Tentacule Abominable",
-      "description": "Entité d'horreur cosmique tentaculaire"
+      "name": "Tentacule Eldritch",
+      "description": "Entité tentaculaire d'horreur cosmique"
     },
     "Other": {
       "name": "Autre",
-      "description": "Espèce ne rentrant dans aucune autre catégorie"
+      "description": "Espèce ne correspondant à aucune autre catégorie"
     },
     "Unknown": {
       "name": "Inconnu",

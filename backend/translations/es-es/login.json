@@ -2,15 +2,15 @@
   "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
   "resources": {
     "title": "Bienvenido a CharHub",
-    "subtitle": "Asegura los perfiles de tus jugadores con el inicio de sesión social. Conéctate con Google o Facebook y accede a análisis de juegos exclusivos en segundos.",
-    "formTitle": "Inicia sesión para continuar",
-    "formInstructions": "Elige tu proveedor preferido a continuación. Serás redirigido para confirmar el acceso y regresarás aquí cuando hayas terminado.",
+    "subtitle": "Proteja los perfiles de sus jugadores con el inicio de sesión social. Conéctese con Google o Facebook y acceda a análisis de juego exclusivos en segundos.",
+    "formTitle": "Inicie sesión para continuar",
+    "formInstructions": "Elija su proveedor preferido a continuación. Será redirigido para confirmar el acceso y traído de vuelta aquí cuando haya terminado.",
     "greeting": "¡Bienvenido de nuevo!",
-    "instruction": "Inicia sesión para continuar",
+    "instruction": "Inicie sesión para continuar",
     "googleButton": "Iniciar sesión con Google",
     "facebookButton": "Iniciar sesión con Facebook",
     "firstAccess": "¿Primera vez aquí?",
-    "signupLink": "Regístrate",
+    "signupLink": "Registrarse",
     "checkingAuth": "Comprobando autenticación..."
   }
 }

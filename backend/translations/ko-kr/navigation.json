@@ -12,12 +12,14 @@
     "scenes": "장면",
     "profileLink": "내 프로필",
     "sidebarDefaultTitle": "CharHub 탐색",
-    "sidebarDefaultDescription": "탐색 레일의 아이콘을 사용하여 다양한 경험 사이를 전환하세요.",
+    "sidebarDefaultDescription": "내비게이션 레일의 아이콘을 사용하여 경험을 전환하세요.",
     "developmentTools": "개발자 도구",
-    "developmentPlaceholder": "빌드 파이프라인, 로그 및 자동화 제어 기능이 곧 여기에 추가됩니다.",
+    "developmentPlaceholder": "빌드 파이프라인, 로그 및 자동화 제어 기능이 곧 여기에 제공될 예정입니다.",
     "viewAllCharacters": "모든 캐릭터 보기",
     "viewAllStories": "모든 스토리 보기",
+    "viewAllAssets": "모든 자산 보기",
     "viewAllScenes": "모든 장면 보기",
-    "createScene": "장면 만들기"
+    "createAsset": "자산 생성",
+    "createScene": "장면 생성"
   }
 }

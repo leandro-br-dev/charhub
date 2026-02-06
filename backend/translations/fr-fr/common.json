@@ -14,7 +14,7 @@
     "continueFacebook": "Continuer avec Facebook",
     "privacy": "En continuant, vous acceptez notre politique de confidentialité et autorisez CharHub à accéder à vos informations de profil de base.",
     "logout": "Se déconnecter",
-    "logoutLoading": "Déconnexion...",
+    "logoutLoading": "Déconnexion en cours...",
     "authenticatedUser": "Utilisateur authentifié",
     "tokenStored": "Stocké dans un cookie HTTP-only",
     "navDashboard": "Tableau de bord",
@@ -38,15 +38,15 @@
     "nameNotAvailable": "Nom non disponible",
     "cancel": "Annuler",
     "save": "Enregistrer",
-    "saving": "Enregistrement...",
+    "saving": "Enregistrement en cours...",
     "loading": "Chargement...",
     "use": "Utiliser",
     "add": "Ajouter",
     "delete": "Supprimer",
-    "deleting": "Suppression...",
+    "deleting": "Suppression en cours...",
     "enabled": "Activé",
     "disabled": "Désactivé",
-    "selectOption": "Sélectionnez une option",
+    "selectOption": "Sélectionner une option",
     "noResults": "Aucune option trouvée.",
     "chat": {
       "with": "Discuter avec"
@@ -61,7 +61,7 @@
       "title": "Filtre de contenu",
       "ageRating": "Classification par âge",
       "blurNsfw": "Flouter le contenu explicite",
-      "none": "Aucun filtre",
+      "none": "Pas de filtre",
       "blur": "Flouter le contenu sensible",
       "hidden": "Masquer le contenu mature",
       "descriptions": {
@@ -71,11 +71,11 @@
       },
       "ageRatings": {
         "L": "Tout public",
-        "TEN": "10 ans et +",
-        "TWELVE": "12 ans et +",
-        "FOURTEEN": "14 ans et +",
-        "SIXTEEN": "16 ans et +",
-        "EIGHTEEN": "18 ans et +"
+        "TEN": "10+",
+        "TWELVE": "12+",
+        "FOURTEEN": "14+",
+        "SIXTEEN": "16+",
+        "EIGHTEEN": "18+"
       },
       "noBirthdateWarning": "⚠️ Âge non enregistré",
       "noBirthdateDescription": "Pour accéder au contenu soumis à restriction d'âge, veuillez ajouter votre date de naissance dans les paramètres.",
@@ -95,9 +95,9 @@
     "credits": "crédits",
     "tryAgain": "Réessayer",
     "generate": "Générer",
-    "generating": "Génération...",
+    "generating": "Génération en cours...",
     "generateAgain": "Générer à nouveau",
-    "regenerate": "Regénérer",
+    "regenerate": "Régénérer",
     "close": "Fermer",
     "done": "Terminé"
   }
