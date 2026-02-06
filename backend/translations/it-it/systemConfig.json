@@ -1,10 +1,10 @@
 {
   "description": "System Configuration admin page translations",
   "resources": {
-    "title": "Configurazione del sistema",
+    "title": "Configurazione del Sistema",
     "header": {
-      "title": "Configurazione del sistema",
-      "description": "Gestisci i parametri di runtime senza riavviare il server. Le modifiche hanno effetto immediato."
+      "title": "Configurazione del Sistema",
+      "description": "Gestisci i parametri di runtime senza riavviare il server. Le modifiche hanno effetto immediatamente."
     },
     "search": {
       "placeholder": "Filtra configurazioni..."
@@ -12,9 +12,9 @@
     "categories": {
       "translation": "Sistema di Traduzione",
       "context": "Finestra di Contesto",
-      "generation": "Generazione di Personaggi",
+      "generation": "Generazione Personaggi",
       "correction": "Sistema di Correzione",
-      "curation": "Curatela Immagini",
+      "curation": "Cura Immagini",
       "moderation": "Moderazione Contenuti",
       "scheduling": "Pianificazione Lavori"
     },
@@ -30,7 +30,7 @@
         },
         "cache_ttl": {
           "label": "TTL Cache (secondi)",
-          "description": "Durata della cache per i risultati di traduzione"
+          "description": "Tempo di memorizzazione nella cache dei risultati della traduzione"
         },
         "enable_pre_translation": {
           "label": "Abilita Pre-traduzione",
@@ -39,7 +39,7 @@
       },
       "context": {
         "max_tokens": {
-          "label": "Token Massimi",
+          "label": "Max Token",
           "description": "Dimensione massima della finestra di contesto in token"
         }
       },
@@ -49,16 +49,16 @@
           "description": "Numero massimo di personaggi generati al giorno"
         },
         "batch_enabled": {
-          "label": "Abilita Elaborazione in Batch",
-          "description": "Elabora la generazione dei personaggi in batch"
+          "label": "Abilita Elaborazione Batch",
+          "description": "Elabora la generazione di personaggi in batch"
         },
         "batch_size_per_run": {
           "label": "Dimensione Batch",
           "description": "Numero di personaggi da elaborare per batch"
         },
         "batch_retry_attempts": {
-          "label": "Tentativi di Ripetizione",
-          "description": "Numero di tentativi di ripetizione per i batch falliti"
+          "label": "Tentativi di Riprova",
+          "description": "Numero di tentativi di riprova per batch falliti"
         },
         "batch_timeout_minutes": {
           "label": "Timeout (minuti)",
@@ -78,11 +78,11 @@
       "curation": {
         "search_keywords": {
           "label": "Parole Chiave di Ricerca",
-          "description": "Parole chiave separate da virgola per la ricerca di curatela"
+          "description": "Parole chiave separate da virgola per la ricerca di cura"
         },
         "anime_model_ids": {
-          "label": "ID Modello Anime",
-          "description": "ID modello separati da virgola per la curatela Anime"
+          "label": "ID Modelli Anime",
+          "description": "ID dei modelli separati da virgola per la cura di Anime"
         },
         "auto_approval_threshold": {
           "label": "Soglia di Approvazione Automatica",
@@ -91,6 +91,22 @@
         "require_manual_review": {
           "label": "Richiedi Revisione Manuale",
           "description": "Richiedi revisione manuale per i contenuti curati"
+        },
+        "image_limit": {
+          "label": "Limite Immagini Giornaliero",
+          "description": "Numero di immagini da recuperare da Civitai al giorno (0 = disabilitato)"
+        },
+        "rate_limit": {
+          "label": "Limite di Frequenza API Civitai",
+          "description": "Numero massimo di richieste API al giorno a Civitai"
+        },
+        "max_image_size": {
+          "label": "Dimensione Massima Immagine (byte)",
+          "description": "Dimensione massima del file per le immagini scaricate"
+        },
+        "min_rating": {
+          "label": "Valutazione Minima",
+          "description": "Soglia di valutazione minima per le immagini curate (0-5)"
         }
       },
       "moderation": {
@@ -99,38 +115,38 @@
           "description": "Filtra automaticamente i contenuti NSFW"
         },
         "nsfw_filter_strictness": {
-          "label": "Rigorosità Filtro NSFW",
+          "label": "Rigore Filtro NSFW",
           "description": "Quanto deve essere rigoroso il filtro NSFW"
         }
       },
       "scheduling": {
         "daily_curation_hour": {
-          "label": "Ora Curatela Giornaliera",
-          "description": "Ora del giorno per eseguire la curatela giornaliera (0-23)"
+          "label": "Ora di Cura Giornaliera",
+          "description": "Ora del giorno in cui eseguire la cura giornaliera (0-23)"
         }
       }
     },
     "strictness": {
-      "low": "Bassa",
-      "medium": "Media",
-      "high": "Alta"
+      "low": "Basso",
+      "medium": "Medio",
+      "high": "Alto"
     },
     "actions": {
-      "save": "Salva",
+      "save": "Salva ({{count}})",
       "saving": "Salvataggio in corso...",
       "reset": "Ripristina predefiniti",
       "addModel": "Aggiungi Modello"
     },
     "messages": {
       "saveSuccess": "Configurazione \"{{key}}\" aggiornata con successo",
-      "saveError": "Impossibile aggiornare la configurazione",
-      "loadError": "Impossibile caricare le configurazioni di sistema",
-      "confirmChange": "Sei sicuro di voler modificare \"{{key}}\"? L'effetto sarà immediato.",
+      "saveError": "Errore durante l'aggiornamento della configurazione",
+      "loadError": "Errore durante il caricamento delle configurazioni di sistema",
+      "confirmChange": "Sei sicuro di voler modificare \"{{key}}\"? Questa modifica avrà effetto immediatamente.",
       "selectProviderFirst": "Seleziona prima il provider",
       "selectModel": "Seleziona modello..."
     },
     "meta": {
-      "updatedAt": "Aggiornato {{time}}",
+      "updatedAt": "Aggiornato il {{time}}",
       "updatedBy": "da {{user}}",
       "neverUpdated": "Valore predefinito (mai modificato)"
     },

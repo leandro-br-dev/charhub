@@ -91,6 +91,22 @@
         "require_manual_review": {
           "label": "Require Manual Review",
           "description": "Require manual review for curated content"
+        },
+        "image_limit": {
+          "label": "Daily Image Limit",
+          "description": "Number of images to fetch from Civitai per day (0 = disabled)"
+        },
+        "rate_limit": {
+          "label": "Civitai API Rate Limit",
+          "description": "Maximum API requests per day to Civitai"
+        },
+        "max_image_size": {
+          "label": "Max Image Size (bytes)",
+          "description": "Maximum file size for downloaded images"
+        },
+        "min_rating": {
+          "label": "Minimum Rating",
+          "description": "Minimum rating threshold for curated images (0-5)"
         }
       },
       "moderation": {
@@ -116,7 +132,7 @@
       "high": "High"
     },
     "actions": {
-      "save": "Save",
+      "save": "Save ({{count}})",
       "saving": "Saving...",
       "reset": "Reset to default",
       "addModel": "Add Model"

@@ -29,7 +29,7 @@
           "description": "翻訳のデフォルトモデル名"
         },
         "cache_ttl": {
-          "label": "キャッシュTTL (秒)",
+          "label": "キャッシュTTL（秒）",
           "description": "翻訳結果をキャッシュする期間"
         },
         "enable_pre_translation": {
@@ -45,8 +45,8 @@
       },
       "generation": {
         "daily_limit": {
-          "label": "1日あたりの上限",
-          "description": "1日あたりに生成される最大キャラクター数"
+          "label": "1日あたりの制限",
+          "description": "1日あたりの最大生成キャラクター数"
         },
         "batch_enabled": {
           "label": "バッチ処理を有効にする",
@@ -54,43 +54,59 @@
         },
         "batch_size_per_run": {
           "label": "バッチサイズ",
-          "description": "1バッチあたりに処理するキャラクター数"
+          "description": "1バッチあたりの処理キャラクター数"
         },
         "batch_retry_attempts": {
           "label": "リトライ回数",
           "description": "失敗したバッチのリトライ回数"
         },
         "batch_timeout_minutes": {
-          "label": "タイムアウト (分)",
+          "label": "タイムアウト（分）",
           "description": "バッチ完了を待つ最大時間"
         }
       },
       "correction": {
         "avatar_daily_limit": {
-          "label": "アバター1日あたりの上限",
+          "label": "アバター1日あたりの制限",
           "description": "1日あたりの最大アバター修正数"
         },
         "data_daily_limit": {
-          "label": "データ1日あたりの上限",
+          "label": "データ1日あたりの制限",
           "description": "1日あたりの最大データ修正数"
         }
       },
       "curation": {
         "search_keywords": {
           "label": "検索キーワード",
-          "description": "キュレーション検索用のコンマ区切りキーワード"
+          "description": "キュレーション検索用のカンマ区切りキーワード"
         },
         "anime_model_ids": {
           "label": "AnimeモデルID",
-          "description": "Animeキュレーション用のコンマ区切りモデルID"
+          "description": "Animeキュレーション用のカンマ区切りモデルID"
         },
         "auto_approval_threshold": {
           "label": "自動承認しきい値",
-          "description": "自動承認のスコアしきい値 (0-100)"
+          "description": "自動承認のスコアしきい値（0-100）"
         },
         "require_manual_review": {
           "label": "手動レビューを必須にする",
           "description": "キュレーションされたコンテンツの手動レビューを必須にする"
+        },
+        "image_limit": {
+          "label": "1日あたりの画像制限",
+          "description": "Civitaiから1日に取得する画像数（0 = 無効）"
+        },
+        "rate_limit": {
+          "label": "Civitai APIレート制限",
+          "description": "Civitaiへの1日あたりの最大APIリクエスト数"
+        },
+        "max_image_size": {
+          "label": "最大画像サイズ（バイト）",
+          "description": "ダウンロードされる画像の最大ファイルサイズ"
+        },
+        "min_rating": {
+          "label": "最小評価",
+          "description": "キュレーション画像の最小評価しきい値（0-5）"
         }
       },
       "moderation": {
@@ -100,13 +116,13 @@
         },
         "nsfw_filter_strictness": {
           "label": "NSFWフィルターの厳格さ",
-          "description": "NSFWフィルターの厳格さを設定する"
+          "description": "NSFWフィルターの厳格さの度合い"
         }
       },
       "scheduling": {
         "daily_curation_hour": {
           "label": "毎日のキュレーション時刻",
-          "description": "毎日のキュレーションを実行する時刻 (0-23時)"
+          "description": "毎日のキュレーションを実行する時刻（0-23）"
         }
       }
     },
@@ -116,7 +132,7 @@
       "high": "高"
     },
     "actions": {
-      "save": "保存",
+      "save": "保存 ({{count}})",
       "saving": "保存中...",
       "reset": "デフォルトにリセット",
       "addModel": "モデルを追加"
@@ -125,13 +141,13 @@
       "saveSuccess": "設定「{{key}}」が正常に更新されました",
       "saveError": "設定の更新に失敗しました",
       "loadError": "システム設定の読み込みに失敗しました",
-      "confirmChange": "「{{key}}」を変更してもよろしいですか？これはすぐに適用されます。",
+      "confirmChange": "「{{key}}」を変更してもよろしいですか？この変更はすぐに適用されます。",
       "selectProviderFirst": "まずプロバイダーを選択してください",
       "selectModel": "モデルを選択..."
     },
     "meta": {
-      "updatedAt": "{{time}}に更新",
-      "updatedBy": "{{user}}による",
+      "updatedAt": "{{time}} に更新",
+      "updatedBy": "{{user}} によって",
       "neverUpdated": "デフォルト値（未変更）"
     },
     "modelSelection": {
@@ -141,7 +157,7 @@
       "selectModel": "モデルを選択...",
       "selectProviderFirst": "まずプロバイダーを選択してください",
       "addNewModel": "新しいモデルを追加",
-      "noModelsFound": "このプロバイダーにはモデルが見つかりません"
+      "noModelsFound": "このプロバイダーのモデルは見つかりません"
     }
   }
 }

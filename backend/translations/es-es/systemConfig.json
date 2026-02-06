@@ -4,7 +4,7 @@
     "title": "Configuración del Sistema",
     "header": {
       "title": "Configuración del Sistema",
-      "description": "Gestiona los parámetros de tiempo de ejecución sin reiniciar el servidor. Los cambios se aplican inmediatamente."
+      "description": "Gestiona los parámetros de tiempo de ejecución sin reiniciar el servidor. Los cambios se aplican de inmediato."
     },
     "search": {
       "placeholder": "Filtrar configuraciones..."
@@ -30,7 +30,7 @@
         },
         "cache_ttl": {
           "label": "TTL de Caché (segundos)",
-          "description": "Tiempo de duración de la caché para resultados de traducción"
+          "description": "Tiempo de almacenamiento en caché de los resultados de traducción"
         },
         "enable_pre_translation": {
           "label": "Habilitar Pre-traducción",
@@ -53,7 +53,7 @@
           "description": "Procesar la generación de personajes por lotes"
         },
         "batch_size_per_run": {
-          "label": "Tamaño del Lote",
+          "label": "Tamaño de Lote",
           "description": "Número de personajes a procesar por lote"
         },
         "batch_retry_attempts": {
@@ -81,7 +81,7 @@
           "description": "Palabras clave separadas por comas para la búsqueda de curación"
         },
         "anime_model_ids": {
-          "label": "IDs de Modelo Anime",
+          "label": "IDs de Modelo de Anime",
           "description": "IDs de modelo separadas por comas para la curación de Anime"
         },
         "auto_approval_threshold": {
@@ -90,7 +90,23 @@
         },
         "require_manual_review": {
           "label": "Requerir Revisión Manual",
-          "description": "Requerir revisión manual para el contenido curado"
+          "description": "Requerir revisión manual para contenido curado"
+        },
+        "image_limit": {
+          "label": "Límite Diario de Imágenes",
+          "description": "Número de imágenes a obtener de Civitai por día (0 = deshabilitado)"
+        },
+        "rate_limit": {
+          "label": "Límite de Tasa de API de Civitai",
+          "description": "Máximo de solicitudes API por día a Civitai"
+        },
+        "max_image_size": {
+          "label": "Tamaño Máximo de Imagen (bytes)",
+          "description": "Tamaño máximo de archivo para imágenes descargadas"
+        },
+        "min_rating": {
+          "label": "Calificación Mínima",
+          "description": "Umbral de calificación mínima para imágenes curadas (0-5)"
         }
       },
       "moderation": {
@@ -100,7 +116,7 @@
         },
         "nsfw_filter_strictness": {
           "label": "Estrictez del Filtro NSFW",
-          "description": "Cuán estricto debe ser el filtro NSFW"
+          "description": "Qué tan estricto debe ser el filtro NSFW"
         }
       },
       "scheduling": {
@@ -116,17 +132,17 @@
       "high": "Alta"
     },
     "actions": {
-      "save": "Guardar",
+      "save": "Guardar ({{count}})",
       "saving": "Guardando...",
       "reset": "Restablecer a valores predeterminados",
       "addModel": "Añadir Modelo"
     },
     "messages": {
       "saveSuccess": "Configuración \"{{key}}\" actualizada correctamente",
-      "saveError": "Fallo al actualizar la configuración",
-      "loadError": "Fallo al cargar las configuraciones del sistema",
-      "confirmChange": "¿Estás seguro de que quieres cambiar \"{{key}}\"? Esto surtirá efecto inmediatamente.",
-      "selectProviderFirst": "Selecciona primero el proveedor",
+      "saveError": "Error al actualizar la configuración",
+      "loadError": "Error al cargar las configuraciones del sistema",
+      "confirmChange": "¿Estás seguro de que quieres cambiar \"{{key}}\"? Esto tendrá efecto inmediatamente.",
+      "selectProviderFirst": "Selecciona primero un proveedor",
       "selectModel": "Seleccionar modelo..."
     },
     "meta": {
@@ -137,9 +153,9 @@
     "modelSelection": {
       "provider": "Proveedor",
       "model": "Modelo",
-      "selectProvider": "Seleccionar un proveedor...",
-      "selectModel": "Seleccionar un modelo...",
-      "selectProviderFirst": "Selecciona un proveedor primero",
+      "selectProvider": "Selecciona un proveedor...",
+      "selectModel": "Selecciona un modelo...",
+      "selectProviderFirst": "Selecciona primero un proveedor",
       "addNewModel": "Añadir nuevo modelo",
       "noModelsFound": "No se encontraron modelos para este proveedor"
     }

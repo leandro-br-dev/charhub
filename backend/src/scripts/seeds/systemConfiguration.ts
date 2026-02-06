@@ -55,6 +55,10 @@ export const CONFIG_PARAMETERS: ConfigParameter[] = [
   { key: 'curation.anime_model_ids', envVar: 'CIVITAI_ANIME_MODEL_IDS', defaultValue: '' },
   { key: 'curation.auto_approval_threshold', envVar: 'AUTO_APPROVAL_THRESHOLD', defaultValue: 4.5 },
   { key: 'curation.require_manual_review', envVar: 'REQUIRE_MANUAL_REVIEW', defaultValue: false },
+  { key: 'curation.image_limit', envVar: 'CURATION_IMAGE_LIMIT', defaultValue: 50 },
+  { key: 'curation.rate_limit', envVar: 'CIVITAI_RATE_LIMIT', defaultValue: 1000 },
+  { key: 'curation.max_image_size', envVar: 'MAX_IMAGE_SIZE', defaultValue: 10485760 },
+  { key: 'curation.min_rating', envVar: 'CIVITAI_MIN_RATING', defaultValue: 3.0 },
 
   // Moderation settings
   { key: 'moderation.nsfw_filter_enabled', envVar: 'NSFW_FILTER_ENABLED', defaultValue: true },

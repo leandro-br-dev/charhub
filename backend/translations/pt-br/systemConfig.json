@@ -30,35 +30,35 @@
         },
         "cache_ttl": {
           "label": "TTL do Cache (segundos)",
-          "description": "Por quanto tempo armazenar em cache os resultados da tradução"
+          "description": "Tempo para armazenar em cache os resultados da tradução"
         },
         "enable_pre_translation": {
-          "label": "Habilitar Pré-tradução",
+          "label": "Ativar Pré-tradução",
           "description": "Pré-traduzir conteúdo para carregamento mais rápido"
         }
       },
       "context": {
         "max_tokens": {
-          "label": "Máximo de Tokens",
+          "label": "Máx. de Tokens",
           "description": "Tamanho máximo da janela de contexto em tokens"
         }
       },
       "generation": {
         "daily_limit": {
           "label": "Limite Diário",
-          "description": "Número máximo de personagens gerados por dia"
+          "description": "Máximo de personagens gerados por dia"
         },
         "batch_enabled": {
-          "label": "Habilitar Processamento em Lotes",
-          "description": "Processar a geração de personagens em lotes"
+          "label": "Ativar Processamento em Lote",
+          "description": "Processar geração de personagens em lotes"
         },
         "batch_size_per_run": {
           "label": "Tamanho do Lote",
           "description": "Número de personagens a processar por lote"
         },
         "batch_retry_attempts": {
-          "label": "Tentativas de Reexecução",
-          "description": "Número de tentativas de reexecução para lotes falhos"
+          "label": "Tentativas de Reenvio",
+          "description": "Número de tentativas de reenvio para lotes com falha"
         },
         "batch_timeout_minutes": {
           "label": "Tempo Limite (minutos)",
@@ -68,11 +68,11 @@
       "correction": {
         "avatar_daily_limit": {
           "label": "Limite Diário de Avatar",
-          "description": "Número máximo de correções de avatar por dia"
+          "description": "Máximo de correções de avatar por dia"
         },
         "data_daily_limit": {
           "label": "Limite Diário de Dados",
-          "description": "Número máximo de correções de dados por dia"
+          "description": "Máximo de correções de dados por dia"
         }
       },
       "curation": {
@@ -82,25 +82,41 @@
         },
         "anime_model_ids": {
           "label": "IDs de Modelo Anime",
-          "description": "IDs de modelo separadas por vírgulas para curadoria de Anime"
+          "description": "IDs de modelo separados por vírgulas para curadoria Anime"
         },
         "auto_approval_threshold": {
           "label": "Limiar de Aprovação Automática",
-          "description": "Pontuação limite para aprovação automática (0-100)"
+          "description": "Limiar de pontuação para aprovação automática (0-100)"
         },
         "require_manual_review": {
           "label": "Exigir Revisão Manual",
           "description": "Exigir revisão manual para conteúdo curado"
+        },
+        "image_limit": {
+          "label": "Limite Diário de Imagens",
+          "description": "Número de imagens a buscar do Civitai por dia (0 = desativado)"
+        },
+        "rate_limit": {
+          "label": "Limite de Taxa da API Civitai",
+          "description": "Máximo de requisições à API Civitai por dia"
+        },
+        "max_image_size": {
+          "label": "Tamanho Máx. da Imagem (bytes)",
+          "description": "Tamanho máximo do arquivo para imagens baixadas"
+        },
+        "min_rating": {
+          "label": "Classificação Mínima",
+          "description": "Limiar de classificação mínima para imagens curadas (0-5)"
         }
       },
       "moderation": {
         "nsfw_filter_enabled": {
-          "label": "Habilitar Filtro NSFW",
+          "label": "Ativar Filtro NSFW",
           "description": "Filtrar conteúdo NSFW automaticamente"
         },
         "nsfw_filter_strictness": {
           "label": "Rigor do Filtro NSFW",
-          "description": "Quão rigoroso o filtro NSFW deve ser"
+          "description": "Quão rigoroso deve ser o filtro NSFW"
         }
       },
       "scheduling": {
@@ -116,7 +132,7 @@
       "high": "Alto"
     },
     "actions": {
-      "save": "Salvar",
+      "save": "Salvar ({{count}})",
       "saving": "Salvando...",
       "reset": "Redefinir para o padrão",
       "addModel": "Adicionar Modelo"
@@ -125,7 +141,7 @@
       "saveSuccess": "Configuração \"{{key}}\" atualizada com sucesso",
       "saveError": "Falha ao atualizar a configuração",
       "loadError": "Falha ao carregar as configurações do sistema",
-      "confirmChange": "Tem certeza de que deseja alterar \"{{key}}\"? Isso terá efeito imediatamente.",
+      "confirmChange": "Tem certeza de que deseja alterar \"{{key}}\"? Isso entrará em vigor imediatamente.",
       "selectProviderFirst": "Selecione o provedor primeiro",
       "selectModel": "Selecionar modelo..."
     },

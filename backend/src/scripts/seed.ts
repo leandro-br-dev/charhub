@@ -8,6 +8,7 @@ import { seedStripePlans } from './seeds/seedStripePlans';
 import { seedLLMPricing } from './seeds/seedLLMPricing';
 import { seedVisualStyles } from './seeds/seedVisualStyles';
 import { seedSystemConfiguration } from './seeds/systemConfiguration';
+import { seedLLMModelCatalog } from './seeds/llmModelCatalog';
 import { prisma } from '../config/database';
 
 const DATA_DIR = path.resolve(__dirname, '../data');
@@ -29,6 +30,7 @@ interface SeedStats {
   llmPricing: { created: number; updated: number; skipped: number };
   visualStyles: { seeded: boolean };
   systemConfig: { created: number; skipped: number; errors: string[] };
+  llmCatalog: { created: number; skipped: number; errors: string[] };
   errors: string[];
 }
 
@@ -519,6 +521,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
     llmPricing: { created: 0, updated: 0, skipped: 0 },
     visualStyles: { seeded: false },
     systemConfig: { created: 0, skipped: 0, errors: [] },
+    llmCatalog: { created: 0, skipped: 0, errors: [] },
     errors: [],
   };
 
@@ -593,6 +596,12 @@ async function seed(options: SeedOptions = {}): Promise<void> {
       dryRun: options.dryRun,
     });
 
+    // 11. Seed LLM model catalog
+    stats.llmCatalog = await seedLLMModelCatalog({
+      verbose: options.verbose,
+      dryRun: options.dryRun,
+    });
+
   } catch (error) {
     stats.errors.push(String(error));
     console.error('\n❌ Seed failed:', error);
@@ -612,6 +621,7 @@ async function seed(options: SeedOptions = {}): Promise<void> {
   console.log(`LLM Pricing:        ${stats.llmPricing.created} created, ${stats.llmPricing.updated} updated, ${stats.llmPricing.skipped} skipped`);
   console.log(`Visual Styles:      ${stats.visualStyles.seeded ? '✅ Seeded' : '⏭️  Skipped'}`);
   console.log(`System Config:      ${stats.systemConfig.created} created, ${stats.systemConfig.skipped} skipped`);
+  console.log(`LLM Catalog:        ${stats.llmCatalog.created} created, ${stats.llmCatalog.skipped} skipped`);
   console.log(`Duration:           ${duration}s`);
 
   if (stats.errors.length > 0) {
