@@ -1,3 +1,9 @@
+-- CreateEnum
+CREATE TYPE "LLMModelCategory" AS ENUM ('CHAT', 'CODING', 'REASONING', 'VISION', 'SPEECH', 'TRANSLATION', 'AGENTIC', 'EMBEDDING');
+
+-- CreateEnum
+CREATE TYPE "LLMModelType" AS ENUM ('TEXT', 'MULTIMODAL', 'REASONING', 'SPEECH', 'EMBEDDING');
+
 -- CreateTable
 CREATE TABLE "LLMModelCatalog" (
     "id" TEXT NOT NULL,
@@ -21,12 +27,6 @@ CREATE TABLE "LLMModelCatalog" (
 
     CONSTRAINT "LLMModelCatalog_pkey" PRIMARY KEY ("id")
 );
-
--- CreateEnum
-CREATE TYPE "LLMModelCategory" AS ENUM ('CHAT', 'CODING', 'REASONING', 'VISION', 'SPEECH', 'TRANSLATION', 'AGENTIC', 'EMBEDDING');
-
--- CreateEnum
-CREATE TYPE "LLMModelType" AS ENUM ('TEXT', 'MULTIMODAL', 'REASONING', 'SPEECH', 'EMBEDDING');
 
 -- CreateIndex
 CREATE UNIQUE INDEX "LLMModelCatalog_provider_name_key" ON "LLMModelCatalog"("provider", "name");
