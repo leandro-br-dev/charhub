@@ -2,7 +2,7 @@
   "description": "Assets module strings for asset management, forms, and detail views.",
   "resources": {
     "labels": {
-      "untitledAsset": "Ativo sem título",
+      "untitledAsset": "Ativo Sem Título",
       "updatedAt": "Atualizado em {{date}}",
       "public": "Público",
       "private": "Privado",
@@ -23,10 +23,10 @@
       "PROP": "Adereço"
     },
     "typeDescriptions": {
-      "CLOTHING": "Itens de vestuário e roupas",
+      "CLOTHING": "Peças de vestuário e roupas",
       "ACCESSORY": "Acessórios e adornos vestíveis",
       "SCAR": "Marcas, cicatrizes e características corporais",
-      "HAIRSTYLE": "Estilos e cores de cabelo",
+      "HAIRSTYLE": "Penteados e cores de cabelo",
       "OBJECT": "Objetos e itens de mão",
       "WEAPON": "Armas, armas brancas, armas de fogo",
       "VEHICLE": "Veículos e montarias",
@@ -35,7 +35,7 @@
     },
     "categories": {
       "WEARABLE": "Vestível",
-      "HOLDABLE": "Portátil",
+      "HOLDABLE": "Segurável",
       "ENVIRONMENTAL": "Ambiental"
     },
     "categoryDescriptions": {
@@ -62,17 +62,17 @@
     "visualStyles": {
       "ANIME": "Anime",
       "REALISTIC": "Realista",
-      "SEMI_REALISTIC": "Semi-Realista",
-      "CARTOON": "Cartum",
+      "SEMI_REALISTIC": "Semirrealista",
+      "CARTOON": "Cartoon",
       "MANGA": "Manga",
       "MANHWA": "Manhwa",
-      "COMIC": "Quadrinhos",
+      "COMIC": "Comic",
       "CHIBI": "Chibi",
       "PIXEL_ART": "Pixel Art",
       "THREE_D": "3D"
     },
     "imageTypes": {
-      "preview": "Pré-visualização",
+      "preview": "Prévia",
       "reference": "Referência",
       "transparent": "Transparente",
       "in_context": "Em Contexto"
@@ -95,6 +95,7 @@
       "sidebar": {
         "description": "Navegue e gerencie seus ativos criativos.",
         "viewGallery": "Ver Galeria",
+        "viewAllAssets": "Ver todos os ativos",
         "myAsset": "Meu ativo",
         "noAssetsFound": "Nenhum ativo encontrado."
       },
@@ -141,7 +142,7 @@
         "classification": "Classificação",
         "classificationHint": "Estilo visual, classificação etária e tags de conteúdo.",
         "images": "Imagens",
-        "imagesHint": "Gerenciar referências visuais para este ativo."
+        "imagesHint": "Gerencie referências visuais para este ativo."
       },
       "fields": {
         "name": "Nome",
@@ -152,28 +153,28 @@
         "promptContext": "Prompt de Contexto",
         "negativePrompt": "Prompt Negativo",
         "placementZone": "Zona de Posicionamento",
-        "placementDetail": "Detalhe do Posicionamento",
+        "placementDetail": "Detalhe de Posicionamento",
         "style": "Estilo Visual",
         "visibility": "Visibilidade",
         "ageRating": "Classificação Etária",
         "contentTags": "Tags de Conteúdo"
       },
       "placeholders": {
-        "name": "Insira o nome do ativo",
+        "name": "Digite o nome do ativo",
         "description": "Descreva este ativo...",
-        "type": "Selecione o tipo",
-        "category": "Selecione a categoria",
+        "type": "Selecionar tipo",
+        "category": "Selecionar categoria",
         "promptPrimary": "Descreva como o ativo deve aparecer...",
-        "promptContext": "Contexto adicional ao usar com personagens...",
+        "promptContext": "Contexto adicional quando usado com personagens...",
         "negativePrompt": "Descreva o que evitar...",
-        "placementZone": "Selecione a zona de posicionamento",
+        "placementZone": "Selecionar zona de posicionamento",
         "placementDetail": "ex: 'bochecha esquerda', 'através do nariz'"
       },
       "hints": {
         "name": "Um nome claro e descritivo para este ativo",
         "description": "Descrição detalhada da aparência do ativo",
-        "positivePrompt": "Prompt visual para geração de IA (ex: 'uma jaqueta de couro vermelha com zíperes prateados')",
-        "negativePrompt": "Elementos a evitar na geração (ex: 'danificado, rasgado, sujo')",
+        "positivePrompt": "Prompt visual para geração por IA (ex: 'uma jaqueta de couro vermelha com zíperes prateados')",
+        "negativePrompt": "Elementos a serem evitados na geração (ex: 'danificado, rasgado, sujo')",
         "placementZone": "Onde o ativo deve ser posicionado no personagem"
       },
       "labels": {
@@ -186,12 +187,12 @@
       "images": {
         "coverHeader": "Capa do ativo",
         "coverDescription": "Imagem que representa este ativo.",
-        "upload": "Fazer upload da capa",
+        "upload": "Carregar capa",
         "change": "Alterar capa",
-        "uploading": "Enviando...",
+        "uploading": "Carregando...",
         "urlModalTitle": "Usar imagem de URL",
         "urlLabel": "URL da Imagem",
-        "previewAlt": "Pré-visualização da capa do ativo",
+        "previewAlt": "Prévia da capa do ativo",
         "invalidUrl": "Insira uma URL de imagem válida (http/https).",
         "saveFirst": "Salve o ativo primeiro para adicionar imagens"
       },
@@ -201,20 +202,20 @@
         "upload": "Selecionar imagem",
         "change": "Alterar imagem",
         "remove": "Remover",
-        "fromDevice": "Enviar do dispositivo",
+        "fromDevice": "Carregar do dispositivo",
         "fromUrl": "Usar URL da imagem",
         "generateAI": "Gerar com IA",
         "aiComingSoon": "Geração por IA para ativos em breve",
         "urlModalTitle": "Usar imagem de URL",
         "urlLabel": "URL da Imagem",
-        "preview": "Pré-visualização",
-        "previewAlt": "Pré-visualização da capa do ativo",
+        "preview": "Prévia",
+        "previewAlt": "Prévia da capa do ativo",
         "invalidUrl": "Insira uma URL de imagem válida (http/https).",
         "error": "Não foi possível carregar esta imagem. {{message}}",
         "loading": "Carregando...",
-        "uploading": "Enviando...",
+        "uploading": "Carregando...",
         "helperCreate": "Escolha uma imagem de capa agora e a manteremos enquanto você preenche o restante do formulário.",
-        "helperEdit": "Atualize a imagem de capa quando quiser. As alterações serão aplicadas assim que você salvar."
+        "helperEdit": "Atualize a imagem de capa quando quiser. As alterações são aplicadas assim que você salva."
       },
       "tabs": {
         "identity": "Identidade",
@@ -225,12 +226,12 @@
         "lockedHint": "Preencha os detalhes básicos para desbloquear as outras seções."
       },
       "autocomplete": {
-        "button": "Preenchimento automático",
-        "ai": "Preenchimento automático com IA",
-        "web": "Preenchimento automático com busca na web",
+        "button": "Autocompletar",
+        "ai": "Autocompletar com IA",
+        "web": "Autocompletar com busca na web",
         "nothing": "Nenhuma sugestão disponível.",
-        "applied": "Preenchimento automático aplicado.",
-        "failed": "Falha ao preencher automaticamente."
+        "applied": "Autocompletar aplicado.",
+        "failed": "Falha ao autocompletar."
       }
     },
     "create": {
@@ -267,7 +268,7 @@
         "notFound": "Não foi possível encontrar este ativo."
       },
       "actions": {
-        "backToHub": "Voltar ao hub",
+        "backToHub": "Voltar para o hub",
         "edit": "Editar",
         "delete": "Excluir",
         "deleting": "Excluindo...",
@@ -341,7 +342,7 @@
     },
     "characterAssets": {
       "title": "Ativos do Personagem",
-      "subtitle": "Gerenciar ativos equipados a este personagem",
+      "subtitle": "Gerenciar ativos equipados neste personagem",
       "tabs": {
         "equipped": "Equipados",
         "available": "Disponíveis"
@@ -377,7 +378,7 @@
       "linkFailed": "Falha ao vincular ativo ao personagem.",
       "unlinkFailed": "Falha ao desvincular ativo do personagem.",
       "nameRequired": "O nome do ativo é obrigatório",
-      "typeRequired": "O tipo do ativo é obrigatório",
+      "typeRequired": "O tipo de ativo é obrigatório",
       "categoryRequired": "A categoria do ativo é obrigatória",
       "invalidType": "Tipo de ativo inválido",
       "invalidCategory": "Categoria de ativo inválida",
@@ -393,7 +394,7 @@
       "unlinked": "Ativo desvinculado do personagem"
     },
     "messages": {
-      "imageUploaded": "Imagem enviada com sucesso",
+      "imageUploaded": "Imagem carregada com sucesso",
       "imageDeleted": "Imagem excluída com sucesso",
       "coverUploaded": "Imagem de capa atualizada com sucesso",
       "descriptionRequired": "A descrição é obrigatória"
@@ -401,19 +402,19 @@
     "images": {
       "title": "Imagens do Ativo",
       "addImage": "Adicionar Imagem",
-      "selectType": "Selecione o tipo de imagem",
-      "uploadFailed": "Falha ao enviar imagem",
+      "selectType": "Selecionar tipo de imagem",
+      "uploadFailed": "Falha ao carregar imagem",
       "deleteFailed": "Falha ao excluir imagem",
       "deleteConfirm": "Excluir esta imagem?",
       "noImages": "Nenhuma imagem ainda. Adicione sua primeira referência visual.",
       "types": {
-        "preview": "Pré-visualização",
+        "preview": "Prévia",
         "reference": "Referência",
         "transparent": "Transparente",
         "in_context": "Em Contexto"
       },
       "typeDescriptions": {
-        "preview": "Imagem principal de pré-visualização para o ativo",
+        "preview": "Imagem de prévia principal para o ativo",
         "reference": "Referência visual para o ativo",
         "transparent": "Versão com fundo transparente",
         "in_context": "Ativo mostrado em uso/contexto de cena"
@@ -426,19 +427,19 @@
       "contextLabel": "Prompt de Contexto",
       "contextHint": "Contexto adicional quando este ativo é usado com personagens",
       "negativeLabel": "Prompt Negativo",
-      "negativeHint": "Elementos a evitar ao gerar este ativo"
+      "negativeHint": "Elementos a serem evitados ao gerar este ativo"
     },
     "avatar": {
       "invalidUrl": "Insira uma URL de imagem válida (http/https).",
       "error": "Não foi possível carregar esta imagem. {{message}}",
       "aiComingSoon": "Geração por IA para ativos em breve",
       "generateAI": "Gerar com IA",
-      "fromDevice": "Enviar do dispositivo",
+      "fromDevice": "Carregar do dispositivo",
       "fromUrl": "Usar URL da imagem",
       "urlModalTitle": "Usar imagem de URL",
       "urlLabel": "URL da Imagem",
-      "preview": "Pré-visualização",
-      "previewAlt": "Pré-visualização da imagem",
+      "preview": "Prévia",
+      "previewAlt": "Prévia da imagem",
       "loading": "Carregando..."
     }
   }
