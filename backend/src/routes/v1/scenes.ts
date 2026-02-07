@@ -166,6 +166,12 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
 
     let scenes;
 
+    // Parse pagination parameters with validation
+    const parsedSkip = typeof skip === 'string' ? parseInt(skip, 10) : undefined;
+    const parsedLimit = typeof limit === 'string' ? parseInt(limit, 10) : undefined;
+    const validSkip = typeof parsedSkip === 'number' && !isNaN(parsedSkip) ? parsedSkip : undefined;
+    const validLimit = typeof parsedLimit === 'number' && !isNaN(parsedLimit) ? parsedLimit : undefined;
+
     // If filtering by specific author
     if (authorId && typeof authorId === 'string') {
       scenes = await sceneService.listScenes({
@@ -176,8 +182,8 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
         search: typeof search === 'string' ? search : undefined,
         visibility: typeof visibility === 'string' ? visibility as any : undefined,
         style: typeof style === 'string' ? style : undefined,
-        skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
-        limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
+        skip: validSkip,
+        limit: validLimit,
       });
     }
     // If user is authenticated and not requesting public only
@@ -190,8 +196,8 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
         search: typeof search === 'string' ? search : undefined,
         visibility: typeof visibility === 'string' ? visibility as any : undefined,
         style: typeof style === 'string' ? style : undefined,
-        skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
-        limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
+        skip: validSkip,
+        limit: validLimit,
       });
     }
     // Otherwise get public scenes
@@ -200,8 +206,8 @@ router.get('/', optionalAuth, async (req: Request, res: Response) => {
         genre: typeof genre === 'string' ? genre : undefined,
         mood: typeof mood === 'string' ? mood : undefined,
         search: typeof search === 'string' ? search : undefined,
-        skip: typeof skip === 'string' ? parseInt(skip, 10) : undefined,
-        limit: typeof limit === 'string' ? parseInt(limit, 10) : undefined,
+        skip: validSkip,
+        limit: validLimit,
       });
     }
 

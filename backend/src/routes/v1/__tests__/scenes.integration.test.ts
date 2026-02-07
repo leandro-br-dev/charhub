@@ -201,7 +201,7 @@ describe('Scenes API Integration Tests', () => {
         .set(getAuthHeader(token))
         .expect(200);
 
-      expect(response.body.data.some((s: any) => s.name.includes('dragon'))).toBe(true);
+      expect(response.body.data.some((s: any) => s.name.toLowerCase().includes('dragon'))).toBe(true);
     });
 
     it('should support pagination', async () => {
