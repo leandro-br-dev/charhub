@@ -7,39 +7,39 @@
     },
     "Sci-Fi": {
       "name": "Sci-Fi",
-      "description": "Genre de science-fiction"
+      "description": "Genre science-fiction"
     },
     "Romance": {
       "name": "Romance",
-      "description": "Genre de romance"
+      "description": "Genre romantique"
     },
     "Horror": {
       "name": "Horreur",
-      "description": "Genre d'horreur"
+      "description": "Genre horreur"
     },
     "Mystery": {
       "name": "Mystère",
-      "description": "Genre de mystère"
+      "description": "Genre mystère"
     },
     "Thriller": {
       "name": "Thriller",
-      "description": "Genre de thriller"
+      "description": "Genre thriller"
     },
     "Adventure": {
       "name": "Aventure",
-      "description": "Genre d'aventure"
+      "description": "Genre aventure"
     },
     "Action": {
       "name": "Action",
-      "description": "Histoires axées sur l'action"
+      "description": "Histoires orientées action"
     },
     "Comedy": {
       "name": "Comédie",
-      "description": "Genre de comédie"
+      "description": "Genre comédie"
     },
     "Drama": {
       "name": "Drame",
-      "description": "Genre dramatique"
+      "description": "Genre drame"
     },
     "Slice of Life": {
       "name": "Tranche de vie",
@@ -51,27 +51,27 @@
     },
     "Harem": {
       "name": "Harem",
-      "description": "Plusieurs intérêts romantiques"
+      "description": "Multiples intérêts romantiques"
     },
     "Reverse Harem": {
-      "name": "Harem inversé",
+      "name": "Reverse Harem",
       "description": "Protagoniste féminine avec plusieurs intérêts masculins"
     },
     "Yaoi": {
       "name": "Yaoi",
-      "description": "Romance entre hommes"
+      "description": "Romance homme/homme"
     },
     "Yuri": {
       "name": "Yuri",
-      "description": "Romance entre femmes"
+      "description": "Romance femme/femme"
     },
     "Ecchi": {
       "name": "Ecchi",
-      "description": "Contenu sexuellement suggestif"
+      "description": "Contenu sexuel suggestif"
     },
     "Hentai": {
       "name": "Hentai",
-      "description": "Contenu sexuellement explicite"
+      "description": "Contenu sexuel explicite"
     },
     "Gore": {
       "name": "Gore",
@@ -82,16 +82,16 @@
       "description": "Thèmes psychologiques"
     },
     "Dark Fantasy": {
-      "name": "Fantasy sombre",
-      "description": "Thèmes fantastiques sombres et matures"
+      "name": "Dark Fantasy",
+      "description": "Thèmes de fantaisie sombres et matures"
     },
     "Urban Fantasy": {
-      "name": "Fantasy urbaine",
-      "description": "Fantasy dans un décor moderne"
+      "name": "Urban Fantasy",
+      "description": "Fantaisie dans un cadre moderne"
     },
     "High Fantasy": {
       "name": "High Fantasy",
-      "description": "Fantasy épique dans des mondes fictifs"
+      "description": "Fantaisie épique dans des mondes fictifs"
     },
     "Cyberpunk": {
       "name": "Cyberpunk",
@@ -99,11 +99,11 @@
     },
     "Steampunk": {
       "name": "Steampunk",
-      "description": "Technologie à vapeur de l'époque victorienne"
+      "description": "Technologie à vapeur de l'ère victorienne"
     },
     "Post-Apocalyptic": {
-      "name": "Post-apocalyptique",
-      "description": "Monde après une catastrophe"
+      "name": "Post-Apocalyptique",
+      "description": "Monde après la catastrophe"
     },
     "Dystopian": {
       "name": "Dystopique",
@@ -127,7 +127,7 @@
     },
     "School Life": {
       "name": "Vie scolaire",
-      "description": "Histoires se déroulant à l'école"
+      "description": "Histoires se déroulant en milieu scolaire"
     },
     "Sports": {
       "name": "Sports",
@@ -143,11 +143,11 @@
     },
     "Crime": {
       "name": "Crime",
-      "description": "Crimes et activités criminelles"
+      "description": "Crime et activités criminelles"
     },
     "Noir": {
       "name": "Noir",
-      "description": "Histoires de crime sombres"
+      "description": "Histoires policières sombres"
     },
     "Western": {
       "name": "Western",
@@ -167,7 +167,7 @@
     },
     "Mafia": {
       "name": "Mafia",
-      "description": "Thèmes du crime organisé"
+      "description": "Thèmes de crime organisé"
     },
     "Vampire": {
       "name": "Vampire",
@@ -194,7 +194,7 @@
       "description": "Parodie ou satire"
     },
     "Wholesome": {
-      "name": "Positif",
+      "name": "Bienveillant",
       "description": "Contenu réconfortant"
     },
     "Grimdark": {
@@ -215,7 +215,7 @@
     },
     "Tentacle": {
       "name": "Tentacule",
-      "description": "Érotisme de tentacules"
+      "description": "Érotisme à tentacules"
     },
     "Furry": {
       "name": "Furry",
@@ -223,7 +223,7 @@
     },
     "Monster Girl": {
       "name": "Monster Girl",
-      "description": "Personnages féminins monstres"
+      "description": "Personnages monstres féminins"
     },
     "Transformation": {
       "name": "Transformation",
@@ -250,7 +250,7 @@
       "description": "Exploration de donjons"
     },
     "Game World": {
-      "name": "Monde de jeu",
+      "name": "Monde du jeu",
       "description": "Se déroule dans un monde de jeu"
     },
     "LitRPG": {

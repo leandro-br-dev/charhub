@@ -19,13 +19,13 @@
       "mine": "Mías",
       "noPopularCharacters": "No se encontraron personajes populares.",
       "noNewCharacters": "Aún no hay personajes nuevos.",
-      "noFavoriteCharacters": "Aún no has añadido ningún personaje a favoritos.",
+      "noFavoriteCharacters": "Aún no has marcado ningún personaje como favorito.",
       "createCharacter": "Crear Personaje",
       "browseCharacters": "Explorar Personajes"
     },
     "noStories": "Aún no hay historias. ¡Crea tu primera historia!",
     "createStory": "Crear Historia",
-    "plusRequired": "Requiere Plan Plus",
+    "plusRequired": "Requiere plan Plus",
     "recentConversations": "Conversaciones Recientes",
     "newConversation": "Nueva Conversación",
     "noConversations": "Aún no hay conversaciones. ¡Empieza a chatear ahora!",
@@ -57,7 +57,7 @@
         },
         "stories": {
           "title": "Descubre Historias",
-          "description": "Vive aventuras interactivas inmersivas",
+          "description": "Experimenta aventuras interactivas inmersivas",
           "action": "Explorar",
           "actionFull": "Explorar Historias",
           "create": "Crear",
@@ -65,7 +65,7 @@
         },
         "pricing": {
           "title": "Desbloquea Premium",
-          "description": "Creaciones ilimitadas, funciones exclusivas y más",
+          "description": "Creaciones ilimitadas, funciones exclusivas y mucho más",
           "action": "Ver Planes",
           "actionFull": "Ver Planes"
         }

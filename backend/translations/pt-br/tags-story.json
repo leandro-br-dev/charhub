@@ -54,24 +54,24 @@
       "description": "Múltiplos interesses românticos"
     },
     "Reverse Harem": {
-      "name": "Harem Reverso",
+      "name": "Reverse Harem",
       "description": "Protagonista feminina com múltiplos interesses masculinos"
     },
     "Yaoi": {
       "name": "Yaoi",
-      "description": "Romance entre homens"
+      "description": "Romance masculino/masculino"
     },
     "Yuri": {
       "name": "Yuri",
-      "description": "Romance entre mulheres"
+      "description": "Romance feminino/feminino"
     },
     "Ecchi": {
       "name": "Ecchi",
-      "description": "Conteúdo sexualmente sugestivo"
+      "description": "Conteúdo sexual sugestivo"
     },
     "Hentai": {
       "name": "Hentai",
-      "description": "Conteúdo sexualmente explícito"
+      "description": "Conteúdo sexual explícito"
     },
     "Gore": {
       "name": "Gore",
@@ -83,11 +83,11 @@
     },
     "Dark Fantasy": {
       "name": "Fantasia Sombria",
-      "description": "Temas de fantasia sombrios e maduros"
+      "description": "Temas de fantasia sombria e madura"
     },
     "Urban Fantasy": {
       "name": "Fantasia Urbana",
-      "description": "Fantasia em cenário moderno"
+      "description": "Fantasia em um cenário moderno"
     },
     "High Fantasy": {
       "name": "Alta Fantasia",
@@ -103,11 +103,11 @@
     },
     "Post-Apocalyptic": {
       "name": "Pós-Apocalíptico",
-      "description": "Mundo após desastre"
+      "description": "Mundo pós-desastre"
     },
     "Dystopian": {
       "name": "Distópico",
-      "description": "Cenário de sociedade opressora"
+      "description": "Cenário de sociedade opressiva"
     },
     "Historical": {
       "name": "Histórico",
@@ -123,7 +123,7 @@
     },
     "Mecha": {
       "name": "Mecha",
-      "description": "Robôs gigantes/mechs"
+      "description": "Robôs gigantes/mechas"
     },
     "School Life": {
       "name": "Vida Escolar",
@@ -150,7 +150,7 @@
       "description": "Histórias de crime sombrias"
     },
     "Western": {
-      "name": "Western",
+      "name": "Faroeste",
       "description": "Cenário do Velho Oeste"
     },
     "Space Opera": {
@@ -171,11 +171,11 @@
     },
     "Vampire": {
       "name": "Vampiro",
-      "description": "Histórias com tema de vampiro"
+      "description": "Histórias com tema de vampiros"
     },
     "Werewolf": {
       "name": "Lobisomem",
-      "description": "Histórias com tema de lobisomem"
+      "description": "Histórias com tema de lobisomens"
     },
     "Mythology": {
       "name": "Mitologia",
@@ -194,8 +194,8 @@
       "description": "Paródia ou sátira"
     },
     "Wholesome": {
-      "name": "Edificante",
-      "description": "Conteúdo que faz se sentir bem"
+      "name": "Agradável",
+      "description": "Conteúdo que faz sentir bem"
     },
     "Grimdark": {
       "name": "Grimdark",
@@ -214,7 +214,7 @@
       "description": "Relacionamentos incestuosos"
     },
     "Tentacle": {
-      "name": "Tentáculo",
+      "name": "Tentacle",
       "description": "Erotismo com tentáculos"
     },
     "Furry": {
@@ -222,8 +222,8 @@
       "description": "Personagens animais antropomórficos"
     },
     "Monster Girl": {
-      "name": "Garota Monstro",
-      "description": "Personagens femininas de monstros"
+      "name": "Monster Girl",
+      "description": "Personagens monstros femininos"
     },
     "Transformation": {
       "name": "Transformação",
@@ -239,14 +239,14 @@
     },
     "Villainess": {
       "name": "Vilã",
-      "description": "Protagonista feminina vilã"
+      "description": "Protagonista vilã feminina"
     },
     "Regression": {
       "name": "Regressão",
       "description": "Retorno ao passado/regressão"
     },
     "Dungeon": {
-      "name": "Dungeon",
+      "name": "Masmorra",
       "description": "Exploração de masmorras"
     },
     "Game World": {

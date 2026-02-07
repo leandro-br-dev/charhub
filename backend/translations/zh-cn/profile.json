@@ -4,48 +4,48 @@
     "tabs": {
       "profile": "个人资料",
       "password": "密码",
-      "contentClassification": "内容分类",
+      "contentClassification": "内容分级",
       "deleteAccount": "删除账户"
     },
     "sectionTitle": "账户",
-    "title": "管理你的个人资料",
-    "subtitle": "更新他人在 CharHub 上看到你的方式。仍在迁移的偏好设置将很快在此处显示。",
+    "title": "管理您的个人资料",
+    "subtitle": "更新其他用户在 CharHub 上看到您的方式。正在迁移的偏好设置将很快在此处显示。",
     "identity": {
       "header": "个人资料照片",
-      "description": "选择一个头像来代表你在聊天和角色中的形象。",
+      "description": "选择一个头像来代表您在聊天和角色中的形象。",
       "upload": "上传图片",
-      "placeholderNote": "媒体服务重新连接后将提供头像上传功能。"
+      "placeholderNote": "在重新连接媒体服务后，头像上传功能将可用。"
     },
     "details": {
       "header": "公开详情",
-      "description": "这些值将与协作者共享，并用作对话中的默认值。"
+      "description": "这些值将与协作者共享，并用作对话中的默认设置。"
     },
     "contentClassification": {
-      "header": "内容分类",
-      "description": "配置内容过滤器，以控制你想要查看的角色和故事类型。只有符合你选择偏好设置的内容才会被推荐给你。",
-      "blockedTags": "内容过滤器",
-      "filterNote": "选择你想允许的内容类型。未选中的项目将从推荐中过滤掉。",
-      "allAgesNote": "选择“所有年龄段”评级时，所有内容类型都将被屏蔽。",
+      "header": "内容分级",
+      "description": "配置内容筛选器以控制您希望看到的人物和故事类型。只有符合您所选偏好设置的内容才会被推荐给您。",
+      "blockedTags": "内容筛选器",
+      "filterNote": "选择您想“允许”的内容类型。未选中的项目将从推荐中筛选掉。",
+      "allAgesNote": "当选择“适合所有年龄”评级时，所有内容类型都将被屏蔽。",
       "allowAll": "允许所有",
       "birthDateRequired": "需要出生日期",
-      "birthDateRequiredMessage": "请在“个人资料”选项卡中填写你的出生日期，以解锁内容分类设置。这将确保推荐的内容适合你的年龄。",
+      "birthDateRequiredMessage": "请在“个人资料”选项卡中填写您的出生日期，以解锁内容分级设置。这有助于确保推荐适合年龄的内容。",
       "maxAgeRatingLabel": "最高年龄评级",
-      "maxAgeRatingHint": "选择你想看到的最高年龄评级",
+      "maxAgeRatingHint": "选择您想看到的最高年龄评级",
       "ageRestricted": "年龄限制"
     },
     "fields": {
       "displayName": "显示名称",
-      "displayNamePlaceholder": "其他用户如何称呼你",
+      "displayNamePlaceholder": "其他用户如何称呼您",
       "fullName": "全名",
-      "fullNamePlaceholder": "账单和电子邮件副本可选",
+      "fullNamePlaceholder": "可选，用于账单和电子邮件副本",
       "username": "用户名",
       "usernamePlaceholder": "用户名",
-      "usernameHint": "你在 CharHub 上的唯一标识符。",
+      "usernameHint": "您在 CharHub 上的唯一标识符。",
       "usernameChecking": "正在检查可用性...",
       "usernameAvailable": "用户名可用",
       "usernameUnavailable": "用户名已被占用",
       "email": "电子邮件",
-      "emailHint": "由你的身份验证提供商管理。",
+      "emailHint": "由您的身份验证提供商管理。",
       "birthDate": "出生日期",
       "gender": "性别"
     },
@@ -56,15 +56,15 @@
       "unspecified": "不愿透露"
     },
     "preferences": {
-      "placeholder": "内容偏好、模糊设置和敏感主题将在集成审核服务后返回。"
+      "placeholder": "内容偏好设置、模糊设置和敏感主题将在审核服务集成后恢复。"
     },
     "actions": {
       "save": "保存更改",
       "saving": "正在保存..."
     },
     "subscription": {
-      "header": "订阅和积分",
-      "description": "管理你的订阅计划并查看你的积分余额。",
+      "header": "订阅与积分",
+      "description": "管理您的订阅计划并查看您的积分余额。",
       "currentPlan": "当前计划",
       "credits": "可用积分",
       "viewPlans": "查看计划",
@@ -73,30 +73,30 @@
     },
     "security": {
       "header": "安全",
-      "description": "你的 CharHub 会话继承来自 Google 或 Facebook 的 OAuth 安全。很快将支持多因素认证。",
-      "placeholder": "会话管理和无密码登录控件已在路线图上。"
+      "description": "您的 CharHub 会话继承了 Google 或 Facebook 的 OAuth 安全性。多因素支持功能将很快添加。",
+      "placeholder": "会话管理和无密码登录控制已列入路线图。"
     },
     "deleteAccount": {
       "title": "删除账户",
-      "description": "永久删除你的账户和所有内容。",
+      "description": "永久删除您的账户及所有内容。",
       "submit": "删除我的账户",
-      "confirmTitle": "你确定吗？",
-      "confirmDescription": "此操作无法撤销。这将永久删除你的账户并从我们的服务器中移除你的数据。",
+      "confirmTitle": "您确定要删除吗？",
+      "confirmDescription": "此操作无法撤消。这将永久删除您的账户并从我们的服务器中删除您的数据。",
       "confirmInstruction": "请输入“DELETE”以确认。",
       "confirmSubmit": "删除此账户"
     },
     "feedback": {
       "success": "个人资料更新成功。",
-      "error": "我们无法保存你的更改。"
+      "error": "未能保存您的更改。"
     },
     "errors": {
-      "updateFailed": "我们无法保存你的更改。请稍后再试。",
+      "updateFailed": "未能保存您的更改。请稍后重试。",
       "displayNameRequired": "需要显示名称。",
-      "usernameTooShort": "用户名在“@”符号后必须至少包含 3 个字符。",
-      "usernameInvalid": "用户名必须以“@”开头，并且只能包含字母、数字和下划线。",
-      "usernameTaken": "此用户名已被占用。请选择其他用户名。",
-      "validationFailed": "请检查表单字段后重试。",
-      "authenticationRequired": "你的会话已过期。请重新登录以继续。"
+      "usernameTooShort": "用户名在 @ 之后必须包含至少 3 个字符。",
+      "usernameInvalid": "用户名必须以 @ 开头，并且只能包含字母、数字和下划线。",
+      "usernameTaken": "该用户名已被占用。请选择其他用户名。",
+      "validationFailed": "请检查表单字段并重试。",
+      "authenticationRequired": "您的会话已过期。请重新登录以继续。"
     }
   }
 }

@@ -1,12 +1,12 @@
 {
   "resources": {
     "title": "Galerie d'images",
-    "loading": "Chargement des images en cours...",
+    "loading": "Chargement des images...",
     "error": "Échec du chargement des images.",
     "tabs": {
       "gallery": "Galerie de conversations",
       "avatar": "Avatars",
-      "samples": "Exemples",
+      "samples": "Échantillons",
       "stickers": "Stickers"
     },
     "upload": "Télécharger une image",

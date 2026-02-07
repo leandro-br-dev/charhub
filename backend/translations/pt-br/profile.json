@@ -8,34 +8,34 @@
       "deleteAccount": "Excluir Conta"
     },
     "sectionTitle": "Conta",
-    "title": "Gerencie seu perfil",
-    "subtitle": "Atualize como outras pessoas te veem no CharHub. Preferências que ainda estão sendo migradas aparecerão aqui em breve.",
+    "title": "Gerenciar seu perfil",
+    "subtitle": "Atualize como outras pessoas veem você no CharHub. Preferências que ainda estão sendo migradas aparecerão aqui em breve.",
     "identity": {
       "header": "Foto de perfil",
-      "description": "Escolha um avatar para te representar em chats e personagens.",
-      "upload": "Enviar imagem",
+      "description": "Escolha um avatar para representar você em conversas e personagens.",
+      "upload": "Carregar imagem",
       "placeholderNote": "O upload de avatares estará disponível após reconectarmos o serviço de mídia."
     },
     "details": {
       "header": "Detalhes públicos",
-      "description": "Estes valores são compartilhados com colaboradores e usados como padrão em conversas."
+      "description": "Esses valores são compartilhados com colaboradores e usados como padrão em conversas."
     },
     "contentClassification": {
       "header": "Classificação de Conteúdo",
-      "description": "Configure filtros de conteúdo para controlar quais tipos de personagens e histórias você deseja ver. Apenas conteúdo que corresponder às suas preferências selecionadas será recomendado.",
+      "description": "Configure filtros de conteúdo para controlar quais tipos de personagens e histórias você deseja ver. Somente o conteúdo que corresponder às suas preferências selecionadas será recomendado a você.",
       "blockedTags": "Filtros de Conteúdo",
-      "filterNote": "Selecione os tipos de conteúdo que você deseja PERMITIR. Itens desmarcados serão filtrados das recomendações.",
+      "filterNote": "Selecione os tipos de conteúdo que você deseja PERMITIR. Os itens não marcados serão filtrados das recomendações.",
       "allAgesNote": "Todos os tipos de conteúdo são bloqueados quando a classificação \"Todas as Idades\" é selecionada.",
       "allowAll": "Permitir Tudo",
       "birthDateRequired": "Data de Nascimento Obrigatória",
-      "birthDateRequiredMessage": "Por favor, preencha sua data de nascimento na aba Perfil para desbloquear as configurações de classificação de conteúdo. Isso garante recomendações de conteúdo adequadas à idade.",
-      "maxAgeRatingLabel": "Classificação de Idade Máxima",
-      "maxAgeRatingHint": "Selecione a classificação de idade máxima que você deseja ver",
+      "birthDateRequiredMessage": "Por favor, preencha sua data de nascimento na aba Perfil para desbloquear as configurações de classificação de conteúdo. Isso garante recomendações de conteúdo apropriadas para a idade.",
+      "maxAgeRatingLabel": "Classificação Indicativa Máxima",
+      "maxAgeRatingHint": "Selecione a classificação indicativa máxima que você deseja ver",
       "ageRestricted": "Restrito por idade"
     },
     "fields": {
       "displayName": "Nome de exibição",
-      "displayNamePlaceholder": "Como outros usuários se referem a você",
+      "displayNamePlaceholder": "Como outros usuários se dirigem a você",
       "fullName": "Nome completo",
       "fullNamePlaceholder": "Opcional para faturamento e cópias de e-mail",
       "username": "Nome de usuário",
@@ -43,7 +43,7 @@
       "usernameHint": "Seu identificador único no CharHub.",
       "usernameChecking": "Verificando disponibilidade...",
       "usernameAvailable": "Nome de usuário disponível",
-      "usernameUnavailable": "Nome de usuário já em uso",
+      "usernameUnavailable": "Nome de usuário já está em uso",
       "email": "E-mail",
       "emailHint": "Gerenciado pelo seu provedor de autenticação.",
       "birthDate": "Data de nascimento",
@@ -52,7 +52,7 @@
     "genders": {
       "feminine": "Feminino",
       "masculine": "Masculino",
-      "nonBinary": "Não-binário",
+      "nonBinary": "Não binário",
       "unspecified": "Prefiro não dizer"
     },
     "preferences": {
@@ -64,7 +64,7 @@
     },
     "subscription": {
       "header": "Assinatura e Créditos",
-      "description": "Gerencie seu plano de assinatura e veja seu saldo de créditos.",
+      "description": "Gerencie seu plano de assinatura e visualize seu saldo de créditos.",
       "currentPlan": "Plano Atual",
       "credits": "Créditos Disponíveis",
       "viewPlans": "Ver Planos",
@@ -73,8 +73,8 @@
     },
     "security": {
       "header": "Segurança",
-      "description": "Suas sessões CharHub herdam a segurança OAuth do Google ou Facebook. O suporte a autenticação de múltiplos fatores será adicionado em breve.",
-      "placeholder": "Gerenciamento de sessão e controles de login sem senha estão no roteiro."
+      "description": "Suas sessões no CharHub herdam a segurança OAuth do Google ou Facebook. O suporte a múltiplos fatores será adicionado em breve.",
+      "placeholder": "O gerenciamento de sessões e os controles de login sem senha estão no roteiro."
     },
     "deleteAccount": {
       "title": "Excluir Conta",
@@ -82,7 +82,7 @@
       "submit": "Excluir minha conta",
       "confirmTitle": "Você tem certeza absoluta?",
       "confirmDescription": "Esta ação não pode ser desfeita. Isso excluirá permanentemente sua conta e removerá seus dados de nossos servidores.",
-      "confirmInstruction": "Por favor, digite \"EXCLUIR\" para confirmar.",
+      "confirmInstruction": "Por favor, digite \"DELETE\" para confirmar.",
       "confirmSubmit": "Excluir esta conta"
     },
     "feedback": {
@@ -90,10 +90,10 @@
       "error": "Não foi possível salvar suas alterações."
     },
     "errors": {
-      "updateFailed": "Não foi possível salvar suas alterações. Tente novamente em um momento.",
-      "displayNameRequired": "O nome de exibição é obrigatório.",
+      "updateFailed": "Não foi possível salvar suas alterações. Tente novamente em alguns instantes.",
+      "displayNameRequired": "Nome de exibição é obrigatório.",
       "usernameTooShort": "O nome de usuário deve conter pelo menos 3 caracteres após o @.",
-      "usernameInvalid": "O nome de usuário deve começar com @ e conter apenas letras, números e underscores.",
+      "usernameInvalid": "O nome de usuário deve começar com @ e conter apenas letras, números e sublinhados.",
       "usernameTaken": "Este nome de usuário já está em uso. Por favor, escolha outro.",
       "validationFailed": "Por favor, verifique os campos do formulário e tente novamente.",
       "authenticationRequired": "Sua sessão expirou. Por favor, faça login novamente para continuar."

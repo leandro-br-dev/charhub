@@ -4,10 +4,10 @@
     "processingTitle": "正在完成登录...",
     "processingMessage": "正在完成身份验证...",
     "successTitle": "欢迎回来！",
-    "redirectingMessage": "身份验证已完成。正在重定向...",
+    "redirectingMessage": "身份验证完成。正在重定向...",
     "errorTitle": "身份验证错误",
-    "cancelledMessage": "身份验证被提供方取消。",
-    "missingParamsMessage": "缺少授权参数。请重新开始登录过程。",
+    "cancelledMessage": "身份验证已被提供方取消。",
+    "missingParamsMessage": "缺少授权参数。请重新开始登录流程。",
     "exchangeFailedMessage": "我们无法完成 OAuth 交换。请重试。",
     "returnButton": "返回登录"
   }

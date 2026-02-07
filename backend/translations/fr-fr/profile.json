@@ -9,41 +9,41 @@
     },
     "sectionTitle": "Compte",
     "title": "Gérer votre profil",
-    "subtitle": "Modifiez la façon dont les autres vous voient sur CharHub. Les préférences en cours de migration apparaîtront bientôt ici.",
+    "subtitle": "Mettez à jour la façon dont les autres vous voient sur CharHub. Les préférences en cours de migration apparaîtront ici bientôt.",
     "identity": {
       "header": "Photo de profil",
-      "description": "Choisissez un avatar pour vous représenter dans les discussions et auprès des personnages.",
-      "upload": "Télécharger une image",
-      "placeholderNote": "Les téléchargements d'avatars seront disponibles une fois que nous aurons reconnecté le service multimédia."
+      "description": "Choisissez un avatar pour vous représenter dans les chats et avec les personnages.",
+      "upload": "Importer une image",
+      "placeholderNote": "L'importation d'avatars sera disponible après la reconnexion du service média."
     },
     "details": {
       "header": "Détails publics",
-      "description": "Ces informations sont partagées avec les collaborateurs et servent de valeurs par défaut dans les conversations."
+      "description": "Ces valeurs sont partagées avec les collaborateurs et utilisées par défaut dans les conversations."
     },
     "contentClassification": {
       "header": "Classification du contenu",
-      "description": "Configurez des filtres de contenu pour contrôler les types de personnages et d'histoires que vous souhaitez voir. Seul le contenu correspondant à vos préférences sélectionnées vous sera recommandé.",
+      "description": "Configurez les filtres de contenu pour contrôler les types de personnages et d'histoires que vous souhaitez voir. Seul le contenu correspondant à vos préférences sélectionnées vous sera recommandé.",
       "blockedTags": "Filtres de contenu",
       "filterNote": "Sélectionnez les types de contenu que vous souhaitez AUTORISER. Les éléments non cochés seront filtrés des recommandations.",
-      "allAgesNote": "Tous les types de contenu sont bloqués lorsque la classification \"Tout public\" est sélectionnée.",
-      "allowAll": "Tout autoriser",
+      "allAgesNote": "Tous les types de contenu sont bloqués lorsque la classification \"Tous âges\" est sélectionnée.",
+      "allowAll": "Autoriser tout",
       "birthDateRequired": "Date de naissance requise",
       "birthDateRequiredMessage": "Veuillez renseigner votre date de naissance dans l'onglet Profil pour débloquer les paramètres de classification du contenu. Cela garantit des recommandations de contenu adaptées à l'âge.",
       "maxAgeRatingLabel": "Classification d'âge maximale",
       "maxAgeRatingHint": "Sélectionnez la classification d'âge maximale que vous souhaitez voir",
-      "ageRestricted": "Contenu réservé aux adultes"
+      "ageRestricted": "Restreint par l'âge"
     },
     "fields": {
       "displayName": "Nom d'affichage",
-      "displayNamePlaceholder": "Comment les autres utilisateurs s'adressent à vous",
+      "displayNamePlaceholder": "La façon dont les autres utilisateurs s'adressent à vous",
       "fullName": "Nom complet",
-      "fullNamePlaceholder": "Facultatif pour la facturation et les copies par e-mail",
+      "fullNamePlaceholder": "Facultatif pour la facturation et les copies d'e-mails",
       "username": "Nom d'utilisateur",
       "usernamePlaceholder": "nom d'utilisateur",
       "usernameHint": "Votre identifiant unique sur CharHub.",
       "usernameChecking": "Vérification de la disponibilité...",
       "usernameAvailable": "Nom d'utilisateur disponible",
-      "usernameUnavailable": "Nom d'utilisateur déjà pris",
+      "usernameUnavailable": "Ce nom d'utilisateur est déjà pris",
       "email": "E-mail",
       "emailHint": "Géré par votre fournisseur d'authentification.",
       "birthDate": "Date de naissance",
@@ -53,17 +53,17 @@
       "feminine": "Femme",
       "masculine": "Homme",
       "nonBinary": "Non-binaire",
-      "unspecified": "Préfère ne pas répondre"
+      "unspecified": "Préfère ne pas dire"
     },
     "preferences": {
-      "placeholder": "Les préférences de contenu, les paramètres de floutage et les thèmes sensibles reviendront une fois le service de modération intégré."
+      "placeholder": "Les préférences de contenu, les paramètres de flou et les thèmes sensibles reviendront une fois le service de modération intégré."
     },
     "actions": {
       "save": "Enregistrer les modifications",
       "saving": "Enregistrement..."
     },
     "subscription": {
-      "header": "Abonnement et Crédits",
+      "header": "Abonnement et crédits",
       "description": "Gérez votre plan d'abonnement et consultez votre solde de crédits.",
       "currentPlan": "Plan actuel",
       "credits": "Crédits disponibles",
@@ -73,16 +73,16 @@
     },
     "security": {
       "header": "Sécurité",
-      "description": "Vos sessions CharHub héritent de la sécurité OAuth de Google ou de Facebook. Le support multi-facteurs sera bientôt ajouté.",
-      "placeholder": "La gestion des sessions et les contrôles de connexion sans mot de passe sont prévus dans la feuille de route."
+      "description": "Vos sessions CharHub héritent de la sécurité OAuth de Google ou Facebook. Le support multi-facteurs sera ajouté bientôt.",
+      "placeholder": "La gestion des sessions et les contrôles de connexion sans mot de passe sont sur la feuille de route."
     },
     "deleteAccount": {
       "title": "Supprimer le compte",
       "description": "Supprimez définitivement votre compte et tout votre contenu.",
       "submit": "Supprimer mon compte",
-      "confirmTitle": "Êtes-vous absolument sûr ?",
-      "confirmDescription": "Cette action est irréversible. Elle supprimera définitivement votre compte et vos données de nos serveurs.",
-      "confirmInstruction": "Veuillez taper \"SUPPRIMER\" pour confirmer.",
+      "confirmTitle": "Êtes-vous absolument certain ?",
+      "confirmDescription": "Cette action est irréversible. Cela supprimera définitivement votre compte et vos données de nos serveurs.",
+      "confirmInstruction": "Veuillez taper \"DELETE\" pour confirmer.",
       "confirmSubmit": "Supprimer ce compte"
     },
     "feedback": {

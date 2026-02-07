@@ -15,7 +15,7 @@
     },
     "Elf": {
       "name": "Elf",
-      "description": "Fantasy-Elf-Charakter"
+      "description": "Fantasy-Elfencharakter"
     },
     "Demon": {
       "name": "Dämon",
@@ -23,7 +23,7 @@
     },
     "Angel": {
       "name": "Engel",
-      "description": "Engelsgleicher Charakter"
+      "description": "Engelhafter Charakter"
     },
     "Vampire": {
       "name": "Vampir",
@@ -31,11 +31,11 @@
     },
     "Werewolf": {
       "name": "Werwolf",
-      "description": "Werwolf oder Lykanthrop-Charakter"
+      "description": "Werwolf- oder Lykanthropen-Charakter"
     },
     "Robot": {
       "name": "Roboter",
-      "description": "Roboter- oder Android-Charakter"
+      "description": "Roboter- oder Androiden-Charakter"
     },
     "Cyborg": {
       "name": "Cyborg",
@@ -58,20 +58,20 @@
       "description": "Fuchsgeist-Charakter"
     },
     "Maid": {
-      "name": "Hausmädchen",
-      "description": "Beruf oder Outfit eines Hausmädchens"
+      "name": "Maid",
+      "description": "Maid-Beruf oder -Outfit"
     },
     "Butler": {
       "name": "Butler",
-      "description": "Beruf oder Outfit eines Butlers"
+      "description": "Butler-Beruf oder -Outfit"
     },
     "Student": {
-      "name": "Schüler",
-      "description": "Schüler-Charakter"
+      "name": "Schüler/Student",
+      "description": "Schüler- oder Studentencharakter"
     },
     "Teacher": {
       "name": "Lehrer",
-      "description": "Lehrer oder Pädagoge"
+      "description": "Lehrer oder Erzieher"
     },
     "Warrior": {
       "name": "Krieger",
@@ -87,7 +87,7 @@
     },
     "Ninja": {
       "name": "Ninja",
-      "description": "Ninja-Krieger-Charakter"
+      "description": "Stealth-Krieger-Charakter"
     },
     "Mage": {
       "name": "Magier",
@@ -103,15 +103,15 @@
     },
     "Healer": {
       "name": "Heiler",
-      "description": "Unterstützungs-/Heilungsrolle"
+      "description": "Unterstützungs-/Heilerrolle"
     },
     "Assassin": {
-      "name": "Attentäter",
-      "description": "Auftragsmörder-Charakter"
+      "name": "Assassine",
+      "description": "Meuchelmörder-Charakter"
     },
     "Thief": {
       "name": "Dieb",
-      "description": "Schurken- oder Dieb-Charakter"
+      "description": "Schurke oder Dieb"
     },
     "Pirate": {
       "name": "Pirat",
@@ -127,35 +127,35 @@
     },
     "Doctor": {
       "name": "Arzt",
-      "description": "Medizinisches Fachpersonal"
+      "description": "Mediziner"
     },
     "Nurse": {
-      "name": "Krankenschwester",
+      "name": "Krankenpfleger",
       "description": "Pflegefachkraft"
     },
     "Idol": {
       "name": "Idol",
-      "description": "Pop-Idol oder Interpret"
+      "description": "Pop-Idol oder Darsteller"
     },
     "Musician": {
       "name": "Musiker",
-      "description": "Musikalischer Künstler"
+      "description": "Musikkünstler"
     },
     "Artist": {
       "name": "Künstler",
       "description": "Bildender Künstler oder Maler"
     },
     "Athlete": {
-      "name": "Athlet",
+      "name": "Sportler",
       "description": "Sportprofi"
     },
     "Chef": {
       "name": "Koch",
-      "description": "Kulinarischer Profi"
+      "description": "Kochprofi"
     },
     "Royalty": {
-      "name": "Adel",
-      "description": "Königlicher oder adliger Charakter"
+      "name": "Royalty",
+      "description": "Königlicher oder adeliger Charakter"
     },
     "Princess": {
       "name": "Prinzessin",
@@ -167,15 +167,15 @@
     },
     "Tsundere": {
       "name": "Tsundere",
-      "description": "Anfangs kalt, allmählich warmherzige Persönlichkeit"
+      "description": "Anfänglich kalte, allmählich wärmere Persönlichkeit"
     },
     "Yandere": {
       "name": "Yandere",
-      "description": "Obsessiver, potenziell gewalttätiger Liebhaber"
+      "description": "Besessener, potenziell gewalttätiger Liebhaber"
     },
     "Kuudere": {
       "name": "Kuudere",
-      "description": "Coole, emotional distanzierte Persönlichkeit"
+      "description": "Kühle, emotional distanzierte Persönlichkeit"
     },
     "Dandere": {
       "name": "Dandere",
@@ -186,7 +186,7 @@
       "description": "Energetische, enthusiastische Persönlichkeit"
     },
     "Tomboy": {
-      "name": "Tomboy",
+      "name": "Wildfang",
       "description": "Maskulin auftretender weiblicher Charakter"
     },
     "Femboy": {
@@ -195,50 +195,50 @@
     },
     "BDSM": {
       "name": "BDSM",
-      "description": "Bondage, Disziplin, Dominanz/Unterwerfung Themen"
+      "description": "Bondage-, Disziplin-, Dominanz-/Unterwerfungsthemen"
     },
     "Dominatrix": {
-      "name": "Dominatrix",
+      "name": "Domina",
       "description": "Dominante sexuelle Rolle"
     },
     "Submissive": {
-      "name": "Devot",
-      "description": "Devote sexuelle Rolle"
+      "name": "Submissive",
+      "description": "Submissive sexuelle Rolle"
     },
     "Succubus": {
-      "name": "Succubus",
+      "name": "Sukkubus",
       "description": "Dämonische Verführerin"
     },
     "Monster Girl": {
       "name": "Monster-Mädchen",
-      "description": "Weiblicher Monstercharakter"
+      "description": "Weiblicher Monster-Charakter"
     },
     "Monster Boy": {
       "name": "Monster-Junge",
-      "description": "Männlicher Monstercharakter"
+      "description": "Männlicher Monster-Charakter"
     },
     "Giantess": {
       "name": "Riesin",
-      "description": "Riesige weibliche Figur"
+      "description": "Riesiger weiblicher Charakter"
     },
     "Loli": {
       "name": "Loli",
-      "description": "Jünglich aussehende weibliche Figur (nicht-sexueller Kontext)"
+      "description": "Jung aussehender weiblicher Charakter (nicht-sexueller Kontext)"
     },
     "Shota": {
       "name": "Shota",
-      "description": "Jünglich aussehender männlicher Charakter (nicht-sexueller Kontext)"
+      "description": "Jung aussehender männlicher Charakter (nicht-sexueller Kontext)"
     },
     "MILF": {
       "name": "MILF",
-      "description": "Attraktive erwachsene Frau"
+      "description": "Attraktive reife Frau"
     },
     "DILF": {
       "name": "DILF",
-      "description": "Attraktiver erwachsener Mann"
+      "description": "Attraktiver reifer Mann"
     },
     "Schoolgirl": {
-      "name": "Schülerin",
+      "name": "Schulmädchen",
       "description": "Weiblicher Schülercharakter"
     },
     "Schoolboy": {
@@ -255,15 +255,15 @@
     },
     "Gyaru": {
       "name": "Gyaru",
-      "description": "Japanischer Subkultur-Modestil"
+      "description": "Japanischer Mode-Subkultur-Stil"
     },
     "Goth": {
       "name": "Goth",
-      "description": "Gotischer Modestil"
+      "description": "Gothic-Modestil"
     },
     "Punk": {
       "name": "Punk",
-      "description": "Punk-Mode/Einstellung"
+      "description": "Punk-Mode/Attitüde"
     },
     "Zombie": {
       "name": "Zombie",
@@ -271,7 +271,7 @@
     },
     "Ghost": {
       "name": "Geist",
-      "description": "Geist- oder Spuk-Charakter"
+      "description": "Geist- oder Geistercharakter"
     },
     "Alien": {
       "name": "Alien",
@@ -279,7 +279,7 @@
     },
     "Mercenary": {
       "name": "Söldner",
-      "description": "Angeheuerter Soldat oder Kämpfer"
+      "description": "Angestellter Soldat oder Kämpfer"
     },
     "Gladiator": {
       "name": "Gladiator",
@@ -290,12 +290,12 @@
       "description": "Stammeskrieger-Charakter"
     },
     "Necromancer": {
-      "name": "Nekromantiker",
-      "description": "Anwender von Todesmagie"
+      "name": "Nekromant",
+      "description": "Todesmagieanwender"
     },
     "Druid": {
       "name": "Druide",
-      "description": "Anwender von Naturmagie"
+      "description": "Naturmagieanwender"
     },
     "Bard": {
       "name": "Barde",
@@ -307,7 +307,7 @@
     },
     "Ranger": {
       "name": "Waldläufer",
-      "description": "Wildniskrieger"
+      "description": "Wildnis-Krieger"
     },
     "Paladin": {
       "name": "Paladin",
@@ -319,23 +319,23 @@
     },
     "Warlock": {
       "name": "Hexenmeister",
-      "description": "Anwender dunkler Magie durch Pakt"
+      "description": "Dunkelmagieanwender mit Pakt"
     },
     "Sorcerer": {
       "name": "Zauberer",
-      "description": "Anwender von angeborener Magie"
+      "description": "Angeborener Magieanwender"
     },
     "Alchemist": {
       "name": "Alchemist",
-      "description": "Trankbrauer oder Chemiker"
+      "description": "Trankmacher oder Chemiker"
     },
     "Blacksmith": {
       "name": "Schmied",
-      "description": "Hersteller von Waffen und Rüstungen"
+      "description": "Waffen- und Rüstungsschmied"
     },
     "Merchant": {
       "name": "Händler",
-      "description": "Kaufmann oder Ladenbesitzer"
+      "description": "Händler oder Ladenbesitzer"
     },
     "Adventurer": {
       "name": "Abenteurer",

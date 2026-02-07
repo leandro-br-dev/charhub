@@ -5,14 +5,14 @@
       "skip": "Pular",
       "back": "Voltar",
       "next": "Próximo",
-      "finish": "Concluir",
+      "finish": "Finalizar",
       "saving": "Salvando...",
-      "progress": "Etapa {{current}} de {{total}}",
+      "progress": "Passo {{current}} de {{total}}",
       "successTitle": "Boas-vindas Concluídas!",
       "successMessage": "Seu perfil foi configurado com sucesso. Aproveite o CharHub!"
     },
     "displayName": {
-      "title": "Como você gostaria de ser chamado(a)?",
+      "title": "Como gostaria de ser chamado(a)?",
       "label": "Nome de Exibição",
       "placeholder": "ex: João Silva"
     },
@@ -21,7 +21,7 @@
       "subtitle": "É assim que outros usuários vão te encontrar",
       "label": "Nome de Usuário",
       "placeholder": "ex: joaosilva",
-      "description": "Somente letras, números e underscores",
+      "description": "Apenas letras, números e underscores",
       "checking": "Verificando disponibilidade...",
       "available": "Nome de usuário disponível!",
       "unavailable": "Nome de usuário já em uso",
@@ -29,13 +29,13 @@
     },
     "birthDate": {
       "title": "Sua Data de Nascimento",
-      "subtitle": "Necessário para filtrar conteúdo por faixa etária",
+      "subtitle": "Necessário para filtrar conteúdo por idade",
       "label": "Data de Nascimento",
       "note": "Sua data de nascimento é privada e não será compartilhada publicamente"
     },
     "gender": {
       "title": "Gênero",
-      "subtitle": "Opcional - ajuda os agentes a personalizar conversas",
+      "subtitle": "Opcional - ajuda agentes a personalizar conversas",
       "feminine": "Feminino",
       "masculine": "Masculino",
       "nonBinary": "Não binário",
@@ -43,8 +43,8 @@
       "description": "Isso ajuda os agentes de IA a usar pronomes e linguagem apropriados"
     },
     "language": {
-      "title": "Idioma Preferencial",
-      "subtitle": "Escolha seu idioma preferencial para as respostas da IA e interface",
+      "title": "Idioma Preferido",
+      "subtitle": "Escolha seu idioma preferido para respostas de IA e interface",
       "label": "Idioma"
     },
     "ageRating": {

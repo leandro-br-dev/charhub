@@ -2,13 +2,13 @@
   "description": "Story management and creation interface translations",
   "resources": {
     "create": {
-      "title": "Crear nueva historia",
+      "title": "Crear Nueva Historia",
       "subtitle": "Crea una historia interactiva con personajes y objetivos",
       "chooseMethod": {
         "title": "¿Cómo te gustaría crear tu historia?",
         "subtitle": "Elige el método que mejor se adapte a tus necesidades",
         "manual": {
-          "title": "Creación manual",
+          "title": "Creación Manual",
           "description": "Crea tu historia paso a paso con control total",
           "features": [
             "Personalización completa",
@@ -16,7 +16,7 @@
             "Perfecto para historias detalladas"
           ],
           "cost": "Gratis",
-          "button": "Crear manualmente"
+          "button": "Crear Manualmente"
         },
         "ai": {
           "title": "Creación con IA",
@@ -32,71 +32,71 @@
       }
     },
     "new": {
-      "title": "Crear historia manualmente",
+      "title": "Crear Historia Manualmente",
       "subtitle": "Rellena los detalles paso a paso"
     },
     "edit": {
-      "title": "Editar historia",
+      "title": "Editar Historia",
       "subtitle": "Edita los detalles de tu historia"
     },
     "createAI": {
-      "title": "Generador de historias con IA",
+      "title": "Generador de Historias con IA",
       "subtitle": "Describe tu idea de historia o sube una imagen, y la IA generará los detalles por ti",
-      "descriptionLabel": "Descripción de la historia",
-      "descriptionPlaceholder": "Describe tu idea de historia... (ej., \"Un joven mago descubre un portal antiguo que conduce a un mundo de sueños\")",
+      "descriptionLabel": "Descripción de la Historia",
+      "descriptionPlaceholder": "Describe tu idea de historia... (ej., \"Un joven mago descubre un antiguo portal que conduce a un mundo de sueños\")",
       "descriptionHint": "Cuanto más detallada sea tu descripción, mejores serán los resultados",
-      "imageLabel": "Imagen de la escena",
+      "imageLabel": "Imagen de la Escena",
       "uploadPrompt": "Haz clic para subir la imagen de la escena",
       "uploadHint": "PNG, JPEG, WEBP, GIF (máx. 10MB)",
       "generating": "Generando...",
-      "generateButton": "Generar historia",
+      "generateButton": "Generar Historia",
       "howItWorks": "Cómo funciona",
       "step1": "Proporciona una descripción de texto y/o sube una imagen de la escena",
       "step2": "La IA analiza tu entrada y genera los detalles de la historia",
       "step3": "Revisa y edita la historia generada antes de guardar",
       "step4": "Se generará automáticamente una imagen de portada para ti",
-      "pricing": "Coste en créditos",
+      "pricing": "Coste en Créditos",
       "textOnly": "Solo texto",
       "withImage": "Con imagen",
       "progress": {
         "preparing": "Preparando tu historia",
         "uploadingImage": "Subiendo tu escena",
         "analyzingImage": "Analizando la atmósfera",
-        "extractingDescription": "Leyendo el relato",
+        "extractingDescription": "Leyendo el cuento",
         "generatingConcept": "Tejiendo la narrativa",
         "generatingPlot": "Elaborando la trama",
-        "writingScene": "Escribiendo el inicio",
+        "writingScene": "Escribiendo la apertura",
         "generatingCover": "Creando la portada",
         "creatingStory": "Dando vida a la historia",
         "completed": "Tu historia espera",
         "error": "Un giro inesperado"
       },
       "reveal": {
-        "title": "Concepto de historia creado",
+        "title": "Concepto de Historia Creado",
         "conceptMessage": "La base de tu historia ha sido forjada...",
-        "plotTitle": "Trama escrita",
-        "plotMessage": "El camino por delante ha sido trazado...",
-        "sceneTitle": "Escena inicial escrita",
-        "sceneMessage": "El relato comienza a desarrollarse...",
-        "storyTitle": "Historia creada",
+        "plotTitle": "Trama Escrita",
+        "plotMessage": "El camino a seguir ha sido trazado...",
+        "sceneTitle": "Escena de Apertura Escrita",
+        "sceneMessage": "El cuento comienza a desarrollarse...",
+        "storyTitle": "Historia Creada",
         "storyMessage": "¡Tu historia ha cobrado vida!",
         "continuing": "Continuando..."
       },
       "final": {
-        "title": "¡Tu historia ha sido creada!",
-        "message": "Tu historia ha sido generada y está lista para leer. Se está generando una imagen de portada en segundo plano.",
+        "title": "¡Tu Historia Ha Sido Creada!",
+        "message": "Tu historia ha sido generada y está lista para leer. Una imagen de portada se está generando en segundo plano.",
         "createAnother": "Crear otra historia"
       },
       "generationStarted": "¡Generación de historia iniciada! Observando el progreso...",
-      "generationFailed": "Fallo en la generación",
-      "weavingYourTale": "Tejiendo tu relato..."
+      "generationFailed": "Generación Fallida",
+      "weavingYourTale": "Tejiendo tu historia..."
     },
     "form": {
       "title": "Título",
       "titlePlaceholder": "Introduce el título de la historia",
       "synopsis": "Sinopsis",
       "synopsisPlaceholder": "Breve resumen de tu historia...",
-      "coverImage": "Imagen de portada",
+      "coverImage": "Imagen de Portada",
       "coverImagePlaceholder": "https://example.com/image.jpg",
       "coverImagePreview": "Vista previa de la portada",
       "coverImageError": "Error al cargar la imagen",
@@ -108,13 +108,13 @@
       "imageUrlModalTitle": "Usar imagen desde URL",
       "imageUrlLabel": "URL de la imagen",
       "invalidImageUrl": "Introduce una URL de imagen válida (http/https).",
-      "preview": "Previsualizar",
+      "preview": "Vista previa",
       "uploading": "Procesando...",
       "loading": "Cargando...",
-      "initialText": "Escena inicial",
+      "initialText": "Escena de Apertura",
       "initialTextPlaceholder": "La historia comienza...",
-      "initialTextHint": "Esta es la escena inicial que verán los jugadores al comenzar la historia.",
-      "objectives": "Objetivos de la historia",
+      "initialTextHint": "Esta es la escena de apertura que los jugadores verán al iniciar la historia.",
+      "objectives": "Objetivos de la Historia",
       "objectivePlaceholder": "Añadir un objetivo de historia",
       "noObjectives": "Aún no hay objetivos. Añade algunos para guiar la narrativa.",
       "characters": "Personajes",
@@ -122,24 +122,24 @@
       "searchCharacters": "Buscar personajes",
       "noCharactersFound": "No se encontraron personajes",
       "noCharactersAvailable": "Crea personajes primero",
-      "mainCharacterLabel": "Personaje principal (interpretado por ti)",
+      "mainCharacterLabel": "Personaje Principal (interpretado por ti)",
       "selectMainCharacter": "Seleccionar personaje principal...",
-      "tags": "Etiquetas de género",
+      "tags": "Etiquetas de Género",
       "selectedTags": "Etiquetas seleccionadas",
       "searchTags": "Buscar etiquetas",
       "noTagsFound": "No se encontraron etiquetas",
       "noTagsAvailable": "No hay etiquetas disponibles",
       "incompatibleHint": "Las etiquetas resaltadas en rojo son incompatibles con la clasificación por edad seleccionada. Elimínalas para continuar.",
-      "ageRating": "Clasificación por edad",
+      "ageRating": "Clasificación por Edad",
       "ageRatingHint": "Esto filtra las etiquetas de género disponibles y bloquea las advertencias de contenido inapropiado.",
-      "contentTags": "Advertencias de contenido",
+      "contentTags": "Advertencias de Contenido",
       "contentTagDisabled": "Requiere edad {{age}} o superior",
       "contentTagsDisabledHint": "Las advertencias de contenido atenuadas requieren una clasificación por edad superior.",
-      "visibility": "Visibilidad de la historia",
+      "visibility": "Visibilidad de la Historia",
       "makePublic": "Hacer esta historia pública",
       "tabs": {
         "details": "Detalles",
-        "plot": "Trama y ambientación",
+        "plot": "Trama y Ambientación",
         "characters": "Personajes",
         "classification": "Clasificación",
         "media": "Medios"
@@ -165,25 +165,25 @@
       "generationFailed": "Error al generar la historia"
     },
     "sidebar": {
-      "myStories": "Mis historias",
+      "myStories": "Mis Historias",
       "noStories": "Aún no hay historias"
     },
     "list": {
-      "title": "Mis historias",
+      "title": "Mis Historias",
       "subtitle": "Gestiona tus historias interactivas",
       "public": "Público",
       "private": "Privado",
       "empty": {
         "title": "Aún no hay historias",
         "description": "Crea tu primera historia interactiva",
-        "action": "Crear historia"
+        "action": "Crear Historia"
       }
     },
     "detail": {
       "title": "Historia",
       "synopsis": "Sinopsis",
-      "initialScene": "Escena inicial",
-      "objectives": "Objetivos de la historia",
+      "initialScene": "Escena de Apertura",
+      "objectives": "Objetivos de la Historia",
       "characters": "Personajes",
       "confirmDelete": "¿Estás seguro de que quieres eliminar esta historia? Esta acción no se puede deshacer.",
       "labels": {
@@ -194,8 +194,8 @@
       "conversations": "Conversaciones",
       "favorites": "Favoritos"
     },
-    "start": "Iniciar historia",
+    "start": "Iniciar Historia",
     "starting": "Iniciando...",
-    "view": "Ver historia"
+    "view": "Ver Historia"
   }
 }

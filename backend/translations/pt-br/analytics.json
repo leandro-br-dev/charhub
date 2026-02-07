@@ -17,7 +17,7 @@
       "costsByModel": "Custos por Modelo",
       "costsByPlan": "Custos por Plano de Assinatura",
       "dailyCosts": "Tendência de Custos Diários",
-      "cachingMetrics": "Eficiência de Cache",
+      "cachingMetrics": "Eficácia de Cache",
       "topUsers": "Principais Usuários por Custo"
     },
     "cards": {
@@ -32,10 +32,10 @@
       "avgCost": "Custo Médio/Usuário"
     },
     "caching": {
-      "hitRate": "Taxa de Acerto de Cache",
+      "hitRate": "Taxa de Acerto do Cache",
       "totalRequests": "Total de Requisições",
       "cachedRequests": "Requisições em Cache",
-      "costSavings": "Economia de Custos"
+      "costSavings": "Economia de Custo"
     },
     "table": {
       "userId": "ID do Usuário",
@@ -57,7 +57,7 @@
       "CHAT_MESSAGE": "Mensagens de Chat",
       "AUTOMATED_GENERATION": "Geração Automatizada",
       "IMAGE_ANALYSIS": "Análise de Imagens",
-      "OTHER": "Outro"
+      "OTHER": "Outros"
     },
     "planNames": {
       "FREE": "Grátis",

@@ -7,10 +7,10 @@
       "description": "监控和分析平台上的 LLM 使用成本"
     },
     "dateRange": {
-      "label": "期间",
-      "last7Days": "过去 7 天",
-      "last30Days": "过去 30 天",
-      "last90Days": "过去 90 天"
+      "label": "时间段",
+      "last7Days": "过去7天",
+      "last30Days": "过去30天",
+      "last90Days": "过去90天"
     },
     "sections": {
       "costsByFeature": "按功能划分的成本",
@@ -18,17 +18,17 @@
       "costsByPlan": "按订阅计划划分的成本",
       "dailyCosts": "每日成本趋势",
       "cachingMetrics": "缓存效率",
-      "topUsers": "按成本排名的热门用户"
+      "topUsers": "按成本排名的顶尖用户"
     },
     "cards": {
       "totalCost": {
         "title": "LLM 总成本",
-        "description": "选定期间内 LLM API 调用的总运营成本",
-        "currency": "USD"
+        "description": "所选时间段内 LLM API 调用的总运营成本",
+        "currency": "美元"
       }
     },
     "planStats": {
-      "users": "用户",
+      "users": "用户数",
       "avgCost": "平均成本/用户"
     },
     "caching": {
@@ -43,12 +43,12 @@
       "requests": "请求数"
     },
     "metrics": {
-      "requests": "请求",
+      "requests": "请求数",
       "req": "请求",
       "avgReq": "平均/请求"
     },
     "messages": {
-      "noData": "选定期间无可用数据"
+      "noData": "所选时间段内无可用数据"
     },
     "featureNames": {
       "CHARACTER_GENERATION": "角色生成",
@@ -61,7 +61,7 @@
     },
     "planNames": {
       "FREE": "免费版",
-      "PLUS": "Plus 版",
+      "PLUS": "Plus版",
       "PREMIUM": "高级版"
     }
   }

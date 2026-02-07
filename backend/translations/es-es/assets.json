@@ -1,0 +1,447 @@
+{
+  "description": "Assets module strings for asset management, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledAsset": "Activo sin nombre",
+      "updatedAt": "Actualizado el {{date}}",
+      "public": "Público",
+      "private": "Privado",
+      "identifier": "ID de activo: {{id}}",
+      "unsavedChanges": "Cambios sin guardar",
+      "allSaved": "Todos los cambios guardados",
+      "submitting": "Guardando..."
+    },
+    "types": {
+      "CLOTHING": "Vestimenta",
+      "ACCESSORY": "Accesorio",
+      "SCAR": "Cicatriz",
+      "HAIRSTYLE": "Peinado",
+      "OBJECT": "Objeto",
+      "WEAPON": "Arma",
+      "VEHICLE": "Vehículo",
+      "FURNITURE": "Mobiliario",
+      "PROP": "Utilería"
+    },
+    "typeDescriptions": {
+      "CLOTHING": "Prendas y artículos de vestir",
+      "ACCESSORY": "Accesorios y adornos ponibles",
+      "SCAR": "Marcas, cicatrices y características corporales",
+      "HAIRSTYLE": "Estilos y colores de cabello",
+      "OBJECT": "Objetos y artículos de mano",
+      "WEAPON": "Armas, armas cuerpo a cuerpo, armas de fuego",
+      "VEHICLE": "Vehículos y monturas",
+      "FURNITURE": "Mobiliario y elementos estructurales",
+      "PROP": "Utilería y decoraciones de fondo"
+    },
+    "categories": {
+      "WEARABLE": "Ponible",
+      "HOLDABLE": "Sostenible",
+      "ENVIRONMENTAL": "Ambiental"
+    },
+    "categoryDescriptions": {
+      "WEARABLE": "Artículos que puede llevar un personaje",
+      "HOLDABLE": "Artículos que se pueden sostener o llevar",
+      "ENVIRONMENTAL": "Elementos de fondo y ambientales"
+    },
+    "placementZones": {
+      "face": "Cara",
+      "torso": "Torso",
+      "left_hand": "Mano izquierda",
+      "right_hand": "Mano derecha",
+      "head": "Cabeza",
+      "feet": "Pies"
+    },
+    "placementZoneDescriptions": {
+      "face": "Aplicado a la zona de la cara",
+      "torso": "Aplicado a la zona del cuerpo/torso",
+      "left_hand": "Sostenido en la mano izquierda",
+      "right_hand": "Sostenido en la mano derecha",
+      "head": "Llevado en la cabeza",
+      "feet": "Llevado en los pies"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realista",
+      "SEMI_REALISTIC": "Semi-Realista",
+      "CARTOON": "Dibujo animado",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Cómic",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "imageTypes": {
+      "preview": "Vista previa",
+      "reference": "Referencia",
+      "transparent": "Transparente",
+      "in_context": "En contexto"
+    },
+    "accessibility": {
+      "addToFavorites": "Añadir a favoritos",
+      "removeFromFavorites": "Eliminar de favoritos"
+    },
+    "stats": {
+      "assets": "Activos",
+      "characters": "Personaje",
+      "characters_plural": "Personajes",
+      "images": "Imagen",
+      "images_plural": "Imágenes",
+      "charactersShort": "{{count}}K personajes",
+      "charactersShort_plural": "{{count}}K personajes"
+    },
+    "hub": {
+      "title": "Activos",
+      "subtitle": "Crea y gestiona activos para tus personajes. Los activos incluyen vestimenta, accesorios, objetos y más.",
+      "sidebar": {
+        "description": "Explora y gestiona tus activos creativos.",
+        "viewGallery": "Ver galería",
+        "viewAllAssets": "Ver todos los activos",
+        "myAsset": "Mi activo",
+        "noAssetsFound": "No se encontraron activos."
+      },
+      "actions": {
+        "newAsset": "Nuevo activo",
+        "createAsset": "Crear activo",
+        "retry": "Intentar de nuevo"
+      },
+      "tabs": {
+        "myAssets": "Mis activos",
+        "publicGallery": "Galería pública"
+      },
+      "filters": {
+        "searchPlaceholder": "Buscar por nombre",
+        "type": "Tipo",
+        "category": "Categoría",
+        "allTypes": "Todos los tipos",
+        "allCategories": "Todas las categorías",
+        "noFilter": "Cualquiera"
+      },
+      "states": {
+        "loading": "Cargando tus activos...",
+        "error": "No pudimos cargar los activos. Inténtalo de nuevo.",
+        "empty": "Aún no hay activos disponibles.",
+        "empty_private": "Todavía no has creado ningún activo.",
+        "empty_public": "Ningún activo público coincide con tus filtros.",
+        "emptyHint": "Empieza creando tu primer activo o ajusta tus filtros.",
+        "emptySearchHint": "Ajusta tus filtros o borra la búsqueda para ver más resultados."
+      },
+      "labels": {
+        "total": "{{count}} activo disponible",
+        "total_plural": "{{count}} activos disponibles",
+        "quickCreateLink": "Ir directamente a la creación"
+      }
+    },
+    "form": {
+      "submit": "Guardar",
+      "cancel": "Cancelar",
+      "create": "Crear activo",
+      "saveChanges": "Guardar cambios",
+      "sections": {
+        "details": "Detalles",
+        "detailsHint": "Información básica sobre este activo.",
+        "classification": "Clasificación",
+        "classificationHint": "Estilo visual, clasificación por edad y etiquetas de contenido.",
+        "images": "Imágenes",
+        "imagesHint": "Gestiona las referencias visuales para este activo."
+      },
+      "fields": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "type": "Tipo",
+        "category": "Categoría",
+        "promptPrimary": "Prompt visual",
+        "promptContext": "Prompt de contexto",
+        "negativePrompt": "Prompt negativo",
+        "placementZone": "Zona de colocación",
+        "placementDetail": "Detalle de colocación",
+        "style": "Estilo visual",
+        "visibility": "Visibilidad",
+        "ageRating": "Clasificación por edad",
+        "contentTags": "Etiquetas de contenido"
+      },
+      "placeholders": {
+        "name": "Introduce el nombre del activo",
+        "description": "Describe este activo...",
+        "type": "Seleccionar tipo",
+        "category": "Seleccionar categoría",
+        "promptPrimary": "Describe cómo debe aparecer el activo...",
+        "promptContext": "Contexto adicional cuando se usa con personajes...",
+        "negativePrompt": "Describe lo que se debe evitar...",
+        "placementZone": "Seleccionar zona de colocación",
+        "placementDetail": "ej., 'mejilla izquierda', 'a través de la nariz'"
+      },
+      "hints": {
+        "name": "Un nombre claro y descriptivo para este activo",
+        "description": "Descripción detallada de la apariencia del activo",
+        "positivePrompt": "Prompt visual para la generación de IA (ej., 'una chaqueta de cuero roja con cremalleras plateadas')",
+        "negativePrompt": "Elementos a evitar en la generación (ej., 'dañado, roto, sucio')",
+        "placementZone": "Dónde debe colocarse el activo en el personaje"
+      },
+      "labels": {
+        "unsavedChanges": "Tienes cambios sin guardar",
+        "allSaved": "Cambios guardados",
+        "submitting": "Guardando...",
+        "visibilityPublic": "Público",
+        "visibilityPrivate": "Privado"
+      },
+      "images": {
+        "coverHeader": "Portada del activo",
+        "coverDescription": "Imagen que representa este activo.",
+        "upload": "Subir portada",
+        "change": "Cambiar portada",
+        "uploading": "Subiendo...",
+        "urlModalTitle": "Usar imagen desde URL",
+        "urlLabel": "URL de imagen",
+        "previewAlt": "Vista previa de la portada del activo",
+        "invalidUrl": "Introduce una URL de imagen válida (http/https).",
+        "saveFirst": "Guarda primero el activo para añadir imágenes"
+      },
+      "cover": {
+        "header": "Portada del activo",
+        "description": "Representación visual de tu activo.",
+        "upload": "Seleccionar imagen",
+        "change": "Cambiar imagen",
+        "remove": "Eliminar",
+        "fromDevice": "Subir desde el dispositivo",
+        "fromUrl": "Usar URL de imagen",
+        "generateAI": "Generar con IA",
+        "aiComingSoon": "Generación de IA próximamente para activos",
+        "urlModalTitle": "Usar imagen desde URL",
+        "urlLabel": "URL de imagen",
+        "preview": "Vista previa",
+        "previewAlt": "Vista previa de la portada del activo",
+        "invalidUrl": "Introduce una URL de imagen válida (http/https).",
+        "error": "No pudimos cargar esta imagen. {{message}}",
+        "loading": "Cargando...",
+        "uploading": "Subiendo...",
+        "helperCreate": "Elige una imagen de portada ahora y la conservaremos mientras rellenas el resto del formulario.",
+        "helperEdit": "Actualiza la imagen de portada cuando quieras. Los cambios se aplican tan pronto como guardes."
+      },
+      "tabs": {
+        "identity": "Identidad",
+        "details": "Detalles",
+        "configuration": "Configuración",
+        "classification": "Clasificación",
+        "images": "Imágenes",
+        "lockedHint": "Rellena los detalles básicos para desbloquear las otras secciones."
+      },
+      "autocomplete": {
+        "button": "Autocompletar",
+        "ai": "Autocompletar con IA",
+        "web": "Autocompletar con búsqueda web",
+        "nothing": "No hay sugerencias disponibles.",
+        "applied": "Autocompletado aplicado.",
+        "failed": "Error al autocompletar."
+      }
+    },
+    "create": {
+      "title": "Crear un nuevo activo",
+      "subtitle": "Define las propiedades y características visuales del activo.",
+      "saveButton": "Guardar activo",
+      "cancelButton": "Cancelar y volver",
+      "cover": {
+        "header": "Portada del activo",
+        "description": "Representación visual de tu activo."
+      }
+    },
+    "edit": {
+      "title": "Editar activo",
+      "subtitle": "Actualizando {{name}}",
+      "saveButton": "Actualizar activo",
+      "cancelButton": "Descartar cambios",
+      "states": {
+        "loading": "Cargando activo..."
+      },
+      "accessDenied": {
+        "title": "Acceso denegado",
+        "message": "No tienes permiso para editar este activo.",
+        "backButton": "Volver a Activos"
+      },
+      "cover": {
+        "header": "Portada del activo",
+        "description": "Representación visual de tu activo."
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "Cargando detalles del activo...",
+        "notFound": "No pudimos encontrar este activo."
+      },
+      "actions": {
+        "backToHub": "Volver al centro",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "deleting": "Eliminando...",
+        "share": "Compartir"
+      },
+      "confirmDelete": {
+        "title": "¿Eliminar activo?",
+        "message": "Esta acción no se puede deshacer. Todos los datos asociados con este activo se eliminarán permanentemente.",
+        "confirm": "Eliminar permanentemente",
+        "cancel": "Cancelar"
+      },
+      "labels": {
+        "public": "Público",
+        "private": "Privado",
+        "createdAt": "Creado",
+        "createdBy": "Creado por",
+        "updatedAt": "Última actualización",
+        "identifier": "ID de activo: {{id}}",
+        "characterCount": "{{count}} personaje",
+        "characterCount_plural": "{{count}} personajes",
+        "type": "Tipo",
+        "category": "Categoría"
+      },
+      "sections": {
+        "description": "Descripción",
+        "prompts": "Prompts de generación",
+        "placement": "Colocación",
+        "metadata": "Metadatos"
+      },
+      "placement": {
+        "title": "Colocación del activo",
+        "zoneLabel": "Zona de colocación",
+        "categoryLabel": "Categoría"
+      },
+      "characters": {
+        "title": "Personajes que usan este activo",
+        "empty": "Ningún personaje está usando este activo todavía."
+      }
+    },
+    "picker": {
+      "title": "Seleccionar activos",
+      "subtitle": "Elige activos para añadir a tu personaje",
+      "searchPlaceholder": "Buscar activos...",
+      "filters": {
+        "allTypes": "Todos los tipos",
+        "allCategories": "Todas las categorías",
+        "typeFilter": "Filtrar por tipo",
+        "categoryFilter": "Filtrar por categoría"
+      },
+      "actions": {
+        "addSelected": "Añadir seleccionados ({{count}})",
+        "addSelected_plural": "Añadir seleccionados ({{count}})",
+        "cancel": "Cancelar",
+        "clearSelection": "Borrar selección"
+      },
+      "states": {
+        "loading": "Cargando activos...",
+        "error": "Error al cargar activos",
+        "empty": "No hay activos disponibles",
+        "noResults": "Ningún activo coincide con tu búsqueda",
+        "selectedEmpty": "Selecciona activos para añadir"
+      },
+      "labels": {
+        "selected": "{{count}} seleccionado",
+        "selected_plural": "{{count}} seleccionados"
+      },
+      "assetCard": {
+        "typeLabel": "Tipo",
+        "categoryLabel": "Categoría"
+      }
+    },
+    "characterAssets": {
+      "title": "Activos del personaje",
+      "subtitle": "Gestionar los activos equipados en este personaje",
+      "tabs": {
+        "equipped": "Equipados",
+        "available": "Disponibles"
+      },
+      "actions": {
+        "addAssets": "Añadir activos",
+        "removeAsset": "Eliminar",
+        "configureAsset": "Configurar"
+      },
+      "states": {
+        "noEquipped": "Ningún activo equipado",
+        "noAvailable": "No hay activos disponibles",
+        "loading": "Cargando activos..."
+      },
+      "placement": {
+        "title": "Colocación del activo",
+        "zoneLabel": "Zona",
+        "configure": "Configurar colocación",
+        "remove": "Eliminar del personaje"
+      },
+      "labels": {
+        "equippedCount": "{{count}} activo equipado",
+        "equippedCount_plural": "{{count}} activos equipados",
+        "availableCount": "{{count}} disponible",
+        "availableCount_plural": "{{count}} disponibles"
+      }
+    },
+    "errors": {
+      "createFailed": "No pudimos crear el activo. Inténtalo de nuevo.",
+      "updateFailed": "No pudimos actualizar el activo.",
+      "deleteFailed": "No pudimos eliminar el activo.",
+      "detailUnavailable": "No se pueden cargar los detalles del activo en este momento.",
+      "linkFailed": "Error al vincular el activo al personaje.",
+      "unlinkFailed": "Error al desvincular el activo del personaje.",
+      "nameRequired": "El nombre del activo es obligatorio",
+      "typeRequired": "El tipo de activo es obligatorio",
+      "categoryRequired": "La categoría del activo es obligatoria",
+      "invalidType": "Tipo de activo no válido",
+      "invalidCategory": "Categoría de activo no válida",
+      "invalidPlacementZone": "Zona de colocación no válida para este tipo de activo",
+      "assetInUse": "Este activo está siendo utilizado por {{count}} personaje y no se puede eliminar.",
+      "assetInUse_plural": "Este activo está siendo utilizado por {{count}} personajes y no se puede eliminar."
+    },
+    "success": {
+      "created": "Activo creado correctamente",
+      "updated": "Activo actualizado correctamente",
+      "deleted": "Activo eliminado correctamente",
+      "linked": "Activo vinculado al personaje",
+      "unlinked": "Activo desvinculado del personaje"
+    },
+    "messages": {
+      "imageUploaded": "Imagen subida correctamente",
+      "imageDeleted": "Imagen eliminada correctamente",
+      "coverUploaded": "Imagen de portada actualizada correctamente",
+      "descriptionRequired": "La descripción es obligatoria"
+    },
+    "images": {
+      "title": "Imágenes del activo",
+      "addImage": "Añadir imagen",
+      "selectType": "Seleccionar tipo de imagen",
+      "uploadFailed": "Error al subir imagen",
+      "deleteFailed": "Error al eliminar imagen",
+      "deleteConfirm": "¿Eliminar esta imagen?",
+      "noImages": "Aún no hay imágenes. Añade tu primera referencia visual.",
+      "types": {
+        "preview": "Vista previa",
+        "reference": "Referencia",
+        "transparent": "Transparente",
+        "in_context": "En contexto"
+      },
+      "typeDescriptions": {
+        "preview": "Imagen de vista previa principal para el activo",
+        "reference": "Referencia visual para el activo",
+        "transparent": "Versión con fondo transparente",
+        "in_context": "Activo mostrado en contexto de uso/escena"
+      }
+    },
+    "prompts": {
+      "title": "Prompts de generación",
+      "primaryLabel": "Prompt visual",
+      "primaryHint": "Describe cómo debe aparecer el activo en las imágenes generadas",
+      "contextLabel": "Prompt de contexto",
+      "contextHint": "Contexto adicional cuando este activo se usa con personajes",
+      "negativeLabel": "Prompt negativo",
+      "negativeHint": "Elementos a evitar al generar este activo"
+    },
+    "avatar": {
+      "invalidUrl": "Introduce una URL de imagen válida (http/https).",
+      "error": "No pudimos cargar esta imagen. {{message}}",
+      "aiComingSoon": "Generación de IA próximamente para activos",
+      "generateAI": "Generar con IA",
+      "fromDevice": "Subir desde el dispositivo",
+      "fromUrl": "Usar URL de imagen",
+      "urlModalTitle": "Usar imagen desde URL",
+      "urlLabel": "URL de imagen",
+      "preview": "Vista previa",
+      "previewAlt": "Vista previa de la imagen",
+      "loading": "Cargando..."
+    }
+  }
+}

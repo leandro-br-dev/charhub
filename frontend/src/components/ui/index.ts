@@ -28,3 +28,6 @@ export type { PageHeaderProps } from './PageHeader';
 // Character selector
 export { CharacterSelector } from './CharacterSelector';
 export type { CharacterOption, CharacterSelectorProps } from './CharacterSelector';
+
+// ClassificationTab
+export { ClassificationTab } from './ClassificationTab/ClassificationTab';

@@ -2,14 +2,14 @@
   "description": "Daily tasks and rewards page for earning credits through daily activities.",
   "resources": {
     "title": "Tâches quotidiennes",
-    "subtitle": "Accomplissez des tâches quotidiennes pour gagner des crédits",
+    "subtitle": "Accomplissez les tâches quotidiennes pour gagner des crédits",
     "dailyReward": {
       "title": "Récompense de connexion quotidienne",
-      "description": "Réclamez votre récompense de connexion quotidienne et gagnez des crédits",
+      "description": "Récupérez votre récompense de connexion quotidienne et gagnez des crédits",
       "credits": "crédits",
-      "claimed": "Déjà réclamé aujourd'hui",
-      "claimButton": "Réclamer la récompense",
-      "claiming": "Réclamation en cours...",
+      "claimed": "Déjà récupérée aujourd'hui",
+      "claimButton": "Récupérer la récompense",
+      "claiming": "Récupération en cours...",
       "nextReward": "Prochaine récompense disponible dans",
       "hours": "heures",
       "minutes": "minutes"
@@ -17,18 +17,18 @@
     "firstChatReward": {
       "title": "Premier chat de la journée",
       "description": "Démarrez une nouvelle conversation et gagnez une récompense",
-      "claimed": "Réclamé",
+      "claimed": "Récupéré",
       "available": "Disponible",
       "rewardGranted": "Récompense du premier chat de la journée ! Vous avez gagné 25 crédits."
     },
     "yourCredits": "Vos crédits",
     "availableCredits": "Crédits disponibles",
-    "comingSoon": "Plus de tâches bientôt disponibles",
-    "comingSoonDescription": "Nous travaillons à l'ajout de nouvelles façons de gagner des crédits grâce à des tâches et des réalisations quotidiennes.",
+    "comingSoon": "Plus de tâches à venir",
+    "comingSoonDescription": "Nous travaillons à l'ajout de nouvelles façons de gagner des crédits grâce aux tâches quotidiennes et aux succès.",
     "messages": {
-      "rewardClaimed": "Récompense quotidienne réclamée avec succès !",
-      "alreadyClaimed": "Vous avez déjà réclamé votre récompense quotidienne aujourd'hui. Revenez demain !",
-      "error": "Échec de la réclamation de la récompense. Veuillez réessayer."
+      "rewardClaimed": "Récompense quotidienne récupérée avec succès !",
+      "alreadyClaimed": "Vous avez déjà récupéré votre récompense quotidienne aujourd'hui. Revenez demain !",
+      "error": "Échec de la récupération de la récompense. Veuillez réessayer."
     }
   }
 }

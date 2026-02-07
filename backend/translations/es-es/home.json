@@ -1,10 +1,10 @@
 {
   "description": "Landing page strings for the home page with call-to-action buttons.",
   "resources": {
-    "titleLine1": "Da Vida a Tus",
-    "titleLine2Highlight": "Conversaciones e Historias",
+    "titleLine1": "Dale vida a tus",
+    "titleLine2Highlight": "conversaciones e historias",
     "subtitle": "Crea personajes cautivadores y sumérgete en narrativas interactivas generadas por IA. Tu aventura comienza ahora.",
-    "accessButton": "Iniciar Sesión",
+    "accessButton": "Iniciar sesión",
     "signupButton": "Registrarse"
   }
 }

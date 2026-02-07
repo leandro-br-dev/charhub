@@ -3,15 +3,15 @@
   "resources": {
     "VTuber": {
       "name": "VTuber",
-      "description": "Virtual YouTuber o creador de contenido"
+      "description": "YouTuber virtual o creador de contenido"
     },
     "Anime": {
       "name": "Anime",
-      "description": "Personaje estilo Anime"
+      "description": "Personaje de estilo anime"
     },
     "Manga": {
       "name": "Manga",
-      "description": "Personaje estilo Manga"
+      "description": "Personaje de estilo manga"
     },
     "Elf": {
       "name": "Elfo",
@@ -19,7 +19,7 @@
     },
     "Demon": {
       "name": "Demonio",
-      "description": "Personaje demoníaco o demonio"
+      "description": "Personaje demonio o demoníaco"
     },
     "Angel": {
       "name": "Ángel",
@@ -38,28 +38,28 @@
       "description": "Personaje robot o androide"
     },
     "Cyborg": {
-      "name": "Ciborg",
+      "name": "Cyborg",
       "description": "Organismo cibernético"
     },
     "Furry": {
       "name": "Furry",
-      "description": "Personaje de animal antropomórfico"
+      "description": "Personaje animal antropomórfico"
     },
     "Kemonomimi": {
       "name": "Kemonomimi",
       "description": "Personaje con orejas/cola de animal"
     },
     "Catgirl": {
-      "name": "Chica gato",
-      "description": "Personaje con rasgos de gato"
+      "name": "Chica Gato",
+      "description": "Personaje con rasgos felinos"
     },
     "Kitsune": {
       "name": "Kitsune",
-      "description": "Espíritu zorro"
+      "description": "Personaje espíritu de zorro"
     },
     "Maid": {
-      "name": "Doncella",
-      "description": "Ocupación o atuendo de doncella"
+      "name": "Criada",
+      "description": "Ocupación o atuendo de criada"
     },
     "Butler": {
       "name": "Mayordomo",
@@ -82,7 +82,7 @@
       "description": "Personaje caballero o paladín"
     },
     "Samurai": {
-      "name": "Samurái",
+      "name": "Samurai",
       "description": "Guerrero japonés"
     },
     "Ninja": {
@@ -103,7 +103,7 @@
     },
     "Healer": {
       "name": "Sanador",
-      "description": "Rol de apoyo/curación"
+      "description": "Rol de apoyo/sanación"
     },
     "Assassin": {
       "name": "Asesino",
@@ -130,12 +130,12 @@
       "description": "Profesional médico"
     },
     "Nurse": {
-      "name": "Enfermera",
+      "name": "Enfermero",
       "description": "Profesional de enfermería"
     },
     "Idol": {
-      "name": "Idol",
-      "description": "Idol pop o artista"
+      "name": "Ídolo",
+      "description": "Ídolo pop o artista"
     },
     "Musician": {
       "name": "Músico",
@@ -175,27 +175,27 @@
     },
     "Kuudere": {
       "name": "Kuudere",
-      "description": "Personalidad fría y emocionalmente distante"
+      "description": "Personalidad fría, emocionalmente distante"
     },
     "Dandere": {
       "name": "Dandere",
-      "description": "Personalidad tímida y callada"
+      "description": "Personalidad tímida, tranquila"
     },
     "Genki": {
       "name": "Genki",
-      "description": "Personalidad enérgica y entusiasta"
+      "description": "Personalidad enérgica, entusiasta"
     },
     "Tomboy": {
-      "name": "Marimacho",
-      "description": "Personaje femenino con apariencia masculina"
+      "name": "Tomboy",
+      "description": "Personaje femenino de apariencia masculina"
     },
     "Femboy": {
       "name": "Femboy",
-      "description": "Personaje masculino con apariencia femenina"
+      "description": "Personaje masculino de apariencia femenina"
     },
     "BDSM": {
       "name": "BDSM",
-      "description": "Temas de Bondage, Disciplina, Dominación/Sumisión"
+      "description": "Temas de bondage, disciplina, dominación/sumisión"
     },
     "Dominatrix": {
       "name": "Dominatriz",
@@ -207,15 +207,15 @@
     },
     "Succubus": {
       "name": "Súcubo",
-      "description": "Súcubo demoníaca"
+      "description": "Súcubo seductora"
     },
     "Monster Girl": {
       "name": "Chica Monstruo",
-      "description": "Personaje femenino monstruo"
+      "description": "Personaje monstruo femenino"
     },
     "Monster Boy": {
       "name": "Chico Monstruo",
-      "description": "Personaje masculino monstruo"
+      "description": "Personaje monstruo masculino"
     },
     "Giantess": {
       "name": "Giganta",
@@ -238,19 +238,19 @@
       "description": "Hombre maduro atractivo"
     },
     "Schoolgirl": {
-      "name": "Estudiante",
-      "description": "Personaje estudiante femenino"
+      "name": "Colegiala",
+      "description": "Personaje estudiante femenina"
     },
     "Schoolboy": {
-      "name": "Estudiante",
+      "name": "Colegial",
       "description": "Personaje estudiante masculino"
     },
     "Office Lady": {
-      "name": "Empleada de oficina",
-      "description": "Trabajadora de oficina femenina"
+      "name": "Mujer de oficina",
+      "description": "Trabajadora de oficina"
     },
     "Salaryman": {
-      "name": "Empleado",
+      "name": "Salaryman",
       "description": "Trabajador de oficina masculino"
     },
     "Gyaru": {
@@ -259,22 +259,22 @@
     },
     "Goth": {
       "name": "Gótico",
-      "description": "Estilo de moda gótico"
+      "description": "Estilo de moda gótica"
     },
     "Punk": {
       "name": "Punk",
-      "description": "Moda/actitud punk"
+      "description": "Estilo/actitud punk"
     },
     "Zombie": {
       "name": "Zombi",
-      "description": "Personaje zombi no muerto"
+      "description": "Personaje zombi no-muerto"
     },
     "Ghost": {
       "name": "Fantasma",
       "description": "Personaje espíritu o fantasma"
     },
     "Alien": {
-      "name": "Extraterrestre",
+      "name": "Alien",
       "description": "Personaje extraterrestre"
     },
     "Mercenary": {
@@ -291,7 +291,7 @@
     },
     "Necromancer": {
       "name": "Nigromante",
-      "description": "Usuario de magia de la muerte"
+      "description": "Usuario de magia de muerte"
     },
     "Druid": {
       "name": "Druida",
@@ -307,7 +307,7 @@
     },
     "Ranger": {
       "name": "Explorador",
-      "description": "Guerrero del desierto"
+      "description": "Guerrero de la naturaleza"
     },
     "Paladin": {
       "name": "Paladín",
@@ -315,7 +315,7 @@
     },
     "Cleric": {
       "name": "Clérigo",
-      "description": "Sanador o sacerdote religioso"
+      "description": "Sanador religioso o sacerdote"
     },
     "Warlock": {
       "name": "Brujo",
@@ -331,10 +331,10 @@
     },
     "Blacksmith": {
       "name": "Herrero",
-      "description": "Creador de armas y armaduras"
+      "description": "Artesano de armas y armaduras"
     },
     "Merchant": {
-      "name": "Comerciante",
+      "name": "Mercader",
       "description": "Comerciante o tendero"
     },
     "Adventurer": {

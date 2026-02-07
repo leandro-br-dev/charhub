@@ -3,19 +3,19 @@
   "resources": {
     "Human": {
       "name": "Mensch",
-      "description": "Standard-Mensch"
+      "description": "Standardmenschliches Wesen"
     },
     "Elf": {
       "name": "Elf",
-      "description": "Spitzohriger Humanoider mit magischer Affinität"
+      "description": "Spitzohriges Humanoider mit magischer Affinität"
     },
     "Dark Elf": {
-      "name": "Dunkelelf",
-      "description": "Dunkelhäutiger Elf, der unter der Erde lebt"
+      "name": "Dunkelelfe",
+      "description": "Dunkelhäutiger Elf mit unterirdischer Behausung"
     },
     "Wood Elf": {
       "name": "Waldelf",
-      "description": "Im Wald lebender Elf mit Naturverbundenheit"
+      "description": "Waldbewohnender Elf mit Naturverbundenheit"
     },
     "High Elf": {
       "name": "Hochelf",
@@ -31,7 +31,7 @@
     },
     "Gnome": {
       "name": "Gnom",
-      "description": "Kleiner Humanoider mit Erfindungsreichtum und Illusionsmagie"
+      "description": "Kleiner Humanoider mit Erfindergeist und Illusionsmagie"
     },
     "Orc": {
       "name": "Ork",
@@ -51,7 +51,7 @@
     },
     "Dragonborn": {
       "name": "Drachengeborener",
-      "description": "Drachenähnlicher Humanoider mit Schuppen und Odemwaffe"
+      "description": "Drakonischer Humanoider mit Schuppen und Odemwaffe"
     },
     "Half-Elf": {
       "name": "Halb-Elf",
@@ -71,7 +71,7 @@
     },
     "Kobold": {
       "name": "Kobold",
-      "description": "Kleiner, reptilienartiger Humanoider mit Fallen-Expertise"
+      "description": "Kleiner, reptilienartiger Humanoider mit Fallenexpertise"
     },
     "Fairy": {
       "name": "Fee",
@@ -79,43 +79,43 @@
     },
     "Pixie": {
       "name": "Pixie",
-      "description": "Winziger, schelmischer Humanoider mit Insektenflügeln"
+      "description": "Winziger schelmischer Humanoider mit Insektenflügeln"
     },
     "Nymph": {
       "name": "Nymphe",
-      "description": "Naturgeist, an einen Ort gebunden"
+      "description": "Naturgeist, gebunden an einen Ort"
     },
     "Dryad": {
       "name": "Dryade",
-      "description": "Baumgeist mit tiefer Waldverbundenheit"
+      "description": "Baumgeist mit tiefer Waldverbindung"
     },
     "Satyr": {
       "name": "Satyr",
-      "description": "Halbmensch, Halbziege mit musikalischem Talent"
+      "description": "Halb-Mensch, halb-Ziege mit musikalischem Talent"
     },
     "Centaur": {
       "name": "Zentaur",
-      "description": "Halbmensch, ab der Taille ein Pferd"
+      "description": "Halb-Mensch, halb-Pferd ab der Taille"
     },
     "Minotaur": {
       "name": "Minotaurus",
-      "description": "Halbmensch, Halbstier mit großer Stärke"
+      "description": "Halb-Mensch, halb-Stier mit großer Stärke"
     },
     "Naga": {
       "name": "Naga",
-      "description": "Humanoides Oberkörper mit Schlangenschwanz"
+      "description": "Humanoider Oberkörper mit Schlangenschwanz"
     },
     "Lamia": {
       "name": "Lamia",
       "description": "Weiblicher Humanoider mit Schlangenunterleib"
     },
     "Merfolk": {
-      "name": "Meervolk",
-      "description": "Halbmensch, Halb-Fisch Wasserbewohner"
+      "name": "Meeresvolk",
+      "description": "Halb-Mensch, halb-Fisch Wasserbewohner"
     },
     "Mermaid": {
       "name": "Meerjungfrau",
-      "description": "Weibliches Meervolk mit wunderschöner Singstimme"
+      "description": "Weibliches Meeresvolk mit wunderschöner Singstimme"
     },
     "Siren": {
       "name": "Sirene",
@@ -123,7 +123,7 @@
     },
     "Harpy": {
       "name": "Harpyie",
-      "description": "Vogel-Frau-Hybrid mit scharfen Krallen"
+      "description": "Vogel-Frau-Hybrid mit scharfen Klauen"
     },
     "Werewolf": {
       "name": "Werwolf",
@@ -135,7 +135,7 @@
     },
     "Zombie": {
       "name": "Zombie",
-      "description": "Wiederbelebter Leichnam mit Hunger nach Gehirnen"
+      "description": "Wiederbelebte Leiche mit Hunger nach Gehirnen"
     },
     "Lich": {
       "name": "Lich",
@@ -147,27 +147,27 @@
     },
     "Specter": {
       "name": "Schemen",
-      "description": "Böswilliger Geist mit Energieraub-Fähigkeit"
+      "description": "Böswilliger Geist mit Energiedrainage-Fähigkeit"
     },
     "Wraith": {
-      "name": "Schattengeist",
+      "name": "Totengeist",
       "description": "Rachsüchtiger Geist mit lebensentziehender Berührung"
     },
     "Skeleton": {
       "name": "Skelett",
-      "description": "Belebte Knochen einer verstorbenen Kreatur"
+      "description": "Animierte Knochen einer verstorbenen Kreatur"
     },
     "Mummy": {
       "name": "Mumie",
-      "description": "Konservierter Leichnam aus alten Gräbern"
+      "description": "Konservierte Leiche aus alten Gräbern"
     },
     "Ghoul": {
       "name": "Ghul",
-      "description": "Aasfressende untote Kreatur"
+      "description": "Aasfressendes untotes Wesen"
     },
     "Banshee": {
       "name": "Banshee",
-      "description": "Weiblicher Geist, dessen Klage den Tod voraussagt"
+      "description": "Weiblicher Geist, dessen Klage den Tod vorhersagt"
     },
     "Reaper": {
       "name": "Sensenmann",
@@ -191,11 +191,11 @@
     },
     "Griffin": {
       "name": "Greif",
-      "description": "Löwe-Adler-Hybrid, edle Kreatur"
+      "description": "Löwen-Adler-Hybrid, edles Geschöpf"
     },
     "Hydra": {
       "name": "Hydra",
-      "description": "Vielköpfige Schlange, der zwei Köpfe nachwachsen, wenn einer abgehackt wird"
+      "description": "Mehrköpfige Schlange, die zwei Köpfe nachwachsen lässt, wenn einer abgeschnitten wird"
     },
     "Chimera": {
       "name": "Chimäre",
@@ -207,7 +207,7 @@
     },
     "Unicorn": {
       "name": "Einhorn",
-      "description": "Reinweißes Pferd mit einem spiralförmigen Horn"
+      "description": "Reines weißes Pferd mit einem spiralförmigen Horn"
     },
     "Pegasus": {
       "name": "Pegasus",
@@ -215,7 +215,7 @@
     },
     "Kirin": {
       "name": "Kirin",
-      "description": "Japanisches Einhorn-ähnliches Wesen guter Omen"
+      "description": "Japanisches einhornartiges Geschöpf guter Omen"
     },
     "Kitsune": {
       "name": "Kitsune",
@@ -231,7 +231,7 @@
     },
     "Tengu": {
       "name": "Tengu",
-      "description": "Japanischer vogelähnlicher Humanoider oder Karasu-Tengu"
+      "description": "Japanischer vogelartiger Humanoider oder Karasu-Tengu"
     },
     "Kappa": {
       "name": "Kappa",
@@ -251,39 +251,39 @@
     },
     "Slime": {
       "name": "Schleim",
-      "description": "Gelatineartiges Wesen mit verschiedenen Fähigkeiten"
+      "description": "Gallertartiges Geschöpf mit verschiedenen Fähigkeiten"
     },
     "Elemental": {
       "name": "Elementar",
-      "description": "Reine Verkörperung eines natürlichen Elements"
+      "description": "Reine Verkörperung eines Naturelements"
     },
     "Fire Elemental": {
       "name": "Feuerelementar",
-      "description": "Lebende Flamme mit brennender Berührung"
+      "description": "Lebendige Flamme mit brennender Berührung"
     },
     "Water Elemental": {
       "name": "Wasserelementar",
-      "description": "Lebendes Wasser mit fließender Form"
+      "description": "Lebendiges Wasser mit fließender Form"
     },
     "Earth Elemental": {
       "name": "Erdelementar",
-      "description": "Lebender Stein und Erde mit zermalmender Stärke"
+      "description": "Lebendiger Stein und Erde mit zermalmender Stärke"
     },
     "Air Elemental": {
       "name": "Luftelementar",
-      "description": "Lebender Wind mit unsichtbarer Form"
+      "description": "Lebendiger Wind mit unsichtbarer Form"
     },
     "Ice Elemental": {
       "name": "Eiselementar",
-      "description": "Lebendes Eis mit gefrierender Aura"
+      "description": "Lebendiges Eis mit gefrierender Aura"
     },
     "Lightning Elemental": {
       "name": "Blitzelementar",
-      "description": "Lebende Elektrizität mit schockierender Kraft"
+      "description": "Lebendige Elektrizität mit schockierender Kraft"
     },
     "Golem": {
       "name": "Golem",
-      "description": "Belebtes Konstrukt aus Lehm, Stein oder Metall"
+      "description": "Animiertes Konstrukt aus Lehm, Stein oder Metall"
     },
     "Homunculus": {
       "name": "Homunkulus",
@@ -295,7 +295,7 @@
     },
     "Android": {
       "name": "Androide",
-      "description": "Als Mensch entworfener Roboter"
+      "description": "Roboter, der menschenähnlich aussieht"
     },
     "Cyborg": {
       "name": "Cyborg",
@@ -303,7 +303,7 @@
     },
     "Mecha": {
       "name": "Mecha",
-      "description": "Großer, pilotierter Roboter für den Kampf"
+      "description": "Großer, gesteuerter Kampfroboter"
     },
     "AI": {
       "name": "KI",
@@ -326,24 +326,24 @@
       "description": "Mensch mit Katzenohren"
     },
     "Wolfkin": {
-      "name": "Wolfsvolk",
+      "name": "Wolfswesen",
       "description": "Humanoider mit Wolfsmerkmalen"
     },
     "Foxkin": {
-      "name": "Fuchsvolk",
+      "name": "Fuchswesen",
       "description": "Humanoider mit Fuchsmerkmalen"
     },
     "Rabbitfolk": {
-      "name": "Kaninchenvolk",
-      "description": "Humanoider mit Kaninchenmerkmalen"
+      "name": "Hasenvolk",
+      "description": "Humanoider mit Hasenmerkmalen"
     },
     "Dragonkin": {
-      "name": "Drachenvolk",
+      "name": "Drachenwesen",
       "description": "Humanoider mit Drachenmerkmalen"
     },
     "Demon": {
       "name": "Dämon",
-      "description": "Teuflische Kreatur aus den unteren Ebenen"
+      "description": "Teuflisches Geschöpf aus den niederen Ebenen"
     },
     "Angel": {
       "name": "Engel",
@@ -359,7 +359,7 @@
     },
     "Imp": {
       "name": "Wichtel",
-      "description": "Kleiner, schelmischer Teufel"
+      "description": "Kleiner schelmischer Teufel"
     },
     "Succubus": {
       "name": "Sukkubus",
@@ -387,15 +387,15 @@
     },
     "Eldritch": {
       "name": "Eldritch",
-      "description": "Kosmischer Schrecken jenseits des menschlichen Verständnisses"
+      "description": "Kosmischer Horror jenseits menschlichen Verständnisses"
     },
     "Lovecraftian": {
       "name": "Lovecraftian",
-      "description": "Kreatur aus Lovecrafts Mythos"
+      "description": "Geschöpf aus Lovecrafts Mythos"
     },
     "Eldritch Tentacle": {
       "name": "Eldritch-Tentakel",
-      "description": "Tentakelbewehrtes kosmisches Schreckenwesen"
+      "description": "Tentakelbewehrtes kosmisches Horrorwesen"
     },
     "Other": {
       "name": "Andere",

@@ -13,7 +13,7 @@
     },
     "displayName": {
       "title": "¿Cómo te gustaría que te llamaran?",
-      "label": "Nombre para mostrar",
+      "label": "Nombre de visualización",
       "placeholder": "ej., John Silva"
     },
     "username": {
@@ -29,7 +29,7 @@
     },
     "birthDate": {
       "title": "Tu fecha de nacimiento",
-      "subtitle": "Requerido para el filtrado de contenido apropiado para la edad",
+      "subtitle": "Requerido para el filtrado de contenido según la edad",
       "label": "Fecha de nacimiento",
       "note": "Tu fecha de nacimiento es privada y no se compartirá públicamente"
     },
@@ -40,7 +40,7 @@
       "masculine": "Masculino",
       "nonBinary": "No binario",
       "preferNotToSay": "Prefiero no decirlo",
-      "description": "Esto ayuda a los agentes de IA a usar los pronombres y el lenguaje apropiados"
+      "description": "Esto ayuda a los agentes de IA a usar pronombres y lenguaje apropiados"
     },
     "language": {
       "title": "Idioma preferido",
@@ -49,7 +49,7 @@
     },
     "ageRating": {
       "title": "Preferencia de clasificación de contenido",
-      "subtitle": "Elige la clasificación de edad máxima que deseas ver",
+      "subtitle": "Elige la clasificación de edad máxima que quieres ver",
       "options": {
         "L": "Todas las edades (L)",
         "TEN": "10+",
@@ -69,7 +69,7 @@
     },
     "contentFilters": {
       "title": "Preferencias de contenido",
-      "subtitle": "Selecciona los temas que deseas ver"
+      "subtitle": "Selecciona los temas que quieres ver"
     }
   }
 }

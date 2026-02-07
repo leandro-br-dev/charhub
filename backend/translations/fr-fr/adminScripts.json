@@ -4,55 +4,55 @@
     "title": "Scripts d'administration",
     "header": {
       "title": "Scripts d'administration",
-      "description": "Exécutez manuellement des scripts de correction de données et surveillez les statistiques du système."
+      "description": "Exécutez manuellement des scripts de correction de données et surveillez les statistiques système."
     },
     "stats": {
       "title": "Statistiques",
-      "totalCharacters": "Total de personnages",
+      "totalCharacters": "Total des personnages",
       "charactersWithAvatars": "Personnages avec avatars",
       "charactersWithCompleteData": "Personnages avec données complètes",
       "never": "Jamais",
       "lastCorrections": "Dernières corrections",
       "compressionStats": "Statistiques de compression",
-      "totalImages": "Total d'images",
+      "totalImages": "Total des images",
       "oversizedImages": "Images surdimensionnées",
-      "bytesCouldBeSaved": "Pourrait être économisé",
+      "bytesCouldBeSaved": "Économie potentielle",
       "maxSizeThreshold": "Seuil de taille maximale"
     },
     "scripts": {
       "title": "Scripts de correction",
       "avatar": {
-        "name": "Correction des avatars",
+        "name": "Correction d'avatar",
         "description": "Corrige les URL d'avatar cassées ou manquantes pour les personnages",
-        "success": "Script de correction des avatars démarré avec succès",
-        "error": "Échec du démarrage du script de correction des avatars"
+        "success": "Script de correction d'avatar démarré avec succès",
+        "error": "Échec du démarrage du script de correction d'avatar"
       },
       "data": {
         "name": "Correction de l'exhaustivité des données",
-        "description": "S'assure que tous les champs de personnage requis sont remplis",
+        "description": "Garantit que tous les champs de personnage requis sont renseignés",
         "success": "Script de correction des données démarré avec succès",
         "error": "Échec du démarrage du script de correction des données"
       },
       "generation": {
         "name": "Génération de personnages",
-        "description": "Générer des personnages automatiquement à partir d'images sélectionnées",
+        "description": "Génère automatiquement des personnages à partir d'images sélectionnées",
         "success": "Génération de personnages démarrée avec succès",
         "error": "Échec du démarrage de la génération de personnages"
       },
       "compression": {
-        "name": "Compression d'images",
+        "name": "Compression d'image",
         "description": "Compresse les images surdimensionnées pour économiser de l'espace de stockage",
-        "success": "Compression d'images démarrée avec succès",
-        "error": "Échec du démarrage de la compression d'images",
+        "success": "Compression d'image démarrée avec succès",
+        "error": "Échec du démarrage de la compression d'image",
         "limit": "Limite",
         "images": "images",
-        "maxSizeKB": "Taille Max",
-        "targetSizeKB": "Taille Cible"
+        "maxSizeKB": "Taille maximale",
+        "targetSizeKB": "Taille cible"
       },
       "lastRun": "Dernière exécution",
       "run": "Exécuter le script",
       "running": "En cours d'exécution...",
-      "moreComing": "D'autres scripts à venir...",
+      "moreComing": "D'autres scripts seront disponibles prochainement...",
       "records": "enregistrements",
       "characters": "personnages",
       "limit": "Limite d'enregistrements",

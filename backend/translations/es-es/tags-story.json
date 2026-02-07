@@ -6,16 +6,16 @@
       "description": "Género de fantasía"
     },
     "Sci-Fi": {
-      "name": "Ciencia Ficción",
+      "name": "Ciencia ficción",
       "description": "Género de ciencia ficción"
     },
     "Romance": {
       "name": "Romance",
-      "description": "Género de romance"
+      "description": "Género romántico"
     },
     "Horror": {
-      "name": "Terror",
-      "description": "Género de terror"
+      "name": "Horror",
+      "description": "Género de horror"
     },
     "Mystery": {
       "name": "Misterio",
@@ -42,7 +42,7 @@
       "description": "Género de drama"
     },
     "Slice of Life": {
-      "name": "Slice of Life",
+      "name": "Recuentos de la vida",
       "description": "Historias de la vida cotidiana"
     },
     "Isekai": {
@@ -54,16 +54,16 @@
       "description": "Múltiples intereses románticos"
     },
     "Reverse Harem": {
-      "name": "Harem Inverso",
+      "name": "Reverse Harem",
       "description": "Protagonista femenina con múltiples intereses masculinos"
     },
     "Yaoi": {
       "name": "Yaoi",
-      "description": "Romance entre hombres"
+      "description": "Romance masculino/masculino"
     },
     "Yuri": {
       "name": "Yuri",
-      "description": "Romance entre mujeres"
+      "description": "Romance femenino/femenino"
     },
     "Ecchi": {
       "name": "Ecchi",
@@ -99,19 +99,19 @@
     },
     "Steampunk": {
       "name": "Steampunk",
-      "description": "Tecnología de vapor de la era victoriana"
+      "description": "Tecnología a vapor de la era victoriana"
     },
     "Post-Apocalyptic": {
-      "name": "Post-apocalíptico",
+      "name": "Postapocalíptico",
       "description": "Mundo después de un desastre"
     },
     "Dystopian": {
       "name": "Distópico",
-      "description": "Entorno de sociedad opresiva"
+      "description": "Ambientación de sociedad opresiva"
     },
     "Historical": {
       "name": "Histórico",
-      "description": "Ambientación de época histórica"
+      "description": "Ambientación de período histórico"
     },
     "Supernatural": {
       "name": "Sobrenatural",
@@ -119,11 +119,11 @@
     },
     "Martial Arts": {
       "name": "Artes Marciales",
-      "description": "Enfocado en artes marciales"
+      "description": "Enfoque en artes marciales"
     },
     "Mecha": {
       "name": "Mecha",
-      "description": "Robots gigantes/mechs"
+      "description": "Robots/mechs gigantes"
     },
     "School Life": {
       "name": "Vida Escolar",
@@ -131,11 +131,11 @@
     },
     "Sports": {
       "name": "Deportes",
-      "description": "Historias temáticas de deportes"
+      "description": "Historias con temática deportiva"
     },
     "Music": {
       "name": "Música",
-      "description": "Historias temáticas de música"
+      "description": "Historias con temática musical"
     },
     "Military": {
       "name": "Militar",
@@ -151,15 +151,15 @@
     },
     "Western": {
       "name": "Western",
-      "description": "Ambientación del Salvaje Oeste"
+      "description": "Ambientación del Viejo Oeste"
     },
     "Space Opera": {
-      "name": "Space Opera",
+      "name": "Ópera Espacial",
       "description": "Aventuras espaciales épicas"
     },
     "Time Travel": {
-      "name": "Viaje en el Tiempo",
-      "description": "Temas de viaje en el tiempo"
+      "name": "Viajes en el Tiempo",
+      "description": "Temas de viajes en el tiempo"
     },
     "Survival": {
       "name": "Supervivencia",
@@ -170,12 +170,12 @@
       "description": "Temas de crimen organizado"
     },
     "Vampire": {
-      "name": "Vampiro",
-      "description": "Historias temáticas de vampiros"
+      "name": "Vampiros",
+      "description": "Historias con temática de vampiros"
     },
     "Werewolf": {
-      "name": "Hombre Lobo",
-      "description": "Historias temáticas de hombres lobo"
+      "name": "Hombres Lobo",
+      "description": "Historias con temática de hombres lobo"
     },
     "Mythology": {
       "name": "Mitología",
@@ -194,7 +194,7 @@
       "description": "Parodia o sátira"
     },
     "Wholesome": {
-      "name": "Edificante",
+      "name": "Sano",
       "description": "Contenido reconfortante"
     },
     "Grimdark": {
@@ -214,7 +214,7 @@
       "description": "Relaciones incestuosas"
     },
     "Tentacle": {
-      "name": "Tentáculo",
+      "name": "Tentáculos",
       "description": "Erótica de tentáculos"
     },
     "Furry": {
@@ -223,14 +223,14 @@
     },
     "Monster Girl": {
       "name": "Chica Monstruo",
-      "description": "Personajes femeninos monstruosos"
+      "description": "Personajes femeninos monstruo"
     },
     "Transformation": {
       "name": "Transformación",
       "description": "Temas de transformación física"
     },
     "Gender Bender": {
-      "name": "Cambio de Género",
+      "name": "Gender Bender",
       "description": "Cambio o intercambio de género"
     },
     "Cooking": {
@@ -243,7 +243,7 @@
     },
     "Regression": {
       "name": "Regresión",
-      "description": "Regreso al pasado/regresión"
+      "description": "Retorno al pasado/regresión"
     },
     "Dungeon": {
       "name": "Mazmorra",

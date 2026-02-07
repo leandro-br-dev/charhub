@@ -4,7 +4,7 @@
     "title": "Análisis de Costos de LLM",
     "header": {
       "title": "Análisis de Costos de LLM",
-      "description": "Monitorea y analiza los costos de uso de LLM en toda la plataforma"
+      "description": "Monitoriza y analiza los costos de uso de LLM en toda la plataforma"
     },
     "dateRange": {
       "label": "Período",
@@ -13,17 +13,17 @@
       "last90Days": "Últimos 90 Días"
     },
     "sections": {
-      "costsByFeature": "Costos por Característica",
+      "costsByFeature": "Costos por Función",
       "costsByModel": "Costos por Modelo",
       "costsByPlan": "Costos por Plan de Suscripción",
       "dailyCosts": "Tendencia de Costos Diarios",
-      "cachingMetrics": "Efectividad del Caché",
+      "cachingMetrics": "Efectividad del Caching",
       "topUsers": "Usuarios Principales por Costo"
     },
     "cards": {
       "totalCost": {
         "title": "Costo Total de LLM",
-        "description": "Costo operativo total de las llamadas a la API de LLM en el período seleccionado",
+        "description": "Costo operativo total para las llamadas a la API de LLM en el período seleccionado",
         "currency": "USD"
       }
     },
@@ -32,10 +32,10 @@
       "avgCost": "Costo Promedio/Usuario"
     },
     "caching": {
-      "hitRate": "Tasa de Aciertos del Caché",
+      "hitRate": "Tasa de Aciertos de Caché",
       "totalRequests": "Solicitudes Totales",
       "cachedRequests": "Solicitudes en Caché",
-      "costSavings": "Ahorros de Costo"
+      "costSavings": "Ahorro de Costo"
     },
     "table": {
       "userId": "ID de Usuario",
@@ -44,8 +44,8 @@
     },
     "metrics": {
       "requests": "solicitudes",
-      "req": "sol.",
-      "avgReq": "prom./sol."
+      "req": "req",
+      "avgReq": "prom/req"
     },
     "messages": {
       "noData": "No hay datos disponibles para el período seleccionado"

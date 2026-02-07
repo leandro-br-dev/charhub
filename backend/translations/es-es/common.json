@@ -17,7 +17,7 @@
     "logoutLoading": "Cerrando sesión...",
     "authenticatedUser": "Usuario autenticado",
     "tokenStored": "Almacenado en cookie solo HTTP",
-    "navDashboard": "Panel",
+    "navDashboard": "Panel de control",
     "navCharacters": "Personajes",
     "navTagline": "Demostración segura de OAuth",
     "providerLabel": {
@@ -46,15 +46,15 @@
     "deleting": "Eliminando...",
     "enabled": "Habilitado",
     "disabled": "Deshabilitado",
-    "selectOption": "Selecciona una opción",
+    "selectOption": "Seleccionar una opción",
     "noResults": "No se encontraron opciones.",
     "chat": {
       "with": "Chatear con"
     },
     "messages": {
       "linkCopied": "¡Enlace copiado al portapapeles!",
-      "chatStarted": "¡Chat iniciado correctamente!",
-      "characterDeleted": "Personaje eliminado correctamente"
+      "chatStarted": "¡Chat iniciado con éxito!",
+      "characterDeleted": "Personaje eliminado con éxito"
     },
     "contentFilter": {
       "ariaLabel": "Filtro de contenido",
@@ -63,10 +63,10 @@
       "blurNsfw": "Difuminar Contenido Explícito",
       "none": "Sin Filtro",
       "blur": "Difuminar Sensible",
-      "hidden": "Ocultar Contenido Maduro",
+      "hidden": "Ocultar Maduro",
       "descriptions": {
         "none": "Mostrar todo el contenido sin restricciones",
-        "blur": "Aplicar difuminado al contenido maduro",
+        "blur": "Aplicar desenfoque al contenido maduro",
         "hidden": "Ocultar completamente el contenido maduro"
       },
       "ageRatings": {
@@ -84,13 +84,13 @@
     },
     "errors": {
       "generic": "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
-      "failedToFetchData": "Error al obtener los datos"
+      "failedToFetchData": "Error al obtener datos"
     },
     "character": "Personaje",
     "seeMore": "Ver más",
     "seeMoreArrow": "Ver más →",
-    "showMore": "Ver más",
-    "showLess": "Ver menos",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos",
     "back": "Volver",
     "credits": "créditos",
     "tryAgain": "Intentar de Nuevo",

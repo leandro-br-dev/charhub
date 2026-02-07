@@ -1,0 +1,447 @@
+{
+  "description": "Assets module strings for asset management, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledAsset": "Risorsa senza nome",
+      "updatedAt": "Aggiornato il {{date}}",
+      "public": "Pubblico",
+      "private": "Privato",
+      "identifier": "ID Risorsa: {{id}}",
+      "unsavedChanges": "Modifiche non salvate",
+      "allSaved": "Tutte le modifiche salvate",
+      "submitting": "Salvataggio in corso..."
+    },
+    "types": {
+      "CLOTHING": "Abbigliamento",
+      "ACCESSORY": "Accessorio",
+      "SCAR": "Cicatrice",
+      "HAIRSTYLE": "Acconciatura",
+      "OBJECT": "Oggetto",
+      "WEAPON": "Arma",
+      "VEHICLE": "Veicolo",
+      "FURNITURE": "Arredamento",
+      "PROP": "Oggetto di scena"
+    },
+    "typeDescriptions": {
+      "CLOTHING": "Capi e articoli di abbigliamento",
+      "ACCESSORY": "Accessori e ornamenti indossabili",
+      "SCAR": "Segni, cicatrici e caratteristiche corporee",
+      "HAIRSTYLE": "Acconciature e colori dei capelli",
+      "OBJECT": "Oggetti e articoli da tenere in mano",
+      "WEAPON": "Armi, armi da mischia, armi da fuoco",
+      "VEHICLE": "Veicoli e cavalcature",
+      "FURNITURE": "Mobili ed elementi strutturali",
+      "PROP": "Oggetti di scena e decorazioni di sfondo"
+    },
+    "categories": {
+      "WEARABLE": "Indossabile",
+      "HOLDABLE": "Impugnabile",
+      "ENVIRONMENTAL": "Ambientale"
+    },
+    "categoryDescriptions": {
+      "WEARABLE": "Oggetti che possono essere indossati da un personaggio",
+      "HOLDABLE": "Oggetti che possono essere tenuti o trasportati",
+      "ENVIRONMENTAL": "Elementi di sfondo e ambientali"
+    },
+    "placementZones": {
+      "face": "Volto",
+      "torso": "Busto",
+      "left_hand": "Mano sinistra",
+      "right_hand": "Mano destra",
+      "head": "Testa",
+      "feet": "Piedi"
+    },
+    "placementZoneDescriptions": {
+      "face": "Applicato all'area del volto",
+      "torso": "Applicato all'area del corpo/busto",
+      "left_hand": "Tenuto nella mano sinistra",
+      "right_hand": "Tenuto nella mano destra",
+      "head": "Indossato sulla testa",
+      "feet": "Indossato sui piedi"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "Realistico",
+      "SEMI_REALISTIC": "Semi-Realistico",
+      "CARTOON": "Cartone animato",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "Fumetto",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "imageTypes": {
+      "preview": "Anteprima",
+      "reference": "Riferimento",
+      "transparent": "Trasparente",
+      "in_context": "Nel contesto"
+    },
+    "accessibility": {
+      "addToFavorites": "Aggiungi ai preferiti",
+      "removeFromFavorites": "Rimuovi dai preferiti"
+    },
+    "stats": {
+      "assets": "Risorse",
+      "characters": "Personaggio",
+      "characters_plural": "Personaggi",
+      "images": "Immagine",
+      "images_plural": "Immagini",
+      "charactersShort": "{{count}}K personaggi",
+      "charactersShort_plural": "{{count}}K personaggi"
+    },
+    "hub": {
+      "title": "Risorse",
+      "subtitle": "Crea e gestisci le risorse per i tuoi personaggi. Le risorse includono abbigliamento, accessori, oggetti e altro ancora.",
+      "sidebar": {
+        "description": "Sfoglia e gestisci le tue risorse creative.",
+        "viewGallery": "Visualizza Galleria",
+        "viewAllAssets": "Visualizza tutte le risorse",
+        "myAsset": "Mia risorsa",
+        "noAssetsFound": "Nessuna risorsa trovata."
+      },
+      "actions": {
+        "newAsset": "Nuova Risorsa",
+        "createAsset": "Nuova risorsa",
+        "retry": "Riprova"
+      },
+      "tabs": {
+        "myAssets": "Le mie risorse",
+        "publicGallery": "Galleria pubblica"
+      },
+      "filters": {
+        "searchPlaceholder": "Cerca per nome",
+        "type": "Tipo",
+        "category": "Categoria",
+        "allTypes": "Tutti i tipi",
+        "allCategories": "Tutte le categorie",
+        "noFilter": "Qualsiasi"
+      },
+      "states": {
+        "loading": "Caricamento delle tue risorse...",
+        "error": "Non è stato possibile caricare le risorse. Riprova.",
+        "empty": "Nessuna risorsa disponibile per il momento.",
+        "empty_private": "Non hai ancora creato nessuna risorsa.",
+        "empty_public": "Nessuna risorsa pubblica corrisponde ai tuoi filtri.",
+        "emptyHint": "Inizia creando la tua prima risorsa o modifica i tuoi filtri.",
+        "emptySearchHint": "Modifica i tuoi filtri o cancella la ricerca per vedere più risultati."
+      },
+      "labels": {
+        "total": "{{count}} risorsa disponibile",
+        "total_plural": "{{count}} risorse disponibili",
+        "quickCreateLink": "Inizia subito la creazione"
+      }
+    },
+    "form": {
+      "submit": "Salva",
+      "cancel": "Annulla",
+      "create": "Crea Risorsa",
+      "saveChanges": "Salva Modifiche",
+      "sections": {
+        "details": "Dettagli",
+        "detailsHint": "Informazioni di base su questa risorsa.",
+        "classification": "Classificazione",
+        "classificationHint": "Stile visivo, classificazione per età e tag di contenuto.",
+        "images": "Immagini",
+        "imagesHint": "Gestisci i riferimenti visivi per questa risorsa."
+      },
+      "fields": {
+        "name": "Nome",
+        "description": "Descrizione",
+        "type": "Tipo",
+        "category": "Categoria",
+        "promptPrimary": "Prompt Visivo",
+        "promptContext": "Prompt di Contesto",
+        "negativePrompt": "Prompt Negativo",
+        "placementZone": "Zona di Posizionamento",
+        "placementDetail": "Dettaglio Posizionamento",
+        "style": "Stile Visivo",
+        "visibility": "Visibilità",
+        "ageRating": "Classificazione per Età",
+        "contentTags": "Tag di Contenuto"
+      },
+      "placeholders": {
+        "name": "Inserisci il nome della risorsa",
+        "description": "Descrivi questa risorsa...",
+        "type": "Seleziona tipo",
+        "category": "Seleziona categoria",
+        "promptPrimary": "Descrivi come dovrebbe apparire la risorsa...",
+        "promptContext": "Contesto aggiuntivo quando usato con i personaggi...",
+        "negativePrompt": "Descrivi cosa evitare...",
+        "placementZone": "Seleziona zona di posizionamento",
+        "placementDetail": "es. 'guancia sinistra', 'attraverso il naso'"
+      },
+      "hints": {
+        "name": "Un nome chiaro e descrittivo per questa risorsa",
+        "description": "Descrizione dettagliata dell'aspetto della risorsa",
+        "positivePrompt": "Prompt visivo per la generazione AI (es. 'una giacca di pelle rossa con cerniere argentate')",
+        "negativePrompt": "Elementi da evitare nella generazione (es. 'danneggiato, strappato, sporco')",
+        "placementZone": "Dove la risorsa dovrebbe essere posizionata sul personaggio"
+      },
+      "labels": {
+        "unsavedChanges": "Hai modifiche non salvate",
+        "allSaved": "Modifiche salvate",
+        "submitting": "Salvataggio in corso...",
+        "visibilityPublic": "Pubblica",
+        "visibilityPrivate": "Privata"
+      },
+      "images": {
+        "coverHeader": "Copertina risorsa",
+        "coverDescription": "Immagine che rappresenta questa risorsa.",
+        "upload": "Carica copertina",
+        "change": "Cambia copertina",
+        "uploading": "Caricamento in corso...",
+        "urlModalTitle": "Usa immagine da URL",
+        "urlLabel": "URL immagine",
+        "previewAlt": "Anteprima copertina risorsa",
+        "invalidUrl": "Inserisci un URL immagine valido (http/https).",
+        "saveFirst": "Salva prima la risorsa per aggiungere immagini"
+      },
+      "cover": {
+        "header": "Copertina risorsa",
+        "description": "Rappresentazione visiva della tua risorsa.",
+        "upload": "Seleziona immagine",
+        "change": "Cambia immagine",
+        "remove": "Rimuovi",
+        "fromDevice": "Carica dal dispositivo",
+        "fromUrl": "Usa URL immagine",
+        "generateAI": "Genera con AI",
+        "aiComingSoon": "Generazione AI presto disponibile per le risorse",
+        "urlModalTitle": "Usa immagine da URL",
+        "urlLabel": "URL immagine",
+        "preview": "Anteprima",
+        "previewAlt": "Anteprima copertina risorsa",
+        "invalidUrl": "Inserisci un URL immagine valido (http/https).",
+        "error": "Non è stato possibile caricare questa immagine. {{message}}",
+        "loading": "Caricamento...",
+        "uploading": "Caricamento in corso...",
+        "helperCreate": "Scegli ora un'immagine di copertina e la manterremo mentre compili il resto del modulo.",
+        "helperEdit": "Aggiorna l'immagine di copertina quando vuoi. Le modifiche verranno applicate non appena salvi."
+      },
+      "tabs": {
+        "identity": "Identità",
+        "details": "Dettagli",
+        "configuration": "Configurazione",
+        "classification": "Classificazione",
+        "images": "Immagini",
+        "lockedHint": "Compila i dettagli di base per sbloccare le altre sezioni."
+      },
+      "autocomplete": {
+        "button": "Completamento automatico",
+        "ai": "Completamento automatico con AI",
+        "web": "Completamento automatico con ricerca web",
+        "nothing": "Nessun suggerimento disponibile.",
+        "applied": "Completamento automatico applicato.",
+        "failed": "Completamento automatico fallito."
+      }
+    },
+    "create": {
+      "title": "Crea una nuova risorsa",
+      "subtitle": "Definisci le proprietà e le caratteristiche visive della risorsa.",
+      "saveButton": "Salva risorsa",
+      "cancelButton": "Annulla e torna indietro",
+      "cover": {
+        "header": "Copertina risorsa",
+        "description": "Rappresentazione visiva della tua risorsa."
+      }
+    },
+    "edit": {
+      "title": "Modifica risorsa",
+      "subtitle": "Aggiornamento di {{name}}",
+      "saveButton": "Aggiorna risorsa",
+      "cancelButton": "Ignora modifiche",
+      "states": {
+        "loading": "Caricamento risorsa..."
+      },
+      "accessDenied": {
+        "title": "Accesso Negato",
+        "message": "Non hai il permesso di modificare questa risorsa.",
+        "backButton": "Torna alle Risorse"
+      },
+      "cover": {
+        "header": "Copertina risorsa",
+        "description": "Rappresentazione visiva della tua risorsa."
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "Caricamento dettagli risorsa...",
+        "notFound": "Non siamo riusciti a trovare questa risorsa."
+      },
+      "actions": {
+        "backToHub": "Torna all'hub",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "deleting": "Eliminazione in corso...",
+        "share": "Condividi"
+      },
+      "confirmDelete": {
+        "title": "Eliminare Risorsa?",
+        "message": "Questa azione non può essere annullata. Tutti i dati associati a questa risorsa verranno eliminati permanentemente.",
+        "confirm": "Elimina definitivamente",
+        "cancel": "Annulla"
+      },
+      "labels": {
+        "public": "Pubblica",
+        "private": "Privata",
+        "createdAt": "Creato",
+        "createdBy": "Creato da",
+        "updatedAt": "Ultimo aggiornamento",
+        "identifier": "ID Risorsa: {{id}}",
+        "characterCount": "{{count}} personaggio",
+        "characterCount_plural": "{{count}} personaggi",
+        "type": "Tipo",
+        "category": "Categoria"
+      },
+      "sections": {
+        "description": "Descrizione",
+        "prompts": "Prompt di Generazione",
+        "placement": "Posizionamento",
+        "metadata": "Metadati"
+      },
+      "placement": {
+        "title": "Posizionamento Risorsa",
+        "zoneLabel": "Zona di Posizionamento",
+        "categoryLabel": "Categoria"
+      },
+      "characters": {
+        "title": "Personaggi che usano questa risorsa",
+        "empty": "Nessun personaggio sta ancora usando questa risorsa."
+      }
+    },
+    "picker": {
+      "title": "Seleziona Risorse",
+      "subtitle": "Scegli le risorse da aggiungere al tuo personaggio",
+      "searchPlaceholder": "Cerca risorse...",
+      "filters": {
+        "allTypes": "Tutti i Tipi",
+        "allCategories": "Tutte le Categorie",
+        "typeFilter": "Filtra per tipo",
+        "categoryFilter": "Filtra per categoria"
+      },
+      "actions": {
+        "addSelected": "Aggiungi selezionati ({{count}})",
+        "addSelected_plural": "Aggiungi selezionati ({{count}})",
+        "cancel": "Annulla",
+        "clearSelection": "Cancella selezione"
+      },
+      "states": {
+        "loading": "Caricamento risorse...",
+        "error": "Caricamento risorse fallito",
+        "empty": "Nessuna risorsa disponibile",
+        "noResults": "Nessuna risorsa corrisponde alla tua ricerca",
+        "selectedEmpty": "Seleziona risorse da aggiungere"
+      },
+      "labels": {
+        "selected": "{{count}} selezionato",
+        "selected_plural": "{{count}} selezionati"
+      },
+      "assetCard": {
+        "typeLabel": "Tipo",
+        "categoryLabel": "Categoria"
+      }
+    },
+    "characterAssets": {
+      "title": "Risorse del Personaggio",
+      "subtitle": "Gestisci le risorse equipaggiate a questo personaggio",
+      "tabs": {
+        "equipped": "Equipaggiato",
+        "available": "Disponibile"
+      },
+      "actions": {
+        "addAssets": "Aggiungi Risorse",
+        "removeAsset": "Rimuovi",
+        "configureAsset": "Configura"
+      },
+      "states": {
+        "noEquipped": "Nessuna risorsa equipaggiata",
+        "noAvailable": "Nessuna risorsa disponibile",
+        "loading": "Caricamento risorse..."
+      },
+      "placement": {
+        "title": "Posizionamento Risorsa",
+        "zoneLabel": "Zona",
+        "configure": "Configura posizionamento",
+        "remove": "Rimuovi dal personaggio"
+      },
+      "labels": {
+        "equippedCount": "{{count}} risorsa equipaggiata",
+        "equippedCount_plural": "{{count}} risorse equipaggiate",
+        "availableCount": "{{count}} disponibile",
+        "availableCount_plural": "{{count}} disponibili"
+      }
+    },
+    "errors": {
+      "createFailed": "Non è stato possibile creare la risorsa. Riprova.",
+      "updateFailed": "Non è stato possibile aggiornare la risorsa.",
+      "deleteFailed": "Non è stato possibile eliminare la risorsa.",
+      "detailUnavailable": "Impossibile caricare i dettagli della risorsa in questo momento.",
+      "linkFailed": "Impossibile collegare la risorsa al personaggio.",
+      "unlinkFailed": "Impossibile scollegare la risorsa dal personaggio.",
+      "nameRequired": "Il nome della risorsa è obbligatorio",
+      "typeRequired": "Il tipo di risorsa è obbligatorio",
+      "categoryRequired": "La categoria della risorsa è obbligatoria",
+      "invalidType": "Tipo di risorsa non valido",
+      "invalidCategory": "Categoria di risorsa non valida",
+      "invalidPlacementZone": "Zona di posizionamento non valida per questo tipo di risorsa",
+      "assetInUse": "Questa risorsa è utilizzata da {{count}} personaggio e non può essere eliminata.",
+      "assetInUse_plural": "Questa risorsa è utilizzata da {{count}} personaggi e non può essere eliminata."
+    },
+    "success": {
+      "created": "Risorsa creata con successo",
+      "updated": "Risorsa aggiornata con successo",
+      "deleted": "Risorsa eliminata con successo",
+      "linked": "Risorsa collegata al personaggio",
+      "unlinked": "Risorsa scollegata dal personaggio"
+    },
+    "messages": {
+      "imageUploaded": "Immagine caricata con successo",
+      "imageDeleted": "Immagine eliminata con successo",
+      "coverUploaded": "Immagine di copertina aggiornata con successo",
+      "descriptionRequired": "La descrizione è obbligatoria"
+    },
+    "images": {
+      "title": "Immagini della Risorsa",
+      "addImage": "Aggiungi Immagine",
+      "selectType": "Seleziona tipo di immagine",
+      "uploadFailed": "Caricamento immagine fallito",
+      "deleteFailed": "Eliminazione immagine fallita",
+      "deleteConfirm": "Eliminare questa immagine?",
+      "noImages": "Nessuna immagine ancora. Aggiungi il tuo primo riferimento visivo.",
+      "types": {
+        "preview": "Anteprima",
+        "reference": "Riferimento",
+        "transparent": "Trasparente",
+        "in_context": "Nel contesto"
+      },
+      "typeDescriptions": {
+        "preview": "Immagine di anteprima principale per la risorsa",
+        "reference": "Riferimento visivo per la risorsa",
+        "transparent": "Versione con sfondo trasparente",
+        "in_context": "Risorsa mostrata in uso/contesto della scena"
+      }
+    },
+    "prompts": {
+      "title": "Prompt di Generazione",
+      "primaryLabel": "Prompt Visivo",
+      "primaryHint": "Descrivi come la risorsa dovrebbe apparire nelle immagini generate",
+      "contextLabel": "Prompt di Contesto",
+      "contextHint": "Contesto aggiuntivo quando questa risorsa viene utilizzata con i personaggi",
+      "negativeLabel": "Prompt Negativo",
+      "negativeHint": "Elementi da evitare durante la generazione di questa risorsa"
+    },
+    "avatar": {
+      "invalidUrl": "Inserisci un URL immagine valido (http/https).",
+      "error": "Non è stato possibile caricare questa immagine. {{message}}",
+      "aiComingSoon": "Generazione AI presto disponibile per le risorse",
+      "generateAI": "Genera con AI",
+      "fromDevice": "Carica dal dispositivo",
+      "fromUrl": "Usa URL immagine",
+      "urlModalTitle": "Usa immagine da URL",
+      "urlLabel": "URL immagine",
+      "preview": "Anteprima",
+      "previewAlt": "Anteprima immagine",
+      "loading": "Caricamento..."
+    }
+  }
+}

@@ -10,14 +10,14 @@
     },
     "settings": "Configurações",
     "account": "Conta",
-    "continueGoogle": "Continuar com o Google",
-    "continueFacebook": "Continuar com o Facebook",
+    "continueGoogle": "Continuar com Google",
+    "continueFacebook": "Continuar com Facebook",
     "privacy": "Ao continuar, você concorda com nossa política de privacidade e autoriza o CharHub a acessar suas informações básicas de perfil.",
     "logout": "Sair",
     "logoutLoading": "Saindo...",
     "authenticatedUser": "Usuário autenticado",
     "tokenStored": "Armazenado em cookie somente HTTP",
-    "navDashboard": "Painel",
+    "navDashboard": "Dashboard",
     "navCharacters": "Personagens",
     "navTagline": "Demonstração de OAuth seguro",
     "providerLabel": {
@@ -60,14 +60,14 @@
       "ariaLabel": "Filtro de conteúdo",
       "title": "Filtro de Conteúdo",
       "ageRating": "Classificação Etária",
-      "blurNsfw": "Borrar Conteúdo Explícito",
+      "blurNsfw": "Desfocar Conteúdo Explícito",
       "none": "Sem Filtro",
-      "blur": "Borrar Conteúdo Sensível",
-      "hidden": "Ocultar Conteúdo Adulto",
+      "blur": "Desfocar Conteúdo Sensível",
+      "hidden": "Ocultar Conteúdo Maduro",
       "descriptions": {
         "none": "Mostrar todo o conteúdo sem restrições",
-        "blur": "Aplicar desfoque ao conteúdo adulto",
-        "hidden": "Ocultar completamente o conteúdo adulto"
+        "blur": "Aplicar desfoque ao conteúdo maduro",
+        "hidden": "Ocultar completamente o conteúdo maduro"
       },
       "ageRatings": {
         "L": "Livre",

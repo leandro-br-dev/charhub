@@ -5,14 +5,14 @@
     "createCharacter": "Criar Personagem",
     "tabs": {
       "discover": "Descobrir",
-      "chat": "Chat",
+      "chat": "Conversar",
       "story": "História"
     },
     "sections": {
       "popularCharacters": "Personagens Populares",
       "favoriteCharacters": "Seus Favoritos",
-      "popular": "Populares",
-      "newest": "Novidades",
+      "popular": "Popular",
+      "newest": "Novos",
       "favorites": "Favoritos",
       "myStories": "Minhas Histórias",
       "popularStories": "Histórias Populares",
@@ -29,7 +29,7 @@
     "recentConversations": "Conversas Recentes",
     "newConversation": "Nova Conversa",
     "noConversations": "Nenhuma conversa ainda. Comece a conversar agora!",
-    "startChat": "Iniciar Novo Chat",
+    "startChat": "Iniciar Nova Conversa",
     "endOfList": {
       "characters": {
         "message": "Você viu todos os personagens!",
@@ -56,7 +56,7 @@
           "action2Full": "Explorar Personagens"
         },
         "stories": {
-          "title": "Descobrir Histórias",
+          "title": "Descubra Histórias",
           "description": "Experimente aventuras interativas imersivas",
           "action": "Explorar",
           "actionFull": "Explorar Histórias",
@@ -82,8 +82,8 @@
       "title": "Filtros",
       "gender": "Gênero",
       "species": "Espécie",
-      "selectGender": "Selecione os gêneros...",
-      "selectSpecies": "Selecione as espécies...",
+      "selectGender": "Selecionar gêneros...",
+      "selectSpecies": "Selecionar espécies...",
       "clear": "Limpar",
       "genders": {
         "male": "Masculino",

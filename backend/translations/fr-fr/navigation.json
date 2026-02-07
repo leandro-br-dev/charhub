@@ -11,12 +11,17 @@
     "adminSystemConfig": "Configuration du système",
     "adminLlmCatalog": "Catalogue LLM",
     "assets": "Ressources",
+    "scenes": "Scènes",
     "profileLink": "Mon profil",
     "sidebarDefaultTitle": "Explorer CharHub",
     "sidebarDefaultDescription": "Utilisez les icônes de la barre de navigation pour passer d'une expérience à l'autre.",
     "developmentTools": "Outils de développement",
     "developmentPlaceholder": "Les pipelines de build, les journaux et les contrôles d'automatisation seront bientôt disponibles ici.",
     "viewAllCharacters": "Voir tous les personnages",
-    "viewAllStories": "Voir toutes les histoires"
+    "viewAllStories": "Voir toutes les histoires",
+    "viewAllAssets": "Voir toutes les ressources",
+    "viewAllScenes": "Voir toutes les scènes",
+    "createAsset": "Créer une ressource",
+    "createScene": "Créer une scène"
   }
 }

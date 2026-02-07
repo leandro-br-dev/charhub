@@ -2,7 +2,7 @@
   "description": "Navigation and menu labels",
   "resources": {
     "chat": "Chat",
-    "story": "Geschichte",
+    "story": "Story",
     "characters": "Charaktere",
     "tasks": "Aufgaben",
     "admin": "Admin",
@@ -11,12 +11,17 @@
     "adminSystemConfig": "Systemkonfiguration",
     "adminLlmCatalog": "LLM-Katalog",
     "assets": "Assets",
+    "scenes": "Szenen",
     "profileLink": "Mein Profil",
     "sidebarDefaultTitle": "CharHub erkunden",
-    "sidebarDefaultDescription": "Verwenden Sie die Symbole in der Navigationsleiste, um zwischen den verschiedenen Bereichen zu wechseln.",
+    "sidebarDefaultDescription": "Nutze die Symbole in der Navigationsleiste, um zwischen den Erlebnissen zu wechseln.",
     "developmentTools": "Entwicklertools",
-    "developmentPlaceholder": "Build-Pipelines, Protokolle und Automatisierungssteuerungen werden bald hier verfügbar sein.",
+    "developmentPlaceholder": "Build-Pipelines, Protokolle und Automatisierungssteuerungen werden hier bald verfügbar sein.",
     "viewAllCharacters": "Alle Charaktere anzeigen",
-    "viewAllStories": "Alle Geschichten anzeigen"
+    "viewAllStories": "Alle Stories anzeigen",
+    "viewAllAssets": "Alle Assets anzeigen",
+    "viewAllScenes": "Alle Szenen anzeigen",
+    "createAsset": "Asset erstellen",
+    "createScene": "Szene erstellen"
   }
 }

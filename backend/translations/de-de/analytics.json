@@ -4,7 +4,7 @@
     "title": "LLM Kostenanalyse",
     "header": {
       "title": "LLM Kostenanalyse",
-      "description": "Überwachen und analysieren Sie die LLM-Nutzungskosten plattformweit"
+      "description": "Überwachen und analysieren Sie die LLM-Nutzungskosten auf der gesamten Plattform"
     },
     "dateRange": {
       "label": "Zeitraum",
@@ -29,7 +29,7 @@
     },
     "planStats": {
       "users": "Nutzer",
-      "avgCost": "Durchschn. Kosten/Nutzer"
+      "avgCost": "Durchschnittliche Kosten/Nutzer"
     },
     "caching": {
       "hitRate": "Cache-Trefferquote",
@@ -44,15 +44,15 @@
     },
     "metrics": {
       "requests": "Anfragen",
-      "req": "Anfr.",
-      "avgReq": "Durchschn./Anfr."
+      "req": "Anfrage",
+      "avgReq": "Durchschn./Anfrage"
     },
     "messages": {
       "noData": "Für den ausgewählten Zeitraum sind keine Daten verfügbar"
     },
     "featureNames": {
       "CHARACTER_GENERATION": "Charaktergenerierung",
-      "STORY_GENERATION": "Geschichtengenerierung",
+      "STORY_GENERATION": "Story-Generierung",
       "CONTENT_TRANSLATION": "Inhaltsübersetzung",
       "CHAT_MESSAGE": "Chat-Nachrichten",
       "AUTOMATED_GENERATION": "Automatisierte Generierung",

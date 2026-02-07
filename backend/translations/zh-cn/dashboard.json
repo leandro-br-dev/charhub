@@ -19,37 +19,37 @@
       "mine": "我的",
       "noPopularCharacters": "未找到热门角色。",
       "noNewCharacters": "暂无新角色。",
-      "noFavoriteCharacters": "您尚未收藏任何角色。",
+      "noFavoriteCharacters": "您还没有收藏任何角色。",
       "createCharacter": "创建角色",
       "browseCharacters": "浏览角色"
     },
     "noStories": "暂无故事。创建您的第一个故事吧！",
     "createStory": "创建故事",
-    "plusRequired": "需要Plus会员",
+    "plusRequired": "需要Plus会员计划",
     "recentConversations": "最近对话",
     "newConversation": "新对话",
     "noConversations": "暂无对话。立即开始聊天吧！",
     "startChat": "开始新聊天",
     "endOfList": {
       "characters": {
-        "message": "您已浏览完所有角色！",
+        "message": "您已看完所有角色！",
         "cta": "创建您自己的角色",
-        "description": "将您的想象变为现实，创造独特的AI角色"
+        "description": "将您的想象变为现实，创建独特的AI角色"
       },
       "stories": {
-        "message": "您已浏览完所有故事！",
+        "message": "您已看完所有故事！",
         "cta": "创建您自己的故事",
-        "description": "开始与AI角色一起创作互动故事"
+        "description": "开始与AI角色一起创建互动故事"
       }
     },
     "carousel": {
       "alt": "{{title}}的轮播图",
-      "goToSlide": "前往幻灯片{{slide}}",
+      "goToSlide": "前往幻灯片 {{slide}}",
       "plus": "PLUS",
       "slides": {
         "welcome": {
           "title": "欢迎来到CharHub",
-          "description": "创建独特角色，让您的故事栩栩如生",
+          "description": "创建独特的角色，让您的故事栩栩如生",
           "action1": "创建",
           "action1Full": "创建角色",
           "action2": "浏览",
@@ -65,15 +65,15 @@
         },
         "pricing": {
           "title": "解锁高级版",
-          "description": "无限创作、专属功能等",
-          "action": "查看套餐",
-          "actionFull": "查看套餐"
+          "description": "无限创作、独家功能等",
+          "action": "查看方案",
+          "actionFull": "查看方案"
         }
       }
     },
     "storyCard": {
       "alt": "{{title}}的封面图片",
-      "play": "开始"
+      "play": "播放"
     },
     "infiniteScroll": {
       "endOfList": "所有角色已加载完毕"
@@ -88,13 +88,13 @@
       "genders": {
         "male": "男性",
         "female": "女性",
-        "nonBinary": "非二元性别",
+        "nonBinary": "非二元",
         "other": "其他",
         "unknown": "未知",
         "MALE": "男性",
         "FEMALE": "女性",
-        "NON_BINARY": "非二元性别",
-        "NON-BINARY": "非二元性别",
+        "NON_BINARY": "非二元",
+        "NON-BINARY": "非二元",
         "OTHER": "其他",
         "UNKNOWN": "未知"
       }

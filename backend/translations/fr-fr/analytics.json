@@ -4,7 +4,7 @@
     "title": "Analyse des coûts LLM",
     "header": {
       "title": "Analyse des coûts LLM",
-      "description": "Suivre et analyser les coûts d'utilisation des LLM sur l'ensemble de la plateforme"
+      "description": "Surveiller et analyser les coûts d'utilisation des LLM sur la plateforme"
     },
     "dateRange": {
       "label": "Période",
@@ -17,25 +17,25 @@
       "costsByModel": "Coûts par modèle",
       "costsByPlan": "Coûts par plan d'abonnement",
       "dailyCosts": "Tendance des coûts quotidiens",
-      "cachingMetrics": "Efficacité de la mise en cache",
-      "topUsers": "Utilisateurs principaux par coût"
+      "cachingMetrics": "Efficacité du cache",
+      "topUsers": "Utilisateurs les plus coûteux"
     },
     "cards": {
       "totalCost": {
-        "title": "Coût total des LLM",
-        "description": "Coût opérationnel total des appels d'API LLM pour la période sélectionnée",
+        "title": "Coût total LLM",
+        "description": "Coût opérationnel total des appels API LLM pour la période sélectionnée",
         "currency": "USD"
       }
     },
     "planStats": {
       "users": "Utilisateurs",
-      "avgCost": "Coût moyen/utilisateur"
+      "avgCost": "Coût moy./utilisateur"
     },
     "caching": {
       "hitRate": "Taux de succès du cache",
       "totalRequests": "Requêtes totales",
       "cachedRequests": "Requêtes mises en cache",
-      "costSavings": "Économies de coûts"
+      "costSavings": "Économies réalisées"
     },
     "table": {
       "userId": "ID utilisateur",

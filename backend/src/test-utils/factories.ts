@@ -238,3 +238,124 @@ export async function createTestMessage(
     data: defaultData,
   });
 }
+
+/**
+ * Create test asset
+ */
+export async function createTestAsset(authorId: string, overrides: any = {}) {
+  const db = getTestDb();
+  const timestamp = Date.now();
+
+  const defaultData = {
+    name: `TestAsset${timestamp}`,
+    description: 'A test asset description',
+    type: 'OBJECT',
+    category: 'HOLDABLE',
+    visibility: 'PUBLIC',
+    authorId,
+    previewImageUrl: `https://example.com/asset-${timestamp}.jpg`,
+    ...overrides,
+  };
+
+  return await db.asset.create({
+    data: defaultData,
+  });
+}
+
+/**
+ * Create test scene
+ */
+export async function createTestScene(authorId: string, overrides: any = {}) {
+  const db = getTestDb();
+  const timestamp = Date.now();
+
+  const defaultData = {
+    name: `TestScene${timestamp}`,
+    description: 'A test scene description',
+    shortDescription: 'Short description',
+    genre: 'Fantasy',
+    era: 'Medieval',
+    mood: 'Mysterious',
+    style: 'REALISTIC',
+    ageRating: 'TWELVE',
+    contentTags: [],
+    visibility: 'PUBLIC',
+    authorId,
+    ...overrides,
+  };
+
+  return await db.scene.create({
+    data: defaultData,
+  });
+}
+
+/**
+ * Create test scene area
+ */
+export async function createTestSceneArea(sceneId: string, overrides: any = {}) {
+  const db = getTestDb();
+  const timestamp = Date.now();
+
+  const defaultData = {
+    name: `TestArea${timestamp}`,
+    description: 'A test area description',
+    shortDescription: 'Short area description',
+    displayOrder: 0,
+    isAccessible: true,
+    sceneId,
+    ...overrides,
+  };
+
+  return await db.sceneArea.create({
+    data: defaultData,
+  });
+}
+
+/**
+ * Create test scene area connection
+ */
+export async function createTestSceneAreaConnection(
+  fromAreaId: string,
+  toAreaId: string,
+  overrides: any = {}
+) {
+  const db = getTestDb();
+
+  const defaultData = {
+    fromAreaId,
+    toAreaId,
+    direction: 'North',
+    description: 'A path to the north',
+    isLocked: false,
+    ...overrides,
+  };
+
+  return await db.sceneAreaConnection.create({
+    data: defaultData,
+  });
+}
+
+/**
+ * Link asset to area
+ */
+export async function linkTestAssetToArea(
+  areaId: string,
+  assetId: string,
+  overrides: any = {}
+) {
+  const db = getTestDb();
+
+  const defaultData = {
+    areaId,
+    assetId,
+    position: 'on the table',
+    isHidden: false,
+    isInteractable: true,
+    displayOrder: 0,
+    ...overrides,
+  };
+
+  return await db.sceneAreaAsset.create({
+    data: defaultData,
+  });
+}

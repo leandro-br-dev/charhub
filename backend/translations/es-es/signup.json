@@ -3,14 +3,14 @@
   "resources": {
     "greeting": "¡Crea tu cuenta!",
     "instruction": "Elige una opción para registrarte",
-    "googleButton": "Regístrate con Google",
-    "facebookButton": "Regístrate con Facebook",
+    "googleButton": "Registrarse con Google",
+    "facebookButton": "Registrarse con Facebook",
     "termsAgreementPt1": "Al registrarte, aceptas los",
     "termsAgreementAnd": "y la",
-    "termsAndConditions": "Términos y Condiciones",
-    "privacyPolicy": "Política de Privacidad",
+    "termsAndConditions": "Términos y condiciones",
+    "privacyPolicy": "Política de privacidad",
     "alreadyRegistered": "¿Ya tienes una cuenta?",
-    "loginLink": "Inicia sesión",
+    "loginLink": "Iniciar sesión",
     "checkingAuth": "Comprobando autenticación..."
   }
 }

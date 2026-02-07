@@ -4,46 +4,46 @@
     "tabs": {
       "profile": "Perfil",
       "password": "Contraseña",
-      "contentClassification": "Clasificación de Contenido",
-      "deleteAccount": "Eliminar Cuenta"
+      "contentClassification": "Clasificación de contenido",
+      "deleteAccount": "Eliminar cuenta"
     },
     "sectionTitle": "Cuenta",
     "title": "Gestiona tu perfil",
-    "subtitle": "Actualiza cómo te ven los demás en CharHub. Las preferencias que aún se están migrando aparecerán aquí pronto.",
+    "subtitle": "Actualiza cómo te ven otras personas en CharHub. Las preferencias que aún se están migrando aparecerán aquí pronto.",
     "identity": {
       "header": "Foto de perfil",
       "description": "Elige un avatar para representarte en chats y personajes.",
       "upload": "Subir imagen",
-      "placeholderNote": "Las subidas de avatar estarán disponibles después de que reconectemos el servicio multimedia."
+      "placeholderNote": "Las subidas de avatar estarán disponibles después de que reconectemos el servicio de medios."
     },
     "details": {
       "header": "Detalles públicos",
       "description": "Estos valores se comparten con colaboradores y se utilizan como valores predeterminados en las conversaciones."
     },
     "contentClassification": {
-      "header": "Clasificación de Contenido",
+      "header": "Clasificación de contenido",
       "description": "Configura filtros de contenido para controlar qué tipos de personajes e historias deseas ver. Solo se te recomendará contenido que coincida con tus preferencias seleccionadas.",
-      "blockedTags": "Filtros de Contenido",
-      "filterNote": "Selecciona los tipos de contenido que deseas PERMITIR. Los elementos desmarcados se filtrarán de las recomendaciones.",
-      "allAgesNote": "Todos los tipos de contenido están bloqueados cuando se selecciona la clasificación \"Todas las edades\".",
+      "blockedTags": "Filtros de contenido",
+      "filterNote": "Selecciona los tipos de contenido que deseas PERMITIR. Los elementos no marcados se filtrarán de las recomendaciones.",
+      "allAgesNote": "Todos los tipos de contenido se bloquean cuando se selecciona la clasificación \"Todas las edades\".",
       "allowAll": "Permitir todo",
-      "birthDateRequired": "Se requiere fecha de nacimiento",
-      "birthDateRequiredMessage": "Por favor, rellena tu fecha de nacimiento en la pestaña Perfil para desbloquear la configuración de clasificación de contenido. Esto garantiza recomendaciones de contenido apropiadas para la edad.",
-      "maxAgeRatingLabel": "Clasificación de edad máxima",
-      "maxAgeRatingHint": "Selecciona la clasificación de edad máxima que deseas ver",
+      "birthDateRequired": "Fecha de nacimiento requerida",
+      "birthDateRequiredMessage": "Por favor, introduce tu fecha de nacimiento en la pestaña Perfil para desbloquear la configuración de clasificación de contenido. Esto asegura recomendaciones de contenido apropiadas para la edad.",
+      "maxAgeRatingLabel": "Calificación de edad máxima",
+      "maxAgeRatingHint": "Selecciona la calificación de edad máxima que deseas ver",
       "ageRestricted": "Restringido por edad"
     },
     "fields": {
       "displayName": "Nombre visible",
-      "displayNamePlaceholder": "Cómo te dirigen otros usuarios",
+      "displayNamePlaceholder": "Cómo te llaman otros usuarios",
       "fullName": "Nombre completo",
-      "fullNamePlaceholder": "Opcional para facturación y copias por correo electrónico",
+      "fullNamePlaceholder": "Opcional para facturación y copias de correo electrónico",
       "username": "Nombre de usuario",
-      "usernamePlaceholder": "nombre de usuario",
+      "usernamePlaceholder": "nombredeusuario",
       "usernameHint": "Tu identificador único en CharHub.",
       "usernameChecking": "Comprobando disponibilidad...",
       "usernameAvailable": "Nombre de usuario disponible",
-      "usernameUnavailable": "Nombre de usuario ya en uso",
+      "usernameUnavailable": "El nombre de usuario ya está en uso",
       "email": "Correo electrónico",
       "emailHint": "Gestionado por tu proveedor de autenticación.",
       "birthDate": "Fecha de nacimiento",
@@ -56,7 +56,7 @@
       "unspecified": "Prefiero no decirlo"
     },
     "preferences": {
-      "placeholder": "Las preferencias de contenido, la configuración de desenfoque y los temas sensibles volverán una vez que el servicio de moderación esté integrado."
+      "placeholder": "Las preferencias de contenido, la configuración de desenfoque y los temas sensibles regresarán una vez que se integre el servicio de moderación."
     },
     "actions": {
       "save": "Guardar cambios",
@@ -65,24 +65,24 @@
     "subscription": {
       "header": "Suscripción y Créditos",
       "description": "Gestiona tu plan de suscripción y consulta tu saldo de créditos.",
-      "currentPlan": "Plan Actual",
-      "credits": "Créditos Disponibles",
-      "viewPlans": "Ver Planes",
+      "currentPlan": "Plan actual",
+      "credits": "Créditos disponibles",
+      "viewPlans": "Ver planes",
       "loadingPlan": "Cargando plan...",
       "loadingCredits": "Cargando créditos..."
     },
     "security": {
       "header": "Seguridad",
-      "description": "Tus sesiones de CharHub heredan la seguridad OAuth de Google o Facebook. Pronto se añadirá soporte para autenticación de múltiples factores.",
-      "placeholder": "La gestión de sesiones y los controles de inicio de sesión sin contraseña están en el plan de desarrollo."
+      "description": "Tus sesiones de CharHub heredan la seguridad OAuth de Google o Facebook. Pronto se añadirá el soporte multifactor.",
+      "placeholder": "La gestión de sesiones y los controles de inicio de sesión sin contraseña están en la hoja de ruta."
     },
     "deleteAccount": {
-      "title": "Eliminar Cuenta",
+      "title": "Eliminar cuenta",
       "description": "Elimina permanentemente tu cuenta y todo tu contenido.",
       "submit": "Eliminar mi cuenta",
-      "confirmTitle": "¿Estás absolutamente seguro?",
+      "confirmTitle": "¿Estás absolutamente seguro/a?",
       "confirmDescription": "Esta acción no se puede deshacer. Esto eliminará permanentemente tu cuenta y tus datos de nuestros servidores.",
-      "confirmInstruction": "Por favor, escribe \"ELIMINAR\" para confirmar.",
+      "confirmInstruction": "Por favor, escribe \"DELETE\" para confirmar.",
       "confirmSubmit": "Eliminar esta cuenta"
     },
     "feedback": {
@@ -93,10 +93,10 @@
       "updateFailed": "No pudimos guardar tus cambios. Inténtalo de nuevo en un momento.",
       "displayNameRequired": "El nombre visible es obligatorio.",
       "usernameTooShort": "El nombre de usuario debe contener al menos 3 caracteres después del @.",
-      "usernameInvalid": "El nombre de usuario debe empezar con @ y contener solo letras, números y guiones bajos.",
+      "usernameInvalid": "El nombre de usuario debe comenzar con @ y contener solo letras, números y guiones bajos.",
       "usernameTaken": "Este nombre de usuario ya está en uso. Por favor, elige otro.",
       "validationFailed": "Por favor, revisa los campos del formulario e inténtalo de nuevo.",
-      "authenticationRequired": "Tu sesión ha expirado. Por favor, inicia sesión de nuevo para continuar."
+      "authenticationRequired": "Tu sesión ha caducado. Por favor, inicia sesión de nuevo para continuar."
     }
   }
 }

@@ -43,7 +43,7 @@ export type Theme =
 
 export type StickerStatus = 'PENDING' | 'GENERATING' | 'COMPLETED' | 'FAILED';
 
-export type TagType = 'CHARACTER' | 'STORY';
+export type TagType = 'CHARACTER' | 'STORY' | 'SCENE';
 
 export interface Tag {
   id: string;

@@ -8,15 +8,20 @@
     "admin": "Админ",
     "adminAnalytics": "Аналитика",
     "adminScripts": "Скрипты",
-    "adminSystemConfig": "Конфигурация системы",
+    "adminSystemConfig": "Настройки системы",
     "adminLlmCatalog": "Каталог LLM",
-    "assets": "Ресурсы",
+    "assets": "Активы",
+    "scenes": "Сцены",
     "profileLink": "Мой профиль",
-    "sidebarDefaultTitle": "Исследовать CharHub",
-    "sidebarDefaultDescription": "Используйте иконки на навигационной панели для переключения между разделами.",
+    "sidebarDefaultTitle": "Обзор CharHub",
+    "sidebarDefaultDescription": "Используйте значки на панели навигации для переключения между разделами.",
     "developmentTools": "Инструменты разработчика",
-    "developmentPlaceholder": "Скоро здесь появятся конвейеры сборки, логи и элементы управления автоматизацией.",
+    "developmentPlaceholder": "Конвейеры сборки, журналы и элементы управления автоматизацией скоро появятся здесь.",
     "viewAllCharacters": "Посмотреть всех персонажей",
-    "viewAllStories": "Посмотреть все истории"
+    "viewAllStories": "Посмотреть все истории",
+    "viewAllAssets": "Посмотреть все активы",
+    "viewAllScenes": "Посмотреть все сцены",
+    "createAsset": "Создать актив",
+    "createScene": "Создать сцену"
   }
 }
