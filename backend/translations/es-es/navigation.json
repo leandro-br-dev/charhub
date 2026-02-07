@@ -8,15 +8,20 @@
     "admin": "Administración",
     "adminAnalytics": "Análisis",
     "adminScripts": "Scripts",
-    "adminSystemConfig": "Configuración del Sistema",
-    "adminLlmCatalog": "Catálogo de LLM",
+    "adminSystemConfig": "Configuración del sistema",
+    "adminLlmCatalog": "Catálogo LLM",
     "assets": "Activos",
+    "scenes": "Escenas",
     "profileLink": "Mi perfil",
     "sidebarDefaultTitle": "Explorar CharHub",
-    "sidebarDefaultDescription": "Usa los íconos de la barra de navegación para cambiar entre experiencias.",
-    "developmentTools": "Herramientas de desarrollo",
-    "developmentPlaceholder": "Los Pipelines de compilación, registros y controles de automatización estarán aquí pronto.",
+    "sidebarDefaultDescription": "Usa los iconos de la barra de navegación para cambiar entre experiencias.",
+    "developmentTools": "Herramientas de desarrollador",
+    "developmentPlaceholder": "Las tuberías de compilación, los registros y los controles de automatización estarán aquí pronto.",
     "viewAllCharacters": "Ver todos los personajes",
-    "viewAllStories": "Ver todas las historias"
+    "viewAllStories": "Ver todas las historias",
+    "viewAllAssets": "Ver todos los activos",
+    "viewAllScenes": "Ver todas las escenas",
+    "createAsset": "Crear activo",
+    "createScene": "Crear escena"
   }
 }

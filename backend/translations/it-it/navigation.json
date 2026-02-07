@@ -5,18 +5,23 @@
     "story": "Storia",
     "characters": "Personaggi",
     "tasks": "Attività",
-    "admin": "Amministrazione",
-    "adminAnalytics": "Analisi",
+    "admin": "Admin",
+    "adminAnalytics": "Analytics",
     "adminScripts": "Script",
     "adminSystemConfig": "Configurazione di sistema",
     "adminLlmCatalog": "Catalogo LLM",
     "assets": "Risorse",
+    "scenes": "Scene",
     "profileLink": "Il mio profilo",
     "sidebarDefaultTitle": "Esplora CharHub",
-    "sidebarDefaultDescription": "Usa le icone nella barra di navigazione per passare da un'esperienza all'altra.",
+    "sidebarDefaultDescription": "Usa le icone nella barra di navigazione per passare tra le esperienze.",
     "developmentTools": "Strumenti per sviluppatori",
-    "developmentPlaceholder": "Build pipeline, log e controlli di automazione saranno presto disponibili qui.",
+    "developmentPlaceholder": "Pipeline di build, log e controlli di automazione saranno presto disponibili qui.",
     "viewAllCharacters": "Visualizza tutti i personaggi",
-    "viewAllStories": "Visualizza tutte le storie"
+    "viewAllStories": "Visualizza tutte le storie",
+    "viewAllAssets": "Visualizza tutte le risorse",
+    "viewAllScenes": "Visualizza tutte le scene",
+    "createAsset": "Crea Risorsa",
+    "createScene": "Crea Scena"
   }
 }
