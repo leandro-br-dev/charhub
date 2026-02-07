@@ -1498,17 +1498,11 @@ model BatchGenerationLog {
 // SYSTEM CONFIGURATION AND CORRECTION LOGGING (FEATURE-011)
 // ============================================================================
 
-// System configuration key-value storage
+// System configuration key-value storage (simplified)
 model SystemConfiguration {
-  id          String   @id @default(uuid())
-  key         String   @unique
-  value       String
-  description String?
-  category    String? // e.g., "generation", "correction", "curation"
-  updatedAt   DateTime @updatedAt
-  updatedBy   String? // User ID who last updated
-
-  @@index([category])
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
 }
 
 // Correction job execution log
@@ -1833,4 +1827,70 @@ model SceneAreaConnection {
   @@unique([fromAreaId, toAreaId])
   @@index([fromAreaId])
   @@index([toAreaId])
+}
+
+// ============================================================================
+// LLM MODEL CATALOG SYSTEM
+// ============================================================================
+
+// LLM Model category classification
+enum LLMModelCategory {
+  CHAT // General conversation
+  CODING // Programming/Code generation
+  REASONING // Complex reasoning tasks
+  VISION // Multimodal/image analysis
+  SPEECH // Voice/speech processing
+  TRANSLATION // Language translation
+  AGENTIC // Tool-calling agents
+  EMBEDDING // Vector embeddings
+}
+
+// LLM Model type
+enum LLMModelType {
+  TEXT // Text-only models
+  MULTIMODAL // Vision/text models
+  REASONING // Reasoning-specialized models
+  SPEECH // Voice models
+  EMBEDDING // Embedding models
+}
+
+// LLM Model Catalog - centralized registry of all LLM models
+model LLMModelCatalog {
+  id String @id @default(uuid())
+
+  // Provider identification
+  provider String // 'gemini', 'openai', 'grok', 'openrouter', 'anthropic', etc
+  name String // Model identifier: 'gemini-2.5-flash-lite', 'gpt-4', etc
+
+  // Display information
+  displayName String // Human-readable name: 'Gemini 2.5 Flash-Lite'
+  category LLMModelCategory // CHAT, CODING, REASONING, VISION, etc
+  type LLMModelType // TEXT, MULTIMODAL, REASONING, etc
+
+  // Model specifications
+  contextWindow Int // Maximum context window in tokens
+  maxOutput Int // Maximum output tokens
+
+  // Feature support flags
+  supportsTools Boolean @default(false) // Supports function calling
+  supportsVision Boolean @default(false) // Supports image inputs
+  supportsReasoning Boolean @default(false) // Has extended thinking capabilities
+
+  // Description and metadata
+  description String? @db.Text // Model description
+  isActive Boolean @default(true) // Whether model is active
+  isAvailable Boolean @default(true) // Whether model is available (API access)
+
+  // Versioning and source tracking
+  version String @default("1.0.0") // Model version
+  source String? @db.Text // Source URL or documentation link
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([provider, name])
+  @@index([provider])
+  @@index([category])
+  @@index([type])
+  @@index([isActive, isAvailable])
+  @@index([provider, isActive])
 }

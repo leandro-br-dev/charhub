@@ -1,0 +1,163 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "Configuração do Sistema",
+    "header": {
+      "title": "Configuração do Sistema",
+      "description": "Gerencie parâmetros de tempo de execução sem reiniciar o servidor. As alterações entram em vigor imediatamente."
+    },
+    "search": {
+      "placeholder": "Filtrar configurações..."
+    },
+    "categories": {
+      "translation": "Sistema de Tradução",
+      "context": "Janela de Contexto",
+      "generation": "Geração de Personagens",
+      "correction": "Sistema de Correção",
+      "curation": "Curadoria de Imagens",
+      "moderation": "Moderação de Conteúdo",
+      "scheduling": "Agendamento de Tarefas"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "Provedor Padrão",
+          "description": "Provedor LLM padrão para traduções"
+        },
+        "default_model": {
+          "label": "Modelo Padrão",
+          "description": "Nome do modelo padrão para traduções"
+        },
+        "cache_ttl": {
+          "label": "TTL do Cache (segundos)",
+          "description": "Tempo para armazenar em cache os resultados da tradução"
+        },
+        "enable_pre_translation": {
+          "label": "Ativar Pré-tradução",
+          "description": "Pré-traduzir conteúdo para carregamento mais rápido"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "Máx. de Tokens",
+          "description": "Tamanho máximo da janela de contexto em tokens"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "Limite Diário",
+          "description": "Máximo de personagens gerados por dia"
+        },
+        "batch_enabled": {
+          "label": "Ativar Processamento em Lote",
+          "description": "Processar geração de personagens em lotes"
+        },
+        "batch_size_per_run": {
+          "label": "Tamanho do Lote",
+          "description": "Número de personagens a processar por lote"
+        },
+        "batch_retry_attempts": {
+          "label": "Tentativas de Reenvio",
+          "description": "Número de tentativas de reenvio para lotes com falha"
+        },
+        "batch_timeout_minutes": {
+          "label": "Tempo Limite (minutos)",
+          "description": "Tempo máximo para aguardar a conclusão do lote"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "Limite Diário de Avatar",
+          "description": "Máximo de correções de avatar por dia"
+        },
+        "data_daily_limit": {
+          "label": "Limite Diário de Dados",
+          "description": "Máximo de correções de dados por dia"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "Palavras-chave de Busca",
+          "description": "Palavras-chave separadas por vírgulas para busca de curadoria"
+        },
+        "anime_model_ids": {
+          "label": "IDs de Modelo Anime",
+          "description": "IDs de modelo separados por vírgulas para curadoria Anime"
+        },
+        "auto_approval_threshold": {
+          "label": "Limiar de Aprovação Automática",
+          "description": "Limiar de pontuação para aprovação automática (0-100)"
+        },
+        "require_manual_review": {
+          "label": "Exigir Revisão Manual",
+          "description": "Exigir revisão manual para conteúdo curado"
+        },
+        "image_limit": {
+          "label": "Limite Diário de Imagens",
+          "description": "Número de imagens a buscar do Civitai por dia (0 = desativado)"
+        },
+        "rate_limit": {
+          "label": "Limite de Taxa da API Civitai",
+          "description": "Máximo de requisições à API Civitai por dia"
+        },
+        "max_image_size": {
+          "label": "Tamanho Máx. da Imagem (bytes)",
+          "description": "Tamanho máximo do arquivo para imagens baixadas"
+        },
+        "min_rating": {
+          "label": "Classificação Mínima",
+          "description": "Limiar de classificação mínima para imagens curadas (0-5)"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "Ativar Filtro NSFW",
+          "description": "Filtrar conteúdo NSFW automaticamente"
+        },
+        "nsfw_filter_strictness": {
+          "label": "Rigor do Filtro NSFW",
+          "description": "Quão rigoroso deve ser o filtro NSFW"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "Hora da Curadoria Diária",
+          "description": "Hora do dia para executar a curadoria diária (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "Baixo",
+      "medium": "Médio",
+      "high": "Alto"
+    },
+    "actions": {
+      "save": "Salvar ({{count}})",
+      "saving": "Salvando...",
+      "reset": "Redefinir para o padrão",
+      "addModel": "Adicionar Modelo"
+    },
+    "messages": {
+      "saveSuccess": "Configuração \"{{key}}\" atualizada com sucesso",
+      "saveError": "Falha ao atualizar a configuração",
+      "loadError": "Falha ao carregar as configurações do sistema",
+      "confirmChange": "Tem certeza de que deseja alterar \"{{key}}\"? Isso entrará em vigor imediatamente.",
+      "selectProviderFirst": "Selecione o provedor primeiro",
+      "selectModel": "Selecionar modelo..."
+    },
+    "meta": {
+      "updatedAt": "Atualizado em {{time}}",
+      "updatedBy": "por {{user}}",
+      "neverUpdated": "Valor padrão (nunca modificado)"
+    },
+    "modelSelection": {
+      "provider": "Provedor",
+      "model": "Modelo",
+      "selectProvider": "Selecione um provedor...",
+      "selectModel": "Selecione um modelo...",
+      "selectProviderFirst": "Selecione um provedor primeiro",
+      "addNewModel": "Adicionar novo modelo",
+      "noModelsFound": "Nenhum modelo encontrado para este provedor"
+    }
+  }
+}

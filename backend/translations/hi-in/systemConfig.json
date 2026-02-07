@@ -1,0 +1,163 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "सिस्टम कॉन्फ़िगरेशन",
+    "header": {
+      "title": "सिस्टम कॉन्फ़िगरेशन",
+      "description": "सर्वर रीस्टार्ट किए बिना रनटाइम पैरामीटर प्रबंधित करें। परिवर्तन तुरंत प्रभावी होंगे।"
+    },
+    "search": {
+      "placeholder": "कॉन्फ़िगरेशन फ़िल्टर करें..."
+    },
+    "categories": {
+      "translation": "अनुवाद प्रणाली",
+      "context": "संदर्भ विंडो",
+      "generation": "कैरेक्टर जेनरेशन",
+      "correction": "सुधार प्रणाली",
+      "curation": "छवि क्यूरेशन",
+      "moderation": "सामग्री मॉडरेशन",
+      "scheduling": "कार्य शेड्यूलिंग"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "डिफ़ॉल्ट प्रोवाइडर",
+          "description": "अनुवादों के लिए डिफ़ॉल्ट LLM प्रोवाइडर"
+        },
+        "default_model": {
+          "label": "डिफ़ॉल्ट मॉडल",
+          "description": "अनुवादों के लिए डिफ़ॉल्ट मॉडल नाम"
+        },
+        "cache_ttl": {
+          "label": "कैश TTL (सेकंड)",
+          "description": "अनुवाद परिणामों को कितनी देर तक कैश करना है"
+        },
+        "enable_pre_translation": {
+          "label": "प्री-अनुवाद सक्षम करें",
+          "description": "तेजी से लोड होने के लिए सामग्री का प्री-अनुवाद करें"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "अधिकतम टोकन",
+          "description": "टोकन में अधिकतम संदर्भ विंडो आकार"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "दैनिक सीमा",
+          "description": "प्रति दिन उत्पन्न किए गए अधिकतम कैरेक्टर"
+        },
+        "batch_enabled": {
+          "label": "बैच प्रोसेसिंग सक्षम करें",
+          "description": "कैरेक्टर जेनरेशन को बैचों में प्रोसेस करें"
+        },
+        "batch_size_per_run": {
+          "label": "बैच का आकार",
+          "description": "प्रति बैच प्रोसेस किए जाने वाले कैरेक्टर की संख्या"
+        },
+        "batch_retry_attempts": {
+          "label": "पुनः प्रयास के प्रयास",
+          "description": "असफल बैचों के लिए पुनः प्रयास के प्रयासों की संख्या"
+        },
+        "batch_timeout_minutes": {
+          "label": "टाइमआउट (मिनट)",
+          "description": "बैच पूरा होने के लिए प्रतीक्षा करने का अधिकतम समय"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "अवतार दैनिक सीमा",
+          "description": "प्रति दिन अधिकतम अवतार सुधार"
+        },
+        "data_daily_limit": {
+          "label": "डेटा दैनिक सीमा",
+          "description": "प्रति दिन अधिकतम डेटा सुधार"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "खोज कीवर्ड",
+          "description": "क्यूरेशन खोज के लिए अल्पविराम से अलग किए गए कीवर्ड"
+        },
+        "anime_model_ids": {
+          "label": "Anime मॉडल आईडी",
+          "description": "Anime क्यूरेशन के लिए अल्पविराम से अलग किए गए मॉडल आईडी"
+        },
+        "auto_approval_threshold": {
+          "label": "स्वतः-अनुमोदन थ्रेशोल्ड",
+          "description": "स्वचालित अनुमोदन के लिए स्कोर थ्रेशोल्ड (0-100)"
+        },
+        "require_manual_review": {
+          "label": "मैन्युअल समीक्षा आवश्यक है",
+          "description": "क्यूरेट की गई सामग्री के लिए मैन्युअल समीक्षा की आवश्यकता है"
+        },
+        "image_limit": {
+          "label": "दैनिक छवि सीमा",
+          "description": "प्रति दिन Civitai से प्राप्त की जाने वाली छवियों की संख्या (0 = अक्षम)"
+        },
+        "rate_limit": {
+          "label": "Civitai API दर सीमा",
+          "description": "प्रति दिन Civitai को अधिकतम API अनुरोध"
+        },
+        "max_image_size": {
+          "label": "अधिकतम छवि आकार (बाइट्स)",
+          "description": "डाउनलोड की गई छवियों के लिए अधिकतम फ़ाइल आकार"
+        },
+        "min_rating": {
+          "label": "न्यूनतम रेटिंग",
+          "description": "क्यूरेट की गई छवियों के लिए न्यूनतम रेटिंग थ्रेशोल्ड (0-5)"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "NSFW फ़िल्टर सक्षम करें",
+          "description": "NSFW सामग्री को स्वचालित रूप से फ़िल्टर करें"
+        },
+        "nsfw_filter_strictness": {
+          "label": "NSFW फ़िल्टर कठोरता",
+          "description": "NSFW फ़िल्टर कितना सख्त होना चाहिए"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "दैनिक क्यूरेशन घंटा",
+          "description": "दैनिक क्यूरेशन चलाने का दिन का घंटा (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "कम",
+      "medium": "मध्यम",
+      "high": "उच्च"
+    },
+    "actions": {
+      "save": "सहेजें ({{count}})",
+      "saving": "सहेजा जा रहा है...",
+      "reset": "डिफ़ॉल्ट पर रीसेट करें",
+      "addModel": "मॉडल जोड़ें"
+    },
+    "messages": {
+      "saveSuccess": "कॉन्फ़िगरेशन \"{{key}}\" सफलतापूर्वक अपडेट किया गया",
+      "saveError": "कॉन्फ़िगरेशन अपडेट करने में विफल रहा",
+      "loadError": "सिस्टम कॉन्फ़िगरेशन लोड करने में विफल रहा",
+      "confirmChange": "क्या आप निश्चित हैं कि आप \"{{key}}\" को बदलना चाहते हैं? यह तुरंत प्रभावी होगा।",
+      "selectProviderFirst": "पहले प्रोवाइडर चुनें",
+      "selectModel": "मॉडल चुनें..."
+    },
+    "meta": {
+      "updatedAt": "{{time}} को अपडेट किया गया",
+      "updatedBy": "{{user}} द्वारा",
+      "neverUpdated": "डिफ़ॉल्ट मान (कभी संशोधित नहीं)"
+    },
+    "modelSelection": {
+      "provider": "प्रोवाइडर",
+      "model": "मॉडल",
+      "selectProvider": "एक प्रोवाइडर चुनें...",
+      "selectModel": "एक मॉडल चुनें...",
+      "selectProviderFirst": "पहले एक प्रोवाइडर चुनें",
+      "addNewModel": "नया मॉडल जोड़ें",
+      "noModelsFound": "इस प्रोवाइडर के लिए कोई मॉडल नहीं मिला"
+    }
+  }
+}

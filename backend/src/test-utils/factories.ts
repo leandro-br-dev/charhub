@@ -29,6 +29,7 @@ export async function createTestUser(overrides: any = {}) {
     provider: 'GOOGLE',
     providerAccountId: `account_${timestamp}`,
     birthDate: eighteenYearsAgo, // User is 18+ years old
+    role: 'BASIC', // Default role for test users
     ...cleanedOverrides,
   };
 

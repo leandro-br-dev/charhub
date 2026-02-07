@@ -8,18 +8,15 @@
     "admin": "प्रशासक",
     "adminAnalytics": "विश्लेषण",
     "adminScripts": "स्क्रिप्ट्स",
-    "assets": "संसाधन",
-    "scenes": "दृश्य",
+    "adminSystemConfig": "सिस्टम कॉन्फ़िग",
+    "adminLlmCatalog": "LLM कैटलॉग",
+    "assets": "एसेट्स",
     "profileLink": "मेरी प्रोफ़ाइल",
     "sidebarDefaultTitle": "CharHub एक्सप्लोर करें",
-    "sidebarDefaultDescription": "नेविगेशन रेल पर दिए गए आइकनों का उपयोग करके विभिन्न अनुभवों के बीच स्विच करें।",
-    "developmentTools": "डेवलपर उपकरण",
-    "developmentPlaceholder": "बिल्ड पाइपलाइन, लॉग और ऑटोमेशन कंट्रोल जल्द ही यहाँ उपलब्ध होंगे।",
+    "sidebarDefaultDescription": "अनुभवों के बीच स्विच करने के लिए नेविगेशन रेल पर दिए गए आइकनों का उपयोग करें।",
+    "developmentTools": "डेवलपर टूल्स",
+    "developmentPlaceholder": "यहां जल्द ही बिल्ड पाइपलाइन, लॉग और ऑटोमेशन कंट्रोल उपलब्ध होंगे।",
     "viewAllCharacters": "सभी किरदार देखें",
-    "viewAllStories": "सभी कहानियाँ देखें",
-    "viewAllAssets": "सभी संसाधन देखें",
-    "viewAllScenes": "सभी दृश्य देखें",
-    "createAsset": "संसाधन बनाएँ",
-    "createScene": "दृश्य बनाएँ"
+    "viewAllStories": "सभी कहानियाँ देखें"
   }
 }

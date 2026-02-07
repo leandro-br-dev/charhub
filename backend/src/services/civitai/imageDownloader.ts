@@ -8,6 +8,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { randomBytes } from 'crypto';
 import { logger } from '../../config/logger';
+import { systemConfigurationService } from '../config/systemConfigurationService';
 
 export interface DownloadedImage {
   localPath: string;
@@ -22,11 +23,11 @@ export interface DownloadedImage {
  */
 export class ImageDownloader {
   private readonly tempDir: string;
-  private readonly maxFileSize: number; // 10MB max
+  private maxFileSize: number; // Max file size in bytes (can be updated from SystemConfiguration)
 
   constructor() {
     this.tempDir = process.env.TEMP_IMAGE_DIR || '/tmp/civitai-images';
-    this.maxFileSize = parseInt(process.env.MAX_IMAGE_SIZE || '10485760', 10); // 10MB
+    this.maxFileSize = parseInt(process.env.MAX_IMAGE_SIZE || '10485760', 10); // 10MB default
   }
 
   /**
@@ -178,6 +179,22 @@ export class ImageDownloader {
    */
   getTempDir(): string {
     return this.tempDir;
+  }
+
+  /**
+   * Update max file size from SystemConfiguration
+   * Call this when the configuration is changed via admin panel
+   */
+  async updateMaxFileSize(): Promise<void> {
+    try {
+      const newMaxSize = await systemConfigurationService.get('curation.max_image_size');
+      if (newMaxSize) {
+        this.maxFileSize = parseInt(newMaxSize, 10);
+        logger.info({ maxFileSize: this.maxFileSize }, 'Max image size updated from SystemConfiguration');
+      }
+    } catch (error) {
+      logger.warn({ error }, 'Failed to update max file size from SystemConfiguration, using existing value');
+    }
   }
 }
 

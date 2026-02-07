@@ -1,0 +1,163 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "系统配置",
+    "header": {
+      "title": "系统配置",
+      "description": "无需重启服务器即可管理运行时参数。更改立即生效。"
+    },
+    "search": {
+      "placeholder": "筛选配置..."
+    },
+    "categories": {
+      "translation": "翻译系统",
+      "context": "上下文窗口",
+      "generation": "角色生成",
+      "correction": "校正系统",
+      "curation": "图像筛选",
+      "moderation": "内容审核",
+      "scheduling": "任务调度"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "默认提供商",
+          "description": "翻译的默认 LLM 提供商"
+        },
+        "default_model": {
+          "label": "默认模型",
+          "description": "翻译的默认模型名称"
+        },
+        "cache_ttl": {
+          "label": "缓存 TTL (秒)",
+          "description": "翻译结果的缓存时长"
+        },
+        "enable_pre_translation": {
+          "label": "启用预翻译",
+          "description": "预翻译内容以加快加载速度"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "最大 Token 数",
+          "description": "上下文窗口的最大 Token 大小"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "每日限制",
+          "description": "每日生成的最大角色数"
+        },
+        "batch_enabled": {
+          "label": "启用批量处理",
+          "description": "批量处理角色生成"
+        },
+        "batch_size_per_run": {
+          "label": "批次大小",
+          "description": "每批次处理的角色数"
+        },
+        "batch_retry_attempts": {
+          "label": "重试次数",
+          "description": "失败批次的重试次数"
+        },
+        "batch_timeout_minutes": {
+          "label": "超时 (分钟)",
+          "description": "等待批次完成的最长时间"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "头像每日限制",
+          "description": "每日最大头像校正数"
+        },
+        "data_daily_limit": {
+          "label": "数据每日限制",
+          "description": "每日最大数据校正数"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "搜索关键词",
+          "description": "用于筛选搜索的逗号分隔关键词"
+        },
+        "anime_model_ids": {
+          "label": "Anime 模型 ID",
+          "description": "用于 Anime 筛选的逗号分隔模型 ID"
+        },
+        "auto_approval_threshold": {
+          "label": "自动批准阈值",
+          "description": "自动批准的评分阈值 (0-100)"
+        },
+        "require_manual_review": {
+          "label": "需要手动审核",
+          "description": "对筛选内容需要手动审核"
+        },
+        "image_limit": {
+          "label": "每日图像限制",
+          "description": "每日从 Civitai 获取的图像数量 (0 = 禁用)"
+        },
+        "rate_limit": {
+          "label": "Civitai API 速率限制",
+          "description": "每日对 Civitai 的最大 API 请求数"
+        },
+        "max_image_size": {
+          "label": "最大图像大小 (字节)",
+          "description": "下载图像的最大文件大小"
+        },
+        "min_rating": {
+          "label": "最低评分",
+          "description": "筛选图像的最低评分阈值 (0-5)"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "启用 NSFW 过滤器",
+          "description": "自动过滤 NSFW 内容"
+        },
+        "nsfw_filter_strictness": {
+          "label": "NSFW 过滤器严格度",
+          "description": "NSFW 过滤器的严格程度"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "每日筛选时间 (小时)",
+          "description": "运行每日筛选的时间 (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "低",
+      "medium": "中",
+      "high": "高"
+    },
+    "actions": {
+      "save": "保存 ({{count}})",
+      "saving": "正在保存...",
+      "reset": "重置为默认值",
+      "addModel": "添加模型"
+    },
+    "messages": {
+      "saveSuccess": "配置 \"{{key}}\" 更新成功",
+      "saveError": "更新配置失败",
+      "loadError": "加载系统配置失败",
+      "confirmChange": "您确定要更改 \"{{key}}\" 吗？此操作将立即生效。",
+      "selectProviderFirst": "请先选择提供商",
+      "selectModel": "选择模型..."
+    },
+    "meta": {
+      "updatedAt": "更新于 {{time}}",
+      "updatedBy": "由 {{user}} 更新",
+      "neverUpdated": "默认值 (从未修改)"
+    },
+    "modelSelection": {
+      "provider": "提供商",
+      "model": "模型",
+      "selectProvider": "选择提供商...",
+      "selectModel": "选择模型...",
+      "selectProviderFirst": "请先选择提供商",
+      "addNewModel": "添加新模型",
+      "noModelsFound": "此提供商未找到模型"
+    }
+  }
+}

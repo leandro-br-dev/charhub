@@ -60,6 +60,8 @@ export async function cleanDatabase(): Promise<void> {
   await db.plan.deleteMany({});
   await db.user.deleteMany({});
   await db.systemConfiguration.deleteMany({});
+  await db.contentTranslation.deleteMany({});
+  await db.messageTranslation.deleteMany({});
 }
 
 /**

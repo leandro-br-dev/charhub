@@ -1,7 +1,7 @@
 import { prisma } from '../../config/database';
 
 /**
- * SystemConfigurationService
+ * SystemConfigurationService (Simplified)
  *
  * Provides centralized configuration management with in-memory caching
  * and .env fallback for runtime parameters.
@@ -20,10 +20,6 @@ export interface SystemConfiguration {
   id: string;
   key: string;
   value: string;
-  description: string | null;
-  category: string | null;
-  updatedAt: Date;
-  updatedBy: string | null;
 }
 
 class SystemConfigurationService {
@@ -145,20 +141,18 @@ class SystemConfigurationService {
    *
    * @param key - Configuration key
    * @param value - Configuration value
-   * @param userId - Optional user ID who made the change
+   * @param _userId - Optional user ID who made the change (for logging only, unused in simplified version)
    */
-  async set(key: string, value: string, userId?: string): Promise<void> {
-    // Upsert to database
+  async set(key: string, value: string, _userId?: string): Promise<void> {
+    // Upsert to database (simplified - only key and value)
     await prisma.systemConfiguration.upsert({
       where: { key },
       create: {
         key,
         value,
-        updatedBy: userId,
       },
       update: {
         value,
-        updatedBy: userId,
       },
     });
 
@@ -167,48 +161,21 @@ class SystemConfigurationService {
   }
 
   /**
-   * Get all configurations from database
+   * Get all configurations from database (simplified)
    *
+   * Returns array of [key, value] tuples for easier consumption.
    * Note: This does not include .env values, only database entries.
    *
-   * @returns Array of all system configurations
+   * @returns Array of [key, value] tuples
    */
-  async getAll(): Promise<SystemConfiguration[]> {
+  async getAll(): Promise<[string, string][]> {
     const configs = await prisma.systemConfiguration.findMany({
-      orderBy: {
-        category: 'asc',
-      },
-    });
-
-    return configs;
-  }
-
-  /**
-   * Get configurations by category
-   *
-   * Returns a key-value map of all configurations in the specified category.
-   * Only includes database entries, not .env values.
-   *
-   * @param category - Configuration category (e.g., "generation", "correction")
-   * @returns Object with configuration key-value pairs
-   */
-  async getByCategory(category: string): Promise<Record<string, string>> {
-    const configs = await prisma.systemConfiguration.findMany({
-      where: {
-        category,
-      },
       orderBy: {
         key: 'asc',
       },
     });
 
-    // Convert to key-value map
-    const result: Record<string, string> = {};
-    for (const config of configs) {
-      result[config.key] = config.value;
-    }
-
-    return result;
+    return configs.map((config) => [config.key, config.value]);
   }
 
   /**
@@ -303,6 +270,19 @@ class SystemConfigurationService {
   }
 
   /**
+   * Clear cache and reset initialization flag
+   *
+   * FOR TESTING ONLY: Clears all cache entries and resets the cacheInitialized flag.
+   * Use this in test beforeEach hooks to ensure cache isolation between tests.
+   *
+   * @internal
+   */
+  clearCacheForTesting(): void {
+    this.cache.clear();
+    this.cacheInitialized = false;
+  }
+
+  /**
    * Get multiple configuration values at once
    *
    * Optimized for batch retrieval of multiple keys.
@@ -329,9 +309,9 @@ class SystemConfigurationService {
    * Optimized for batch updates. Uses transaction for atomicity.
    *
    * @param configs - Object with key-value pairs
-   * @param userId - Optional user ID who made the change
+   * @param _userId - Optional user ID who made the change (for logging only, unused in simplified version)
    */
-  async setMany(configs: Record<string, string>, userId?: string): Promise<void> {
+  async setMany(configs: Record<string, string>, _userId?: string): Promise<void> {
     // Use transaction for atomic batch update
     await prisma.$transaction(async (tx) => {
       for (const [key, value] of Object.entries(configs)) {
@@ -340,11 +320,9 @@ class SystemConfigurationService {
           create: {
             key,
             value,
-            updatedBy: userId,
           },
           update: {
             value,
-            updatedBy: userId,
           },
         });
 

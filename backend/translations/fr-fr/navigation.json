@@ -8,6 +8,8 @@
     "admin": "Admin",
     "adminAnalytics": "Analytique",
     "adminScripts": "Scripts",
+    "adminSystemConfig": "Configuration du système",
+    "adminLlmCatalog": "Catalogue LLM",
     "assets": "Ressources",
     "scenes": "Scènes",
     "profileLink": "Mon profil",

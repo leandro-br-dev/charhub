@@ -6,6 +6,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { logger } from '../../config/logger';
 import { getVariedSearchParams } from './searchVariation';
+import { systemConfigurationService } from '../config/systemConfigurationService';
 
 // Civitai API Types
 export interface CivitaiImage {
@@ -69,13 +70,14 @@ export class CivitaiApiClient {
   private client: AxiosInstance;
   private readonly baseUrl: string;
   private readonly apiKey?: string;
-  private readonly rateLimitPerDay: number;
+  private rateLimitPerDay: number;
   private requestCount = 0;
   private lastResetTime = Date.now();
 
   constructor() {
     this.baseUrl = process.env.CIVITAI_API_BASE_URL || 'https://civitai.com/api/v1';
     this.apiKey = process.env.CIVITAI_API_KEY;
+    // Rate limit from SystemConfiguration (can be changed at runtime)
     this.rateLimitPerDay = parseInt(process.env.CIVITAI_RATE_LIMIT || '1000', 10);
 
     // Create axios instance
@@ -168,8 +170,9 @@ export class CivitaiApiClient {
         // Filter for image type (still images only)
         params.types = 'image';
 
-        // Use anime-related base models if configured
-        const animeModelIds = process.env.CIVITAI_ANIME_MODEL_IDS?.split(',').map(id => id.trim()) || [];
+        // Use anime-related base models if configured (from SystemConfiguration)
+        const animeModelIdsStr = await systemConfigurationService.get('curation.anime_model_ids', '');
+        const animeModelIds = animeModelIdsStr ? animeModelIdsStr.split(',').map(id => id.trim()) : [];
 
         // Add model filter if specific anime models are configured
         if (animeModelIds.length > 0) {
@@ -336,6 +339,22 @@ export class CivitaiApiClient {
       remaining: Math.max(0, this.rateLimitPerDay - this.requestCount),
       resetIn: Math.max(0, timeUntilReset),
     };
+  }
+
+  /**
+   * Update rate limit from SystemConfiguration
+   * Call this when the configuration is changed via admin panel
+   */
+  async updateRateLimit(): Promise<void> {
+    try {
+      const newLimit = await systemConfigurationService.get('curation.rate_limit');
+      if (newLimit) {
+        this.rateLimitPerDay = parseInt(newLimit, 10);
+        logger.info({ rateLimitPerDay: this.rateLimitPerDay }, 'Civitai rate limit updated from SystemConfiguration');
+      }
+    } catch (error) {
+      logger.warn({ error }, 'Failed to update rate limit from SystemConfiguration, using existing value');
+    }
   }
 }
 

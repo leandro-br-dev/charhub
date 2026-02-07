@@ -5,21 +5,18 @@
     "story": "ストーリー",
     "characters": "キャラクター",
     "tasks": "タスク",
-    "admin": "管理者",
+    "admin": "管理",
     "adminAnalytics": "アナリティクス",
     "adminScripts": "スクリプト",
+    "adminSystemConfig": "システム設定",
+    "adminLlmCatalog": "LLMカタログ",
     "assets": "アセット",
-    "scenes": "シーン",
     "profileLink": "マイプロフィール",
-    "sidebarDefaultTitle": "CharHub を探索",
-    "sidebarDefaultDescription": "ナビゲーションレール上のアイコンを使用して、エクスペリエンスを切り替えてください。",
+    "sidebarDefaultTitle": "CharHubを探索",
+    "sidebarDefaultDescription": "ナビゲーションレール上のアイコンを使って、異なるエクスペリエンスを切り替えます。",
     "developmentTools": "開発者ツール",
-    "developmentPlaceholder": "ビルドパイプライン、ログ、自動化制御はまもなくここに表示されます。",
+    "developmentPlaceholder": "ビルドパイプライン、ログ、自動化コントロールがまもなくここに表示されます。",
     "viewAllCharacters": "すべてのキャラクターを表示",
-    "viewAllStories": "すべてのストーリーを表示",
-    "viewAllAssets": "すべてのアセットを表示",
-    "viewAllScenes": "すべてのシーンを表示",
-    "createAsset": "アセットを作成",
-    "createScene": "シーンを作成"
+    "viewAllStories": "すべてのストーリーを表示"
   }
 }

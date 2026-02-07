@@ -319,7 +319,7 @@ export async function buildComfyUIPayload(
   positive: string;
   negative: string;
 } | null> {
-  const config = await getVisualStyleConfiguration(style, contentType);
+  const config = await getVisualStyleConfiguration(style, contentType, theme);
 
   if (!config) {
     return null;

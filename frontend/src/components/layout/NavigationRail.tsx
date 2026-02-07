@@ -265,6 +265,19 @@ export function NavigationRail({
                 <Menu.Item>
                   {({ active }) => (
                     <Link
+                      to="/admin/system-config"
+                      className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm ${
+                        active ? 'bg-primary/10 text-content' : 'text-content'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-base">settings</span>
+                      {t('navigation:adminSystemConfig', 'System Config')}
+                    </Link>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <Link
                       to="/admin/scripts"
                       className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm ${
                         active ? 'bg-primary/10 text-content' : 'text-content'
@@ -272,6 +285,19 @@ export function NavigationRail({
                     >
                       <span className="material-symbols-outlined text-base">terminal</span>
                       {t('navigation:adminScripts', 'Scripts')}
+                    </Link>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <Link
+                      to="/admin/llm-catalog"
+                      className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm ${
+                        active ? 'bg-primary/10 text-content' : 'text-content'
+                      }`}
+                    >
+                      <span className="material-symbols-outlined text-base">model_training</span>
+                      {t('navigation:adminLlmCatalog', 'LLM Catalog')}
                     </Link>
                   )}
                 </Menu.Item>

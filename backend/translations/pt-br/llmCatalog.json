@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "Catálogo de Modelos LLM",
+    "header": {
+      "title": "Catálogo de Modelos LLM",
+      "description": "Gerenciar modelos e provedores LLM para a plataforma"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "Selecionar Provedor"
+    },
+    "categories": {
+      "CHAT": "Chat",
+      "CODING": "Programação",
+      "REASONING": "Raciocínio",
+      "VISION": "Visão",
+      "SPEECH": "Fala",
+      "TRANSLATION": "Tradução",
+      "AGENTIC": "Agente",
+      "EMBEDDING": "Embedding"
+    },
+    "types": {
+      "TEXT": "Texto",
+      "MULTIMODAL": "Multimodal",
+      "REASONING": "Raciocínio",
+      "SPEECH": "Fala",
+      "EMBEDDING": "Embedding"
+    },
+    "model": {
+      "id": "ID",
+      "name": "ID do Modelo",
+      "displayName": "Nome de Exibição",
+      "category": "Categoria",
+      "type": "Tipo",
+      "contextWindow": "Janela de Contexto",
+      "maxOutput": "Saída Máxima",
+      "supportsTools": "Ferramentas",
+      "supportsVision": "Visão",
+      "supportsReasoning": "Raciocínio",
+      "description": "Descrição",
+      "status": "Status",
+      "isActive": "Ativo",
+      "isAvailable": "Disponível",
+      "version": "Versão",
+      "source": "Origem"
+    },
+    "actions": {
+      "addModel": "Adicionar Modelo",
+      "editModel": "Editar Modelo",
+      "deleteModel": "Excluir Modelo",
+      "toggleActive": "Alternar Ativo",
+      "toggleAvailable": "Alternar Disponível",
+      "refreshCache": "Atualizar Cache",
+      "save": "Salvar",
+      "cancel": "Cancelar",
+      "confirm": "Confirmar",
+      "back": "Voltar"
+    },
+    "messages": {
+      "loadError": "Falha ao carregar modelos LLM",
+      "createSuccess": "Modelo criado com sucesso",
+      "updateSuccess": "Modelo atualizado com sucesso",
+      "deleteSuccess": "Modelo excluído com sucesso",
+      "toggleSuccess": "Status do modelo atualizado",
+      "cacheRefreshed": "Cache do modelo atualizado com sucesso",
+      "noModelsFound": "Nenhum modelo encontrado para este provedor",
+      "deleteConfirm": "Tem certeza de que deseja excluir o modelo \"{{modelName}}\"? Esta ação não pode ser desfeita."
+    },
+    "errors": {
+      "createFailed": "Falha ao criar modelo",
+      "updateFailed": "Falha ao atualizar modelo",
+      "deleteFailed": "Falha ao excluir modelo",
+      "toggleFailed": "Falha ao atualizar status do modelo",
+      "validation": {
+        "nameRequired": "O ID do modelo é obrigatório",
+        "displayNameRequired": "O nome de exibição é obrigatório",
+        "categoryRequired": "A categoria é obrigatória",
+        "typeRequired": "O tipo é obrigatório",
+        "contextWindowRequired": "A janela de contexto é obrigatória",
+        "maxOutputRequired": "A saída máxima é obrigatória"
+      }
+    },
+    "form": {
+      "addTitle": "Adicionar Novo Modelo",
+      "editTitle": "Editar Modelo",
+      "provider": "Provedor",
+      "providerChangeWarning": "não pode ser alterado",
+      "providerChangeHelp": "O provedor não pode ser alterado após a criação. Exclua e recrie o modelo se necessário.",
+      "name": "ID do Modelo",
+      "namePlaceholder": "ex: gemini-2.5-flash",
+      "displayName": "Nome de Exibição",
+      "displayNamePlaceholder": "ex: Gemini 2.5 Flash",
+      "category": "Categoria",
+      "type": "Tipo",
+      "contextWindow": "Janela de Contexto (tokens)",
+      "contextWindowPlaceholder": "ex: 128000",
+      "maxOutput": "Saída Máxima (tokens)",
+      "maxOutputPlaceholder": "ex: 4096",
+      "supportsTools": "Suporta Chamada de Função",
+      "supportsVision": "Suporta Visão",
+      "supportsReasoning": "Suporta Raciocínio",
+      "description": "Descrição",
+      "descriptionPlaceholder": "Breve descrição do modelo...",
+      "version": "Versão",
+      "versionPlaceholder": "ex: 1.0.0",
+      "source": "URL de Origem",
+      "sourcePlaceholder": "https://...",
+      "isActive": "Ativo (habilitado para uso)",
+      "isAvailable": "Disponível (API configurada)"
+    }
+  }
+}

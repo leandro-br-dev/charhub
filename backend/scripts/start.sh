@@ -23,7 +23,43 @@ fi
 # Run database migrations
 if [ "$RUN_MIGRATIONS" != "false" ]; then
   echo "[entrypoint] Running database migrations"
+
+  # Check for failed migrations and auto-resolve them
+  # This handles cases where a copied database has failed migrations
+  echo "[entrypoint] Checking for failed migrations..."
+  FAILED_MIGRATIONS=$(npx prisma migrate status 2>&1 | grep -c "ERRORED" || true)
+
+  if [ "$FAILED_MIGRATIONS" -gt 0 ]; then
+    echo "[entrypoint] ⚠️  Found $FAILED_MIGRATIONS failed migration(s)"
+    echo "[entrypoint] Attempting automatic resolution..."
+
+    # Get the failed migration name and mark it as rolled back
+    # This allows migrate deploy to retry the migration
+    npx prisma migrate status --json 2>/dev/null > /tmp/migrate-status.json || true
+
+    if [ -f /tmp/migrate-status.json ]; then
+      FAILED_NAME=$(cat /tmp/migrate-status.json | grep -o '"migrationName":"[^"]*"' | head -1 | cut -d'"' -f4 || echo "")
+
+      if [ -n "$FAILED_NAME" ]; then
+        echo "[entrypoint] Resolving failed migration: $FAILED_NAME"
+        npx prisma migrate resolve --rolled-back "$FAILED_NAME" 2>/dev/null || true
+        echo "[entrypoint] ✅ Migration resolved for retry"
+      fi
+    fi
+
+    rm -f /tmp/migrate-status.json
+  fi
+
+  # Deploy all pending migrations
   npx prisma migrate deploy
+
+  if [ $? -eq 0 ]; then
+    echo "[entrypoint] ✅ Migrations applied successfully"
+  else
+    echo "[entrypoint] ❌ Migration failed"
+    echo "[entrypoint] This is a critical error - container will stop"
+    exit 1
+  fi
 
   # Run database seeding after migrations
   echo "[entrypoint] Running database seed"

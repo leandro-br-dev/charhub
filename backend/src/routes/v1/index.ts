@@ -33,6 +33,7 @@ import styleThemesRoutes from './style-themes';
 import characterPopulationRoutes from './character-population';
 import scenesRoutes from './scenes';
 import systemConfigRoutes from './system-config';
+import llmCatalogRoutes from './llm-catalog';
 import { checkFreeMonthlyCredits } from '../../middleware/checkFreeMonthlyCredits';
 
 const router = Router();
@@ -75,6 +76,7 @@ router.use('/style-themes', styleThemesRoutes);
 router.use('/character-population', characterPopulationRoutes);
 router.use('/scenes', scenesRoutes);
 router.use('/system-config', systemConfigRoutes);
+router.use('/llm-catalog', llmCatalogRoutes);
 router.use('/', accessRoutes);
 
 export default router;

@@ -1,0 +1,163 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "Configuration système",
+    "header": {
+      "title": "Configuration système",
+      "description": "Gérez les paramètres d'exécution sans redémarrage du serveur. Les modifications prennent effet immédiatement."
+    },
+    "search": {
+      "placeholder": "Filtrer les configurations..."
+    },
+    "categories": {
+      "translation": "Système de traduction",
+      "context": "Fenêtre de contexte",
+      "generation": "Génération de personnages",
+      "correction": "Système de correction",
+      "curation": "Curation d'images",
+      "moderation": "Modération de contenu",
+      "scheduling": "Planification des tâches"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "Fournisseur par défaut",
+          "description": "Fournisseur LLM par défaut pour les traductions"
+        },
+        "default_model": {
+          "label": "Modèle par défaut",
+          "description": "Nom du modèle par défaut pour les traductions"
+        },
+        "cache_ttl": {
+          "label": "TTL du cache (secondes)",
+          "description": "Durée de mise en cache des résultats de traduction"
+        },
+        "enable_pre_translation": {
+          "label": "Activer la pré-traduction",
+          "description": "Pré-traduire le contenu pour un chargement plus rapide"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "Max. de jetons",
+          "description": "Taille maximale de la fenêtre de contexte en jetons"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "Limite quotidienne",
+          "description": "Nombre maximal de caractères générés par jour"
+        },
+        "batch_enabled": {
+          "label": "Activer le traitement par lots",
+          "description": "Traiter la génération de personnages par lots"
+        },
+        "batch_size_per_run": {
+          "label": "Taille du lot",
+          "description": "Nombre de caractères à traiter par lot"
+        },
+        "batch_retry_attempts": {
+          "label": "Tentatives de réessai",
+          "description": "Nombre de tentatives de réessai pour les lots échoués"
+        },
+        "batch_timeout_minutes": {
+          "label": "Délai d'attente (minutes)",
+          "description": "Temps maximum à attendre pour l'achèvement du lot"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "Limite quotidienne d'avatars",
+          "description": "Nombre maximal de corrections d'avatars par jour"
+        },
+        "data_daily_limit": {
+          "label": "Limite quotidienne de données",
+          "description": "Nombre maximal de corrections de données par jour"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "Mots-clés de recherche",
+          "description": "Mots-clés séparés par des virgules pour la recherche de curation"
+        },
+        "anime_model_ids": {
+          "label": "ID de modèles Anime",
+          "description": "ID de modèles séparés par des virgules pour la curation Anime"
+        },
+        "auto_approval_threshold": {
+          "label": "Seuil d'approbation automatique",
+          "description": "Seuil de score pour l'approbation automatique (0-100)"
+        },
+        "require_manual_review": {
+          "label": "Exiger une révision manuelle",
+          "description": "Exiger une révision manuelle pour le contenu curaté"
+        },
+        "image_limit": {
+          "label": "Limite quotidienne d'images",
+          "description": "Nombre d'images à récupérer de Civitai par jour (0 = désactivé)"
+        },
+        "rate_limit": {
+          "label": "Limite de taux de l'API Civitai",
+          "description": "Nombre maximal de requêtes API par jour vers Civitai"
+        },
+        "max_image_size": {
+          "label": "Taille maximale de l'image (octets)",
+          "description": "Taille maximale du fichier pour les images téléchargées"
+        },
+        "min_rating": {
+          "label": "Note minimale",
+          "description": "Seuil de note minimale pour les images curatées (0-5)"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "Activer le filtre NSFW",
+          "description": "Filtrer automatiquement le contenu NSFW"
+        },
+        "nsfw_filter_strictness": {
+          "label": "Rigueur du filtre NSFW",
+          "description": "Degré de rigueur du filtre NSFW"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "Heure de curation quotidienne",
+          "description": "Heure de la journée pour exécuter la curation quotidienne (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "Faible",
+      "medium": "Moyenne",
+      "high": "Élevée"
+    },
+    "actions": {
+      "save": "Enregistrer ({{count}})",
+      "saving": "Enregistrement en cours...",
+      "reset": "Rétablir par défaut",
+      "addModel": "Ajouter un modèle"
+    },
+    "messages": {
+      "saveSuccess": "Configuration \"{{key}}\" mise à jour avec succès",
+      "saveError": "Échec de la mise à jour de la configuration",
+      "loadError": "Échec du chargement des configurations système",
+      "confirmChange": "Êtes-vous sûr de vouloir modifier \"{{key}}\" ? Cette modification prendra effet immédiatement.",
+      "selectProviderFirst": "Sélectionnez d'abord un fournisseur",
+      "selectModel": "Sélectionner un modèle..."
+    },
+    "meta": {
+      "updatedAt": "Mis à jour {{time}}",
+      "updatedBy": "par {{user}}",
+      "neverUpdated": "Valeur par défaut (jamais modifiée)"
+    },
+    "modelSelection": {
+      "provider": "Fournisseur",
+      "model": "Modèle",
+      "selectProvider": "Sélectionner un fournisseur...",
+      "selectModel": "Sélectionner un modèle...",
+      "selectProviderFirst": "Sélectionnez d'abord un fournisseur",
+      "addNewModel": "Ajouter un nouveau modèle",
+      "noModelsFound": "Aucun modèle trouvé pour ce fournisseur"
+    }
+  }
+}

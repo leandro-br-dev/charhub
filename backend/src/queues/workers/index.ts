@@ -104,16 +104,18 @@ export async function scheduleRecurringJobs(): Promise<void> {
     logger.info('Monthly snapshot job scheduled to run on 1st of each month at 01:00 UTC');
 
     // Schedule automated character population (if enabled)
-    const batchGenerationEnabled = process.env.BATCH_GENERATION_ENABLED === 'true';
-    if (batchGenerationEnabled) {
-      const batchSize = parseInt(process.env.BATCH_SIZE_PER_RUN || '24', 10);
-      const dailyCurationHour = parseInt(process.env.DAILY_CURATION_HOUR || '3', 10); // Default: 3 AM UTC
+    const batchGenerationEnabled = await systemConfigurationService.getBool('generation.batch_enabled', false);
+    const dailyCurationHour = await systemConfigurationService.getInt('scheduling.daily_curation_hour', 3); // Default: 3 AM UTC
 
-      // Schedule daily curation job (fetches and curates images once per day)
+    // Schedule daily curation job (fetches and curates images once per day)
+    // This is independent of character generation - controlled by curation.image_limit
+    const curationImageLimit = await systemConfigurationService.getInt('curation.image_limit', 50);
+
+    if (curationImageLimit > 0) {
       await populationQueue.add(
         'daily-curation',
         {
-          imageCount: batchSize * 2, // Fetch extra to account for filtering
+          imageCount: curationImageLimit,
           task: 'daily_curation',
         } as DailyCurationJobData,
         {
@@ -130,11 +132,18 @@ export async function scheduleRecurringJobs(): Promise<void> {
       );
 
       logger.info(
-        { hour: dailyCurationHour, imageCount: batchSize * 2 },
+        { hour: dailyCurationHour, imageCount: curationImageLimit },
         'Daily curation job scheduled (fetches anime-style images from Civitai)'
       );
+    } else {
+      logger.info('Daily curation job is disabled (set curation.image_limit > 0 to enable)');
+    }
 
-      // Schedule hourly generation job (generates 1 character per hour, up to daily limit)
+    // Schedule hourly generation job (generates 1 character per hour, up to daily limit)
+    // Only runs if batch generation is enabled
+    if (batchGenerationEnabled) {
+      const batchSize = await systemConfigurationService.getInt('generation.batch_size_per_run', 24);
+
       await populationQueue.add(
         'hourly-generation',
         {
@@ -159,7 +168,7 @@ export async function scheduleRecurringJobs(): Promise<void> {
         'Hourly generation job scheduled (generates 1 character per hour, respecting daily limit)'
       );
     } else {
-      logger.info('Automated character population is disabled (set BATCH_GENERATION_ENABLED=true to enable)');
+      logger.info('Automated character generation is disabled (set generation.batch_enabled=true to enable)');
     }
 
     // Schedule avatar correction job (if enabled)

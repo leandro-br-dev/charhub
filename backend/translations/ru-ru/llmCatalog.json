@@ -1,0 +1,119 @@
+{
+  "description": "LLM Model Catalog Admin Page translations",
+  "resources": {
+    "title": "Каталог моделей LLM",
+    "header": {
+      "title": "Каталог моделей LLM",
+      "description": "Управление моделями LLM и поставщиками для платформы"
+    },
+    "providers": {
+      "gemini": "Google Gemini",
+      "openai": "OpenAI",
+      "grok": "XAI Grok",
+      "openrouter": "OpenRouter",
+      "anthropic": "Anthropic",
+      "together_ai": "Together AI",
+      "groq": "Groq",
+      "selectProvider": "Выберите поставщика"
+    },
+    "categories": {
+      "CHAT": "Чат",
+      "CODING": "Кодирование",
+      "REASONING": "Рассуждение",
+      "VISION": "Зрение",
+      "SPEECH": "Речь",
+      "TRANSLATION": "Перевод",
+      "AGENTIC": "Агентские",
+      "EMBEDDING": "Встраивание"
+    },
+    "types": {
+      "TEXT": "Текст",
+      "MULTIMODAL": "Мультимодальные",
+      "REASONING": "Рассуждение",
+      "SPEECH": "Речь",
+      "EMBEDDING": "Встраивание"
+    },
+    "model": {
+      "id": "Идентификатор",
+      "name": "ID модели",
+      "displayName": "Отображаемое имя",
+      "category": "Категория",
+      "type": "Тип",
+      "contextWindow": "Окно контекста",
+      "maxOutput": "Максимальный вывод",
+      "supportsTools": "Инструменты",
+      "supportsVision": "Зрение",
+      "supportsReasoning": "Рассуждение",
+      "description": "Описание",
+      "status": "Статус",
+      "isActive": "Активно",
+      "isAvailable": "Доступно",
+      "version": "Версия",
+      "source": "Источник"
+    },
+    "actions": {
+      "addModel": "Добавить модель",
+      "editModel": "Редактировать модель",
+      "deleteModel": "Удалить модель",
+      "toggleActive": "Переключить активность",
+      "toggleAvailable": "Переключить доступность",
+      "refreshCache": "Обновить кэш",
+      "save": "Сохранить",
+      "cancel": "Отмена",
+      "confirm": "Подтвердить",
+      "back": "Назад"
+    },
+    "messages": {
+      "loadError": "Не удалось загрузить модели LLM",
+      "createSuccess": "Модель успешно создана",
+      "updateSuccess": "Модель успешно обновлена",
+      "deleteSuccess": "Модель успешно удалена",
+      "toggleSuccess": "Статус модели обновлен",
+      "cacheRefreshed": "Кэш моделей успешно обновлен",
+      "noModelsFound": "Модели для этого поставщика не найдены",
+      "deleteConfirm": "Вы уверены, что хотите удалить модель \"{{modelName}}\"? Это действие невозможно отменить."
+    },
+    "errors": {
+      "createFailed": "Не удалось создать модель",
+      "updateFailed": "Не удалось обновить модель",
+      "deleteFailed": "Не удалось удалить модель",
+      "toggleFailed": "Не удалось обновить статус модели",
+      "validation": {
+        "nameRequired": "Требуется ID модели",
+        "displayNameRequired": "Требуется отображаемое имя",
+        "categoryRequired": "Требуется категория",
+        "typeRequired": "Требуется тип",
+        "contextWindowRequired": "Требуется окно контекста",
+        "maxOutputRequired": "Требуется максимальный вывод"
+      }
+    },
+    "form": {
+      "addTitle": "Добавить новую модель",
+      "editTitle": "Редактировать модель",
+      "provider": "Поставщик",
+      "providerChangeWarning": "не может быть изменен",
+      "providerChangeHelp": "Поставщик не может быть изменен после создания. При необходимости удалите и создайте модель заново.",
+      "name": "ID модели",
+      "namePlaceholder": "напр., gemini-2.5-flash",
+      "displayName": "Отображаемое имя",
+      "displayNamePlaceholder": "напр., Gemini 2.5 Flash",
+      "category": "Категория",
+      "type": "Тип",
+      "contextWindow": "Окно контекста (токенов)",
+      "contextWindowPlaceholder": "напр., 128000",
+      "maxOutput": "Максимальный вывод (токенов)",
+      "maxOutputPlaceholder": "напр., 4096",
+      "supportsTools": "Поддерживает вызов функций",
+      "supportsVision": "Поддерживает зрение",
+      "supportsReasoning": "Поддерживает рассуждение",
+      "description": "Описание",
+      "descriptionPlaceholder": "Краткое описание модели...",
+      "version": "Версия",
+      "versionPlaceholder": "напр., 1.0.0",
+      "source": "URL источника",
+      "sourcePlaceholder": "https://...",
+      "isActive": "Активно (разрешено к использованию)",
+      "isAvailable": "Доступно (API настроен)"
+    }
+  }
+}

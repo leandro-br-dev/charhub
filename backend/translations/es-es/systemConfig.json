@@ -1,0 +1,163 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "Configuración del Sistema",
+    "header": {
+      "title": "Configuración del Sistema",
+      "description": "Gestiona los parámetros de tiempo de ejecución sin reiniciar el servidor. Los cambios se aplican de inmediato."
+    },
+    "search": {
+      "placeholder": "Filtrar configuraciones..."
+    },
+    "categories": {
+      "translation": "Sistema de Traducción",
+      "context": "Ventana de Contexto",
+      "generation": "Generación de Personajes",
+      "correction": "Sistema de Corrección",
+      "curation": "Curación de Imágenes",
+      "moderation": "Moderación de Contenido",
+      "scheduling": "Programación de Tareas"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "Proveedor Predeterminado",
+          "description": "Proveedor LLM predeterminado para traducciones"
+        },
+        "default_model": {
+          "label": "Modelo Predeterminado",
+          "description": "Nombre del modelo predeterminado para traducciones"
+        },
+        "cache_ttl": {
+          "label": "TTL de Caché (segundos)",
+          "description": "Tiempo de almacenamiento en caché de los resultados de traducción"
+        },
+        "enable_pre_translation": {
+          "label": "Habilitar Pre-traducción",
+          "description": "Pre-traducir contenido para una carga más rápida"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "Tokens Máximos",
+          "description": "Tamaño máximo de la ventana de contexto en tokens"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "Límite Diario",
+          "description": "Máximo de personajes generados por día"
+        },
+        "batch_enabled": {
+          "label": "Habilitar Procesamiento por Lotes",
+          "description": "Procesar la generación de personajes por lotes"
+        },
+        "batch_size_per_run": {
+          "label": "Tamaño de Lote",
+          "description": "Número de personajes a procesar por lote"
+        },
+        "batch_retry_attempts": {
+          "label": "Intentos de Reintento",
+          "description": "Número de intentos de reintento para lotes fallidos"
+        },
+        "batch_timeout_minutes": {
+          "label": "Tiempo de Espera (minutos)",
+          "description": "Tiempo máximo de espera para la finalización del lote"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "Límite Diario de Avatares",
+          "description": "Máximo de correcciones de avatares por día"
+        },
+        "data_daily_limit": {
+          "label": "Límite Diario de Datos",
+          "description": "Máximo de correcciones de datos por día"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "Palabras Clave de Búsqueda",
+          "description": "Palabras clave separadas por comas para la búsqueda de curación"
+        },
+        "anime_model_ids": {
+          "label": "IDs de Modelo de Anime",
+          "description": "IDs de modelo separadas por comas para la curación de Anime"
+        },
+        "auto_approval_threshold": {
+          "label": "Umbral de Aprobación Automática",
+          "description": "Umbral de puntuación para aprobación automática (0-100)"
+        },
+        "require_manual_review": {
+          "label": "Requerir Revisión Manual",
+          "description": "Requerir revisión manual para contenido curado"
+        },
+        "image_limit": {
+          "label": "Límite Diario de Imágenes",
+          "description": "Número de imágenes a obtener de Civitai por día (0 = deshabilitado)"
+        },
+        "rate_limit": {
+          "label": "Límite de Tasa de API de Civitai",
+          "description": "Máximo de solicitudes API por día a Civitai"
+        },
+        "max_image_size": {
+          "label": "Tamaño Máximo de Imagen (bytes)",
+          "description": "Tamaño máximo de archivo para imágenes descargadas"
+        },
+        "min_rating": {
+          "label": "Calificación Mínima",
+          "description": "Umbral de calificación mínima para imágenes curadas (0-5)"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "Habilitar Filtro NSFW",
+          "description": "Filtrar contenido NSFW automáticamente"
+        },
+        "nsfw_filter_strictness": {
+          "label": "Estrictez del Filtro NSFW",
+          "description": "Qué tan estricto debe ser el filtro NSFW"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "Hora de Curación Diaria",
+          "description": "Hora del día para ejecutar la curación diaria (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "Baja",
+      "medium": "Media",
+      "high": "Alta"
+    },
+    "actions": {
+      "save": "Guardar ({{count}})",
+      "saving": "Guardando...",
+      "reset": "Restablecer a valores predeterminados",
+      "addModel": "Añadir Modelo"
+    },
+    "messages": {
+      "saveSuccess": "Configuración \"{{key}}\" actualizada correctamente",
+      "saveError": "Error al actualizar la configuración",
+      "loadError": "Error al cargar las configuraciones del sistema",
+      "confirmChange": "¿Estás seguro de que quieres cambiar \"{{key}}\"? Esto tendrá efecto inmediatamente.",
+      "selectProviderFirst": "Selecciona primero un proveedor",
+      "selectModel": "Seleccionar modelo..."
+    },
+    "meta": {
+      "updatedAt": "Actualizado {{time}}",
+      "updatedBy": "por {{user}}",
+      "neverUpdated": "Valor predeterminado (nunca modificado)"
+    },
+    "modelSelection": {
+      "provider": "Proveedor",
+      "model": "Modelo",
+      "selectProvider": "Selecciona un proveedor...",
+      "selectModel": "Selecciona un modelo...",
+      "selectProviderFirst": "Selecciona primero un proveedor",
+      "addNewModel": "Añadir nuevo modelo",
+      "noModelsFound": "No se encontraron modelos para este proveedor"
+    }
+  }
+}

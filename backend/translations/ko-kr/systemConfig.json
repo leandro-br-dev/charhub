@@ -1,0 +1,163 @@
+{
+  "description": "System Configuration admin page translations",
+  "resources": {
+    "title": "시스템 구성",
+    "header": {
+      "title": "시스템 구성",
+      "description": "서버 재시작 없이 런타임 매개변수를 관리합니다. 변경 사항은 즉시 적용됩니다."
+    },
+    "search": {
+      "placeholder": "구성 필터링..."
+    },
+    "categories": {
+      "translation": "번역 시스템",
+      "context": "컨텍스트 창",
+      "generation": "캐릭터 생성",
+      "correction": "수정 시스템",
+      "curation": "이미지 큐레이션",
+      "moderation": "콘텐츠 검열",
+      "scheduling": "작업 스케줄링"
+    },
+    "fields": {
+      "translation": {
+        "default_provider": {
+          "label": "기본 제공자",
+          "description": "번역을 위한 기본 LLM 제공자"
+        },
+        "default_model": {
+          "label": "기본 모델",
+          "description": "번역을 위한 기본 모델 이름"
+        },
+        "cache_ttl": {
+          "label": "캐시 TTL (초)",
+          "description": "번역 결과를 캐시할 기간"
+        },
+        "enable_pre_translation": {
+          "label": "사전 번역 활성화",
+          "description": "더 빠른 로딩을 위해 콘텐츠 사전 번역"
+        }
+      },
+      "context": {
+        "max_tokens": {
+          "label": "최대 토큰 수",
+          "description": "토큰 단위의 최대 컨텍스트 창 크기"
+        }
+      },
+      "generation": {
+        "daily_limit": {
+          "label": "일일 제한",
+          "description": "하루에 생성할 수 있는 최대 캐릭터 수"
+        },
+        "batch_enabled": {
+          "label": "일괄 처리 활성화",
+          "description": "일괄적으로 캐릭터 생성 처리"
+        },
+        "batch_size_per_run": {
+          "label": "일괄 처리 크기",
+          "description": "일괄 처리당 처리할 캐릭터 수"
+        },
+        "batch_retry_attempts": {
+          "label": "재시도 횟수",
+          "description": "실패한 일괄 처리에 대한 재시도 횟수"
+        },
+        "batch_timeout_minutes": {
+          "label": "시간 초과 (분)",
+          "description": "일괄 처리 완료를 기다리는 최대 시간"
+        }
+      },
+      "correction": {
+        "avatar_daily_limit": {
+          "label": "아바타 일일 제한",
+          "description": "하루에 가능한 최대 아바타 수정 횟수"
+        },
+        "data_daily_limit": {
+          "label": "데이터 일일 제한",
+          "description": "하루에 가능한 최대 데이터 수정 횟수"
+        }
+      },
+      "curation": {
+        "search_keywords": {
+          "label": "검색 키워드",
+          "description": "큐레이션 검색을 위한 쉼표로 구분된 키워드"
+        },
+        "anime_model_ids": {
+          "label": "Anime 모델 ID",
+          "description": "Anime 큐레이션을 위한 쉼표로 구분된 모델 ID"
+        },
+        "auto_approval_threshold": {
+          "label": "자동 승인 임계값",
+          "description": "자동 승인을 위한 점수 임계값 (0-100)"
+        },
+        "require_manual_review": {
+          "label": "수동 검토 필요",
+          "description": "큐레이션된 콘텐츠에 대한 수동 검토 필요"
+        },
+        "image_limit": {
+          "label": "일일 이미지 제한",
+          "description": "하루에 Civitai에서 가져올 이미지 수 (0 = 비활성화)"
+        },
+        "rate_limit": {
+          "label": "Civitai API 요청 제한",
+          "description": "Civitai에 대한 하루 최대 API 요청 수"
+        },
+        "max_image_size": {
+          "label": "최대 이미지 크기 (바이트)",
+          "description": "다운로드된 이미지의 최대 파일 크기"
+        },
+        "min_rating": {
+          "label": "최소 평점",
+          "description": "큐레이션된 이미지의 최소 평점 임계값 (0-5)"
+        }
+      },
+      "moderation": {
+        "nsfw_filter_enabled": {
+          "label": "NSFW 필터 활성화",
+          "description": "NSFW 콘텐츠 자동 필터링"
+        },
+        "nsfw_filter_strictness": {
+          "label": "NSFW 필터 엄격성",
+          "description": "NSFW 필터의 엄격성 수준"
+        }
+      },
+      "scheduling": {
+        "daily_curation_hour": {
+          "label": "일일 큐레이션 시간",
+          "description": "일일 큐레이션을 실행할 시간 (0-23)"
+        }
+      }
+    },
+    "strictness": {
+      "low": "낮음",
+      "medium": "중간",
+      "high": "높음"
+    },
+    "actions": {
+      "save": "저장 ({{count}})",
+      "saving": "저장 중...",
+      "reset": "기본값으로 재설정",
+      "addModel": "모델 추가"
+    },
+    "messages": {
+      "saveSuccess": "구성 \"{{key}}\"이(가) 성공적으로 업데이트되었습니다.",
+      "saveError": "구성 업데이트에 실패했습니다.",
+      "loadError": "시스템 구성을 로드하는 데 실패했습니다.",
+      "confirmChange": "\"{{key}}\"을(를) 변경하시겠습니까? 이 변경 사항은 즉시 적용됩니다.",
+      "selectProviderFirst": "제공자를 먼저 선택하세요",
+      "selectModel": "모델 선택..."
+    },
+    "meta": {
+      "updatedAt": "{{time}} 업데이트됨",
+      "updatedBy": "{{user}}에 의해",
+      "neverUpdated": "기본값 (수정된 적 없음)"
+    },
+    "modelSelection": {
+      "provider": "제공자",
+      "model": "모델",
+      "selectProvider": "제공자를 선택하세요...",
+      "selectModel": "모델을 선택하세요...",
+      "selectProviderFirst": "제공자를 먼저 선택하세요",
+      "addNewModel": "새 모델 추가",
+      "noModelsFound": "이 제공자에 대한 모델을 찾을 수 없습니다"
+    }
+  }
+}

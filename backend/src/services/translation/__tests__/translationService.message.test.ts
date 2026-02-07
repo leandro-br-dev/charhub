@@ -7,6 +7,7 @@ import { setupTestDatabase, cleanDatabase, teardownTestDatabase } from '../../..
 import { createTestUser, createTestMessage } from '../../../test-utils/factories';
 import { getTestDb } from '../../../test-utils/database';
 import { PrismaClient } from '../../../generated/prisma';
+import { SystemConfigurationService } from '../../config/systemConfigurationService';
 
 // Mock the LLM service
 jest.mock('../../llm', () => ({
@@ -32,16 +33,22 @@ import { encryptMessage } from '../../../services/encryption';
 describe('TranslationService - Message Translation (FEATURE-018)', () => {
   let translationService: TranslationService;
   let db: PrismaClient;
+  let systemConfigService: SystemConfigurationService;
 
   beforeAll(async () => {
     await setupTestDatabase();
     db = getTestDb();
+    systemConfigService = SystemConfigurationService.getInstance();
     translationService = new TranslationService();
   });
 
   beforeEach(async () => {
     await cleanDatabase();
     jest.clearAllMocks();
+    // Clear system configuration cache to ensure test isolation
+    systemConfigService.clearCacheForTesting();
+    // Reset translation service config initialization flag
+    (translationService as any).configInitialized = false;
   });
 
   afterAll(async () => {
