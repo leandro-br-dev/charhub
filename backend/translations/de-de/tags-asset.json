@@ -14,12 +14,12 @@
       "description": "Schuluniformkleidung"
     },
     "Maid Outfit": {
-      "name": "Hausmädchen-Outfit",
-      "description": "Hausmädchen-Uniform"
+      "name": "Dienstmädchen-Outfit",
+      "description": "Dienstmädchenuniform"
     },
     "Butler Outfit": {
       "name": "Butler-Outfit",
-      "description": "Butler-Uniform"
+      "description": "Butleruniform"
     },
     "Kimono": {
       "name": "Kimono",
@@ -27,11 +27,11 @@
     },
     "Yukata": {
       "name": "Yukata",
-      "description": "Sommer-Kimono"
+      "description": "Sommerkimono"
     },
     "Armor": {
       "name": "Rüstung",
-      "description": "Schutzkleidung"
+      "description": "Schutzrüstung"
     },
     "Knight Armor": {
       "name": "Ritterrüstung",
@@ -50,20 +50,20 @@
       "description": "Rüstung im Fantasy-Stil"
     },
     "Robe": {
-      "name": "Gewand",
-      "description": "Magisches oder zeremonielles Gewand"
+      "name": "Robe",
+      "description": "Magische oder zeremonielle Robe"
     },
     "Cloak": {
       "name": "Umhang",
-      "description": "Umhang oder Mantel"
+      "description": "Kapuzenumhang oder Umhang"
     },
     "Dress": {
       "name": "Kleid",
-      "description": "Kleiderkleidung"
+      "description": "Kleider"
     },
     "Wedding Dress": {
-      "name": "Hochzeitskleid",
-      "description": "Brautkleid"
+      "name": "Brautkleid",
+      "description": "Hochzeitskleid"
     },
     "Ball Gown": {
       "name": "Ballkleid",
@@ -79,11 +79,11 @@
     },
     "Lingerie": {
       "name": "Dessous",
-      "description": "Intime Kleidung"
+      "description": "Intime Bekleidung"
     },
     "Latex": {
       "name": "Latex",
-      "description": "Latex-/Gummi-Kleidung"
+      "description": "Latex-/Gummikleidung"
     },
     "Leather": {
       "name": "Leder",
@@ -98,8 +98,8 @@
       "description": "Ninja-/Shinobi-Kleidung"
     },
     "Pirate Outfit": {
-      "name": "Pirat-Outfit",
-      "description": "Pirat-Kleidung"
+      "name": "Piraten-Outfit",
+      "description": "Piratenkleidung"
     },
     "Cowboy Outfit": {
       "name": "Cowboy-Outfit",
@@ -115,15 +115,15 @@
     },
     "Military Uniform": {
       "name": "Militäruniform",
-      "description": "Formelle Militäruniform"
+      "description": "Militärische Paradeuniform"
     },
     "Police Uniform": {
       "name": "Polizeiuniform",
       "description": "Polizeibeamtenuniform"
     },
     "Nurse Uniform": {
-      "name": "Krankenschwester-Uniform",
-      "description": "Medizinische Krankenschwester-Uniform"
+      "name": "Krankenschwesteruniform",
+      "description": "Krankenpflegeuniform"
     },
     "Doctor Coat": {
       "name": "Arztkittel",
@@ -131,22 +131,22 @@
     },
     "Lab Coat": {
       "name": "Laborkittel",
-      "description": "Wissenschaftler-/Forscherkittel"
+      "description": "Wissenschaftler-/Forschungskittel"
     },
     "Chef Uniform": {
       "name": "Kochuniform",
-      "description": "Berufskleidung für Köche"
+      "description": "Berufsbekleidung für Köche"
     },
     "Bunny Suit": {
-      "name": "Bunny Suit",
-      "description": "Playboy-Bunny-Kostüm"
+      "name": "Hasenkostüm",
+      "description": "Playboy-Hasenkostüm"
     },
     "Cat Costume": {
       "name": "Katzenkostüm",
       "description": "Katzen-Themenkostüm"
     },
     "Fox Costume": {
-      "name": "Fuchs-Kostüm",
+      "name": "Fuchskostüm",
       "description": "Fuchs-Themenkostüm"
     },
     "Fursuit": {
@@ -159,11 +159,11 @@
     },
     "Gothic Lolita": {
       "name": "Gothic Lolita",
-      "description": "Gothic Lolita Mode"
+      "description": "Gothic-Lolita-Mode"
     },
     "Punk Fashion": {
       "name": "Punk-Mode",
-      "description": "Punkrock-Kleidung"
+      "description": "Punk-Rock-Kleidung"
     },
     "Goth Fashion": {
       "name": "Goth-Mode",
@@ -179,15 +179,15 @@
     },
     "Sportswear": {
       "name": "Sportkleidung",
-      "description": "Sportbekleidung"
+      "description": "Sportliche Kleidung"
     },
     "Gym Clothes": {
-      "name": "Trainingskleidung",
-      "description": "Trainingsbekleidung"
+      "name": "Sportkleidung",
+      "description": "Trainingskleidung"
     },
     "Pajamas": {
       "name": "Pyjama",
-      "description": "Schlafanzug"
+      "description": "Schlafkleidung"
     },
     "Nightgown": {
       "name": "Nachthemd",
@@ -199,23 +199,23 @@
     },
     "Towel": {
       "name": "Handtuch",
-      "description": "In ein Handtuch gewickelt"
+      "description": "In Handtuch gewickelt"
     },
     "Naked": {
       "name": "Nackt",
       "description": "Nackt/unbekleidet"
     },
     "Topless": {
-      "name": "Oberkörperfrei",
-      "description": "Keine Oberbekleidung"
+      "name": "Oben ohne",
+      "description": "Ohne Oberbekleidung"
     },
     "Covered Nude": {
-      "name": "Bedeckte Nacktheit",
-      "description": "Strategisch bedeckte Nacktheit"
+      "name": "Verdeckte Nacktheit",
+      "description": "Strategisch verdeckte Nacktheit"
     },
     "Business Suit": {
-      "name": "Business-Anzug",
-      "description": "Professionelle Business-Kleidung"
+      "name": "Anzug",
+      "description": "Professionelle Geschäftskleidung"
     },
     "Tuxedo": {
       "name": "Smoking",
@@ -223,11 +223,11 @@
     },
     "Crown": {
       "name": "Krone",
-      "description": "Königliches Kronen-Accessoire"
+      "description": "Königliche Kronen-Accessoire"
     },
     "Tiara": {
-      "name": "Diadem",
-      "description": "Prinzessinnen-Diadem"
+      "name": "Tiara",
+      "description": "Prinzessinnen-Tiara"
     },
     "Glasses": {
       "name": "Brille",
@@ -250,24 +250,24 @@
       "description": "Katzenohr-Haarreif"
     },
     "Fox Ears": {
-      "name": "Fuchs-Ohren",
-      "description": "Fuchs-Ohren-Accessoire"
+      "name": "Fuchsohren",
+      "description": "Fuchsohren-Accessoire"
     },
     "Horns": {
       "name": "Hörner",
-      "description": "Dämonen-/Drachen-Hörner"
+      "description": "Dämonen-/Drachenhörner"
     },
     "Halo": {
       "name": "Heiligenschein",
-      "description": "Engel-Heiligenschein"
+      "description": "Engels-Heiligenschein"
     },
     "Wings": {
       "name": "Flügel",
-      "description": "Engel-/Dämonenflügel"
+      "description": "Engels-/Dämonenflügel"
     },
     "Tail": {
       "name": "Schwanz",
-      "description": "Tier-Schwanz-Accessoire"
+      "description": "Tierschwanz-Accessoire"
     },
     "Collar": {
       "name": "Halsband",
@@ -287,11 +287,11 @@
     },
     "Sword": {
       "name": "Schwert",
-      "description": "Schwert-Waffe"
+      "description": "Schwertwaffe"
     },
     "Gun": {
       "name": "Pistole",
-      "description": "Schusswaffen-Waffe"
+      "description": "Schusswaffe"
     },
     "Bow": {
       "name": "Bogen",
@@ -311,7 +311,7 @@
     },
     "Scythe": {
       "name": "Sense",
-      "description": "Sense-Waffe"
+      "description": "Sensenwaffe"
     }
   }
 }

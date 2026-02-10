@@ -4,20 +4,20 @@
     "title": "Admin-Skripte",
     "header": {
       "title": "Admin-Skripte",
-      "description": "Manuelles Ausführen von Datenkorrektur-Skripten und Überwachen von Systemstatistiken."
+      "description": "Führen Sie Datenkorrektur-Skripte manuell aus und überwachen Sie Systemstatistiken."
     },
     "stats": {
       "title": "Statistiken",
-      "totalCharacters": "Gesamtanzahl Charaktere",
+      "totalCharacters": "Gesamtzahl der Charaktere",
       "charactersWithAvatars": "Charaktere mit Avataren",
       "charactersWithCompleteData": "Charaktere mit vollständigen Daten",
       "never": "Nie",
       "lastCorrections": "Letzte Korrekturen",
-      "compressionStats": "Komprimierungsstatistiken",
-      "totalImages": "Gesamtanzahl Bilder",
+      "compressionStats": "Kompressionsstatistiken",
+      "totalImages": "Gesamtzahl der Bilder",
       "oversizedImages": "Überdimensionierte Bilder",
-      "bytesCouldBeSaved": "Könnte gespeichert werden",
-      "maxSizeThreshold": "Maximale Größe Schwelle"
+      "bytesCouldBeSaved": "Könnte eingespart werden",
+      "maxSizeThreshold": "Maximale Größenbegrenzung"
     },
     "scripts": {
       "title": "Korrektur-Skripte",
@@ -28,20 +28,20 @@
         "error": "Fehler beim Starten des Avatar-Korrektur-Skripts"
       },
       "data": {
-        "name": "Datenvollständigkeitskorrektur",
+        "name": "Korrektur der Datenvollständigkeit",
         "description": "Stellt sicher, dass alle erforderlichen Charakterfelder ausgefüllt sind",
         "success": "Datenkorrektur-Skript erfolgreich gestartet",
         "error": "Fehler beim Starten des Datenkorrektur-Skripts"
       },
       "generation": {
         "name": "Charaktergenerierung",
-        "description": "Charaktere automatisch aus kuratierten Bildern generieren",
+        "description": "Generiert Charaktere automatisch aus kuratierten Bildern",
         "success": "Charaktergenerierung erfolgreich gestartet",
         "error": "Fehler beim Starten der Charaktergenerierung"
       },
       "compression": {
         "name": "Bildkomprimierung",
-        "description": "Überdimensionierte Bilder komprimieren, um Speicherplatz zu sparen",
+        "description": "Komprimiert überdimensionierte Bilder, um Speicherplatz zu sparen",
         "success": "Bildkomprimierung erfolgreich gestartet",
         "error": "Fehler beim Starten der Bildkomprimierung",
         "limit": "Limit",

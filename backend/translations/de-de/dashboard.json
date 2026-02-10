@@ -34,12 +34,12 @@
       "characters": {
         "message": "Du hast alle Charaktere gesehen!",
         "cta": "Erstelle deinen eigenen Charakter",
-        "description": "Erwecke deine Fantasie zum Leben und erschaffe einzigartige KI-Charaktere"
+        "description": "Erwecke deine Vorstellungskraft zum Leben und erstelle einzigartige KI-Charaktere"
       },
       "stories": {
         "message": "Du hast alle Stories gesehen!",
         "cta": "Erstelle deine eigene Story",
-        "description": "Beginne interaktive Stories mit KI-Charakteren zu erstellen"
+        "description": "Beginne, interaktive Stories mit KI-Charakteren zu erstellen"
       }
     },
     "carousel": {

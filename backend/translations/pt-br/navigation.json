@@ -11,12 +11,17 @@
     "adminSystemConfig": "Configuração do Sistema",
     "adminLlmCatalog": "Catálogo LLM",
     "assets": "Ativos",
+    "scenes": "Cenas",
     "profileLink": "Meu perfil",
     "sidebarDefaultTitle": "Explorar CharHub",
     "sidebarDefaultDescription": "Use os ícones na barra de navegação para alternar entre as experiências.",
     "developmentTools": "Ferramentas do desenvolvedor",
     "developmentPlaceholder": "Pipelines de build, logs e controles de automação estarão aqui em breve.",
     "viewAllCharacters": "Ver todos os personagens",
-    "viewAllStories": "Ver todas as histórias"
+    "viewAllStories": "Ver todas as histórias",
+    "viewAllAssets": "Ver todos os ativos",
+    "viewAllScenes": "Ver todas as cenas",
+    "createAsset": "Criar Ativo",
+    "createScene": "Criar Cena"
   }
 }

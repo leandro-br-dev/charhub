@@ -8,39 +8,39 @@
       "deleteAccount": "Konto löschen"
     },
     "sectionTitle": "Konto",
-    "title": "Verwalten Sie Ihr Profil",
-    "subtitle": "Aktualisieren Sie, wie andere Sie auf CharHub sehen. Einstellungen, die noch migriert werden, werden bald hier angezeigt.",
+    "title": "Profil verwalten",
+    "subtitle": "Aktualisieren Sie, wie andere Personen Sie auf CharHub sehen. Einstellungen, die noch migriert werden, erscheinen hier in Kürze.",
     "identity": {
-      "header": "Profilfoto",
-      "description": "Wählen Sie einen Avatar, der Sie in Chats und Charakteren repräsentiert.",
+      "header": "Profilbild",
+      "description": "Wählen Sie einen Avatar, der Sie in Chats und bei Charakteren repräsentiert.",
       "upload": "Bild hochladen",
-      "placeholderNote": "Avatar-Uploads sind verfügbar, nachdem wir den Mediendienst wieder verbunden haben."
+      "placeholderNote": "Avatar-Uploads werden verfügbar sein, sobald wir den Mediendienst wieder verbunden haben."
     },
     "details": {
       "header": "Öffentliche Details",
-      "description": "Diese Werte werden mit Kollaborateuren geteilt und als Standardwerte in Konversationen verwendet."
+      "description": "Diese Werte werden mit Kooperationspartnern geteilt und als Standard in Unterhaltungen verwendet."
     },
     "contentClassification": {
       "header": "Inhaltsklassifizierung",
       "description": "Konfigurieren Sie Inhaltsfilter, um zu steuern, welche Arten von Charakteren und Geschichten Sie sehen möchten. Nur Inhalte, die Ihren ausgewählten Präferenzen entsprechen, werden Ihnen empfohlen.",
       "blockedTags": "Inhaltsfilter",
-      "filterNote": "Wählen Sie die Inhaltstypen aus, die Sie ZULASSEN möchten. Nicht angekreuzte Elemente werden aus den Empfehlungen herausgefiltert.",
-      "allAgesNote": "Alle Inhaltstypen sind blockiert, wenn die Altersfreigabe \"Alle Altersgruppen\" ausgewählt ist.",
+      "filterNote": "Wählen Sie Inhaltstypen aus, die Sie ERLAUBEN möchten. Nicht ausgewählte Elemente werden aus den Empfehlungen herausgefiltert.",
+      "allAgesNote": "Alle Inhaltstypen werden blockiert, wenn die Altersfreigabe \"Für alle Altersgruppen\" ausgewählt ist.",
       "allowAll": "Alle zulassen",
       "birthDateRequired": "Geburtsdatum erforderlich",
-      "birthDateRequiredMessage": "Bitte geben Sie Ihr Geburtsdatum im Profil-Tab ein, um die Einstellungen zur Inhaltsklassifizierung zu entsperren. Dies gewährleistet altersgerechte Inhaltsempfehlungen.",
+      "birthDateRequiredMessage": "Bitte geben Sie Ihr Geburtsdatum im Tab \"Profil\" ein, um die Einstellungen zur Inhaltsklassifizierung freizuschalten. Dies gewährleistet altersgerechte Inhaltsempfehlungen.",
       "maxAgeRatingLabel": "Maximale Altersfreigabe",
       "maxAgeRatingHint": "Wählen Sie die maximale Altersfreigabe, die Sie sehen möchten",
       "ageRestricted": "Altersbeschränkt"
     },
     "fields": {
       "displayName": "Anzeigename",
-      "displayNamePlaceholder": "Wie andere Benutzer Sie ansprechen",
-      "fullName": "Vollständiger Name",
-      "fullNamePlaceholder": "Optional für Rechnungsstellung und E-Mail-Kopien",
+      "displayNamePlaceholder": "Wie andere Nutzer Sie ansprechen",
+      "fullName": "Voller Name",
+      "fullNamePlaceholder": "Optional für Abrechnung und E-Mail-Kopien",
       "username": "Benutzername",
-      "usernamePlaceholder": "Benutzername",
-      "usernameHint": "Ihr eindeutiger Identifikator auf CharHub.",
+      "usernamePlaceholder": "benutzername",
+      "usernameHint": "Ihre eindeutige Kennung auf CharHub.",
       "usernameChecking": "Verfügbarkeit wird geprüft...",
       "usernameAvailable": "Benutzername ist verfügbar",
       "usernameUnavailable": "Benutzername ist bereits vergeben",
@@ -53,45 +53,45 @@
       "feminine": "Weiblich",
       "masculine": "Männlich",
       "nonBinary": "Nicht-binär",
-      "unspecified": "Keine Angabe"
+      "unspecified": "Möchte ich nicht angeben"
     },
     "preferences": {
-      "placeholder": "Inhaltspräferenzen, Blur-Einstellungen und sensible Themen werden zurückkehren, sobald der Moderationsdienst integriert ist."
+      "placeholder": "Inhaltspräferenzen, Unschärfe-Einstellungen und sensible Themen werden zurückkehren, sobald der Moderationsdienst integriert ist."
     },
     "actions": {
       "save": "Änderungen speichern",
-      "saving": "Speichere..."
+      "saving": "Wird gespeichert..."
     },
     "subscription": {
-      "header": "Abonnement & Credits",
-      "description": "Verwalten Sie Ihren Abonnementplan und sehen Sie Ihr Guthaben an.",
+      "header": "Abonnement & Guthaben",
+      "description": "Verwalten Sie Ihr Abonnement und sehen Sie Ihr Guthaben ein.",
       "currentPlan": "Aktueller Plan",
-      "credits": "Verfügbare Credits",
-      "viewPlans": "Pläne anzeigen",
-      "loadingPlan": "Lade Plan...",
-      "loadingCredits": "Lade Credits..."
+      "credits": "Verfügbares Guthaben",
+      "viewPlans": "Pläne ansehen",
+      "loadingPlan": "Plan wird geladen...",
+      "loadingCredits": "Guthaben wird geladen..."
     },
     "security": {
       "header": "Sicherheit",
-      "description": "Ihre CharHub-Sitzungen erben die OAuth-Sicherheit von Google oder Facebook. Multi-Faktor-Unterstützung wird bald hinzugefügt.",
-      "placeholder": "Sitzungsverwaltung und passwortlose Anmeldekontrollen sind auf der Roadmap."
+      "description": "Ihre CharHub-Sitzungen übernehmen die OAuth-Sicherheit von Google oder Facebook. Die Multi-Faktor-Unterstützung wird in Kürze hinzugefügt.",
+      "placeholder": "Sitzungsverwaltung und passwortlose Anmeldefunktionen sind in Planung."
     },
     "deleteAccount": {
       "title": "Konto löschen",
       "description": "Löschen Sie Ihr Konto und alle Ihre Inhalte dauerhaft.",
       "submit": "Mein Konto löschen",
       "confirmTitle": "Sind Sie absolut sicher?",
-      "confirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden. Dies wird Ihr Konto dauerhaft löschen und Ihre Daten von unseren Servern entfernen.",
-      "confirmInstruction": "Bitte geben Sie \"DELETE\" ein, um zu bestätigen.",
+      "confirmDescription": "Diese Aktion kann nicht rückgängig gemacht werden. Ihr Konto und Ihre Daten werden unwiderruflich von unseren Servern gelöscht.",
+      "confirmInstruction": "Bitte tippen Sie \"LÖSCHEN\" zur Bestätigung ein.",
       "confirmSubmit": "Dieses Konto löschen"
     },
     "feedback": {
       "success": "Profil erfolgreich aktualisiert.",
-      "error": "Wir konnten Ihre Änderungen nicht speichern."
+      "error": "Ihre Änderungen konnten nicht gespeichert werden."
     },
     "errors": {
-      "updateFailed": "Wir konnten Ihre Änderungen nicht speichern. Versuchen Sie es gleich noch einmal.",
-      "displayNameRequired": "Anzeigename ist erforderlich.",
+      "updateFailed": "Ihre Änderungen konnten nicht gespeichert werden. Versuchen Sie es in Kürze erneut.",
+      "displayNameRequired": "Ein Anzeigename ist erforderlich.",
       "usernameTooShort": "Der Benutzername muss mindestens 3 Zeichen nach dem @ enthalten.",
       "usernameInvalid": "Der Benutzername muss mit @ beginnen und darf nur Buchstaben, Zahlen und Unterstriche enthalten.",
       "usernameTaken": "Dieser Benutzername ist bereits vergeben. Bitte wählen Sie einen anderen.",

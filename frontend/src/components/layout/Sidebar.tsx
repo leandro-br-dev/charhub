@@ -5,6 +5,8 @@ import { Button } from "../ui/Button";
 import { ConversationHistory } from "../../pages/(chat)/shared/components/ConversationHistory";
 import { CharacterListSidebar } from "../../pages/(characters)/shared/components";
 import { StoryListSidebar } from "../../pages/story/shared/components";
+import { AssetListSidebar } from "../../pages/assets/shared/components";
+import { SceneListSidebar } from "../../pages/scenes/shared/components";
 
 /**
  * Loading placeholder for sidebar content while translations load
@@ -60,6 +62,16 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
     navigate("/stories/create");
   };
 
+  const handleCreateAsset = () => {
+    handleLinkClick();
+    navigate("/assets/create");
+  };
+
+  const handleCreateScene = () => {
+    handleLinkClick();
+    navigate("/scenes/create");
+  };
+
   let content: ReactNode;
 
   if (activeView?.startsWith("/chat")) {
@@ -106,7 +118,7 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
               navigate("/characters");
             }}
           >
-            {t("navigation:viewAllCharacters", "View all characters")}
+            {t("viewAllCharacters", "View all characters")}
           </Button>
         </div>
       </div>
@@ -129,7 +141,53 @@ export function Sidebar({ onClose, displayMode = "permanent", isOpen = false, ac
               navigate("/stories");
             }}
           >
-            {t("navigation:viewAllStories", "View all stories")}
+            {t("viewAllStories", "View all stories")}
+          </Button>
+        </div>
+      </div>
+    );
+  } else if (activeView?.startsWith("/assets")) {
+    content = (
+      <div className="flex h-full w-full flex-col">
+        <Suspense fallback={<SidebarLoadingFallback />}>
+          <AssetListSidebar onLinkClick={handleLinkClick} />
+        </Suspense>
+        <div className="mt-auto flex flex-col gap-2 p-4">
+          <Button variant="primary" icon="add" onClick={handleCreateAsset}>
+            {t("createAsset", "Create Asset")}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="inventory_2"
+            onClick={() => {
+              handleLinkClick();
+              navigate("/assets/hub");
+            }}
+          >
+            {t("viewAllAssets", "View all assets")}
+          </Button>
+        </div>
+      </div>
+    );
+  } else if (activeView?.startsWith("/scenes")) {
+    content = (
+      <div className="flex h-full w-full flex-col">
+        <Suspense fallback={<SidebarLoadingFallback />}>
+          <SceneListSidebar onLinkClick={handleLinkClick} />
+        </Suspense>
+        <div className="mt-auto flex flex-col gap-2 p-4">
+          <Button variant="primary" icon="add" onClick={handleCreateScene}>
+            {t("createScene", "Create Scene")}
+          </Button>
+          <Button
+            variant="secondary"
+            icon="grid_view"
+            onClick={() => {
+              handleLinkClick();
+              navigate("/scenes/hub");
+            }}
+          >
+            {t("viewAllScenes", "View all scenes")}
           </Button>
         </div>
       </div>

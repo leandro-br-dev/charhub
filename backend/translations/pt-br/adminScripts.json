@@ -1,10 +1,10 @@
 {
-  "description": "Interface de Gerenciamento de Scripts Admin",
+  "description": "Admin Scripts Management Interface",
   "resources": {
     "title": "Scripts Admin",
     "header": {
       "title": "Scripts Admin",
-      "description": "Execute scripts de correção de dados manualmente e monitore estatísticas do sistema."
+      "description": "Execute manualmente scripts de correção de dados e monitore as estatísticas do sistema."
     },
     "stats": {
       "title": "Estatísticas",
@@ -15,9 +15,9 @@
       "lastCorrections": "Últimas Correções",
       "compressionStats": "Estatísticas de Compressão",
       "totalImages": "Total de Imagens",
-      "oversizedImages": "Imagens Excedentes",
-      "bytesCouldBeSaved": "Podem ser salvos",
-      "maxSizeThreshold": "Limite máximo"
+      "oversizedImages": "Imagens Grandes",
+      "bytesCouldBeSaved": "Poderiam ser salvos",
+      "maxSizeThreshold": "Limite máximo de tamanho"
     },
     "scripts": {
       "title": "Scripts de Correção",
@@ -29,7 +29,7 @@
       },
       "data": {
         "name": "Correção de Completude de Dados",
-        "description": "Garante que todos os campos obrigatórios dos personagens estejam preenchidos",
+        "description": "Garante que todos os campos de personagem obrigatórios sejam preenchidos",
         "success": "Script de correção de dados iniciado com sucesso",
         "error": "Falha ao iniciar script de correção de dados"
       },
@@ -41,12 +41,12 @@
       },
       "compression": {
         "name": "Compressão de Imagens",
-        "description": "Comprime imagens excedentes para economizar armazenamento",
+        "description": "Comprime imagens grandes para economizar armazenamento",
         "success": "Compressão de imagens iniciada com sucesso",
         "error": "Falha ao iniciar compressão de imagens",
         "limit": "Limite",
         "images": "imagens",
-        "maxSizeKB": "Tamanho Máx",
+        "maxSizeKB": "Tamanho Máximo",
         "targetSizeKB": "Tamanho Alvo"
       },
       "lastRun": "Última Execução",
@@ -56,7 +56,7 @@
       "records": "registros",
       "characters": "personagens",
       "limit": "Limite de Registros",
-      "limitPlaceholder": "Número de registros para processar (1-1000)"
+      "limitPlaceholder": "Número de registros a processar (1-1000)"
     },
     "refresh": "Atualizar Estatísticas"
   }

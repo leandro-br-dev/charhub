@@ -43,41 +43,41 @@
       "title": "Gerador de Histórias com IA",
       "subtitle": "Descreva sua ideia de história ou carregue uma imagem, e a IA gerará os detalhes para você",
       "descriptionLabel": "Descrição da História",
-      "descriptionPlaceholder": "Descreva sua ideia de história... (ex: \"Um jovem bruxo descobre um portal antigo que leva a um mundo de sonhos\")",
+      "descriptionPlaceholder": "Descreva sua ideia de história... (ex: \"Um jovem mago descobre um portal antigo que leva a um mundo de sonhos\")",
       "descriptionHint": "Quanto mais detalhada sua descrição, melhores serão os resultados",
       "imageLabel": "Imagem da Cena",
-      "uploadPrompt": "Clique para carregar a imagem da cena",
+      "uploadPrompt": "Clique para carregar imagem da cena",
       "uploadHint": "PNG, JPEG, WEBP, GIF (máx. 10MB)",
       "generating": "Gerando...",
       "generateButton": "Gerar História",
       "howItWorks": "Como funciona",
-      "step1": "Forneça uma descrição de texto e/ou carregue uma imagem da cena",
+      "step1": "Forneça uma descrição em texto e/ou carregue uma imagem da cena",
       "step2": "A IA analisa sua entrada e gera os detalhes da história",
       "step3": "Revise e edite a história gerada antes de salvar",
       "step4": "Uma imagem de capa será gerada automaticamente para você",
       "pricing": "Custo em Créditos",
-      "textOnly": "Somente texto",
+      "textOnly": "Apenas texto",
       "withImage": "Com imagem",
       "progress": {
         "preparing": "Preparando sua história",
         "uploadingImage": "Carregando sua cena",
         "analyzingImage": "Analisando a atmosfera",
-        "extractingDescription": "Lendo a história",
+        "extractingDescription": "Lendo o conto",
         "generatingConcept": "Tecendo a narrativa",
         "generatingPlot": "Elaborando o enredo",
-        "writingScene": "Escrevendo a cena de abertura",
+        "writingScene": "Escrevendo a abertura",
         "generatingCover": "Criando a capa",
         "creatingStory": "Dando vida à história",
         "completed": "Sua história aguarda",
-        "error": "Uma reviravolta inesperada"
+        "error": "Um reviravolta inesperada"
       },
       "reveal": {
-        "title": "Conceito da História Criado",
-        "conceptMessage": "A fundação da sua história foi forjada...",
+        "title": "Conceito de História Criado",
+        "conceptMessage": "A base da sua história foi forjada...",
         "plotTitle": "Enredo Escrito",
         "plotMessage": "A jornada à frente foi mapeada...",
         "sceneTitle": "Cena de Abertura Escrita",
-        "sceneMessage": "A história começa a se desenrolar...",
+        "sceneMessage": "O conto começa a se desenrolar...",
         "storyTitle": "História Criada",
         "storyMessage": "Sua história ganhou vida!",
         "continuing": "Continuando..."
@@ -89,11 +89,11 @@
       },
       "generationStarted": "Geração da história iniciada! Observando o progresso...",
       "generationFailed": "Falha na Geração",
-      "weavingYourTale": "Tecendo sua história..."
+      "weavingYourTale": "Tecendo seu conto..."
     },
     "form": {
       "title": "Título",
-      "titlePlaceholder": "Digite o título da história",
+      "titlePlaceholder": "Insira o título da história",
       "synopsis": "Sinopse",
       "synopsisPlaceholder": "Resumo breve da sua história...",
       "coverImage": "Imagem de Capa",
@@ -101,11 +101,11 @@
       "coverImagePreview": "Prévia da capa",
       "coverImageError": "Falha ao carregar imagem",
       "coverImageHint": "Carregue uma imagem ou cole uma URL para a capa da história",
-      "changeCoverImage": "Mudar imagem",
+      "changeCoverImage": "Alterar imagem",
       "uploadCoverImage": "Selecionar imagem",
       "uploadFromDevice": "Carregar do dispositivo",
       "useImageUrl": "Usar URL da imagem",
-      "imageUrlModalTitle": "Usar imagem de uma URL",
+      "imageUrlModalTitle": "Usar imagem da URL",
       "imageUrlLabel": "URL da Imagem",
       "invalidImageUrl": "Insira uma URL de imagem válida (http/https).",
       "preview": "Prévia",
@@ -129,12 +129,12 @@
       "searchTags": "Buscar tags",
       "noTagsFound": "Nenhuma tag encontrada",
       "noTagsAvailable": "Nenhuma tag disponível",
-      "incompatibleHint": "As tags destacadas em vermelho são incompatíveis com a classificação etária selecionada. Remova-as para continuar.",
+      "incompatibleHint": "Tags destacadas em vermelho são incompatíveis com a classificação etária selecionada. Remova-as para continuar.",
       "ageRating": "Classificação Etária",
       "ageRatingHint": "Isso filtra as tags de gênero disponíveis e bloqueia avisos de conteúdo impróprio.",
       "contentTags": "Avisos de Conteúdo",
       "contentTagDisabled": "Requer idade {{age}} ou superior",
-      "contentTagsDisabledHint": "Avisos de conteúdo desativados exigem uma classificação etária mais alta.",
+      "contentTagsDisabledHint": "Avisos de conteúdo esmaecidos exigem uma classificação etária mais alta.",
       "visibility": "Visibilidade da História",
       "makePublic": "Tornar esta história pública",
       "tabs": {
@@ -161,7 +161,7 @@
       "notFound": "História não encontrada",
       "imageTooLarge": "A imagem deve ser menor que 10MB",
       "invalidImageType": "A imagem deve ser PNG, JPEG, WEBP ou GIF",
-      "descriptionOrImageRequired": "Por favor, forneça uma descrição ou uma imagem",
+      "descriptionOrImageRequired": "Forneça uma descrição ou uma imagem",
       "generationFailed": "Falha ao gerar história"
     },
     "sidebar": {
@@ -171,8 +171,8 @@
     "list": {
       "title": "Minhas Histórias",
       "subtitle": "Gerencie suas histórias interativas",
-      "public": "Pública",
-      "private": "Privada",
+      "public": "Público",
+      "private": "Privado",
       "empty": {
         "title": "Nenhuma história ainda",
         "description": "Crie sua primeira história interativa",
@@ -187,7 +187,7 @@
       "characters": "Personagens",
       "confirmDelete": "Tem certeza de que deseja excluir esta história? Esta ação não pode ser desfeita.",
       "labels": {
-        "createdBy": "Criada por"
+        "createdBy": "Criado por"
       }
     },
     "stats": {

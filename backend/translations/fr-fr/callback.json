@@ -1,10 +1,10 @@
 {
   "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
   "resources": {
-    "processingTitle": "Connexion en cours...",
-    "processingMessage": "Authentification en cours...",
+    "processingTitle": "Finalisation de la connexion...",
+    "processingMessage": "Finalisation de l'authentification...",
     "successTitle": "Bienvenue !",
-    "redirectingMessage": "Authentification terminée. Redirection...",
+    "redirectingMessage": "Authentification terminée. Redirection en cours...",
     "errorTitle": "Erreur d'authentification",
     "cancelledMessage": "L'authentification a été annulée par le fournisseur.",
     "missingParamsMessage": "Paramètres d'autorisation manquants. Veuillez redémarrer le processus de connexion.",

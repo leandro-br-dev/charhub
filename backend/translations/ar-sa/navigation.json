@@ -5,18 +5,23 @@
     "story": "قصة",
     "characters": "شخصيات",
     "tasks": "مهام",
-    "admin": "الإدارة",
+    "admin": "إدارة",
     "adminAnalytics": "تحليلات",
-    "adminScripts": "برامج نصية",
+    "adminScripts": "نصوص برمجية",
     "adminSystemConfig": "إعدادات النظام",
     "adminLlmCatalog": "كتالوج LLM",
     "assets": "أصول",
+    "scenes": "مشاهد",
     "profileLink": "ملفي الشخصي",
     "sidebarDefaultTitle": "استكشف CharHub",
     "sidebarDefaultDescription": "استخدم الأيقونات في شريط التنقل للتبديل بين التجارب.",
     "developmentTools": "أدوات المطور",
-    "developmentPlaceholder": "سيتم توفير مسارات الإنشاء والسجلات وعناصر التحكم في الأتمتة هنا قريبًا.",
+    "developmentPlaceholder": "خطوط أنابيب البناء والسجلات وعناصر التحكم الآلي ستتوفر هنا قريبًا.",
     "viewAllCharacters": "عرض جميع الشخصيات",
-    "viewAllStories": "عرض جميع القصص"
+    "viewAllStories": "عرض جميع القصص",
+    "viewAllAssets": "عرض جميع الأصول",
+    "viewAllScenes": "عرض جميع المشاهد",
+    "createAsset": "إنشاء أصل",
+    "createScene": "إنشاء مشهد"
   }
 }

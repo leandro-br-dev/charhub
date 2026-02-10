@@ -18,12 +18,12 @@
       "description": "Elfo habitante da floresta com afinidade com a natureza"
     },
     "High Elf": {
-      "name": "Elfo Superior",
+      "name": "Alto Elfo",
       "description": "Elfo nobre com fortes habilidades mágicas"
     },
     "Dwarf": {
       "name": "Anão",
-      "description": "Humanoide baixo e robusto, habilidoso em artesanato"
+      "description": "Humanoide baixo e robusto habilidoso em artesanato"
     },
     "Halfling": {
       "name": "Pequenino",
@@ -43,11 +43,11 @@
     },
     "Goblin": {
       "name": "Goblin",
-      "description": "Humanoide verde pequeno e travesso"
+      "description": "Humanoide pequeno, verde e travesso"
     },
     "Tiefling": {
       "name": "Tiefling",
-      "description": "Humanoide com ancestralidade demoníaca, chifres e cauda"
+      "description": "Humanoide com ascendência demoníaca, chifres e cauda"
     },
     "Dragonborn": {
       "name": "Draconato",
@@ -71,11 +71,11 @@
     },
     "Kobold": {
       "name": "Kobold",
-      "description": "Humanoide reptiliano pequeno com expertise em armadilhas"
+      "description": "Humanoide pequeno e reptiliano com expertise em armadilhas"
     },
     "Fairy": {
       "name": "Fada",
-      "description": "Humanoide alado pequeno com pó mágico"
+      "description": "Humanoide pequeno alado com pó mágico"
     },
     "Pixie": {
       "name": "Pixie",
@@ -103,19 +103,19 @@
     },
     "Naga": {
       "name": "Naga",
-      "description": "Parte superior humanoide com cauda de serpente"
+      "description": "Parte superior do corpo humanoide com cauda de serpente"
     },
     "Lamia": {
       "name": "Lâmia",
-      "description": "Humanoide feminina com parte inferior de serpente"
+      "description": "Humanoide feminina com parte inferior do corpo de cobra"
     },
     "Merfolk": {
-      "name": "Povo-do-Mar",
-      "description": "Habitante aquático meio-humano, meio-peixe"
+      "name": "Povo do Mar",
+      "description": "Meio-humano, meio-peixe habitante da água"
     },
     "Mermaid": {
       "name": "Sereia",
-      "description": "Povo-do-mar feminino com bela voz de canto"
+      "description": "Povo do mar feminino com uma linda voz de canto"
     },
     "Siren": {
       "name": "Sirene",
@@ -151,7 +151,7 @@
     },
     "Wraith": {
       "name": "Aparição",
-      "description": "Espírito vingativo com toque drenador de vida"
+      "description": "Espírito vingativo com toque que drena a vida"
     },
     "Skeleton": {
       "name": "Esqueleto",
@@ -171,19 +171,19 @@
     },
     "Reaper": {
       "name": "Ceifador",
-      "description": "Ceifador sombrio, a morte personificada"
+      "description": "Ceifador sinistro, a morte personificada"
     },
     "Dragon": {
       "name": "Dragão",
       "description": "Grande réptil voador com poderes mágicos"
     },
     "Wyvern": {
-      "name": "Wyvern",
-      "description": "Parente de dragão de duas pernas com cauda venenosa"
+      "name": "Serpe",
+      "description": "Parente de dragão de duas patas com cauda venenosa"
     },
     "Drake": {
       "name": "Drake",
-      "description": "Dragão pequeno que cospe fogo, sem asas"
+      "description": "Dragão pequeno que cospe fogo sem asas"
     },
     "Phoenix": {
       "name": "Fênix",
@@ -195,7 +195,7 @@
     },
     "Hydra": {
       "name": "Hidra",
-      "description": "Serpente multi-cabeça que cresce duas cabeças quando uma é cortada"
+      "description": "Serpente multi-cabeças que cresce duas cabeças quando uma é cortada"
     },
     "Chimera": {
       "name": "Quimera",
@@ -203,7 +203,7 @@
     },
     "Sphinx": {
       "name": "Esfinge",
-      "description": "Leão com cabeça humana, guardiã de enigmas"
+      "description": "Leão com cabeça humana, guardião de enigmas"
     },
     "Unicorn": {
       "name": "Unicórnio",
@@ -223,7 +223,7 @@
     },
     "Tanuki": {
       "name": "Tanuki",
-      "description": "Cão-guaxinim japonês com habilidade de metamorfose"
+      "description": "Cão-guaxinim japonês com habilidade de mudar de forma"
     },
     "Oni": {
       "name": "Oni",
@@ -231,11 +231,11 @@
     },
     "Tengu": {
       "name": "Tengu",
-      "description": "Humanoide japonês semelhante a pássaro ou karasu-tengu"
+      "description": "Humanoide japonês semelhante a um pássaro ou karasu-tengu"
     },
     "Kappa": {
       "name": "Kappa",
-      "description": "Imp de água japonês com cabeça em forma de prato"
+      "description": "Duende aquático japonês com cabeça em forma de prato"
     },
     "Yokai": {
       "name": "Yokai",
@@ -247,7 +247,7 @@
     },
     "Raiju": {
       "name": "Raiju",
-      "description": "Besta do trovão japonesa na forma de lobo ou gato"
+      "description": "Besta do trovão japonesa em forma de lobo ou gato"
     },
     "Slime": {
       "name": "Limo",
@@ -303,10 +303,10 @@
     },
     "Mecha": {
       "name": "Mecha",
-      "description": "Robô grande pilotado para combate"
+      "description": "Robô pilotado grande para combate"
     },
     "AI": {
-      "name": "AI",
+      "name": "IA",
       "description": "Inteligência artificial sem forma física"
     },
     "Doll": {
@@ -318,7 +318,7 @@
       "description": "Marionete trazida à vida"
     },
     "Catfolk": {
-      "name": "Povo-Gato",
+      "name": "Povo Gato",
       "description": "Humanoide com características de gato"
     },
     "Nekomimi": {
@@ -326,19 +326,19 @@
       "description": "Humano com orelhas de gato"
     },
     "Wolfkin": {
-      "name": "Povo-Lobo",
+      "name": "Povo Lobo",
       "description": "Humanoide com características de lobo"
     },
     "Foxkin": {
-      "name": "Povo-Raposa",
+      "name": "Povo Raposa",
       "description": "Humanoide com características de raposa"
     },
     "Rabbitfolk": {
-      "name": "Povo-Coelho",
+      "name": "Povo Coelho",
       "description": "Humanoide com características de coelho"
     },
     "Dragonkin": {
-      "name": "Povo-Dragão",
+      "name": "Povo Dragão",
       "description": "Humanoide com características de dragão"
     },
     "Demon": {
@@ -359,7 +359,7 @@
     },
     "Imp": {
       "name": "Diabrete",
-      "description": "Diabrete pequeno e travesso"
+      "description": "Pequeno demônio travesso"
     },
     "Succubus": {
       "name": "Súcubo",
@@ -374,7 +374,7 @@
       "description": "Servo mágico em forma animal"
     },
     "Doppelganger": {
-      "name": "Doppelgänger",
+      "name": "Doppelganger",
       "description": "Metamorfo que assume as formas de outros"
     },
     "Changeling": {
@@ -382,7 +382,7 @@
       "description": "Criança fada deixada no lugar de um humano roubado"
     },
     "Alien": {
-      "name": "Alien",
+      "name": "Alienígena",
       "description": "Ser extraterrestre de outro mundo"
     },
     "Eldritch": {
@@ -391,11 +391,11 @@
     },
     "Lovecraftian": {
       "name": "Lovecraftiano",
-      "description": "Criatura do mythos de Lovecraft"
+      "description": "Criatura do mito de Lovecraft"
     },
     "Eldritch Tentacle": {
       "name": "Tentáculo Abissal",
-      "description": "Entidade tentaculada de horror cósmico"
+      "description": "Entidade tentaculosa de horror cósmico"
     },
     "Other": {
       "name": "Outro",

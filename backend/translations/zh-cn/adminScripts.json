@@ -1,10 +1,10 @@
 {
   "description": "Admin Scripts Management Interface",
   "resources": {
-    "title": "管理员脚本",
+    "title": "管理脚本",
     "header": {
-      "title": "管理员脚本",
-      "description": "手动执行数据校正脚本并监控系统统计信息。"
+      "title": "管理脚本",
+      "description": "手动执行数据校正脚本并监控系统统计数据。"
     },
     "stats": {
       "title": "统计数据",
@@ -13,9 +13,9 @@
       "charactersWithCompleteData": "数据完整的角色",
       "never": "从不",
       "lastCorrections": "上次校正",
-      "compressionStats": "压缩统计",
+      "compressionStats": "压缩统计数据",
       "totalImages": "总图片数",
-      "oversizedImages": "过大图片",
+      "oversizedImages": "超大图片",
       "bytesCouldBeSaved": "可节省",
       "maxSizeThreshold": "最大尺寸阈值"
     },
@@ -24,25 +24,25 @@
       "avatar": {
         "name": "头像校正",
         "description": "修复角色损坏或缺失的头像URL",
-        "success": "头像校正脚本已成功启动",
+        "success": "头像校正脚本启动成功",
         "error": "启动头像校正脚本失败"
       },
       "data": {
         "name": "数据完整性校正",
-        "description": "确保所有必填角色字段都已填充",
-        "success": "数据校正脚本已成功启动",
+        "description": "确保所有必需的角色字段都已填充",
+        "success": "数据校正脚本启动成功",
         "error": "启动数据校正脚本失败"
       },
       "generation": {
         "name": "角色生成",
         "description": "从精选图片自动生成角色",
-        "success": "角色生成已成功启动",
+        "success": "角色生成启动成功",
         "error": "启动角色生成失败"
       },
       "compression": {
         "name": "图片压缩",
-        "description": "压缩过大的图片以节省存储空间",
-        "success": "图片压缩已成功启动",
+        "description": "压缩超大图片以节省存储空间",
+        "success": "图片压缩启动成功",
         "error": "启动图片压缩失败",
         "limit": "限制",
         "images": "图片",
@@ -51,7 +51,7 @@
       },
       "lastRun": "上次运行",
       "run": "运行脚本",
-      "running": "运行中...",
+      "running": "正在运行...",
       "moreComing": "更多脚本即将推出...",
       "records": "记录",
       "characters": "角色",

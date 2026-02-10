@@ -6,9 +6,9 @@
     "googleButton": "S'inscrire avec Google",
     "facebookButton": "S'inscrire avec Facebook",
     "termsAgreementPt1": "En vous inscrivant, vous acceptez les",
-    "termsAgreementAnd": "et",
-    "termsAndConditions": "Conditions Générales d'Utilisation",
-    "privacyPolicy": "Politique de Confidentialité",
+    "termsAgreementAnd": "et la",
+    "termsAndConditions": "Conditions générales",
+    "privacyPolicy": "Politique de confidentialité",
     "alreadyRegistered": "Vous avez déjà un compte ?",
     "loginLink": "Se connecter",
     "checkingAuth": "Vérification de l'authentification..."

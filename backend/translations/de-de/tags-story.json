@@ -10,8 +10,8 @@
       "description": "Science-Fiction-Genre"
     },
     "Romance": {
-      "name": "Romance",
-      "description": "Romanzen-Genre"
+      "name": "Romantik",
+      "description": "Romantik-Genre"
     },
     "Horror": {
       "name": "Horror",
@@ -19,23 +19,23 @@
     },
     "Mystery": {
       "name": "Mystery",
-      "description": "Mystery-Genre"
+      "description": "Krimi-Genre"
     },
     "Thriller": {
       "name": "Thriller",
       "description": "Thriller-Genre"
     },
     "Adventure": {
-      "name": "Adventure",
+      "name": "Abenteuer",
       "description": "Abenteuer-Genre"
     },
     "Action": {
       "name": "Action",
-      "description": "Actionreiche Geschichten"
+      "description": "Action-orientierte Geschichten"
     },
     "Comedy": {
-      "name": "Comedy",
-      "description": "Comedy-Genre"
+      "name": "Komödie",
+      "description": "Komödien-Genre"
     },
     "Drama": {
       "name": "Drama",
@@ -47,7 +47,7 @@
     },
     "Isekai": {
       "name": "Isekai",
-      "description": "Geschichten aus einer anderen Welt/Reinkarnationsgeschichten"
+      "description": "Geschichten über eine andere Welt/Reinkarnation"
     },
     "Harem": {
       "name": "Harem",
@@ -55,19 +55,19 @@
     },
     "Reverse Harem": {
       "name": "Reverse Harem",
-      "description": "Protagonistin mit mehreren männlichen Interessen"
+      "description": "Weibliche Protagonistin mit mehreren männlichen Interessen"
     },
     "Yaoi": {
       "name": "Yaoi",
-      "description": "Männerliebe-Romantik"
+      "description": "Romantik zwischen Männern"
     },
     "Yuri": {
       "name": "Yuri",
-      "description": "Frauenliebe-Romantik"
+      "description": "Romantik zwischen Frauen"
     },
     "Ecchi": {
       "name": "Ecchi",
-      "description": "Andeutungsreicher sexueller Inhalt"
+      "description": "Suggestiver sexueller Inhalt"
     },
     "Hentai": {
       "name": "Hentai",
@@ -78,16 +78,16 @@
       "description": "Grafische Gewalt und Blut"
     },
     "Psychological": {
-      "name": "Psychological",
+      "name": "Psychologisch",
       "description": "Psychologische Themen"
     },
     "Dark Fantasy": {
       "name": "Dark Fantasy",
-      "description": "Dunkle, erwachsene Fantasy-Themen"
+      "description": "Dunkle, reife Fantasy-Themen"
     },
     "Urban Fantasy": {
       "name": "Urban Fantasy",
-      "description": "Fantasy in modernem Umfeld"
+      "description": "Fantasy in modernem Setting"
     },
     "High Fantasy": {
       "name": "High Fantasy",
@@ -99,55 +99,55 @@
     },
     "Steampunk": {
       "name": "Steampunk",
-      "description": "Viktorianische Dampftechnologie"
+      "description": "Dampftechnologie der viktorianischen Ära"
     },
     "Post-Apocalyptic": {
       "name": "Post-Apocalyptic",
-      "description": "Welt nach einer Katastrophe"
+      "description": "Welt nach der Katastrophe"
     },
     "Dystopian": {
-      "name": "Dystopian",
-      "description": "Umfeld einer repressiven Gesellschaft"
+      "name": "Dystopie",
+      "description": "Setting einer oppressiven Gesellschaft"
     },
     "Historical": {
-      "name": "Historical",
-      "description": "Historisches Zeitumfeld"
+      "name": "Historisch",
+      "description": "Historisches Setting"
     },
     "Supernatural": {
-      "name": "Supernatural",
+      "name": "Übernatürlich",
       "description": "Übernatürliche Elemente"
     },
     "Martial Arts": {
-      "name": "Martial Arts",
-      "description": "Fokus auf Kampfkünste"
+      "name": "Kampfkunst",
+      "description": "Auf Kampfkunst fokussiert"
     },
     "Mecha": {
       "name": "Mecha",
-      "description": "Riesige Roboter/Mechs"
+      "description": "Riesenroboter/Mechs"
     },
     "School Life": {
-      "name": "School Life",
-      "description": "Geschichten mit Schulsetting"
+      "name": "Schulleben",
+      "description": "Geschichten im Schul-Setting"
     },
     "Sports": {
-      "name": "Sports",
-      "description": "Sportthemen"
+      "name": "Sport",
+      "description": "Sportthemen-Geschichten"
     },
     "Music": {
-      "name": "Music",
-      "description": "Musikthemen"
+      "name": "Musik",
+      "description": "Musikthemen-Geschichten"
     },
     "Military": {
-      "name": "Military",
-      "description": "Militärische Themen"
+      "name": "Militär",
+      "description": "Militärthemen"
     },
     "Crime": {
-      "name": "Crime",
-      "description": "Kriminalität und kriminelle Aktivitäten"
+      "name": "Krimi",
+      "description": "Verbrechen und kriminelle Aktivitäten"
     },
     "Noir": {
       "name": "Noir",
-      "description": "Dunkle Kriminalgeschichten"
+      "description": "Dunkle Krimigeschichten"
     },
     "Western": {
       "name": "Western",
@@ -158,27 +158,27 @@
       "description": "Epische Weltraumabenteuer"
     },
     "Time Travel": {
-      "name": "Time Travel",
+      "name": "Zeitreise",
       "description": "Zeitreise-Themen"
     },
     "Survival": {
-      "name": "Survival",
+      "name": "Überleben",
       "description": "Überlebenssituationen"
     },
     "Mafia": {
       "name": "Mafia",
-      "description": "Organisierte Kriminalitätsthemen"
+      "description": "Organisierte Kriminalität Themen"
     },
     "Vampire": {
-      "name": "Vampire",
-      "description": "Vampir-Themen"
+      "name": "Vampir",
+      "description": "Vampir-Themen-Geschichten"
     },
     "Werewolf": {
-      "name": "Werewolf",
-      "description": "Werwolf-Themen"
+      "name": "Werwolf",
+      "description": "Werwolf-Themen-Geschichten"
     },
     "Mythology": {
-      "name": "Mythology",
+      "name": "Mythologie",
       "description": "Mythologische Themen"
     },
     "Religion": {
@@ -186,15 +186,15 @@
       "description": "Religiöse Themen"
     },
     "Political": {
-      "name": "Political",
+      "name": "Politisch",
       "description": "Politische Intrigen"
     },
     "Parody": {
-      "name": "Parody",
+      "name": "Parodie",
       "description": "Parodie oder Satire"
     },
     "Wholesome": {
-      "name": "Wholesome",
+      "name": "Herzerwärmend",
       "description": "Wohlfühl-Inhalte"
     },
     "Grimdark": {
@@ -202,19 +202,19 @@
       "description": "Extrem dunkel und brutal"
     },
     "Erotic": {
-      "name": "Erotic",
+      "name": "Erotisch",
       "description": "Sexuell expliziter Inhalt"
     },
     "NTR": {
       "name": "NTR",
-      "description": "Netorare (Untreue)-Themen"
+      "description": "Netorare (Untreue) Themen"
     },
     "Incest": {
-      "name": "Incest",
+      "name": "Inzest",
       "description": "Inzestuöse Beziehungen"
     },
     "Tentacle": {
-      "name": "Tentacle",
+      "name": "Tentakel",
       "description": "Tentakel-Erotik"
     },
     "Furry": {
@@ -222,24 +222,24 @@
       "description": "Anthropomorphe Tiercharaktere"
     },
     "Monster Girl": {
-      "name": "Monster Girl",
-      "description": "Weibliche Monstercharaktere"
+      "name": "Monster-Mädchen",
+      "description": "Weibliche Monster-Charaktere"
     },
     "Transformation": {
       "name": "Transformation",
-      "description": "Themen der körperlichen Verwandlung"
+      "description": "Themen der physischen Transformation"
     },
     "Gender Bender": {
       "name": "Gender Bender",
       "description": "Geschlechtswechsel oder -tausch"
     },
     "Cooking": {
-      "name": "Cooking",
+      "name": "Kochen",
       "description": "Kulinarische Themen"
     },
     "Villainess": {
-      "name": "Villainess",
-      "description": "Weibliche Schurken-Protagonistin"
+      "name": "Bösewichtin",
+      "description": "Weibliche Bösewicht-Protagonistin"
     },
     "Regression": {
       "name": "Regression",
@@ -250,8 +250,8 @@
       "description": "Dungeon-Erkundung"
     },
     "Game World": {
-      "name": "Game World",
-      "description": "Spielt in einer Spielwelt"
+      "name": "Spielwelt",
+      "description": "In einer Spielwelt angesiedelt"
     },
     "LitRPG": {
       "name": "LitRPG",

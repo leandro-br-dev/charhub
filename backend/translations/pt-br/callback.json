@@ -2,11 +2,11 @@
   "description": "Messages displayed while finalizing the OAuth callback and handling success or error states.",
   "resources": {
     "processingTitle": "Finalizando login...",
-    "processingMessage": "Finalizando autenticação...",
-    "successTitle": "Bem-vindo de volta!",
+    "processingMessage": "Concluindo autenticação...",
+    "successTitle": "Bem-vindo(a) de volta!",
     "redirectingMessage": "Autenticação concluída. Redirecionando...",
     "errorTitle": "Erro de autenticação",
-    "cancelledMessage": "Autenticação cancelada pelo provedor.",
+    "cancelledMessage": "A autenticação foi cancelada pelo provedor.",
     "missingParamsMessage": "Parâmetros de autorização ausentes. Por favor, reinicie o processo de login.",
     "exchangeFailedMessage": "Não foi possível finalizar a troca OAuth. Por favor, tente novamente.",
     "returnButton": "Voltar ao login"

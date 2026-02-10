@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { characterStatsService } from '../../services/characterStatsService';
 import { storyStatsService } from '../../services/storyStatsService';
+import { assetStatsService } from '../../services/assetStatsService';
+import { sceneStatsService } from '../../services/sceneStatsService';
 
-type FavoriteType = 'character' | 'story';
+type FavoriteType = 'character' | 'story' | 'asset' | 'scene';
 
 interface FavoriteButtonProps {
   characterId?: string;
   storyId?: string;
+  assetId?: string;
+  sceneId?: string;
   initialIsFavorited?: boolean;
   onToggle?: (isFavorited: boolean) => void;
   size?: 'small' | 'medium' | 'large';
@@ -18,18 +22,20 @@ interface FavoriteButtonProps {
 export function FavoriteButton({
   characterId,
   storyId,
+  assetId,
+  sceneId,
   initialIsFavorited,
   onToggle,
   size = 'large',
   readOnly = false,
   className = '',
 }: FavoriteButtonProps): JSX.Element {
-  const { t } = useTranslation(['characters']);
+  const { t } = useTranslation(['characters', 'assets', 'scenes']);
   const [isFavorited, setIsFavorited] = useState(initialIsFavorited || false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const type: FavoriteType = characterId ? 'character' : 'story';
-  const id = characterId || storyId;
+  const type: FavoriteType = characterId ? 'character' : storyId ? 'story' : assetId ? 'asset' : 'scene';
+  const id = characterId || storyId || assetId || sceneId;
 
   useEffect(() => {
     let isMounted = true;
@@ -40,7 +46,11 @@ export function FavoriteButton({
         try {
           const stats = type === 'character'
             ? await characterStatsService.getStats(id)
-            : await storyStatsService.getStats(id);
+            : type === 'story'
+            ? await storyStatsService.getStats(id)
+            : type === 'scene'
+            ? await sceneStatsService.getStats(id)
+            : await assetStatsService.getStats(id);
           if (isMounted) {
             setIsFavorited(stats.isFavoritedByUser);
           }
@@ -65,8 +75,12 @@ export function FavoriteButton({
     try {
       if (type === 'character') {
         await characterStatsService.toggleFavorite(id, !isFavorited);
-      } else {
+      } else if (type === 'story') {
         await storyStatsService.toggleFavorite(id, !isFavorited);
+      } else if (type === 'scene') {
+        await sceneStatsService.toggleFavorite(id, !isFavorited);
+      } else {
+        await assetStatsService.toggleFavorite(id, !isFavorited);
       }
       const next = !isFavorited;
       setIsFavorited(next);

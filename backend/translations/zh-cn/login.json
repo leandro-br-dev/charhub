@@ -2,14 +2,14 @@
   "description": "Copy shown on the authentication landing page encouraging users to authenticate.",
   "resources": {
     "title": "欢迎来到 CharHub",
-    "subtitle": "通过社交登录保护您的玩家资料。使用 Google 或 Facebook 登录，即可在几秒钟内获取独家游戏分析。",
+    "subtitle": "使用社交登录保护您的玩家档案。连接 Google 或 Facebook，并在几秒钟内访问独家游戏分析。",
     "formTitle": "登录以继续",
-    "formInstructions": "从下方选择您偏好的提供商。您将被重定向以确认访问，完成后将返回此处。",
+    "formInstructions": "请在下方选择您偏好的提供商。您将被重定向以确认访问权限，并在完成后返回此处。",
     "greeting": "欢迎回来！",
     "instruction": "登录以继续",
     "googleButton": "使用 Google 登录",
     "facebookButton": "使用 Facebook 登录",
-    "firstAccess": "第一次来？",
+    "firstAccess": "首次访问？",
     "signupLink": "注册",
     "checkingAuth": "正在检查身份验证..."
   }

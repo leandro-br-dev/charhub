@@ -53,6 +53,90 @@ export async function cleanDatabase(): Promise<void> {
     // Ignore Prisma errors during cleanup
     console.warn('Warning: Failed to delete userPlan records:', error);
   }
+  // Asset-related cleanup
+  try {
+    await db.assetFavorite.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.characterAsset.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.assetTag.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.assetImage.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.asset.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  // Scene-related cleanup
+  try {
+    await db.sceneAreaAsset.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.sceneAreaConnection.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.sceneArea.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.sceneTag.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.scene.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  // Character-related cleanup
+  try {
+    await db.conversationParticipant.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.message.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.conversation.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.characterImage.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  try {
+    await db.character.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
+  // Tag cleanup
+  try {
+    await db.tag.deleteMany({});
+  } catch (e) {
+    // Ignore
+  }
   await db.creditTransaction.deleteMany({});
   await db.userMonthlyBalance.deleteMany({});
   await db.userPlusAccess.deleteMany({});

@@ -2,15 +2,15 @@
   "description": "Signup page strings for new user registration.",
   "resources": {
     "greeting": "Crie Sua Conta!",
-    "instruction": "Escolha uma opção para se inscrever",
-    "googleButton": "Inscreva-se com o Google",
-    "facebookButton": "Inscreva-se com o Facebook",
-    "termsAgreementPt1": "Ao se inscrever, você concorda com os",
+    "instruction": "Escolha uma opção para se cadastrar",
+    "googleButton": "Cadastrar-se com o Google",
+    "facebookButton": "Cadastrar-se com o Facebook",
+    "termsAgreementPt1": "Ao se cadastrar, você concorda com os",
     "termsAgreementAnd": "e",
     "termsAndConditions": "Termos e Condições",
     "privacyPolicy": "Política de Privacidade",
-    "alreadyRegistered": "Já possui uma conta?",
-    "loginLink": "Entrar",
+    "alreadyRegistered": "Já tem uma conta?",
+    "loginLink": "Fazer login",
     "checkingAuth": "Verificando autenticação..."
   }
 }

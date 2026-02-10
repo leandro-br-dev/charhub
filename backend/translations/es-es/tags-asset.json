@@ -3,7 +3,7 @@
   "resources": {
     "Casual Wear": {
       "name": "Ropa Informal",
-      "description": "Ropa informal de uso diario"
+      "description": "Ropa casual de diario"
     },
     "Formal Wear": {
       "name": "Ropa Formal",
@@ -14,11 +14,11 @@
       "description": "Ropa de uniforme escolar"
     },
     "Maid Outfit": {
-      "name": "Uniforme de Doncella",
-      "description": "Uniforme de doncella"
+      "name": "Traje de Sirvienta",
+      "description": "Uniforme de sirvienta"
     },
     "Butler Outfit": {
-      "name": "Uniforme de Mayordomo",
+      "name": "Traje de Mayordomo",
       "description": "Uniforme de mayordomo"
     },
     "Kimono": {
@@ -47,7 +47,7 @@
     },
     "Fantasy Armor": {
       "name": "Armadura de Fantasía",
-      "description": "Armadura de estilo fantástico"
+      "description": "Armadura estilo fantasía"
     },
     "Robe": {
       "name": "Túnica",
@@ -55,7 +55,7 @@
     },
     "Cloak": {
       "name": "Capa",
-      "description": "Capa o mantón"
+      "description": "Capa o manto"
     },
     "Dress": {
       "name": "Vestido",
@@ -63,7 +63,7 @@
     },
     "Wedding Dress": {
       "name": "Vestido de Novia",
-      "description": "Vestido nupcial"
+      "description": "Traje nupcial"
     },
     "Ball Gown": {
       "name": "Vestido de Gala",
@@ -71,7 +71,7 @@
     },
     "Swimsuit": {
       "name": "Traje de Baño",
-      "description": "Vestimenta para nadar"
+      "description": "Atuendo de natación"
     },
     "Bikini": {
       "name": "Bikini",
@@ -79,38 +79,38 @@
     },
     "Lingerie": {
       "name": "Lencería",
-      "description": "Ropa interior"
+      "description": "Ropa íntima"
     },
     "Latex": {
       "name": "Látex",
-      "description": "Ropa de látex/goma"
+      "description": "Ropa de látex/caucho"
     },
     "Leather": {
       "name": "Cuero",
       "description": "Ropa de cuero"
     },
     "Bondage Gear": {
-      "name": "Equipo de Bondage",
-      "description": "Equipo BDSM"
+      "name": "Equipo de BDSM",
+      "description": "Equipo de BDSM"
     },
     "Ninja Outfit": {
-      "name": "Atuendo de Ninja",
+      "name": "Traje de Ninja",
       "description": "Atuendo de ninja/shinobi"
     },
     "Pirate Outfit": {
-      "name": "Atuendo de Pirata",
-      "description": "Ropa de pirata"
+      "name": "Traje de Pirata",
+      "description": "Vestimenta de pirata"
     },
     "Cowboy Outfit": {
-      "name": "Atuendo de Vaquero",
-      "description": "Atuendo del oeste/vaquero"
+      "name": "Traje de Vaquero",
+      "description": "Atuendo western/vaquero"
     },
     "Steampunk Outfit": {
-      "name": "Atuendo Steampunk",
+      "name": "Traje Steampunk",
       "description": "Ropa steampunk victoriana"
     },
     "Cyberpunk Outfit": {
-      "name": "Atuendo Cyberpunk",
+      "name": "Traje Cyberpunk",
       "description": "Atuendo cyberpunk futurista"
     },
     "Military Uniform": {
@@ -135,27 +135,27 @@
     },
     "Chef Uniform": {
       "name": "Uniforme de Chef",
-      "description": "Atuendo de profesional culinario"
+      "description": "Atuendo profesional culinario"
     },
     "Bunny Suit": {
-      "name": "Traje de Bunny",
-      "description": "Disfraz de conejita de Playboy"
+      "name": "Traje de Conejita",
+      "description": "Disfraz de conejita Playboy"
     },
     "Cat Costume": {
       "name": "Disfraz de Gato",
-      "description": "Disfraz temático de gato"
+      "description": "Disfraz con temática de gato"
     },
     "Fox Costume": {
       "name": "Disfraz de Zorro",
-      "description": "Disfraz temático de zorro"
+      "description": "Disfraz con temática de zorro"
     },
     "Fursuit": {
       "name": "Fursuit",
       "description": "Disfraz de animal antropomórfico"
     },
     "Idol Outfit": {
-      "name": "Atuendo de Idol",
-      "description": "Atuendo de escenario de ídolo pop"
+      "name": "Traje de Idol",
+      "description": "Vestuario de escenario de idol pop"
     },
     "Gothic Lolita": {
       "name": "Gothic Lolita",
@@ -167,7 +167,7 @@
     },
     "Goth Fashion": {
       "name": "Moda Gótica",
-      "description": "Estilo de moda gótico"
+      "description": "Estilo de moda gótica"
     },
     "Gyaru Fashion": {
       "name": "Moda Gyaru",
@@ -175,7 +175,7 @@
     },
     "Cosplay": {
       "name": "Cosplay",
-      "description": "Disfraz de personaje de cosplay"
+      "description": "Disfraz de cosplay de personaje"
     },
     "Sportswear": {
       "name": "Ropa Deportiva",
@@ -183,19 +183,19 @@
     },
     "Gym Clothes": {
       "name": "Ropa de Gimnasio",
-      "description": "Atuendo para hacer ejercicio"
+      "description": "Atuendo para ejercicio"
     },
     "Pajamas": {
       "name": "Pijama",
-      "description": "Ropa para dormir"
+      "description": "Ropa de dormir"
     },
     "Nightgown": {
       "name": "Camisón",
       "description": "Vestido de noche"
     },
     "Bathrobe": {
-      "name": "Bata de Baño",
-      "description": "Bata de baño o de casa"
+      "name": "Albornoz",
+      "description": "Albornoz de baño o de casa"
     },
     "Towel": {
       "name": "Toalla",
@@ -206,12 +206,12 @@
       "description": "Desnudo/sin ropa"
     },
     "Topless": {
-      "name": "Sin Camiseta",
-      "description": "Sin ropa en la parte superior"
+      "name": "Sin Parte Superior",
+      "description": "Sin ropa superior"
     },
     "Covered Nude": {
       "name": "Desnudo Cubierto",
-      "description": "Nudez estratégicamente cubierta"
+      "description": "Desnudez estratégicamente cubierta"
     },
     "Business Suit": {
       "name": "Traje de Negocios",
@@ -226,8 +226,8 @@
       "description": "Accesorio de corona real"
     },
     "Tiara": {
-      "name": "Tiarra",
-      "description": "Tiarra de princesa"
+      "name": "Tiara",
+      "description": "Tiara de princesa"
     },
     "Glasses": {
       "name": "Gafas",
@@ -243,7 +243,7 @@
     },
     "Witch Hat": {
       "name": "Sombrero de Bruja",
-      "description": "Sombrero puntiagudo de bruja"
+      "description": "Sombrero de bruja puntiagudo"
     },
     "Cat Ears": {
       "name": "Orejas de Gato",
@@ -258,8 +258,8 @@
       "description": "Cuernos de demonio/dragón"
     },
     "Halo": {
-      "name": "Aureola",
-      "description": "Aureola de ángel"
+      "name": "Halo",
+      "description": "Halo de ángel"
     },
     "Wings": {
       "name": "Alas",
@@ -275,7 +275,7 @@
     },
     "Choker": {
       "name": "Gargantilla",
-      "description": "Collar gargantilla"
+      "description": "Collar tipo gargantilla"
     },
     "Jewelry": {
       "name": "Joyería",
@@ -287,7 +287,7 @@
     },
     "Sword": {
       "name": "Espada",
-      "description": "Arma de espada"
+      "description": "Arma espada"
     },
     "Gun": {
       "name": "Pistola",
@@ -298,8 +298,8 @@
       "description": "Arco y flecha"
     },
     "Staff": {
-      "name": "Bastón",
-      "description": "Bastón mágico"
+      "name": "Báculo",
+      "description": "Báculo mágico"
     },
     "Wand": {
       "name": "Varita",
@@ -311,7 +311,7 @@
     },
     "Scythe": {
       "name": "Guadaña",
-      "description": "Arma de guadaña"
+      "description": "Arma guadaña"
     }
   }
 }

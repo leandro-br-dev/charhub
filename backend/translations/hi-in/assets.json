@@ -1,0 +1,447 @@
+{
+  "description": "Assets module strings for asset management, forms, and detail views.",
+  "resources": {
+    "labels": {
+      "untitledAsset": "अनाम एसेट",
+      "updatedAt": "{{date}} को अपडेट किया गया",
+      "public": "सार्वजनिक",
+      "private": "निजी",
+      "identifier": "एसेट ID: {{id}}",
+      "unsavedChanges": "असुरक्षित परिवर्तन",
+      "allSaved": "सभी परिवर्तन सहेजे गए",
+      "submitting": "सहेजा जा रहा है..."
+    },
+    "types": {
+      "CLOTHING": "कपड़े",
+      "ACCESSORY": "सहायक सामग्री",
+      "SCAR": "निशान",
+      "HAIRSTYLE": "केशविन्यास",
+      "OBJECT": "वस्तु",
+      "WEAPON": "हथियार",
+      "VEHICLE": "वाहन",
+      "FURNITURE": "फर्नीचर",
+      "PROP": "प्रोप"
+    },
+    "typeDescriptions": {
+      "CLOTHING": "परिधान और कपड़े की वस्तुएँ",
+      "ACCESSORY": "पहनने योग्य सहायक सामग्री और आभूषण",
+      "SCAR": "निशान, घाव और शारीरिक विशेषताएँ",
+      "HAIRSTYLE": "केशविन्यास और रंग",
+      "OBJECT": "हाथ में पकड़ी जाने वाली वस्तुएँ और सामान",
+      "WEAPON": "हथियार, हाथापाई के हथियार, आग्नेयास्त्र",
+      "VEHICLE": "वाहन और सवारी",
+      "FURNITURE": "फर्नीचर और संरचनात्मक तत्व",
+      "PROP": "पृष्ठभूमि के प्रोप और सजावट"
+    },
+    "categories": {
+      "WEARABLE": "पहनने योग्य",
+      "HOLDABLE": "पकड़ने योग्य",
+      "ENVIRONMENTAL": "पर्यावरण संबंधी"
+    },
+    "categoryDescriptions": {
+      "WEARABLE": "वह वस्तुएँ जिन्हें कोई पात्र पहन सकता है",
+      "HOLDABLE": "वह वस्तुएँ जिन्हें पकड़ा या ले जाया जा सकता है",
+      "ENVIRONMENTAL": "पृष्ठभूमि और पर्यावरणीय तत्व"
+    },
+    "placementZones": {
+      "face": "चेहरा",
+      "torso": "धड़",
+      "left_hand": "बायाँ हाथ",
+      "right_hand": "दायाँ हाथ",
+      "head": "सिर",
+      "feet": "पैर"
+    },
+    "placementZoneDescriptions": {
+      "face": "चेहरे के क्षेत्र पर लागू",
+      "torso": "शरीर/धड़ क्षेत्र पर लागू",
+      "left_hand": "बाएँ हाथ में पकड़ा हुआ",
+      "right_hand": "दाएँ हाथ में पकड़ा हुआ",
+      "head": "सिर पर पहना हुआ",
+      "feet": "पैरों में पहना हुआ"
+    },
+    "visualStyles": {
+      "ANIME": "Anime",
+      "REALISTIC": "यथार्थवादी",
+      "SEMI_REALISTIC": "अर्ध-यथार्थवादी",
+      "CARTOON": "कार्टून",
+      "MANGA": "Manga",
+      "MANHWA": "Manhwa",
+      "COMIC": "कॉमिक",
+      "CHIBI": "Chibi",
+      "PIXEL_ART": "Pixel Art",
+      "THREE_D": "3D"
+    },
+    "imageTypes": {
+      "preview": "पूर्वावलोकन",
+      "reference": "संदर्भ",
+      "transparent": "पारदर्शी",
+      "in_context": "संदर्भ में"
+    },
+    "accessibility": {
+      "addToFavorites": "पसंदीदा में जोड़ें",
+      "removeFromFavorites": "पसंदीदा से हटाएँ"
+    },
+    "stats": {
+      "assets": "एसेट",
+      "characters": "पात्र",
+      "characters_plural": "पात्र",
+      "images": "छवि",
+      "images_plural": "छवियाँ",
+      "charactersShort": "{{count}}K पात्र",
+      "charactersShort_plural": "{{count}}K पात्र"
+    },
+    "hub": {
+      "title": "एसेट",
+      "subtitle": "अपने पात्रों के लिए एसेट बनाएँ और प्रबंधित करें। एसेट में कपड़े, सहायक सामग्री, वस्तुएँ और बहुत कुछ शामिल हैं।",
+      "sidebar": {
+        "description": "अपनी रचनात्मक एसेट ब्राउज़ करें और प्रबंधित करें।",
+        "viewGallery": "गैलरी देखें",
+        "viewAllAssets": "सभी एसेट देखें",
+        "myAsset": "मेरा एसेट",
+        "noAssetsFound": "कोई एसेट नहीं मिला।"
+      },
+      "actions": {
+        "newAsset": "नया एसेट",
+        "createAsset": "नया एसेट",
+        "retry": "पुनः प्रयास करें"
+      },
+      "tabs": {
+        "myAssets": "मेरे एसेट",
+        "publicGallery": "सार्वजनिक गैलरी"
+      },
+      "filters": {
+        "searchPlaceholder": "नाम से खोजें",
+        "type": "प्रकार",
+        "category": "श्रेणी",
+        "allTypes": "सभी प्रकार",
+        "allCategories": "सभी श्रेणियाँ",
+        "noFilter": "कोई भी"
+      },
+      "states": {
+        "loading": "आपके एसेट लोड हो रहे हैं...",
+        "error": "हम एसेट लोड नहीं कर सके। कृपया पुनः प्रयास करें।",
+        "empty": "अभी तक कोई एसेट उपलब्ध नहीं है।",
+        "empty_private": "आपने अभी तक कोई एसेट नहीं बनाया है।",
+        "empty_public": "कोई भी सार्वजनिक एसेट आपके फ़िल्टर से मेल नहीं खाता।",
+        "emptyHint": "अपना पहला एसेट बनाकर शुरू करें या अपने फ़िल्टर समायोजित करें।",
+        "emptySearchHint": "अधिक परिणाम देखने के लिए अपने फ़िल्टर समायोजित करें या खोज साफ़ करें।"
+      },
+      "labels": {
+        "total": "{{count}} एसेट उपलब्ध है",
+        "total_plural": "{{count}} एसेट उपलब्ध हैं",
+        "quickCreateLink": "सीधे निर्माण में कूदें"
+      }
+    },
+    "form": {
+      "submit": "सहेजें",
+      "cancel": "रद्द करें",
+      "create": "एसेट बनाएँ",
+      "saveChanges": "परिवर्तन सहेजें",
+      "sections": {
+        "details": "विवरण",
+        "detailsHint": "इस एसेट के बारे में बुनियादी जानकारी।",
+        "classification": "वर्गीकरण",
+        "classificationHint": "दृश्य शैली, आयु रेटिंग और सामग्री टैग।",
+        "images": "छवियाँ",
+        "imagesHint": "इस एसेट के लिए दृश्य संदर्भ प्रबंधित करें।"
+      },
+      "fields": {
+        "name": "नाम",
+        "description": "विवरण",
+        "type": "प्रकार",
+        "category": "श्रेणी",
+        "promptPrimary": "दृश्य प्रॉम्प्ट",
+        "promptContext": "संदर्भ प्रॉम्प्ट",
+        "negativePrompt": "नकारात्मक प्रॉम्प्ट",
+        "placementZone": "प्लेसमेंट ज़ोन",
+        "placementDetail": "प्लेसमेंट विवरण",
+        "style": "दृश्य शैली",
+        "visibility": "दृश्यता",
+        "ageRating": "आयु रेटिंग",
+        "contentTags": "सामग्री टैग"
+      },
+      "placeholders": {
+        "name": "एसेट का नाम दर्ज करें",
+        "description": "इस एसेट का वर्णन करें...",
+        "type": "प्रकार चुनें",
+        "category": "श्रेणी चुनें",
+        "promptPrimary": "बताएँ कि एसेट कैसा दिखना चाहिए...",
+        "promptContext": "पात्रों के साथ उपयोग किए जाने पर अतिरिक्त संदर्भ...",
+        "negativePrompt": "बताएँ कि क्या बचना है...",
+        "placementZone": "प्लेसमेंट ज़ोन चुनें",
+        "placementDetail": "उदा., 'बायाँ गाल', 'नाक के आर-पार'"
+      },
+      "hints": {
+        "name": "इस एसेट के लिए एक स्पष्ट, वर्णनात्मक नाम",
+        "description": "एसेट की उपस्थिति का विस्तृत विवरण",
+        "positivePrompt": "AI जनरेशन के लिए दृश्य प्रॉम्प्ट (उदा., 'चांदी की ज़िप वाली एक लाल लेदर जैकेट')",
+        "negativePrompt": "जनरेशन में बचने वाले तत्व (उदा., 'क्षतिग्रस्त, फटा हुआ, गंदा')",
+        "placementZone": "एसेट को पात्र पर कहाँ रखा जाना चाहिए"
+      },
+      "labels": {
+        "unsavedChanges": "आपके पास असुरक्षित परिवर्तन हैं",
+        "allSaved": "परिवर्तन सहेजे गए",
+        "submitting": "सहेजा जा रहा है...",
+        "visibilityPublic": "सार्वजनिक",
+        "visibilityPrivate": "निजी"
+      },
+      "images": {
+        "coverHeader": "एसेट कवर",
+        "coverDescription": "इस एसेट का प्रतिनिधित्व करने वाली छवि।",
+        "upload": "कवर अपलोड करें",
+        "change": "कवर बदलें",
+        "uploading": "अपलोड हो रहा है...",
+        "urlModalTitle": "URL से छवि का उपयोग करें",
+        "urlLabel": "छवि URL",
+        "previewAlt": "एसेट कवर पूर्वावलोकन",
+        "invalidUrl": "एक वैध छवि URL (http/https) दर्ज करें।",
+        "saveFirst": "छवियाँ जोड़ने के लिए पहले एसेट सहेजें"
+      },
+      "cover": {
+        "header": "एसेट कवर",
+        "description": "आपके एसेट का दृश्य प्रतिनिधित्व।",
+        "upload": "छवि चुनें",
+        "change": "छवि बदलें",
+        "remove": "हटाएँ",
+        "fromDevice": "डिवाइस से अपलोड करें",
+        "fromUrl": "छवि URL का उपयोग करें",
+        "generateAI": "AI के साथ जनरेट करें",
+        "aiComingSoon": "एसेट के लिए AI जनरेशन जल्द ही आ रहा है",
+        "urlModalTitle": "URL से छवि का उपयोग करें",
+        "urlLabel": "छवि URL",
+        "preview": "पूर्वावलोकन",
+        "previewAlt": "एसेट कवर पूर्वावलोकन",
+        "invalidUrl": "एक वैध छवि URL (http/https) दर्ज करें।",
+        "error": "हम यह छवि लोड नहीं कर सके। {{message}}",
+        "loading": "लोड हो रहा है...",
+        "uploading": "अपलोड हो रहा है...",
+        "helperCreate": "अभी एक कवर छवि चुनें और जब आप बाकी फॉर्म भरेंगे तब हम इसे बनाए रखेंगे।",
+        "helperEdit": "जब चाहें कवर छवि अपडेट करें। परिवर्तन सहेजते ही लागू हो जाएंगे।"
+      },
+      "tabs": {
+        "identity": "पहचान",
+        "details": "विवरण",
+        "configuration": "विन्यास",
+        "classification": "वर्गीकरण",
+        "images": "छवियाँ",
+        "lockedHint": "अन्य अनुभागों को अनलॉक करने के लिए बुनियादी विवरण भरें।"
+      },
+      "autocomplete": {
+        "button": "स्वतः पूर्ण करें",
+        "ai": "AI के साथ स्वतः पूर्ण करें",
+        "web": "वेब खोज के साथ स्वतः पूर्ण करें",
+        "nothing": "कोई सुझाव उपलब्ध नहीं है।",
+        "applied": "स्वतः पूर्ण लागू किया गया।",
+        "failed": "स्वतः पूर्ण करने में विफल।"
+      }
+    },
+    "create": {
+      "title": "एक नया एसेट बनाएँ",
+      "subtitle": "एसेट के गुणों और दृश्य विशेषताओं को परिभाषित करें।",
+      "saveButton": "एसेट सहेजें",
+      "cancelButton": "रद्द करें और वापस जाएँ",
+      "cover": {
+        "header": "एसेट कवर",
+        "description": "आपके एसेट का दृश्य प्रतिनिधित्व।"
+      }
+    },
+    "edit": {
+      "title": "एसेट संपादित करें",
+      "subtitle": "{{name}} अपडेट किया जा रहा है",
+      "saveButton": "एसेट अपडेट करें",
+      "cancelButton": "परिवर्तन छोड़ दें",
+      "states": {
+        "loading": "एसेट लोड हो रहा है..."
+      },
+      "accessDenied": {
+        "title": "पहुँच अस्वीकृत",
+        "message": "आपके पास इस एसेट को संपादित करने की अनुमति नहीं है।",
+        "backButton": "एसेट पर वापस"
+      },
+      "cover": {
+        "header": "एसेट कवर",
+        "description": "आपके एसेट का दृश्य प्रतिनिधित्व।"
+      }
+    },
+    "detail": {
+      "states": {
+        "loading": "एसेट विवरण लोड हो रहा है...",
+        "notFound": "हमें यह एसेट नहीं मिल सका।"
+      },
+      "actions": {
+        "backToHub": "हब पर वापस",
+        "edit": "संपादित करें",
+        "delete": "हटाएँ",
+        "deleting": "हटाया जा रहा है...",
+        "share": "साझा करें"
+      },
+      "confirmDelete": {
+        "title": "एसेट हटाएँ?",
+        "message": "इस क्रिया को पूर्ववत नहीं किया जा सकता। इस एसेट से जुड़ा सभी डेटा स्थायी रूप से हटा दिया जाएगा।",
+        "confirm": "स्थायी रूप से हटाएँ",
+        "cancel": "रद्द करें"
+      },
+      "labels": {
+        "public": "सार्वजनिक",
+        "private": "निजी",
+        "createdAt": "निर्मित",
+        "createdBy": "इसके द्वारा बनाया गया",
+        "updatedAt": "अंतिम बार अपडेट किया गया",
+        "identifier": "एसेट ID: {{id}}",
+        "characterCount": "{{count}} पात्र",
+        "characterCount_plural": "{{count}} पात्र",
+        "type": "प्रकार",
+        "category": "श्रेणी"
+      },
+      "sections": {
+        "description": "विवरण",
+        "prompts": "जनरेशन प्रॉम्प्ट",
+        "placement": "प्लेसमेंट",
+        "metadata": "मेटाडेटा"
+      },
+      "placement": {
+        "title": "एसेट प्लेसमेंट",
+        "zoneLabel": "प्लेसमेंट ज़ोन",
+        "categoryLabel": "श्रेणी"
+      },
+      "characters": {
+        "title": "इस एसेट का उपयोग करने वाले पात्र",
+        "empty": "अभी तक कोई पात्र इस एसेट का उपयोग नहीं कर रहा है।"
+      }
+    },
+    "picker": {
+      "title": "एसेट चुनें",
+      "subtitle": "अपने पात्र में जोड़ने के लिए एसेट चुनें",
+      "searchPlaceholder": "एसेट खोजें...",
+      "filters": {
+        "allTypes": "सभी प्रकार",
+        "allCategories": "सभी श्रेणियाँ",
+        "typeFilter": "प्रकार के अनुसार फ़िल्टर करें",
+        "categoryFilter": "श्रेणी के अनुसार फ़िल्टर करें"
+      },
+      "actions": {
+        "addSelected": "चयनित जोड़ें ({{count}})",
+        "addSelected_plural": "चयनित जोड़ें ({{count}})",
+        "cancel": "रद्द करें",
+        "clearSelection": "चयन साफ़ करें"
+      },
+      "states": {
+        "loading": "एसेट लोड हो रहे हैं...",
+        "error": "एसेट लोड करने में विफल",
+        "empty": "कोई एसेट उपलब्ध नहीं है",
+        "noResults": "कोई भी एसेट आपकी खोज से मेल नहीं खाता",
+        "selectedEmpty": "जोड़ने के लिए एसेट चुनें"
+      },
+      "labels": {
+        "selected": "{{count}} चयनित",
+        "selected_plural": "{{count}} चयनित"
+      },
+      "assetCard": {
+        "typeLabel": "प्रकार",
+        "categoryLabel": "श्रेणी"
+      }
+    },
+    "characterAssets": {
+      "title": "पात्र एसेट",
+      "subtitle": "इस पात्र को सुसज्जित एसेट प्रबंधित करें",
+      "tabs": {
+        "equipped": "सुसज्जित",
+        "available": "उपलब्ध"
+      },
+      "actions": {
+        "addAssets": "एसेट जोड़ें",
+        "removeAsset": "हटाएँ",
+        "configureAsset": "विन्यास करें"
+      },
+      "states": {
+        "noEquipped": "कोई एसेट सुसज्जित नहीं",
+        "noAvailable": "कोई उपलब्ध एसेट नहीं",
+        "loading": "एसेट लोड हो रहे हैं..."
+      },
+      "placement": {
+        "title": "एसेट प्लेसमेंट",
+        "zoneLabel": "ज़ोन",
+        "configure": "प्लेसमेंट कॉन्फ़िगर करें",
+        "remove": "पात्र से हटाएँ"
+      },
+      "labels": {
+        "equippedCount": "{{count}} एसेट सुसज्जित है",
+        "equippedCount_plural": "{{count}} एसेट सुसज्जित हैं",
+        "availableCount": "{{count}} उपलब्ध है",
+        "availableCount_plural": "{{count}} उपलब्ध हैं"
+      }
+    },
+    "errors": {
+      "createFailed": "हम एसेट नहीं बना सके। कृपया पुनः प्रयास करें।",
+      "updateFailed": "हम एसेट अपडेट नहीं कर सके।",
+      "deleteFailed": "हम एसेट नहीं हटा सके।",
+      "detailUnavailable": "अभी एसेट विवरण लोड करने में असमर्थ।",
+      "linkFailed": "एसेट को पात्र से जोड़ने में विफल।",
+      "unlinkFailed": "एसेट को पात्र से हटाने में विफल।",
+      "nameRequired": "एसेट का नाम आवश्यक है",
+      "typeRequired": "एसेट का प्रकार आवश्यक है",
+      "categoryRequired": "एसेट की श्रेणी आवश्यक है",
+      "invalidType": "अवैध एसेट प्रकार",
+      "invalidCategory": "अवैध एसेट श्रेणी",
+      "invalidPlacementZone": "इस एसेट प्रकार के लिए अवैध प्लेसमेंट ज़ोन",
+      "assetInUse": "यह एसेट {{count}} पात्र द्वारा उपयोग किया जा रहा है और इसे हटाया नहीं जा सकता।",
+      "assetInUse_plural": "यह एसेट {{count}} पात्रों द्वारा उपयोग किया जा रहा है और इसे हटाया नहीं जा सकता।"
+    },
+    "success": {
+      "created": "एसेट सफलतापूर्वक बनाया गया",
+      "updated": "एसेट सफलतापूर्वक अपडेट किया गया",
+      "deleted": "एसेट सफलतापूर्वक हटाया गया",
+      "linked": "एसेट पात्र से जुड़ा",
+      "unlinked": "एसेट पात्र से हटाया गया"
+    },
+    "messages": {
+      "imageUploaded": "छवि सफलतापूर्वक अपलोड की गई",
+      "imageDeleted": "छवि सफलतापूर्वक हटाई गई",
+      "coverUploaded": "कवर छवि सफलतापूर्वक अपडेट की गई",
+      "descriptionRequired": "विवरण आवश्यक है"
+    },
+    "images": {
+      "title": "एसेट छवियाँ",
+      "addImage": "छवि जोड़ें",
+      "selectType": "छवि प्रकार चुनें",
+      "uploadFailed": "छवि अपलोड करने में विफल",
+      "deleteFailed": "छवि हटाने में विफल",
+      "deleteConfirm": "यह छवि हटाएँ?",
+      "noImages": "अभी तक कोई छवि नहीं है। अपना पहला दृश्य संदर्भ जोड़ें।",
+      "types": {
+        "preview": "पूर्वावलोकन",
+        "reference": "संदर्भ",
+        "transparent": "पारदर्शी",
+        "in_context": "संदर्भ में"
+      },
+      "typeDescriptions": {
+        "preview": "एसेट के लिए मुख्य पूर्वावलोकन छवि",
+        "reference": "एसेट के लिए दृश्य संदर्भ",
+        "transparent": "पारदर्शी पृष्ठभूमि संस्करण",
+        "in_context": "उपयोग/दृश्य संदर्भ में दिखाया गया एसेट"
+      }
+    },
+    "prompts": {
+      "title": "जनरेशन प्रॉम्प्ट",
+      "primaryLabel": "दृश्य प्रॉम्प्ट",
+      "primaryHint": "बताएँ कि जनरेट की गई छवियों में एसेट कैसा दिखना चाहिए",
+      "contextLabel": "संदर्भ प्रॉम्प्ट",
+      "contextHint": "जब इस एसेट का उपयोग पात्रों के साथ किया जाता है तो अतिरिक्त संदर्भ",
+      "negativeLabel": "नकारात्मक प्रॉम्प्ट",
+      "negativeHint": "इस एसेट को जनरेट करते समय बचने वाले तत्व"
+    },
+    "avatar": {
+      "invalidUrl": "एक वैध छवि URL (http/https) दर्ज करें।",
+      "error": "हम यह छवि लोड नहीं कर सके। {{message}}",
+      "aiComingSoon": "एसेट के लिए AI जनरेशन जल्द ही आ रहा है",
+      "generateAI": "AI के साथ जनरेट करें",
+      "fromDevice": "डिवाइस से अपलोड करें",
+      "fromUrl": "छवि URL का उपयोग करें",
+      "urlModalTitle": "URL से छवि का उपयोग करें",
+      "urlLabel": "छवि URL",
+      "preview": "पूर्वावलोकन",
+      "previewAlt": "छवि पूर्वावलोकन",
+      "loading": "लोड हो रहा है..."
+    }
+  }
+}

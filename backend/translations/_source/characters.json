@@ -88,6 +88,7 @@
       "removeFromFavorites": "Remove from favorites"
     },
     "stats": {
+      "characters": "Characters",
       "conversations": "Conversations",
       "messages": "Messages",
       "favorites": "Favorites",
@@ -132,6 +133,9 @@
     },
     "sidebar": {
       "myCharacter": "My character"
+    },
+    "emptyStates": {
+      "noCharacters": "No characters found."
     },
     "form": {
       "submit": "Save",
