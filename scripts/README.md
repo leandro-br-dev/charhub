@@ -14,10 +14,6 @@ This directory contains automation scripts for CharHub infrastructure, organized
 
 ```
 scripts/
-├── agents/              # Agent setup and infrastructure scripts
-│   ├── setup-agent.sh           # Setup Claude Code agent profiles
-│   └── setup-infrastructure.sh  # Setup agent infrastructure
-│
 ├── backup/              # Database backup and restore scripts
 │   ├── backup-database.sh       # Create PostgreSQL backup
 │   ├── restore-database.sh      # Restore from backup
@@ -50,21 +46,6 @@ scripts/
 ---
 
 ## 🚀 Scripts by Category
-
-### 🤖 Agent Setup (`/agents/`)
-
-**Purpose**: Setup and maintain Claude Code agent infrastructure
-
-| Script | Description | Usage |
-|--------|-------------|-------|
-| `setup-agent.sh` | Install/update agent profiles | `./scripts/agents/setup-agent.sh` |
-| `setup-infrastructure.sh` | Setup agent infrastructure | `./scripts/agents/setup-infrastructure.sh` |
-
-**Used by**: Agent development workflow
-
-**Documentation**: [Agent Setup Guide](../docs/05-business/planning/agents/)
-
----
 
 ### 📦 Database Backup (`/backup/`)
 
@@ -174,15 +155,7 @@ Uses scripts for production operations:
 ## 📖 Documentation
 
 ### Script Documentation
-- [Production Env Sync](../docs/agents/reviewer/skills/production-env-sync/SKILL.md)
 - [Backup & Restore Guide](../docs/03-reference/scripts/backup-restore-guide.md)
-- [Agent Setup](../docs/05-business/planning/agents/)
-
-### Agent Documentation
-- [Agent Coder](../docs/agents/coder/CLAUDE.md)
-- [Agent Reviewer](../docs/agents/reviewer/CLAUDE.md)
-- [env-guardian Sub-Agent](../docs/agents/reviewer/sub-agents/env-guardian.md)
-
 ---
 
 ## 🚨 Important Notes
