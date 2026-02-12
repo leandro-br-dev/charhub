@@ -47,6 +47,7 @@ export const CONFIG_PARAMETERS: ConfigParameter[] = [
   { key: 'generation.batch_timeout_minutes', envVar: 'BATCH_TIMEOUT_MINUTES', defaultValue: 5 },
 
   // Correction settings
+  { key: 'correction.enabled', envVar: 'CORRECTION_ENABLED', defaultValue: true },
   { key: 'correction.avatar_daily_limit', envVar: 'CORRECTION_AVATAR_DAILY_LIMIT', defaultValue: 5 },
   { key: 'correction.data_daily_limit', envVar: 'CORRECTION_DATA_DAILY_LIMIT', defaultValue: 10 },
 

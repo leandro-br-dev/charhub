@@ -103,8 +103,15 @@ const CONFIG_PARAMETERS = [
         description: 'type:number|min:1|max:60|Timeout per generation job in minutes',
     },
     // ========================================
-    // Category: correction (2 parameters)
+    // Category: correction (3 parameters)
     // ========================================
+    {
+        key: 'correction.enabled',
+        envVar: 'CORRECTION_ENABLED',
+        defaultValue: true,
+        category: 'correction',
+        description: 'type:boolean|Enable automated correction flows',
+    },
     {
         key: 'correction.avatar_daily_limit',
         envVar: 'CORRECTION_AVATAR_DAILY_LIMIT',

@@ -74,7 +74,7 @@ export class BatchCharacterGenerator {
     const { count, maxRetries = this.maxRetries, delayBetweenMs = this.delayBetweenMs, specificImageIds } = options;
 
     // Read batch size from configuration (default: 5)
-    const batchSizePerRun = await systemConfigurationService.getInt('batch.size_per_run', 5);
+    const batchSizePerRun = await systemConfigurationService.getInt('generation.batch_size_per_run', 24);
     const effectiveCount = Math.min(count, batchSizePerRun);
 
     logger.info({ count: effectiveCount, specificImageIds, batchSizePerRun }, 'Starting batch character generation with AI pipeline');
