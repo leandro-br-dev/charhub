@@ -2,7 +2,7 @@
  * System Configuration Seed Script Unit Tests (Simplified)
  *
  * Tests for system configuration seed data:
- * - All 19 parameters are seeded
+ * - All 24 parameters are seeded
  * - Upsert doesn't overwrite existing values
  */
 
@@ -26,10 +26,10 @@ describe('System Configuration Seed', () => {
   });
 
   describe('seedSystemConfiguration()', () => {
-    it('should seed all 23 configuration parameters', async () => {
+    it('should seed all 24 configuration parameters', async () => {
       const result = await seedSystemConfiguration({ verbose: false });
 
-      expect(result.created).toBe(23);
+      expect(result.created).toBe(24);
       expect(result.skipped).toBe(0);
       expect(result.errors).toHaveLength(0);
 
@@ -37,7 +37,7 @@ describe('System Configuration Seed', () => {
       const db = getTestDb();
       const configs = await db.systemConfiguration.findMany();
 
-      expect(configs).toHaveLength(23);
+      expect(configs).toHaveLength(24);
 
       // Verify all keys from CONFIG_PARAMETERS are present
       const seededKeys = configs.map((c: { key: string }) => c.key);
@@ -53,7 +53,7 @@ describe('System Configuration Seed', () => {
 
       // First seed - create all entries (simplified)
       const firstResult = await seedSystemConfiguration({ verbose: false });
-      expect(firstResult.created).toBe(23);
+      expect(firstResult.created).toBe(24);
       expect(firstResult.skipped).toBe(0);
 
       // Modify one value directly in database (change from 'gemini' to 'openai')
@@ -71,7 +71,7 @@ describe('System Configuration Seed', () => {
       // Second seed - should skip all existing entries
       const secondResult = await seedSystemConfiguration({ verbose: false });
       expect(secondResult.created).toBe(0);
-      expect(secondResult.skipped).toBe(23);
+      expect(secondResult.skipped).toBe(24);
 
       // Verify the modified value was NOT overwritten
       const configAfterSecondSeed = await db.systemConfiguration.findUnique({
@@ -114,7 +114,7 @@ describe('System Configuration Seed', () => {
     it('should handle dry run mode', async () => {
       const result = await seedSystemConfiguration({ dryRun: true });
 
-      expect(result.created).toBe(23);
+      expect(result.created).toBe(24);
       expect(result.skipped).toBe(0);
 
       // In dry run, nothing should be created in database
@@ -135,14 +135,14 @@ describe('System Configuration Seed', () => {
 
       const result = await seedSystemConfiguration({ verbose: false });
 
-      // Should skip the 9 existing, create 14 new (23 - 9 = 14)
-      expect(result.created).toBe(14);
+      // Should skip the 9 existing, create 15 new (24 - 9 = 15)
+      expect(result.created).toBe(15);
       expect(result.skipped).toBe(9);
       expect(result.errors).toHaveLength(0);
 
-      // Verify total is 23
+      // Verify total is 24
       const allConfigs = await db.systemConfiguration.findMany();
-      expect(allConfigs).toHaveLength(23);
+      expect(allConfigs).toHaveLength(24);
     });
 
     it('should seed all translation parameters with correct defaults', async () => {
@@ -198,14 +198,14 @@ describe('System Configuration Seed', () => {
   });
 
   describe('CONFIG_PARAMETERS constant', () => {
-    it('should have exactly 23 parameters', () => {
-      expect(CONFIG_PARAMETERS).toHaveLength(23);
+    it('should have exactly 24 parameters', () => {
+      expect(CONFIG_PARAMETERS).toHaveLength(24);
     });
 
     it('should have unique keys', () => {
       const keys = CONFIG_PARAMETERS.map((p: { key: string }) => p.key);
       const uniqueKeys = new Set(keys);
-      expect(uniqueKeys.size).toBe(23);
+      expect(uniqueKeys.size).toBe(24);
     });
 
     it('should have valid envVar format (uppercase with underscores)', () => {
