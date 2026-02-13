@@ -1564,6 +1564,21 @@ export async function getNewestCharacters(options?: {
       });
     }
 
+    // RE-SORT for newest view: Characters with avatars first, then by newest date
+    // This ensures characters without avatars don't clutter the visual experience
+    filteredCharacters.sort((a, b) => {
+      // Characters with avatars come first (priority 1), without avatar after (priority 2)
+      // Use getActiveAvatarUrl for type-safe avatar check
+      const aAvatar = getActiveAvatarUrl(a.images);
+      const bAvatar = getActiveAvatarUrl(b.images);
+      const aHasAvatar = aAvatar !== null && aAvatar.length > 0;
+      const bHasAvatar = bAvatar !== null && bAvatar.length > 0;
+      if (aHasAvatar && !bHasAvatar) return -1;
+      if (!aHasAvatar && bHasAvatar) return 1;
+      // Same avatar status: sort by newest first
+      return b.createdAt.getTime() - a.createdAt.getTime(); // Descending (newest first)
+    });
+
     // Calculate hasMore based on skip, limit, and total
     const hasMore = skip + (limit || 20) < total;
 
